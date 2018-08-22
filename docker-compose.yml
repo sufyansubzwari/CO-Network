@@ -1,0 +1,21 @@
+version: '1'
+services:
+    app:
+      restart: always
+      build:
+        context: .
+      ports:
+        - "8082:82"
+      links:
+        - mongo
+      environment:
+        - ROOT_URL=http://localhost:8082
+        - MONGO_URL=mongodb://mongo:27017/meteor
+        - METEOR_SETTINGS=$(cat ./settings.json)
+    mongo:
+      restart: always
+      image: mongo:latest
+      ports:
+        - "27017:27017"
+      volumes:
+        - ./data:/data

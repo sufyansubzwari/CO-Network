@@ -1,0 +1,109 @@
+<head>
+  <meta charset="utf-8">
+  <title>Meteor Apollo boilerplate</title>
+
+  <!-- GPU rasterisation -->
+  <meta name="viewport" content="width=device-width, minimum-scale=1.0">
+
+  <!-- Favicons -->
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+  <link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+
+  <!-- Safari on iOS -->
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  <meta name="apple-mobile-web-app-title" content="Love, love, love">
+
+  <link rel="apple-touch-icon" sizes="76x76" href="/apple-touch-icon.png">
+  <!-- iPad with high-resolution Retina display running iOS ≥ 7: -->
+  <link rel="apple-touch-icon" sizes="152x152" href="images/icons/icon-apple-152x152.png">
+  <!-- iPad with high-resolution Retina display running iOS ≤ 6: -->
+  <link rel="apple-touch-icon" sizes="144x144" href="images/icons/icon-apple-144x144.png">
+  <!-- iPhone with high-resolution Retina display running iOS ≥ 7: -->
+  <link rel="apple-touch-icon" sizes="120x120" href="images/icons/icon-apple-120x120.png">
+  <!-- iPhone with high-resolution Retina display running iOS ≤ 6: -->
+  <link rel="apple-touch-icon" sizes="114x114" href="images/icons/icon-apple-114x114.png">
+  <!-- iPad mini and the first- and second-generation iPad on iOS ≥ 7: -->
+  <link rel="apple-touch-icon" sizes="76x76" href="images/icons/icon-apple-76x76.png">
+  <!-- iPad mini and the first- and second-generation iPad on iOS ≤ 6: -->
+  <link rel="apple-touch-icon" sizes="72x72" href="images/icons/icon-apple-72x72.png">
+  <!-- non-Retina iPhone, iPod Touch, and Android 2.1+ devices: -->
+  <link rel="apple-touch-icon" href="images/icons/icon-apple-72x72.png">
+
+  <!-- iPhone SPLASHSCREEN -->
+  <link href="images/splash/splash-apple-320x460.png" media="(device-width: 320px)" rel="apple-touch-startup-image">
+  <!-- iPhone (Retina) SPLASHSCREEN -->
+  <link href="images/splash/splash-apple-640x920.png" media="(device-width: 320px) and (device-height: 460px) and (-webkit-device-pixel-ratio: 2)" rel="apple-touch-startup-image">
+  <!-- iPhone 5 (Retina) SPLASHSCREEN -->
+  <link href="images/splash/splash-apple-640x1096.png" media="(device-width: 320px) and (device-height: 568px) and (-webkit-device-pixel-ratio: 2)" rel="apple-touch-startup-image">
+  <!-- iPad (non-Retina) (Portrait) -->
+  <link href="images/splash/splash-apple-768x1004.png" media="screen and (min-device-width: 481px) and (max-device-width: 1024px) and (orientation:portrait)" rel="apple-touch-startup-image" />
+  <!-- iPad (non-Retina) (Landscape) -->
+  <link href="images/splash/splash-apple-1024x748.png" media="screen and (min-device-width: 481px) and (max-device-width: 1024px) and (orientation:landscape)" rel="apple-touch-startup-image" />
+  <!-- iPad (Retina) (Portrait) -->
+  <link href="images/splash/splash-apple-1536x2008.png" media="screen and (min-device-width: 481px) and (max-device-width: 1024px) and (orientation:portrait) and (-webkit-min-device-pixel-ratio: 2)" rel="apple-touch-startup-image" />
+  <!-- iPad (Retina) (Landscape) -->
+  <link href="images/splash/splash-apple-2048x1496.png" media="screen and (min-device-width: 481px) and (max-device-width: 1024px) and (orientation:landscape) and (-webkit-min-device-pixel-ratio: 2)" rel="apple-touch-startup-image" />
+
+  <!-- Windows phone -->
+  <meta name="msapplication-TileImage" content="images/icons/icon-wp-144x144.png">
+  <meta name="msapplication-TileColor" content="#2e2e49">
+
+  <!-- Chrome on Android -->
+  <meta name="mobile-web-app-capable" content="yes">
+
+  <meta name="theme-color" content="#3b395e"/>
+
+  <!-- Handle javascript disabled -->
+  <noscript>
+    <p>Please, enable JavaScript in your browser :)</p>
+  </noscript>
+
+  <!-- SW manifest -->
+  <link rel="manifest" href="/manifest-pwa.json">
+
+  <!-- App shell styles -->
+  <link rel="stylesheet" type="text/css" href="/css/sanitize.css">
+  <link rel="stylesheet" type="text/css" href="/css/basscss.min.css">
+  <link rel="stylesheet" type="text/css" href="/css/style.css">
+</head>
+
+<body>
+  <header class="fixed top-0 z1">
+    <div class="flex justify-between items-center">
+      <div class="flex justify-center items-center header__burger">
+        <svg class="menu__icon no--select" width="24px" height="24px" viewBox="0 0 48 48" fill="#fff">
+          <path d="M6 36h36v-4H6v4zm0-10h36v-4H6v4zm0-14v4h36v-4H6z"></path>
+        </svg>
+      </div>
+      <div id="header" class="center header__title no--select">
+        <span>loading...</span>
+      </div>
+      <div class="header__avatar"></div>
+    </div>
+  </header>
+
+  <div class="fixed top-0 bottom-0 z2 menu">
+    <div class="menu__header"></div>
+    <ul id="menu" class="menu__list"></ul>
+  </div>
+
+  <div class="fixed top-0 bottom-0 left-0 right-0 z1 menu__overlay"></div>
+
+  <div class="flex justify-around items-center app__outer">
+    <div class="app__container pt4">
+      <div class="flex flex-column justify-between">
+        <div id="main"></div>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- Toast msg's -->
+  <div class="fixed toast__container"></div>
+
+  <script src="/js/toast.js"></script>
+  <script src="/js/offline.js"></script>
+  <script src="/js/menu.js"></script>
+</body>

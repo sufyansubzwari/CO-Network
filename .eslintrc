@@ -1,0 +1,38 @@
+{
+  "parser": "babel-eslint",
+  "env": {
+    "browser": true,
+    "es6": true,
+    "node": true,
+    "jest": true
+  },
+  "ecmaFeatures": {
+    "modules": true
+  },
+  "parserOptions": {
+    "allowImportExportEverywhere": true
+  },
+  "plugins": [
+    "meteor",
+    "flowtype",
+    "react",
+    "prettier",
+    "standard"
+  ],
+  "settings": {
+    "import/resolver": "meteor"
+  },
+  "globals": {
+    "Package": true,
+  },
+  "extends": [
+    "prettier",
+    "prettier/flowtype",
+    "prettier/react",
+    "prettier/standard",
+    "plugin:meteor/recommended"
+  ],
+  "rules": {
+    "prettier/prettier": "error"
+  }
+}
