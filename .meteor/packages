@@ -28,3 +28,4 @@ alanning:roles
 practicalmeteor:chai
 practicalmeteor:sinon
 meteortesting:mocha
+hwillson:stub-collections
