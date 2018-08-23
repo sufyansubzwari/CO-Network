@@ -1,5 +1,5 @@
 # types for Users namespace
-
+scalar Date
 type Email {
   address: String
   verified: Boolean
