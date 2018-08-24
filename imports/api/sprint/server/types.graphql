@@ -1,0 +1,30 @@
+# types for Sprint namespace
+
+type Sprint {
+  _id: String
+  name: String!
+  startDate: Date!
+  endDate: Date!
+  project_id: String!
+}
+
+type Query {
+  searchSprint(Sprint: SprintInput!): [Sprint]
+  sprints: [Sprint]
+  sprint(_id: String): Sprint
+}
+input SprintInput {
+  _id: String
+  name: String
+  startDate: Date
+  endDate: Date
+  project_id: String
+}
+input SprintCreateInput {
+  name: String
+  project_id: String!
+}
+
+type Mutation {
+  saveSprint(sprint: SprintCreateInput!): Sprint
+}
