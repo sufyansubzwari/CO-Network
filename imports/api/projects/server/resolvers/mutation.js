@@ -6,7 +6,7 @@ const Mutation = {};
 Mutation.saveProject = async (root, { project }, context) => {
   project.owner = "";
   const projectId=Projects.collection.insert(project);
-  return projectId
+  return Projects.collection.findOne(projectId);
 };
 
 export default Mutation;
