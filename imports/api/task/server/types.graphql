@@ -1,0 +1,52 @@
+# types for Task namespace
+
+type Task {
+  _id: String
+  name: String
+  description: String
+  startDate: Date
+  endDate: Date
+  requirement_id: String
+  assigned: String
+  assignedUser: User
+  ownerWork: [OwnerWork]
+  hours: Int
+  status: String
+}
+type OwnerWork {
+  user: User
+  worksHours: Int
+}
+input OwnerWorkType {
+  user: UserType
+  worksHours: Int
+}
+
+type Query {
+  searchTask(Task: TaskInput!): [Task]
+  tasks: [Task]
+  task(_id: String): Task
+  assignedUser: User
+}
+input TaskInput {
+  _id: String
+  name: String
+  description: String
+  startDate: Date
+  endDate: Date
+  requirement_id: String
+  assigned: UserType
+  ownerWork: [OwnerWorkType]
+  hours: Int
+  status: String
+}
+input TaskCreateInput {
+  name: String!
+  description: String!
+  requirement_id: String!
+}
+
+type Mutation {
+  saveTask(task: TaskCreateInput!): Task
+  assignTask(task_id: String, user_id: String): Task
+}
