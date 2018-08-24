@@ -1,14 +1,24 @@
 # types for Project namespace
-scalar Date
 
 type Project {
+  _id: String
   name: String!
-  gender: String
-  avatar: String!
+  description: String
+  startDate: Date!
+  endDate: Date!
+  owner: String!
 }
 
 type Query {
-  project: Project
+  project(project:ProjectInput): Project
+}
+input ProjectInput {
+  _id: String
+  name: String
+  description: String
+  startDate: Date
+  endDate: Date
+  owner: String
 }
 
 type Mutation {
