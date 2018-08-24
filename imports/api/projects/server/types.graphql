@@ -3,14 +3,16 @@
 type Project {
   _id: String
   name: String!
-  description: String
+  description: String!
   startDate: Date!
   endDate: Date!
   owner: String!
 }
 
 type Query {
-  project(project:ProjectInput): Project
+  searchProject(project: ProjectInput!): [Project]
+  projects: [Project]
+  project(_id: String): Project
 }
 input ProjectInput {
   _id: String
@@ -20,7 +22,11 @@ input ProjectInput {
   endDate: Date
   owner: String
 }
+input ProjectCreateInput {
+  name: String
+  description: String
+}
 
 type Mutation {
-
+  saveProject(project: ProjectCreateInput!): Project
 }
