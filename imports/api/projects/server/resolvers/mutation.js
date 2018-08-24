@@ -4,7 +4,6 @@ import Projects from "../../index";
 const Mutation = {};
 
 Mutation.saveProject = async (root, { project }, context) => {
-  project.owner = "";
   const projectId=Projects.collection.insert(project);
   return Projects.collection.findOne(projectId);
 };
