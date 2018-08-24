@@ -3,9 +3,9 @@ import Sprints from "../../index";
 
 const Mutation = {};
 
-Mutation.saveSprint = async (root, { project }, context) => {
-  const projectId=Sprints.collection.insert(project);
-  return Sprints.collection.findOne(projectId);
+Mutation.saveSprint = async (root, { sprint }, context) => {
+  const sprintId=Sprints.collection.insert(sprint);
+  return Sprints.collection.findOne(sprintId);
 };
 
 export default Mutation;
