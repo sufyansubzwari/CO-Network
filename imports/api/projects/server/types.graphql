@@ -1,0 +1,16 @@
+# types for Project namespace
+scalar Date
+
+type Project {
+  name: String!
+  gender: String
+  avatar: String!
+}
+
+type Query {
+  project: Project
+}
+
+type Mutation {
+
+}
