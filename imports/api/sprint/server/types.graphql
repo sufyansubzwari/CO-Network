@@ -9,7 +9,7 @@ type Sprint {
 }
 
 type Query {
-  searchSprint(Sprint: SprintInput!): [Sprint]
+  searchSprint(sprint: SprintInput!): [Sprint]
   sprints: [Sprint]
   sprint(_id: String): Sprint
 }
