@@ -3,9 +3,12 @@
 type Sprint {
   _id: String
   name: String!
+  status: String!
   startDate: Date!
   endDate: Date!
   project_id: String!
+  totalPlannedHours: Int!
+  totalLoggedHours: Int!
 }
 
 type Query {
