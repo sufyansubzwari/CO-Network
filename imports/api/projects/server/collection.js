@@ -42,6 +42,18 @@ Project.schema = new SimpleSchema({
     type: String,
     label: "The description of the project."
   },
+  members: {
+    type: Array,
+    required: false,
+    label: "Assign history"
+  },
+  "members.$": {
+    type: Object
+  },
+  "members.$.user_id": {
+    type: String,
+    label: "The Id of user"
+  },
   starDate: {
     type: String,
     label: "The date this project was created.",
