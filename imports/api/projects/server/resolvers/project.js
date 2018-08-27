@@ -1,5 +1,6 @@
 import Task from '../../../task';
 import Sprint from '../../../sprint';
+import ProjectCollection from '../../index';
 
 const Project = {};
 Project.totalPlannedHours = async project => {
@@ -50,5 +51,32 @@ Project.currentSprint = async project => {
   ).fetch()
   console.log(data)
   return data[0]
+};
+Project.members = async project => {
+  const pipeline = [
+    {
+      $unwind: "$members"
+    },
+    {
+      $match: {
+        "_id": project._id,
+      }
+    },
+    {
+      $lookup:
+        {
+          from: "users",
+          localField: "members",
+          foreignField: "_id",
+          as: "members"
+        }
+    }
+  ];
+  const options = {};
+  const data = await ProjectCollection.collection
+    .rawCollection()
+    .aggregate(pipeline, options)
+    .toArray();
+  return data[0].members
 };
 export default Project;
