@@ -1,0 +1,54 @@
+import Task from '../../../task';
+import Sprint from '../../../sprint';
+
+const Project = {};
+Project.totalPlannedHours = async project => {
+  const pipeline = [
+    {
+      $match: {
+        project_id: project._id,
+      },
+    },
+    {
+      $group: {
+        _id: '$project_id',
+        totalPlannedHours: { $sum: '$hours' },
+      },
+    },
+  ];
+  const options = {};
+  const data = await Task.collection
+    .rawCollection()
+    .aggregate(pipeline, options)
+    .toArray();
+  return data[0].totalPlannedHours;
+};
+Project.totalLoggedHours = async project => {
+  const pipeline = [
+    {
+      $match: {
+        project_id: project._id,
+      },
+    },
+    {
+      $group: {
+        _id: '$project_id',
+        totalLoggedHours: { $sum: '$logHours' },
+      },
+    },
+  ];
+  const options = {};
+  const data = await Task.collection
+    .rawCollection()
+    .aggregate(pipeline, options)
+    .toArray();
+  return data[0].totalLoggedHours;
+};
+Project.currentSprint = async project => {
+  const data= await Sprint.collection.find({ project_id: project._id, status:'Open' },
+    { sort: { starDate: -1 },limit:1},
+  ).fetch()
+  console.log(data)
+  return data[0]
+};
+export default Project;
