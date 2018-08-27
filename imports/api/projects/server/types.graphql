@@ -10,6 +10,7 @@ type Project {
   totalPlannedHours: Int!
   totalLoggedHours: Int!
   currentSprint: Sprint!
+  members:[User]
 }
 
 type Query {
