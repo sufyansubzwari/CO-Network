@@ -1,0 +1,22 @@
+# types for Bug namespace
+
+type Bug {
+  _id: ID
+  name: String
+  description: String
+  project: Project
+}
+type Query {
+  bugs(project_id:String): [Bug]
+  bug(_id: String): Bug
+}
+input BugCreateInput {
+  name: String!
+  description: String!
+  project_id: String!
+}
+
+type Mutation {
+  saveBug(bug: BugCreateInput!): Bug
+
+}
