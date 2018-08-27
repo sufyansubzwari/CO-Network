@@ -38,7 +38,11 @@ Sprint.schema = new SimpleSchema({
     type: String,
     label: "The title of the Sprint."
   },
-    starDate: {
+  owner: {
+    type: String,
+    label: "The ID user "
+  },
+  starDate: {
     type: String,
     label: "The date this Sprint was created.",
     autoValue() {
@@ -52,15 +56,16 @@ Sprint.schema = new SimpleSchema({
       if (this.isInsert) return new Date().toISOString();
     }
   },
-  status:{
+  status: {
     type: String,
-    required:false,
+    required: false,
     autoValue() {
       if (this.isInsert) return "New";
     }
-  },flag:{
+  },
+  flag: {
     type: String,
-    required:false,
+    required: false,
     autoValue() {
       if (this.isInsert) return "external";
     }
