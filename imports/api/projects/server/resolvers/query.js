@@ -4,7 +4,6 @@ const Query = {};
 Query.project = (root, { _id }, context) => {
   if (_id) {
     const project = Projects.collection.findOne(_id);
-    console.log(project);
     return project;
   }
   throw new Error("Missing parameter");
