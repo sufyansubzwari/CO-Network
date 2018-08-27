@@ -18,7 +18,15 @@ Task.deny({
 Task.schema = new SimpleSchema({
   requirement_id: {
     type: String,
+    label: "The ID of the requirement this Task belongs to."
+  },
+  project_id: {
+    type: String,
     label: "The ID of the project this Task belongs to."
+  },
+  sprint_id: {
+    type: String,
+    label: "The ID of the sprint this Task belongs to."
   },
   createdAt: {
     type: String,
@@ -27,7 +35,6 @@ Task.schema = new SimpleSchema({
       if (this.isInsert) return new Date().toISOString();
     }
   },
-
   updatedAt: {
     type: String,
     label: "The date this Task was last updated.",
@@ -45,7 +52,7 @@ Task.schema = new SimpleSchema({
   },
   assigned: {
     type: String,
-    required:false,
+    required: false,
     label: "The ID of the user work on this task."
   },
   starDate: {
@@ -64,28 +71,33 @@ Task.schema = new SimpleSchema({
   },
   ownerWork: {
     type: Array,
-    required:false,
+    required: false,
     label: "Assign history"
   },
-  'ownerWork.$': {
-    type: Object,
+  "ownerWork.$": {
+    type: Object
   },
-  'ownerWork.$.user_id': {
+  "ownerWork.$.user_id": {
     type: String,
-    label: 'The Id of user',
+    label: "The Id of user"
   },
-  'ownerWork.$.working_hours': {
+  "ownerWork.$.working_hours": {
     type: Number,
-    label: 'Working_hours n this task',
+    label: "Working_hours n this task"
   },
   hours: {
     type: Number,
-    required:false,
-    label: "Assign history"
+    required: false,
+    label: "Assigned hours"
+  },
+  logHours: {
+    type: Number,
+    required: false,
+    label: "Log history"
   },
   status: {
-    type:String,
-    label: 'Task status, these should be one of Open, Doing, Testing, Done',
+    type: String,
+    label: "Task status, these should be one of Open, Doing, Testing, Done",
     autoValue() {
       return "Open";
     }
