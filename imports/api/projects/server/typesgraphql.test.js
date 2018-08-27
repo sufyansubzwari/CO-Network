@@ -4,7 +4,7 @@ import casual from "casual-browserify";
 import schema from "./types.graphql";
 
 if (Meteor.isServer) {
-  describe("User schema", () => {
+  describe("Project schema", () => {
     const server = mockServer(schema, {
       RootQuery: () => ({
         searchProject: (project = {}) => [Project],
