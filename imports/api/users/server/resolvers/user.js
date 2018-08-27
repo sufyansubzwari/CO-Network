@@ -1,11 +1,6 @@
-// Users namespace user resolvers
-const User = {};
+import Task from "../../../task";
 
-//------------------------------------------------------------------------------
-// We need to tell graphql how to resolve the 'services' field inside the User
-// query. We could also define resolver functions for the rest of the User
-// fields, but if we don't do that graphql will default to the field values,
-// which is exactly what we want.
+const User = {};
 User.services = (root, args, context) => {
   // Get current user
   const { user } = context;
@@ -19,6 +14,37 @@ User.services = (root, args, context) => {
   // available services
   return (user.services && Object.keys(user.services)) || [];
 };
-//------------------------------------------------------------------------------
+User.totalPlannedHours = async user => {
+  const pipeline = [
+    {
+      $match: {
+        assigned: user._id
+      }
+    },
+    {
+      $lookup: {
+        from: "Projects",
+        localField: "project_id",
+        foreignField: "_id",
+        as: "projects"
+      }
+    },
+    { $unwind: "$projects" },
+    {
+      $group: {
+        _id: "projects.id",
+        project: { $each: "$projects" },
+        totalPlannedHours: { $sum: "$hours" }
+      }
+    }
+  ];
+  const options = {};
+  const data = await Task.collection
+    .rawCollection()
+    .aggregate(pipeline, options)
+    .toArray();
+  console.log(data);
+  return data;
+};
 
 export default User;
