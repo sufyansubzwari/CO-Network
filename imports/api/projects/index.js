@@ -3,7 +3,7 @@ import extend from "lodash/extend";
 
 /**
  * @namespace Projects
- * @summary defines utilities related to User entities.
+ * @summary defines utilities related to Project entities.
  */
 const Projects = {};
 
