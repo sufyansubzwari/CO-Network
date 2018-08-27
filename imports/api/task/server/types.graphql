@@ -1,7 +1,7 @@
 # types for Task namespace
 
 type Task {
-  _id: String
+  _id: ID
   name: String
   description: String
   startDate: Date
@@ -26,7 +26,7 @@ type Query {
   searchTask(Task: TaskInput!): [Task]
   tasks: [Task]
   task(_id: String): Task
-  assignedUser: User
+  taskByProject(project_id: String): Task
 }
 input TaskInput {
   _id: String
