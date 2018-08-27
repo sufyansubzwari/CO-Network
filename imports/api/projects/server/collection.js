@@ -48,11 +48,7 @@ Project.schema = new SimpleSchema({
     label: "Assign history"
   },
   "members.$": {
-    type: Object
-  },
-  "members.$.user_id": {
-    type: String,
-    label: "The Id of user"
+    type: String
   },
   starDate: {
     type: String,
