@@ -7,6 +7,9 @@ type Project {
   startDate: Date!
   endDate: Date!
   owner: String!
+  totalPlannedHours: Int!
+  totalLoggedHours: Int!
+  currentSprint: Sprint!
 }
 
 type Query {
@@ -29,4 +32,5 @@ input ProjectCreateInput {
 
 type Mutation {
   saveProject(project: ProjectCreateInput!): Project
+  addMemberToProject(project_id: String!,use_id: String!): Project
 }
