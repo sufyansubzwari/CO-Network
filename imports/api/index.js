@@ -8,5 +8,6 @@ export { default as Projects } from './projects';
 export { default as Sprint } from './sprint';
 export { default as Requirements} from './requirements';
 export { default as Task} from './task';
+export { default as Slack} from './slack';
 export { default as Constants } from './constants';
 export { default as ErrorHandling } from './error-handling';
