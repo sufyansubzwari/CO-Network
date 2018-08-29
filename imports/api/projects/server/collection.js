@@ -1,7 +1,7 @@
-import { Mongo } from "meteor/mongo";
+import BaseCollection from "../../base/collection";
 import SimpleSchema from "simpl-schema";
 
-const Project = new Mongo.Collection("Projects");
+const Project = new BaseCollection("projects");
 
 Project.allow({
   insert: () => false,
@@ -16,24 +16,6 @@ Project.deny({
 });
 
 Project.schema = new SimpleSchema({
-  owner: {
-    type: String,
-    label: "The ID of the user this project belongs to."
-  },
-  createdAt: {
-    type: String,
-    label: "The date this project was created.",
-    autoValue() {
-      if (this.isInsert) return new Date().toISOString();
-    }
-  },
-  updatedAt: {
-    type: String,
-    label: "The date this project was last updated.",
-    autoValue() {
-      if (this.isInsert || this.isUpdate) return new Date().toISOString();
-    }
-  },
   name: {
     type: String,
     label: "The title of the project."
@@ -63,7 +45,26 @@ Project.schema = new SimpleSchema({
     autoValue() {
       if (this.isInsert) return new Date().toISOString();
     }
-  }
+  },
+  labels: {
+    type: Array,
+    label: "Project labels"
+  },
+  "labels.$": {
+    type: String,
+    label: "Project labels"
+  },owner: {
+    type: String,
+    label: "The ID of the project on this Bug."
+  },
+  type: {
+    type: String,
+    label: "Project type"
+  },
+  customer: {
+    type: String,
+    label: "Project customer"
+  },
 });
 
 Project.attachSchema(Project.schema);
