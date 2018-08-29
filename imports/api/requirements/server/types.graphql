@@ -27,6 +27,8 @@ input RequirementInput {
   description:String
   startDate: Date
   endDate: Date
+  priority: String
+  status: String
   project_id: String
   sprint_id: String!
 }
