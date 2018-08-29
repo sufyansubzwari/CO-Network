@@ -2,31 +2,35 @@
 type Requirement {
   _id: String
   name: String!
+  description: String!
   startDate: Date!
   endDate: Date!
-  project_id: String!
-  sprint_id: String!
-}
+  report: Report
 
+}
+type Report {
+  totalPlannedHours: Int!
+  totalLoggedHours: Int!
+  progress: [Progress]
+}
+type Progress {
+  status: String
+  percentage: String
+}
 type Query {
-  searchRequirement(requirement: RequirementInput!): [Requirement]
-  requirements: [Requirement]
+  requirements(requirement: RequirementInput): [Requirement]
   requirement(_id: String): Requirement
 }
 input RequirementInput {
   _id: String
   name: String
+  description:String
   startDate: Date
   endDate: Date
   project_id: String
   sprint_id: String!
 }
-input RequirementCreateInput {
-  name: String
-  project_id: String!
-  sprint_id: String!
-}
 
 type Mutation {
-  saveRequirement(requirement: RequirementCreateInput!): Requirement
+  requirement(requirement: RequirementInput): Requirement
 }
