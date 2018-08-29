@@ -42,21 +42,21 @@ class RequirementService {
   };
   /**
    * @name totalPlannedHours
-   * @summary Get amount planned hours in project
-   * @param {String} id - Project id
+   * @summary Get amount planned hours in requirement
+   * @param {String} id - Requirement id
    * @return {Number} Return amount planned hours
    */
   static totalPlannedHours = async id => {
-    return Tasks.service.totalPlannedHoursByProject(id);
+    return Tasks.service.totalPlannedHoursByRequirement(id);
   };
   /**
    * @name totalLoggedHours
-   * @summary Get amount logged hours in project
-   * @param {String} id - Project id
+   * @summary Get amount logged hours in requirement
+   * @param {String} id - Requirement id
    * @return {Number} Return amount logged hours
    */
   static totalLoggedHours = async id => {
-    return Tasks.service.totalLoggedHoursByProject(id);
+    return Tasks.service.totalLoggedHoursByRequirement(id);
   };
   /**
    * @name  requirementByProject
@@ -71,7 +71,7 @@ class RequirementService {
    * @name progress
    * @summary Get requirement task status
    * @param {String} id - Requirement id
-   * @return {Number} Return all requirement tasks status
+   * @return [{Object}] Return all requirement tasks status
    */
   static progress = async id => {
     return Tasks.service.getTaskStatusByRequirement(id);
