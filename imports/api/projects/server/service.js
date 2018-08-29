@@ -139,6 +139,15 @@ class ProjectService {
   static tasks = async id => {
     return Tasks.service.taskByProject(id);
   };
+  /**
+   * @name progress
+   * @summary Get project task status
+   * @param {String} id - Project id
+   * @return {Number} Return all projects tasks status
+   */
+  static progress = async id => {
+    return Tasks.service.getTaskStatusByProject(id);
+  };
 }
 
 export default ProjectService;
