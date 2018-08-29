@@ -6,9 +6,7 @@ type Task {
   description: String
   startDate: Date
   endDate: Date
-  requirement_id: String
-  assigned: String
-  assignedUser: User
+  assigned: User
   ownerWork: [OwnerWork]
   hours: Int
   status: String
@@ -23,30 +21,23 @@ input OwnerWorkType {
 }
 
 type Query {
-  searchTask(Task: TaskInput!): [Task]
-  tasks: [Task]
+  tasks(Task: TaskInput!): [Task]
   task(_id: String): Task
-  taskByProject(project_id: String): Task
 }
 input TaskInput {
   _id: String
   name: String
   description: String
+  priority: String
+  status: String
   startDate: Date
   endDate: Date
+  project_id: String
+  sprint_id: String
   requirement_id: String
-  assigned: UserType
-  ownerWork: [OwnerWorkType]
-  hours: Int
-  status: String
-}
-input TaskCreateInput {
-  name: String!
-  description: String!
-  requirement_id: String!
 }
 
 type Mutation {
-  saveTask(task: TaskCreateInput!): Task
-  assignTask(task_id: String, user_id: String): Task
+  task(task: TaskInput!): Task
+  assignTask(task_id: String!, user_id: String!): Task
 }
