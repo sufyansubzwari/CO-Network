@@ -467,6 +467,43 @@ class TaskService {
     const data = Tasks.collection.aggregate(pipeline, options).toArray();
     return data[0].count
   };
+  /**
+   * @name getActiveUsersInSprint
+   * @summary Get active user in sprint
+   * @param {String} id - Sprint id
+   * @return {Number} Return active user in sprint
+   */
+  static getActiveUsersInSprint = async id => {
+    const pipeline = [
+      {
+        $match: {
+          sprint_id: id,
+        }
+      },
+      {
+        $group: {
+          _id: "$assigned",
+          count: { $sum: 1 }
+        }
+      },
+      {
+        $lookup: {
+          from: "users",
+          localField: "$_id",
+          foreignField: "_id",
+          as: "userInfo"
+        }
+      },
+      { $project: {
+          "count": 1,
+          "user": { "$arrayElemAt": [ "$userInfo", 0 ] }
+        }}
+    ];
+    const options = {};
+
+    return Tasks.collection.aggregate(pipeline, options).toArray();
+
+  };
 }
 
 export default TaskService;
