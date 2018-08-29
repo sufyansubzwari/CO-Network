@@ -55,3 +55,5 @@ class BaseCollection extends Mongo.Collection {
     return this.rawCollection().distinct(key,query, options, callback);
   }
 }
+
+export default BaseCollection
