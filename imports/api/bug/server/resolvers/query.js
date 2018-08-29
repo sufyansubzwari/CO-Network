@@ -1,22 +1,15 @@
-import { Meteor } from "meteor/meteor";
-import Bugs from "../../index";
+import Service from "../service";
+
 const Query = {};
 Query.bug = (root, { _id }, context) => {
-  if (_id) {
-    const bug = Bugs.collection.findOne(_id);
-    console.log(bug);
-    return bug;
-  }
-  throw new Error("Missing parameter");
+  return Service.getBug(_id);
 };
-Query.bugs = (root, {project_id}, context) => {
+Query.bugs = (root, { bug }, context) => {
   let query = {};
-  if (project_id) {
-    query = project_id;
+  if (bug) {
+    query = bug;
   }
-  const bugData = Bugs.collection.find(query).fetch();
-  return bugData;
+  return Service.bugs(query);
 };
-
 
 export default Query;
