@@ -1,10 +1,8 @@
-import { Meteor } from "meteor/meteor";
-import Bugs from "../../index";
+import Service from "../service"
 const Mutation = {};
 
-Mutation.saveBug= async (root, { bug }, context) => {
-  const bugId = Bugs.collection.insert(bug);
-  return Bugs.collection.findOne(bugId);
+Mutation.bug= async (root, { bug }, context) => {
+    return Service.bug(bug);
 };
 
 export default Mutation;
