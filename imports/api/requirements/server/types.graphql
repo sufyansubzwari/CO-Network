@@ -6,6 +6,7 @@ type Requirement {
   startDate: Date!
   endDate: Date!
   report: Report
+  status: String
 
 }
 type Report {
