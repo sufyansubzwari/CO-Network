@@ -1,11 +1,10 @@
-import { Meteor } from "meteor/meteor";
+import Service from "../service";
 import Sprints from "../../index";
 
 const Mutation = {};
 
-Mutation.saveSprint = async (root, { sprint }, context) => {
-  const sprintId=Sprints.collection.insert(sprint);
-  return Sprints.collection.findOne(sprintId);
+Mutation.sprint = async (root, { sprint }, context) => {
+  return Service.sprint(sprint);
 };
 
 export default Mutation;
