@@ -35,6 +35,20 @@ class SprintService {
       .fetch();
     return data[0];
   };
+  /**
+   * @name sprintByProject
+   * @summary Get all sprint by project
+   * @param {String} id - Sprint id
+   * @return {Object} Sprint
+   */
+  static sprintByProject = async id => {
+    const data = await Sprints.collection
+      .find(
+        { project_id: id },
+      )
+      .fetch();
+    return data;
+  };
 
 }
 
