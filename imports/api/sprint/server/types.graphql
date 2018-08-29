@@ -8,6 +8,7 @@ type Sprint {
   startDate: Date!
   endDate: Date!
   report: Report
+  activeUsers:[User]
 }
 
 type Report {
