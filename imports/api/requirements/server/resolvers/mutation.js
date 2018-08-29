@@ -1,11 +1,8 @@
-import { Meteor } from "meteor/meteor";
-import Requirements from "../../index";
-
+import Service from "../service";
 const Mutation = {};
 
-Mutation.saveRequirement = async (root, { requirement }, context) => {
-  const requirementId = Requirements.collection.insert(requirement);
-  return Requirements.collection.findOne(requirementId);
+Mutation.requirement = async (root, { requirement }, context) => {
+  return Service.project(requirement);
 };
 
 export default Mutation;
