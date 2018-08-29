@@ -1,5 +1,7 @@
 import Tasks from "../index";
 import * as _ from "lodash";
+import Users from "../../users"
+import Task from './resolvers/task';
 
 /**
  * @class Task Service
@@ -386,6 +388,55 @@ class TaskService {
     const options = {};
 
     return await Tasks.collection.aggregate(pipeline, options).toArray();
+  };
+  /**
+   * @name assigned
+   * @summary Get current user working on this task
+   * @param {String} id User id
+   * @return {Object} Return user working on this task
+   */
+ static assigned = id => {
+    return Users.service.getUser(id);
+  };
+  /**
+   * @name ownerWork
+   * @summary Get task assign history
+   * @param {String} id Task id
+   * @return {Object} Return task assign history
+   */
+ static ownerWork = async id => {
+    const pipeline = [
+      {
+        $unwind: "$ownerWork"
+      },
+      {
+        $match: {
+          _id: _id
+        }
+      },
+      {
+        $lookup: {
+          from: "users",
+          localField: "ownerWork.user_id",
+          foreignField: "_id",
+          as: "owners"
+        }
+      },
+      { $unwind: "$owners" },
+      {
+        $group: {
+          _id: "$_id",
+          ownerWork: {
+            $push: { user: "$owners", worksHours: "$ownerWork.working_hours" ,endDate: "$ownerWork.workingHours",Note: "$ownerWork.note"}
+          }
+        }
+      }
+    ];
+    const options = {};
+    const data = await Tasks.collection
+      .aggregate(pipeline, options)
+      .toArray();
+    return data[0].ownerWork;
   };
 }
 
