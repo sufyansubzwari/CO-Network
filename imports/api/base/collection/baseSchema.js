@@ -9,7 +9,6 @@ Schema.schema = new SimpleSchema({
       if (this.isInsert) return new Date().toISOString();
     }
   },
-
   updatedAt: {
     type: Date,
     label: "The date  was last updated.",
@@ -17,9 +16,38 @@ Schema.schema = new SimpleSchema({
       if (this.isInsert || this.isUpdate) return new Date().toISOString();
     }
   },
-  owner: {
+  createBy: {
     type: String,
-    label: "The ID of the project on this Bug."
+    label: "User action owner"
+  },
+  updateBy: {
+    type: String,
+    label: "User action owner"
+  },
+  meta: {
+    type: Array,
+    required: false,
+    label: "metas"
+  },
+  "meta.$": {
+    type: Object
+  },
+  "meta.$.key": {
+    type: String,
+    label: "Key"
+  },
+  "meta.$.value": {
+    type: Number,
+    label: "Value"
+  },
+  "meta.$.label": {
+    type: String,
+    label: "Display nam"
+  },
+  "meta.$.type": {
+    type: String,
+    label: "Note",
+    optional: true
   }
 });
 
