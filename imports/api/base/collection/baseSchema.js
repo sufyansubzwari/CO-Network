@@ -3,7 +3,7 @@ import SimpleSchema from "simpl-schema";
 const Schema = {};
 Schema.schema = new SimpleSchema({
   createdAt: {
-    type: String,
+    type: Date,
     label: "The date was created.",
     autoValue() {
       if (this.isInsert) return new Date().toISOString();
@@ -11,7 +11,7 @@ Schema.schema = new SimpleSchema({
   },
 
   updatedAt: {
-    type: String,
+    type: Date,
     label: "The date  was last updated.",
     autoValue() {
       if (this.isInsert || this.isUpdate) return new Date().toISOString();
