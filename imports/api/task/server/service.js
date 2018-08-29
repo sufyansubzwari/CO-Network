@@ -1,7 +1,7 @@
 import Tasks from "../index";
 import * as _ from "lodash";
-import Users from "../../users"
-import Task from './resolvers/task';
+import Users from "../../users";
+import Task from "./resolvers/task";
 
 /**
  * @class Task Service
@@ -47,7 +47,7 @@ class TaskService {
    * @param {String} task_id Task id
    * @param {String} user_id User id
    * */
-  static assignTask = async ( task_id , user_id) => {
+  static assignTask = async (task_id, user_id) => {
     const Task = Tasks.collection.findOne(task_id);
 
     const userNew = Users.collection.findOne(user_id);
@@ -69,7 +69,7 @@ class TaskService {
       Tasks.collection.update(task_id, { $set: Task });
       return Tasks.collection.findOne(task_id);
     }
-    throw  new  Error("User no found")
+    throw new Error("User no found");
   };
   /**
    * @name totalPlannedHoursByProject
@@ -395,7 +395,7 @@ class TaskService {
    * @param {String} id User id
    * @return {Object} Return user working on this task
    */
- static assigned = id => {
+  static assigned = id => {
     return Users.service.getUser(id);
   };
   /**
@@ -404,7 +404,7 @@ class TaskService {
    * @param {String} id Task id
    * @return {Object} Return task assign history
    */
- static ownerWork = async id => {
+  static ownerWork = async id => {
     const pipeline = [
       {
         $unwind: "$ownerWork"
@@ -427,16 +427,45 @@ class TaskService {
         $group: {
           _id: "$_id",
           ownerWork: {
-            $push: { user: "$owners", worksHours: "$ownerWork.working_hours" ,endDate: "$ownerWork.workingHours",Note: "$ownerWork.note"}
+            $push: {
+              user: "$owners",
+              worksHours: "$ownerWork.working_hours",
+              endDate: "$ownerWork.workingHours",
+              Note: "$ownerWork.note"
+            }
           }
         }
       }
     ];
     const options = {};
-    const data = await Tasks.collection
-      .aggregate(pipeline, options)
-      .toArray();
+    const data = await Tasks.collection.aggregate(pipeline, options).toArray();
     return data[0].ownerWork;
+  };
+  /**
+   * @name getCountOpenTaskByRequirement
+   * @summary Get amount of open task by requirement
+   * @param {String} id - Requirement id
+   * @return {Number} Return amount of open task by requirement
+   */
+  static getCountOpenTaskByRequirement = async id => {
+    const pipeline = [
+      {
+        $match: {
+          requirement_id: id,
+          status: { $eq: "Open" }
+        }
+      },
+      {
+        $group: {
+          _id: "$requirement_id",
+          count: { $sum: 1 }
+        }
+      }
+    ];
+    const options = {};
+
+    const data = Tasks.collection.aggregate(pipeline, options).toArray();
+    return data[0].count
   };
 }
 
