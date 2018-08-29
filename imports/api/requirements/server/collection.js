@@ -32,6 +32,11 @@ Requirement.schema = new SimpleSchema({
     type: String,
     label: "The description of the Requirement."
   },
+  status: {
+    type: String,
+    allowedValues: ["Open","Close"],
+    label: "Priority"
+  },
   priority: {
     type: String,
     allowedValues: ["Critical","High","Low","Nice to have"],
