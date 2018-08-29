@@ -1,4 +1,5 @@
 import Projects from "../index";
+import Tasks from '../../task'
 import * as _ from "lodash";
 /**
  * @class Project Service
@@ -52,17 +53,16 @@ class ProjectService {
    * @param {String} id - Project id
    * @return {Number} Return amount planned hours
    */
-  totalPlannedHours = async id => {
-    return;
+  static totalPlannedHours = async id => {
+    return Tasks.service.totalPlannedHoursByProject(id);
   };
   /**
    * @summary Get amount logged hours in project
    * @param {String} id - Project id
    * @return {Number} Return amount logged hours
    */
-  totalLoggedHours = async id => {
-
-    return ;
+  static totalLoggedHours = async id => {
+    return Tasks.service.totalLoggedHoursByProject(id);
   };
   /**
    * @summary Get Open sprint
@@ -76,7 +76,7 @@ class ProjectService {
    * @param {String} id - Project id
    * @return {Number} Return all projects members
    */
-  members = async id => {
+  static members = async id => {
     const pipeline = [
       {
         $unwind: "$members"
