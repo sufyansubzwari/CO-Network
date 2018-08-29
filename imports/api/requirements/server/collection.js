@@ -1,7 +1,7 @@
-import { Mongo } from "meteor/mongo";
+import BaseCollection from "../base/collection";
 import SimpleSchema from "simpl-schema";
 
-const Requirement = new Mongo.Collection("Requirement");
+const Requirement = new BaseCollection("requirements");
 
 Requirement.allow({
   insert: () => false,
@@ -16,31 +16,26 @@ Requirement.deny({
 });
 
 Requirement.schema = new SimpleSchema({
-  project_id: {
-    type: String,
-    label: "The ID of the project this Requirement belongs to."
-  },
   sprint_id: {
     type: String,
     label: "The ID of the sprint this Requirement belongs to."
   },
-  createdAt: {
+  project_id: {
     type: String,
-    label: "The date this Requirement was created.",
-    autoValue() {
-      if (this.isInsert) return new Date().toISOString();
-    }
-  },
-  updatedAt: {
-    type: String,
-    label: "The date this Requirement was last updated.",
-    autoValue() {
-      if (this.isInsert || this.isUpdate) return new Date().toISOString();
-    }
+    label: "The ID of the project this Requirement belongs to."
   },
   name: {
     type: String,
     label: "The title of the Requirement."
+  },
+  description: {
+    type: String,
+    label: "The description of the Requirement."
+  },
+  priority: {
+    type: String,
+    allowedValues: ["Critical","High","Low","Nice to have"],
+    label: "Priority"
   },
   starDate: {
     type: String,
@@ -55,6 +50,14 @@ Requirement.schema = new SimpleSchema({
     autoValue() {
       if (this.isInsert) return new Date().toISOString();
     }
+  },
+  labels: {
+    type: Array,
+    label: "Requirement labels"
+  },
+  "labels.$": {
+    type: String,
+    label: "Requirement labels"
   }
 });
 
