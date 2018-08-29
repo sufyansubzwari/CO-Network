@@ -14,8 +14,9 @@ if (Meteor.isServer) {
   import collection from "./server/collection";
   import types from "./server/types.graphql";
   import resolvers from "./server/resolvers";
+  import service from "./server/service";
 
-  extend(Task, { collection, types, resolvers });
+  extend(Task, { collection, types, resolvers, service });
 }
 
 export default Task;
