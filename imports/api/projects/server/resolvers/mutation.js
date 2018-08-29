@@ -1,16 +1,11 @@
-import Projects from "../../index";
-
+import Service from "../service";
 const Mutation = {};
 
-Mutation.saveProject = async (root, { project }, context) => {
-  const projectId = Projects.collection.insert(project);
-  return Projects.collection.findOne(projectId);
+Mutation.project = async (root, { project }, context) => {
+  return Service.project(project);
 };
 Mutation.addMemberToProject = async (root, { project_id, use_id }, context) => {
-  await Projects.collection.update(project_id, {
-    $addToSet: { members: use_id }
-  });
-  return await Projects.collection.findOne(project_id);
+  return Service.addMemberToProject(project_id, use_id);
 };
 
 export default Mutation;
