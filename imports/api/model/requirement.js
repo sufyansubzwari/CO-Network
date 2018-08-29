@@ -31,7 +31,7 @@ Requirement.schema = new SimpleSchema({
     allowedValues: ["Critical","High","Low","Nice to have"],
     label: "Priority"
   },
-  sprint: {
+  sprint_id: {
     type: String,
     label: "Sprint id",
     optional:true
