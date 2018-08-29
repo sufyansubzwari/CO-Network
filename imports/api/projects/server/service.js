@@ -1,5 +1,6 @@
 import Projects from "../index";
 import Tasks from '../../task'
+import Sprints from '../../sprint'
 import * as _ from "lodash";
 /**
  * @class Project Service
@@ -7,6 +8,7 @@ import * as _ from "lodash";
  */
 class ProjectService {
   /**
+   * @name project
    * @summary function for save and update
    * @param {Object} data - Project information. If had id then this operation should be an update
    * @return {Object} Project
@@ -21,6 +23,7 @@ class ProjectService {
     }
   };
   /**
+   * @name addMemberToProject
    * @summary Allow add member to project
    * @param {String} project_id - Project id
    * @param {String} use_id - User id
@@ -33,6 +36,7 @@ class ProjectService {
     return await Projects.collection.findOne(project_id);
   };
   /**
+   * @name getProject
    * @summary Get project by id
    * @param {String} _id - Project id
    * @return {Object} Project
@@ -41,6 +45,7 @@ class ProjectService {
     return Projects.collection.findOne(_id);
   };
   /**
+   *@name projects
    * @summary Get all projects
    * @param {Object} query - query parameters
    * @return {Object}||[{Object }] Return one or all project
@@ -49,6 +54,7 @@ class ProjectService {
     return Projects.collection.find(query).fetch();
   };
   /**
+   * @name totalPlannedHours
    * @summary Get amount planned hours in project
    * @param {String} id - Project id
    * @return {Number} Return amount planned hours
@@ -57,6 +63,7 @@ class ProjectService {
     return Tasks.service.totalPlannedHoursByProject(id);
   };
   /**
+   * @name totalLoggedHours
    * @summary Get amount logged hours in project
    * @param {String} id - Project id
    * @return {Number} Return amount logged hours
@@ -65,13 +72,16 @@ class ProjectService {
     return Tasks.service.totalLoggedHoursByProject(id);
   };
   /**
+   * @name currentSprint
    * @summary Get Open sprint
    * @param {String} id - Project id
-   * @return {Number} Return open sprint
+   * @return {Object} Return open sprint
    */
-  currentSprint = async id => {
+  static currentSprint = async id => {
+    return Sprints.service.currentSprintByProject(id)
   };
   /**
+   * @name members
    * @summary Get all projects members
    * @param {String} id - Project id
    * @return {Number} Return all projects members
