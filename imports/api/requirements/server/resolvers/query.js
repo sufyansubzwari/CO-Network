@@ -1,27 +1,15 @@
-import { Meteor } from "meteor/meteor";
-import RequirementS from "../../index";
+import Service from "../service";
+
 const Query = {};
 Query.requirement = (root, { _id }, context) => {
-  if (_id) {
-    const requirement = RequirementS.collection.findOne(_id);
-    console.log(requirement);
-    return requirement;
-  }
-  throw new Error("Missing parameter");
+ return Service.getRequirement(_id)
 };
-Query.searchRequirement = (root, { requirement }, context) => {
+Query.requirements = (root, {requirement}, context) => {
   let query = {};
   if (requirement) {
     query = requirement;
   }
-  const requirements = RequirementS.collection.find(requirement).fetch();
-  console.log(requirements);
-  return requirements;
-};
-Query.requirements = (root, args, context) => {
-  const requirements = RequirementS.collection.find({}).fetch();
-  console.log(requirements);
-  return requirements;
+  return Service.requirements(query);
 };
 
 export default Query;
