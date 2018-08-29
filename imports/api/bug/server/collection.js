@@ -1,7 +1,7 @@
-import { Mongo } from 'meteor/mongo';
-import SimpleSchema from 'simpl-schema';
+import BaseCollection from "../../base/collection";
+import SimpleSchema from "simpl-schema";
 
-const Bug = new Mongo.Collection('Bug');
+const Bug = new BaseCollection('bugs');
 
 Bug.allow({
   insert: () => false,
@@ -16,21 +16,7 @@ Bug.deny({
 });
 
 Bug.schema = new SimpleSchema({
-  createdAt: {
-    type: String,
-    label: 'The date this Bug was created.',
-    autoValue() {
-      if (this.isInsert) return new Date().toISOString();
-    },
-  },
 
-  updatedAt: {
-    type: String,
-    label: 'The date this Bug was last updated.',
-    autoValue() {
-      if (this.isInsert || this.isUpdate) return new Date().toISOString();
-    },
-  },
   name: {
     type: String,
     label: 'The title of the Bug.',
@@ -39,9 +25,13 @@ Bug.schema = new SimpleSchema({
     type: String,
     label: 'The description of the Bug.',
   },
-  project_id: {
+  task_id: {
     type: String,
-    label: 'The ID of the project on this Bug.',
+    label: 'The Id task of the Bug.',
+  },
+  owner: {
+    type: String,
+    label: 'The user who registered the task',
   },
 
 });
