@@ -7,32 +7,32 @@ type Project {
   startDate: Date!
   endDate: Date!
   owner: String!
-  totalPlannedHours: Int!
-  totalLoggedHours: Int!
-  currentSprint: Sprint!
+  customer: String
+  report: Report
   members: [User]
   tasks: [Task]!
 }
-
+type Report{
+  totalPlannedHours: Int!
+  totalLoggedHours: Int!
+  currentSprint: Sprint!
+}
 type Query {
-  searchProject(project: ProjectInput!): [Project]
-  projects: [Project]
-  project(_id: String): Project
+  projects(project: ProjectInput): [Project]
+  project(_id: String!): Project
 }
 input ProjectInput {
   _id: String
   name: String
   description: String
+  type: String
+  customer: String
   startDate: Date
   endDate: Date
   owner: String
 }
-input ProjectCreateInput {
-  name: String
-  description: String
-}
 
 type Mutation {
-  saveProject(project: ProjectCreateInput!): Project
+  project(project: ProjectInput!): Project
   addMemberToProject(project_id: String!, use_id: String!): Project
 }
