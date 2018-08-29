@@ -53,7 +53,8 @@ Project.schema = new SimpleSchema({
   "labels.$": {
     type: String,
     label: "Project labels"
-  },owner: {
+  },
+  owner: {
     type: String,
     label: "The ID of the project on this Bug."
   },
@@ -64,7 +65,7 @@ Project.schema = new SimpleSchema({
   customer: {
     type: String,
     label: "Project customer"
-  },
+  }
 });
 
 Project.attachSchema(Project.schema);
