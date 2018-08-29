@@ -1,7 +1,7 @@
 import { Mongo } from "meteor/mongo";
 import SimpleSchema from "simpl-schema";
 
-const Task = new Mongo.Collection("Task");
+const Task = new Mongo.Collection("tasks");
 
 Task.allow({
   insert: () => false,
@@ -16,10 +16,6 @@ Task.deny({
 });
 
 Task.schema = new SimpleSchema({
-  requirement_id: {
-    type: String,
-    label: "The ID of the requirement this Task belongs to."
-  },
   project_id: {
     type: String,
     label: "The ID of the project this Task belongs to."
@@ -28,19 +24,9 @@ Task.schema = new SimpleSchema({
     type: String,
     label: "The ID of the sprint this Task belongs to."
   },
-  createdAt: {
+  requirement_id: {
     type: String,
-    label: "The date this Task was created.",
-    autoValue() {
-      if (this.isInsert) return new Date().toISOString();
-    }
-  },
-  updatedAt: {
-    type: String,
-    label: "The date this Task was last updated.",
-    autoValue() {
-      if (this.isInsert || this.isUpdate) return new Date().toISOString();
-    }
+    label: "The ID of the requirement this Task belongs to."
   },
   name: {
     type: String,
@@ -49,6 +35,18 @@ Task.schema = new SimpleSchema({
   description: {
     type: String,
     label: "The description of the Task."
+  },
+  priority: {
+    type: String,
+    allowedValues: ["Critical","High","Low","Nice to have"],
+    label: "Priority"
+  },
+  status: {
+    type: String,
+    label: "Task status, these should be one of Open, Doing, Testing, Done",
+    autoValue() {
+      return "Open";
+    }
   },
   assigned: {
     type: String,
@@ -81,9 +79,18 @@ Task.schema = new SimpleSchema({
     type: String,
     label: "The Id of user"
   },
-  "ownerWork.$.working_hours": {
+  "ownerWork.$.workingHours": {
     type: Number,
     label: "Working_hours n this task"
+  },
+  "ownerWork.$.endDate": {
+    type: Date,
+    label: "Date of closed the task"
+  },
+  "ownerWork.$.note": {
+    type: String,
+    label: "Note",
+    optional:true
   },
   hours: {
     type: Number,
@@ -95,13 +102,15 @@ Task.schema = new SimpleSchema({
     required: false,
     label: "Log history"
   },
-  status: {
+  labels: {
+    type: Array,
+    label: "Requirement labels"
+  },
+  "labels.$": {
     type: String,
-    label: "Task status, these should be one of Open, Doing, Testing, Done",
-    autoValue() {
-      return "Open";
-    }
+    label: "Requirement labels"
   }
+
 });
 
 Task.attachSchema(Task.schema);
