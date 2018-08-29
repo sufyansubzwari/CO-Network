@@ -1,6 +1,7 @@
 import Projects from "../index";
-import Tasks from '../../task'
-import Sprints from '../../sprint'
+import Tasks from "../../task";
+import Sprints from "../../sprint";
+import Requirements from "../../requirements";
 import * as _ from "lodash";
 /**
  * @class Project Service
@@ -78,7 +79,7 @@ class ProjectService {
    * @return {Object} Return open sprint
    */
   static currentSprint = async id => {
-    return Sprints.service.currentSprintByProject(id)
+    return Sprints.service.currentSprintByProject(id);
   };
   /**
    * @name members
@@ -93,7 +94,7 @@ class ProjectService {
       },
       {
         $match: {
-          _id:_id
+          _id: _id
         }
       },
       {
@@ -110,6 +111,33 @@ class ProjectService {
       .aggregate(pipeline, options)
       .toArray();
     return data[0].members;
+  };
+  /**
+   * @name sprints
+   * @summary Get all projects sprint
+   * @param {String} id - Project id
+   * @return {Number} Return all projects sprints
+   */
+  static sprints = async id => {
+    return Sprints.service.sprintByProject(id);
+  };
+  /**
+   * @name requirements
+   * @summary Get all projects requirements
+   * @param {String} id - Project id
+   * @return {Number} Return all projects requirements
+   */
+  static requirements = async id => {
+    return Requirements.service.requirementByProject(id);
+  };
+  /**
+   * @name tasks
+   * @summary Get all projects tasks
+   * @param {String} id - Project id
+   * @return {Number} Return all projects tasks
+   */
+  static tasks = async id => {
+    return Tasks.service.taskByProject(id);
   };
 }
 
