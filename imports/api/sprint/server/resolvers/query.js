@@ -1,27 +1,14 @@
-import { Meteor } from "meteor/meteor";
+import Service from "../service"
 import Sprints from "../../index";
 const Query = {};
 Query.sprint = (root, { _id }, context) => {
-  if (_id) {
-    const sprint = Sprints.collection.findOne(_id);
-    console.log(sprint);
-    return sprint;
-  }
-  throw new Error("Missing parameter");
+ return Service.getSprint(_id)
 };
-Query.searchSprint = (root, { sprint }, context) => {
+Query.sprints = (root, { sprint }, context) => {
   let query = {};
   if (sprint) {
     query = sprint;
   }
-  const sprints = Sprints.collection.find(query).fetch();
-  console.log(sprints);
-  return sprints;
+  return Service.sprints(query)
 };
-Query.sprints = (root, args, context) => {
-  const sprints = Sprints.collection.find({}).fetch();
-  console.log(Sprints);
-  return sprints;
-};
-
 export default Query;
