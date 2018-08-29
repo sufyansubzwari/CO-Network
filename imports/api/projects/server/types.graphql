@@ -8,14 +8,21 @@ type Project {
   endDate: Date!
   owner: String!
   customer: String
-  report: Report
   members: [User]
+  report: Report
+  sprints: [Sprint]
+  requirements: [Requirement]
   tasks: [Task]!
 }
-type Report{
+type Report {
   totalPlannedHours: Int!
   totalLoggedHours: Int!
   currentSprint: Sprint!
+  progress: [Progress]
+}
+type Progress {
+  status: String
+  percentage: String
 }
 type Query {
   projects(project: ProjectInput): [Project]
