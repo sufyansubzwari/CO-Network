@@ -49,9 +49,7 @@ class SprintService {
    */
   static currentSprintByProject = async id => {
     const data = await Sprints.collection
-      .find(
-        { project_id: id, status: "Open" },
-      )
+      .find({ project_id: id, status: "Open" })
       .fetch();
     return data[0];
   };
@@ -62,11 +60,7 @@ class SprintService {
    * @return {Object} Sprint
    */
   static sprintByProject = async id => {
-    const data = await Sprints.collection
-      .find(
-        { project_id: id },
-      )
-      .fetch();
+    const data = await Sprints.collection.find({ project_id: id }).fetch();
     return data;
   };
   /**
@@ -87,7 +81,6 @@ class SprintService {
   static totalLoggedHours = async id => {
     return Tasks.service.totalLoggedHoursBySprint(id);
   };
-
   /**
    * @name progress
    * @summary Get sprint task status
@@ -97,7 +90,15 @@ class SprintService {
   static progress = async id => {
     return Tasks.service.getTaskStatusBySprint(id);
   };
-
+  /**
+   * @name activeUsers
+   * @summary Get active users in sprint
+   * @param {String} id - Sprint id
+   * @return [{Object}] Return all sprints tasks status
+   */
+  static activeUsers = async id => {
+    return Tasks.service.getActiveUsersInSprint(id);
+  };
 }
 
 export default SprintService;
