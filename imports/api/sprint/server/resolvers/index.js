@@ -1,12 +1,12 @@
 import Query from './query';
 import Mutation from './mutation';
-import Sprint from './sprint';
+import Report from './report';
 
 // Project namespace resolvers
 const resolvers = {
   Query,
   Mutation,
-  Sprint
+  Report
 };
 
 export default resolvers;
