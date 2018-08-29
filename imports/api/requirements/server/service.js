@@ -1,7 +1,7 @@
 import Requirements from "../index";
 import * as _ from "lodash";
-import Projects from '../../projects';
-import Tasks from '../../task';
+import Projects from "../../projects";
+import Tasks from "../../task";
 /**
  * @class Requirement Service
  * @summary Requirement Service with business logic
@@ -65,7 +65,7 @@ class RequirementService {
    * @return [{Object}] Return all requirement
    */
   static requirementByProject = async id => {
-    return await Requirements.collection.find({project_id:id}).fetch();
+    return await Requirements.collection.find({ project_id: id }).fetch();
   };
   /**
    * @name progress
@@ -75,6 +75,21 @@ class RequirementService {
    */
   static progress = async id => {
     return Tasks.service.getTaskStatusByRequirement(id);
+  };
+  /**
+   * @name status
+   * @summary Get requirement status
+   * @param {String} id - Requirement id
+   * @return [{Object}] Return  requirement status
+   */
+  static status = async id => {
+    let count = Tasks.service.taskByRequirement(id);
+    if (count === 0) {
+      return "Open";
+    } else {
+      count = Tasks.service.getCountOpenTaskByRequirement(id);
+      return count > 0 ? "Open" : "Close";
+    }
   };
 }
 
