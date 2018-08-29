@@ -3,31 +3,36 @@
 type Sprint {
   _id: String
   name: String!
+  description: String!
   status: String!
   startDate: Date!
   endDate: Date!
-  project_id: String!
-  totalPlannedHours: Int!
-  totalLoggedHours: Int!
+  report: Report
 }
 
+type Report {
+  totalPlannedHours: Int!
+  totalLoggedHours: Int!
+  progress: [Progress]
+}
+type Progress {
+  status: String
+  percentage: String
+}
 type Query {
-  searchSprint(sprint: SprintInput!): [Sprint]
-  sprints: [Sprint]
+  sprints(sprint: SprintInput): [Sprint]
   sprint(_id: String): Sprint
 }
 input SprintInput {
   _id: String
   name: String
+  description: String
   startDate: Date
   endDate: Date
   project_id: String
-}
-input SprintCreateInput {
-  name: String
-  project_id: String!
+  sprint_id: String!
 }
 
 type Mutation {
-  saveSprint(sprint: SprintCreateInput!): Sprint
+  sprint(sprint: SprintInput): Sprint
 }
