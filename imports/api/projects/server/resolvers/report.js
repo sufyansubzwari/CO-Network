@@ -1,13 +1,13 @@
 import Service from "../service";
 import Project from './project';
 const Report = {};
-Report.totalPlannedHours = async project => {
+Report.totalPlannedHours = project => {
   return Service.totalPlannedHours(project._id);
 };
-Report.totalLoggedHours = async project => {
+Report.totalLoggedHours =  project => {
   return Service.totalLoggedHours(project._id);
 };
-Project.currentSprint = async project => {
+Project.currentSprint =  project => {
   return Service.currentSprint(project._id,);
 };
 
