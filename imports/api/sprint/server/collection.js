@@ -1,7 +1,7 @@
-import { Mongo } from "meteor/mongo";
+import BaseCollection from "../../base/collection";
 import SimpleSchema from "simpl-schema";
 
-const Sprint = new Mongo.Collection("Sprint");
+const Sprint = new BaseCollection("sprints");
 
 Sprint.allow({
   insert: () => false,
@@ -18,29 +18,15 @@ Sprint.deny({
 Sprint.schema = new SimpleSchema({
   project_id: {
     type: String,
-    label: "The ID of the project this Sprint belongs to."
-  },
-  createdAt: {
-    type: String,
-    label: "The date this Sprint was created.",
-    autoValue() {
-      if (this.isInsert) return new Date().toISOString();
-    }
-  },
-  updatedAt: {
-    type: String,
-    label: "The date this Sprint was last updated.",
-    autoValue() {
-      if (this.isInsert || this.isUpdate) return new Date().toISOString();
-    }
+    label: "The id of the Project."
   },
   name: {
     type: String,
     label: "The title of the Sprint."
   },
-  owner: {
+  description: {
     type: String,
-    label: "The ID user "
+    label: "Sprint description"
   },
   starDate: {
     type: String,
@@ -58,17 +44,19 @@ Sprint.schema = new SimpleSchema({
   },
   status: {
     type: String,
-    required: false,
+    allowedValues: ["Open", "Close"],
+    label: "Sprint status",
     autoValue() {
-      if (this.isInsert) return "New";
+      return "Open";
     }
   },
-  flag: {
+  labels: {
+    type: Array,
+    label: "Project labels"
+  },
+  "labels.$": {
     type: String,
-    required: false,
-    autoValue() {
-      if (this.isInsert) return "external";
-    }
+    label: "Project labels"
   }
 });
 
