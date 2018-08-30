@@ -9,18 +9,18 @@ type Project {
   owner: String!
   customer: String
   members: [User]
-  report: Report
+  report: ReportProject
   sprints: [Sprint]
   requirements: [Requirement]
   tasks: [Task]!
 }
-type Report {
+type ReportProject {
   totalPlannedHours: Int!
   totalLoggedHours: Int!
   currentSprint: Sprint!
-  progress: [Progress]
+  progress: [ProgressProject]
 }
-type Progress {
+type ProgressProject {
   status: String
   percentage: String
 }
