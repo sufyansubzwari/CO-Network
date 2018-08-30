@@ -34,11 +34,12 @@ Requirement.schema = new SimpleSchema({
   },
   status: {
     type: String,
-    allowedValues: ["Open","Close"],
+    optional:true,
     label: "Priority"
   },
   priority: {
     type: String,
+    optional:true,
     allowedValues: ["Critical","High","Low","Nice to have"],
     label: "Priority"
   },
@@ -58,6 +59,7 @@ Requirement.schema = new SimpleSchema({
   },
   labels: {
     type: Array,
+    optional:true,
     label: "Requirement labels"
   },
   "labels.$": {
