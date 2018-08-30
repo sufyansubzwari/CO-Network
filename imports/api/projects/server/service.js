@@ -15,12 +15,14 @@ class ProjectService {
    * @return {Object} Project
    */
   static project = async data => {
-    if (_.isUndefined(data.id)) {
+    if (_.isUndefined(data._id)) {
       const projectId = Projects.collection.insert(data);
       return Projects.collection.findOne(projectId);
     } else {
-      await Projects.collection.update(data.id, { $set: data });
-      return Projects.collection.findOne(data.id);
+      let id=data._id;
+      delete data._id;
+      await Projects.collection.update(id, { $set: data });
+      return Projects.collection.findOne(id);
     }
   };
   /**
@@ -87,7 +89,7 @@ class ProjectService {
    * @param {String} id - Project id
    * @return {Number} Return all projects members
    */
-  static members = async id => {
+  static members = async _id => {
     const pipeline = [
       {
         $unwind: "$members"
