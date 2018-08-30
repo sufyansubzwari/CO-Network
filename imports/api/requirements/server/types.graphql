@@ -5,16 +5,16 @@ type Requirement {
   description: String!
   startDate: Date!
   endDate: Date!
-  report: Report
+  report: ReportRequirement
   status: String
 
 }
-type Report {
+type ReportRequirement {
   totalPlannedHours: Int!
   totalLoggedHours: Int!
-  progress: [Progress]
+  progress: [ProgressRequirement]
 }
-type Progress {
+type ProgressRequirement {
   status: String
   percentage: String
 }
