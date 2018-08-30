@@ -465,7 +465,7 @@ class TaskService {
     const options = {};
 
     const data = Tasks.collection.aggregate(pipeline, options).toArray();
-    return data[0].count
+    return data[0].count;
   };
   /**
    * @name getActiveUsersInSprint
@@ -477,7 +477,7 @@ class TaskService {
     const pipeline = [
       {
         $match: {
-          sprint_id: id,
+          sprint_id: id
         }
       },
       {
@@ -494,15 +494,62 @@ class TaskService {
           as: "userInfo"
         }
       },
-      { $project: {
-          "count": 1,
-          "user": { "$arrayElemAt": [ "$userInfo", 0 ] }
-        }}
+      {
+        $project: {
+          count: 1,
+          user: { $arrayElemAt: ["$userInfo", 0] }
+        }
+      }
     ];
     const options = {};
 
     return Tasks.collection.aggregate(pipeline, options).toArray();
+  };
+  /**
+   * @name getTaskReport
+   * @summary User task report
+   * @param {Object} user_id - User id
+   * @param {Object}  project_id Project id
+   * @param {Date} startDate filter star date
+   * @param {Date} endDate filter end date
+   * @return [{Object}] Return task report in all project
+   */
+  static getTaskReport = async (user_id, project_id, startDate, endDate) => {
+    let match = {};
+    let date = {
+      startDate: { $qte: startDate },
+      endDate: { $lte: endDate }
+    };
+    if (project_id) {
+      match = {
+        $match: {
+          project_id: project_id,
+          ownerWork: { user_id: user_id },
+          ...date
+        }
+      };
+    } else {
+      match = {
+        $match: {
+          ownerWork: { user_id: user_id },
+          ...date
+        }
+      };
+    }
 
+    const pipeline = [
+      ...match,
+      { $unwind: "$ownerWork" },
+      {
+        $group: {
+          _id: { user: "$ownerWork.user_id", project: "$project_id" },
+          totalPlannedHours: { $sum: "$ownerWork.hours" },
+          totalLoggedHours: { $sum: "$ownerWork.workingHours" }
+        }
+      }
+    ];
+    const options = {};
+    return await Tasks.collection.aggregate(pipeline, options).toArray();
   };
 }
 
