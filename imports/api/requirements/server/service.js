@@ -14,12 +14,14 @@ class RequirementService {
    * @return {Object} Requirement
    */
   static requirement = async data => {
-    if (_.isUndefined(data.id)) {
+    if (_.isUndefined(data._id)) {
       const RequirementId = Requirements.collection.insert(data);
       return Requirements.collection.findOne(RequirementId);
     } else {
-      await Requirements.collection.update(data.id, { $set: data });
-      return Requirements.collection.findOne(data.id);
+      let id=data._id;
+      delete data._id;
+      await Requirements.collection.update(id, { $set: data });
+      return Requirements.collection.findOne(id);
     }
   };
   /**
@@ -90,6 +92,15 @@ class RequirementService {
       count = Tasks.service.getCountOpenTaskByRequirement(id);
       return count > 0 ? "Open" : "Close";
     }
+  };
+  /**
+   * @name tasks
+   * @summary Get all requirement tasks
+   * @param {String} id - Project id
+   * @return {Number} Return all requirement tasks
+   */
+  static tasks = async id => {
+    return Tasks.service.taskByRequirement(id);
   };
 }
 
