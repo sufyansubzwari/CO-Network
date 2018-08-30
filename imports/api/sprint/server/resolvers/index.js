@@ -1,13 +1,13 @@
 import Query from './query';
 import Mutation from './mutation';
-import Report from './report';
+import ReportSprint from './report';
 import Sprint from './sprint';
 
 // Project namespace resolvers
 const resolvers = {
   Query,
   Mutation,
-  Report,
+  ReportSprint,
   Sprint
 };
 
