@@ -35,6 +35,7 @@ Project.schema = new SimpleSchema({
   starDate: {
     type: String,
     label: "The date this project was created.",
+    optional: true,
     autoValue() {
       if (this.isInsert) return new Date().toISOString();
     }
@@ -42,13 +43,15 @@ Project.schema = new SimpleSchema({
   endDate: {
     type: String,
     label: "The date this project was created.",
+    optional: true,
     autoValue() {
       if (this.isInsert) return new Date().toISOString();
     }
   },
   labels: {
     type: Array,
-    label: "Project labels"
+    label: "Project labels",
+    optional:true
   },
   "labels.$": {
     type: String,
@@ -64,7 +67,8 @@ Project.schema = new SimpleSchema({
   },
   customer: {
     type: String,
-    label: "Project customer"
+    label: "Project customer",
+    optional: true
   }
 });
 
