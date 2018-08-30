@@ -4,19 +4,21 @@ type Bug {
   _id: ID
   name: String
   description: String
-  project: Project
+  owner: User
+
 }
 type Query {
-  bugs(project_id:String): [Bug]
+  bugs(bug:BugInput): [Bug]
   bug(_id: String): Bug
 }
-input BugCreateInput {
+input BugInput {
   name: String!
   description: String!
-  project_id: String!
+  task_id: String!
+  owner: String!
 }
 
 type Mutation {
-  saveBug(bug: BugCreateInput!): Bug
+  bug(bug: BugInput): Bug
 
 }
