@@ -79,9 +79,13 @@ Task.schema = new SimpleSchema({
     type: String,
     label: "The Id of user"
   },
+  "ownerWork.$.hours": {
+    type: Number,
+    label: "hours planned this task"
+  },
   "ownerWork.$.workingHours": {
     type: Number,
-    label: "Working_hours n this task"
+    label: "Working_hours in this task"
   },
   "ownerWork.$.endDate": {
     type: Date,
