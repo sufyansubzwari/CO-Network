@@ -7,16 +7,16 @@ type Sprint {
   status: String!
   startDate: Date!
   endDate: Date!
-  report: Report
+  report: ReportSprint
   activeUsers:[User]
 }
 
-type Report {
+type ReportSprint {
   totalPlannedHours: Int!
   totalLoggedHours: Int!
-  progress: [Progress]
+  progress: [ProgressReportSprint]
 }
-type Progress {
+type ProgressReportSprint {
   status: String
   percentage: String
 }
