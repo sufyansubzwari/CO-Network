@@ -8,9 +8,13 @@ type Sprint {
   startDate: Date!
   endDate: Date!
   report: ReportSprint
-  activeUsers:[User]
+  activeUsers:[Active]
+  tasks: [Task]!
 }
-
+type Active {
+  user: User
+  count: Int
+}
 type ReportSprint {
   totalPlannedHours: Int!
   totalLoggedHours: Int!
@@ -31,7 +35,6 @@ input SprintInput {
   startDate: Date
   endDate: Date
   project_id: String
-  sprint_id: String!
 }
 
 type Mutation {
