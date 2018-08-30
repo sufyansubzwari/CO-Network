@@ -15,12 +15,14 @@ class SprintService {
    * @return {Object} Sprint
    */
   static sprint = async data => {
-    if (_.isUndefined(data.id)) {
+    if (_.isUndefined(data._id)) {
       const SprintId = Sprints.collection.insert(data);
       return Sprints.collection.findOne(SprintId);
     } else {
-      await Sprints.collection.update(data.id, { $set: data });
-      return Sprints.collection.findOne(data.id);
+      let id=data._id;
+      delete data._id;
+      await Sprints.collection.update(id, { $set: data });
+      return Sprints.collection.findOne(id);
     }
   };
   /**
@@ -98,6 +100,15 @@ class SprintService {
    */
   static activeUsers = async id => {
     return Tasks.service.getActiveUsersInSprint(id);
+  };
+  /**
+   * @name tasks
+   * @summary Get all sprint tasks
+   * @param {String} id - Project id
+   * @return {Number} Return all sprint tasks
+   */
+  static tasks = async id => {
+    return Tasks.service.taskBySprint(id);
   };
 }
 
