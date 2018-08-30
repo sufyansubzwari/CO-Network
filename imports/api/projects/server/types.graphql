@@ -6,7 +6,7 @@ type Project {
   description: String!
   startDate: Date!
   endDate: Date!
-  owner: String!
+  owner: User
   customer: String
   members: [User]
   report: ReportProject
