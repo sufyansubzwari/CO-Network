@@ -1,27 +1,28 @@
 import SimpleSchema from "simpl-schema";
 
-const Schema = {};
-Schema.schema = new SimpleSchema({
+const Schema={
   createdAt: {
     type: Date,
     label: "The date was created.",
     autoValue() {
-      if (this.isInsert) return new Date().toISOString();
+      if (this.isInsert) return new Date();
     }
   },
   updatedAt: {
     type: Date,
     label: "The date  was last updated.",
     autoValue() {
-      if (this.isInsert || this.isUpdate) return new Date().toISOString();
+      if (this.isInsert || this.isUpdate) return new Date();
     }
   },
   createBy: {
     type: String,
+    optional: true,
     label: "User action owner"
   },
   updateBy: {
     type: String,
+    optional: true,
     label: "User action owner"
   },
   meta: {
@@ -49,6 +50,6 @@ Schema.schema = new SimpleSchema({
     label: "Note",
     optional: true
   }
-});
+};
 
 export default Schema;
