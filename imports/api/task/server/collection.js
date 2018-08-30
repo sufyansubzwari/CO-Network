@@ -1,7 +1,7 @@
-import { Mongo } from "meteor/mongo";
+import BaseCollection from "../../base/collection";
 import SimpleSchema from "simpl-schema";
 
-const Task = new Mongo.Collection("tasks");
+const Task = new BaseCollection("tasks");
 
 Task.allow({
   insert: () => false,
@@ -108,11 +108,12 @@ Task.schema = new SimpleSchema({
   },
   labels: {
     type: Array,
-    label: "Requirement labels"
+    optional:true,
+    label: "Task labels"
   },
   "labels.$": {
     type: String,
-    label: "Requirement labels"
+    label: "Task labels"
   }
 
 });
