@@ -1,9 +1,9 @@
-import Project from "../../../projects";
+import Users from "../../../users";
 
 const Bug = {};
 
-Bug.project = project => {
-  return Project.collection.findOne(project.project_id);
+Bug.user = owner => {
+  return Users.service.getUser(owner);
 };
 
 export default Bug;
