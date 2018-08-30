@@ -15,12 +15,14 @@ class TaskService {
    * @return {Object} Task
    */
   static task = async data => {
-    if (_.isUndefined(data.id)) {
+    if (_.isUndefined(data._id)) {
       const TaskId = Tasks.collection.insert(data);
       return Tasks.collection.findOne(TaskId);
     } else {
-      await Tasks.collection.update(data.id, { $set: data });
-      return Tasks.collection.findOne(data.id);
+      let id = data._id;
+      delete data._id;
+      await Tasks.collection.update(id, { $set: data });
+      return Tasks.collection.findOne(id);
     }
   };
   /**
@@ -249,8 +251,23 @@ class TaskService {
    * @return {Object} Return all task progress over total
    */
   static getTaskStatusByProject = async id => {
-    let nums = Tasks.collection.count();
     const pipeline = [
+      {
+        $match: {
+          project_id: id
+        }
+      },
+      {
+        $group: {
+          _id: null,
+          count: { $sum: 1 }
+        }
+      }
+    ];
+    const options = {};
+    let nums = await Tasks.collection.aggregate(pipeline, options).toArray();
+
+    const pipeline1 = [
       {
         $match: {
           project_id: id
@@ -271,13 +288,12 @@ class TaskService {
               {
                 $substr: [
                   {
-                    $multiply: [
-                      { $divide: ["$count", { $literal: nums }] },
-                      100
-                    ]
+                    $trunc: {
+                      $multiply: [{ $divide: ["$count", nums[0].count] }, 100]
+                    }
                   },
                   0,
-                  2
+                  -1
                 ]
               },
               "",
@@ -287,9 +303,13 @@ class TaskService {
         }
       }
     ];
-    const options = {};
+    const options1 = {};
 
-    return await Tasks.collection.aggregate(pipeline, options).toArray();
+    const data = await Tasks.collection
+      .aggregate(pipeline1, options1)
+      .toArray();
+    console.log(data);
+    return data;
   };
   /**
    * @name getTaskStatusByRequirement
@@ -298,8 +318,22 @@ class TaskService {
    * @return {Object} Return all task progress over total
    */
   static getTaskStatusByRequirement = async id => {
-    let nums = Tasks.collection.count();
     const pipeline = [
+      {
+        $match: {
+          requirement_id: id
+        }
+      },
+      {
+        $group: {
+          _id: null,
+          count: { $sum: 1 }
+        }
+      }
+    ];
+    const options = {};
+    let nums = await Tasks.collection.aggregate(pipeline, options).toArray();
+    const pipeline1 = [
       {
         $match: {
           requirement_id: id
@@ -313,20 +347,19 @@ class TaskService {
       },
       {
         $project: {
-          status: "$id",
+          status: "$_id",
           count: 1,
           percentage: {
             $concat: [
               {
                 $substr: [
                   {
-                    $multiply: [
-                      { $divide: ["$count", { $literal: nums }] },
-                      100
-                    ]
+                    $trunc: {
+                      $multiply: [{ $divide: ["$count", nums[0].count] }, 100]
+                    }
                   },
                   0,
-                  2
+                  -1
                 ]
               },
               "",
@@ -336,9 +369,9 @@ class TaskService {
         }
       }
     ];
-    const options = {};
+    const options1 = {};
 
-    return await Tasks.collection.aggregate(pipeline, options).toArray();
+    return await Tasks.collection.aggregate(pipeline1, options1).toArray();
   };
   /**
    * @name getTaskStatusBySprint
@@ -347,7 +380,21 @@ class TaskService {
    * @return {Object} Return all task progress over total
    */
   static getTaskStatusBySprint = async id => {
-    let nums = Tasks.collection.count();
+    const pipeline1 = [
+      {
+        $match: {
+          sprint_id: id
+        }
+      },
+      {
+        $group: {
+          _id: null,
+          count: { $sum: 1 }
+        }
+      }
+    ];
+    const options1 = {};
+    let nums = await Tasks.collection.aggregate(pipeline1, options1).toArray();
     const pipeline = [
       {
         $match: {
@@ -362,20 +409,19 @@ class TaskService {
       },
       {
         $project: {
-          status: "$id",
+          status: "$_id",
           count: 1,
           percentage: {
             $concat: [
               {
                 $substr: [
                   {
-                    $multiply: [
-                      { $divide: ["$count", { $literal: nums }] },
-                      100
-                    ]
+                    $trunc: {
+                      $multiply: [{ $divide: ["$count", nums[0].count] }, 100]
+                    }
                   },
                   0,
-                  2
+                  -1
                 ]
               },
               "",
@@ -477,7 +523,8 @@ class TaskService {
     const pipeline = [
       {
         $match: {
-          sprint_id: id
+          sprint_id: id,
+          assigned: { $ne: null }
         }
       },
       {
@@ -489,13 +536,14 @@ class TaskService {
       {
         $lookup: {
           from: "users",
-          localField: "$_id",
+          localField: "_id",
           foreignField: "_id",
           as: "userInfo"
         }
       },
       {
         $project: {
+          _id: 0,
           count: 1,
           user: { $arrayElemAt: ["$userInfo", 0] }
         }
@@ -503,7 +551,7 @@ class TaskService {
     ];
     const options = {};
 
-    return Tasks.collection.aggregate(pipeline, options).toArray();
+    return await Tasks.collection.aggregate(pipeline, options).toArray();
   };
   /**
    * @name getTaskReport
