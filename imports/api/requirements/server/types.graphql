@@ -7,6 +7,7 @@ type Requirement {
   endDate: Date!
   report: ReportRequirement
   status: String
+  tasks: [Task]!
 
 }
 type ReportRequirement {
@@ -30,7 +31,7 @@ input RequirementInput {
   endDate: Date
   priority: String
   status: String
-  project_id: String
+  project_id: String!
   sprint_id: String!
 }
 
