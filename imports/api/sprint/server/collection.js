@@ -52,11 +52,12 @@ Sprint.schema = new SimpleSchema({
   },
   labels: {
     type: Array,
-    label: "Project labels"
+    optional :true,
+    label: "Sprint labels"
   },
   "labels.$": {
     type: String,
-    label: "Project labels"
+    label: "Sprint labels"
   }
 });
 
