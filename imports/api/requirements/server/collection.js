@@ -1,4 +1,4 @@
-import BaseCollection from "../base/collection";
+import BaseCollection from "../../base/collection";
 import SimpleSchema from "simpl-schema";
 
 const Requirement = new BaseCollection("requirements");
