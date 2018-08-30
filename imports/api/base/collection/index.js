@@ -1,6 +1,7 @@
 import { Meteor } from "meteor/meteor";
 import { Mongo } from "meteor/mongo";
 import baseSchema from "./baseSchema";
+import SimpleSchema from "simpl-schema";
 /**
  * @class BaseCollection
  * @summary Base class for Mongodb collection.
@@ -22,7 +23,7 @@ class BaseCollection extends Mongo.Collection {
    */
   attachSchema(schema) {
     schema.extend(baseSchema);
-    this.attachSchema(schema);
+    super.attachSchema(schema);
   }
   /**
    * @summary Mongodb Collection Aggregation
@@ -31,7 +32,7 @@ class BaseCollection extends Mongo.Collection {
    * @return {Object} AggregationCursor
    */
   aggregate(pipeline, options) {
-    return this.rawCollection().aggregate(pipeline, options);
+    return super.rawCollection().aggregate(pipeline, options);
   }
   /**
    * @summary Mongodb Collection  count
@@ -41,7 +42,7 @@ class BaseCollection extends Mongo.Collection {
    * @return {Promise}
    */
   count(query, options, callback) {
-    return this.rawCollection().count(query, options, callback);
+    return super.rawCollection().count(query, options, callback);
   }
   /**
    * @summary Mongodb Collection  distinct
@@ -52,7 +53,7 @@ class BaseCollection extends Mongo.Collection {
    * @return {Promise}
    */
   distinct(key,query, options, callback) {
-    return this.rawCollection().distinct(key,query, options, callback);
+    return super.rawCollection().distinct(key,query, options, callback);
   }
 }
 
