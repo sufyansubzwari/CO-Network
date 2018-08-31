@@ -1,4 +1,4 @@
-import Task from "../../../task";
+import Service from "../service"
 
 const User = {};
 User.services = (root, args, context) => {
@@ -14,37 +14,8 @@ User.services = (root, args, context) => {
   // available services
   return (user.services && Object.keys(user.services)) || [];
 };
-User.totalPlannedHours = async user => {
-  const pipeline = [
-    {
-      $match: {
-        assigned: user._id
-      }
-    },
-    {
-      $lookup: {
-        from: "Projects",
-        localField: "project_id",
-        foreignField: "_id",
-        as: "projects"
-      }
-    },
-    { $unwind: "$projects" },
-    {
-      $group: {
-        _id: "projects.id",
-        project: { $each: "$projects" },
-        totalPlannedHours: { $sum: "$hours" }
-      }
-    }
-  ];
-  const options = {};
-  const data = await Task.collection
-    .rawCollection()
-    .aggregate(pipeline, options)
-    .toArray();
-  console.log(data);
-  return data;
+User.report=(root, {project_id,startDate,endDate}, context)=>{
+  return Service.report(root._id,project_id,startDate,endDate)
 };
 
 export default User;
