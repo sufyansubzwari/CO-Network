@@ -37,11 +37,15 @@ type User {
   emails: [Email]
   profile: Profile!
   subscriptions: [Subscription]
-  totalPlannedHours: Int!
+  report(project_id: String, startDate: Date, endDate: Date): [ReportUser]
+}
+type ReportUser {
+  totalPlannedHours: Int
+  totalLoggedHours: Int
+  project: Project
 }
 input UserType {
   _id: String!
-  createdAt: Date!
   services: [String]!
   emails: [EmailType]
   profile: ProfileType!
@@ -59,8 +63,8 @@ input SubscriptionInput {
 }
 
 type Query {
-  user: User
-  userBy(_id: String!): User
+  users(user: UserType!): [User]
+  user(_id: String): User
 }
 
 type Mutation {
