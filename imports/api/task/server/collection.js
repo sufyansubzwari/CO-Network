@@ -85,10 +85,12 @@ Task.schema = new SimpleSchema({
   },
   "ownerWork.$.workingHours": {
     type: Number,
+    optional:true,
     label: "Working_hours in this task"
   },
   "ownerWork.$.endDate": {
     type: Date,
+    optional:true,
     label: "Date of closed the task"
   },
   "ownerWork.$.note": {
