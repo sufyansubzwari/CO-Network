@@ -49,7 +49,7 @@ class TaskService {
    * @param {String} task_id Task id
    * @param {String} user_id User id
    * */
-  static assignTask = async (task_id, user_id) => {
+  static assignTask = async (task_id, user_id, hours) => {
     const Task = Tasks.collection.findOne(task_id);
 
     const userNew = Users.collection.findOne(user_id);
@@ -59,15 +59,23 @@ class TaskService {
         if (!_.isUndefined(Task.ownerWork)) {
           let exitHistory = _.findIndex(Task.ownerWork, { user_id: oldUserId });
           if (exitHistory === -1) {
-            Task.ownerWork.push({ user_id: oldUserId, working_hours: 0 });
+            Task.ownerWork.push({
+              user_id: oldUserId,
+              workingHours: 0,
+              hours: hours
+            });
           }
         } else {
           Task.ownerWork = [];
-          Task.ownerWork.push({ user_id: oldUserId, working_hours: 0 });
+          Task.ownerWork.push({
+            user_id: oldUserId,
+            workingHours: 0,
+            hours: hours
+          });
         }
       }
       Task.assigned = userNew._id;
-
+      delete Task._id;
       Tasks.collection.update(task_id, { $set: Task });
       return Tasks.collection.findOne(task_id);
     }
@@ -565,37 +573,48 @@ class TaskService {
   static getTaskReport = async (user_id, project_id, startDate, endDate) => {
     let match = {};
     let date = {
-      startDate: { $qte: startDate },
+      starDate: { $gte: startDate },
       endDate: { $lte: endDate }
     };
-    if (project_id) {
+    if (!_.isUndefined(project_id)) {
       match = {
         $match: {
           project_id: project_id,
-          ownerWork: { user_id: user_id },
+          ownerWork: { $elemMatch: { user_id: user_id } },
           ...date
         }
       };
     } else {
       match = {
         $match: {
-          ownerWork: { user_id: user_id },
+          ownerWork: { $elemMatch: { user_id: user_id } },
           ...date
         }
       };
     }
 
     const pipeline = [
-      ...match,
-      { $unwind: "$ownerWork" },
+      match,
+      {
+        $unwind: "$ownerWork"
+      },
       {
         $group: {
           _id: { user: "$ownerWork.user_id", project: "$project_id" },
           totalPlannedHours: { $sum: "$ownerWork.hours" },
           totalLoggedHours: { $sum: "$ownerWork.workingHours" }
         }
+      },
+      {
+        $project: {
+          _id:0,
+          project: "$_id.project",
+          totalPlannedHours: 1,
+          totalLoggedHours: 1
+        }
       }
     ];
+
     const options = {};
     return await Tasks.collection.aggregate(pipeline, options).toArray();
   };
