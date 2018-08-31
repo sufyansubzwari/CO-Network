@@ -1,4 +1,5 @@
 import Users from "../index";
+import Tasks from "../../task";
 import * as _ from "lodash";
 
 /**
@@ -13,12 +14,14 @@ class UserService {
    * @return {Object} Users
    */
   static user = async data => {
-    if (_.isUndefined(data.id)) {
+    if (_.isUndefined(data._id)) {
       const UsersId = Users.collection.insert(data);
       return Users.collection.findOne(UsersId);
     } else {
-      await Users.collection.update(data.id, { $set: data });
-      return Users.collection.findOne(data.id);
+      let id=data._id;
+      delete data._id;
+      await Users.collection.update(id, { $set: data });
+      return Users.collection.findOne(id);
     }
   };
   /**
@@ -38,6 +41,18 @@ class UserService {
    */
   static users = query => {
     return Users.collection.find(query).fetch();
+  };
+  /**
+   *@name report
+   * @summary Get user work reports
+   * @param {String} user_id - User id
+   * @param {String} project_id - Project id
+   * @param {Date} startDate - start date filter
+   * @param {Date} endDate - end date filter
+   * @return {Object} | [{Object }] Return all project with planned hours and log
+   */
+  static report=(user_id,project_id,startDate,endDate) =>{
+    return Tasks.service.getTaskReport(user_id, project_id, startDate, endDate)
   };
 
 }
