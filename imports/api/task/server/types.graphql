@@ -39,5 +39,5 @@ input TaskInput {
 
 type Mutation {
   task(task: TaskInput!): Task
-  assignTask(task_id: String!, user_id: String!): Task
+  assignTask(task_id: String!, user_id: String! ,hours:Int): Task
 }
