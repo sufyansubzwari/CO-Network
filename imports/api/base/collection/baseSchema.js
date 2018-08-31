@@ -1,5 +1,3 @@
-import SimpleSchema from "simpl-schema";
-
 const Schema={
   createdAt: {
     type: Date,
