@@ -1,14 +1,15 @@
-import Users from "../../index";
+import Service from '../service';
 const Query = {};
 
-//------------------------------------------------------------------------------
-// We access to the current user here thanks to the context. The current
-// user is added to the context thanks to the 'meteor/apollo' package.
-Query.user = (root, args, context) => context.user;
-Query.userBy = (root, { _id }, context) => {
-  return Users.collection.findOne(_id);
+Query.user = (root, { _id }, context) => {
+  return Service.getUser(_id)
 };
 
-//------------------------------------------------------------------------------
-
+Query.users = (root, {task}, context) => {
+  let query = {};
+  if (task) {
+    query = task;
+  }
+  return Service.users(query);
+};
 export default Query;
