@@ -7,7 +7,7 @@ const Mutation = {};
 Mutation.task = async (root, { task }, context) => {
     return Service.task(task);
 };
-Mutation.assignTask = async (root, { task_id, user_id }, context) => {
-  return Service.assignTask(task_id, user_id)
+Mutation.assignTask = async (root, { task_id, user_id,hours }, context) => {
+  return Service.assignTask(task_id, user_id,hours)
 };
 export default Mutation;
