@@ -13,12 +13,14 @@ class BugService {
    * @return {Object} bug
    */
   static bug = async data => {
-    if (_.isUndefined(data.id)) {
+    if (_.isUndefined(data._id)) {
       const bugId = Bugs.collection.insert(data);
       return Bugs.collection.findOne(bugId);
     } else {
-      await Bugs.collection.update(data.id, { $set: data });
-      return Bugs.collection.findOne(data.id);
+      let id=data._id;
+      delete data._id;
+      await Bugs.collection.update(id, { $set: data });
+      return Bugs.collection.findOne(id);
     }
   };
    /**
