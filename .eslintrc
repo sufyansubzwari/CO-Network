@@ -12,18 +12,12 @@
   "parserOptions": {
     "allowImportExportEverywhere": true
   },
-  "plugins": [
-    "meteor",
-    "flowtype",
-    "react",
-    "prettier",
-    "standard"
-  ],
+  "plugins": ["meteor", "flowtype", "react", "prettier", "standard"],
   "settings": {
     "import/resolver": "meteor"
   },
   "globals": {
-    "Package": true,
+    "Package": true
   },
   "extends": [
     "prettier",
