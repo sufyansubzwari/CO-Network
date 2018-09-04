@@ -1,6 +1,7 @@
 {
   "name": "mlsociety-new-design",
   "private": true,
+  "repository": "https://gitlab.com/blueoceantech/sufyan/mlsociety-new-design.git",
   "scripts": {
     "start": "meteor run",
     "local": "meteor run --settings settings.json",
