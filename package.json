@@ -1,7 +1,6 @@
 {
-  "name": "btech-starter-meteor-react",
+  "name": "mlsociety-new-design",
   "private": true,
-  "repository": "https://gitlab.com/blueoceantech/component-storage/react/btech-starter-meteor-react.git",
   "scripts": {
     "start": "meteor run",
     "local": "meteor run --settings settings.json",
