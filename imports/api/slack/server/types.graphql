@@ -1,7 +1,0 @@
-input SlackInput {
-  message: String
-}
-
-type Mutation {
-  sendSlackMessage(slack: SlackInput!): String
- }
