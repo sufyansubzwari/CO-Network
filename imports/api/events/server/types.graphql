@@ -16,8 +16,8 @@ type Events {
     image: String
     entity: String
     views: Int
-    ticketType: TicketType!
-    eventType: EventType!
+    ticketType: ObjectType!
+    eventType: ObjectType!
     sponsors: [Sponsors]
 }
 
@@ -26,14 +26,9 @@ type Attenders {
     max: Int
 }
 
-type TicketType {
-    label: String!
-    value: String!
-}
-
-type EventType {
-    label: String!
-    value: String!
+type ObjectType {
+    label: String
+    value: String
 }
 
 type Sponsors {
