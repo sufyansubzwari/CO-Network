@@ -7,7 +7,7 @@ type Jobs {
     owner: User!
     image: String
     organization: Organizations!
-    jobType: JobType!
+    jobType: ObjectType!
     salaryRange: SalaryRange!
     remote: Booleam
     languages: [Tags]
@@ -23,11 +23,6 @@ type SalaryRange {
     min: Int
     max: Int
     frecuency: String
-}
-
-type JobType {
-    label: String!
-    value: String!
 }
 
 type Query {
