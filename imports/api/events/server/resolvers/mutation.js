@@ -2,8 +2,8 @@ import Service from "../service";
 
 const Mutation = {};
 
-Mutation.event = async (root, {event}, context) => {
-  return Service.event(event);
+Mutation.event = async (root, {events}, context) => {
+  return Service.event(events);
 };
 
 Mutation.updateEventImage = async (root, {id, image}, context) => {

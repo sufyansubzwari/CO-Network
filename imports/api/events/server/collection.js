@@ -25,6 +25,7 @@ Events.schema = new SimpleSchema({
   from: {
     type: String,
     label: 'The type of owner (organization, communities or register user).',
+    optional: true,
   },
   createdAt: {
     type: Date,
@@ -43,10 +44,12 @@ Events.schema = new SimpleSchema({
   startDate: {
     type: Date,
     label: 'The start date of the event.',
+    optional: true,
   },
   endDate: {
     type: Date,
     label: 'The end date of the event.',
+    optional: true,
   },
   title: {
     type: String,
@@ -56,14 +59,17 @@ Events.schema = new SimpleSchema({
   description: {
     type: String,
     label: 'The description of the event.',
+    optional: true,
   },
   venueName: {
     type: String,
     label: 'The description of the event.',
+    optional: true,
   },
   organizer: {
     type: String,
     label: 'The description of the event.',
+    optional: true,
   },
   phone: {
     type: String,
@@ -133,25 +139,31 @@ Events.schema = new SimpleSchema({
     optional: true,
   },
   category: {
-    type: Array
+    type: Array,
+    optional: true,
   },
   'category.$': {
     type: String,
     label: 'The categorys of the event.',
+    optional: true,
   },
   attenders: {
     type: Object,
     label: 'The expected attenders of the event.',
+    optional: true,
   },
   'attenders.min': {
     type: Number,
+    optional: true,
   },
   'attenders.max': {
     type: Number,
+    optional: true,
   },
   image: {
     type: String,
     label: 'The location of the job.',
+    optional: true,
   },
   entity: {
     type: String,
