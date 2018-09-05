@@ -1,0 +1,52 @@
+# types for Achievements namespace
+
+type Achievements {
+    _id: ID
+    owner: User!
+    type: String!
+    institution: String
+    study: String
+    story: String
+    degree: String
+    organization: String
+    position: String
+    help: String
+    experience: String
+    name: String
+    link: String
+    level: String
+    category: [Tags]
+    id: String
+    year: String
+    explain: String
+}
+
+type Query {
+    achievements(achievements: AchievementsInput!): [Achievements]
+    achievement(_id: String): Achievements
+}
+
+input AchievementsInput {
+    _id: ID
+    owner: String!
+    type: String!
+    institution: String
+    study: String
+    story: String
+    degree: String
+    organization: String
+    position: String
+    help: String
+    experience: String
+    name: String
+    link: String
+    level: String
+    category: [Strings]
+    id: String
+    year: String
+    explain: String
+}
+
+type Mutation {
+    achievement(achievements: AchievementsInput!): Achievements
+}
