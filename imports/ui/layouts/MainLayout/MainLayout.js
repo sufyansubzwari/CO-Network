@@ -1,7 +1,20 @@
 import React, { Component } from 'react';
 import { Layout, Container } from 'btech-layout';
+import { HNavbar, HNavItem } from 'btech-horizantal-navbar';
 
 import {theme} from '../../theme';
+// todo
+const navs = [ ]
+const colors = ['red', 'blue', 'green', 'gray', 'black']
+for (let i = 0; i < 5; i++) {
+  navs.push({
+    link: '#link' + i,
+    title: 'Link' + i,
+    number: {value: Math.floor(Math.random() * 120), primary: true},
+    color: colors[i],
+    icon: {size: 24, src: '/assets/logo.svg'}
+  })
+}
 
 class MainLayout extends Component {
   render() {
@@ -14,29 +27,27 @@ class MainLayout extends Component {
         layoutAreas={{xs: `'content' 'navBar'`, md: `'navBar content'`}}
         fullWY>
         <Container fullY gridArea='navBar'>
-          {/*<HNavbar links={navs} activeEval={this.activeEval} itemOptions={{title: {hide: true, mdShow: true}}} >*/}
-            {/*<Layout customTemplateColumns={'1fr 58px 1fr'} background={'red'} key={'header'} mb={'20px'}>*/}
-              {/*<Container />*/}
-              {/*<HNavItem icon={'/assets/logo.svg'} activeEval={this.activeEval} />*/}
-              {/*<Container />*/}
-            {/*</Layout>*/}
+          <HNavbar links={navs} activeEval={this.activeEval} itemOptions={{title: {hide: true, mdShow: true}}} >
+            <Layout customTemplateColumns={'1fr 58px 1fr'} background={'red'} key={'header'} mb={'20px'}>
+              <Container />
+              <HNavItem icon={{size: 58, src: '/assets/logo.svg'}} activeEval={this.activeEval} hideHexagon />
+              <Container />
+            </Layout>
 
-            {/*<Layout customTemplateRows={'1fr auto'} fullY textCenter className={'center nav-profile'} key={'footer'}>*/}
-              {/*<Container />*/}
-              {/*<Container>*/}
-                {/*<Layout rowGap='15px' >*/}
-                  {/*<HNavItem icon={'/assets/logo.svg'} />*/}
-                  {/*<button>+</button>*/}
-                  {/*<span> M</span>*/}
-                  {/*<span> N</span>*/}
-                  {/*<Layout rowGap='5px' padding='0 20px 20px;' className={'center terms'}>*/}
+            <Layout customTemplateRows={'1fr auto'} fullY textCenter className={'center nav-profile'} key={'footer'}>
+              <Container />
+              <Container>
+                <Layout rowGap='15px' >
+                  <span> M</span>
+                  <span> N</span>
+                  <Layout rowGap='5px' padding='0 20px 20px;' className={'center terms'}>
                     {/*<a>Terms Policies </a>*/}
                     {/*<a> CONetwork © 2018 </a>*/}
-                  {/*</Layout>*/}
-                {/*</Layout>*/}
-              {/*</Container>*/}
-            {/*</Layout>*/}
-          {/*</HNavbar>*/}
+                  </Layout>
+                </Layout>
+              </Container>
+            </Layout>
+          </HNavbar>
         </Container>
         <Container gridArea='content'>
         </Container>
