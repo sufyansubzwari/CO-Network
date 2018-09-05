@@ -15,8 +15,9 @@ if (Meteor.isServer) {
   import types from './server/types.graphql';
   import resolvers from './server/resolvers';
   import utils from './server/utils';
+  import services from './server/services'
 
-  extend(Users, { collection, types, resolvers, utils });
+  extend(Users, { collection, types, resolvers, utils, services });
 }
 
 export default Users;

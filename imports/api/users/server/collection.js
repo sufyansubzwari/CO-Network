@@ -1,4 +1,4 @@
-import { Meteor } from 'meteor/meteor';
+import {Meteor} from 'meteor/meteor';
 import SimpleSchema from 'simpl-schema';
 import Constants from '../../constants';
 
@@ -51,27 +51,185 @@ const schema = new SimpleSchema({
     type: Object,
     optional: true,
   },
-
-  'profile.name': {
+  'profile.info': {
+    type: Object,
+    optional: true,
+  },
+  'profile.info.name': {
     type: String,
     max: 150,
     optional: true,
   },
-
-  'profile.gender': {
-    type: String,
-    max: 50,
-    optional: true,
-  },
-
-  'profile.avatar': {
+  'profile.info.lastName': {
     type: String,
     max: 150,
     optional: true,
   },
-
-  // This must be optional if you also use other login services like facebook,
-  // but if you use only accounts-password, then it can be required
+  'profile.info.image': {
+    type: String,
+    optional: true,
+  },
+  'profile.info.cover': {
+    type: String,
+    optional: true,
+  },
+  'profile.info.email': {
+    type: String,
+    optional: true,
+  },
+  'profile.info.gender': {
+    type: String,
+    optional: true,
+  },
+  'profile.info.website': {
+    type: String,
+    optional: true,
+  },
+  'profile.info.phone': {
+    type: String,
+    optional: true,
+  },
+  'profile.social': {
+    type: Object,
+    optional: true,
+  },
+  'profile.social.github': {
+    type: String,
+    optional: true,
+  },
+  'profile.social.facebook': {
+    type: String,
+    optional: true,
+  },
+  'profile.social.twitter': {
+    type: String,
+    optional: true,
+  },
+  'profile.social.linkedin': {
+    type: String,
+    optional: true,
+  },
+  'profile.aboutMe': {
+    type: Object,
+    optional: true,
+  },
+  'profile.aboutMe.yourPassion': {
+    type: String,
+    optional: true,
+  },
+  'profile.aboutMe.existingProblem': {
+    type: String,
+    optional: true,
+  },
+  'profile.aboutMe.steps': {
+    type: String,
+    optional: true,
+  },
+  'profile.knowledge': {
+    type: Object,
+    optional: true,
+  },
+  'profile.knowledge.languages': {
+    type: Array,
+    optional: true,
+  },
+  'profile.knowledge.languages.$': {
+    type: String,
+    optional: true,
+  },
+  'profile.knowledge.curiosity': {
+    type: Array,
+    optional: true,
+  },
+  'profile.knowledge.curiosity.$': {
+    type: String,
+    optional: true,
+  },
+  'profile.knowledge.lookingFor': {
+    type: Array,
+    optional: true,
+  },
+  'profile.knowledge.lookingFor.$': {
+    type: String,
+    optional: true,
+  },
+  'profile.professional': {
+    type: Object,
+    optional: true,
+  },
+  'profile.professional.seeking': {
+    type: Boolean,
+    optional: true,
+  },
+  'profile.professional.salaryRange': {
+    type: Object,
+    optional: true,
+  },
+  'profile.professional.salaryRange.min': {
+    type: Number,
+    optional: true,
+  },
+  'profile.professional.salaryRange.max': {
+    type: Number,
+    optional: true,
+  },
+  'profile.professional.jobType': {
+    type: Array,
+    optional: true,
+  },
+  'profile.professional.jobType.$': {
+    type: String,
+    optional: true,
+  },
+  'profile.speaker': {
+    type: Object,
+    optional: true,
+  },
+  'profile.speaker.join': {
+    type: Boolean,
+    optional: true,
+  },
+  'profile.speaker.topic': {
+    type: Array,
+    optional: true,
+  },
+  'profile.speaker.topic.$': {
+    type: String,
+    optional: true,
+  },
+  'profile.speaker.style': {
+    type: Array,
+    optional: true,
+  },
+  'profile.speaker.style.$': {
+    type: Object,
+    optional: true,
+  },
+  'profile.speaker.style.$.label': {
+    type: String,
+    optional: true,
+  },
+  'profile.speaker.style.$.value': {
+    type: String,
+    optional: true,
+  },
+  'profile.speaker.stage': {
+    type: Array,
+    optional: true,
+  },
+  'profile.speaker.stage.$': {
+    type: Object,
+    optional: true,
+  },
+  'profile.speaker.stage.$.label': {
+    type: String,
+    optional: true,
+  },
+  'profile.speaker.stage.$.value': {
+    type: String,
+    optional: true,
+  },
+  //Emails
   emails: {
     type: Array,
     label: '[{ address, verified }, ...]',
@@ -86,11 +244,10 @@ const schema = new SimpleSchema({
     type: String,
     regEx: SimpleSchema.RegEx.Email,
   },
-
   'emails.$.verified': {
     type: Boolean,
   },
-
+  //Services
   services: {
     type: Object,
     label: 'Auth services such as facebook, google plus or twitter',

@@ -1,26 +1,5 @@
 # types for Users namespace
 
-type Email {
-  address: String
-  verified: Boolean
-}
-
-type Profile {
-  name: String!
-  gender: String
-  avatar: String!
-}
-
-type Keys {
-  auth: String!
-  p256dh: String!
-}
-
-type Subscription {
-  endpoint: String!
-  keys: Keys!
-}
-
 type User {
   _id: String!
   createdAt: Date!
@@ -28,6 +7,74 @@ type User {
   emails: [Email]
   profile: Profile!
   subscriptions: [Subscription]
+}
+
+type Email {
+  address: String
+  verified: Boolean
+}
+
+type Profile {
+  info: Info
+  professional: Professional
+  social: Social
+  aboutMe: AboutMe
+  knowledge: Knowledge
+  speaker: Speaker
+  archivement: Archivement
+}
+
+type Info {
+  name: String
+  lastName: String
+  image: String
+  cover: String
+  email: String
+  gender: String
+  website: String
+  phone: String
+}
+
+type Social {
+  github: String
+  facebook: String
+  linkedin: String
+  twitter: String
+}
+
+type AboutMe {
+  yourPassion: String
+  existingProblem: String
+  steps: String
+}
+
+type Knowledge {
+  languages: [String]
+  curiosity: [String]
+  lookingFor: [String]
+}
+
+type Professional {
+  languages: Seeking
+  salaryRange: SalaryRange
+  jobType: [String]
+}
+
+type Speaker {
+  join: Boolean
+  topic: SalaryRange
+  style: [ObjectType]
+  stage: [ObjectType]
+}
+
+type Subscription {
+  endpoint: String!
+  keys: Keys!
+}
+
+type Keys {
+  auth: String!
+  p256dh: String!
 }
 
 input KeysInput {
