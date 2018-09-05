@@ -1,0 +1,79 @@
+# types for Organizations namespace
+
+type Organizations {
+    _id: ID
+    owner: User!
+    entity: String
+    views: Int
+    info: Info!
+    social: Social
+    contact: Contact!
+    services: Services
+    reason: Reason!
+}
+
+type Info {
+    name: String!
+    description: String!
+    image: String
+    cover: String
+    employees: Employees!
+    orgType: [Tags]!
+}
+
+type Employees {
+    label: String
+    value: String
+}
+
+type Social {
+    facebook: String
+    twitter: String
+    github: String
+    linkedin: String
+    website: String
+}
+
+type Contact {
+    name: String
+    email: String!
+    phone: String
+}
+
+type Services {
+    relocated: String
+    seeking: String
+    hostEvents: String
+}
+
+type Reason {
+    languages: [Tags]!
+    vision: String
+    mission: String
+    culture: String
+    orgDefine: String
+    product: String
+    industry: [Tags]!
+}
+
+type Query {
+    organizations(organizations: OrganizationsInput!): [Organizations]
+    organization(_id: String): Organizations
+}
+
+input OrganizationsInput {
+    _id: ID
+    owner: String!
+    info: Info!
+    social: Social
+    contact: Contact!
+    services: Services
+    reason: Reason!
+
+}
+
+type Mutation {
+    organization(organizations: OrganizationsInput!): Organizations
+    updateImage(_id: String!, image: String, cover: String): Organization
+    deleteOrganization(_id: String!): Organization
+}
