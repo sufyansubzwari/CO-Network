@@ -1,0 +1,28 @@
+# types for FeedBack namespace
+
+type FeedBack {
+    _id: ID
+    owner: User!
+    title: String!
+    email: String!
+    type: String
+    text: String
+}
+
+type Query {
+    feedBacks(feedBack: FeedBackInput!): [FeedBack]
+    feedBack(_id: String): FeedBack
+}
+
+input FeedBackInput {
+    _id: ID
+    owner: String!
+    title: String!
+    email: String!
+    type: String
+    text: String
+}
+
+type Mutation {
+    feedBack(feedBack: FeedBackInput!): FeedBack
+}
