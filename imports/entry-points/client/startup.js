@@ -6,18 +6,16 @@ async function renderAsync() {
     React,
     { hydrate },
     { default: App },
-    { default: Header },
+    { default: MainLayout },
   ] = await Promise.all([
     import('react'),
     import('react-dom'),
     import('../../ui/app'),
-    import('../../ui/components/smart/header'),
+    import('../../ui/layouts/MainLayout/MainLayout'),
   ]);
 
   // Inject react app components into App's Shell
-  hydrate(<App component={Header} />, document.getElementById('header'));
-  render(<App component={Menu} />, document.getElementById('menu'));
-  render(<App component={Routes} />, document.getElementById('main'));
+  hydrate(<App component={MainLayout} />, document.getElementById('root-app'));
 }
 
 Meteor.startup(() => {
