@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { Layout, Container } from "btech-layout";
 import { HNavbar, HNavItem } from "btech-horizantal-navbar";
-import navs from './nav.constant'
+import navs from "./nav.constant";
 import { theme } from "../../theme";
 // todo
 
@@ -24,13 +24,17 @@ class MainLayout extends Component {
             itemOptions={{ title: { hide: true, mdShow: true } }}
           >
             <Layout
-              customTemplateColumns={"1fr 58px 1fr"}
               key={"header"}
-              mb={"20px"}
+              mb={"35px"}
+              mt={"35px"}
             >
-              <Container />
-              <HNavItem icon={{size: 60, src: '/images/logo/home.gif'}} activeEval={this.activeEval} hideHexagon />
-              <Container />
+              <Container ml={"-8px"}>
+                <HNavItem
+                  icon={{ size: 60, src: "/images/logo/home.gif" }}
+                  activeEval={this.activeEval}
+                  hideHexagon
+                />
+              </Container>
             </Layout>
 
             <Layout
