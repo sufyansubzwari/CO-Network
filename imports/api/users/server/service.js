@@ -1,5 +1,4 @@
 import Users from "../index";
-import Tasks from "../../task";
 import * as _ from "lodash";
 
 /**

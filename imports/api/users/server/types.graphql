@@ -21,7 +21,7 @@ type Profile {
   aboutMe: AboutMe
   knowledge: Knowledge
   speaker: Speaker
-  archivement: Archivement
+  archivement: [Achievements]
 }
 
 type Info {
