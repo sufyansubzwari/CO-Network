@@ -1,46 +1,55 @@
-import React, { Component } from 'react';
-import { Layout, Container } from 'btech-layout';
-import { HNavbar, HNavItem } from 'btech-horizantal-navbar';
-
-import {theme} from '../../theme';
+import React, { Component } from "react";
+import { Layout, Container } from "btech-layout";
+import { HNavbar, HNavItem } from "btech-horizantal-navbar";
+import navs from './nav.constant'
+import { theme } from "../../theme";
 // todo
-const navs = [ ]
-const colors = ['red', 'blue', 'green', 'gray', 'black']
-for (let i = 0; i < 5; i++) {
-  navs.push({
-    link: '#link' + i,
-    title: 'Link' + i,
-    number: {value: Math.floor(Math.random() * 120), primary: true},
-    color: colors[i],
-    icon: {size: 24, src: '/assets/logo.svg'}
-  })
-}
 
 class MainLayout extends Component {
   render() {
     return (
       <Layout
-        customTemplateColumns={'1fr'}
-        customTemplateRows={'1fr 80px'}
-        mdCustomTemplateColumns={'100px 1fr'}
-        mdCustomTemplateRows={'1fr'}
-        layoutAreas={{xs: `'content' 'navBar'`, md: `'navBar content'`}}
-        fullWY>
-        <Container fullY gridArea='navBar'>
-          <HNavbar links={navs} activeEval={this.activeEval} itemOptions={{title: {hide: true, mdShow: true}}} >
-            <Layout customTemplateColumns={'1fr 58px 1fr'} background={'red'} key={'header'} mb={'20px'}>
+        customTemplateColumns={"1fr"}
+        customTemplateRows={"1fr 80px"}
+        mdCustomTemplateColumns={"100px 1fr"}
+        mdCustomTemplateRows={"1fr"}
+        layoutAreas={{ xs: `'content' 'navBar'`, md: `'navBar content'` }}
+        fullWY
+      >
+        <Container fullY gridArea="navBar">
+          <HNavbar
+            mdRowGap={15}
+            links={navs}
+            activeEval={this.activeEval}
+            itemOptions={{ title: { hide: true, mdShow: true } }}
+          >
+            <Layout
+              customTemplateColumns={"1fr 58px 1fr"}
+              key={"header"}
+              mb={"20px"}
+            >
               <Container />
-              <HNavItem icon={{size: 58, src: '/assets/logo.svg'}} activeEval={this.activeEval} hideHexagon />
+              <HNavItem icon={{size: 60, src: '/images/logo/home.gif'}} activeEval={this.activeEval} hideHexagon />
               <Container />
             </Layout>
 
-            <Layout customTemplateRows={'1fr auto'} fullY textCenter className={'center nav-profile'} key={'footer'}>
+            <Layout
+              customTemplateRows={"1fr auto"}
+              fullY
+              textCenter
+              className={"center nav-profile"}
+              key={"footer"}
+            >
               <Container />
               <Container>
-                <Layout rowGap='15px' >
+                <Layout rowGap="15px">
                   <span> M</span>
                   <span> N</span>
-                  <Layout rowGap='5px' padding='0 20px 20px;' className={'center terms'}>
+                  <Layout
+                    rowGap="5px"
+                    padding="0 20px 20px;"
+                    className={"center terms"}
+                  >
                     {/*<a>Terms Policies </a>*/}
                     {/*<a> CONetwork © 2018 </a>*/}
                   </Layout>
@@ -49,8 +58,7 @@ class MainLayout extends Component {
             </Layout>
           </HNavbar>
         </Container>
-        <Container gridArea='content'>
-        </Container>
+        <Container gridArea="content" />
       </Layout>
     );
   }
