@@ -1,0 +1,60 @@
+# types for Jobs namespace
+
+type Jobs {
+    _id: ID
+    title: String!
+    description: String
+    owner: User!
+    image: String
+    organization: Organizations!
+    jobType: JobType!
+    salaryRange: SalaryRange!
+    remote: Booleam
+    languages: [Tags]
+    industry: [Tags]!
+    jobResponsibilities: String
+    workForUs: String
+    aboutUsTeam: String
+    candidateQuestions: String
+    views: Int
+}
+
+type SalaryRange {
+    min: Int
+    max: Int
+    frecuency: String
+}
+
+type JobType {
+    label: String!
+    value: String!
+}
+
+type Query {
+    jobs(jobs: JobsInput!): [Jobs]
+    job(_id: String): Jobs
+}
+
+input JobsInput {
+    _id: ID
+    title: String!
+    description: String
+    owner: String!
+    image: String
+    organization: String!
+    jobType: JobType!
+    salaryRange: SalaryRange!
+    remote: Booleam
+    languages: [String]
+    industry: [String]!
+    jobResponsibilities: String
+    workForUs: String
+    aboutUsTeam: String
+    candidateQuestions: String
+}
+
+type Mutation {
+    job(jobs: JobsInput!): Jobs
+    updateImage(_id: String!, image: String!): Jobs
+    deleteJob(_id: String!): Jobs
+}
