@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { Layout, Container } from "btech-layout";
-import { HNavbar, HNavItem } from "btech-horizantal-navbar";
+import { HNavbar, HNavItem , HButtonGroup,HButtom} from "btech-horizantal-navbar";
 import navs from "./nav.constant";
 import { theme } from "../../theme";
 // todo
@@ -47,8 +47,12 @@ class MainLayout extends Component {
               <Container />
               <Container>
                 <Layout rowGap="15px">
-                  <span> M</span>
-                  <span> N</span>
+                  <HButtonGroup rows={[1,2,1]} gap={8} rowGap={-2}>
+                    <HButtom big image={"https://cdn.dribbble.com/users/199982/screenshots/4044699/furkan-avatar-dribbble.png"}></HButtom>
+                    <HButtom>a</HButtom>
+                    <HButtom>a</HButtom>
+                    <HButtom big primary>a</HButtom>
+                  </HButtonGroup>
                   <Layout
                     rowGap="5px"
                     padding="0 20px 20px;"

@@ -22,7 +22,7 @@
     "bcrypt": "^3.0.0",
     "bcrypt-nodejs": "0.0.3",
     "body-parser": "^1.18.2",
-    "btech-horizantal-navbar": "^1.1.5",
+    "btech-horizantal-navbar": "^1.1.6",
     "btech-layout": "^1.0.12",
     "btech-placeholder-component": "^1.1.0",
     "classnames": "^2.2.5",
