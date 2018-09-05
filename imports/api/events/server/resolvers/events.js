@@ -3,10 +3,10 @@ import Users from "../../../users";
 
 const Events = {};
 
-Events.owner = project => {
-  return Users.service.getUser(project.owner);
+Events.owner = entity => {
+  return Users.service.getUser(entity.owner);
 };
-Events.owner = project => {
-  return Users.service.getUser(project.owner);
+Events.owner = entity => {
+  return Users.service.getUser(entity.owner);
 };
 export default Events;
