@@ -41,7 +41,7 @@ input AchievementsInput {
     name: String
     link: String
     level: String
-    category: [Strings]
+    category: [String]
     id: String
     year: String
     explain: String
@@ -49,4 +49,5 @@ input AchievementsInput {
 
 type Mutation {
     achievement(achievements: AchievementsInput!): Achievements
+    deleteAchievement(_id: String!): Achievements
 }

@@ -55,12 +55,12 @@ input EventsInput {
     category: [String]!
     attenders: Attenders!
     image: String
-    ticketType: TicketType!
-    eventType: EventType!
+    ticketType: ObjectType!
+    eventType: ObjectType!
 }
 
 type Mutation {
     event(events: EventsInput!): Events
-    updateImage(_id: String!, image: String!): Events
+    updateEventImage(_id: String!, image: String!): Events
     deleteEvent(_id: String!): Events
 }

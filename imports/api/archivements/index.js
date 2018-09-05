@@ -2,10 +2,10 @@ import { Meteor } from "meteor/meteor";
 import extend from "lodash/extend";
 
 /**
- * @namespace Archievements
+ * @namespace Achievements
  * @summary defines utilities related to Achievements.
  */
-const Archievements = {};
+const Achievements = {};
 
 // Load client-only or client-server utilities if any
 
@@ -16,8 +16,8 @@ import types from "./server/types.graphql";
 import resolvers from "./server/resolvers";
 import service from "./server/service";
 
-    extend(Archievements, { collection, types, resolvers, service });
+    extend(Achievements, { collection, types, resolvers, service });
 }
 
-export default Archievements;
+export default Achievements;
 

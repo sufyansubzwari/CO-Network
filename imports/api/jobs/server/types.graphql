@@ -9,7 +9,7 @@ type Jobs {
     organization: Organizations!
     jobType: ObjectType!
     salaryRange: SalaryRange!
-    remote: Booleam
+    remote: Boolean
     languages: [Tags]
     industry: [Tags]!
     jobResponsibilities: String
@@ -37,9 +37,9 @@ input JobsInput {
     owner: String!
     image: String
     organization: String!
-    jobType: JobType!
+    jobType: ObjectType!
     salaryRange: SalaryRange!
-    remote: Booleam
+    remote: Boolean
     languages: [String]
     industry: [String]!
     jobResponsibilities: String
@@ -50,6 +50,6 @@ input JobsInput {
 
 type Mutation {
     job(jobs: JobsInput!): Jobs
-    updateImage(_id: String!, image: String!): Jobs
+    updateJobsImage(_id: String!, image: String!): Jobs
     deleteJob(_id: String!): Jobs
 }

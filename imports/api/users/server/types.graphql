@@ -35,13 +35,6 @@ type Info {
   phone: String
 }
 
-type Social {
-  github: String
-  facebook: String
-  linkedin: String
-  twitter: String
-}
-
 type AboutMe {
   yourPassion: String
   existingProblem: String
@@ -55,7 +48,7 @@ type Knowledge {
 }
 
 type Professional {
-  languages: Seeking
+  languages: [Tags]
   salaryRange: SalaryRange
   jobType: [String]
 }
@@ -88,7 +81,17 @@ input SubscriptionInput {
 }
 
 type Query {
-  user: User
+  users(user: UserInput!): [User]
+  user(_id: String): User
+}
+
+input UserInput {
+  _id: String!
+  createdAt: Date!
+  services: [String]!
+  emails: [Email]
+  profile: Profile!
+  subscriptions: [Subscription]
 }
 
 type Mutation {

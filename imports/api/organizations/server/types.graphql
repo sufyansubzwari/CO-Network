@@ -5,14 +5,14 @@ type Organizations {
     owner: User!
     entity: String
     views: Int
-    info: Info!
+    info: OrgInfo!
     social: Social
     contact: Contact!
     services: Services
     reason: Reason!
 }
 
-type Info {
+type OrgInfo {
     name: String!
     description: String!
     image: String
@@ -59,7 +59,7 @@ type Query {
 input OrganizationsInput {
     _id: ID
     owner: String!
-    info: Info!
+    info: OrgInfo!
     social: Social
     contact: Contact!
     services: Services
@@ -69,6 +69,6 @@ input OrganizationsInput {
 
 type Mutation {
     organization(organizations: OrganizationsInput!): Organizations
-    updateImage(_id: String!, image: String, cover: String): Organization
-    deleteOrganization(_id: String!): Organization
+    updateImage(_id: String!, image: String, cover: String): Organizations
+    deleteOrganization(_id: String!): Organizations
 }

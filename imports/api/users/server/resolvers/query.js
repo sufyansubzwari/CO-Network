@@ -5,10 +5,10 @@ Query.user = (root, { _id }, context) => {
   return Service.getUser(_id)
 };
 
-Query.users = (root, {task}, context) => {
+Query.users = (root, {user}, context) => {
   let query = {};
-  if (task) {
-    query = task;
+  if (user) {
+    query = user;
   }
   return Service.users(query);
 };
