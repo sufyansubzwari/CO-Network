@@ -12,6 +12,10 @@ BrowserPolicy.content.disallowConnect();
 BrowserPolicy.content.allowEval('http://fonts.googleapis.com');
 BrowserPolicy.content.allowFontDataUrl('http://fonts.googleapis.com');
 BrowserPolicy.content.allowOriginForAll('https://at.alicdn.com');
+BrowserPolicy.content.allowSameOriginForAll();
+BrowserPolicy.content.allowOriginForAll("https://*");
+BrowserPolicy.content.allowOriginForAll("http://*");
+BrowserPolicy.content.allowEval();
 
 // Allow Meteor DDP Connections
 const rootUrl = __meteor_runtime_config__.ROOT_URL;

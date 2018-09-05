@@ -89,9 +89,60 @@ input UserInput {
   _id: String!
   createdAt: Date!
   services: [String]!
-  emails: [Email]
-  profile: Profile!
-  subscriptions: [Subscription]
+  emails: [EmailInput]
+  profile: ProfileInput!
+  subscriptions: [SubscriptionInput]
+}
+
+input ProfileInput {
+  info: InfoInput
+  professional: ProfessionalInput
+  social: SocialInput
+  aboutMe: AboutMeInput
+  knowledge: KnowledgeInput
+  speaker: SpeakerInput
+  archivement: [AchievementsInput]
+}
+
+input EmailInput {
+  address: String
+  verified: Boolean
+}
+
+input InfoInput {
+  name: String
+  lastName: String
+  image: String
+  cover: String
+  email: String
+  gender: String
+  website: String
+  phone: String
+}
+
+input AboutMeInput {
+  yourPassion: String
+  existingProblem: String
+  steps: String
+}
+
+input KnowledgeInput {
+  languages: [String]
+  curiosity: [String]
+  lookingFor: [String]
+}
+
+input ProfessionalInput {
+  languages: [String]
+  salaryRange: SalaryRangeInput
+  jobType: [String]
+}
+
+input SpeakerInput {
+  join: Boolean
+  topic: SalaryRangeInput
+  style: [ObjectTypeInput]
+  stage: [ObjectTypeInput]
 }
 
 type Mutation {

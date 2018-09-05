@@ -59,12 +59,51 @@ type Query {
 input OrganizationsInput {
     _id: ID
     owner: String!
-    info: OrgInfo!
-    social: Social
-    contact: Contact!
-    services: Services
-    reason: Reason!
+    info: OrgInfoInput
+    social: SocialInput
+    contact: ContactInput
+    services: ServicesInput
+    reason: ReasonInput
 
+}
+
+input OrgInfoInput {
+    name: String!
+    description: String!
+    image: String
+    cover: String
+    employees: ObjectTypeInput!
+    orgType: [String]!
+}
+
+input SocialInput {
+    facebook: String
+    twitter: String
+    github: String
+    linkedin: String
+    website: String
+}
+
+input ContactInput {
+    name: String
+    email: String!
+    phone: String
+}
+
+input ServicesInput {
+    relocated: String
+    seeking: String
+    hostEvents: String
+}
+
+input ReasonInput {
+    languages: [String]!
+    vision: String
+    mission: String
+    culture: String
+    orgDefine: String
+    product: String
+    industry: [String]!
 }
 
 type Mutation {

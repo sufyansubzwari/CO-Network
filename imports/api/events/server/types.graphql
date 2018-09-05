@@ -53,10 +53,20 @@ input EventsInput {
     phone: String
     notes: String
     category: [String]!
-    attenders: Attenders!
+    attenders: AttendersInput!
     image: String
-    ticketType: ObjectType!
-    eventType: ObjectType!
+    ticketType: ObjectTypeInput!
+    eventType: ObjectTypeInput!
+}
+
+input AttendersInput {
+    min: Int
+    max: Int
+}
+
+input ObjectTypeInput {
+    label: String
+    value: String
 }
 
 type Mutation {

@@ -37,8 +37,8 @@ input JobsInput {
     owner: String!
     image: String
     organization: String!
-    jobType: ObjectType!
-    salaryRange: SalaryRange!
+    jobType: ObjectTypeInput!
+    salaryRange: SalaryRangeInput!
     remote: Boolean
     languages: [String]
     industry: [String]!
@@ -46,6 +46,12 @@ input JobsInput {
     workForUs: String
     aboutUsTeam: String
     candidateQuestions: String
+}
+
+input SalaryRangeInput {
+    min: Int
+    max: Int
+    frecuency: String
 }
 
 type Mutation {
