@@ -7,7 +7,7 @@ const color = {
   black: '#0e1800',
   backgroundLight: '#f5f7fb',
   background: '#dadada',
-  default: '#d3dee3',
+  default: '#FFFFFF',
   grey: '#dbdbdb'
 }
 
