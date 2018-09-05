@@ -17,13 +17,8 @@ type Info {
     description: String!
     image: String
     cover: String
-    employees: Employees!
+    employees: ObjectType!
     orgType: [Tags]!
-}
-
-type Employees {
-    label: String
-    value: String
 }
 
 type Social {
