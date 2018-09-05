@@ -9,9 +9,7 @@
     "prettier": "prettier --write \"client/**/*.js\" \"imports/**/*.js\" \"server/**/*.js\" --single-quote=true --trailing-comma=es5 --print-width=100",
     "test-client": "TEST_WATCH=1 TEST_SERVER=0 meteor test --driver-package meteortesting:mocha  --port 3001 --settings settings.json",
     "test-server": "TEST_WATCH=1 TEST_CLIENT=0  meteor test --driver-package meteortesting:mocha --port 3001 --settings settings.json",
-    "test-full": "TEST_WATCH=1 meteor test --driver-package meteortesting:mocha --port 3001 --settings settings.json",
-    "storybook": "start-storybook -p 6006",
-    "build-storybook": "build-storybook"
+    "test-full": "TEST_WATCH=1 meteor test --driver-package meteortesting:mocha --port 3001 --settings settings.json"
   },
   "dependencies": {
     "@babel/runtime": "^7.0.0-beta.36",
@@ -51,9 +49,6 @@
     "web-push": "^3.2.5"
   },
   "devDependencies": {
-    "@storybook/addon-actions": "^3.2.16",
-    "@storybook/addon-links": "^3.2.16",
-    "@storybook/react": "^3.2.16",
     "autoprefixer": "^6.3.5",
     "babel-eslint": "^7.0.0",
     "babel-plugin-styled-components": "^1.3.0",
@@ -85,7 +80,6 @@
     "redux-devtools-log-monitor": "^1.2.0",
     "selenium-webdriver": "^4.0.0-alpha.1",
     "sinon": "^6.1.5",
-    "storybook-host": "^4.1.4",
     "stylelint": "^5.2.1"
   }
 }

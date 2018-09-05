@@ -1,0 +1,58 @@
+{
+  "smtp": {
+    "protocol": "smtp",
+    "username": "postmaster@mg.tek-task.com",
+    "password": "7ebd3378d1708923ef34c46d1b46c8ef-770f03c4-c365508f",
+    "server": "smtp.mailgun.org",
+    "port": "587"
+  },
+  "facebook": {
+    "secret": "0b12fb02d9e94bb69e14d3fcdb1b20b7"
+  },
+  "firebase": {
+    "privateKey": "AAAAULCK1SI:APA91bEO7_E37E2G-25Z0EZrT2jlYhHBJNupG2cRY3ISG8U54b9EEpGIY1wBv5nwwcOAvNIFSy_wt9u-t9FQGabS9J89wBFLDmTH120YllRYaKnBJE3U1atcwd3oTVOmiaJeE7Oph5PCShUe_yDE0HJUmb6_3MedPw"
+  },
+  "vapid": {
+    "subject": "mailto:logistics@blueoceantech.us",
+    "privateKey": "YYOoa_IbW83Zvdr5r7o6b1c84e4R1KXRyoXH6ioaN6o"
+  },
+
+  "OAuth": {
+    "facebook": {
+      "enabled": true,
+      "appId": "347608012393871",
+      "secret": "85e292ed4df50a0e3e9770a59bb58de9",
+      "loginStyle": "popup"
+    },
+    "google": {
+      "enabled": true,
+      "clientId": "302945356378-ehrjehcr16b5tvqrrqbjeoqhm4j4a8dp.apps.googleusercontent.com",
+      "secret": "eF5-HIC6RoptOSGbRRteUvBm",
+      "loginStyle": "popup"
+    },
+    "github": {
+      "enabled": true,
+      "clientId": "b3a31f35dccd37db2d17",
+      "secret": "002d6fb6e89ad024bd6de540e9d308bfb366c958",
+      "loginStyle": "popup"
+    },
+    "twitter": {
+      "enabled": true,
+      "consumerKey": "GmrVzim28FfnFzjAZhGU8AKHg",
+      "clientId": "GmrVzim28FfnFzjAZhGU8AKHg",
+      "secret": "QDmUq8iDnreCOyUvt1GS1YDbeKRFfMl7EB3quQSo6hT7GNH2ze",
+      "loginStyle": "popup"
+    }
+  },
+  "public": {
+    "facebook": {
+      "appId": "647522955587362"
+    },
+    "vapid": {
+      "publicKey": "BCzI7KVNGfhsXdfVQ-ILEND2PfUJtnK0T9X3pgUKEKfcC1UfropJVUWIDLScweahotN3ZdSqck0I5YDY87T5o28"
+    }
+  },
+  "admins": [
+    { "email": "admin@admin.com", "roles": ["admin"] }
+  ]
+}
