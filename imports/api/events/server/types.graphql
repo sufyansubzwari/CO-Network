@@ -2,23 +2,43 @@
 
 type Events {
     _id: ID
-    title: String
+    title: String!
     description: String
-    startDate: Date
-    endDate: Date
-    owner: User
-    venueName: String
-    organizer: String
+    startDate: Date!
+    endDate: Date!
+    owner: User!
+    venueName: String!
+    organizer: String!
     phone: String
     notes: String
-    ticketType: Object
-    eventType: Object
-    sponsors: Object
-    category: [String]
-    size: String
+    category: [Tags]!
+    attenders: Attenders!
     image: String
     entity: String
     views: Int
+    ticketType: TicketType!
+    eventType: EventType!
+    sponsors: [Sponsors]
+}
+
+type Attenders {
+    min: Int
+    max: Int
+}
+
+type TicketType {
+    label: String!
+    value: String!
+}
+
+type EventType {
+    label: String!
+    value: String!
+}
+
+type Sponsors {
+    name: String
+    email: String
 }
 
 type Query {
@@ -28,25 +48,24 @@ type Query {
 
 input EventsInput {
     _id: String
-    title: String
+    title: String!
     description: String
-    startDate: Date
-    endDate: Date
-    owner: User
+    startDate: Date!
+    endDate: Date!
+    owner: String!
     venueName: String
     organizer: String
     phone: String
     notes: String
-    ticketType: Object
-    eventType: Object
-    sponsors: Object
-    category: [String]
-    size: String
+    category: [String]!
+    attenders: Attenders!
     image: String
-    entity: String
-    views: Int
+    ticketType: TicketType!
+    eventType: EventType!
 }
 
 type Mutation {
-    events(events: EventsInput!): Events
+    event(events: EventsInput!): Events
+    updateEvent(_id: String!, image: String!): Events
+    deleteEvent(_id: String!): Events
 }

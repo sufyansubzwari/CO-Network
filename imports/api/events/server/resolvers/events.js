@@ -4,6 +4,9 @@ import Users from "../../../users";
 const Events = {};
 
 Events.owner = project => {
-  //return Users.service.getUser(project.owner);
+  return Users.service.getUser(project.owner);
+};
+Events.owner = project => {
+  return Users.service.getUser(project.owner);
 };
 export default Events;
