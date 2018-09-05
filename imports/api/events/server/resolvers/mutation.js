@@ -6,7 +6,7 @@ Mutation.event = async (root, {event}, context) => {
   return Service.event(event);
 };
 
-Mutation.updateEvent = async (root, {id, image}, context) => {
+Mutation.updateImage = async (root, {id, image}, context) => {
   return Service.updateImage(id, image);
 };
 
