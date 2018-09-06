@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import { Layout, Container } from "btech-layout";
+import Routes from "../../routes";
 import Navbar from "../../components/Navbar/Navbar";
 
 const MainLayout = props => {
@@ -13,7 +14,9 @@ const MainLayout = props => {
       fullWY
     >
       <Navbar {...props} />
-      <Container gridArea="content" />
+      <Container gridArea="content">
+        <Routes {...props}/>
+      </Container>
     </Layout>
   );
 };
