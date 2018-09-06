@@ -1,0 +1,24 @@
+# types for Followers namespace
+
+type Followers {
+    _id: ID
+    entityId: String!
+    entity: String!
+    followers: [String]!
+}
+
+type Query {
+    followers(followers: FollowersInput!): [Followers]
+    follower(_id: String): Followers
+}
+
+input FollowersInput {
+    _id: ID
+    entityId: String!
+    entity: String!
+    followers: [String]!
+}
+
+type Mutation {
+    follower(followers: FollowersInput!): Followers
+}
