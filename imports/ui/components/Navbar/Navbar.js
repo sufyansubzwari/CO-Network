@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import { Layout, Container } from "btech-layout";
+import { withRouter } from "react-router-dom";
 import {
   HNavbar,
   HNavItem,
@@ -15,9 +16,15 @@ import navs from "./nav.constant";
  * @description This component is a wrapper for the react-table
  */
 class Navbar extends Component {
+
+  activeEval= (item) => {
+    return item.title === 'Link1'
+  }
+
   constructor(props) {
     super(props);
   }
+
 
   render() {
     return (
@@ -45,4 +52,4 @@ class Navbar extends Component {
   }
 }
 
-export default Navbar;
+export default withRouter(Navbar);
