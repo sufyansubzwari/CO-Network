@@ -1,15 +1,23 @@
-import React from 'react';
-import { Switch, Route } from 'react-router-dom';
-import { propType } from 'graphql-anywhere';
-import { userFragment } from './apollo-client/user';
+import React from "react";
+import { Switch, Route } from "react-router-dom";
+import { propType } from "graphql-anywhere";
+import { userFragment } from "./apollo-client/user";
 import {
   ScrollToTop,
   LoggedInRoute,
   LoggedOutRoute,
   RouteWithProps,
-  AdminRoute,
-} from './components/smart/route-wrappers';
-import LoadableWrapper from './components/dumb/loadable-wrapper';
+  AdminRoute
+} from "./components/smart/route-wrappers";
+import Authorization from "../ui/Authorization";
+import LoadableWrapper from "./components/dumb/loadable-wrapper";
+
+const handleAuthentication = props => {
+  alert("dasdasdasd");
+  if (/access_token|id_token|error/.test(props.location.hash)) {
+    Authorization.auth0.popup.callback();
+  }
+};
 
 //------------------------------------------------------------------------------
 // COMPONENT:
@@ -17,77 +25,76 @@ import LoadableWrapper from './components/dumb/loadable-wrapper';
 const Routes = props => (
   <ScrollToTop>
     <Switch>
-      <LoggedInRoute
+      <RouteWithProps
         exact
         name="home"
         path="/"
-        component={LoadableWrapper({ loader: () => import('./pages/home-page') })}
-        redirectTo="/login"
-        emailNotVerifiedOverlay={LoadableWrapper({ loader: () => import('./pages/auth/welcome-page') })}
-        {...props}
-      />
-      <LoggedOutRoute
-        name="login"
-        path="/login"
-        component={LoadableWrapper({ loader: () => import('./pages/auth/login-page') })}
-        redirectTo="/"
-        {...props}
-      />
-      <LoggedOutRoute
-        name="signup"
-        path="/signup"
-        component={LoadableWrapper({ loader: () => import('./pages/auth/signup-page') })}
-        redirectTo="/"
+        component={LoadableWrapper({
+          loader: () => import("./pages/home-page")
+        })}
         {...props}
       />
       <RouteWithProps
-        name="verifyEmail"
-        path="/verify-email/:token"
-        component={LoadableWrapper({ loader: () => import('./pages/auth/verify-email-page') })}
+        exact
+        name="Events"
+        path="/events"
+        component={LoadableWrapper({
+          loader: () => import("./pages/events/list-events")
+        })}
         {...props}
       />
       <RouteWithProps
-        name="linkExpired"
-        path="/link-expired"
-        component={LoadableWrapper({ loader: () => import('./pages/auth/link-expired-page') })}
-        {...props}
-      />
-      <LoggedOutRoute
-        name="forgotPassword"
-        path="/forgot-password"
-        component={LoadableWrapper({ loader: () => import('./pages/auth/forgot-password-page') })}
-        redirectTo="/"
-        {...props}
-      />
-      <LoggedOutRoute
-        name="resetPassword"
-        path="/reset-password/:token"
-        component={LoadableWrapper({ loader: () => import('./pages/auth/reset-password-page') })}
-        redirectTo="/"
+        exact
+        name="Events"
+        path="/post-event"
+        component={LoadableWrapper({
+          loader: () => import("./pages/events/post-event")
+        })}
         {...props}
       />
       <AdminRoute
         exact
         name="admin"
         path="/admin"
-        component={LoadableWrapper({ loader: () => import('./pages/admin/admin-page') })}
+        component={LoadableWrapper({
+          loader: () => import("./pages/admin/admin-page")
+        })}
         redirectTo="/login"
         {...props}
       />
       <Route
+        path="/callback"
+        render={props => {
+          handleAuthentication(props);
+          return (
+            <div
+              style={{
+                height: "600pc",
+                width: "500px",
+                backgroundColor: "white",
+                position: "fixed",
+                zIndex: 10000
+              }}
+            />
+          );
+        }}
+      />
+      <Route
         name="notFound"
-        component={LoadableWrapper({ loader: () => import('./pages/not-found-page') })}
+        component={LoadableWrapper({
+          loader: () => import("./pages/not-found-page")
+        })}
       />
     </Switch>
   </ScrollToTop>
 );
 
 Routes.propTypes = {
-  curUser: propType(userFragment), // eslint-disable-line
+  curUser: propType(userFragment) // eslint-disable-line
 };
 
 Routes.defaultProps = {
-  curUser: null,
+  curUser: null
 };
 
 export default Routes;

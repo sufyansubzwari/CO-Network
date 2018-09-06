@@ -5,6 +5,9 @@ import { HButtonGroup, HButtom } from "btech-horizantal-navbar";
 import { theme } from "../../theme";
 import SideBarLink from "./SideBarLink";
 import { ThemeProvider } from "styled-components";
+import { withTracker } from "meteor/react-meteor-data";
+import { withRouter } from "react-router-dom";
+import Authorization from "../../Authorization";
 
 /**
  * @module Data
@@ -14,7 +17,29 @@ import { ThemeProvider } from "styled-components";
 class UserNavbarSection extends React.Component {
   constructor(props) {
     super(props);
+    this.state = {
+      authenticated: this.props.authenticated,
+      user: this.props.user
+    };
     this.policy = Meteor.settings.public.policyUrl;
+  }
+
+  handleLoginClick() {
+    !this.state.authenticated
+      ? Authorization.login("facebook", data => {
+          this.setState({ user: Meteor.user() });
+        })
+      : this.props.history.push("/profile");
+  }
+
+  componentWillReceiveProps(nextProps) {
+    this.setState({
+      authenticated: nextProps.authenticated,
+      user: nextProps.user
+    });
+    // if (this.props.authenticated) {
+    //   this.props.onLogin()
+    // }
   }
 
   render() {
@@ -34,6 +59,7 @@ class UserNavbarSection extends React.Component {
                 image={
                   "https://cdn.dribbble.com/users/199982/screenshots/4044699/furkan-avatar-dribbble.png"
                 }
+                onClick={() => this.handleLoginClick()}
               />
               <HButtom>a</HButtom>
               <HButtom>a</HButtom>
@@ -60,4 +86,15 @@ class UserNavbarSection extends React.Component {
   }
 }
 
-export default UserNavbarSection;
+export default withRouter(
+  withTracker(() => {
+    const loggingIn = Meteor.loggingIn();
+    const user = Meteor.user();
+    const userId = Meteor.userId();
+    return {
+      loggingIn,
+      user,
+      authenticated: user && userId
+    };
+  })(withRouter(UserNavbarSection))
+);

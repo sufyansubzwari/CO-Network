@@ -44,6 +44,12 @@
     }
   },
   "public": {
+    "auth0":{
+      "domain": "mlsociety.auth0.com",
+      "clientID": "YzDO5Cls87g8QHx3ZRjrBlC0ZHXeFzP_",
+      "redirectUri": "http://localhost:3000/",
+      "audience": "https://mlsociety.auth0.com/api/v2/"
+    },
     "facebook": {
       "appId": "647522955587362"
     },

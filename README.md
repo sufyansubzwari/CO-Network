@@ -51,7 +51,7 @@ Create a new file called ```settings.json``` based on the provided ```settings.s
 #### 3. Register the app on Mailgun:
 Mailgun will allow you to use password authentication service and send emails from your app.
 
-In order to get started, first access your [Mailgun](https://www.mailgun.com/) account. Then, grab your sandbox domain smtp username and password and copy said values into your settings.json file. Finally, add your email address to the list of [Auhtorized Recipients](https://help.mailgun.com/hc/en-us/articles/217531258-Authorized-Recipients).
+In order to get started, first access your [Mailgun](https://www.mailgun.com/) account. Then, grab your sandbox domain smtp username and password and copy said values into your settings.json file. Finally, add your email address to the listEvent of [Auhtorized Recipients](https://help.mailgun.com/hc/en-us/articles/217531258-Authorized-Recipients).
 
 #### 4. Register the app on Facebook:
 Follow [this](https://medium.com/@jaaaco/add-facebook-login-to-meteor-app-in-2-minutes-3c744b46009e) tutorial to register the app on Facebook; this will allow you to use Facebook authentication service. Once you get your appId and secret key, copy said values back into your settings.json file.
@@ -121,7 +121,7 @@ Finding dependencies:
 npm ls <lib-name>
 ```
 
-Before deploying to production, if you used --extra-packages, simply remove bundle-visualizer from the list of included packages and run meteor as normal.
+Before deploying to production, if you used --extra-packages, simply remove bundle-visualizer from the listEvent of included packages and run meteor as normal.
 
 Learn more at:
 - https://blog.meteor.com/announcing-meteor-1-5-b82be66571bb
@@ -130,11 +130,11 @@ Learn more at:
 #### Look for meteor package dependencies
 The following command is handy when trying to reduce your client bundle size and need to identify where the dependencies are coming from.
 ```
-meteor list --tree
+meteor listEvent --tree
 
 OR
 
-for p in `meteor list | grep '^[a-z]' | awk '{sub(/[+*]$/, "", $2);
+for p in `meteor listEvent | grep '^[a-z]' | awk '{sub(/[+*]$/, "", $2);
 print $1"@"$2 }'`;
 do echo "$p";
 meteor show "$p" | grep -E '^  [a-z]';

@@ -34,11 +34,18 @@ const sidebar = {
   }
 };
 
+const lists = {
+  scrollSeparation: 15,
+  scrollBottomSeparation : 15,
+  itemSeparation: 15
+}
+
 export const theme = {
   textColor: color.black,
   color,
   inverse,
   sizes,
   sidebar,
+  lists,
   borderColor: color.grey
 };
