@@ -1,0 +1,35 @@
+# types for Messages namespace
+
+type Messages {
+    _id: ID
+    owner: User!
+    createdAt: Date!
+    from: User!
+    receptor String!
+    type: String!
+    text: String!
+    read: Boolean
+    attachment: String
+}
+
+type Query {
+    messages(messages: MessagesInput!): [Messages]
+    message(_id: String): Messages
+}
+
+input MessagesInput {
+    _id: ID
+    owner: String!
+    from: String!
+    receptor String!
+    type: String!
+    text: String!
+    read: Boolean
+    attachment: String
+}
+
+type Mutation {
+    message(message: MessagesInput!): Messages
+    markAsRead(_id: String!): Messages
+    deleteMessage(_id: String!): Messages
+}
