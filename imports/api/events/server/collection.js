@@ -1,9 +1,10 @@
 /* eslint-disable consistent-return */
 
 import {Mongo} from 'meteor/mongo';
+import BaseCollection from '../../base/collection';
 import SimpleSchema from 'simpl-schema';
 
-const collection = new Mongo.Collection('Events');
+const collection = new BaseCollection('Events');
 
 collection.allow({
   insert: () => false,

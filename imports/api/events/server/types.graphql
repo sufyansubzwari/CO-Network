@@ -1,7 +1,7 @@
 # types for Events namespace
 
 type Events {
-    _id: ID
+    _id: String
     title: String!
     description: String
     startDate: Date!
@@ -37,7 +37,7 @@ type Sponsors {
 }
 
 type Query {
-    events(events: EventsInput!): [Events]
+    events(events: EventsInput): [Events]
     event(_id: String): Events
 }
 

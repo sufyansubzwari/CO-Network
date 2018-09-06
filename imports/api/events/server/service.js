@@ -52,7 +52,6 @@ class EventsService {
    * @return {Object} Event
    */
   static getEvent = _id => {
-    console.log(_id);
     return Events.collection.findOne(_id);
   };
   /**
@@ -62,7 +61,8 @@ class EventsService {
    * @return {Object}||[{Object }] Return one or all events
    */
   static events = query => {
-    return Events.collection.find(query).fetch();
+    let events= Events.collection.find(query).fetch();
+    return events;
   };
 }
 

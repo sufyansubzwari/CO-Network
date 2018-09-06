@@ -2,14 +2,14 @@ import Service from "../service"
 
 const Query = {};
 
-Query.event = (root, {_id}, context) => {
-  return Service.getEvent(_id)
+Query.job = (root, {_id}, context) => {
+  return Service.getJob(_id)
 };
-Query.events = (root, {event}, context) => {
+Query.jobs = (root, {event}, context) => {
   let query = {};
   if (event) {
     query = event;
   }
-  return Service.events(query)
+  return Service.jobs(query)
 };
 export default Query;

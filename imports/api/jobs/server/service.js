@@ -51,7 +51,7 @@ class JobsService {
    * @param {String} _id - Event id
    * @return {Object} Event
    */
-  static getEvent = _id => {
+  static getJob = _id => {
     return Jobs.collection.findOne(_id);
   };
   /**
@@ -60,7 +60,7 @@ class JobsService {
    * @param {Object} query - query parameters
    * @return {Object}||[{Object }] Return one or all events
    */
-  static events = query => {
+  static jobs = query => {
     return Jobs.collection.find(query).fetch();
   };
 }
