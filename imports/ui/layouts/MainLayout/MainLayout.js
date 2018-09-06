@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { Layout, Container } from "btech-layout";
-import Navbar from '../../components/Navbar/Navbar';
+import Navbar from "../../components/Navbar/Navbar";
 
 const MainLayout = props => {
   return (
@@ -18,8 +18,6 @@ const MainLayout = props => {
   );
 };
 
-MainLayout.propTypes = {
-
-};
+MainLayout.propTypes = {};
 
 export default MainLayout;

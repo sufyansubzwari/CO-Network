@@ -1,6 +1,11 @@
 import React, { Component } from "react";
 import { Layout, Container } from "btech-layout";
-import { HNavbar, HNavItem , HButtonGroup,HButtom} from "btech-horizantal-navbar";
+import {
+  HNavbar,
+  HNavItem,
+  HButtonGroup,
+  HButtom
+} from "btech-horizantal-navbar";
 import UserNavbarSection from "./UserNavbarSection";
 import navs from "./nav.constant";
 
@@ -12,22 +17,18 @@ import navs from "./nav.constant";
 class Navbar extends Component {
   constructor(props) {
     super(props);
-  };
+  }
 
   render() {
     return (
       <Container fullY gridArea="Navbar">
         <HNavbar
-          mdRowGap={15}
+          mdRowGap={10}
           links={navs}
           activeEval={this.activeEval}
           itemOptions={{ title: { hide: true, mdShow: true } }}
         >
-          <Layout
-            key={"header"}
-            mb={"35px"}
-            mt={"35px"}
-          >
+          <Layout key={"header"} mb={"30px"} mt={"35px"}>
             <Container ml={"-8px"}>
               <HNavItem
                 icon={{ size: 60, src: "/images/logo/home.gif" }}
@@ -36,7 +37,7 @@ class Navbar extends Component {
               />
             </Container>
           </Layout>
-          <UserNavbarSection key={'footer'}/>
+          <UserNavbarSection key={"footer"} />
         </HNavbar>
       </Container>
     );
