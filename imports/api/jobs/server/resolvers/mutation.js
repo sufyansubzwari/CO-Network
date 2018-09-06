@@ -6,12 +6,12 @@ Mutation.job = async (root, {event}, context) => {
   return Service.job(event);
 };
 
-Mutation.updateJobsImage = async (root, {id, image}, context) => {
-  return Service.updateImage(id, image);
+Mutation.updateJobsImage = async (root, {_id, image}, context) => {
+  return Service.updateImage(_id, image);
 };
 
-Mutation.deleteJob = async (root, {id}, context) => {
-  return Service.deleteJob(id);
+Mutation.deleteJob = async (root, {_id}, context) => {
+  return Service.deleteJob(_id);
 };
 
 export default Mutation;

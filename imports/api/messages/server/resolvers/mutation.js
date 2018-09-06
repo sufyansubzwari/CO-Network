@@ -6,12 +6,12 @@ Mutation.message = async (root, {message}, context) => {
   return Service.message(message);
 };
 
-Mutation.markAsRead = async (root, {id}, context) => {
-  return Service.markAsRead(id);
+Mutation.markAsRead = async (root, {_id}, context) => {
+  return Service.markAsRead(_id);
 };
 
-Mutation.deleteMessage = async (root, {id}, context) => {
-  return Service.deleteMessage(id);
+Mutation.deleteMessage = async (root, {_id}, context) => {
+  return Service.deleteMessage(_id);
 };
 
 

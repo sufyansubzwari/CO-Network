@@ -6,8 +6,8 @@ Mutation.stripeCustomer = async (root, {stripeCustomer}, context) => {
   return Service.stripeCustomer(stripeCustomer);
 };
 
-Mutation.deleteStripeCustomer = async (root, {id}, context) => {
-  return Service.deleteStripeCustomer(id);
+Mutation.deleteStripeCustomer = async (root, {_id}, context) => {
+  return Service.deleteStripeCustomer(_id);
 };
 
 

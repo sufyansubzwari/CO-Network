@@ -6,8 +6,8 @@ Mutation.following = async (root, {following}, context) => {
   return Service.following(following);
 };
 
-Mutation.deleteFollowing = async (root, {id}, context) => {
-  return Service.deleteFollowing(id);
+Mutation.deleteFollowing = async (root, {_id}, context) => {
+  return Service.deleteFollowing(_id);
 };
 
 

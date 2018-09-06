@@ -6,12 +6,12 @@ Mutation.event = async (root, {events}, context) => {
   return Service.event(events);
 };
 
-Mutation.updateEventImage = async (root, {id, image}, context) => {
-  return Service.updateImage(id, image);
+Mutation.updateEventImage = async (root, {_id, image}, context) => {
+  return Service.updateImage(_id, image);
 };
 
-Mutation.deleteEvent = async (root, {id}, context) => {
-  return Service.deleteEvent(id);
+Mutation.deleteEvent = async (root, {_id}, context) => {
+  return Service.deleteEvent(_id);
 };
 
 export default Mutation;
