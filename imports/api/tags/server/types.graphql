@@ -1,0 +1,30 @@
+# types for Tags namespace
+
+type Tags {
+    _id: ID
+    name: String!
+    label: String!
+    value: String!
+    used: Int
+    categories: [String]!
+    types: String!
+}
+
+type Query {
+    tags(tags: TagsInput!): [Tags]
+    tag(_id: String): Tags
+}
+
+input TagsInput {
+    _id: ID
+    name: String!
+    label: String!
+    value: String!
+    used: Int
+    categories: [String]!
+    types: String!
+}
+
+type Mutation {
+    tag(tags: TagsInput!): Tags
+}

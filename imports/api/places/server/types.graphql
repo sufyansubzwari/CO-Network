@@ -1,0 +1,61 @@
+# types for Places namespace
+
+type Places {
+    _id: ID
+    owner: User!
+    location: Location!
+    entity: String!
+}
+
+type Location{
+    address: String!
+    location: Coordinates!
+    cityCountry: CityCountry!
+}
+
+type Coordinates{
+    lat: Int
+    lng: Int
+}
+
+type CityCountry{
+    city: String!
+    state: String
+    entire: String
+    country: String!
+}
+
+type Query {
+    places(places: PlacesInput): [Places]
+    place(_id: String): Places
+}
+
+input PlacesInput {
+    _id: ID
+    owner: UserInput!
+    location: LocationInput!
+    entity: String!
+}
+
+input LocationInput{
+    address: String!
+    location: CoordinatesInput!
+    cityCountry: CityCountryInput!
+}
+
+input CoordinatesInput{
+    lat: Int
+    lng: Int
+}
+
+input CityCountryInput{
+    city: String!
+    state: String
+    entire: String
+    country: String!
+}
+
+type Mutation {
+    place(places: PlacesInput): Places
+    deletePlace(_id: String!): Places
+}

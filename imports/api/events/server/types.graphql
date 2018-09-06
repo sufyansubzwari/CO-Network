@@ -1,0 +1,76 @@
+# types for Events namespace
+
+type Events {
+    _id: String
+    title: String!
+    description: String
+    startDate: Date!
+    endDate: Date!
+    owner: User!
+    venueName: String!
+    organizer: String!
+    phone: String
+    notes: String
+    category: [Tags]!
+    attenders: Attenders!
+    image: String
+    entity: String
+    views: Int
+    ticketType: ObjectType!
+    eventType: ObjectType!
+    sponsors: [Sponsors]
+}
+
+type Attenders {
+    min: Int
+    max: Int
+}
+
+type ObjectType {
+    label: String
+    value: String
+}
+
+type Sponsors {
+    name: String
+    email: String
+}
+
+type Query {
+    events(events: EventsInput, limit: Int): [Events]
+    event(_id: String): Events
+}
+
+input EventsInput {
+    _id: String
+    title: String!
+    description: String
+    startDate: Date!
+    endDate: Date!
+    owner: String!
+    venueName: String
+    organizer: String
+    phone: String
+    notes: String
+    category: [String]!
+    attenders: AttendersInput!
+    image: String
+    ticketType: ObjectTypeInput!
+    eventType: ObjectTypeInput!
+}
+
+input AttendersInput {
+    min: Int
+    max: Int
+}
+
+input ObjectTypeInput {
+    label: String
+    value: String
+}
+
+type Mutation {
+    event(events: EventsInput!): Events
+    updateEventImage(_id: String!, image: String!): Events
+    deleteEvent(_id: String!): Events
+}

@@ -1,0 +1,25 @@
+# types for Followings namespace
+
+type Followings {
+    _id: ID
+    entityId: String!
+    entity: String!
+    followings: [String]!
+}
+
+type Query {
+    followings(followings: FollowingsInput!): [Followings]
+    following(_id: String): Followings
+}
+
+input FollowingsInput {
+    _id: ID
+    entityId: String!
+    entity: String!
+    followings: [String]!
+}
+
+type Mutation {
+    following(followings: FollowingsInput!): Followings
+    deleteFollowing(_id: String!): Followings
+}

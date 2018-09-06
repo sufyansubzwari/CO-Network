@@ -6,11 +6,6 @@ fragment userFragment on User {
     address
     verified
   }
-  profile {
-    name
-    gender
-    avatar
-  }
   subscriptions {
     endpoint
     keys {

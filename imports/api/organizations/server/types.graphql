@@ -1,0 +1,113 @@
+# types for Organizations namespace
+
+type Organizations {
+    _id: ID
+    owner: User!
+    entity: String
+    views: Int
+    info: OrgInfo!
+    social: Social
+    contact: Contact!
+    services: Services
+    reason: Reason!
+}
+
+type OrgInfo {
+    name: String!
+    description: String!
+    image: String
+    cover: String
+    employees: ObjectType!
+    orgType: [Tags]!
+}
+
+type Social {
+    facebook: String
+    twitter: String
+    github: String
+    linkedin: String
+    website: String
+}
+
+type Contact {
+    name: String
+    email: String!
+    phone: String
+}
+
+type Services {
+    relocated: String
+    seeking: String
+    hostEvents: String
+}
+
+type Reason {
+    languages: [Tags]!
+    vision: String
+    mission: String
+    culture: String
+    orgDefine: String
+    product: String
+    industry: [Tags]!
+}
+
+type Query {
+    organizations(organizations: OrganizationsInput, limit: Int): [Organizations]
+    organization(_id: String): Organizations
+}
+
+input OrganizationsInput {
+    _id: ID
+    owner: String!
+    info: OrgInfoInput
+    social: SocialInput
+    contact: ContactInput
+    services: ServicesInput
+    reason: ReasonInput
+
+}
+
+input OrgInfoInput {
+    name: String!
+    description: String!
+    image: String
+    cover: String
+    employees: ObjectTypeInput!
+    orgType: [String]!
+}
+
+input SocialInput {
+    facebook: String
+    twitter: String
+    github: String
+    linkedin: String
+    website: String
+}
+
+input ContactInput {
+    name: String
+    email: String!
+    phone: String
+}
+
+input ServicesInput {
+    relocated: String
+    seeking: String
+    hostEvents: String
+}
+
+input ReasonInput {
+    languages: [String]!
+    vision: String
+    mission: String
+    culture: String
+    orgDefine: String
+    product: String
+    industry: [String]!
+}
+
+type Mutation {
+    organization(organizations: OrganizationsInput!): Organizations
+    updateImage(_id: String!, image: String, cover: String): Organizations
+    deleteOrganization(_id: String!): Organizations
+}

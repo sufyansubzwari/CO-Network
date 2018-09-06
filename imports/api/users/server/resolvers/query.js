@@ -1,13 +1,14 @@
+import Service from '../service';
 
-// Users namespace query resolvers
 const Query = {};
 
-//------------------------------------------------------------------------------
-// We access to the current user here thanks to the context. The current
-// user is added to the context thanks to the 'meteor/apollo' package.
-Query.user = (root, args, context) => (
-    context.user
-);
-//------------------------------------------------------------------------------
+Query.user = (root, {_id}, context) => {
+  return Service.getUser(_id)
+};
 
+Query.users = (root, {user, limit}, context) => {
+  let query = user || {};
+  let limitQuery = limit || {};
+  return Service.users(query, limitQuery);
+};
 export default Query;
