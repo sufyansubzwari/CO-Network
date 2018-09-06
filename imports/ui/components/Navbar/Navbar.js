@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import { Layout, Container } from "btech-layout";
+import { withRouter } from "react-router-dom";
 import {
   HNavbar,
   HNavItem,
@@ -15,9 +16,15 @@ import navs from "./nav.constant";
  * @description This component is a wrapper for the react-table
  */
 class Navbar extends Component {
+
+  activeEval= (item) => {
+    return item.title === 'Link1'
+  }
+
   constructor(props) {
     super(props);
   }
+
 
   render() {
     return (
@@ -28,20 +35,21 @@ class Navbar extends Component {
           activeEval={this.activeEval}
           itemOptions={{ title: { hide: true, mdShow: true } }}
         >
-          <Layout key={"header"} mb={"30px"} mt={"35px"}>
+          <Layout key={"header"} mb={"30px"} mt={"30px"}>
             <Container ml={"-8px"}>
               <HNavItem
+                link={"/"}
                 icon={{ size: 60, src: "/images/logo/home.gif" }}
                 activeEval={this.activeEval}
                 hideHexagon
               />
             </Container>
           </Layout>
-          <UserNavbarSection key={"footer"} />
+          <UserNavbarSection key={"footer"} curUser={this.props.curUser}/>
         </HNavbar>
       </Container>
     );
   }
 }
 
-export default Navbar;
+export default withRouter(Navbar);
