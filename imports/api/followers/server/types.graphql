@@ -21,4 +21,5 @@ input FollowersInput {
 
 type Mutation {
     follower(followers: FollowersInput!): Followers
+    deleteFollower(_id: String!): Followers
 }
