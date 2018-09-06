@@ -16,15 +16,17 @@ import navs from "./nav.constant";
  * @description This component is a wrapper for the react-table
  */
 class Navbar extends Component {
-
-  activeEval= (item) => {
-    return item.title === 'Link1'
-  }
+  activeEval = item => {
+    console.log('Link',item.link, 'value',this.props.location.pathname === "/"
+      ? item.link === "/"
+      : this.props.location.pathname.startsWith(item.link), 'path',this.props.location.pathname);
+    return item.link === "/" ?this.props.location.pathname === "/"
+      : this.props.location.pathname.startsWith(item.link);
+  };
 
   constructor(props) {
     super(props);
   }
-
 
   render() {
     return (
@@ -45,7 +47,7 @@ class Navbar extends Component {
               />
             </Container>
           </Layout>
-          <UserNavbarSection key={"footer"} curUser={this.props.curUser}/>
+          <UserNavbarSection key={"footer"} curUser={this.props.curUser} />
         </HNavbar>
       </Container>
     );

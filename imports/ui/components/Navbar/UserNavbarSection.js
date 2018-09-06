@@ -36,7 +36,6 @@ class UserNavbarSection extends React.Component {
             <HButtonGroup rows={[1, 2, 1]} gap={8} rowGap={-2}>
               <Link to={avatarLink}>
                 <HButtom
-                  big
                   image={
                     "https://cdn.dribbble.com/users/199982/screenshots/4044699/furkan-avatar-dribbble.png"
                   }
@@ -51,7 +50,7 @@ class UserNavbarSection extends React.Component {
                   right: "-5px",
                   value: Math.floor(Math.random() * 120),
                   primary: true,
-                  size: { width: 19, height: 22 }
+                  size: { width: 22, height: 24 }
                 }}
                 activeEval={this.activeEval}
               />
@@ -63,11 +62,11 @@ class UserNavbarSection extends React.Component {
                   right: "-5px",
                   value: Math.floor(Math.random() * 120),
                   primary: true,
-                  size: { width: 19, height: 22 }
+                  size: { width: 22, height: 24 }
                 }}
                 activeEval={this.activeEval}
               />
-              <HButtom big primary size={this.size}>
+              <HButtom primary size={this.size}>
                 a
               </HButtom>
             </HButtonGroup>
