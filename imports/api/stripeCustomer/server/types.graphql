@@ -1,0 +1,23 @@
+# types for stripeCustomer namespace
+
+type StripeCustomer {
+    _id: ID
+    owner: User!
+    customer: String!
+}
+
+type Query {
+    stripeCustomers(stripeCustomer: StripeCustomerInput!): [StripeCustomer]
+    stripeCustomer(_id: String): StripeCustomer
+}
+
+input StripeCustomerInput {
+    _id: ID
+    owner: String!
+    customer: String!
+}
+
+type Mutation {
+    stripeCustomer(stripeCustomer: StripeCustomerInput!): StripeCustomer
+    deleteStripeCustomer(_id: String!): StripeCustomer
+}
