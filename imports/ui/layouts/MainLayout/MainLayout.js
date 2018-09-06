@@ -15,7 +15,7 @@ const MainLayout = props => {
     >
       <Navbar {...props} />
       <Container gridArea="content">
-        <Routes {...props}/>
+        <Routes {...props} />
       </Container>
     </Layout>
   );

@@ -43,19 +43,7 @@ class Authorization extends react.Component {
     this.login = this.login.bind(this);
     this.logout = this.logout.bind(this);
     this.loginMeteor = this.loginMeteor.bind(this);
-    this.handleAuthentication = this.handleAuthentication.bind(this);
     this.isAuthenticated = this.isAuthenticated.bind(this);
-  }
-
-  handleAuthentication(props) {
-    this.auth0.parseHash((err, authResult) => {
-      console.log("authResult -> ", authResult);
-      if (authResult && authResult.accessToken && authResult.idToken) {
-        this.setSession(authResult, props);
-      } else if (err) {
-        console.log("authResult Error -> ", err);
-      }
-    });
   }
 
   getAccessToken() {
@@ -79,8 +67,8 @@ class Authorization extends react.Component {
   }
 
   scheduleRenewal() {
-    var expiresAt = JSON.parse(localStorage.getItem("expires_at"));
-    var delay = expiresAt - Date.now();
+    const expiresAt = JSON.parse(localStorage.getItem("expires_at"));
+    const delay = expiresAt - Date.now();
     let self = this;
     if (delay > 0) {
       global.tokenRenewalTimeout = setTimeout(function() {
@@ -112,7 +100,6 @@ class Authorization extends react.Component {
     localStorage.removeItem("id_token");
     localStorage.removeItem("expires_at");
     callback ? callback() : null;
-    // });
   }
 
   isAuthenticated() {
@@ -128,6 +115,7 @@ class Authorization extends react.Component {
     if (profile) {
       this.userProfile = profile;
       profile.expireIn = localStorage.expires_at;
+      // todo integrate with the new grapql api
       Meteor.call("users.findUser", this.userProfile.user_id, (err, result) => {
         if (!err) {
           if (result.length > 0) {
@@ -137,6 +125,7 @@ class Authorization extends react.Component {
           }
         }
       });
+      // todo integrate with the new grapql api
       Meteor.call(
         "users.insertUserAuth0",
         profile,
@@ -185,7 +174,7 @@ class Authorization extends react.Component {
         connection: service
       },
       (error, auth) => {
-        if (!error) _this.linkAccountAutenticated(auth, service);
+        if (!error) _this.linkAccountCallback(auth, service);
       }
     );
   }
@@ -207,9 +196,8 @@ class Authorization extends react.Component {
     return this.auth0Link;
   }
 
-  linkAccountAutenticated(authResult, service) {
+  linkAccountCallback(authResult, service) {
     localStorage.setItem(service, authResult.idTokenPayload.sub);
-
     this.linkAccount(authResult.idToken);
   }
 

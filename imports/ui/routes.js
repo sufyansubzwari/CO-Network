@@ -34,6 +34,24 @@ const Routes = props => (
         })}
         {...props}
       />
+      <RouteWithProps
+        exact
+        name="Events"
+        path="/events"
+        component={LoadableWrapper({
+          loader: () => import("./pages/events/list-events")
+        })}
+        {...props}
+      />
+      <RouteWithProps
+        exact
+        name="Events"
+        path="/post-event"
+        component={LoadableWrapper({
+          loader: () => import("./pages/events/post-event")
+        })}
+        {...props}
+      />
       <AdminRoute
         exact
         name="admin"
