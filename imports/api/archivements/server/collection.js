@@ -19,17 +19,17 @@ Achievements.deny({
 
 Achievements.schema = new SimpleSchema({
   createdAt: {
-    type: String,
+    type: Date,
     label: 'The date this document was created.',
     autoValue() {
-      if (this.isInsert) return (new Date()).toISOString();
+      if (this.isInsert) return new Date();
     },
   },
   updatedAt: {
-    type: String,
+    type: Date,
     label: 'The date this document was last updated.',
     autoValue() {
-      if (this.isInsert || this.isUpdate) return (new Date()).toISOString();
+      if (this.isInsert || this.isUpdate) return new Date();
     },
   },
   owner: {

@@ -23,17 +23,17 @@ FeedBack.schema = new SimpleSchema({
     label: 'The ID of the user this document belongs to.',
   },
   createdAt: {
-    type: String,
+    type: Date,
     label: 'The date this document was created.',
     autoValue() {
-      if (this.isInsert) return (new Date());
+      if (this.isInsert) return new Date();
     },
   },
   updatedAt: {
-    type: String,
+    type: Date,
     label: 'The date this document was last updated.',
     autoValue() {
-      if (this.isInsert || this.isUpdate) return (new Date());
+      if (this.isInsert || this.isUpdate) return new Date();
     },
   },
   title: {

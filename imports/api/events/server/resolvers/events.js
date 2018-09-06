@@ -6,7 +6,5 @@ const Events = {};
 Events.owner = entity => {
   return Users.service.getUser(entity.owner);
 };
-Events.owner = entity => {
-  return Users.service.getUser(entity.owner);
-};
+
 export default Events;

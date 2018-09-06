@@ -35,10 +35,10 @@ Events.schema = new SimpleSchema({
     },
   },
   updatedAt: {
-    type: String,
+    type: Date,
     label: 'The date this document was last updated.',
     autoValue() {
-      if (this.isInsert || this.isUpdate) return (new Date()).toISOString();
+      if (this.isInsert || this.isUpdate) return new Date();
     },
   },
   startDate: {
