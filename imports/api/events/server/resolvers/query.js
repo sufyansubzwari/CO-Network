@@ -6,12 +6,10 @@ Query.event = (root, {_id}, context) => {
   return Service.getEvent(_id)
 };
 
-//get all the events
-Query.events = (root, {event}, context) => {
-  let query = {};
-  if (event) {
-    query = event;
-  }
-  return Service.events(query)
+Query.events = (root, {event, limit}, context) => {
+  let query = event || {};
+  let limitQuery = limit || {};
+  return Service.events(query, limitQuery)
 };
+
 export default Query;

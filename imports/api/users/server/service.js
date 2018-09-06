@@ -17,9 +17,9 @@ class UserService {
       const UsersId = Users.collection.insert(data);
       return Users.collection.findOne(UsersId);
     } else {
-      let id=data._id;
+      let id = data._id;
       delete data._id;
-      await Users.collection.update(id, { $set: data });
+      await Users.collection.update(id, {$set: data});
       return Users.collection.findOne(id);
     }
   };
@@ -36,10 +36,11 @@ class UserService {
    *@name users
    * @summary Get all Users
    * @param {Object} query - query parameters
+   * @param {Object} limit - limit parameters
    * @return {Object} | [{Object }] Return one or all Users
    */
-  static users = query => {
-    return Users.collection.find(query).fetch();
+  static users = (query, limit) => {
+    return Users.collection.find(query, limit).fetch();
   };
 
 }

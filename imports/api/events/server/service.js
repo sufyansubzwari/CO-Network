@@ -58,11 +58,11 @@ class EventsService {
    *@name events
    * @summary Get all events
    * @param {Object} query - query parameters
+   * @param {Number} limit - limit parameters
    * @return {Object}||[{Object }] Return one or all events
    */
-  static events = query => {
-    let events= Events.collection.find(query).fetch();
-    return events;
+  static events = (query, limit) => {
+    return Events.collection.find(query, limit).fetch();
   };
 }
 

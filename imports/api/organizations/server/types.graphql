@@ -52,7 +52,7 @@ type Reason {
 }
 
 type Query {
-    organizations(organizations: OrganizationsInput!): [Organizations]
+    organizations(organizations: OrganizationsInput, limit: Int): [Organizations]
     organization(_id: String): Organizations
 }
 

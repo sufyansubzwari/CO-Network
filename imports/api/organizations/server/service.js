@@ -40,11 +40,11 @@ class OrganizationsService {
    * @return {Object} Event updated
    */
   static updateImage = async (id, image, cover) => {
-    if(image)
-    await Organizations.collection.update(id, {
-      $addToSet: {image: image}
-    });
-    if(cover)
+    if (image)
+      await Organizations.collection.update(id, {
+        $addToSet: {image: image}
+      });
+    if (cover)
       await Organizations.collection.update(id, {
         $addToSet: {cover: cover}
       });
@@ -65,8 +65,8 @@ class OrganizationsService {
    * @param {Object} query - query parameters
    * @return {Object}||[{Object }] Return one or all organizations
    */
-  static organizations = query => {
-    return Organizations.collection.find(query).fetch();
+  static organizations = (query, limit) => {
+    return Organizations.collection.find(query, limit).fetch();
   };
 }
 

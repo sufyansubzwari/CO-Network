@@ -58,10 +58,11 @@ class JobsService {
    *@name events
    * @summary Get all events
    * @param {Object} query - query parameters
+   * @param {Number} limit - limit parameters
    * @return {Object}||[{Object }] Return one or all events
    */
-  static jobs = query => {
-    return Jobs.collection.find(query).fetch();
+  static jobs = (query, limit) => {
+    return Jobs.collection.find(query, limit).fetch();
   };
 }
 

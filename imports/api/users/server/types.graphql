@@ -81,7 +81,7 @@ input SubscriptionInput {
 }
 
 type Query {
-  users(user: UserInput!): [User]
+  users(user: UserInput, limit: Int): [User]
   user(_id: String): User
 }
 

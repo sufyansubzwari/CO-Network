@@ -37,7 +37,7 @@ type Sponsors {
 }
 
 type Query {
-    events(events: EventsInput): [Events]
+    events(events: EventsInput, limit: Int): [Events]
     event(_id: String): Events
 }
 
