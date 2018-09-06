@@ -52,6 +52,7 @@ class EventsService {
    * @return {Object} Event
    */
   static getEvent = _id => {
+    console.log(_id);
     return Events.collection.findOne(_id);
   };
   /**

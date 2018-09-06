@@ -10,8 +10,8 @@ Mutation.updateJobsImage = async (root, {id, image}, context) => {
   return Service.updateImage(id, image);
 };
 
-Mutation.deleteEvent = async (root, {id}, context) => {
-  return Service.deleteEvent(id);
+Mutation.deleteJob = async (root, {id}, context) => {
+  return Service.deleteJob(id);
 };
 
 export default Mutation;

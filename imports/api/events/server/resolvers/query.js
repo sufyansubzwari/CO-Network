@@ -3,6 +3,7 @@ import Service from "../service"
 const Query = {};
 
 Query.event = (root, {_id}, context) => {
+  console.log(_id);
   return Service.getEvent(_id)
 };
 Query.events = (root, {event}, context) => {

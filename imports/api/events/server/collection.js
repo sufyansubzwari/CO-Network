@@ -3,21 +3,21 @@
 import {Mongo} from 'meteor/mongo';
 import SimpleSchema from 'simpl-schema';
 
-const Events = new Mongo.Collection('Events');
+const collection = new Mongo.Collection('Events');
 
-Events.allow({
+collection.allow({
   insert: () => false,
   update: () => false,
   remove: () => false,
 });
 
-Events.deny({
+collection.deny({
   insert: () => true,
   update: () => true,
   remove: () => true,
 });
 
-Events.schema = new SimpleSchema({
+const schema = new SimpleSchema({
   owner: {
     type: String,
     label: 'The ID of the user this document belongs to.',
@@ -178,6 +178,6 @@ Events.schema = new SimpleSchema({
   },
 });
 
-Events.attachSchema(Events.schema);
+collection.attachSchema(schema);
 
-export default Events;
+export default collection;
