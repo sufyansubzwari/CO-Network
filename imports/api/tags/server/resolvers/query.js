@@ -5,11 +5,9 @@ const Query = {};
 Query.tag = (root, {_id}, context) => {
   return Service.getTag(_id)
 };
-Query.tags = (root, {tag}, context) => {
-  let query = {};
-  if (tag) {
-    query = tag;
-  }
-  return Service.tags(query)
+Query.tags = (root, {tag, limit}, context) => {
+  let query = tag || {};
+  let limitQuery = limit || {};
+  return Service.tags(query, limitQuery)
 };
 export default Query;

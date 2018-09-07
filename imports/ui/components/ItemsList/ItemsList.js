@@ -1,14 +1,14 @@
-import React, { Component } from "react";
-import { List, MLCard } from "btech-card-list-component";
-import { ThemeProvider } from "styled-components";
-import { theme } from "../../theme";
+import React, {Component} from "react";
+import {List, MLCard} from "btech-card-list-component";
+import {ThemeProvider} from "styled-components";
+import {theme} from "../../theme";
 import PropTypes from "prop-types";
-import { Layout, Container } from "btech-layout";
+import {Layout, Container} from "btech-layout";
 import styled from "styled-components";
 
 const SListTitle = styled(Container)`
   font-family: ${props =>
-    props.theme.texts.title.fontFamily || "Helvetica Neue LT Std"};
+  props.theme.texts.title.fontFamily || "Helvetica Neue LT Std"};
   font-size: ${props => props.size || "18px"};
   line-height: ${props => props.lineHeight || "26px"};
   margin-bottom: 5px;
@@ -29,10 +29,11 @@ class ItemsList extends Component {
     this.renderItem = this.renderItem.bind(this);
   }
 
-  componentWillMount() {}
+  componentWillMount() {
+  }
 
   componentWillReceiveProps(nextProps) {
-    if (nextProps.data) this.setState({ items: nextProps.data });
+    if (nextProps.data) this.setState({items: nextProps.data});
   }
 
   onChangeSelection(item, key) {
@@ -56,7 +57,10 @@ class ItemsList extends Component {
             : false
         }
         loading={this.state.loading}
-        {...item}
+        title={item.title || ""}
+        subTitle={item.description || ""}
+        tags={item.category || []}
+        views={item.views}
         key={key}
       />
     );

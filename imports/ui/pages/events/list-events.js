@@ -1,6 +1,8 @@
-import React, { Component } from "react";
-import { Container } from "btech-layout";
-import { ItemsList, ListLayout } from "../../../ui/components";
+import React, {Component} from "react";
+import {Container} from "btech-layout";
+import {ItemsList, ListLayout} from "../../../ui/components";
+import gql from 'graphql-tag';
+import {graphql} from 'react-apollo';
 
 /**
  * @module Events
@@ -13,80 +15,86 @@ class ListEvents extends Component {
       openFilters: true,
       selectedItem: null,
       loading: false,
-      items: [
-        {
-          icon: "briefcase",
-          views: 20,
-          title: "Toys",
-          subTitle: "Cuba, Havana",
-          tags: [
-            {
-              name: "Javascript",
-              value: "javascript"
-            }
-          ]
-        },
-        {
-          icon: "briefcase",
-          views: 40,
-          title: "Toys 2",
-          subTitle: "Cuba, Havana",
-          tags: [
-            {
-              name: "Javascript",
-              value: "javascript"
-            }
-          ]
-        },
-        {
-          icon: "briefcase",
-          views: 67,
-          title: "Toys 3",
-          subTitle: "Cuba, Havana",
-          tags: [
-            {
-              name: "Javascript",
-              value: "javascript"
-            }
-          ]
-        },
-        {
-          icon: "briefcase",
-          views: 84,
-          title: "Toys 4",
-          subTitle: "Cuba, Havana",
-          tags: [
-            {
-              name: "Javascript",
-              value: "javascript"
-            }
-          ]
-        },
-        {
-          icon: "briefcase",
-          title: "Toys 5",
-          subTitle: "Cuba, Havana",
-          tags: [
-            {
-              name: "Javascript",
-              value: "javascript"
-            }
-          ]
-        },
-        {
-          icon: "briefcase",
-          views: 13,
-          title: "Toys 6",
-          subTitle: "Cuba, Havana",
-          tags: [
-            {
-              name: "Javascript",
-              value: "javascript"
-            }
-          ]
-        }
-      ]
+      items: this.props.data && this.props.data.events,
+      // items: [
+      //   {
+      //     icon: "briefcase",
+      //     views: 20,
+      //     title: "Toys",
+      //     subTitle: "Cuba, Havana",
+      //     tags: [
+      //       {
+      //         name: "Javascript",
+      //         value: "javascript"
+      //       }
+      //     ]
+      //   },
+      //   {
+      //     icon: "briefcase",
+      //     views: 40,
+      //     title: "Toys 2",
+      //     subTitle: "Cuba, Havana",
+      //     tags: [
+      //       {
+      //         name: "Javascript",
+      //         value: "javascript"
+      //       }
+      //     ]
+      //   },
+      //   {
+      //     icon: "briefcase",
+      //     views: 67,
+      //     title: "Toys 3",
+      //     subTitle: "Cuba, Havana",
+      //     tags: [
+      //       {
+      //         name: "Javascript",
+      //         value: "javascript"
+      //       }
+      //     ]
+      //   },
+      //   {
+      //     icon: "briefcase",
+      //     views: 84,
+      //     title: "Toys 4",
+      //     subTitle: "Cuba, Havana",
+      //     tags: [
+      //       {
+      //         name: "Javascript",
+      //         value: "javascript"
+      //       }
+      //     ]
+      //   },
+      //   {
+      //     icon: "briefcase",
+      //     title: "Toys 5",
+      //     subTitle: "Cuba, Havana",
+      //     tags: [
+      //       {
+      //         name: "Javascript",
+      //         value: "javascript"
+      //       }
+      //     ]
+      //   },
+      //   {
+      //     icon: "briefcase",
+      //     views: 13,
+      //     title: "Toys 6",
+      //     subTitle: "Cuba, Havana",
+      //     tags: [
+      //       {
+      //         name: "Javascript",
+      //         value: "javascript"
+      //       }
+      //     ]
+      //   }
+      // ]
     };
+  }
+
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.data && nextProps.data.events)
+      this.setState({item: nextProps.data.events});
   }
 
   onChangeSelection(item, key) {
@@ -95,7 +103,8 @@ class ListEvents extends Component {
     });
   }
 
-  fetchMoreSelection(item, key) {}
+  fetchMoreSelection(item, key) {
+  }
 
   render() {
     return (
@@ -114,4 +123,23 @@ class ListEvents extends Component {
   }
 }
 
-export default ListEvents;
+const events = gql`
+    {
+        events {
+            title
+            description
+            venueName
+            image
+            category {
+                label
+                value
+                name
+            }
+            entity
+            views
+        }
+    }
+
+`;
+
+export default graphql(events)(ListEvents);
