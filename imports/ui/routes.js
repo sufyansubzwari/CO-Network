@@ -4,13 +4,12 @@ import { propType } from "graphql-anywhere";
 import { userFragment } from "./apollo-client/user";
 import {
   ScrollToTop,
-  LoggedInRoute,
-  LoggedOutRoute,
   RouteWithProps,
   AdminRoute
 } from "./components/smart/route-wrappers";
 import Authorization from "../ui/Authorization";
 import LoadableWrapper from "./components/dumb/loadable-wrapper";
+import ListEvents from "./pages/events/list-events";
 
 const handleAuthentication = props => {
   alert("dasdasdasd");
@@ -34,15 +33,7 @@ const Routes = props => (
         })}
         {...props}
       />
-      <RouteWithProps
-        exact
-        name="Events"
-        path="/events"
-        component={LoadableWrapper({
-          loader: () => import("./pages/events/list-events")
-        })}
-        {...props}
-      />
+      <Route name="Events" path="/events" render={() => <ListEvents />} />
       <RouteWithProps
         exact
         name="Events"

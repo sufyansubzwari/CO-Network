@@ -24,15 +24,20 @@ class InternalLayout extends Component {
   render() {
     return (
       <ThemeProvider theme={theme}>
-        <Layout fullWY customTemplateColumns={"1fr 1fr"}>
-          <Container>
+        <Layout fullY
+          customTemplateColumns={"1fr"}
+          mdCustomTemplateColumns={"900px 1fr"}
+          lgCustomTemplateColumns={"900px 1fr"}
+          layoutAreas={{ xs: `'leftSide'`, md: `'leftSide rightSide'`, lg: `'leftSide rightSide'` }}
+        >
+          <Container fullY gridArea="leftSide">
             {this.props.renderLeft && this.props.renderLeft()}
           </Container>
-          {this.props.isOpenPreview ? (
-            <Container background={"pink"}>
-              {this.props.renderRight && this.props.renderRight()}
-            </Container>
-          ) : null}
+          <Container fullY gridArea="rightSide" background={"pink"}>
+            {this.props.isOpenPreview
+              ? this.props.renderRight && this.props.renderRight()
+              : null}
+          </Container>
         </Layout>
       </ThemeProvider>
     );

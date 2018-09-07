@@ -10,7 +10,7 @@ import { Button } from "btech-base-forms-component";
 import styled from "styled-components";
 
 const STopSearcherContainer = styled(Container)`
-  padding: ${props => (!props.isOpenFilters ? "20px 65px" : "20px 48px")};
+  padding: ${props => (!props.isOpenFilters ? "20px 66px" : "20px 48px")};
   box-shadow: ${props => "0 1px 0 0 " + props.theme.color.grey};
 `;
 
@@ -24,7 +24,7 @@ const SListContainer = styled(Container)`
 
 const SInnerListContainer = styled(Container)`
   border-top: ${props => "1px solid " + props.theme.color.grey};
-  padding: 50px 40px 0 40px;
+  padding: 60px 66px 15px 66px;
   background-color: ${props => props.theme.color.innerBackground};
 `;
 /**
@@ -49,16 +49,16 @@ class ListLayout extends Component {
   renderListSide() {
     return (
       <Layout
-        fullWY
+        fullY
         customTemplateColumns={this.state.isOpenFilters ? "250px 1fr" : "1fr"}
       >
         {this.state.isOpenFilters ? (
-          <SFiltersContainer>
+          <SFiltersContainer fullY>
             {this.props.renderFilters && this.props.renderFilters()}
           </SFiltersContainer>
         ) : null}
         <SListContainer>
-          <Layout fullWY customTemplateRows={"75px 1fr"}>
+          <Layout fullY customTemplateRows={"75px 1fr"}>
             <STopSearcherContainer {...this.state}>
               {this.props.renderSearcher ? (
                 this.props.renderSearcher()
@@ -108,7 +108,7 @@ class ListLayout extends Component {
       <ThemeProvider theme={theme}>
         <InternalLayout
           renderLeft={this.renderListSide}
-          renderRight={this.props.renderPreview && this.props.renderPreview()}
+          renderRight={this.props.renderPreview && this.props.renderPreview}
         />
       </ThemeProvider>
     );

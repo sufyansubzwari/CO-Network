@@ -15,7 +15,7 @@ const MainLayout = props => {
       fullWY
     >
       <Navbar {...props} />
-      <Container gridArea="content">
+      <Container fullY gridArea="content">
         <Routes {...props} />
       </Container>
     </Layout>
