@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { ItemsList, InternalLayout } from "../../../ui/components";
+import { ItemsList, ListLayout } from "../../../ui/components";
 
 /**
  * @module Events
@@ -16,7 +16,6 @@ class ListEvents extends Component {
         {
           icon: "briefcase",
           views: 20,
-          image: "./testing.jpeg",
           title: "Toys",
           subTitle: "Cuba, Havana",
           tags: [
@@ -99,26 +98,17 @@ class ListEvents extends Component {
   }
 
   fetchMoreSelection(item, key) {
-    this.setState({
-      loading: true
-    });
-    // todo: load more
-    setTimeout(() => {
-      this.setState({
-        loading: false
-      });
-    }, 2000);
   }
 
   renderList() {
+    console.log("log ListEvents");
     return (
-      <div>asdasd</div>
-      // <ItemsList
-      //   data={this.state.items}
-      //   loading={this.state.loading}
-      //   onFetchData={options => this.fetchMoreSelection(options)}
-      //   onSelectCard={(item, key) => this.onChangeSelection(item, key)}
-      // />
+      <ItemsList
+        data={this.state.items}
+        loading={this.state.loading}
+        onFetchData={options => this.fetchMoreSelection(options)}
+        onSelectCard={(item, key) => this.onChangeSelection(item, key)}
+      />
     );
   }
 
@@ -132,7 +122,7 @@ class ListEvents extends Component {
 
   render() {
     return (
-      <InternalLayout
+      <ListLayout
         renderList={this.renderList}
         renderPreview={this.renderPreview}
         renderFilters={this.renderFilters}

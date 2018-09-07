@@ -8,7 +8,8 @@ const color = {
   backgroundLight: "#f5f7fb",
   background: "#dadada",
   default: "#FFFFFF",
-  grey: "#dbdbdb"
+  grey: "#dbdbdb",
+  innerBackground: "#F9F9FB"
 };
 
 const inverse = {
