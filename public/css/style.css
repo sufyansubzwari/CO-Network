@@ -1,3 +1,17 @@
+@font-face {
+    font-family: "Helvetica Neue LT Std";
+    font-style: normal;
+    font-weight: bold;
+    src: local('Helvetica Neue LT Bold'), url('../fonts/helvetica-neue-lt-bold.woff') format('woff');
+}
+
+@font-face {
+    font-family: "Helvetica Neue Bold Light";
+    font-style: normal;
+    font-weight: normal;
+    src: local('Helvetica Neue LT Light'), url('../fonts/helvetica-neue-lt-light.woff') format('woff');
+}
+
 body {
   font-family: Roboto Mono, serif;
   font-size: 16px;

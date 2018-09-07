@@ -3,6 +3,16 @@ import { List, MLCard } from "btech-card-list-component";
 import { ThemeProvider } from "styled-components";
 import { theme } from "../../theme";
 import PropTypes from "prop-types";
+import { Layout, Container } from "btech-layout";
+import styled from "styled-components";
+
+const SListTitle = styled(Container)`
+  font-family: ${props =>
+    props.theme.texts.title.fontFamily || "Helvetica Neue LT Std"};
+  font-size: ${props => props.size || "18px"};
+  line-height: ${props => props.lineHeight || "26px"};
+  margin-bottom: 5px;
+`;
 
 /**
  * @module Event
@@ -59,7 +69,8 @@ class ItemsList extends Component {
 
   render() {
     return (
-      <ThemeProvider theme={theme}>
+      <Container fullY>
+        <SListTitle>{this.props.title}</SListTitle>
         <List
           renderItem={
             this.props.renderItem ? this.props.renderItem : this.renderItem
@@ -69,12 +80,13 @@ class ItemsList extends Component {
           scrollSeparation={theme.lists.scrollSeparation}
           data={this.state.items}
         />
-      </ThemeProvider>
+      </Container>
     );
   }
 }
 
 ItemsList.propTypes = {
+  title: PropTypes.string,
   data: PropTypes.array,
   loading: PropTypes.bool,
   onFetchData: PropTypes.func,
