@@ -16,7 +16,7 @@ class ItemsList extends Component {
       activeIndex: null,
       loading: this.props.loading
     };
-    this.renderItem = this.renderItem.bind(this)
+    this.renderItem = this.renderItem.bind(this);
   }
 
   componentWillMount() {}
@@ -41,7 +41,9 @@ class ItemsList extends Component {
       <MLCard
         onSelect={() => this.onChangeSelection(item, key)}
         isActive={
-          this.state.activeIndex ? this.state.activeIndex === key : false
+          this.state.activeIndex !== null
+            ? this.state.activeIndex === key
+            : false
         }
         loading={this.state.loading}
         {...item}

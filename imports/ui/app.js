@@ -9,6 +9,7 @@ import store from "./redux/store.js";
 import {theme} from "./theme";
 import GlobalDataProvider from "./global-data-provider";
 
+import 'bootstrap/dist/css/bootstrap.min.css';
 // To get started, create an ApolloClient instance and point it at your GraphQL
 // server (handled in our case by meteor-apollo). By default, this client will
 // send queries to the '/graphql' endpoint on the same host.

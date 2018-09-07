@@ -1,69 +1,86 @@
 <head>
-  <meta charset="utf-8">
-  <title>Meteor Apollo boilerplate</title>
+    <meta charset="utf-8">
+    <title>Machine Learning Society</title>
+    <meta name="description"
+          content="Welcome to CO - A global Data+Science community. We are a global community
+          of Data+Scientists committed to advancing innovation in Science, Technology and Culture.">
+    <meta name="Author" content="CO NETWORK">
 
-  <!-- GPU rasterisation -->
-  <meta name="viewport" content="width=device-width, minimum-scale=1.0">
+    <!-- GPU rasterisation -->
+    <meta name="viewport" content="initial-scale=1, minimal-ui, maximum-scale=1, minimum-scale=1"/>
 
-  <!-- Favicons -->
-  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
-  <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
-  <link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+    <meta property="og:image" content="/favicon.png"/>
+    <meta property="og:title" content="Machine Learning Society"/>
+    <!-- Favicons -->
+    <link rel="shortcut icon" type="image/png" href="/favicon.png" sizes="16x16 32x32 64x64">
+    <link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
 
-  <!-- Safari on iOS -->
-  <meta name="apple-mobile-web-app-capable" content="yes">
-  <meta name="apple-mobile-web-app-status-bar-style" content="black">
-  <meta name="apple-mobile-web-app-title" content="Love, love, love">
+    <!-- Safari on iOS -->
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="apple-mobile-web-app-title" content="Love, love, love">
 
-  <link rel="apple-touch-icon" sizes="76x76" href="/apple-touch-icon.png">
-  <!-- iPad with high-resolution Retina display running iOS ≥ 7: -->
-  <link rel="apple-touch-icon" sizes="152x152" href="images/icons/icon-apple-152x152.png">
-  <!-- iPad with high-resolution Retina display running iOS ≤ 6: -->
-  <link rel="apple-touch-icon" sizes="144x144" href="images/icons/icon-apple-144x144.png">
-  <!-- iPhone with high-resolution Retina display running iOS ≥ 7: -->
-  <link rel="apple-touch-icon" sizes="120x120" href="images/icons/icon-apple-120x120.png">
-  <!-- iPhone with high-resolution Retina display running iOS ≤ 6: -->
-  <link rel="apple-touch-icon" sizes="114x114" href="images/icons/icon-apple-114x114.png">
-  <!-- iPad mini and the first- and second-generation iPad on iOS ≥ 7: -->
-  <link rel="apple-touch-icon" sizes="76x76" href="images/icons/icon-apple-76x76.png">
-  <!-- iPad mini and the first- and second-generation iPad on iOS ≤ 6: -->
-  <link rel="apple-touch-icon" sizes="72x72" href="images/icons/icon-apple-72x72.png">
-  <!-- non-Retina iPhone, iPod Touch, and Android 2.1+ devices: -->
-  <link rel="apple-touch-icon" href="images/icons/icon-apple-72x72.png">
+    <link rel="apple-touch-icon" sizes="76x76" href="/favicon.png">
+    <!-- iPad with high-resolution Retina display running iOS ≥ 7: -->
+    <link rel="apple-touch-icon" sizes="152x152" href="/favicon.png">
+    <!-- iPad with high-resolution Retina display running iOS ≤ 6: -->
+    <link rel="apple-touch-icon" sizes="144x144" href="/favicon.png">
+    <!-- iPhone with high-resolution Retina display running iOS ≥ 7: -->
+    <link rel="apple-touch-icon" sizes="120x120" href="/favicon.png">
+    <!-- iPhone with high-resolution Retina display running iOS ≤ 6: -->
+    <link rel="apple-touch-icon" sizes="114x114" href="/favicon.png">
+    <!-- iPad mini and the first- and second-generation iPad on iOS ≥ 7: -->
+    <link rel="apple-touch-icon" sizes="76x76" href="/favicon.png">
+    <!-- iPad mini and the first- and second-generation iPad on iOS ≤ 6: -->
+    <link rel="apple-touch-icon" sizes="72x72" href="/favicon.png">
+    <!-- non-Retina iPhone, iPod Touch, and Android 2.1+ devices: -->
+    <link rel="apple-touch-icon" href="/favicon.png">
 
-  <!-- iPhone SPLASHSCREEN -->
-  <link href="images/splash/splash-apple-320x460.png" media="(device-width: 320px)" rel="apple-touch-startup-image">
-  <!-- iPhone (Retina) SPLASHSCREEN -->
-  <link href="images/splash/splash-apple-640x920.png" media="(device-width: 320px) and (device-height: 460px) and (-webkit-device-pixel-ratio: 2)" rel="apple-touch-startup-image">
-  <!-- iPhone 5 (Retina) SPLASHSCREEN -->
-  <link href="images/splash/splash-apple-640x1096.png" media="(device-width: 320px) and (device-height: 568px) and (-webkit-device-pixel-ratio: 2)" rel="apple-touch-startup-image">
-  <!-- iPad (non-Retina) (Portrait) -->
-  <link href="images/splash/splash-apple-768x1004.png" media="screen and (min-device-width: 481px) and (max-device-width: 1024px) and (orientation:portrait)" rel="apple-touch-startup-image" />
-  <!-- iPad (non-Retina) (Landscape) -->
-  <link href="images/splash/splash-apple-1024x748.png" media="screen and (min-device-width: 481px) and (max-device-width: 1024px) and (orientation:landscape)" rel="apple-touch-startup-image" />
-  <!-- iPad (Retina) (Portrait) -->
-  <link href="images/splash/splash-apple-1536x2008.png" media="screen and (min-device-width: 481px) and (max-device-width: 1024px) and (orientation:portrait) and (-webkit-min-device-pixel-ratio: 2)" rel="apple-touch-startup-image" />
-  <!-- iPad (Retina) (Landscape) -->
-  <link href="images/splash/splash-apple-2048x1496.png" media="screen and (min-device-width: 481px) and (max-device-width: 1024px) and (orientation:landscape) and (-webkit-min-device-pixel-ratio: 2)" rel="apple-touch-startup-image" />
+    <!-- iPhone SPLASHSCREEN -->
+    <link href="images/splash/splash-apple-320x460.png" media="(device-width: 320px)" rel="apple-touch-startup-image">
+    <!-- iPhone (Retina) SPLASHSCREEN -->
+    <link href="images/splash/splash-apple-640x920.png"
+          media="(device-width: 320px) and (device-height: 460px) and (-webkit-device-pixel-ratio: 2)"
+          rel="apple-touch-startup-image">
+    <!-- iPhone 5 (Retina) SPLASHSCREEN -->
+    <link href="images/splash/splash-apple-640x1096.png"
+          media="(device-width: 320px) and (device-height: 568px) and (-webkit-device-pixel-ratio: 2)"
+          rel="apple-touch-startup-image">
+    <!-- iPad (non-Retina) (Portrait) -->
+    <link href="images/splash/splash-apple-768x1004.png"
+          media="screen and (min-device-width: 481px) and (max-device-width: 1024px) and (orientation:portrait)"
+          rel="apple-touch-startup-image"/>
+    <!-- iPad (non-Retina) (Landscape) -->
+    <link href="images/splash/splash-apple-1024x748.png"
+          media="screen and (min-device-width: 481px) and (max-device-width: 1024px) and (orientation:landscape)"
+          rel="apple-touch-startup-image"/>
+    <!-- iPad (Retina) (Portrait) -->
+    <link href="images/splash/splash-apple-1536x2008.png"
+          media="screen and (min-device-width: 481px) and (max-device-width: 1024px) and (orientation:portrait) and (-webkit-min-device-pixel-ratio: 2)"
+          rel="apple-touch-startup-image"/>
+    <!-- iPad (Retina) (Landscape) -->
+    <link href="images/splash/splash-apple-2048x1496.png"
+          media="screen and (min-device-width: 481px) and (max-device-width: 1024px) and (orientation:landscape) and (-webkit-min-device-pixel-ratio: 2)"
+          rel="apple-touch-startup-image"/>
 
-  <!-- Windows phone -->
-  <meta name="msapplication-TileImage" content="images/icons/icon-wp-144x144.png">
-  <meta name="msapplication-TileColor" content="#2e2e49">
+    <!-- Windows phone -->
+    <meta name="msapplication-TileImage" content="images/icons/icon-wp-144x144.png">
+    <meta name="msapplication-TileColor" content="#2e2e49">
 
-  <!-- Chrome on Android -->
-  <meta name="mobile-web-app-capable" content="yes">
+    <!-- Chrome on Android -->
+    <meta name="mobile-web-app-capable" content="yes">
 
-  <meta name="theme-color" content="#3b395e"/>
+    <meta name="theme-color" content="#3b395e"/>
 
-  <!-- Handle javascript disabled -->
-  <noscript>
-    <p>Please, enable JavaScript in your browser :)</p>
-  </noscript>
+    <!-- Handle javascript disabled -->
+    <noscript>
+        <p>Please, enable JavaScript in your browser :)</p>
+    </noscript>
 
-  <!-- SW manifest -->
+    <!-- SW manifest -->
     <link rel="manifest" href="/manifest-pwa.json">
 
-  <!-- App shell styles -->
+    <!-- App shell styles -->
     <link href="https://fonts.googleapis.com/css?family=Roboto+Mono" rel="stylesheet">
     <link rel="stylesheet"
           href="https://cdnjs.cloudflare.com/ajax/libs/material-design-iconic-font/2.2.0/css/material-design-iconic-font.min.css">
@@ -75,9 +92,9 @@
 </head>
 
 <body>
-    <div id="root-app">
-    </div>
-    <script src="/js/toast.js"></script>
-    <script src="/js/offline.js"></script>
-    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCqziAoTlEKOak6m2CahxkjWAm-HcE6pN4&v=3.exp&libraries=geometry,drawing,places"></script>
+<div id="root-app">
+</div>
+<script src="/js/toast.js"></script>
+<script src="/js/offline.js"></script>
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCqziAoTlEKOak6m2CahxkjWAm-HcE6pN4&v=3.exp&libraries=geometry,drawing,places"></script>
 </body>

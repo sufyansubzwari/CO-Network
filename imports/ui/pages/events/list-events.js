@@ -1,8 +1,5 @@
 import React, { Component } from "react";
-import { Layout, Container } from "btech-layout";
-import { ThemeProvider } from "styled-components";
-import { theme } from "../../theme";
-import { ItemsList } from "../../../ui/components";
+import { ItemsList, ListLayout } from "../../../ui/components";
 
 /**
  * @module Events
@@ -19,7 +16,6 @@ class ListEvents extends Component {
         {
           icon: "briefcase",
           views: 20,
-          image: "./testing.jpeg",
           title: "Toys",
           subTitle: "Cuba, Havana",
           tags: [
@@ -90,6 +86,9 @@ class ListEvents extends Component {
         }
       ]
     };
+    this.renderList = this.renderList.bind(this);
+    this.renderFilters = this.renderFilters.bind(this);
+    this.renderPreview = this.renderPreview.bind(this);
   }
 
   onChangeSelection(item, key) {
@@ -99,44 +98,35 @@ class ListEvents extends Component {
   }
 
   fetchMoreSelection(item, key) {
-    this.setState({
-      loading: true
-    });
-    // todo: load more
-    setTimeout(() => {
-      this.setState({
-        loading: false
-      });
-    }, 2000);
+  }
+
+  renderList() {
+    console.log("log ListEvents");
+    return (
+      <ItemsList
+        data={this.state.items}
+        loading={this.state.loading}
+        onFetchData={options => this.fetchMoreSelection(options)}
+        onSelectCard={(item, key) => this.onChangeSelection(item, key)}
+      />
+    );
+  }
+
+  renderFilters() {
+    return <div>Filters</div>;
+  }
+
+  renderPreview() {
+    return <div>Preview</div>;
   }
 
   render() {
     return (
-      <ThemeProvider theme={theme}>
-        <Layout fullWY customTemplateColumns={"50% 50%"}>
-          <Container>
-            <Layout fullWY customTemplateColumns={"250px 1fr"}>
-              <Container background={"red"}>Filters</Container>
-              <Container>
-                <Layout fullWY customTemplateRows={"75px 1fr"}>
-                  <Container background={"blue"}>Buscador</Container>
-                  <Container background={"yellow"}>
-                    <ItemsList
-                      data={this.state.items}
-                      loading={this.state.loading}
-                      onFetchData={options => this.fetchMoreSelection(options)}
-                      onSelectCard={(item, key) =>
-                        this.onChangeSelection(item, key)
-                      }
-                    />
-                  </Container>
-                </Layout>
-              </Container>
-            </Layout>
-          </Container>
-          <Container background={"pink"}>Detail</Container>
-        </Layout>
-      </ThemeProvider>
+      <ListLayout
+        renderList={this.renderList}
+        renderPreview={this.renderPreview}
+        renderFilters={this.renderFilters}
+      />
     );
   }
 }
