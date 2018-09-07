@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import { Layout, Container } from "btech-layout";
+import Routes from "../../routes";
 import Navbar from "../../components/Navbar/Navbar";
 
 const MainLayout = props => {
@@ -7,13 +8,16 @@ const MainLayout = props => {
     <Layout
       customTemplateColumns={"1fr"}
       customTemplateRows={"1fr 80px"}
-      mdCustomTemplateColumns={"100px 1fr"}
+      mdCustomTemplateColumns={"72px 1fr"}
+      lgCustomTemplateColumns={"100px 1fr"}
       mdCustomTemplateRows={"1fr"}
       layoutAreas={{ xs: `'content' 'Navbar'`, md: `'Navbar content'` }}
       fullWY
     >
       <Navbar {...props} />
-      <Container gridArea="content" />
+      <Container fullY gridArea="content">
+        <Routes {...props} />
+      </Container>
     </Layout>
   );
 };

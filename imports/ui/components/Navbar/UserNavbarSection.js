@@ -1,10 +1,11 @@
 import React from "react";
 import { Meteor } from "meteor/meteor";
 import { Layout, Container } from "btech-layout";
-import { HButtonGroup, HButtom } from "btech-horizantal-navbar";
+import { HButtonGroup, HButtom, HNavItem } from "btech-horizantal-navbar";
 import { theme } from "../../theme";
 import SideBarLink from "./SideBarLink";
 import { ThemeProvider } from "styled-components";
+import { Link } from "react-router-dom";
 
 /**
  * @module Data
@@ -15,9 +16,13 @@ class UserNavbarSection extends React.Component {
   constructor(props) {
     super(props);
     this.policy = Meteor.settings.public.policyUrl;
+    this.size = { width: 46, height: 53 };
+    this.notSize = { width: 33, height: 39 };
   }
 
   render() {
+    const isAuthenticated = this.props.curUser;
+    const avatarLink = isAuthenticated ? "/profile" : "/";
     return (
       <Layout
         customTemplateRows={"1fr auto"}
@@ -29,15 +34,39 @@ class UserNavbarSection extends React.Component {
         <Container>
           <Layout rowGap="15px">
             <HButtonGroup rows={[1, 2, 1]} gap={8} rowGap={-2}>
-              <HButtom
-                big
-                image={
-                  "https://cdn.dribbble.com/users/199982/screenshots/4044699/furkan-avatar-dribbble.png"
-                }
+              <Link to={avatarLink}>
+                <HButtom
+                  image={
+                    "https://cdn.dribbble.com/users/199982/screenshots/4044699/furkan-avatar-dribbble.png"
+                  }
+                  size={this.size}
+                />
+              </Link>
+              <HNavItem
+                size={this.notSize}
+                icon={{ size: 20, src: "/images/logo/home.gif" }}
+                number={{
+                  top: "-5px",
+                  right: "-5px",
+                  value: Math.floor(Math.random() * 120),
+                  primary: true,
+                  size: { width: 22, height: 24 }
+                }}
+                activeEval={this.activeEval}
               />
-              <HButtom>a</HButtom>
-              <HButtom>a</HButtom>
-              <HButtom big primary>
+              <HNavItem
+                size={this.notSize}
+                icon={{ size: 20, src: "/images/logo/home.gif" }}
+                number={{
+                  top: "-5px",
+                  right: "-5px",
+                  value: Math.floor(Math.random() * 120),
+                  primary: true,
+                  size: { width: 22, height: 24 }
+                }}
+                activeEval={this.activeEval}
+              />
+              <HButtom primary size={this.size}>
                 a
               </HButtom>
             </HButtonGroup>

@@ -8,7 +8,8 @@ const color = {
   backgroundLight: "#f5f7fb",
   background: "#dadada",
   default: "#FFFFFF",
-  grey: "#dbdbdb"
+  grey: "#dbdbdb",
+  innerBackground: "#F9F9FB"
 };
 
 const inverse = {
@@ -34,11 +35,18 @@ const sidebar = {
   }
 };
 
+const lists = {
+  scrollSeparation: 15,
+  scrollBottomSeparation : 15,
+  itemSeparation: 15
+}
+
 export const theme = {
   textColor: color.black,
   color,
   inverse,
   sizes,
   sidebar,
+  lists,
   borderColor: color.grey
 };
