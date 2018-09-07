@@ -21,25 +21,32 @@ class InternalLayout extends Component {
       this.setState({ isOpenFilters: nextProps.isOpenFilters });
   }
 
+  getComponent(key) {
+    return this.props.children.filter(function(comp) {
+      return comp.key === key;
+    });
+  }
+
   render() {
     return (
-      <ThemeProvider theme={theme}>
-        <Layout fullY
-          customTemplateColumns={"1fr"}
-          mdCustomTemplateColumns={"900px 1fr"}
-          lgCustomTemplateColumns={"900px 1fr"}
-          layoutAreas={{ xs: `'leftSide'`, md: `'leftSide rightSide'`, lg: `'leftSide rightSide'` }}
-        >
-          <Container fullY gridArea="leftSide">
-            {this.props.renderLeft && this.props.renderLeft()}
-          </Container>
-          <Container fullY gridArea="rightSide" background={"pink"}>
-            {this.props.isOpenPreview
-              ? this.props.renderRight && this.props.renderRight()
-              : null}
-          </Container>
-        </Layout>
-      </ThemeProvider>
+      <Layout
+        fullY
+        customTemplateColumns={"1fr"}
+        mdCustomTemplateColumns={"47% 1fr"}
+        lgCustomTemplateColumns={"47% 1fr"}
+        layoutAreas={{
+          xs: `'leftSide'`,
+          md: `'leftSide rightSide'`,
+          lg: `'leftSide rightSide'`
+        }}
+      >
+        <Container gridArea="leftSide">
+          {this.getComponent("leftSide")}
+        </Container>
+        <Container gridArea="rightSide">
+          {this.props.isOpenPreview ? this.getComponent("rightSide") : null}
+        </Container>
+      </Layout>
     );
   }
 }
@@ -49,9 +56,7 @@ InternalLayout.defaultProps = {
 };
 
 InternalLayout.propTypes = {
-  isOpenPreview: PropTypes.bool,
-  renderLeft: PropTypes.func.isRequired,
-  renderRight: PropTypes.func.isRequired
+  isOpenPreview: PropTypes.bool
 };
 
 export default InternalLayout;

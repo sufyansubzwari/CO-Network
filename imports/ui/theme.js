@@ -41,11 +41,19 @@ const lists = {
   itemSeparation: 15
 }
 
+const texts = {
+  title:{
+    fontFamily: 'Helvetica Neue LT Std'
+  },
+  fontFamily: 'Roboto Mono'
+}
+
 export const theme = {
   textColor: color.black,
   color,
   inverse,
   sizes,
+  texts,
   sidebar,
   lists,
   borderColor: color.grey

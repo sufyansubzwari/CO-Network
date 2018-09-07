@@ -14,17 +14,13 @@ const STopSearcherContainer = styled(Container)`
   box-shadow: ${props => "0 1px 0 0 " + props.theme.color.grey};
 `;
 
-const SFiltersContainer = styled(Container)`
-  border-right: ${props => "1px solid " + props.theme.color.grey};
-`;
-
 const SListContainer = styled(Container)`
   border-right: ${props => "1px solid " + props.theme.color.grey};
 `;
 
 const SInnerListContainer = styled(Container)`
   border-top: ${props => "1px solid " + props.theme.color.grey};
-  padding: 60px 66px 15px 66px;
+  padding: 20px 66px 15px 66px;
   background-color: ${props => props.theme.color.innerBackground};
 `;
 /**
@@ -37,7 +33,6 @@ class ListLayout extends Component {
     this.state = {
       isOpenFilters: this.props.isOpenFilters
     };
-    this.renderListSide = this.renderListSide.bind(this);
   }
 
   componentWillReceiveProps(nextProps) {
@@ -46,23 +41,19 @@ class ListLayout extends Component {
       this.setState({ isOpenFilters: nextProps.isOpenFilters });
   }
 
-  renderListSide() {
+  getComponent(key) {
+    return this.props.children.filter(function(comp) {
+      return comp.key === key;
+    });
+  }
+
+  render() {
     return (
-      <Layout
-        fullY
-        customTemplateColumns={this.state.isOpenFilters ? "250px 1fr" : "1fr"}
-      >
-        {this.state.isOpenFilters ? (
-          <SFiltersContainer fullY>
-            {this.props.renderFilters && this.props.renderFilters()}
-          </SFiltersContainer>
-        ) : null}
-        <SListContainer>
-          <Layout fullY customTemplateRows={"75px 1fr"}>
-            <STopSearcherContainer {...this.state}>
-              {this.props.renderSearcher ? (
-                this.props.renderSearcher()
-              ) : (
+      <InternalLayout>
+        <Layout fullY key={"leftSide"}>
+          <SListContainer>
+            <Layout fullY customTemplateRows={"75px 1fr"}>
+              <STopSearcherContainer {...this.state}>
                 <Layout
                   colGap={"10px"}
                   customTemplateColumns={
@@ -92,25 +83,15 @@ class ListLayout extends Component {
                     />
                   </Container>
                 </Layout>
-              )}
-            </STopSearcherContainer>
-            <SInnerListContainer>
-              {this.props.renderList && this.props.renderList()}
-            </SInnerListContainer>
-          </Layout>
-        </SListContainer>
-      </Layout>
-    );
-  }
-
-  render() {
-    return (
-      <ThemeProvider theme={theme}>
-        <InternalLayout
-          renderLeft={this.renderListSide}
-          renderRight={this.props.renderPreview && this.props.renderPreview}
-        />
-      </ThemeProvider>
+              </STopSearcherContainer>
+              <SInnerListContainer>
+                {this.getComponent("listComponent")}
+              </SInnerListContainer>
+            </Layout>
+          </SListContainer>
+        </Layout>
+        <Container key={"rightSide"}>asdasdasdasd</Container>
+      </InternalLayout>
     );
   }
 }
@@ -120,9 +101,6 @@ InternalLayout.defaultProps = {
 };
 
 ListLayout.propTypes = {
-  renderFilters: PropTypes.func.isRequired,
-  renderList: PropTypes.func.isRequired,
-  renderPreview: PropTypes.func.isRequired,
   renderSearcher: PropTypes.func
 };
 

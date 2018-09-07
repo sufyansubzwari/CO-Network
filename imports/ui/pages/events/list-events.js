@@ -13,11 +13,80 @@ class ListEvents extends Component {
       openFilters: true,
       selectedItem: null,
       loading: false,
-      items: []
+      items: [
+        {
+          icon: "briefcase",
+          views: 20,
+          title: "Toys",
+          subTitle: "Cuba, Havana",
+          tags: [
+            {
+              name: "Javascript",
+              value: "javascript"
+            }
+          ]
+        },
+        {
+          icon: "briefcase",
+          views: 40,
+          title: "Toys 2",
+          subTitle: "Cuba, Havana",
+          tags: [
+            {
+              name: "Javascript",
+              value: "javascript"
+            }
+          ]
+        },
+        {
+          icon: "briefcase",
+          views: 67,
+          title: "Toys 3",
+          subTitle: "Cuba, Havana",
+          tags: [
+            {
+              name: "Javascript",
+              value: "javascript"
+            }
+          ]
+        },
+        {
+          icon: "briefcase",
+          views: 84,
+          title: "Toys 4",
+          subTitle: "Cuba, Havana",
+          tags: [
+            {
+              name: "Javascript",
+              value: "javascript"
+            }
+          ]
+        },
+        {
+          icon: "briefcase",
+          title: "Toys 5",
+          subTitle: "Cuba, Havana",
+          tags: [
+            {
+              name: "Javascript",
+              value: "javascript"
+            }
+          ]
+        },
+        {
+          icon: "briefcase",
+          views: 13,
+          title: "Toys 6",
+          subTitle: "Cuba, Havana",
+          tags: [
+            {
+              name: "Javascript",
+              value: "javascript"
+            }
+          ]
+        }
+      ]
     };
-    this.renderList = this.renderList.bind(this);
-    this.renderFilters = this.renderFilters.bind(this);
-    this.renderPreview = this.renderPreview.bind(this);
   }
 
   onChangeSelection(item, key) {
@@ -28,27 +97,19 @@ class ListEvents extends Component {
 
   fetchMoreSelection(item, key) {}
 
-  renderList() {
-    return (
-      <div>asas</div>
-    );
-  }
-
-  renderFilters() {
-    return <div>Filters</div>;
-  }
-
-  renderPreview() {
-    return <div>Preview</div>;
-  }
-
   render() {
     return (
-      <ListLayout
-        renderList={this.renderList}
-        renderPreview={this.renderPreview}
-        renderFilters={this.renderFilters}
-      />
+      <ListLayout>
+        <ItemsList
+          key={"listComponent"}
+          title={"Jobs"}
+          data={this.state.items}
+          loading={this.state.loading}
+          onFetchData={options => this.fetchMoreSelection(options)}
+          onSelectCard={(item, key) => this.onChangeSelection(item, key)}
+        />
+        <Container key={"rightSide"}>preview component</Container>
+      </ListLayout>
     );
   }
 }
