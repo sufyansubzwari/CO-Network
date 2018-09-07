@@ -1,0 +1,5 @@
+# types for Tags namespace
+
+type Mutation {
+    resourceUpload(body: String!, content: String!, path: String!): String
+}
