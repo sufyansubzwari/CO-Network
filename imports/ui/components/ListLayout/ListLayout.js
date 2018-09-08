@@ -8,21 +8,13 @@ import InternalLayout from "../InternalLayout/InternalLayout";
 import MaterialIcon from "react-material-iconic-font";
 import { Button } from "btech-base-forms-component";
 import styled from "styled-components";
-
-const STopSearcherContainer = styled(Container)`
-  padding: ${props => (!props.isOpenFilters ? "20px 66px" : "20px 48px")};
-  box-shadow: ${props => "0 1px 0 0 " + props.theme.color.grey};
-`;
+import ListContainer from "./ListContainer";
+import TopSearchContainer from "./TopSearchContainer";
 
 const SListContainer = styled(Container)`
   border-right: ${props => "1px solid " + props.theme.color.grey};
 `;
 
-const SInnerListContainer = styled(Container)`
-  border-top: ${props => "1px solid " + props.theme.color.grey};
-  padding: 20px 66px 15px 66px;
-  background-color: ${props => props.theme.color.innerBackground};
-`;
 /**
  * @module Common
  * @category ListLayout
@@ -47,15 +39,16 @@ class ListLayout extends Component {
         <Layout fullY key={"leftSide"}>
           <SListContainer>
             <Layout fullY customTemplateRows={"75px 1fr"}>
-              <STopSearcherContainer {...this.state}>
+              <TopSearchContainer {...this.state}>
                 <Layout
                   colGap={"10px"}
-                  customTemplateColumns={
+                  customTemplateColumns={"1fr"}
+                  mdCustomTemplateColumns={
                     !this.state.isOpenFilters ? "auto 1fr" : "1fr"
                   }
                 >
                   {!this.state.isOpenFilters ? (
-                    <Container>
+                    <Container hide mdShow lgShow>
                       <Button
                         width={"35px"}
                         fontSize={"18px"}
@@ -77,14 +70,16 @@ class ListLayout extends Component {
                     />
                   </Container>
                 </Layout>
-              </STopSearcherContainer>
-              <SInnerListContainer>
+              </TopSearchContainer>
+              <ListContainer>
                 {this.getComponent("listComponent")}
-              </SInnerListContainer>
+              </ListContainer>
             </Layout>
           </SListContainer>
         </Layout>
-        <Container key={"rightSide"}>asdasdasdasd</Container>
+        <Container key={"rightSide"}>
+          {this.getComponent("rightSide")}
+        </Container>
       </InternalLayout>
     );
   }

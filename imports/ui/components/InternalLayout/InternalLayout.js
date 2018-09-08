@@ -37,8 +37,8 @@ class InternalLayout extends Component {
         <Container gridArea="leftSide">
           {this.getComponent("leftSide")}
         </Container>
-        <Container gridArea="rightSide">
-          {this.props.isOpenPreview ? this.getComponent("rightSide") : null}
+        <Container hide mdShow lgShow gridArea="rightSide">
+          {this.getComponent("rightSide")}
         </Container>
       </Layout>
     );
