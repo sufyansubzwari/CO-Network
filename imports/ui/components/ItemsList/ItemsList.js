@@ -1,10 +1,11 @@
 import React, { Component } from "react";
-import { List, MLCard } from "btech-card-list-component";
-import { ThemeProvider } from "styled-components";
+import { List } from "btech-card-list-component";
+import CardItem from "../CardItem/CardItem";
 import { theme } from "../../theme";
 import PropTypes from "prop-types";
 import { Layout, Container } from "btech-layout";
 import styled from "styled-components";
+import { LOADINGDATA } from "./mockData";
 
 const SListTitle = styled(Container)`
   font-family: ${props =>
@@ -22,9 +23,9 @@ class ItemsList extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      items: this.props.data,
       activeIndex: null,
-      loading: this.props.loading
+      loading: this.props.loading,
+      mockData: LOADINGDATA
     };
     this.renderItem = this.renderItem.bind(this);
   }
@@ -32,7 +33,8 @@ class ItemsList extends Component {
   componentWillMount() {}
 
   componentWillReceiveProps(nextProps) {
-    if (nextProps.data) this.setState({ items: nextProps.data });
+    if (nextProps.loading && nextProps.loading !== this.state.loading)
+      this.setState({ loading: nextProps.loading });
   }
 
   onChangeSelection(item, key) {
@@ -48,7 +50,7 @@ class ItemsList extends Component {
 
   renderItem(item, key) {
     return (
-      <MLCard
+      <CardItem
         onSelect={() => this.onChangeSelection(item, key)}
         isActive={
           this.state.activeIndex !== null
@@ -78,7 +80,7 @@ class ItemsList extends Component {
           onFetchData={options => this.fetchMoreItems(options)}
           itemSeparation={theme.lists.itemSeparation}
           scrollSeparation={theme.lists.scrollSeparation}
-          data={this.state.items}
+          data={this.state.loading ? this.state.mockData : this.props.data}
         />
       </Container>
     );

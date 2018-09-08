@@ -15,12 +15,6 @@ class InternalLayout extends Component {
 
   onCreateAction() {}
 
-  componentWillReceiveProps(nextProps) {
-    console.log("InternalLayout");
-    if (nextProps.isOpenFilters)
-      this.setState({ isOpenFilters: nextProps.isOpenFilters });
-  }
-
   getComponent(key) {
     return this.props.children.filter(function(comp) {
       return comp.key === key;

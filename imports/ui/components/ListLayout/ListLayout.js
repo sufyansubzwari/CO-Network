@@ -35,12 +35,6 @@ class ListLayout extends Component {
     };
   }
 
-  componentWillReceiveProps(nextProps) {
-    console.log("ListLayout");
-    if (nextProps.isOpenFilters)
-      this.setState({ isOpenFilters: nextProps.isOpenFilters });
-  }
-
   getComponent(key) {
     return this.props.children.filter(function(comp) {
       return comp.key === key;
