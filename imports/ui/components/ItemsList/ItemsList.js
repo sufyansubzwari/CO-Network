@@ -43,7 +43,7 @@ class ItemsList extends Component {
         activeIndex: key
       },
       () => {
-        this.onSelectCard && this.onSelectCard(item, key);
+        this.props.onSelectCard && this.props.onSelectCard(item, key);
       }
     );
   }

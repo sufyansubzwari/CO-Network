@@ -4,10 +4,6 @@ import react from "react";
 import Axios from "axios";
 
 class Authorization extends react.Component {
-  getAuthorization() {
-    return this.auth0;
-  }
-
   login(service, callback) {
     localStorage.setItem("currentService", service);
     this.callback = callback;
@@ -20,11 +16,6 @@ class Authorization extends react.Component {
         if (!err && authResult) this.setSession(authResult);
       }
     );
-  }
-
-  logButton(logB) {
-    debugger;
-    this.logButton = logB;
   }
 
   constructor() {

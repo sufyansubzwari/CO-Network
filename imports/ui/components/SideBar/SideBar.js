@@ -1,5 +1,15 @@
 import React, { Component } from "react";
-import { Layout, Container } from "btech-layout";
+import { Container } from "btech-layout";
+import styled from "styled-components";
+import { Button } from "btech-base-forms-component";
+import PropTypes from "prop-types";
+import { connect } from "react-redux";
+import { toggleSideBar } from "../../actions/SideBarActions";
+import * as type from "../../actions/SideBarActions/types";
+
+const SSideBarContainer = styled(Container)`
+  border-right: ${props => "1px solid " + props.theme.color.grey};
+`;
 
 /**
  * @module Data
@@ -11,13 +21,58 @@ class SideBar extends Component {
     super(props);
   }
 
+  renderSidebar() {
+    const data = this.props.sidebar;
+    if (data) {
+      if (data.isAdd) {
+        //  render add
+        return <div>Add element</div>;
+      } else {
+        switch (data.entityType) {
+          case "events":
+            return (
+              <Button
+                onClick={() =>
+                  this.props.toggleSideBar && this.props.toggleSideBar(false)
+                }
+              >
+                Hidde Filters
+              </Button>
+            );
+          default:
+            return <div>You must implement this filters</div>;
+        }
+      }
+    }
+  }
+
   render() {
     return (
-      <Container fullY gridArea="SideBar">
-        SideBar
-      </Container>
+      <SSideBarContainer hide mdShow lgShow fullY gridArea="SideBar">
+        {this.renderSidebar()}
+      </SSideBarContainer>
     );
   }
 }
 
-export default SideBar;
+const mapStateToProps = state => {
+  const { sideBarStatus } = state;
+  return {
+    sidebar: sideBarStatus || {
+      status: false,
+      type: type.HIDE_SIDEBAR,
+      entityType: null
+    }
+  };
+};
+
+const mapDispatchToProps = dispatch => {
+  return {
+    toggleSideBar: status => dispatch(toggleSideBar(status, null))
+  };
+};
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(SideBar);

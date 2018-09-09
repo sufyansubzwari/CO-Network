@@ -1,7 +1,5 @@
 import React, { Component } from "react";
 import { Layout, Container } from "btech-layout";
-import { ThemeProvider } from "styled-components";
-import { theme } from "../../theme";
 import PropTypes from "prop-types";
 import TopSearcher from "./TopSearcher";
 import InternalLayout from "../InternalLayout/InternalLayout";
@@ -10,6 +8,8 @@ import { Button } from "btech-base-forms-component";
 import styled from "styled-components";
 import ListContainer from "./ListContainer";
 import TopSearchContainer from "./TopSearchContainer";
+import { connect } from "react-redux";
+import { toggleSideBar } from "../../actions/SideBarActions";
 
 const SListContainer = styled(Container)`
   border-right: ${props => "1px solid " + props.theme.color.grey};
@@ -22,9 +22,6 @@ const SListContainer = styled(Container)`
 class ListLayout extends Component {
   constructor(props) {
     super(props);
-    this.state = {
-      isOpenFilters: this.props.isOpenFilters
-    };
   }
 
   getComponent(key) {
@@ -44,17 +41,17 @@ class ListLayout extends Component {
                   colGap={"10px"}
                   customTemplateColumns={"1fr"}
                   mdCustomTemplateColumns={
-                    !this.state.isOpenFilters ? "auto 1fr" : "1fr"
+                    !this.props.showSidebar ? "auto 1fr" : "1fr"
                   }
                 >
-                  {!this.state.isOpenFilters ? (
+                  {!this.props.showSidebar ? (
                     <Container hide mdShow lgShow>
                       <Button
                         width={"35px"}
                         fontSize={"18px"}
                         color={"black"}
                         secondary
-                        onClick={() => this.setState({ isOpenFilters: true })}
+                        onClick={() => this.props.toggleSideBar(true, this.props.entityType)}
                       >
                         <MaterialIcon type={"sort"} />
                       </Button>
@@ -85,12 +82,25 @@ class ListLayout extends Component {
   }
 }
 
-InternalLayout.defaultProps = {
-  isOpenFilters: true
-};
-
 ListLayout.propTypes = {
-  renderSearcher: PropTypes.func
+  renderSearcher: PropTypes.func,
+  entityType: PropTypes.string
 };
 
-export default ListLayout;
+const mapStateToProps = state => {
+  const { sideBarStatus } = state;
+  return {
+    showSidebar: sideBarStatus ? sideBarStatus.status : false
+  };
+};
+
+const mapDispatchToProps = dispatch => {
+  return {
+    toggleSideBar: (status, entityType) => dispatch(toggleSideBar(status, entityType))
+  };
+};
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(ListLayout);

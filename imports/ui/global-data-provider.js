@@ -1,10 +1,10 @@
-import { Accounts } from 'meteor/accounts-base';
-import React from 'react';
-import PropTypes from 'prop-types';
-import { graphql } from 'react-apollo';
-import { propType } from 'graphql-anywhere';
-import { userFragment, userQuery } from './apollo-client/user';
-import Loading from './components/dumb/loading';
+import { Accounts } from "meteor/accounts-base";
+import React from "react";
+import PropTypes from "prop-types";
+import { graphql } from "react-apollo";
+import { propType } from "graphql-anywhere";
+import { userFragment, userQuery } from "./apollo-client/user";
+import Loading from "./components/dumb/loading";
 
 //------------------------------------------------------------------------------
 // COMPONENT:
@@ -36,7 +36,7 @@ class GlobalDataProvider extends React.Component {
     }
 
     const api = {
-      curUser: user,
+      curUser: user
     };
 
     return this.props.children(api);
@@ -48,11 +48,11 @@ GlobalDataProvider.propTypes = {
     error: PropTypes.object,
     loading: PropTypes.bool.isRequired,
     user: propType(userFragment),
-    refetch: PropTypes.func.isRequired,
-  }).isRequired,
+    refetch: PropTypes.func.isRequired
+  }).isRequired
 };
 
 // Apollo integration
-const withData = graphql(userQuery, { name: 'userData' });
+const withData = graphql(userQuery, { name: "userData" });
 
 export default withData(GlobalDataProvider);

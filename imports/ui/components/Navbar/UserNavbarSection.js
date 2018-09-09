@@ -6,6 +6,8 @@ import { theme } from "../../theme";
 import SideBarLink from "./SideBarLink";
 import { ThemeProvider } from "styled-components";
 import { Link } from "react-router-dom";
+import { connect } from "react-redux";
+import { toggleSideBar } from "../../actions/SideBarActions";
 
 /**
  * @module Data
@@ -18,6 +20,13 @@ class UserNavbarSection extends React.Component {
     this.policy = Meteor.settings.public.policyUrl;
     this.size = { width: 46, height: 53 };
     this.notSize = { width: 33, height: 39 };
+    this.state = { addStatus: false };
+  }
+
+  onAddToggle() {
+    this.setState({ addStatus: !this.state.addStatus }, () =>
+      this.props.toggleSideBar(this.state.addStatus, null)
+    );
   }
 
   render() {
@@ -66,7 +75,11 @@ class UserNavbarSection extends React.Component {
                 }}
                 activeEval={this.activeEval}
               />
-              <HButtom primary size={this.size}>
+              <HButtom
+                primary
+                size={this.size}
+                onClick={() => this.onAddToggle()}
+              >
                 a
               </HButtom>
             </HButtonGroup>
@@ -89,4 +102,17 @@ class UserNavbarSection extends React.Component {
   }
 }
 
-export default UserNavbarSection;
+const mapStateToProps = () => {
+  return {};
+};
+
+const mapDispatchToProps = dispatch => {
+  return {
+    toggleSideBar: (status, type) => dispatch(toggleSideBar(status, type, true))
+  };
+};
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(UserNavbarSection);
