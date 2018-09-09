@@ -20,13 +20,10 @@ class UserNavbarSection extends React.Component {
     this.policy = Meteor.settings.public.policyUrl;
     this.size = { width: 46, height: 53 };
     this.notSize = { width: 33, height: 39 };
-    this.state = { addStatus: false };
   }
 
   onAddToggle() {
-    this.setState({ addStatus: !this.state.addStatus }, () =>
-      this.props.toggleSideBar(this.state.addStatus, null)
-    );
+    this.props.toggleSideBar(true, null);
   }
 
   render() {

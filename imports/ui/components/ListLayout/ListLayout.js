@@ -30,6 +30,8 @@ class ListLayout extends Component {
     });
   }
 
+  onCreateAction() {}
+
   render() {
     return (
       <InternalLayout>
@@ -41,17 +43,19 @@ class ListLayout extends Component {
                   colGap={"10px"}
                   customTemplateColumns={"1fr"}
                   mdCustomTemplateColumns={
-                    !this.props.showSidebar ? "auto 1fr" : "1fr"
+                    !this.props.sidebarIsOpen ? "auto 1fr" : "1fr"
                   }
                 >
-                  {!this.props.showSidebar ? (
+                  {!this.props.sidebarIsOpen ? (
                     <Container hide mdShow lgShow>
                       <Button
                         width={"35px"}
                         fontSize={"18px"}
                         color={"black"}
                         secondary
-                        onClick={() => this.props.toggleSideBar(true, this.props.entityType)}
+                        onClick={() =>
+                          this.props.toggleSideBar(true, this.props.entityType)
+                        }
                       >
                         <MaterialIcon type={"sort"} />
                       </Button>
@@ -63,7 +67,13 @@ class ListLayout extends Component {
                       onSearchTextChange={value =>
                         alert(`value change ${value}`)
                       }
-                      onCreateAction={() => this.onCreateAction()}
+                      onCreateAction={() =>
+                        this.props.toggleSideBar(
+                          true,
+                          this.props.entityType,
+                          true
+                        )
+                      }
                     />
                   </Container>
                 </Layout>
@@ -90,13 +100,18 @@ ListLayout.propTypes = {
 const mapStateToProps = state => {
   const { sideBarStatus } = state;
   return {
-    showSidebar: sideBarStatus ? sideBarStatus.status : false
+    sidebarIsOpen: sideBarStatus
+      ? sideBarStatus.isAdd
+        ? false
+        : sideBarStatus.status
+      : false
   };
 };
 
 const mapDispatchToProps = dispatch => {
   return {
-    toggleSideBar: (status, entityType) => dispatch(toggleSideBar(status, entityType))
+    toggleSideBar: (status, entityType, isAdd) =>
+      dispatch(toggleSideBar(status, entityType, isAdd))
   };
 };
 

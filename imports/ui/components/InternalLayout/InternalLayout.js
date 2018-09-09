@@ -1,8 +1,5 @@
 import React, { Component } from "react";
 import { Layout, Container } from "btech-layout";
-import { ThemeProvider } from "styled-components";
-import { theme } from "../../theme";
-import PropTypes from "prop-types";
 
 /**
  * @module Common
@@ -12,8 +9,6 @@ class InternalLayout extends Component {
   constructor(props) {
     super(props);
   }
-
-  onCreateAction() {}
 
   getComponent(key) {
     return this.props.children.filter(function(comp) {
@@ -44,13 +39,5 @@ class InternalLayout extends Component {
     );
   }
 }
-
-InternalLayout.defaultProps = {
-  isOpenPreview: false
-};
-
-InternalLayout.propTypes = {
-  isOpenPreview: PropTypes.bool
-};
 
 export default InternalLayout;

@@ -49,7 +49,9 @@ class TopSearcher extends Component {
             <Button
               width={"35px"}
               fontSize={"18px"}
-              onClick={() => this.onCreateAction && this.onCreateAction()}
+              onClick={() =>
+                this.props.onCreateAction && this.props.onCreateAction()
+              }
             >
               <MaterialIcon type={"plus"} />
             </Button>

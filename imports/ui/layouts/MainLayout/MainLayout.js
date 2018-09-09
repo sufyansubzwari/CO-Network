@@ -32,6 +32,10 @@ const MainLayout = props => {
   );
 };
 
+MainLayout.defaultProps = {
+  showSidebar: false
+};
+
 MainLayout.propTypes = {};
 
 const mapStateToProps = state => {
