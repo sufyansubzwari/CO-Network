@@ -5,6 +5,9 @@ import UserNavbarSection from "./Navbar/UserNavbarSection";
 import InternalLayout from "./InternalLayout/InternalLayout";
 import TopSearcher from "./ListLayout/TopSearcher";
 import ListLayout from "./ListLayout/ListLayout";
+import Create from "./Create/Create";
+import Preview from "./Preview/Preview";
+import UserPhoto from "./UserPhoto/UserPhoto";
 
 export {
   ItemsList,
@@ -13,5 +16,8 @@ export {
   UserNavbarSection,
   InternalLayout,
   TopSearcher,
-  ListLayout
+  ListLayout,
+  Create,
+  Preview,
+  UserPhoto
 };

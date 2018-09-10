@@ -2,10 +2,12 @@ import React, { Component } from "react";
 import { Container } from "btech-layout";
 import styled from "styled-components";
 import { Button } from "btech-base-forms-component";
-import PropTypes from "prop-types";
+
 import { connect } from "react-redux";
 import { toggleSideBar } from "../../actions/SideBarActions";
 import * as type from "../../actions/SideBarActions/types";
+import Create from "../../components/Create/Create";
+import { CREATE_LINKS } from "./create-links";
 
 const SSideBarContainer = styled(Container)`
   border-right: ${props => "1px solid " + props.theme.color.grey};
@@ -25,8 +27,15 @@ class SideBar extends Component {
     const data = this.props.sidebar;
     if (data) {
       if (data.isAdd) {
-        //  render add
-        return <div>Add element</div>;
+        return (
+          <Create
+            options={CREATE_LINKS}
+            noteText={
+              "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore."
+            }
+            onBlur={() => console.log("adsdasdasdasd")}
+          />
+        );
       } else {
         switch (data.entityType) {
           case "events":

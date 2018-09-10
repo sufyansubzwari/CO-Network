@@ -35,18 +35,91 @@ const sidebar = {
   }
 };
 
+const create = {
+  heading: {
+    family: "Helvetica Neue LT Std",
+    size: "24px",
+    lineHeight: "26px",
+    align: "center",
+    color: "#ffffff"
+  },
+  subheading: {
+    family: "Roboto Mono",
+    size: "12px",
+    align: "center",
+    color: "#ffffff"
+  }
+};
+
+const preview = {
+  photo: {
+    topcolor: "#32363D",
+    bottomcolor: "#202225",
+    height: "187px",
+    fontsize: "14px",
+    fontcolor: "#C6C6C9",
+    fontfamily: "Roboto Mono"
+  },
+  userphoto: {
+    height: "110px",
+    width: "120px",
+    background: "#32363D",
+    borderColor: "#DBDBDB",
+    family: "Helvetica Neue LT Std",
+    fontcolor: "#D2DDE2",
+    fontsize: "18px",
+    fontWidth: "75px"
+  },
+  nav: {
+    fontweight: "bold",
+    fontsize: "18px",
+    color: "black",
+    family: "Helvetica Neue LT Std"
+  },
+  background: "#F9F9FB",
+  borderColor: "#DBDBDB"
+};
+
+const filter = {
+  borderColor: "#DBDBDB",
+  separatorColor: "#BEBEBE",
+  heading: {
+    family: "Helvetica Neue Lt std",
+    font: "14px",
+    marginleft: "22px",
+    margintop: "29px",
+    marginbottom: "30px"
+  }
+};
+
+const bigtag = {
+  color: {
+    primary: "#F92672",
+    black: "#010101",
+    lightblue: "#E9EFF0",
+    gray: "#F3F3F3"
+  },
+  font: {
+    family: "Roboto Mono",
+    size: "10px",
+    weight: "300",
+    lineHeight: "0",
+    align: "center"
+  }
+};
+
 const lists = {
   scrollSeparation: 15,
-  scrollBottomSeparation : 15,
+  scrollBottomSeparation: 15,
   itemSeparation: 15
-}
+};
 
 const texts = {
-  title:{
-    fontFamily: 'Helvetica Neue LT Std'
+  title: {
+    fontFamily: "Helvetica Neue LT Std"
   },
-  fontFamily: 'Roboto Mono'
-}
+  fontFamily: "Roboto Mono"
+};
 
 export const theme = {
   textColor: color.black,
@@ -56,5 +129,9 @@ export const theme = {
   texts,
   sidebar,
   lists,
+  filter,
+  bigtag,
+  preview,
+  create,
   borderColor: color.grey
 };
