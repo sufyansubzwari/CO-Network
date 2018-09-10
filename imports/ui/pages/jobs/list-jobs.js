@@ -15,7 +15,7 @@ class ListJobs extends Component {
       openFilters: true,
       selectedItem: null,
       loading: false,
-      items: this.props.data && this.props.data.events,
+      items: this.props.data && this.props.data.jobs,
       // items: [
       //   {
       //     icon: "briefcase",
@@ -93,8 +93,8 @@ class ListJobs extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    if (nextProps.data && nextProps.data.events)
-      this.setState({item: nextProps.data.events});
+    if (nextProps.data && nextProps.data.jobs)
+      this.setState({items: nextProps.data.jobs});
   }
 
   onChangeSelection(item, key) {

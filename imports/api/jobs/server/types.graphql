@@ -17,6 +17,7 @@ type Jobs {
     aboutUsTeam: String
     candidateQuestions: String
     views: Int
+    entity: String
 }
 
 type SalaryRange {

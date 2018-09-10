@@ -15,7 +15,7 @@ class ListInnovators extends Component {
       openFilters: true,
       selectedItem: null,
       loading: false,
-      items: this.props.data && this.props.data.events,
+      items: (this.props.data && this.props.data.organizations) || [],
       // items: [
       //   {
       //     icon: "briefcase",
@@ -93,8 +93,8 @@ class ListInnovators extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    if (nextProps.data && nextProps.data.events)
-      this.setState({item: nextProps.data.events});
+    if (nextProps.data && nextProps.data.organizations)
+      this.setState({items: nextProps.data.organizations});
   }
 
   onChangeSelection(item, key) {

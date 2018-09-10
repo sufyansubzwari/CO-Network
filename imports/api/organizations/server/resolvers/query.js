@@ -5,9 +5,9 @@ const Query = {};
 Query.organization = (root, {_id}, context) => {
   return Service.getOrganization(_id)
 };
-Query.organizations = (root, {organization, limit}, context) => {
-  let query = organization || {};
-  let limitQuery = limit || {};
+Query.organizations = (root, {organizations, limit}, context) => {
+  let query = organizations || {};
+  let limitQuery = {limit: limit} || {};
   return Service.organizations(query, limitQuery)
 };
 export default Query;

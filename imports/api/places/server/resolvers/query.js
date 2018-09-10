@@ -7,7 +7,7 @@ Query.place = (root, {_id}, context) => {
 };
 Query.places = (root, {places, limit}, context) => {
   let query = places || {};
-  let limitQuery = limit || {};
+  let limitQuery = {limit: limit} || {};
   return Service.places(query, limitQuery)
 };
 export default Query;

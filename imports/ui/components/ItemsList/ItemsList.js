@@ -1,5 +1,5 @@
 import React, {Component} from "react";
-import {List, MLCard} from "btech-card-list-component";
+import {List} from "btech-card-list-component";
 import {ThemeProvider} from "styled-components";
 import {theme} from "../../theme";
 import PropTypes from "prop-types";
@@ -66,9 +66,9 @@ class ItemsList extends Component {
     );
   }
 
-  fetchMoreItems(options) {
+  fetchMoreItems() {
     console.log("loading more events");
-    this.props.onFetchData && this.props.onFetchData(options);
+    this.props.onFetchData && this.props.onFetchData();
   }
 
   render() {
@@ -79,7 +79,7 @@ class ItemsList extends Component {
           renderItem={
             this.props.renderItem ? this.props.renderItem : this.renderItem
           }
-          onFetchData={options => this.fetchMoreItems(options)}
+          onFetchData={() => this.fetchMoreItems()}
           itemSeparation={theme.lists.itemSeparation}
           scrollSeparation={theme.lists.scrollSeparation}
           data={this.state.items}
