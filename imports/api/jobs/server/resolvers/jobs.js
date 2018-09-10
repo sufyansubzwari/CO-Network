@@ -10,7 +10,7 @@ Jobs.owner = entity => {
 Jobs.industry = entity => {
   return Tags.service.tags({}, {limit: 1});
 };
-Jobs.languages = entity => {
-  return Tags.service.getTags(entity.languages);
-};
+// Jobs.languages = entity => {
+//   return Tags.service.getTags(entity.languages);
+// };
 export default Jobs;

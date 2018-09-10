@@ -5,10 +5,10 @@ import gql from 'graphql-tag';
 import {graphql} from 'react-apollo';
 
 /**
- * @module Events
+ * @module Jobs
  * @category list
  */
-class ListEvents extends Component {
+class ListJobs extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -124,20 +124,22 @@ class ListEvents extends Component {
 }
 
 const jobs = gql`
-    jobs{
-        title
-        owner{
-            _id
+    {
+        jobs{
+            title
+            owner{
+                _id
+            }
+            image
+            industry{
+                label
+                value
+                name
+            }
+            entity
+            views
         }
-        image
-        industry{
-            label
-            value
-            name
-        }
-        entity
-        views
     }
   `;
 
-export default graphql(jobs)(ListEvents);
+export default graphql(jobs)(ListJobs);
