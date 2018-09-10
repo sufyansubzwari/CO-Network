@@ -111,7 +111,7 @@ export default class Preview extends React.Component {
           ))
       : [];
     return (
-      <Layout fullY customTemplateRows={"190px 70px 1fr"}>
+      <Layout fullY customTemplateRows={"190px 70px 1fr"}  background={"white"}>
         <Photo image={this.props.backGroundImage}>
           <Layout
             paddingX={"100px"}

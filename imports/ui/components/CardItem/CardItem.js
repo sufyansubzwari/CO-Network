@@ -84,16 +84,19 @@ class CardItem extends Component {
 
   render() {
     return (
-      <SMLCard
-        onSelect={() =>
-          this.props.onSelect && this.props.onSelect({ ...this.props.data })
-        }
-        isActive={this.props.isActive}
-        loading={this.props.loading}
-        {...this.props}
-        {...this.props.data}
-        renderLeftSide={this.renderLeftSide}
-      />
+      <Container style={{ cursor: "pointer" }}>
+        <SMLCard
+          background={"white"}
+          onSelect={() =>
+            this.props.onSelect && this.props.onSelect({ ...this.props.data })
+          }
+          isActive={this.props.isActive}
+          loading={this.props.loading}
+          {...this.props}
+          {...this.props.data}
+          renderLeftSide={this.renderLeftSide}
+        />
+      </Container>
     );
   }
 }

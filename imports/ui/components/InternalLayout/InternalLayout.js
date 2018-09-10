@@ -12,7 +12,7 @@ class InternalLayout extends Component {
 
   getComponent(key) {
     return this.props.children.filter(function(comp) {
-      return comp.key === key;
+      return comp && comp.key === key;
     });
   }
 

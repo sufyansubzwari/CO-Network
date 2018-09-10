@@ -38,7 +38,7 @@ class Navbar extends Component {
 
   render() {
     return (
-      <Container fullY gridArea="Navbar">
+      <Container fullY gridArea="Navbar" background={"white"}>
         <HNavbar
           mdRowGap={10}
           links={navs}

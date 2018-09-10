@@ -107,11 +107,13 @@ class ListEvents extends Component {
           onFetchData={options => this.fetchMoreSelection(options)}
           onSelectCard={(item, key) => this.onChangeSelection(item, key)}
         />
-        <PreviewEvent
-          key={"rightSide"}
-          data={this.state.selectedItem}
-          index={this.state.selectedIndex}
-        />
+        {this.state.selectedItem ? (
+          <PreviewEvent
+            key={"rightSide"}
+            data={this.state.selectedItem}
+            index={this.state.selectedIndex}
+          />
+        ) : null}
       </ListLayout>
     );
   }

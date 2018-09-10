@@ -3,6 +3,8 @@ import { Layout } from "btech-layout";
 import styled from "styled-components";
 import { Scrollbars } from "react-custom-scrollbars";
 import PropTypes from "prop-types";
+import { Button } from "btech-base-forms-component";
+import MaterialIcon from "react-material-iconic-font";
 
 const SContainer = styled(Layout)`
   h6 {
@@ -17,6 +19,26 @@ const SContainer = styled(Layout)`
     margin-bottom: ${props =>
       props.theme ? props.theme.filter.heading.marginbottom : "30px"};
   }
+`;
+
+const Icon = styled.span`
+  font-size: 18px;
+  width: 34px;
+  height: 34px;
+`;
+
+const SButton = styled(Button)`
+  margin-top: 20px;
+  margin-right: 12px;
+  width: 34px;
+`;
+
+const Separator = styled.div`
+  height: 1px;
+  width: 100%;
+  opacity: 0.5;
+  background-color: ${props =>
+    props.theme ? props.theme.filter.separatorColor : "black"};
 `;
 
 /**

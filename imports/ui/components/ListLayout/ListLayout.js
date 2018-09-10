@@ -26,7 +26,7 @@ class ListLayout extends Component {
 
   getComponent(key) {
     return this.props.children.filter(function(comp) {
-      return comp.key === key;
+      return comp && comp.key === key;
     });
   }
 
@@ -38,7 +38,7 @@ class ListLayout extends Component {
         <Layout fullY key={"leftSide"}>
           <SListContainer>
             <Layout fullY customTemplateRows={"75px 1fr"}>
-              <TopSearchContainer {...this.state}>
+              <TopSearchContainer {...this.state} background={"white"}>
                 <Layout
                   colGap={"10px"}
                   customTemplateColumns={"1fr"}

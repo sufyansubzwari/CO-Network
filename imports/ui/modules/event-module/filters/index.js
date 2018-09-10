@@ -4,8 +4,6 @@ import styled from "styled-components";
 import { GeoInputLocation } from "btech-location";
 import FilterContainer from "../../../components/FiltersContainer/FiltersContainer";
 import BigTag from "./../../../components/BigTag/BigTag";
-import MaterialIcon from "react-material-iconic-font";
-import { Scrollbars } from "react-custom-scrollbars";
 import { SalaryRange, CheckBoxList, Button } from "btech-base-forms-component";
 import PropsTypes from "prop-types";
 
@@ -19,18 +17,6 @@ const Separator = styled.div`
   opacity: 0.5;
   background-color: ${props =>
     props.theme ? props.theme.filter.separatorColor : "black"};
-`;
-
-const Icon = styled.span`
-  font-size: 18px;
-  width: 34px;
-  height: 34px;
-`;
-
-const SButton = styled(Button)`
-  margin-top: 20px;
-  margin-right: 12px;
-  width: 34px;
 `;
 
 class EventsFilters extends React.Component {

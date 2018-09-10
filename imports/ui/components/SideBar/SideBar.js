@@ -4,10 +4,10 @@ import styled from "styled-components";
 import { connect } from "react-redux";
 import { toggleSideBar } from "../../actions/SideBarActions";
 import * as type from "../../actions/SideBarActions/types";
-import {Create} from "../../components";
+import { Create } from "../../components";
 import { CREATE_LINKS } from "./create-links";
 
-import EventsFilters from "../../modules/event-module/filters"
+import EventsFilters from "../../modules/event-module/filters";
 
 const SSideBarContainer = styled(Container)`
   border-right: ${props => "1px solid " + props.theme.color.grey};
@@ -56,7 +56,14 @@ class SideBar extends Component {
 
   render() {
     return (
-      <SSideBarContainer hide mdShow lgShow fullY gridArea="SideBar">
+      <SSideBarContainer
+        background={"white"}
+        hide
+        mdShow
+        lgShow
+        fullY
+        gridArea="SideBar"
+      >
         {this.renderSidebar()}
       </SSideBarContainer>
     );

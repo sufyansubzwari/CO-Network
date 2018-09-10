@@ -85,10 +85,10 @@ const filter = {
   separatorColor: "#BEBEBE",
   heading: {
     family: "Helvetica Neue Lt std",
-    font: "14px",
+    font: "18px",
     marginleft: "22px",
     margintop: "29px",
-    marginbottom: "30px"
+    marginbottom: "25px"
   }
 };
 
