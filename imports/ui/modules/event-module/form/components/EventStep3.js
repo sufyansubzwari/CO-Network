@@ -19,7 +19,12 @@ class EventStep3 extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    if (nextProps.data) this.setState({ event: nextProps.data });
+    if (nextProps.data && nextProps.data !== this.state.event)
+      this.setState({ event: nextProps.data });
+  }
+
+  notifyParent() {
+    this.props.onChange && this.props.onChange(this.state.event);
   }
 
   render() {
@@ -31,6 +36,7 @@ class EventStep3 extends Component {
               <Input
                 placeholderText={"Venue Name"}
                 name={"venueName"}
+                getValue={this.notifyParent.bind(this)}
                 model={this.state.event}
               />
             </Container>
@@ -38,6 +44,7 @@ class EventStep3 extends Component {
               <Input
                 placeholderText={"Venue Contac Email"}
                 name={"venueEmail"}
+                getValue={this.notifyParent.bind(this)}
                 model={this.state.event}
               />
             </Container>
@@ -49,9 +56,7 @@ class EventStep3 extends Component {
             model={this.state.event}
             placeholder={"Location"}
             isGeoLocationAvailable={true}
-            onChange={(model, value) => {
-              console.log("Geo: ", value);
-            }}
+            onChange={(model, value) => this.notifyParent(model, value)}
           />
         </Container>
         <Container>
@@ -70,9 +75,12 @@ class EventStep3 extends Component {
                   const event = this.state.event;
                   event.venueMin = min;
                   event.venueMin = max;
-                  this.setState({
-                    event: event
-                  }, ()=> console.log(this.state.event))
+                  this.setState(
+                    {
+                      event: event
+                    },
+                    () => this.notifyParent()
+                  );
                 }}
               />
             </Container>
@@ -88,7 +96,8 @@ EventStep3.defaultProps = {
 };
 
 EventStep3.propTypes = {
-  data: PropTypes.object
+  data: PropTypes.object,
+  onChange: PropTypes.func
 };
 
 export default EventStep3;

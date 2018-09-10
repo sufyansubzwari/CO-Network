@@ -7,6 +7,7 @@ import {
   EventStep5
 } from "./components/index";
 import { MlWizardForm, WizardStepForm } from "btech-base-forms-component";
+import PropTypes from "prop-types";
 
 /**
  * @module Event
@@ -35,32 +36,55 @@ class EventForm extends Component {
 
   render() {
     return (
-      <MlWizardForm title={"Post a Event"}>
-        <WizardStepForm title={"Event Details"}>
+      <MlWizardForm
+        title={"Post a Event"}
+        onFinish={() =>
+          this.props.onFinish && this.props.onFinish(this.state.event)
+        }
+        onCancel={() => this.props.onCancel && this.props.onCancel()}
+      >
+        <WizardStepForm title={"Event Details"} isValid>
           <EventStep1
             data={this.state.event}
-            onChange={event => {
-              this.setState({ event: event }, () =>
-                console.log(this.state.event)
-              );
-            }}
+            onChange={event => this.setState({ event: event })}
           />
         </WizardStepForm>
-        <WizardStepForm title={"Speaker & Sponsors"}>
-          <EventStep2 data={this.state.event} />
+        <WizardStepForm title={"Speaker & Sponsors"} isValid>
+          <EventStep2
+            data={this.state.event}
+            onChange={event => this.setState({ event: event })}
+          />
         </WizardStepForm>
-        <WizardStepForm title={"Venue"}>
-          <EventStep3 data={this.state.event} />
+        <WizardStepForm title={"Venue"} isValid>
+          <EventStep3
+            data={this.state.event}
+            onChange={event => this.setState({ event: event })}
+          />
         </WizardStepForm>
-        <WizardStepForm title={"Ticket Type"}>
-          <EventStep4 data={this.state.event} />
+        <WizardStepForm title={"Ticket Type"} isValid>
+          <EventStep4
+            data={this.state.event}
+            onChange={event => this.setState({ event: event })}
+          />
         </WizardStepForm>
-        <WizardStepForm title={"Receive Payments"}>
-          <EventStep5 data={this.state.event} />
+        <WizardStepForm title={"Receive Payments"} isValid>
+          <EventStep5
+            data={this.state.event}
+            onChange={event => this.setState({ event: event })}
+          />
         </WizardStepForm>
       </MlWizardForm>
     );
   }
 }
+
+EventForm.defaultProps = {
+  data: {}
+};
+
+EventForm.propTypes = {
+  onCancel: PropTypes.func,
+  onFinish: PropTypes.func
+};
 
 export default EventForm;
