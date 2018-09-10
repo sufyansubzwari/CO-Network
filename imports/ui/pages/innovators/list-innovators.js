@@ -8,7 +8,7 @@ import {graphql} from 'react-apollo';
  * @module Events
  * @category list
  */
-class ListEvents extends Component {
+class ListInnovators extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -148,4 +148,4 @@ const innovators = gql`
     }
   `;
 
-export default graphql(innovators)(ListEvents);
+export default graphql(innovators)(ListInnovators);
