@@ -3,17 +3,14 @@ import {Container} from "btech-layout";
 import {ItemsList, ListLayout} from "../../../ui/components";
 import gql from 'graphql-tag';
 import {Query} from "react-apollo";
-import {connect} from "react-redux";
-import {PreviewData} from "../../actions/PreviewActions";
 
-const events = gql`
-    query Events($limit: Int!) {
-        events(limit: $limit) {
+const jobs = gql`
+    query Jobs($limit: Int!) {
+        jobs(limit: $limit) {
             title
             description
-            venueName
             image
-            category {
+            industry {
                 label
                 value
                 name
@@ -25,18 +22,18 @@ const events = gql`
 `;
 
 /**
- * @module Events
+ * @module Jobs
  * @category list
  */
-class ListEvents extends Component {
+class ListJobs extends Component {
   constructor(props) {
     super(props);
     this.state = {
       openFilters: true,
       selectedItem: null,
-      selectedIndex: null,
       loading: false,
       limit: 10,
+      // items: this.props.data && this.props.data.jobs,
       // items: [
       //   {
       //     icon: "briefcase",
@@ -113,8 +110,11 @@ class ListEvents extends Component {
     };
   }
 
+
   onChangeSelection(item, key) {
-    this.setState({ selectedItem: item, selectedIndex: key });
+    this.setState({
+      selectedItem: item
+    });
   }
 
   fetchMoreSelection() {
@@ -126,8 +126,8 @@ class ListEvents extends Component {
   render() {
     const {limit} = this.state;
     return (
-      <ListLayout entityType={"events"}>
-        <Query key={"listComponent"} query={events} variables={{limit}}>
+      <ListLayout entityType={'jobs'}>
+        <Query key={"listComponent"} query={jobs} variables={{limit}}>
           {({loading, error, data}) => {
             // if (loading) return null;
             // if (error) return `Error!: ${error}`;
@@ -135,8 +135,8 @@ class ListEvents extends Component {
             return (
               <ItemsList
                 key={"listComponent"}
-                title={"Events"}
-                data={data.events}
+                title={"Jobs"}
+                data={data.jobs}
                 loading={this.state.loading}
                 onFetchData={() => this.fetchMoreSelection()}
                 onSelectCard={(item, key) => this.onChangeSelection(item, key)}
@@ -144,33 +144,14 @@ class ListEvents extends Component {
             );
           }}
         </Query>
-
-        {this.state.selectedItem ? (
-          <PreviewEvent
-            key={"rightSide"}
-            data={this.state.selectedItem}
-            index={this.state.selectedIndex}
-          />
-        ) : null}
+        <Container key={"rightSide"}>
+          {this.props.previewData && this.props.previewData.entity
+            ? this.props.previewData.entity.title
+            : "Loading..."}
+        </Container>
       </ListLayout>
     );
   }
 }
 
-const mapStateToProps = state => {
-  const {previewData} = state;
-  return {
-    previewData: previewData
-  };
-};
-
-const mapDispatchToProps = dispatch => {
-  return {
-    sendPreviewData: (item, key, type) => dispatch(PreviewData(item, key, type))
-  };
-};
-
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(ListEvents);
+export default ListJobs;

@@ -6,9 +6,9 @@ Query.event = (root, {_id}, context) => {
   return Service.getEvent(_id)
 };
 
-Query.events = (root, {event, limit}, context) => {
-  let query = event || {};
-  let limitQuery = limit || {};
+Query.events = (root, {events, limit}, context) => {
+  let query = events || {};
+  let limitQuery = limit ? {limit: limit} : {};
   return Service.events(query, limitQuery)
 };
 

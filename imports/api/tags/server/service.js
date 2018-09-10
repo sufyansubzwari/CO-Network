@@ -24,10 +24,10 @@ class TagsService {
     }
   };
   /**
-   * @name getEvent
-   * @summary Get event by id
-   * @param {String} _id - Event id
-   * @return {Object} Event
+   * @name getTag
+   * @summary Get tag by id
+   * @param {String} _id - tag id
+   * @return {Object} tag
    */
   static getTag = _id => {
     return Tags.collection.findOne(_id);
@@ -36,10 +36,11 @@ class TagsService {
    *@name tags
    * @summary Get all tags
    * @param {Object} query - query parameters
+   * @param {Object} limit - query limit
    * @return {Object}||[{Object }] Return one or all tags
    */
-  static tags = query => {
-    return Tags.collection.find(query).fetch();
+  static tags = (query, limit) => {
+    return Tags.collection.find(query, limit).fetch();
   };
 }
 

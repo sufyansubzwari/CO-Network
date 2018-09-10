@@ -2,8 +2,9 @@
 
 import {Mongo} from 'meteor/mongo';
 import SimpleSchema from 'simpl-schema';
+import BaseCollection from '../../base/collection';
 
-const Tags = new Mongo.Collection('Tags');
+const Tags = new BaseCollection('Tags');
 
 Tags.allow({
   insert: () => false,
@@ -34,6 +35,7 @@ Tags.schema = new SimpleSchema({
   },
   name: {
     type: String,
+    optional: true,
   },
   label: {
     type: String,
@@ -46,13 +48,16 @@ Tags.schema = new SimpleSchema({
     optional: true,
   },
   categories: {
-    type: Array
+    type: Array,
+    optional: true,
   },
   'categories.$': {
-    type: String
+    type: String,
+    optional: true,
   },
   types: {
-    type: String
+    type: String,
+    optional: true,
   }
 });
 
