@@ -111,7 +111,7 @@ class ListEvents extends Component {
       <ListLayout>
         <ItemsList
           key={"listComponent"}
-          title={"Events"}
+          title={"Jobs"}
           data={this.state.items}
           loading={this.state.loading}
           onFetchData={options => this.fetchMoreSelection(options)}
@@ -123,22 +123,21 @@ class ListEvents extends Component {
   }
 }
 
-const events = gql`    
-      {
-          events {
-              title
-              description
-              venueName
-              image
-              category {
-                  label
-                  value
-                  name
-              }
-              entity
-              views
-          }
-      }
+const jobs = gql`
+    jobs{
+        title
+        owner{
+            _id
+        }
+        image
+        industry{
+            label
+            value
+            name
+        }
+        entity
+        views
+    }
   `;
 
-export default graphql(events)(ListEvents);
+export default graphql(jobs)(ListEvents);

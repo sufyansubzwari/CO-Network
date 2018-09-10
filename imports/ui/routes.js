@@ -10,6 +10,8 @@ import {
 import Authorization from "../ui/Authorization";
 import LoadableWrapper from "./components/dumb/loadable-wrapper";
 import ListEvents from "./pages/events/list-events";
+import ListJobs from "./pages/jobs/list-jobs";
+import ListInnovators from "./pages/innovators/list-innovators";
 
 const handleAuthentication = props => {
   alert("dasdasdasd");
@@ -33,7 +35,9 @@ const Routes = props => (
         })}
         {...props}
       />
-      <Route name="Events" path="/events" render={() => <ListEvents />} />
+      <Route name="Events" path="/events" render={() => <ListEvents entity={"Events"}/>} />
+      <Route name="Jobs" path="/jobs" render={() => <ListJobs entity={"Jobs"}/>} />
+      <Route name="Innovators" path="/innovators" render={() => <ListInnovators entity={"Innovators"}/>} />
       <RouteWithProps
         exact
         name="Events"
