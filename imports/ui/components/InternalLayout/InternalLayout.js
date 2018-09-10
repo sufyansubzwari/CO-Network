@@ -29,7 +29,7 @@ class InternalLayout extends Component {
           lg: `'leftSide rightSide'`
         }}
       >
-        <Container gridArea="leftSide">
+        <Container gridArea="leftSide" background={"white"}>
           {this.getComponent("leftSide")}
         </Container>
         <Container hide mdShow lgShow gridArea="rightSide">

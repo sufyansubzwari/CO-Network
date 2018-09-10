@@ -36,7 +36,8 @@ class EventStep1 extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    if (nextProps.data) this.setState({ event: nextProps.data });
+    if (nextProps.data && nextProps.data !== this.state.event)
+      this.setState({ event: nextProps.data });
   }
 
   notifyParent() {
@@ -77,12 +78,12 @@ class EventStep1 extends Component {
             getValue={this.notifyParent.bind(this)}
           />
         </Container>
-        <Container>
-          <Layout templateColumns={2}>
-            <Container>date 1</Container>
-            <Container>date 2</Container>
-          </Layout>
-        </Container>
+        {/*<Container>*/}
+        {/*<Layout templateColumns={2}>*/}
+        {/*<Container>date 1</Container>*/}
+        {/*<Container>date 2</Container>*/}
+        {/*</Layout>*/}
+        {/*</Container>*/}
         <Container>
           <CheckBoxList
             columns={2}
