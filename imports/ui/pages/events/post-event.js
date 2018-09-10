@@ -22,7 +22,7 @@ class PostEvent extends Component {
   }
 
   onPostAction(query) {
-    console.log(query)
+    console.log(query);
   }
 
   render() {

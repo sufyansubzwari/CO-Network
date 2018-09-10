@@ -24,17 +24,12 @@ class ItemsList extends Component {
     super(props);
     this.state = {
       activeIndex: null,
-      loading: this.props.loading,
       mockData: LOADINGDATA
     };
     this.renderItem = this.renderItem.bind(this);
   }
 
   componentWillMount() {
-  }
-
-  componentWillReceiveProps(nextProps) {
-    if (nextProps.loading && nextProps.loading !== this.state.loading) this.setState({loading: nextProps.loading});
   }
 
   onChangeSelection(item, key) {
@@ -57,9 +52,10 @@ class ItemsList extends Component {
             ? this.state.activeIndex === key
             : false
         }
-        loading={this.state.loading}
+        loading={this.props.loading}
         title={item.title || ""}
         subTitle={item.description || ""}
+        image={item.image || null}
         tags={item.category || item.industry || []}
         views={item.views}
         key={key}
@@ -68,7 +64,6 @@ class ItemsList extends Component {
   }
 
   fetchMoreItems() {
-    console.log("loading more events");
     this.props.onFetchData && this.props.onFetchData();
   }
 
@@ -83,7 +78,7 @@ class ItemsList extends Component {
           onFetchData={() => this.fetchMoreItems()}
           itemSeparation={theme.lists.itemSeparation}
           scrollSeparation={theme.lists.scrollSeparation}
-          data={this.state.loading ? this.state.mockData : this.props.data}
+          data={this.props.loading ? this.state.mockData : this.props.data}
         />
       </Container>
     );

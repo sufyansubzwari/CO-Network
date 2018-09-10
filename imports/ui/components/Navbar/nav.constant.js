@@ -59,4 +59,4 @@ Colloquium.number = {
   size: { width: 22, height: 24 }
 };
 
-export default [event, jobs, innovators, Colloquium];
+export default [event, jobs, innovators];

@@ -32,6 +32,7 @@ class TopSearcher extends Component {
         <Layout colGap={"10px"} customTemplateColumns={"1fr auto"}>
           <Container>
             <InputAutoComplete
+              iconClass={'arrow-forward'}
               placeholderText={"Discover"}
               getNewAddedOptions={value =>
                 this.onSearchAction && this.onSearchAction(value)

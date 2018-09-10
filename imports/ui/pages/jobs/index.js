@@ -1,4 +1,4 @@
-import PostEvent from "./post-event";
+import PostJobs from "./post-event";
 import ListJobs from "./list-jobs";
 
-export { ListJobs, PostEvent };
+export { ListJobs, PostJobs };

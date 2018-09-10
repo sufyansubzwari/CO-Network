@@ -1,9 +1,9 @@
 import {
   createStore,
-  compose,
+  compose
   // applyMiddleware,
-} from 'redux';
-import rootReducer from './root-reducer.js';
+} from "redux";
+import rootReducer from "./root-reducer.js";
 // import { createLogger } from 'redux-logger'; // DISABLE ON PRODUCTION
 // import DevTools from './dev-tools'; // DISABLE ON PRODUCTION
 

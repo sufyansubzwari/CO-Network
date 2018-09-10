@@ -8,6 +8,8 @@ import { Create } from "../../components";
 import { CREATE_LINKS } from "./create-links";
 
 import EventsFilters from "../../modules/event-module/filters";
+import JobsFilters from "../../modules/jobs-module/filters";
+import OrganizationFilters from "../../modules/organization-module/filters";
 
 const SSideBarContainer = styled(Container)`
   border-right: ${props => "1px solid " + props.theme.color.grey};
@@ -38,10 +40,26 @@ class SideBar extends Component {
           />
         );
       } else {
-        switch (data.entityType) {
+        switch (data.entityType.toLowerCase()) {
           case "events":
             return (
               <EventsFilters
+                onClose={() =>
+                  this.props.toggleSideBar && this.props.toggleSideBar(false)
+                }
+              />
+            );
+          case "jobs":
+            return (
+              <JobsFilters
+                onClose={() =>
+                  this.props.toggleSideBar && this.props.toggleSideBar(false)
+                }
+              />
+            );
+          case "corporations":
+            return (
+              <OrganizationFilters
                 onClose={() =>
                   this.props.toggleSideBar && this.props.toggleSideBar(false)
                 }

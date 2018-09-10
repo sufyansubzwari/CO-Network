@@ -7,7 +7,7 @@ import {
   RouteWithProps,
   AdminRoute
 } from "./components/smart/route-wrappers";
-import Authorization from "./Authorization";
+import Authorization from "./authorization";
 import LoadableWrapper from "./components/dumb/loadable-wrapper";
 //
 import ListEvents from "./pages/events/list-events";

@@ -17,16 +17,6 @@ import navs from "./nav.constant";
  */
 class Navbar extends Component {
   activeEval = item => {
-    console.log(
-      "Link",
-      item.link,
-      "value",
-      this.props.location.pathname === "/"
-        ? item.link === "/"
-        : this.props.location.pathname.startsWith(item.link),
-      "path",
-      this.props.location.pathname
-    );
     return item.link === "/"
       ? this.props.location.pathname === "/"
       : this.props.location.pathname.startsWith(item.link);

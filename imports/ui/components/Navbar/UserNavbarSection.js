@@ -2,13 +2,20 @@ import React from "react";
 import { Meteor } from "meteor/meteor";
 import { Layout, Container } from "btech-layout";
 import { HButtonGroup, HButtom, HNavItem } from "btech-horizantal-navbar";
+import MaterialIcon from "react-material-iconic-font";
 import { theme } from "../../theme";
 import SideBarLink from "./SideBarLink";
 import { ThemeProvider } from "styled-components";
 import { Link } from "react-router-dom";
 import { connect } from "react-redux";
 import { toggleSideBar } from "../../actions/SideBarActions";
+import styled from "styled-components";
 
+const SAddMaterialIcon = styled.span`
+  > i {
+    line-height: 55px;
+  }
+`;
 /**
  * @module Data
  * @category Component
@@ -77,7 +84,9 @@ class UserNavbarSection extends React.Component {
                 size={this.size}
                 onClick={() => this.onAddToggle()}
               >
-                a
+                <SAddMaterialIcon>
+                  <MaterialIcon type={"plus"} size={2} />
+                </SAddMaterialIcon>
               </HButtom>
             </HButtonGroup>
             <Layout

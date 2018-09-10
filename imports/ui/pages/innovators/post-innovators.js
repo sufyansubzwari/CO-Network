@@ -4,7 +4,7 @@ import React, { Component } from "react";
  * @module Events
  * @category post
  */
-class PostEvent extends Component {
+class PostInnovators extends Component {
   constructor(props) {
     super(props);
   }
@@ -14,4 +14,4 @@ class PostEvent extends Component {
   }
 }
 
-export default PostEvent;
+export default PostInnovators;

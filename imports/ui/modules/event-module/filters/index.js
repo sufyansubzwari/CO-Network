@@ -30,13 +30,7 @@ class EventsFilters extends React.Component {
       },
       industry: ""
     };
-    this.handleScroll = this.handleScroll(this);
-    this.handleClose = this.handleClose(this);
   }
-
-  handleScroll() {}
-
-  handleClose() {}
 
   render() {
     return (
@@ -88,8 +82,8 @@ class EventsFilters extends React.Component {
   }
 }
 
-export default EventsFilters;
-
 EventsFilters.propTypes = {
   onClose: PropsTypes.func
 };
+
+export default EventsFilters;
