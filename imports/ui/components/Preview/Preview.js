@@ -9,8 +9,8 @@ import { Button } from "btech-base-forms-component";
 
 const Photo = styled(Container)`
   background: ${props =>
-    props.image
-      ? "url(" + props.image + ") no-repeat center"
+    props.backGroundImage
+      ? "url(" + props.backGroundImage + ") no-repeat center"
       : props.theme
         ? "linear-gradient(180deg, " +
           props.theme.preview.photo.topcolor +
@@ -93,7 +93,7 @@ export default class Preview extends React.Component {
     let options =
       this.props.navOptions &&
       this.props.navOptions.map((element, index) => (
-        <Button secondary onClick={element.onClick}>
+        <Button color={"black"} key={index} secondary onClick={element.onClick}>
           <SButtonIcon>
             <MaterialIcon type={element.icon} />
             {element.text}
@@ -102,13 +102,13 @@ export default class Preview extends React.Component {
       ));
     return (
       <Layout>
-        <Photo image={this.props.image}>
+        <Photo image={this.props.backGroundImage}>
           <Layout
             paddingX={"100px"}
             style={{ position: "relative", bottom: "-75px" }}
             customTemplateColumns={`120px 20px auto 1fr auto`}
           >
-            <UserPhoto userphoto={this.props.userphoto} />
+            <UserPhoto photo={this.props.image} />
             <div />
             <SSpan>
               <MaterialIcon
@@ -154,11 +154,11 @@ export default class Preview extends React.Component {
 }
 
 Preview.propTypes = {
-  image: PropsTypes.string,
-  changeProfile: PropsTypes.func,
-  changeBackground: PropsTypes.func,
+  backGroundImage: PropsTypes.string,
   navlinks: PropsTypes.array,
   navClicked: PropsTypes.func,
   navOptions: PropsTypes.array,
-  userphoto: PropsTypes.string
+  image: PropsTypes.string,
+  changeProfile: PropsTypes.func,
+  changeBackground: PropsTypes.func
 };

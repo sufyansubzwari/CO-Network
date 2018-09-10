@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { Container } from "btech-layout";
-import { ItemsList, ListLayout } from "../../../ui/components";
+import { ItemsList, ListLayout, Preview } from "../../../ui/components";
 import { connect } from "react-redux";
 import { PreviewData } from "../../actions/PreviewActions";
 
@@ -114,9 +114,28 @@ class ListEvents extends Component {
           onSelectCard={(item, key) => this.onChangeSelection(item, key)}
         />
         <Container key={"rightSide"}>
-          {this.props.previewData && this.props.previewData.entity
-            ? this.props.previewData.entity.title
-            : "Loading..."}
+          <Preview
+            navlinks={["Details", "Vision", "Products", "Media"]}
+            navClicked={index => console.log(index)}
+            navOptions={[
+              {
+                text: "Remove",
+                icon: "delete",
+                onClick: function() {
+                  console.log("Remove");
+                }
+              },
+              {
+                text: "Add",
+                icon: "plus",
+                onClick: function() {
+                  console.log("Adding");
+                }
+              }
+            ]}
+            backGroundImage={"/images/lordvader.jpg"}
+            image={"/favicon.png"}
+          />
         </Container>
       </ListLayout>
     );

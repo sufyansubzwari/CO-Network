@@ -72,10 +72,22 @@ const Description = styled.span`
   text-align: center;
 `;
 
+const SNoteDescription = styled.div`
+  font-family: Roboto Mono;
+  color: #d1d1d1;
+  font-size: 12px;
+`;
+
+const SNote = styled(SNoteDescription)`
+  font-weight: bold;
+  color: initial;
+  font-size: 14px;
+`;
+
 const Option = props => {
   return (
     <Container>
-      <Link to={props.link}>
+      <Link to={props.link} onClick={() => props.onSelect && props.onSelect()}>
         <Name>{props.name}</Name>
       </Link>
       <Description>{props.description}</Description>
@@ -92,6 +104,7 @@ class Create extends React.Component {
           key={index}
           link={element.link}
           name={element.name}
+          onSelect={this.props.onChangeRoute && this.props.onChangeRoute}
           description={element.description}
         />
       ));
@@ -111,8 +124,12 @@ class Create extends React.Component {
                   </Layout>
                 </Container>
                 <Container hide={!this.props.noteText}>
-                  <Container>{this.props.noteLabel}</Container>
-                  <Container>{this.props.noteText} </Container>
+                  <Container>
+                    <SNote>{this.props.noteLabel}</SNote>
+                  </Container>
+                  <Container>
+                    <SNoteDescription>{this.props.noteText}</SNoteDescription>
+                  </Container>
                 </Container>
               </Layout>
             </Container>
@@ -132,5 +149,6 @@ Create.defaultProps = {
 Create.propTypes = {
   options: PropsTypes.array,
   noteText: PropsTypes.string,
-  noteLabel: PropsTypes.string
+  noteLabel: PropsTypes.string,
+  onChangeRoute: PropsTypes.func
 };

@@ -2,7 +2,6 @@ import React from "react";
 import { Container } from "btech-layout";
 import styled from "styled-components";
 import PropsTypes from "prop-types";
-import theme from "./../../theme";
 
 const Photo = styled(Container)`
   width: ${props =>
@@ -44,20 +43,17 @@ class UserPhoto extends React.Component {
     super(props);
 
     this.state = {
-      userphoto: props.userphoto
+      photo: props.photo
     };
   }
 
   render() {
-    let photo = this.state.userphoto ? (
-      <img
-        src={this.props.userphoto}
-        style={{ width: "100%", height: "100%" }}
-      />
+    let photo = this.state.photo ? (
+      <img src={this.props.photo} style={{ width: "100%", height: "100%" }} />
     ) : (
       <Label theme={theme}>{this.props.noPhotoText}</Label>
     );
-    return <Photo photo={this.props.userphoto}>{photo}</Photo>;
+    return <Photo photo={this.props.photo}>{photo}</Photo>;
   }
 }
 
@@ -66,7 +62,7 @@ UserPhoto.defaultProps = {
 };
 
 UserPhoto.propTypes = {
-  userphoto: PropsTypes.string,
+  photo: PropsTypes.string,
   noPhotoText: PropsTypes.string
 };
 

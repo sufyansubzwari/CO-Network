@@ -1,12 +1,10 @@
 import React, { Component } from "react";
 import { Container } from "btech-layout";
 import styled from "styled-components";
-import { Button } from "btech-base-forms-component";
-
 import { connect } from "react-redux";
 import { toggleSideBar } from "../../actions/SideBarActions";
 import * as type from "../../actions/SideBarActions/types";
-import Create from "../../components/Create/Create";
+import {Create} from "../../components";
 import { CREATE_LINKS } from "./create-links";
 
 const SSideBarContainer = styled(Container)`
@@ -33,6 +31,7 @@ class SideBar extends Component {
             noteText={
               "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore."
             }
+            onChangeRoute={() => this.props.toggleSideBar(false, null, true)}
             onBlur={() => console.log("adsdasdasdasd")}
           />
         );
@@ -40,13 +39,11 @@ class SideBar extends Component {
         switch (data.entityType) {
           case "events":
             return (
-              <Button
-                onClick={() =>
+              <EventsFilter
+                onClose={() =>
                   this.props.toggleSideBar && this.props.toggleSideBar(false)
                 }
-              >
-                Hidde Filters
-              </Button>
+              />
             );
           default:
             return <div>You must implement this filters</div>;
