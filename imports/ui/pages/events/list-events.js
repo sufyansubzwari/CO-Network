@@ -1,6 +1,8 @@
 import React, { Component } from "react";
 import { Container } from "btech-layout";
 import { ItemsList, ListLayout } from "../../../ui/components";
+import { connect } from "react-redux";
+import { PreviewData } from "../../actions/PreviewActions";
 
 /**
  * @module Events
@@ -90,16 +92,19 @@ class ListEvents extends Component {
   }
 
   onChangeSelection(item, key) {
-    this.setState({
-      selectedItem: item
-    });
+    this.setState(
+      {
+        selectedItem: item
+      },
+      () => this.props.sendPreviewData(item, key, "event")
+    );
   }
 
   fetchMoreSelection(item, key) {}
 
   render() {
     return (
-      <ListLayout>
+      <ListLayout entityType={'events'}>
         <ItemsList
           key={"listComponent"}
           title={"Jobs"}
@@ -108,10 +113,30 @@ class ListEvents extends Component {
           onFetchData={options => this.fetchMoreSelection(options)}
           onSelectCard={(item, key) => this.onChangeSelection(item, key)}
         />
-        <Container key={"rightSide"}>preview component</Container>
+        <Container key={"rightSide"}>
+          {this.props.previewData && this.props.previewData.entity
+            ? this.props.previewData.entity.title
+            : "Loading..."}
+        </Container>
       </ListLayout>
     );
   }
 }
 
-export default ListEvents;
+const mapStateToProps = state => {
+  const { previewData } = state;
+  return {
+    previewData: previewData
+  };
+};
+
+const mapDispatchToProps = dispatch => {
+  return {
+    sendPreviewData: (item, key, type) => dispatch(PreviewData(item, key, type))
+  };
+};
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(ListEvents);
