@@ -1,7 +1,7 @@
 const base = {
   link: "/events",
   title: "Events",
-  border:1.5,
+  border: 1.5,
   number: {
     value: Math.floor(Math.random() * 120),
     primary: true,
@@ -15,18 +15,18 @@ let event = Object.assign({}, base, {
   title: "Events"
 });
 event.number = {
-    value:0,
-    primary: true,
-    size: { width: 22, height: 24 }
-}
+  value: 0,
+  primary: true,
+  size: { width: 22, height: 24 }
+};
 
 let jobs = Object.assign({}, base, {
   link: "/jobs",
   title: "Jobs",
   icon: { size: 30, src: "/images/nav/jobs.svg" }
 });
-jobs.number={
-  value:0,
+jobs.number = {
+  value: 0,
   primary: true,
   size: { width: 22, height: 24 }
 };
@@ -35,8 +35,8 @@ let innovators = Object.assign({}, base, {
   title: "Innovators",
   icon: { size: 34, src: "/images/nav/innovators.svg" }
 });
-innovators.number={
-  value:0,
+innovators.number = {
+  value: 0,
   primary: true,
   size: { width: 22, height: 24 }
 };
@@ -53,10 +53,10 @@ let Colloquium = Object.assign({}, base, {
   icon: { size: 30, src: "/images/nav/Colloquium.svg" }
 });
 
-Colloquium.number={
-  value:0,
+Colloquium.number = {
+  value: 0,
   primary: true,
   size: { width: 22, height: 24 }
 };
 
-export default [event, jobs, innovators, data, Colloquium];
+export default [event, jobs, innovators, Colloquium];

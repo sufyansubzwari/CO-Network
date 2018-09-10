@@ -72,7 +72,7 @@ const preview = {
   },
   nav: {
     fontweight: "bold",
-    fontsize: "18px",
+    fontsize: "14px",
     color: "black",
     family: "Helvetica Neue LT Std"
   },

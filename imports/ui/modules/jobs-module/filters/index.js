@@ -1,13 +1,11 @@
 import React from 'react';
 import {Layout, Container} from 'btech-layout';
-import styled, {ThemeProvider} from 'styled-components';
+import styled from 'styled-components';
 import {Scrollbars} from 'react-custom-scrollbars';
 import {GeoInputLocation} from 'btech-location';
-import BigTag from './../../../BigTag/BigTag';
+import BigTag from './../../../components/BigTag/BigTag';
 import MaterialIcon from 'react-material-iconic-font'
-
-import theme from './../../../../theme'
-import {Input, SalaryRange, CheckBoxList, InputAutoComplete, Button} from 'btech-base-forms-component';
+import {SalaryRange, CheckBoxList, InputAutoComplete, Button} from 'btech-base-forms-component';
 import {JOB_TYPE_NUMBER, EXPERIENCE_REQUIERED_NUMBER} from "../form/constants/constants";
 
 const Filter = styled(Container)`
@@ -73,7 +71,6 @@ class JobsFilters extends React.Component {
 
     render() {
         return (
-            <ThemeProvider theme={theme}>
             <FiltersContainer width={'252px'} height={'100%'}>
                 <Scrollbars universal autoHide autoHideDuration={200} style={{height: '100%'}}>
                     <Layout customTemplateColumns={'1fr auto'}>
@@ -127,8 +124,6 @@ class JobsFilters extends React.Component {
                     <Separator/>
                 </Scrollbars>
             </FiltersContainer>
-            </ThemeProvider>
-
         );
     }
 }

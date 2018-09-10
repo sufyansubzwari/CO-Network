@@ -7,6 +7,8 @@ import * as type from "../../actions/SideBarActions/types";
 import {Create} from "../../components";
 import { CREATE_LINKS } from "./create-links";
 
+import EventsFilters from "../../modules/event-module/filters"
+
 const SSideBarContainer = styled(Container)`
   border-right: ${props => "1px solid " + props.theme.color.grey};
 `;
@@ -39,7 +41,7 @@ class SideBar extends Component {
         switch (data.entityType) {
           case "events":
             return (
-              <EventsFilter
+              <EventsFilters
                 onClose={() =>
                   this.props.toggleSideBar && this.props.toggleSideBar(false)
                 }

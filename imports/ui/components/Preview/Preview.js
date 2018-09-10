@@ -4,7 +4,7 @@ import styled from "styled-components";
 import PropsTypes from "prop-types";
 import UserPhoto from "./../UserPhoto/UserPhoto";
 import MaterialIcon from "react-material-iconic-font";
-
+import { Scrollbars } from "react-custom-scrollbars";
 import { Button } from "btech-base-forms-component";
 
 const Photo = styled(Container)`
@@ -18,8 +18,6 @@ const Photo = styled(Container)`
           props.theme.preview.photo.bottomcolor +
           ")"
         : " linear-gradient(180deg,#32363D, #202225)"};
-  height: ${props =>
-    props.theme ? props.theme.preview.photo.height : "180px"};
 `;
 
 const SSpan = styled.span`
@@ -30,10 +28,8 @@ const SSpan = styled.span`
   color: ${props =>
     props.theme ? props.theme.preview.photo.fontcolor : "white"};
   cursor: pointer;
-
   margin-top: auto;
-  margin-bottom: 35px;
-
+  margin-bottom: 30px;
   i {
     padding-right: 5px;
   }
@@ -47,6 +43,8 @@ const SLayout = styled(Layout)`
     props.theme
       ? "1px solid " + props.theme.preview.borderColor
       : "1px solid transparent"};
+  border-left: none;
+  border-right: none;
 `;
 
 const NavLinks = styled(Layout)`
@@ -74,8 +72,9 @@ SButtonIcon = styled.span`
 export default class Preview extends React.Component {
   constructor(props) {
     super(props);
-
-    this.state = {};
+    this.state = {
+      selectedLink: 0
+    };
   }
 
   render() {
@@ -84,24 +83,35 @@ export default class Preview extends React.Component {
       this.props.navlinks.map((element, index) => (
         <a
           key={index}
-          style={{ padding: "20px 10px" }}
-          onClick={this.props.navClicked(index)}
+          style={{ paddingRight: "10px" }}
+          onClick={() => this.props.navClicked && this.props.navClicked(index)}
         >
           {element}
         </a>
       ));
-    let options =
-      this.props.navOptions &&
-      this.props.navOptions.map((element, index) => (
-        <Button color={"black"} key={index} secondary onClick={element.onClick}>
-          <SButtonIcon>
-            <MaterialIcon type={element.icon} />
-            {element.text}
-          </SButtonIcon>
-        </Button>
-      ));
+    let options = this.props.navOptions
+      ? this.props.navOptions
+          .filter((element, index) => {
+            return element.checkVisibility
+              ? element.checkVisibility(element, index)
+              : true;
+          })
+          .map((element, index) => (
+            <Button
+              color={"black"}
+              key={index}
+              secondary
+              onClick={element.onClick}
+            >
+              <SButtonIcon>
+                <MaterialIcon type={element.icon} />
+                {element.text}
+              </SButtonIcon>
+            </Button>
+          ))
+      : [];
     return (
-      <Layout>
+      <Layout fullY customTemplateRows={"190px 70px 1fr"}>
         <Photo image={this.props.backGroundImage}>
           <Layout
             paddingX={"100px"}
@@ -127,12 +137,12 @@ export default class Preview extends React.Component {
             </SSpan>
           </Layout>
         </Photo>
-        <SLayout paddingX={"100px"} customTemplateColumns={"auto auto"}>
+        <SLayout paddingX={"100px"} customTemplateColumns={"140px 1fr auto"}>
+          <div />
           <NavLinks
             style={{
               display: "flex",
-              flexDirection: "row",
-              justifyContent: "center"
+              flexDirection: "row"
             }}
           >
             {navlinks}
@@ -147,7 +157,16 @@ export default class Preview extends React.Component {
             {options}
           </NavLinks>
         </SLayout>
-        <Layout paddingX={"100px"}>{this.props.children}</Layout>
+        <Container fullY paddingX={"100px"} paddingY={"25px"}>
+          <Scrollbars
+            universal
+            autoHide
+            autoHideDuration={200}
+            style={{ height: "100%" }}
+          >
+            {this.props.children}
+          </Scrollbars>
+        </Container>
       </Layout>
     );
   }

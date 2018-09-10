@@ -84,7 +84,7 @@ class ListLayout extends Component {
             </Layout>
           </SListContainer>
         </Layout>
-        <Container key={"rightSide"}>
+        <Container fullY key={"rightSide"}>
           {this.getComponent("rightSide")}
         </Container>
       </InternalLayout>

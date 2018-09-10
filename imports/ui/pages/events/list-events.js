@@ -1,8 +1,6 @@
 import React, { Component } from "react";
-import { Container } from "btech-layout";
-import { ItemsList, ListLayout, Preview } from "../../../ui/components";
-import { connect } from "react-redux";
-import { PreviewData } from "../../actions/PreviewActions";
+import { ItemsList, ListLayout } from "../../../ui/components";
+import PreviewEvent from "../../modules/event-module/preview";
 
 /**
  * @module Events
@@ -14,6 +12,7 @@ class ListEvents extends Component {
     this.state = {
       openFilters: true,
       selectedItem: null,
+      selectedIndex: null,
       loading: false,
       items: [
         {
@@ -92,19 +91,14 @@ class ListEvents extends Component {
   }
 
   onChangeSelection(item, key) {
-    this.setState(
-      {
-        selectedItem: item
-      },
-      () => this.props.sendPreviewData(item, key, "event")
-    );
+    this.setState({ selectedItem: item, selectedIndex: key });
   }
 
   fetchMoreSelection(item, key) {}
 
   render() {
     return (
-      <ListLayout entityType={'events'}>
+      <ListLayout entityType={"events"}>
         <ItemsList
           key={"listComponent"}
           title={"Jobs"}
@@ -113,49 +107,14 @@ class ListEvents extends Component {
           onFetchData={options => this.fetchMoreSelection(options)}
           onSelectCard={(item, key) => this.onChangeSelection(item, key)}
         />
-        <Container key={"rightSide"}>
-          <Preview
-            navlinks={["Details", "Vision", "Products", "Media"]}
-            navClicked={index => console.log(index)}
-            navOptions={[
-              {
-                text: "Remove",
-                icon: "delete",
-                onClick: function() {
-                  console.log("Remove");
-                }
-              },
-              {
-                text: "Add",
-                icon: "plus",
-                onClick: function() {
-                  console.log("Adding");
-                }
-              }
-            ]}
-            backGroundImage={"/images/lordvader.jpg"}
-            image={"/favicon.png"}
-          />
-        </Container>
+        <PreviewEvent
+          key={"rightSide"}
+          data={this.state.selectedItem}
+          index={this.state.selectedIndex}
+        />
       </ListLayout>
     );
   }
 }
 
-const mapStateToProps = state => {
-  const { previewData } = state;
-  return {
-    previewData: previewData
-  };
-};
-
-const mapDispatchToProps = dispatch => {
-  return {
-    sendPreviewData: (item, key, type) => dispatch(PreviewData(item, key, type))
-  };
-};
-
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(ListEvents);
+export default ListEvents;

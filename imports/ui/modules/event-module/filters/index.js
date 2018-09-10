@@ -2,15 +2,11 @@ import React from "react";
 import { Layout, Container } from "btech-layout";
 import styled from "styled-components";
 import { GeoInputLocation } from "btech-location";
+import FilterContainer from "../../../components/FiltersContainer/FiltersContainer";
 import BigTag from "./../../../components/BigTag/BigTag";
 import MaterialIcon from "react-material-iconic-font";
-import {
-  Input,
-  SalaryRange,
-  CheckBoxList,
-  InputAutoComplete,
-  Button
-} from "btech-base-forms-component";
+import { Scrollbars } from "react-custom-scrollbars";
+import { SalaryRange, CheckBoxList, Button } from "btech-base-forms-component";
 import PropsTypes from "prop-types";
 
 const Filter = styled(Container)`
@@ -23,21 +19,6 @@ const Separator = styled.div`
   opacity: 0.5;
   background-color: ${props =>
     props.theme ? props.theme.filter.separatorColor : "black"};
-`;
-
-const FiltersContainer = styled(Layout)`
-  h6 {
-    font-size: ${props =>
-      props.theme ? props.theme.filter.heading.font : "14px"};
-    font-family: ${props =>
-      props.theme ? props.theme.filter.heading.family : "Roboto Mono"};
-    margin-left: ${props =>
-      props.theme ? props.theme.filter.heading.marginleft : "20px"};
-    margin-top: ${props =>
-      props.theme ? props.theme.filter.heading.margintop : "30px"};
-    margin-bottom: ${props =>
-      props.theme ? props.theme.filter.heading.marginbottom : "30px"};
-  }
 `;
 
 const Icon = styled.span`
@@ -55,9 +36,12 @@ const SButton = styled(Button)`
 class EventsFilters extends React.Component {
   constructor(props) {
     super(props);
-
     this.state = {
-      location: "",
+      location: {
+        address: "",
+        location: { lat: "", lng: "" },
+        fullLocation: {}
+      },
       industry: ""
     };
     this.handleScroll = this.handleScroll(this);
@@ -70,68 +54,50 @@ class EventsFilters extends React.Component {
 
   render() {
     return (
-      <FiltersContainer width={"252px"} height={"100%"}>
-        <Scrollbars
-          universal
-          autoHide
-          autoHideDuration={200}
-          style={{ height: "100%" }}
-        >
-          <Layout customTemplateColumns={"1fr auto"}>
-            <h6>Filters</h6>
-            <SButton
-              secondary={true}
-              onClick={this.props.onClose}
-              color={"black"}
-            >
-              <Icon>
-                <MaterialIcon type={"chevron-left"} />
-              </Icon>
-            </SButton>
+      <FilterContainer
+        onClose={() => this.props.onClose && this.props.onClose()}
+      >
+        <Filter>
+          <GeoInputLocation
+            name={"location"}
+            model={this.state}
+            placeholder={"Location"}
+          />
+          <Layout
+            mt={"10px"}
+            customTemplateColumns={"70px 70px 70px"}
+            colGap={"10px"}
+          >
+            <BigTag text={"New York"} icon={"pin"} connected={false} />
+            <BigTag text={"United States"} icon={"pin"} connected={true} />
+            <BigTag text={"California"} icon={"pin"} connected={true} />
           </Layout>
-          <Separator />
-          <Filter>
-            <GeoInputLocation
-              name={"location"}
-              model={this.state}
-              placeholder={"Location"}
-            />
-            <Layout
-              mt={"10px"}
-              customTemplateColumns={"70px 70px 70px"}
-              colGap={"10px"}
-            >
-              <BigTag text={"New York"} icon={"pin"} connected={false} />
-              <BigTag text={"United States"} icon={"pin"} connected={true} />
-              <BigTag text={"California"} icon={"pin"} connected={true} />
-            </Layout>
-          </Filter>
-          <Separator />
-          <Filter>
-            <SalaryRange labelText={"Dates"} placeholder={"000"} />
-          </Filter>
-          <Separator />
-          <Filter>
-            <SalaryRange labelText={"Prices"} placeholder={"000"} />
-          </Filter>
-          <Separator />
-          <Filter>
-            <CheckBoxList
-              placeholderText={"Event Category"}
-              options={[
-                {
-                  label: "Hackthon",
-                  active: true,
-                  number: 12
-                },
-                { label: "Data Center", active: false, number: 3 },
-                { label: "Carrer Fair", active: false, number: 22 }
-              ]}
-            />
-          </Filter>
-          <Separator />
-        </Scrollbars>
-      </FiltersContainer>
+        </Filter>
+        <Separator />
+        <Filter>
+          <SalaryRange labelText={"Dates"} placeholder={"000"} />
+        </Filter>
+        <Separator />
+        <Filter>
+          <SalaryRange labelText={"Prices"} placeholder={"000"} />
+        </Filter>
+        <Separator />
+        <Filter>
+          <CheckBoxList
+            placeholderText={"Event Category"}
+            options={[
+              {
+                label: "Hackthon",
+                active: true,
+                number: 12
+              },
+              { label: "Data Center", active: false, number: 3 },
+              { label: "Carrer Fair", active: false, number: 22 }
+            ]}
+          />
+        </Filter>
+        <Separator />
+      </FilterContainer>
     );
   }
 }

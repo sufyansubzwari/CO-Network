@@ -1,13 +1,11 @@
 import React from 'react';
 import {Layout, Container} from 'btech-layout';
-import styled, {ThemeProvider} from 'styled-components';
+import styledfrom from 'styled-components';
 import {Scrollbars} from 'react-custom-scrollbars';
 import {GeoInputLocation} from 'btech-location';
 import MaterialIcon from 'react-material-iconic-font'
-import BigTag from './../../../BigTag/BigTag';
-
-import theme from './../../../../theme'
-import {Input, CheckBoxList, InputAutoComplete, Button} from 'btech-base-forms-component';
+import BigTag from './../../../components/BigTag/BigTag';
+import {CheckBoxList, Button} from 'btech-base-forms-component';
 
 const Filter = styled(Container)`
     padding: 20px 10px;    
@@ -72,7 +70,6 @@ class MembersFilters extends React.Component {
 
     render() {
         return (
-            <ThemeProvider theme={theme}>
                 <FiltersContainer width={'252px'} height={'100%'}>
                     <Scrollbars universal autoHide autoHideDuration={200} style={{height: '100%'}}>
                         <Layout customTemplateColumns={'1fr auto'}>
@@ -105,7 +102,6 @@ class MembersFilters extends React.Component {
                         <Separator/>
                     </Scrollbars>
                 </FiltersContainer>
-            </ThemeProvider>
 
         );
     }

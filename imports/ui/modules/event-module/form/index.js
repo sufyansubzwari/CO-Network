@@ -5,7 +5,7 @@ import {
   EventStep3,
   EventStep4,
   EventStep5
-} from "./components";
+} from "./components/index";
 import { MlWizardForm, WizardStepForm } from "btech-base-forms-component";
 
 /**
