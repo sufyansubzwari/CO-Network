@@ -1,11 +1,11 @@
-import React, { Component } from "react";
-import { List } from "btech-card-list-component";
+import React, {Component} from "react";
+import {List} from "btech-card-list-component";
 import CardItem from "../CardItem/CardItem";
-import { theme } from "../../theme";
+import {theme} from "../../theme";
 import PropTypes from "prop-types";
 import {Layout, Container} from "btech-layout";
 import styled from "styled-components";
-import { LOADINGDATA } from "./mockData";
+import {LOADINGDATA} from "./mockData";
 
 const SListTitle = styled(Container)`
   font-family: ${props =>
@@ -34,7 +34,7 @@ class ItemsList extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    if (nextProps.loading && nextProps.loading !== this.state.loading) this.setState({ loading: nextProps.loading });
+    if (nextProps.loading && nextProps.loading !== this.state.loading) this.setState({loading: nextProps.loading});
   }
 
   onChangeSelection(item, key) {
@@ -60,7 +60,7 @@ class ItemsList extends Component {
         loading={this.state.loading}
         title={item.title || ""}
         subTitle={item.description || ""}
-        tags={item.category || []}
+        tags={item.category || item.industry || []}
         views={item.views}
         key={key}
       />

@@ -1,10 +1,10 @@
-import React, { Component } from "react";
+import React, {Component} from "react";
 import Styled from "styled-components";
 import MaterialIcon from "react-material-iconic-font";
 import PropTypes from "prop-types";
-import { Container, Layout } from "btech-layout";
-import { Card } from "btech-card-list-component";
-import { TagList } from "btech-base-forms-component";
+import {Container, Layout} from "btech-layout";
+import {Card} from "btech-card-list-component";
+import {TagList} from "btech-base-forms-component";
 
 const TitleCardContainer = Styled.div`
     font-family: Helvetica Neue LT Std;
@@ -35,10 +35,7 @@ const SMLCard = Styled(Card)`
  */
 class CardItem extends Component {
   renderLeftSide = () => {
-    const tags = this.props.tags.map(tag => {
-      tag.active = true;
-      return tag;
-    });
+    const tags = this.props.tags.map(tag => ({active: true, ...tag}));
     return (
       <Layout fullY rowGap={"5px"} customTemplateRows={"1fr auto"}>
         <Container>
@@ -48,7 +45,7 @@ class CardItem extends Component {
                 <Container>
                   <Layout customTemplateColumns={"20px auto"}>
                     <Container>
-                      <MaterialIcon type={this.props.iconClass} />
+                      <MaterialIcon type={this.props.iconClass}/>
                     </Container>
                     <Container>
                       <SViewsContainer>{this.props.views}</SViewsContainer>
@@ -59,11 +56,11 @@ class CardItem extends Component {
               </Layout>
             </Container>
             <Container>
-              <TitleCardContainer>{this.props.title}</TitleCardContainer>
+              <TitleCardContainer>{this.props.title || "No title"}</TitleCardContainer>
             </Container>
             <Container>
               <SubTitleCardContainer>
-                {this.props.subTitle}
+                {this.props.subTitle || "No description."}
               </SubTitleCardContainer>
             </Container>
           </Layout>
@@ -86,7 +83,7 @@ class CardItem extends Component {
     return (
       <SMLCard
         onSelect={() =>
-          this.props.onSelect && this.props.onSelect({ ...this.props.data })
+          this.props.onSelect && this.props.onSelect({...this.props.data})
         }
         isActive={this.props.isActive}
         loading={this.props.loading}

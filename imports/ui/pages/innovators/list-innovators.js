@@ -2,7 +2,32 @@ import React, {Component} from "react";
 import {Container} from "btech-layout";
 import {ItemsList, ListLayout} from "../../../ui/components";
 import gql from 'graphql-tag';
-import {graphql} from 'react-apollo';
+import {Query} from "react-apollo";
+
+const organizations = gql`
+    query Organizations($limit: Int!) {
+        organizations(limit: $limit){
+            owner{
+                _id
+            }
+            entity
+            views
+            info{
+                name
+                description
+                image
+                cover
+            }
+            reason{
+                industry{
+                    name
+                    label
+                    value
+                }
+            }
+        }
+    }
+`;
 
 /**
  * @module Events
@@ -15,7 +40,8 @@ class ListInnovators extends Component {
       openFilters: true,
       selectedItem: null,
       loading: false,
-      items: (this.props.data && this.props.data.organizations) || [],
+      limit: 10,
+      // items: (this.props.data && this.props.data.organizations) || [],
       // items: [
       //   {
       //     icon: "briefcase",
@@ -92,11 +118,6 @@ class ListInnovators extends Component {
     };
   }
 
-  componentWillReceiveProps(nextProps) {
-    if (nextProps.data && nextProps.data.organizations)
-      this.setState({items: nextProps.data.organizations});
-  }
-
   onChangeSelection(item, key) {
     this.setState({
       selectedItem: item
@@ -104,48 +125,42 @@ class ListInnovators extends Component {
   }
 
   fetchMoreSelection(item, key) {
+    this.setState({
+      limit: this.state.limit + 10
+    })
   }
 
   render() {
+    const {limit} = this.state;
     return (
-      <ListLayout>
-        <ItemsList
-          key={"listComponent"}
-          title={"Innovators"}
-          data={this.state.items}
-          loading={this.state.loading}
-          onFetchData={options => this.fetchMoreSelection(options)}
-          onSelectCard={(item, key) => this.onChangeSelection(item, key)}
-        />
-        <Container key={"rightSide"}>preview component</Container>
+      <ListLayout entityType={'Innovators'}>
+        <Query key={"listComponent"} query={organizations} variables={{limit}}>
+          {({loading, error, data}) => {
+            // if (loading) return null;
+            // if (error) return `Error!: ${error}`;
+
+            return (
+              <ItemsList
+                key={"listComponent"}
+                title={"Innovators"}
+                data={data.organizations}
+                loading={this.state.loading}
+                onFetchData={() => this.fetchMoreSelection()}
+                onSelectCard={(item, key) => this.onChangeSelection(item, key)}
+              />
+            );
+          }}
+        </Query>
+
+        <Container key={"rightSide"}>
+          {this.props.previewData && this.props.previewData.entity
+            ? this.props.previewData.entity.title
+            : "Loading..."}
+        </Container>
       </ListLayout>
     );
   }
 }
 
-const innovators = gql`
-    {
-        organizations{
-            owner{
-                _id
-            }
-            entity
-            views
-            info{
-                name
-                description
-                image
-                cover
-            }
-            reason{
-                industry{
-                    name
-                    label
-                    value
-                }
-            }
-        }
-    }
-  `;
 
-export default graphql(innovators)(ListInnovators);
+export default ListInnovators;

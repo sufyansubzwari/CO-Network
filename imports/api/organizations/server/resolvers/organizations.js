@@ -12,7 +12,7 @@ Reason.industry = () => {
   return Tags.service.tags({}, {limit:2});
 };
 
-Organizations.reason = entity => {
+Organizations.reason = () => {
   return Reason
 };
 
