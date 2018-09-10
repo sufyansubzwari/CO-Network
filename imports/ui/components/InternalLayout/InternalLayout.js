@@ -1,8 +1,5 @@
 import React, { Component } from "react";
 import { Layout, Container } from "btech-layout";
-import { ThemeProvider } from "styled-components";
-import { theme } from "../../theme";
-import PropTypes from "prop-types";
 
 /**
  * @module Common
@@ -11,14 +8,6 @@ import PropTypes from "prop-types";
 class InternalLayout extends Component {
   constructor(props) {
     super(props);
-  }
-
-  onCreateAction() {}
-
-  componentWillReceiveProps(nextProps) {
-    console.log("InternalLayout");
-    if (nextProps.isOpenFilters)
-      this.setState({ isOpenFilters: nextProps.isOpenFilters });
   }
 
   getComponent(key) {
@@ -43,20 +32,12 @@ class InternalLayout extends Component {
         <Container gridArea="leftSide">
           {this.getComponent("leftSide")}
         </Container>
-        <Container gridArea="rightSide">
-          {this.props.isOpenPreview ? this.getComponent("rightSide") : null}
+        <Container hide mdShow lgShow gridArea="rightSide">
+          {this.getComponent("rightSide")}
         </Container>
       </Layout>
     );
   }
 }
-
-InternalLayout.defaultProps = {
-  isOpenPreview: false
-};
-
-InternalLayout.propTypes = {
-  isOpenPreview: PropTypes.bool
-};
 
 export default InternalLayout;

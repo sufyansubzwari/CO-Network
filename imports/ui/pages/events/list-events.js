@@ -3,6 +3,8 @@ import {Container} from "btech-layout";
 import {ItemsList, ListLayout} from "../../../ui/components";
 import gql from 'graphql-tag';
 import {Query} from "react-apollo";
+import {connect} from "react-redux";
+import {PreviewData} from "../../actions/PreviewActions";
 
 const events = gql`
     query Events($limit: Int!) {
@@ -111,9 +113,12 @@ class ListEvents extends Component {
   }
 
   onChangeSelection(item, key) {
-    this.setState({
-      selectedItem: item
-    });
+    this.setState(
+      {
+        selectedItem: item
+      },
+      () => this.props.sendPreviewData(item, key, "event")
+    );
   }
 
   fetchMoreSelection() {
@@ -125,7 +130,7 @@ class ListEvents extends Component {
   render() {
     const {limit} = this.state;
     return (
-      <ListLayout>
+      <ListLayout entityType={'events'}>
         <Query key={"listComponent"} query={events} variables={{limit}}>
           {({loading, error, data}) => {
             // if (loading) return null;
@@ -144,10 +149,30 @@ class ListEvents extends Component {
           }}
         </Query>
 
-        <Container key={"rightSide"}>preview component</Container>
+        <Container key={"rightSide"}>
+          {this.props.previewData && this.props.previewData.entity
+            ? this.props.previewData.entity.title
+            : "Loading..."}
+        </Container>
       </ListLayout>
     );
   }
 }
 
-export default ListEvents;
+const mapStateToProps = state => {
+  const {previewData} = state;
+  return {
+    previewData: previewData
+  };
+};
+
+const mapDispatchToProps = dispatch => {
+  return {
+    sendPreviewData: (item, key, type) => dispatch(PreviewData(item, key, type))
+  };
+};
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(ListEvents);

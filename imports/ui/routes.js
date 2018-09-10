@@ -7,11 +7,13 @@ import {
   RouteWithProps,
   AdminRoute
 } from "./components/smart/route-wrappers";
-import Authorization from "../ui/Authorization";
+import Authorization from "./authorization";
 import LoadableWrapper from "./components/dumb/loadable-wrapper";
+//
 import ListEvents from "./pages/events/list-events";
 import ListJobs from "./pages/jobs/list-jobs";
 import ListInnovators from "./pages/innovators/list-innovators";
+import PostEvent from "./pages/events/post-event";
 
 const handleAuthentication = props => {
   alert("dasdasdasd");
@@ -38,15 +40,7 @@ const Routes = props => (
       <Route name="Events" path="/events" render={() => <ListEvents entity={"Events"}/>} />
       <Route name="Jobs" path="/jobs" render={() => <ListJobs entity={"Jobs"}/>} />
       <Route name="Innovators" path="/innovators" render={() => <ListInnovators entity={"Innovators"}/>} />
-      <RouteWithProps
-        exact
-        name="Events"
-        path="/post-event"
-        component={LoadableWrapper({
-          loader: () => import("./pages/events/post-event")
-        })}
-        {...props}
-      />
+      <Route name="Post a Event" path="/post-event" render={() => <PostEvent />} />
       <AdminRoute
         exact
         name="admin"

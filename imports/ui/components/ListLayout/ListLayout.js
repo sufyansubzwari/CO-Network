@@ -1,28 +1,20 @@
 import React, { Component } from "react";
 import { Layout, Container } from "btech-layout";
-import { ThemeProvider } from "styled-components";
-import { theme } from "../../theme";
 import PropTypes from "prop-types";
 import TopSearcher from "./TopSearcher";
 import InternalLayout from "../InternalLayout/InternalLayout";
 import MaterialIcon from "react-material-iconic-font";
 import { Button } from "btech-base-forms-component";
 import styled from "styled-components";
-
-const STopSearcherContainer = styled(Container)`
-  padding: ${props => (!props.isOpenFilters ? "20px 66px" : "20px 48px")};
-  box-shadow: ${props => "0 1px 0 0 " + props.theme.color.grey};
-`;
+import ListContainer from "./ListContainer";
+import TopSearchContainer from "./TopSearchContainer";
+import { connect } from "react-redux";
+import { toggleSideBar } from "../../actions/SideBarActions";
 
 const SListContainer = styled(Container)`
   border-right: ${props => "1px solid " + props.theme.color.grey};
 `;
 
-const SInnerListContainer = styled(Container)`
-  border-top: ${props => "1px solid " + props.theme.color.grey};
-  padding: 20px 66px 15px 66px;
-  background-color: ${props => props.theme.color.innerBackground};
-`;
 /**
  * @module Common
  * @category ListLayout
@@ -30,15 +22,6 @@ const SInnerListContainer = styled(Container)`
 class ListLayout extends Component {
   constructor(props) {
     super(props);
-    this.state = {
-      isOpenFilters: this.props.isOpenFilters
-    };
-  }
-
-  componentWillReceiveProps(nextProps) {
-    console.log("ListLayout");
-    if (nextProps.isOpenFilters)
-      this.setState({ isOpenFilters: nextProps.isOpenFilters });
   }
 
   getComponent(key) {
@@ -47,27 +30,32 @@ class ListLayout extends Component {
     });
   }
 
+  onCreateAction() {}
+
   render() {
     return (
       <InternalLayout>
         <Layout fullY key={"leftSide"}>
           <SListContainer>
             <Layout fullY customTemplateRows={"75px 1fr"}>
-              <STopSearcherContainer {...this.state}>
+              <TopSearchContainer {...this.state}>
                 <Layout
                   colGap={"10px"}
-                  customTemplateColumns={
-                    !this.state.isOpenFilters ? "auto 1fr" : "1fr"
+                  customTemplateColumns={"1fr"}
+                  mdCustomTemplateColumns={
+                    !this.props.sidebarIsOpen ? "auto 1fr" : "1fr"
                   }
                 >
-                  {!this.state.isOpenFilters ? (
-                    <Container>
+                  {!this.props.sidebarIsOpen ? (
+                    <Container hide mdShow lgShow>
                       <Button
                         width={"35px"}
                         fontSize={"18px"}
                         color={"black"}
                         secondary
-                        onClick={() => this.setState({ isOpenFilters: true })}
+                        onClick={() =>
+                          this.props.toggleSideBar(true, this.props.entityType)
+                        }
                       >
                         <MaterialIcon type={"sort"} />
                       </Button>
@@ -79,29 +67,55 @@ class ListLayout extends Component {
                       onSearchTextChange={value =>
                         alert(`value change ${value}`)
                       }
-                      onCreateAction={() => this.onCreateAction()}
+                      onCreateAction={() =>
+                        this.props.toggleSideBar(
+                          true,
+                          this.props.entityType,
+                          true
+                        )
+                      }
                     />
                   </Container>
                 </Layout>
-              </STopSearcherContainer>
-              <SInnerListContainer>
+              </TopSearchContainer>
+              <ListContainer>
                 {this.getComponent("listComponent")}
-              </SInnerListContainer>
+              </ListContainer>
             </Layout>
           </SListContainer>
         </Layout>
-        <Container key={"rightSide"}>asdasdasdasd</Container>
+        <Container key={"rightSide"}>
+          {this.getComponent("rightSide")}
+        </Container>
       </InternalLayout>
     );
   }
 }
 
-InternalLayout.defaultProps = {
-  isOpenFilters: true
-};
-
 ListLayout.propTypes = {
-  renderSearcher: PropTypes.func
+  renderSearcher: PropTypes.func,
+  entityType: PropTypes.string
 };
 
-export default ListLayout;
+const mapStateToProps = state => {
+  const { sideBarStatus } = state;
+  return {
+    sidebarIsOpen: sideBarStatus
+      ? sideBarStatus.isAdd
+        ? false
+        : sideBarStatus.status
+      : false
+  };
+};
+
+const mapDispatchToProps = dispatch => {
+  return {
+    toggleSideBar: (status, entityType, isAdd) =>
+      dispatch(toggleSideBar(status, entityType, isAdd))
+  };
+};
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(ListLayout);
