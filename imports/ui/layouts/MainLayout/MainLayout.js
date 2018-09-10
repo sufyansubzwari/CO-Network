@@ -1,4 +1,5 @@
 import React from "react";
+import { withRouter } from "react-router-dom";
 import { Layout, Container } from "btech-layout";
 import Routes from "../../routes";
 import { connect } from "react-redux";
@@ -45,4 +46,4 @@ const mapStateToProps = state => {
   };
 };
 
-export default connect(mapStateToProps)(MainLayout);
+export default withRouter(connect(mapStateToProps)(MainLayout));
