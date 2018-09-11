@@ -19,17 +19,19 @@ class EventForm extends Component {
     super(props);
     this.state = {
       event: {
-        categories: ["Co-Founders for Startup", "Scientific Collaborations"],
-        title: "Testing",
+        categories: [],
+        title: "",
+        description: "",
         venueName: "",
         venueEmail: "",
-        venueLocation: {
+        location: {
           address: "",
           location: { lat: "", lng: "" },
           fullLocation: {}
         },
         venueMin: "",
-        venueMax: ""
+        venueMax: "",
+        organizer:"",
       }
     };
   }
@@ -61,18 +63,18 @@ class EventForm extends Component {
             onChange={event => this.setState({ event: event })}
           />
         </WizardStepForm>
-        <WizardStepForm title={"Ticket Type"} isValid>
-          <EventStep4
-            data={this.state.event}
-            onChange={event => this.setState({ event: event })}
-          />
-        </WizardStepForm>
-        <WizardStepForm title={"Receive Payments"} isValid>
-          <EventStep5
-            data={this.state.event}
-            onChange={event => this.setState({ event: event })}
-          />
-        </WizardStepForm>
+        {/*<WizardStepForm title={"Ticket Type"} isValid>*/}
+          {/*<EventStep4*/}
+            {/*data={this.state.event}*/}
+            {/*onChange={event => this.setState({ event: event })}*/}
+          {/*/>*/}
+        {/*</WizardStepForm>*/}
+        {/*<WizardStepForm title={"Receive Payments"} isValid>*/}
+          {/*<EventStep5*/}
+            {/*data={this.state.event}*/}
+            {/*onChange={event => this.setState({ event: event })}*/}
+          {/*/>*/}
+        {/*</WizardStepForm>*/}
       </MlWizardForm>
     );
   }

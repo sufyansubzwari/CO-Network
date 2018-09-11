@@ -7,7 +7,7 @@ Query.tag = (root, {_id}, context) => {
 };
 Query.tags = (root, {tag, limit}, context) => {
   let query = tag || {};
-  let limitQuery = {limit: limit} || {};
+  let limitQuery = limit ? {limit: limit} : {};
   return Service.tags(query, limitQuery)
 };
 export default Query;

@@ -8,6 +8,7 @@ type Events {
     endDate: Date!
     owner: User!
     venueName: String!
+    venueEmail: String!
     organizer: String!
     phone: String
     notes: String
@@ -49,6 +50,7 @@ input EventsInput {
     endDate: Date!
     owner: String!
     venueName: String
+    venueEmail: String
     organizer: String
     phone: String
     notes: String

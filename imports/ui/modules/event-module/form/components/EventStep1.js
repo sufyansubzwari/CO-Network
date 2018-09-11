@@ -1,5 +1,5 @@
-import React, { Component } from "react";
-import { Container, Layout } from "btech-layout";
+import React, {Component} from "react";
+import {Container, Layout} from "btech-layout";
 import PropTypes from "prop-types";
 import {
   Input,
@@ -8,7 +8,20 @@ import {
   InputAutoComplete,
   TagList
 } from "btech-base-forms-component";
-import { COMMUNITYEVENTCATEGORIES } from "../constants/community-event-categories";
+import {COMMUNITYEVENTCATEGORIES} from "../constants/community-event-categories";
+import gql from "graphql-tag";
+import {Query} from "react-apollo";
+
+const tags = gql`
+    {
+        tags {
+            _id
+            name
+            label
+            value
+        }
+    }
+`;
 
 /**
  * @module Event
@@ -37,11 +50,17 @@ class EventStep1 extends Component {
 
   componentWillReceiveProps(nextProps) {
     if (nextProps.data && nextProps.data !== this.state.event)
-      this.setState({ event: nextProps.data });
+      this.setState({event: nextProps.data});
   }
 
-  notifyParent() {
-    this.props.onChange && this.props.onChange(this.state.event);
+  notifyParent(model, name, value) {
+    if (model && name && value) {
+      let event = this.state.event;
+      event[name] = value;
+      this.setState({event: event}, () => this.props.onChange && this.props.onChange(this.state.event));
+    }
+    else
+      this.props.onChange && this.props.onChange(this.state.event);
   }
 
   changeCategoryEvents(actives) {
@@ -50,16 +69,24 @@ class EventStep1 extends Component {
       return category;
     });
     const categories = selected
-      .filter(element => element.active)
-      .map(e => e.label);
+      .filter(element => element.active);
     const temp = this.state.event;
     temp["categories"] = categories;
-    this.setState({ categories: selected, event: temp }, () =>
+    this.setState({categories: selected, event: temp}, () =>
       this.notifyParent()
     );
   }
 
+  showTags() {
+    let _this = this;
+    let tags = this.state.event.categories.filter(item => {
+      return _this.state.categories.indexOf(item) === -1
+    });
+    return tags;
+  }
+
   render() {
+    const {categories} = this.state;
     return (
       <Layout rowGap={"25px"}>
         <Container>
@@ -73,7 +100,7 @@ class EventStep1 extends Component {
         <Container>
           <TextArea
             placeholderText={"Summary"}
-            name={"summary"}
+            name={"description"}
             model={this.state.event}
             getValue={this.notifyParent.bind(this)}
           />
@@ -96,26 +123,26 @@ class EventStep1 extends Component {
         <Container>
           <Layout rowGap={"10px"}>
             <Container>
-              <InputAutoComplete
-                placeholderText={"Other"}
-                getAddedOptions={data => console.log(data)}
-                name={"others"}
-                model={this.state.event}
-                getValue={this.notifyParent.bind(this)}
-                options={[
-                  { label: "option1", value: "option1" },
-                  { label: "option2", value: "option2" },
-                  { label: "option3", value: "option3" }
-                ]}
-              />
+              <Query query={tags}>
+                {({loading, error, data}) => {
+                  if (loading) return <div>Fetching</div>;
+                  if (error) return <div>Error</div>;
+                  return (
+                    <InputAutoComplete
+                      placeholderText={"Other"}
+                      getAddedOptions={data => console.log(data)}
+                      name={"others"}
+                      model={this.state.event}
+                      getValue={this.notifyParent.bind(this)}
+                      options={data.tags}
+                    />
+                  )
+                }}
+              </Query>
             </Container>
             <Container>
               <TagList
-                tags={[
-                  { name: "option1", active: true },
-                  { name: "option2", active: true },
-                  { name: "option3", active: true }
-                ]}
+                tags={this.state.event.categories.length > 0 ? this.showTags() : []}
                 onSelect={tag => alert(`you select the tag '${tag.name}'`)}
                 closeable={true}
                 onClose={tag => alert(`you close the tag '${tag.name}'`)}

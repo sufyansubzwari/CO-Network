@@ -66,6 +66,11 @@ const schema = new SimpleSchema({
     label: 'The description of the event.',
     optional: true,
   },
+  venueEmail: {
+    type: String,
+    label: 'The description of the event.',
+    optional: true,
+  },
   organizer: {
     type: String,
     label: 'The description of the event.',

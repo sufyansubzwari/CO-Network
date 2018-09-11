@@ -30,7 +30,7 @@ class PostEvent extends Component {
       <InternalLayout>
         <Container fullY key={"leftSide"}>
           <EventForm
-            onFinish={data => this.onPostAction(data)}
+            onFinish={(data) => this.onPostAction(data)}
             onCancel={() => this.onCancel()}
           />
         </Container>

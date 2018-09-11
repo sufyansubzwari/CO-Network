@@ -12,7 +12,7 @@ import styled from "styled-components";
 
 const ListContainer = styled(Container)`
   border-top: ${props => "1px solid " + props.theme.color.grey};
-  padding: 20px 66px 15px 66px;
+  padding: 20px 66px 31px 66px;
   background-color: ${props => props.theme.color.innerBackground};
 
   @media screen and (max-width: 376px) {

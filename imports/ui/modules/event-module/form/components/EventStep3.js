@@ -1,9 +1,9 @@
-import React, { Component } from "react";
-import { Container, Layout } from "btech-layout";
+import React, {Component} from "react";
+import {Container, Layout} from "btech-layout";
 import PropTypes from "prop-types";
-import { Input, SalaryRange } from "btech-base-forms-component";
+import {Input, SalaryRange} from "btech-base-forms-component";
 import { GeoInputLocation } from "btech-location";
-import { COMMUNITYEVENTCATEGORIES } from "../constants/community-event-categories";
+import {COMMUNITYEVENTCATEGORIES} from "../constants/community-event-categories";
 import EventStep1 from "./EventStep1";
 
 /**
@@ -20,11 +20,17 @@ class EventStep3 extends Component {
 
   componentWillReceiveProps(nextProps) {
     if (nextProps.data && nextProps.data !== this.state.event)
-      this.setState({ event: nextProps.data });
+      this.setState({event: nextProps.data});
   }
 
-  notifyParent() {
-    this.props.onChange && this.props.onChange(this.state.event);
+  notifyParent(model, name, value) {
+    if (model && name && value) {
+      let event = this.state.event;
+      event[name] = value;
+      this.setState({event: event}, () => this.props.onChange && this.props.onChange(this.state.event));
+    }
+    else
+      this.props.onChange && this.props.onChange(this.state.event);
   }
 
   render() {
@@ -52,29 +58,28 @@ class EventStep3 extends Component {
         </Container>
         <Container>
           <GeoInputLocation
-            name={"venueLocation"}
-            model={this.state.event}
-            placeholder={"Location"}
-            isGeoLocationAvailable={true}
-            onChange={(model, value) => this.notifyParent(model, value)}
+          name={"location"}
+          model={this.state.event}
+          placeholder={"Location"}
+          isGeoLocationAvailable={true}
+          onChange={(model, value) => this.notifyParent(model, value)}
           />
         </Container>
         <Container>
           <Layout
             fullY
-            customTemplateColumns={"60% auto"}
+            customTemplateColumns={"70% auto"}
             smCustomTemplateColumns={"1fr"}
-            lgCustomTemplateColumns={"60% auto"}
+            lgCustomTemplateColumns={"70% auto"}
           >
             <Container>
               <SalaryRange
                 placeholder={"000"}
                 labelText={"Expected Attendees"}
                 getValue={data => {
-                  const { min, max } = data;
+                  const {min, max} = data;
                   const event = this.state.event;
-                  event.venueMin = min;
-                  event.venueMin = max;
+                  event.attenders = {min: min, max: max};
                   this.setState(
                     {
                       event: event

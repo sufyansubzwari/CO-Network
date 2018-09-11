@@ -11,7 +11,7 @@ type Tags {
 }
 
 type Query {
-    tags(tags: TagsInput!, limit: Int!): [Tags]
+    tags(tags: TagsInput, limit: Int): [Tags]
     tag(_id: String): Tags
 }
 
