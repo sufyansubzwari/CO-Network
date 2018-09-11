@@ -1,5 +1,10 @@
 import React, { Component } from "react";
-import { ItemsList, ListLayout, Preview } from "../../../ui/components";
+import {
+  ItemsList,
+  ListLayout,
+  Preview,
+  CardItem
+} from "../../../ui/components";
 import gql from "graphql-tag";
 import { Query } from "react-apollo";
 import { COMMUNITYEVENTCATEGORIES } from "../../modules/event-module/form/constants/community-event-categories";
@@ -62,6 +67,7 @@ class ListInnovators extends Component {
       loading: false,
       limit: 10
     };
+    this.customRenderItem = this.customRenderItem.bind(this);
   }
 
   onChangeSelection(item, key) {
@@ -72,6 +78,26 @@ class ListInnovators extends Component {
     this.setState({
       limit: this.state.limit + 10
     });
+  }
+
+  customRenderItem(item, key) {
+    return (
+      <CardItem
+        onSelect={() => this.onChangeSelection(item, key)}
+        isActive={
+          this.state.selectedIndex !== null
+            ? this.state.selectedIndex === key
+            : false
+        }
+        loading={this.state.loading}
+        title={item.info ? item.info.name : ""}
+        subTitle={item.info ? item.info.description : ""}
+        image={item.info ? item.info.image : null}
+        tags={item.reason ? item.reason.industry : []}
+        views={item.views}
+        key={key}
+      />
+    );
   }
 
   render() {
@@ -88,6 +114,7 @@ class ListInnovators extends Component {
             // if (error) return `Error!: ${error}`;
             return (
               <ItemsList
+                renderItem={this.customRenderItem}
                 key={"listComponent"}
                 title={this.state.currentTab.title}
                 data={data.organizations}
@@ -131,8 +158,10 @@ class ListInnovators extends Component {
                 }
               }
             ]}
+            showAvatar
             index={this.state.selectedIndex}
             data={this.state.selectedItem}
+            image={this.state.selectedIndex.info ? this.state.selectedIndex.info.image : null}
             backGroundImage={
               this.state.selectedItem ? this.state.selectedItem.image : null
             }

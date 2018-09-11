@@ -13,6 +13,9 @@ const events = gql`
       description
       venueName
       image
+      owner {
+        _id
+      }
       category {
         label
         value
@@ -94,7 +97,7 @@ class ListEvents extends Component {
                 onClick: function() {
                   console.log("Remove");
                 }
-              },
+              }
             ]}
             index={this.state.selectedIndex}
             data={this.state.selectedItem}

@@ -7,6 +7,9 @@ const jobs = gql`
   query Jobs($limit: Int!) {
     jobs(limit: $limit) {
       _id
+      owner {
+        _id
+      }
       title
       description
       image
@@ -69,7 +72,12 @@ class ListJobs extends Component {
         {this.state.selectedItem ? (
           <Preview
             key={"rightSide"}
-            navlinks={["Details", "Requirements", "Organizational Culture", "Payment"]}
+            navlinks={[
+              "Details",
+              "Requirements",
+              "Organizational Culture",
+              "Payment"
+            ]}
             navClicked={index => console.log(index)}
             navOptions={[
               {
