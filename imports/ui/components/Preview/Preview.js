@@ -28,13 +28,13 @@ const NavLinks = styled(Layout)`
     props.theme ? props.theme.preview.nav.family : "Roboto Mono"};
 
   button {
-    margin-right: 5px;
+    margin-right: 10px;
   }
 `;
 
 SButtonIcon = styled.span`
   i {
-    padding-right: 10px;
+    padding-right: 5px;
   }
 `;
 
@@ -71,7 +71,7 @@ export default class Preview extends React.Component {
           })
           .map((element, index) => (
             <Button
-              color={"black"}
+              color={!element.primary ? "black" : null}
               key={index}
               secondary={!element.primary}
               onClick={element.onClick}
