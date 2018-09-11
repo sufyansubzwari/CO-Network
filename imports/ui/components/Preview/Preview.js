@@ -6,37 +6,7 @@ import UserPhoto from "./../UserPhoto/UserPhoto";
 import MaterialIcon from "react-material-iconic-font";
 import { Scrollbars } from "react-custom-scrollbars";
 import { Button } from "btech-base-forms-component";
-
-const Photo = styled(Container)`
-  background: ${props =>
-    props.backGroundImage
-      ? "url(" + props.backGroundImage + ") no-repeat center"
-      : props.theme
-        ? "linear-gradient(180deg, " +
-          props.theme.preview.photo.topcolor +
-          ", " +
-          props.theme.preview.photo.bottomcolor +
-          ")"
-        : " linear-gradient(180deg,#32363D, #202225)"};
-`;
-
-const SSpan = styled.span`
-  font-size: ${props =>
-    props.theme ? props.theme.preview.photo.fontsize : "14px"};
-  font-family: ${props =>
-    props.theme ? props.theme.preview.photo.fontfamily : "Roboto Mono"};
-  color: ${props =>
-    props.theme ? props.theme.preview.photo.fontcolor : "white"};
-  cursor: pointer;
-  margin-top: auto;
-  margin-bottom: 30px;
-  i {
-    padding-right: 5px;
-  }
-  :hover {
-    text-decoration: underline;
-  }
-`;
+import TopPreview from "./TopPreview";
 
 const SLayout = styled(Layout)`
   border: ${props =>
@@ -111,32 +81,8 @@ export default class Preview extends React.Component {
           ))
       : [];
     return (
-      <Layout fullY customTemplateRows={"190px 70px 1fr"}  background={"white"}>
-        <Photo image={this.props.backGroundImage}>
-          <Layout
-            paddingX={"100px"}
-            style={{ position: "relative", bottom: "-75px" }}
-            customTemplateColumns={`120px 20px auto 1fr auto`}
-          >
-            <UserPhoto photo={this.props.image} />
-            <div />
-            <SSpan>
-              <MaterialIcon
-                type={"landscape"}
-                onClick={this.props.changeProfile}
-              />
-              Change profile
-            </SSpan>
-            <div />
-            <SSpan>
-              <MaterialIcon
-                type={"landscape"}
-                onClick={this.props.changeBackground}
-              />
-              Change background
-            </SSpan>
-          </Layout>
-        </Photo>
+      <Layout fullY customTemplateRows={"190px 70px 1fr"} background={"white"}>
+        <TopPreview {...this.props} />
         <SLayout paddingX={"100px"} customTemplateColumns={"140px 1fr auto"}>
           <div />
           <NavLinks
@@ -175,6 +121,7 @@ export default class Preview extends React.Component {
 Preview.propTypes = {
   backGroundImage: PropsTypes.string,
   navlinks: PropsTypes.array,
+  showAvatar: PropsTypes.bool,
   navClicked: PropsTypes.func,
   navOptions: PropsTypes.array,
   image: PropsTypes.string,

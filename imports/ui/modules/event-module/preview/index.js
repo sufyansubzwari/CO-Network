@@ -25,12 +25,13 @@ class PreviewEvent extends Component {
       <Preview
         navlinks={["Details", "Vision", "Products", "Media"]}
         navClicked={index => console.log(index)}
+        showAvatar={this.props.showAvatar}
         navOptions={[
           {
             text: "Remove",
             icon: "delete",
             checkVisibility: () => {
-              return this.state.data && this.state.data.id
+              return this.state.data && this.state.data.id;
             },
             onClick: function() {
               console.log("Remove");
@@ -40,7 +41,7 @@ class PreviewEvent extends Component {
             text: "Follow",
             icon: "plus",
             checkVisibility: () => {
-              return this.state.data && this.state.data.id
+              return this.state.data && this.state.data.id;
             },
             onClick: () => {
               console.log("Adding");
@@ -50,7 +51,7 @@ class PreviewEvent extends Component {
         backGroundImage={"/images/lordvader.jpg"}
         image={"/favicon.png"}
       >
-        dasdasdasdasdasdasdasd
+        event preview
       </Preview>
     );
   }
@@ -58,7 +59,8 @@ class PreviewEvent extends Component {
 
 PreviewEvent.propTypes = {
   data: PropTypes.object,
-  index: PropTypes.number
+  index: PropTypes.number,
+  showAvatar: PropTypes.bool
 };
 
 export default PreviewEvent;
