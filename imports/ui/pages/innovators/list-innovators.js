@@ -132,14 +132,16 @@ class ListInnovators extends Component {
               "Details",
               "Vision",
               "Engagements",
-              "Recruitment",
-              "Services",
-              "Media"
+              "..."
+              // "Recruitment",
+              // "Services",
+              // "Media"
             ]}
             navClicked={index => console.log(index)}
             navOptions={[
               {
                 text: "Apply",
+                primary: true,
                 checkVisibility: () => {
                   return this.state.selectedItem && this.state.selectedItem._id;
                 },
@@ -161,9 +163,15 @@ class ListInnovators extends Component {
             showAvatar
             index={this.state.selectedIndex}
             data={this.state.selectedItem}
-            image={this.state.selectedIndex.info ? this.state.selectedIndex.info.image : null}
+            image={
+              this.state.selectedItem.info
+                ? this.state.selectedItem.info.image
+                : null
+            }
             backGroundImage={
-              this.state.selectedItem ? this.state.selectedItem.image : null
+              this.state.selectedItem.info
+                ? this.state.selectedItem.info.image
+                : null
             }
           >
             innovators preview data for innovators

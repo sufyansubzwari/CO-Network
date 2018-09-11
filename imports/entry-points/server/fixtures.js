@@ -35,7 +35,7 @@ import Places from "../../api/places/server/collection";
 import Tags from "../../api/tags/server/collection";
 import {LANGUAGES_LIBRARIES} from "../../ui/constants";
 
-const env = ["development"];
+const env = ["production"];
 
 function image(folder) {
   return `/mock/${folder}/${Math.floor(Math.random() * 4)}.jpeg`;

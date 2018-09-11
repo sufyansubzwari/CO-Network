@@ -9,7 +9,11 @@ const Photo = styled(Container)`
   height: ${props =>
     props.theme ? props.theme.preview.userphoto.height : "100%"};
   background-color: ${props =>
-    props.theme ? props.theme.preview.userphoto.background : "black"};
+    !props.photo
+      ? props.theme
+        ? props.theme.preview.userphoto.background
+        : "black"
+      : "white"};
   border: ${props =>
     props.theme
       ? "1px solid " + props.theme.preview.userphoto.borderColor
@@ -24,6 +28,10 @@ const Label = styled.label`
   font-size: 18px;
 `;
 
+const SImage = styled.img`
+  border-radius: 3px;
+`;
+
 class UserPhoto extends React.Component {
   constructor(props) {
     super(props);
@@ -35,7 +43,7 @@ class UserPhoto extends React.Component {
 
   render() {
     let photo = this.state.photo ? (
-      <img src={this.props.photo} style={{ width: "100%", height: "100%" }} />
+      <SImage src={this.props.photo} style={{ width: "100%", height: "100%" }} />
     ) : (
       <Label>{this.props.noPhotoText}</Label>
     );

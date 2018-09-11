@@ -73,7 +73,7 @@ export default class Preview extends React.Component {
             <Button
               color={"black"}
               key={index}
-              secondary
+              secondary={!element.primary}
               onClick={element.onClick}
             >
               <SButtonIcon>

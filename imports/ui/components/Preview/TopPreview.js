@@ -44,13 +44,13 @@ const SPhotoContainer = styled(Container)`
 
 const SPhotoLabelContainer = styled(Container)`
   position: absolute;
-  bottom: 30px;
+  bottom: 35px;
   left: 15px;
 `;
 
 const SBackLabelContainer = styled(Container)`
   position: absolute;
-  bottom: 10px;
+  bottom: 15px;
 `;
 
 /**
