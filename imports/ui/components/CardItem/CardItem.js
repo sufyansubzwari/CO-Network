@@ -57,7 +57,7 @@ class CardItem extends Component {
     return (
       <Layout fullY rowGap={"5px"} customTemplateRows={"1fr auto"}>
         <Container>
-          <Layout fullY customTemplateRows={"auto auto 1fr"}>
+          <Layout fullY rowGap={"5px"} customTemplateRows={"auto auto 1fr"}>
             <Container>
               <Layout customTemplateColumns={"1fr auto"}>
                 <Container>
@@ -72,7 +72,9 @@ class CardItem extends Component {
                     </Container>
                   </Layout>
                 </Container>
-                <Container>...</Container>
+                <Container>
+                  <SViewsContainer>...</SViewsContainer>
+                </Container>
               </Layout>
             </Container>
             <Container>

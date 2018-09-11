@@ -1,15 +1,15 @@
-import React, {Component} from "react";
-import {List} from "btech-card-list-component";
+import React, { Component } from "react";
+import { List } from "btech-card-list-component";
 import CardItem from "../CardItem/CardItem";
-import {theme} from "../../theme";
+import { theme } from "../../theme";
 import PropTypes from "prop-types";
-import {Layout, Container} from "btech-layout";
+import { Layout, Container } from "btech-layout";
 import styled from "styled-components";
-import {LOADINGDATA} from "./mockData";
+import { LOADINGDATA } from "./mockData";
 
 const SListTitle = styled(Container)`
   font-family: ${props =>
-  props.theme.texts.title.fontFamily || "Helvetica Neue LT Std"};
+    props.theme.texts.title.fontFamily || "Helvetica Neue LT Std"};
   font-size: ${props => props.size || "18px"};
   line-height: ${props => props.lineHeight || "26px"};
   margin-bottom: 5px;
@@ -29,8 +29,7 @@ class ItemsList extends Component {
     this.renderItem = this.renderItem.bind(this);
   }
 
-  componentWillMount() {
-  }
+  componentWillMount() {}
 
   onChangeSelection(item, key) {
     this.setState(

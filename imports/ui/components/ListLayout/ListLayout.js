@@ -24,13 +24,15 @@ class ListLayout extends Component {
     super(props);
   }
 
+  componentWillMount() {
+    this.props.toggleSideBar(this.props.autoOpenFilters, this.props.entityType);
+  }
+
   getComponent(key) {
     return this.props.children.filter(function(comp) {
       return comp && comp.key === key;
     });
   }
-
-  onCreateAction() {}
 
   render() {
     return (
@@ -92,9 +94,14 @@ class ListLayout extends Component {
   }
 }
 
+ListLayout.defaultProps = {
+  autoOpenFilters: true
+};
+
 ListLayout.propTypes = {
   renderSearcher: PropTypes.func,
-  entityType: PropTypes.string
+  entityType: PropTypes.string,
+  autoOpenFilters: PropTypes.bool
 };
 
 const mapStateToProps = state => {

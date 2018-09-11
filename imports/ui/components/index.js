@@ -8,6 +8,7 @@ import ListLayout from "./ListLayout/ListLayout";
 import Create from "./Create/Create";
 import Preview from "./Preview/Preview";
 import UserPhoto from "./UserPhoto/UserPhoto";
+import CardItem from "./CardItem/CardItem";
 
 export {
   ItemsList,
@@ -17,6 +18,7 @@ export {
   InternalLayout,
   TopSearcher,
   ListLayout,
+  CardItem,
   Create,
   Preview,
   UserPhoto

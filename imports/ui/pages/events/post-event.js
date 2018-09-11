@@ -1,8 +1,8 @@
 import React, { Component } from "react";
 import { Container } from "btech-layout";
 import InternalLayout from "../../components/InternalLayout/InternalLayout";
-import PreviewEvent from "../../modules/event-module/preview";
 import EventForm from "../../modules/event-module/form";
+import { Preview } from "../../../ui/components";
 import { withRouter } from "react-router-dom";
 
 /**
@@ -34,11 +34,29 @@ class PostEvent extends Component {
             onCancel={() => this.onCancel()}
           />
         </Container>
-        <PreviewEvent
+        <Preview
           key={"rightSide"}
-          data={this.state.selectedItem}
+          navClicked={index => console.log(index)}
+          navOptions={[
+            {
+              text: "Remove",
+              icon: "delete",
+              checkVisibility: () => {
+                return this.state.selectedItem && this.state.selectedItem.id;
+              },
+              onClick: function() {
+                console.log("Remove");
+              }
+            }
+          ]}
           index={this.state.selectedIndex}
-        />
+          data={this.state.selectedItem}
+          backGroundImage={
+            this.state.selectedItem ? this.state.selectedItem.image : null
+          }
+        >
+          event preview data for event
+        </Preview>
       </InternalLayout>
     );
   }

@@ -1,18 +1,21 @@
 import React, { Component } from "react";
-import { ItemsList, ListLayout } from "../../../ui/components";
+import { ItemsList, ListLayout, Preview } from "../../../ui/components";
 import gql from "graphql-tag";
 import { Query } from "react-apollo";
 import { connect } from "react-redux";
 import { PreviewData } from "../../actions/PreviewActions";
-import PreviewEvent from "../../modules/event-module/preview";
 
 const events = gql`
   query Events($limit: Int!) {
     events(limit: $limit) {
+      _id
       title
       description
       venueName
       image
+      owner {
+        _id
+      }
       category {
         label
         value
@@ -71,11 +74,39 @@ class ListEvents extends Component {
           }}
         </Query>
         {this.state.selectedItem ? (
-          <PreviewEvent
+          <Preview
             key={"rightSide"}
-            data={this.state.selectedItem}
+            navlinks={["Details", "Vision", "Products", "Media"]}
+            navClicked={index => console.log(index)}
+            navOptions={[
+              {
+                text: "Follow",
+                checkVisibility: () => {
+                  return this.state.selectedItem && this.state.selectedItem._id;
+                },
+                onClick: () => {
+                  console.log("Adding");
+                }
+              },
+              {
+                text: "Remove",
+                icon: "delete",
+                checkVisibility: () => {
+                  return this.state.selectedItem && this.state.selectedItem._id;
+                },
+                onClick: function() {
+                  console.log("Remove");
+                }
+              }
+            ]}
             index={this.state.selectedIndex}
-          />
+            data={this.state.selectedItem}
+            backGroundImage={
+              this.state.selectedItem ? this.state.selectedItem.image : null
+            }
+          >
+            event preview data for event
+          </Preview>
         ) : null}
       </ListLayout>
     );

@@ -9,33 +9,27 @@ const Photo = styled(Container)`
   height: ${props =>
     props.theme ? props.theme.preview.userphoto.height : "100%"};
   background-color: ${props =>
-    props.theme ? props.theme.preview.userphoto.background : "black"};
+    !props.photo
+      ? props.theme
+        ? props.theme.preview.userphoto.background
+        : "black"
+      : "white"};
   border: ${props =>
     props.theme
       ? "1px solid " + props.theme.preview.userphoto.borderColor
       : "1px solid transparent"};
   padding: ${props => (props.photo ? "0" : "20px")};
-  margin-top: 20px;
   border-radius: 3px;
-`;
-
-const SLabel = styled.label`      
-    font-family: ${props =>
-      props.theme ? props.theme.preview.userphoto.family : "Roboto Mono"};
-    color: ${props =>
-      props.theme ? props.theme.preview.userphoto.fontcolor : "white"}
-    font-size: ${props =>
-      props.theme ? props.theme.preview.userphoto.fontsize : "14px"};
-    width: ${props =>
-      props.theme ? props.theme.preview.userphoto.fontWidth : "70px"}
-    position: absolute;
-    bottom: 0;
 `;
 
 const Label = styled.label`
   font-family: Helvetica Neue LT Std;
   color: #d2dde2;
   font-size: 18px;
+`;
+
+const SImage = styled.img`
+  border-radius: 3px;
 `;
 
 class UserPhoto extends React.Component {
@@ -49,9 +43,9 @@ class UserPhoto extends React.Component {
 
   render() {
     let photo = this.state.photo ? (
-      <img src={this.props.photo} style={{ width: "100%", height: "100%" }} />
+      <SImage src={this.props.photo} style={{ width: "100%", height: "100%" }} />
     ) : (
-      <Label theme={theme}>{this.props.noPhotoText}</Label>
+      <Label>{this.props.noPhotoText}</Label>
     );
     return <Photo photo={this.props.photo}>{photo}</Photo>;
   }

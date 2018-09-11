@@ -1,13 +1,15 @@
 import React, { Component } from "react";
-import { Container } from "btech-layout";
-import { ItemsList, ListLayout } from "../../../ui/components";
-import PreviewJob from "../../modules/jobs-module/preview";
+import { ItemsList, ListLayout, Preview } from "../../../ui/components";
 import gql from "graphql-tag";
 import { Query } from "react-apollo";
 
 const jobs = gql`
   query Jobs($limit: Int!) {
     jobs(limit: $limit) {
+      _id
+      owner {
+        _id
+      }
       title
       description
       image
@@ -68,11 +70,44 @@ class ListJobs extends Component {
           }}
         </Query>
         {this.state.selectedItem ? (
-          <PreviewJob
+          <Preview
             key={"rightSide"}
-            data={this.state.selectedItem}
+            navlinks={[
+              "Details",
+              "Requirements",
+              "Organizational Culture",
+              "Payment"
+            ]}
+            navClicked={index => console.log(index)}
+            navOptions={[
+              {
+                text: "Apply",
+                checkVisibility: () => {
+                  return this.state.selectedItem && this.state.selectedItem._id;
+                },
+                onClick: () => {
+                  console.log("Adding");
+                }
+              },
+              {
+                text: "Remove",
+                icon: "delete",
+                checkVisibility: () => {
+                  return this.state.selectedItem && this.state.selectedItem._id;
+                },
+                onClick: function() {
+                  console.log("Remove");
+                }
+              }
+            ]}
             index={this.state.selectedIndex}
-          />
+            data={this.state.selectedItem}
+            backGroundImage={
+              this.state.selectedItem ? this.state.selectedItem.image : null
+            }
+          >
+            job preview data for job
+          </Preview>
         ) : null}
       </ListLayout>
     );
