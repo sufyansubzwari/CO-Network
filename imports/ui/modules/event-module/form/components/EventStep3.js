@@ -2,7 +2,7 @@ import React, {Component} from "react";
 import {Container, Layout} from "btech-layout";
 import PropTypes from "prop-types";
 import {Input, SalaryRange} from "btech-base-forms-component";
-import { GeoInputLocation } from "btech-location";
+import {GeoInputLocation} from "btech-location";
 import {COMMUNITYEVENTCATEGORIES} from "../constants/community-event-categories";
 import EventStep1 from "./EventStep1";
 
@@ -58,11 +58,11 @@ class EventStep3 extends Component {
         </Container>
         <Container>
           <GeoInputLocation
-          name={"location"}
-          model={this.state.event}
-          placeholder={"Location"}
-          isGeoLocationAvailable={true}
-          onChange={(model, value) => this.notifyParent(model, value)}
+            name={"location"}
+            model={this.state.event}
+            placeholder={"Location"}
+            isGeoLocationAvailable={true}
+            onChange={(model, name, value) => this.notifyParent(model, name, value)}
           />
         </Container>
         <Container>
@@ -76,6 +76,8 @@ class EventStep3 extends Component {
               <SalaryRange
                 placeholder={"000"}
                 labelText={"Expected Attendees"}
+                min={this.state.event && this.state.event.attenders && this.state.event.attenders.min}
+                max={this.state.event && this.state.event.attenders && this.state.event.attenders.max}
                 getValue={data => {
                   const {min, max} = data;
                   const event = this.state.event;

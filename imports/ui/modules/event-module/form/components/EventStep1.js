@@ -41,11 +41,12 @@ class EventStep1 extends Component {
       this.setState({
         categories: COMMUNITYEVENTCATEGORIES.map(e => {
           e["active"] = this.props.data.categories.some(
-            element => e.label === element
+            element => e.label === element.label
           );
           return e;
         })
       });
+    this.generateOtherTags();
   }
 
   componentWillReceiveProps(nextProps) {
@@ -57,10 +58,11 @@ class EventStep1 extends Component {
     if (model && name && value) {
       let event = this.state.event;
       event[name] = value;
-      this.setState({event: event}, () => this.props.onChange && this.props.onChange(this.state.event));
-    }
-    else
-      this.props.onChange && this.props.onChange(this.state.event);
+      this.setState(
+        {event: event},
+        () => this.props.onChange && this.props.onChange(this.state.event)
+      );
+    } else this.props.onChange && this.props.onChange(this.state.event);
   }
 
   changeCategoryEvents(actives) {
@@ -68,8 +70,7 @@ class EventStep1 extends Component {
       category["active"] = actives[index];
       return category;
     });
-    const categories = selected
-      .filter(element => element.active);
+    const categories = selected.filter(element => element.active);
     const temp = this.state.event;
     temp["categories"] = categories;
     this.setState({categories: selected, event: temp}, () =>
@@ -77,12 +78,25 @@ class EventStep1 extends Component {
     );
   }
 
-  showTags() {
-    let _this = this;
-    let tags = this.state.event.categories.filter(item => {
-      return _this.state.categories.indexOf(item) === -1
-    });
-    return tags;
+  onAddTags(tag) {
+    let tags = this.state.event.others;
+    !tag.name ? tag.name = tag.label : null;
+    tags.push(tag);
+    this.state.event.others = tags;
+    this.setState({event: this.state.event}, () => this.notifyParent());
+  }
+
+  onCloseTags(e, tag, index) {
+    this.state.event.others.splice(index, 1);
+    this.setState({event: this.state.event}, () => this.notifyParent());
+  }
+
+  generateOtherTags(){
+    // const _this = this;
+    // let tags = this.state.event.categories.filter(item => {
+    //   return _this.state.categories.indexOf(item) === -1;
+    // });
+    // this.setState();
   }
 
   render() {
@@ -130,22 +144,22 @@ class EventStep1 extends Component {
                   return (
                     <InputAutoComplete
                       placeholderText={"Other"}
-                      getAddedOptions={data => console.log(data)}
-                      name={"others"}
-                      model={this.state.event}
-                      getValue={this.notifyParent.bind(this)}
+                      getAddedOptions={this.onAddTags.bind(this)}
+                      getNewAddedOptions={this.onAddTags.bind(this)}
                       options={data.tags}
+                      model={{others: []}}
+                      name={'others'}
                     />
-                  )
+                  );
                 }}
               </Query>
             </Container>
             <Container>
               <TagList
-                tags={this.state.event.categories.length > 0 ? this.showTags() : []}
-                onSelect={tag => alert(`you select the tag '${tag.name}'`)}
+                tags={this.state.event.others.length > 0 ? this.state.event.others.map(item => ({active: true, ...item})) : []}
+                // onSelect={tag => alert(`you select the tag '${tag.name}'`)}
                 closeable={true}
-                onClose={tag => alert(`you close the tag '${tag.name}'`)}
+                onClose={(e, tag, index) => this.onCloseTags(e, tag, index)}
               />
             </Container>
           </Layout>
