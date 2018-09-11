@@ -15,21 +15,7 @@ const Photo = styled(Container)`
       ? "1px solid " + props.theme.preview.userphoto.borderColor
       : "1px solid transparent"};
   padding: ${props => (props.photo ? "0" : "20px")};
-  margin-top: 20px;
   border-radius: 3px;
-`;
-
-const SLabel = styled.label`      
-    font-family: ${props =>
-      props.theme ? props.theme.preview.userphoto.family : "Roboto Mono"};
-    color: ${props =>
-      props.theme ? props.theme.preview.userphoto.fontcolor : "white"}
-    font-size: ${props =>
-      props.theme ? props.theme.preview.userphoto.fontsize : "14px"};
-    width: ${props =>
-      props.theme ? props.theme.preview.userphoto.fontWidth : "70px"}
-    position: absolute;
-    bottom: 0;
 `;
 
 const Label = styled.label`
@@ -51,7 +37,7 @@ class UserPhoto extends React.Component {
     let photo = this.state.photo ? (
       <img src={this.props.photo} style={{ width: "100%", height: "100%" }} />
     ) : (
-      <Label theme={theme}>{this.props.noPhotoText}</Label>
+      <Label>{this.props.noPhotoText}</Label>
     );
     return <Photo photo={this.props.photo}>{photo}</Photo>;
   }

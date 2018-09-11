@@ -6,37 +6,7 @@ import UserPhoto from "./../UserPhoto/UserPhoto";
 import MaterialIcon from "react-material-iconic-font";
 import { Scrollbars } from "react-custom-scrollbars";
 import { Button } from "btech-base-forms-component";
-
-const Photo = styled(Container)`
-  background: ${props =>
-    props.backGroundImage
-      ? "url(" + props.backGroundImage + ") no-repeat center"
-      : props.theme
-        ? "linear-gradient(180deg, " +
-          props.theme.preview.photo.topcolor +
-          ", " +
-          props.theme.preview.photo.bottomcolor +
-          ")"
-        : " linear-gradient(180deg,#32363D, #202225)"};
-`;
-
-const SSpan = styled.span`
-  font-size: ${props =>
-    props.theme ? props.theme.preview.photo.fontsize : "14px"};
-  font-family: ${props =>
-    props.theme ? props.theme.preview.photo.fontfamily : "Roboto Mono"};
-  color: ${props =>
-    props.theme ? props.theme.preview.photo.fontcolor : "white"};
-  cursor: pointer;
-  margin-top: auto;
-  margin-bottom: 30px;
-  i {
-    padding-right: 5px;
-  }
-  :hover {
-    text-decoration: underline;
-  }
-`;
+import TopPreview from "./TopPreview";
 
 const SLayout = styled(Layout)`
   border: ${props =>
@@ -56,7 +26,6 @@ const NavLinks = styled(Layout)`
   color: ${props => (props.theme ? props.theme.preview.nav.color : "black")};
   font-family: ${props =>
     props.theme ? props.theme.preview.nav.family : "Roboto Mono"};
-  cursor: pointer;
 
   button {
     margin-right: 5px;
@@ -67,6 +36,10 @@ SButtonIcon = styled.span`
   i {
     padding-right: 10px;
   }
+`;
+
+SNavLinkItem = styled.a`
+  cursor: pointer;
 `;
 
 export default class Preview extends React.Component {
@@ -81,13 +54,13 @@ export default class Preview extends React.Component {
     let navlinks =
       this.props.navlinks &&
       this.props.navlinks.map((element, index) => (
-        <a
+        <SNavLinkItem
           key={index}
           style={{ paddingRight: "10px" }}
           onClick={() => this.props.navClicked && this.props.navClicked(index)}
         >
           {element}
-        </a>
+        </SNavLinkItem>
       ));
     let options = this.props.navOptions
       ? this.props.navOptions
@@ -104,41 +77,22 @@ export default class Preview extends React.Component {
               onClick={element.onClick}
             >
               <SButtonIcon>
-                <MaterialIcon type={element.icon} />
+                {element.icon ? <MaterialIcon type={element.icon} /> : null}
                 {element.text}
               </SButtonIcon>
             </Button>
           ))
       : [];
     return (
-      <Layout fullY customTemplateRows={"190px 70px 1fr"}  background={"white"}>
-        <Photo image={this.props.backGroundImage}>
-          <Layout
-            paddingX={"100px"}
-            style={{ position: "relative", bottom: "-75px" }}
-            customTemplateColumns={`120px 20px auto 1fr auto`}
-          >
-            <UserPhoto photo={this.props.image} />
-            <div />
-            <SSpan>
-              <MaterialIcon
-                type={"landscape"}
-                onClick={this.props.changeProfile}
-              />
-              Change profile
-            </SSpan>
-            <div />
-            <SSpan>
-              <MaterialIcon
-                type={"landscape"}
-                onClick={this.props.changeBackground}
-              />
-              Change background
-            </SSpan>
-          </Layout>
-        </Photo>
-        <SLayout paddingX={"100px"} customTemplateColumns={"140px 1fr auto"}>
-          <div />
+      <Layout fullY customTemplateRows={"190px 70px 1fr"} background={"white"}>
+        <TopPreview {...this.props} />
+        <SLayout
+          paddingX={"100px"}
+          customTemplateColumns={
+            this.props.showAvatar ? "140px 1fr auto" : "1fr auto"
+          }
+        >
+          {this.props.showAvatar ? <Container /> : null}
           <NavLinks
             style={{
               display: "flex",
@@ -172,9 +126,14 @@ export default class Preview extends React.Component {
   }
 }
 
+Preview.defaultProps = {
+  showAvatar: false
+};
+
 Preview.propTypes = {
   backGroundImage: PropsTypes.string,
   navlinks: PropsTypes.array,
+  showAvatar: PropsTypes.bool,
   navClicked: PropsTypes.func,
   navOptions: PropsTypes.array,
   image: PropsTypes.string,

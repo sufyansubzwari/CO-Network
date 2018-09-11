@@ -31,7 +31,11 @@ class JobsFilters extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      location: "",
+      location: {
+        address: "",
+        location: { lat: "", lng: "" },
+        fullLocation: {}
+      },
       industry: ""
     };
   }
