@@ -26,7 +26,7 @@ users.forEach(({ email, password, roles }) => {
   Roles.addUsersToRoles(userId, roles);
 });
 
-/*
+
 import seeder from "@cleverbeagle/seeder";
 import {Meteor} from "meteor/meteor";
 import Jobs from "../../api/jobs/server/collection";
@@ -412,4 +412,3 @@ seeder(Meteor.users, {
     };
   }
 });
-*/
