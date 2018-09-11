@@ -10,6 +10,7 @@ import {
 import Authorization from "./authorization";
 import LoadableWrapper from "./components/dumb/loadable-wrapper";
 //
+import HomePage from "./pages/home-page";
 import ListEvents from "./pages/events/list-events";
 import ListJobs from "./pages/jobs/list-jobs";
 import ListInnovators from "./pages/innovators/list-innovators";
@@ -28,19 +29,19 @@ const handleAuthentication = props => {
 const Routes = props => (
   <ScrollToTop>
     <Switch>
-      <RouteWithProps
-        exact
-        name="home"
-        path="/"
-        component={LoadableWrapper({
-          loader: () => import("./pages/home-page")
-        })}
-        {...props}
+      <Route exact name="Home" path="/" render={() => <HomePage />} />
+      <Route name="Events" path="/events" render={() => <ListEvents />} />
+      <Route name="Jobs" path="/jobs" render={() => <ListJobs />} />
+      <Route
+        name="Innovators"
+        path="/innovators"
+        render={() => <ListInnovators />}
       />
-      <Route name="Events" path="/events" render={() => <ListEvents entity={"Events"}/>} />
-      <Route name="Jobs" path="/jobs" render={() => <ListJobs entity={"Jobs"}/>} />
-      <Route name="Innovators" path="/innovators" render={() => <ListInnovators entity={"Innovators"}/>} />
-      <Route name="Post a Event" path="/post-event" render={() => <PostEvent />} />
+      <Route
+        name="Post a Event"
+        path="/post-event"
+        render={() => <PostEvent />}
+      />
       <AdminRoute
         exact
         name="admin"

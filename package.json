@@ -4,7 +4,7 @@
   "repository": "https://gitlab.com/blueoceantech/sufyan/mlsociety-new-design.git",
   "scripts": {
     "start": "meteor run --settings settings.dev.json",
-    "staging": "meteor run --settings settings.staging.json",
+    "staging": "DEPLOY_HOSTNAME=us-east-1.galaxy-deploy.meteor.com meteor deploy mlsociety-staging.meteorapp.com --settings settings-staging.json",
     "local": "meteor run --settings settings.json",
     "lint": "eslint --quiet --ext .js,.jsx .",
     "prettier": "prettier --write \"client/**/*.js\" \"imports/**/*.js\" \"server/**/*.js\" --single-quote=true --trailing-comma=es5 --print-width=100",
@@ -26,7 +26,8 @@
     "bcrypt": "^3.0.0",
     "bcrypt-nodejs": "0.0.3",
     "body-parser": "^1.18.2",
-    "btech-base-forms-component": "^1.4.3",
+    "node-sass": "^4.9.1",
+    "btech-base-forms-component": "^1.4.7",
     "btech-card-list-component": "^1.2.2",
     "btech-horizantal-navbar": "^1.1.11",
     "btech-layout": "^1.1.0",
