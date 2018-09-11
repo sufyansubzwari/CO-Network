@@ -5,6 +5,7 @@ const color = {
   success: "#85cc00",
   info: "#378bff",
   black: "#0e1800",
+  borderActiveColor: '#F92672',
   backgroundLight: "#f5f7fb",
   background: "#dadada",
   default: "#FFFFFF",

@@ -1,5 +1,5 @@
 import React from "react";
-import { Layout, Container } from "btech-layout";
+import { Container } from "btech-layout";
 import styled from "styled-components";
 import { GeoInputLocation } from "btech-location";
 import {
@@ -31,7 +31,11 @@ class OrganizationFilters extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      location: "",
+      location: {
+        address: "",
+        location: { lat: "", lng: "" },
+        fullLocation: {}
+      },
       industry: ""
     };
   }

@@ -26,7 +26,6 @@ const NavLinks = styled(Layout)`
   color: ${props => (props.theme ? props.theme.preview.nav.color : "black")};
   font-family: ${props =>
     props.theme ? props.theme.preview.nav.family : "Roboto Mono"};
-  cursor: pointer;
 
   button {
     margin-right: 5px;
@@ -37,6 +36,10 @@ SButtonIcon = styled.span`
   i {
     padding-right: 10px;
   }
+`;
+
+SNavLinkItem = styled.a`
+  cursor: pointer;
 `;
 
 export default class Preview extends React.Component {
@@ -51,13 +54,13 @@ export default class Preview extends React.Component {
     let navlinks =
       this.props.navlinks &&
       this.props.navlinks.map((element, index) => (
-        <a
+        <SNavLinkItem
           key={index}
           style={{ paddingRight: "10px" }}
           onClick={() => this.props.navClicked && this.props.navClicked(index)}
         >
           {element}
-        </a>
+        </SNavLinkItem>
       ));
     let options = this.props.navOptions
       ? this.props.navOptions
@@ -74,7 +77,7 @@ export default class Preview extends React.Component {
               onClick={element.onClick}
             >
               <SButtonIcon>
-                <MaterialIcon type={element.icon} />
+                {element.icon ? <MaterialIcon type={element.icon} /> : null}
                 {element.text}
               </SButtonIcon>
             </Button>
@@ -83,8 +86,13 @@ export default class Preview extends React.Component {
     return (
       <Layout fullY customTemplateRows={"190px 70px 1fr"} background={"white"}>
         <TopPreview {...this.props} />
-        <SLayout paddingX={"100px"} customTemplateColumns={"140px 1fr auto"}>
-          <div />
+        <SLayout
+          paddingX={"100px"}
+          customTemplateColumns={
+            this.props.showAvatar ? "140px 1fr auto" : "1fr auto"
+          }
+        >
+          {this.props.showAvatar ? <Container /> : null}
           <NavLinks
             style={{
               display: "flex",
@@ -117,6 +125,10 @@ export default class Preview extends React.Component {
     );
   }
 }
+
+Preview.defaultProps = {
+  showAvatar: false
+};
 
 Preview.propTypes = {
   backGroundImage: PropsTypes.string,

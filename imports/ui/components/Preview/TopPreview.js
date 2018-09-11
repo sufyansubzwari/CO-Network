@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import styled from "styled-components/typings/styled-components";
+import styled from "styled-components";
 import { Layout, Container } from "btech-layout";
 import MaterialIcon from "react-material-iconic-font";
 import UserPhoto from "./../UserPhoto/UserPhoto";
@@ -7,8 +7,8 @@ import PropsTypes from "prop-types";
 
 const Photo = styled(Container)`
   background: ${props =>
-    props.backGroundImage
-      ? "url(" + props.backGroundImage + ") no-repeat center"
+    props.image
+      ? "url(" + props.image + ") no-repeat center"
       : props.theme
         ? "linear-gradient(180deg, " +
           props.theme.preview.photo.topcolor +
@@ -16,9 +16,10 @@ const Photo = styled(Container)`
           props.theme.preview.photo.bottomcolor +
           ")"
         : " linear-gradient(180deg,#32363D, #202225)"};
+  background-size: cover;
 `;
 
-const SSpan = styled.span`
+const SImageAction = styled.span`
   font-size: ${props =>
     props.theme ? props.theme.preview.photo.fontsize : "14px"};
   font-family: ${props =>
@@ -36,6 +37,22 @@ const SSpan = styled.span`
   }
 `;
 
+const SPhotoContainer = styled(Container)`
+  position: absolute;
+  bottom: -20px;
+`;
+
+const SPhotoLabelContainer = styled(Container)`
+  position: absolute;
+  bottom: 30px;
+  left: 15px;
+`;
+
+const SBackLabelContainer = styled(Container)`
+  position: absolute;
+  bottom: 10px;
+`;
+
 /**
  * @module Data
  * @category TopPreview
@@ -48,34 +65,48 @@ class TopPreview extends Component {
 
   render() {
     return (
-      <Photo relative image={this.props.backGroundImage}>
+      <Photo paddingX={"100px"} image={this.props.backGroundImage}>
         <Layout
-          paddingX={"100px"}
+          fullY
+          relative
           customTemplateColumns={
-            this.props.showAvatar ? `120px 20px auto 1fr auto` : `1fr auto`
+            this.props.showAvatar ? `auto 1fr 170px` : `1fr 170px`
           }
         >
           {this.props.showAvatar ? (
             <Container>
-              <UserPhoto photo={this.props.image} />
-              <div />
-              <SSpan>
-                <MaterialIcon
-                  type={"landscape"}
-                  onClick={this.props.changeProfile}
-                />
-                Change profile
-              </SSpan>
+              <SPhotoContainer>
+                <Layout customTemplateColumns={`120px 200px`}>
+                  <Container>
+                    <UserPhoto photo={this.props.image} />
+                  </Container>
+                  <Container relative>
+                    <SPhotoLabelContainer>
+                      <SImageAction>
+                        <MaterialIcon
+                          type={"landscape"}
+                          onClick={this.props.changeProfile}
+                        />
+                        Change profile
+                      </SImageAction>
+                    </SPhotoLabelContainer>
+                  </Container>
+                </Layout>
+              </SPhotoContainer>
             </Container>
           ) : null}
-          <div />
-          <SSpan>
-            <MaterialIcon
-              type={"landscape"}
-              onClick={this.props.changeBackground}
-            />
-            Change background
-          </SSpan>
+          <Container />
+          <Container relative>
+            <SBackLabelContainer>
+              <SImageAction>
+                <MaterialIcon
+                  type={"landscape"}
+                  onClick={this.props.changeBackground}
+                />
+                Change background
+              </SImageAction>
+            </SBackLabelContainer>
+          </Container>
         </Layout>
       </Photo>
     );
