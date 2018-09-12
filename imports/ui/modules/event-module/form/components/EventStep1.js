@@ -11,17 +11,7 @@ import {
 import {COMMUNITYEVENTCATEGORIES} from "../constants/community-event-categories";
 import gql from "graphql-tag";
 import {Query} from "react-apollo";
-
-const tags = gql`
-    {
-        tags {
-            _id
-            name
-            label
-            value
-        }
-    }
-`;
+import {GetTags as tags} from '../../../../apollo-client/tag';
 
 /**
  * @module Event

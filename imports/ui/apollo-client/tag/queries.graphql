@@ -1,0 +1,9 @@
+
+query GetTags {
+  tags {
+    _id
+    name
+    label
+    value
+  }
+}

@@ -13,7 +13,7 @@ type Jobs {
     languages: [Tags]
     industry: [Tags]!
     jobResponsibilities: String
-    workForUs: String
+    culture: String
     aboutUsTeam: String
     candidateQuestions: String
     views: Int
@@ -44,7 +44,7 @@ input JobsInput {
     languages: [String]
     industry: [String]!
     jobResponsibilities: String
-    workForUs: String
+    culture: String
     aboutUsTeam: String
     candidateQuestions: String
 }

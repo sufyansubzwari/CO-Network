@@ -76,7 +76,17 @@ Jobs.schema = new SimpleSchema({
   },
   languages: {
     optional: true,
-    type: String
+    type: Array
+  },
+  'languages.$': {
+    optional: true,
+    type: Object
+  },
+  'languages.$.value': {
+    type: String,
+  },
+  'languages.$.label': {
+    type: String,
   },
   jobType: {
     optional: true,
@@ -93,7 +103,7 @@ Jobs.schema = new SimpleSchema({
     type: String,
     label: 'The location of the job.',
   },
-  workForUs: {
+  culture: {
     optional: true,
     type: String,
     label: 'The location of the job.',

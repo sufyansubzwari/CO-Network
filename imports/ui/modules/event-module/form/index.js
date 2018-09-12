@@ -32,15 +32,20 @@ class EventForm extends Component {
         },
         venueMin: "",
         venueMax: "",
-        organizer:"",
+        organizer: ""
       }
     };
   }
 
-  componentWillMount(){
-    console.log(this.props);
-    if(this.props.location && this.props.location.state && this.props.location.state.event){
-      this.setState({event: this.props.location.state.event}, () => this.props.history.push({state:null}))
+  componentWillMount() {
+    if (
+      this.props.location &&
+      this.props.location.state &&
+      this.props.location.state.event
+    ) {
+      this.setState({ event: this.props.location.state.event }, () =>
+        this.props.history.push({ state: null })
+      );
     }
   }
 
