@@ -7,7 +7,7 @@ import {
   RouteWithProps,
   AdminRoute
 } from "./components/smart/route-wrappers";
-import Authorization from "./authorization";
+import Authorization from "./services/authorization";
 import LoadableWrapper from "./components/dumb/loadable-wrapper";
 //
 import HomePage from "./pages/home-page";
@@ -17,7 +17,6 @@ import ListInnovators from "./pages/innovators/list-innovators";
 import PostEvent from "./pages/events/post-event";
 
 const handleAuthentication = props => {
-  alert("dasdasdasd");
   if (/access_token|id_token|error/.test(props.location.hash)) {
     Authorization.auth0.popup.callback();
   }
@@ -41,16 +40,6 @@ const Routes = props => (
         name="Post a Event"
         path="/post-event"
         render={() => <PostEvent />}
-      />
-      <AdminRoute
-        exact
-        name="admin"
-        path="/admin"
-        component={LoadableWrapper({
-          loader: () => import("./pages/admin/admin-page")
-        })}
-        redirectTo="/login"
-        {...props}
       />
       <Route
         path="/callback"

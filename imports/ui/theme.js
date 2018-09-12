@@ -5,7 +5,7 @@ const color = {
   success: "#85cc00",
   info: "#378bff",
   black: "#0e1800",
-  borderActiveColor: '#F92672',
+  borderActiveColor: "#F92672",
   backgroundLight: "#f5f7fb",
   background: "#dadada",
   default: "#FFFFFF",
@@ -34,6 +34,16 @@ const sidebar = {
     fontSize: "10px",
     color: "initial"
   }
+};
+
+const card = {
+  border: 1,
+  borderActive: 1,
+  borderColor: color.borderColor,
+  backgroundNullImage: color.backgroundNullImage,
+  backgroundImage: "#fff",
+  backgroundImageActive: color.backgroundImageActive,
+  borderActiveColor: color.borderActiveColor
 };
 
 const create = {
@@ -133,6 +143,7 @@ export const theme = {
   filter,
   bigtag,
   preview,
+  card,
   create,
   borderColor: color.grey
 };
