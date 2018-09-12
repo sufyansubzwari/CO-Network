@@ -38,8 +38,30 @@ type Sponsors {
 }
 
 type Query {
-    events(events: EventsInput, limit: Int): [Events]
+    events(events: EventsInputSearch, limit: Int): [Events]
     event(_id: String): Events
+}
+
+input EventsInputSearch {
+    title: TableStringFilterInput
+    description: TableStringFilterInput
+    startDate: Date
+    endDate: Date
+    owner: String
+    venueName: TableStringFilterInput
+}
+
+input TableStringFilterInput{
+    ne: String
+    eq: String
+    le: String
+    lt: String
+    ge: String
+    gt: String
+    contains: String
+    notContains: String
+    between: [String]
+    beginsWith: String
 }
 
 input EventsInput {

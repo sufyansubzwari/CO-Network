@@ -1,15 +1,15 @@
-import React, { Component } from "react";
-import { Layout, Container } from "btech-layout";
+import React, {Component} from "react";
+import {Layout, Container} from "btech-layout";
 import PropTypes from "prop-types";
 import TopSearcher from "./TopSearcher";
 import InternalLayout from "../InternalLayout/InternalLayout";
 import MaterialIcon from "react-material-iconic-font";
-import { Button } from "btech-base-forms-component";
+import {Button} from "btech-base-forms-component";
 import styled from "styled-components";
 import ListContainer from "./ListContainer";
 import TopSearchContainer from "./TopSearchContainer";
-import { connect } from "react-redux";
-import { toggleSideBar } from "../../actions/SideBarActions";
+import {connect} from "react-redux";
+import {toggleSideBar} from "../../actions/SideBarActions";
 
 const SListContainer = styled(Container)`
   border-right: ${props => "1px solid " + props.theme.color.grey};
@@ -29,9 +29,13 @@ class ListLayout extends Component {
   }
 
   getComponent(key) {
-    return this.props.children.filter(function(comp) {
+    return this.props.children.filter(function (comp) {
       return comp && comp.key === key;
     });
+  }
+
+  onSearch(value) {
+    this.props.onSearchText && this.props.onSearchText(value);
   }
 
   render() {
@@ -59,16 +63,13 @@ class ListLayout extends Component {
                           this.props.toggleSideBar(true, this.props.entityType)
                         }
                       >
-                        <MaterialIcon type={"sort"} />
+                        <MaterialIcon type={"sort"}/>
                       </Button>
                     </Container>
                   ) : null}
                   <Container>
                     <TopSearcher
-                      onSearchAction={value => alert(value)}
-                      onSearchTextChange={value =>
-                        alert(`value change ${value}`)
-                      }
+                      onSearchAction={value => this.onSearch(value)}
                       onCreateAction={() =>
                         this.props.toggleSideBar(
                           true,
@@ -101,11 +102,12 @@ ListLayout.defaultProps = {
 ListLayout.propTypes = {
   renderSearcher: PropTypes.func,
   entityType: PropTypes.string,
-  autoOpenFilters: PropTypes.bool
+  autoOpenFilters: PropTypes.bool,
+  onSearchText: PropTypes.func,
 };
 
 const mapStateToProps = state => {
-  const { sideBarStatus } = state;
+  const {sideBarStatus} = state;
   return {
     sidebarIsOpen: sideBarStatus
       ? sideBarStatus.isAdd

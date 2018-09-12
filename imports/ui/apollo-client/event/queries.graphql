@@ -1,5 +1,5 @@
 
-query GetEvents($limit: Int, $events: EventsInput) {
+query GetEvents($limit: Int, $events: EventsInputSearch) {
   events(limit: $limit, events: $events) {
     _id
     title

@@ -1,6 +1,6 @@
-import React, { Component } from "react";
-import { InputAutoComplete, Button } from "btech-base-forms-component";
-import { Layout, Container } from "btech-layout";
+import React, {Component} from "react";
+import {InputAutoComplete, Button} from "btech-base-forms-component";
+import {Layout, Container} from "btech-layout";
 import PropTypes from "prop-types";
 import MaterialIcon from "react-material-iconic-font";
 
@@ -17,12 +17,8 @@ class TopSearcher extends Component {
     };
   }
 
-  onSearchChange(model, name, value) {
-    this.setState(
-      {
-        [name]: value
-      },
-      () => this.onSearchTextChange && this.onSearchTextChange(value)
+  onSearchChange(value) {
+    this.setState({value: value.value}, () => this.props.onSearchAction && this.props.onSearchAction(value.value)
     );
   }
 
@@ -35,15 +31,17 @@ class TopSearcher extends Component {
               iconClass={'arrow-forward'}
               placeholderText={"Discover"}
               getNewAddedOptions={value =>
-                this.onSearchAction && this.onSearchAction(value)
+                this.onSearchChange(value)
               }
               fixLabel
               name={"value"}
               model={this.state}
-              getValue={(model, name, value) =>
-                this.onSearchChange(model, name, value)
-              }
               options={this.props.suggestions}
+              optionsLimit={9}
+              keepText={true}
+              getAddedOptions={value =>
+                this.onSearchChange(value)
+              }
             />
           </Container>
           <Container>
@@ -54,7 +52,7 @@ class TopSearcher extends Component {
                 this.props.onCreateAction && this.props.onCreateAction()
               }
             >
-              <MaterialIcon type={"plus"} />
+              <MaterialIcon type={"plus"}/>
             </Button>
           </Container>
         </Layout>
@@ -70,7 +68,6 @@ TopSearcher.defaultProps = {
 TopSearcher.propTypes = {
   onCreateAction: PropTypes.func.isRequired,
   onSearchAction: PropTypes.func,
-  onSearchTextChange: PropTypes.func,
   suggestions: PropTypes.array
 };
 

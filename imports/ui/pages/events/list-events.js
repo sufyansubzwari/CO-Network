@@ -20,7 +20,8 @@ class ListEvents extends Component {
       selectedItem: null,
       selectedIndex: null,
       loading: false,
-      limit: 10
+      limit: 10,
+      events: {},
     };
   }
 
@@ -34,12 +35,24 @@ class ListEvents extends Component {
     });
   }
 
+  static removeEvent(deleteEvent, event) {
+    deleteEvent({variables: {id: event._id}});
+  }
+
+  onSearch(value) {
+    const searchEntity = {
+      title: value,
+      description: value,
+    };
+    this.setState({events: searchEntity})
+  }
+
   render() {
     const _this = this;
-    const {limit} = this.state;
+    const {limit, events} = this.state;
     return (
-      <ListLayout entityType={"events"}>
-        <Query key={"listComponent"} query={GetEvents} variables={{limit}}>
+      <ListLayout entityType={"events"} onSearchText={this.onSearch.bind(this)}>
+        <Query key={"listComponent"} query={GetEvents} variables={{limit, events}}>
           {({loading, error, data}) => {
             // if (loading) return null;
             // if (error) return `Error!: ${error}`;
@@ -78,7 +91,6 @@ class ListEvents extends Component {
                       return this.state.selectedItem && this.state.selectedItem._id;
                     },
                     onClick: () => {
-                      console.log(_this.props);
                       _this.props.history.push("/post-event", {event: _this.state.selectedItem});
                     }
                   },
@@ -89,7 +101,7 @@ class ListEvents extends Component {
                       return this.state.selectedItem && this.state.selectedItem._id;
                     },
                     onClick: function () {
-                      deleteEvent({variables: {id: _this.state.selectedItem._id}});
+                      ListEvents.removeEvent(deleteEvent, _this.state.selectedItem);
                     }
                   }
                 ]}
