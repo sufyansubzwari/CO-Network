@@ -1,26 +1,25 @@
-
-mutation CreateEvent($entity: EventsInput!) {
-  event(events: $entity) {
-    _id
-    title
-    description
-    venueName
-    image
-    owner {
-      _id
+mutation CreateJob($entity: JobsInput!) {
+    job(jobs: $entity) {
+        _id
+        title
+        description
+        venueName
+        image
+        owner {
+            _id
+        }
+        category {
+            label
+            value
+            name
+        }
+        entity
+        views
     }
-    category {
-      label
-      value
-      name
-    }
-    entity
-    views
-  }
 }
 
-mutation DeleteEvent($id: String!) {
-  deleteEvent(_id: $id) {
-    _id
-  }
+mutation DeleteJob($id: String!) {
+    deleteJob(_id: $id) {
+        _id
+    }
 }

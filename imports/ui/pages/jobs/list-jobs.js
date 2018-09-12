@@ -3,8 +3,8 @@ import { ItemsList, ListLayout, Preview } from "../../../ui/components";
 import { Query, Mutation } from "react-apollo";
 import { connect } from "react-redux";
 import { PreviewData } from "../../actions/PreviewActions";
-import { CreateEvent, DeleteEvent } from "../../apollo-client/event";
-import { GetEvents } from "../../apollo-client/event";
+import {CreateJob, DeleteJob} from "../../apollo-client/job";
+import { GetJobs } from "../../apollo-client/job";
 import { withRouter } from "react-router-dom";
 
 /**
@@ -18,7 +18,8 @@ class ListJobs extends Component {
       openFilters: true,
       selectedItem: null,
       selectedIndex: null,
-      limit: 10
+      limit: 10,
+      filter: {}
     };
   }
 
@@ -32,11 +33,20 @@ class ListJobs extends Component {
     });
   }
 
+  static removeJob(deleteJob, job) {
+    deleteJob({ variables: { id: job._id } });
+  }
+
+  onSearch(value) {
+    this.setState({ filter: value });
+  }
+
   render() {
-    const { limit } = this.state;
+    const _this = this;
+    const { limit, filter } = this.state;
     return (
-      <ListLayout entityType={"jobs"}>
-        <Query key={"listComponent"} query={jobs} variables={{ limit }}>
+      <ListLayout entityType={"jobs"} onSearchText={this.onSearch.bind(this)}>
+        <Query key={"listComponent"} query={GetJobs} variables={{ limit, filter }}>
           {({ loading, error, data }) => {
             // if (loading) return null;
             // if (error) return `Error!: ${error}`;
@@ -44,7 +54,7 @@ class ListJobs extends Component {
               <ItemsList
                 key={"listComponent"}
                 title={"Jobs"}
-                data={data.jobs}
+                data={data && data.jobs}
                 loading={this.state.loading}
                 onFetchData={() => this.fetchMoreSelection()}
                 onSelectCard={(item, key) => this.onChangeSelection(item, key)}
@@ -53,6 +63,8 @@ class ListJobs extends Component {
           }}
         </Query>
         {this.state.selectedItem ? (
+          <Mutation key={"rightSide"} mutation={DeleteJob}>
+            {(deleteJob, { jobDeleted }) => (
           <Preview
             key={"rightSide"}
             navlinks={[
@@ -73,13 +85,31 @@ class ListJobs extends Component {
                 }
               },
               {
+                text: "Edit",
+                checkVisibility: () => {
+                  return (
+                    this.state.selectedItem && this.state.selectedItem._id
+                  );
+                },
+                onClick: () => {
+                  _this.props.history.push("/post-job", {
+                    job: _this.state.selectedItem
+                  });
+                }
+              },
+              {
                 text: "Remove",
                 icon: "delete",
                 checkVisibility: () => {
-                  return this.state.selectedItem && this.state.selectedItem._id;
+                  return (
+                    this.state.selectedItem && this.state.selectedItem._id
+                  );
                 },
                 onClick: function() {
-                  console.log("Remove");
+                  ListJobs.removeJob(
+                    deleteJob,
+                    _this.state.selectedItem
+                  );
                 }
               }
             ]}
@@ -91,10 +121,31 @@ class ListJobs extends Component {
           >
             job preview data for job
           </Preview>
+            )}
+          </Mutation>
         ) : null}
       </ListLayout>
     );
   }
 }
 
-export default ListJobs;
+
+const mapStateToProps = state => {
+  const { previewData } = state;
+  return {
+    previewData: previewData
+  };
+};
+
+const mapDispatchToProps = dispatch => {
+  return {
+    sendPreviewData: (item, key, type) => dispatch(PreviewData(item, key, type))
+  };
+};
+
+export default withRouter(
+  connect(
+    mapStateToProps,
+    mapDispatchToProps
+  )(ListJobs)
+);
