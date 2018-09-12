@@ -41,6 +41,7 @@
     "indexof": "0.0.1",
     "install": "^0.10.1",
     "invariant": "^2.2.2",
+    "reactstrap": "^6.2.0",
     "lodash": "^4.17.4",
     "material-design-iconic-font": "^2.2.0",
     "merge-graphql-schemas": "^1.4.0",
