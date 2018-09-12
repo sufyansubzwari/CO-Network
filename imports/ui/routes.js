@@ -15,6 +15,7 @@ import ListEvents from "./pages/events/list-events";
 import ListJobs from "./pages/jobs/list-jobs";
 import ListInnovators from "./pages/innovators/list-innovators";
 import PostEvent from "./pages/events/post-event";
+import UserProfile from "./pages/user/user-profile";
 
 const handleAuthentication = props => {
   alert("dasdasdasd");
@@ -32,6 +33,7 @@ const Routes = props => (
       <Route exact name="Home" path="/" render={() => <HomePage />} />
       <Route name="Events" path="/events" render={() => <ListEvents />} />
       <Route name="Jobs" path="/jobs" render={() => <ListJobs />} />
+        <Route name="User Profile" path="/profile" render={() => <UserProfile />} />
       <Route
         name="Innovators"
         path="/innovators"

@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 
 /**
- * @module Events
+ * @module Jobs
  * @category post
  */
 class PostJobs extends Component {
