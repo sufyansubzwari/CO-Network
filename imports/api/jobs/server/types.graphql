@@ -27,7 +27,7 @@ type SalaryRange {
 }
 
 type Query {
-    jobs(jobs: JobsInput, limit: Int): [Jobs]
+    jobs(filter: String, limit: Int): [Jobs]
     job(_id: String): Jobs
 }
 
