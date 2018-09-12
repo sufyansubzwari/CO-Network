@@ -1,7 +1,20 @@
-#import './fragments.graphql'
 
-query {
-  user {
-    ...userFragment
+query GetEvents($limit: Int, $events: EventsInput) {
+  events(limit: $limit, events: $events) {
+    _id
+    title
+    description
+    venueName
+    image
+    owner {
+      _id
+    }
+    category {
+      label
+      value
+      name
+    }
+    entity
+    views
   }
 }

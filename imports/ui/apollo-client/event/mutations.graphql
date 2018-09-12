@@ -20,7 +20,7 @@ mutation CreateEvent($entity: EventsInput!) {
 }
 
 mutation DeleteEvent($id: String!) {
-  deleteEvent(event: $id) {
+  deleteEvent(_id: $id) {
     _id
   }
 }

@@ -5,28 +5,7 @@ import {Query, Mutation} from "react-apollo";
 import {connect} from "react-redux";
 import {PreviewData} from "../../actions/PreviewActions";
 import {CreateEvent, DeleteEvent} from '../../apollo-client/event';
-
-const events = gql`
-    query Events($limit: Int!) {
-        events(limit: $limit) {
-            _id
-            title
-            description
-            venueName
-            image
-            owner {
-                _id
-            }
-            category {
-                label
-                value
-                name
-            }
-            entity
-            views
-        }
-    }
-`;
+import {GetEvents} from '../../apollo-client/event';
 
 /**
  * @module Events
@@ -59,7 +38,7 @@ class ListEvents extends Component {
     const {limit} = this.state;
     return (
       <ListLayout entityType={"events"}>
-        <Query key={"listComponent"} query={events} variables={{limit}}>
+        <Query key={"listComponent"} query={GetEvents} variables={{limit}}>
           {({loading, error, data}) => {
             // if (loading) return null;
             // if (error) return `Error!: ${error}`;
@@ -76,7 +55,7 @@ class ListEvents extends Component {
           }}
         </Query>
         {this.state.selectedItem ? (
-          <Mutation mutation={DeleteEvent}>
+          <Mutation key={"rightSide"} mutation={DeleteEvent}>
             {(deleteEvent, {eventDeleted}) => (
               <Preview
                 key={"rightSide"}
@@ -100,6 +79,7 @@ class ListEvents extends Component {
                     },
                     onClick: function () {
                       deleteEvent({variables: {id: _this.state.selectedItem._id}});
+                      _this.setState({limit: 10});
                     }
                   }
                 ]}
