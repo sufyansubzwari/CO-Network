@@ -15,6 +15,7 @@ import ListEvents from "./pages/events/list-events";
 import ListJobs from "./pages/jobs/list-jobs";
 import ListInnovators from "./pages/innovators/list-innovators";
 import PostEvent from "./pages/events/post-event";
+import PostJob from "./pages/jobs/post-jobs";
 
 const handleAuthentication = props => {
   if (/access_token|id_token|error/.test(props.location.hash)) {
@@ -41,6 +42,7 @@ const Routes = props => (
         path="/post-event"
         render={() => <PostEvent />}
       />
+      <Route name="Post a Job" path="/post-job" render={() => <PostJob />} />
       <Route
         path="/callback"
         render={props => {
