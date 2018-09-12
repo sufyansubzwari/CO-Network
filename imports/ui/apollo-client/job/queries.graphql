@@ -1,0 +1,19 @@
+
+query GetJobs($limit: Int, $filter: String) {
+  jobs(limit: $limit, events: $filter) {
+      _id
+      owner {
+        _id
+      }
+      title
+      description
+      image
+      industry {
+        label
+        value
+        name
+      }
+      entity
+      views
+    }
+}

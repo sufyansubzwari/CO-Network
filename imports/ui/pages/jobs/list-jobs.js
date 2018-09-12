@@ -1,28 +1,11 @@
 import React, { Component } from "react";
 import { ItemsList, ListLayout, Preview } from "../../../ui/components";
-import gql from "graphql-tag";
-import { Query } from "react-apollo";
-
-const jobs = gql`
-  query Jobs($limit: Int!) {
-    jobs(limit: $limit) {
-      _id
-      owner {
-        _id
-      }
-      title
-      description
-      image
-      industry {
-        label
-        value
-        name
-      }
-      entity
-      views
-    }
-  }
-`;
+import { Query, Mutation } from "react-apollo";
+import { connect } from "react-redux";
+import { PreviewData } from "../../actions/PreviewActions";
+import { CreateEvent, DeleteEvent } from "../../apollo-client/event";
+import { GetEvents } from "../../apollo-client/event";
+import { withRouter } from "react-router-dom";
 
 /**
  * @module Jobs
