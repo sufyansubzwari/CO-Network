@@ -1,12 +1,11 @@
-import React, {Component} from "react";
-import {ItemsList, ListLayout, Preview} from "../../../ui/components";
-import gql from "graphql-tag";
-import {Query, Mutation} from "react-apollo";
-import {connect} from "react-redux";
-import {PreviewData} from "../../actions/PreviewActions";
-import {CreateEvent, DeleteEvent} from '../../apollo-client/event';
-import {GetEvents} from '../../apollo-client/event';
-import {withRouter} from 'react-router-dom';
+import React, { Component } from "react";
+import { ItemsList, ListLayout, Preview } from "../../../ui/components";
+import { Query, Mutation } from "react-apollo";
+import { connect } from "react-redux";
+import { PreviewData } from "../../actions/PreviewActions";
+import { CreateEvent, DeleteEvent } from "../../apollo-client/event";
+import { GetEvents } from "../../apollo-client/event";
+import { withRouter } from "react-router-dom";
 
 /**
  * @module Events
@@ -21,12 +20,12 @@ class ListEvents extends Component {
       selectedIndex: null,
       loading: false,
       limit: 10,
-      events: {},
+      filter: {}
     };
   }
 
   onChangeSelection(item, key) {
-    this.setState({selectedItem: item, selectedIndex: key});
+    this.setState({ selectedItem: item, selectedIndex: key });
   }
 
   fetchMoreSelection() {
@@ -36,31 +35,31 @@ class ListEvents extends Component {
   }
 
   static removeEvent(deleteEvent, event) {
-    deleteEvent({variables: {id: event._id}});
+    deleteEvent({ variables: { id: event._id } });
   }
 
   onSearch(value) {
-    const searchEntity = {
-      title: value,
-      description: value,
-    };
-    this.setState({events: searchEntity})
+    this.setState({ filter: value });
   }
 
   render() {
     const _this = this;
-    const {limit, events} = this.state;
+    const { limit, filter } = this.state;
     return (
       <ListLayout entityType={"events"} onSearchText={this.onSearch.bind(this)}>
-        <Query key={"listComponent"} query={GetEvents} variables={{limit, events}}>
-          {({loading, error, data}) => {
+        <Query
+          key={"listComponent"}
+          query={GetEvents}
+          variables={{ limit, filter }}
+        >
+          {({ loading, error, data }) => {
             // if (loading) return null;
             // if (error) return `Error!: ${error}`;
             return (
               <ItemsList
                 key={"listComponent"}
                 title={"Events"}
-                data={data.events}
+                data={data && data.events}
                 loading={this.state.loading}
                 onFetchData={() => this.fetchMoreSelection()}
                 onSelectCard={(item, key) => this.onChangeSelection(item, key)}
@@ -70,7 +69,7 @@ class ListEvents extends Component {
         </Query>
         {this.state.selectedItem ? (
           <Mutation key={"rightSide"} mutation={DeleteEvent}>
-            {(deleteEvent, {eventDeleted}) => (
+            {(deleteEvent, { eventDeleted }) => (
               <Preview
                 key={"rightSide"}
                 navlinks={["Details", "Vision", "Products", "Media"]}
@@ -79,7 +78,9 @@ class ListEvents extends Component {
                   {
                     text: "Follow",
                     checkVisibility: () => {
-                      return this.state.selectedItem && this.state.selectedItem._id;
+                      return (
+                        this.state.selectedItem && this.state.selectedItem._id
+                      );
                     },
                     onClick: () => {
                       console.log("Adding");
@@ -88,20 +89,29 @@ class ListEvents extends Component {
                   {
                     text: "Edit",
                     checkVisibility: () => {
-                      return this.state.selectedItem && this.state.selectedItem._id;
+                      return (
+                        this.state.selectedItem && this.state.selectedItem._id
+                      );
                     },
                     onClick: () => {
-                      _this.props.history.push("/post-event", {event: _this.state.selectedItem});
+                      _this.props.history.push("/post-event", {
+                        event: _this.state.selectedItem
+                      });
                     }
                   },
                   {
                     text: "Remove",
                     icon: "delete",
                     checkVisibility: () => {
-                      return this.state.selectedItem && this.state.selectedItem._id;
+                      return (
+                        this.state.selectedItem && this.state.selectedItem._id
+                      );
                     },
-                    onClick: function () {
-                      ListEvents.removeEvent(deleteEvent, _this.state.selectedItem);
+                    onClick: function() {
+                      ListEvents.removeEvent(
+                        deleteEvent,
+                        _this.state.selectedItem
+                      );
                     }
                   }
                 ]}
@@ -122,7 +132,7 @@ class ListEvents extends Component {
 }
 
 const mapStateToProps = state => {
-  const {previewData} = state;
+  const { previewData } = state;
   return {
     previewData: previewData
   };
@@ -134,7 +144,9 @@ const mapDispatchToProps = dispatch => {
   };
 };
 
-export default withRouter(connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(ListEvents));
+export default withRouter(
+  connect(
+    mapStateToProps,
+    mapDispatchToProps
+  )(ListEvents)
+);

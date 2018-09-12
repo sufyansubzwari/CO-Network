@@ -1,6 +1,6 @@
 
-query GetEvents($limit: Int, $events: EventsInputSearch) {
-  events(limit: $limit, events: $events) {
+query GetEvents($limit: Int, $filter: String) {
+  events(limit: $limit, filter: $filter) {
     _id
     title
     description

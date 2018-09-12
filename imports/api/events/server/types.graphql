@@ -38,7 +38,7 @@ type Sponsors {
 }
 
 type Query {
-    events(events: EventsInputSearch, limit: Int): [Events]
+    events(filter: String, limit: Int): [Events]
     event(_id: String): Events
 }
 
@@ -62,6 +62,7 @@ input TableStringFilterInput{
     notContains: String
     between: [String]
     beginsWith: String
+    regex: String
 }
 
 input EventsInput {
