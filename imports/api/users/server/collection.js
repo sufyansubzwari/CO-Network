@@ -181,6 +181,22 @@ const schema = new SimpleSchema({
     type: String,
     optional: true,
   },
+    'profile.professional.industry': {
+        type: Array,
+        optional: true,
+    },
+    'profile.professional.industry.$': {
+        type: Object,
+        optional: true,
+    },
+    'profile.professional.industry.$.label': {
+        type: String,
+        optional: true,
+    },
+    'profile.professional.industry.$.value': {
+        type: String,
+        optional: true,
+    },
   'profile.speaker': {
     type: Object,
     optional: true,
