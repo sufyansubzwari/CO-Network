@@ -82,7 +82,7 @@ input SubscriptionInput {
 
 type Query {
   users(user: UserInput, limit: Int): [User]
-  user(_id: String): User
+  user(id: String): User
 }
 
 input UserInput {

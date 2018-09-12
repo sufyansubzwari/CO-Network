@@ -2,22 +2,9 @@ import { WebAuth, Management } from "auth0-js/dist/auth0";
 import { Meteor } from "meteor/meteor";
 import react from "react";
 import Axios from "axios";
+import { userQuery } from "../../apollo-client/user";
 
 class Authorization extends react.Component {
-  login(service, callback) {
-    localStorage.setItem("currentService", service);
-    this.callback = callback;
-    this.auth0.popup.authorize(
-      {
-        nonce: "login",
-        connection: service
-      },
-      (err, authResult) => {
-        if (!err && authResult) this.setSession(authResult);
-      }
-    );
-  }
-
   constructor() {
     super();
     this.settings = Meteor.settings.public.auth0;
@@ -30,11 +17,24 @@ class Authorization extends react.Component {
         "read:current_user  update:current_user_identities delete:current_user_metadata delete:current_user_device_credentials offline_access",
       responseType: "token id_token"
     });
-
     this.login = this.login.bind(this);
     this.logout = this.logout.bind(this);
     this.loginMeteor = this.loginMeteor.bind(this);
     this.isAuthenticated = this.isAuthenticated.bind(this);
+  }
+
+  login(service, callback) {
+    localStorage.setItem("currentService", service);
+    this.callback = callback;
+    this.auth0.popup.authorize(
+      {
+        nonce: "login",
+        connection: service
+      },
+      (err, authResult) => {
+        if (!err && authResult) this.setSession(authResult);
+      }
+    );
   }
 
   getAccessToken() {
@@ -106,25 +106,26 @@ class Authorization extends react.Component {
     if (profile) {
       this.userProfile = profile;
       profile.expireIn = localStorage.expires_at;
-      // todo integrate with the new grapql api
       Meteor.call("users.findUser", this.userProfile.user_id, (err, result) => {
         if (!err) {
           if (result.length > 0) {
             _this.callback({ isSignUp: false });
           } else {
-            _this.callback({ isSignUp: true });
+            // insert user from Auth0
+            Meteor.call(
+              "users.insertUserAuth0",
+              profile,
+              localStorage.getItem("currentService"),
+              (err, result) => {
+                if (!err)
+                  Meteor.loginWithToken(result.token, () =>
+                    _this.callback({ isSignUp: true })
+                  );
+              }
+            );
           }
         }
       });
-      // todo integrate with the new grapql api
-      Meteor.call(
-        "users.insertUserAuth0",
-        profile,
-        localStorage.getItem("currentService"),
-        (err, result) => {
-          if (!err) Meteor.loginWithToken(result.token, () => _this.callback());
-        }
-      );
     }
   }
 
@@ -196,25 +197,23 @@ class Authorization extends react.Component {
     var primaryAccessToken = localStorage.getItem("id_token");
     var primaryUserId = localStorage.getItem("user_id");
     let _this = this;
-    this.authManage.linkUser(
-      primaryUserId,
-      secondaryIdToken,
-      (error, response) => {
-        if (error) {
-          // todo: alert for error
-        } else
-          _this.getProfile(profile => {
-            let prof = Meteor.user();
-            prof = Object.assign(prof.profile, profile);
-            // todo: update the profile
-            // UpdUserProfile(prof);
-          });
-      }
-    );
+    this.authManage.linkUser(primaryUserId, secondaryIdToken, error => {
+      if (error) {
+        // todo: alert for error
+      } else
+        _this.getProfile(profile => {
+          let prof = Meteor.user();
+          prof = Object.assign(prof.profile, profile);
+          // todo: update the profile
+          // UpdUserProfile(prof);
+        });
+    });
   }
 
   unlinkAccount(service) {
-    let secondary_user = localStorage.getItem(service).split("|")[1];
+    const userData = localStorage.getItem(service);
+    let secondary_user = null;
+    if (userData) secondary_user = userData.split("|")[1];
     let _this = this;
 
     if (!this.authManage) this.getAuthForLink();
@@ -222,21 +221,22 @@ class Authorization extends react.Component {
     if (!this.isAuthenticated()) {
       this.renewToken();
     } else {
-      Axios.delete(
-        `https://${this.settings.domain}/api/v2/users/${
-          localStorage.user_id
-        }/identities/${service}/${secondary_user}`,
-        {
-          headers: { authorization: "Bearer " + localStorage.access_token }
-        }
-      ).then(res => {
-        _this.getProfile(profile => {
-          let prof = Meteor.user();
-          prof = Object.assign(prof.profile, profile);
-          // todo: update the profile
-          // UpdUserProfile(prof);
+      if (secondary_user)
+        Axios.delete(
+          `https://${this.settings.domain}/api/v2/users/${
+            localStorage.user_id
+          }/identities/${service}/${secondary_user}`,
+          {
+            headers: { authorization: "Bearer " + localStorage.access_token }
+          }
+        ).then(res => {
+          _this.getProfile(profile => {
+            let prof = Meteor.user();
+            prof = Object.assign(prof.profile, profile);
+            // todo: update the profile
+            // UpdUserProfile(prof);
+          });
         });
-      });
     }
   }
 }
