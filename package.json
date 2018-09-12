@@ -3,7 +3,7 @@
   "private": true,
   "repository": "https://gitlab.com/blueoceantech/sufyan/mlsociety-new-design.git",
   "scripts": {
-    "start": "meteor run --settings settings.dev.json",
+    "start": "meteor --settings settings.dev.json",
     "staging": "DEPLOY_HOSTNAME=us-east-1.galaxy-deploy.meteor.com meteor deploy mlsociety-staging.meteorapp.com --settings settings-staging.json",
     "local": "meteor run --settings settings.json",
     "lint": "eslint --quiet --ext .js,.jsx .",

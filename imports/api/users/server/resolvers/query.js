@@ -3,7 +3,7 @@ import Service from '../service';
 const Query = {};
 
 Query.user = (root, {_id}, context) => {
-  return Service.getUser(_id)
+  return _id ? Service.getUser(_id): null
 };
 
 Query.users = (root, {user, limit}, context) => {

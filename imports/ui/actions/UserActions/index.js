@@ -2,7 +2,7 @@ import { Meteor } from "meteor/meteor";
 import getUserName from "./get-user-name";
 import * as types from "./types";
 
-export function onLogin(isSignUp) {
+export function onLogin() {
   const loggingIn = Meteor.loggingIn();
   const user = Meteor.user();
   const userId = Meteor.userId();

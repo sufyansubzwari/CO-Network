@@ -32,10 +32,8 @@ class LoginModal extends Component {
 
   processAuthRequest(service) {
     Authorization.login(service, response => {
-      if (response.isSignUp) {
-        this.props.hideModal();
-      } else {
-        this.props.onLogin(response.isSignUp);
+      if (response && response.isSignUp) {
+        this.props.onLogin();
         this.props.hideModal();
       }
     });
