@@ -91,7 +91,7 @@ class EventStep1 extends Component {
     this.setState({event: this.state.event}, () => this.notifyParent());
   }
 
-  generateOtherTags(){
+  generateOtherTags() {
     // const _this = this;
     // let tags = this.state.event.categories.filter(item => {
     //   return _this.state.categories.indexOf(item) === -1;
@@ -156,7 +156,7 @@ class EventStep1 extends Component {
             </Container>
             <Container>
               <TagList
-                tags={this.state.event.others.length > 0 ? this.state.event.others.map(item => ({active: true, ...item})) : []}
+                tags={this.state.event.others && this.state.event.others.length > 0 ? this.state.event.others.map(item => ({active: true, ...item})) : []}
                 // onSelect={tag => alert(`you select the tag '${tag.name}'`)}
                 closeable={true}
                 onClose={(e, tag, index) => this.onCloseTags(e, tag, index)}

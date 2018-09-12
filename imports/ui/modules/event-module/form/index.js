@@ -37,6 +37,13 @@ class EventForm extends Component {
     };
   }
 
+  componentWillMount(){
+    console.log(this.props);
+    if(this.props.location && this.props.location.state && this.props.location.state.event){
+      this.setState({event: this.props.location.state.event}, () => this.props.history.push({state:null}))
+    }
+  }
+
   render() {
     return (
       <MlWizardForm

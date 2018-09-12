@@ -33,7 +33,7 @@ class PostEvent extends Component {
       owner: "Qt5569uuKKd6YrDwS",//Meteor.userId(),
     };
     createEvent({variables: {entity: event}});
-    console.log(query);
+    this.props.history.push("events");
   }
 
   render() {
@@ -45,6 +45,7 @@ class PostEvent extends Component {
               <EventForm
                 onFinish={(data) => this.onPostAction(createEvent, data)}
                 onCancel={() => this.onCancel()}
+                {...this.props}
               />
             )}
           </Mutation>

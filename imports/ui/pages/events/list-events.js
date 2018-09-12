@@ -6,6 +6,7 @@ import {connect} from "react-redux";
 import {PreviewData} from "../../actions/PreviewActions";
 import {CreateEvent, DeleteEvent} from '../../apollo-client/event';
 import {GetEvents} from '../../apollo-client/event';
+import {withRouter} from 'react-router-dom';
 
 /**
  * @module Events
@@ -72,6 +73,16 @@ class ListEvents extends Component {
                     }
                   },
                   {
+                    text: "Edit",
+                    checkVisibility: () => {
+                      return this.state.selectedItem && this.state.selectedItem._id;
+                    },
+                    onClick: () => {
+                      console.log(_this.props);
+                      _this.props.history.push("/post-event", {event: _this.state.selectedItem});
+                    }
+                  },
+                  {
                     text: "Remove",
                     icon: "delete",
                     checkVisibility: () => {
@@ -79,7 +90,6 @@ class ListEvents extends Component {
                     },
                     onClick: function () {
                       deleteEvent({variables: {id: _this.state.selectedItem._id}});
-                      _this.setState({limit: 10});
                     }
                   }
                 ]}
@@ -112,7 +122,7 @@ const mapDispatchToProps = dispatch => {
   };
 };
 
-export default connect(
+export default withRouter(connect(
   mapStateToProps,
   mapDispatchToProps
-)(ListEvents);
+)(ListEvents));
