@@ -5,6 +5,7 @@ import Routes from "../../routes";
 import { connect } from "react-redux";
 import Navbar from "../../components/Navbar/Navbar";
 import SideBar from "../../components/SideBar/SideBar";
+import LoginModal from "../../components/LoginModal/LoginModal";
 
 const MainLayout = props => {
   return (
@@ -25,6 +26,7 @@ const MainLayout = props => {
       fullWY
     >
       <Navbar {...props} />
+      <LoginModal />
       {props.showSidebar ? <SideBar {...props} /> : null}
       <Container fullY gridArea="content">
         <Routes {...props} />

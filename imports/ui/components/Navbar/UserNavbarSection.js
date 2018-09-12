@@ -10,6 +10,7 @@ import { Link } from "react-router-dom";
 import { connect } from "react-redux";
 import { toggleSideBar } from "../../actions/SideBarActions";
 import styled from "styled-components";
+import { loginModalShow } from "../../actions/LoginModalActions";
 
 const SAddMaterialIcon = styled.span`
   > i {
@@ -33,6 +34,10 @@ class UserNavbarSection extends React.Component {
     this.props.toggleSideBar(true, null);
   }
 
+  loginRequest() {
+    if (!this.props.curUser) this.props.showLogin();
+  }
+
   render() {
     const isAuthenticated = this.props.curUser;
     const avatarLink = isAuthenticated ? "/profile" : "/";
@@ -52,6 +57,7 @@ class UserNavbarSection extends React.Component {
                   image={
                     "https://cdn.dribbble.com/users/199982/screenshots/4044699/furkan-avatar-dribbble.png"
                   }
+                  onClick={() => this.loginRequest()}
                   size={this.size}
                 />
               </Link>
@@ -114,7 +120,9 @@ const mapStateToProps = () => {
 
 const mapDispatchToProps = dispatch => {
   return {
-    toggleSideBar: (status, type) => dispatch(toggleSideBar(status, type, true))
+    toggleSideBar: (status, type) =>
+      dispatch(toggleSideBar(status, type, true)),
+    showLogin: () => dispatch(loginModalShow())
   };
 };
 
