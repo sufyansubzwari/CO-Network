@@ -62,7 +62,7 @@ class EventsService {
    * @return {Object}||[{Object }] Return one or all events
    */
   static events = (query, limit) => {
-    return Events.collection.find(query, limit).fetch();
+    return Events.collection.find(query, {...limit, sort: {createdAt: -1}}).fetch();
   };
 }
 

@@ -1,0 +1,26 @@
+
+mutation CreateEvent($entity: EventsInput!) {
+  event(events: $entity) {
+    _id
+    title
+    description
+    venueName
+    image
+    owner {
+      _id
+    }
+    category {
+      label
+      value
+      name
+    }
+    entity
+    views
+  }
+}
+
+mutation DeleteEvent($id: String!) {
+  deleteEvent(event: $id) {
+    _id
+  }
+}

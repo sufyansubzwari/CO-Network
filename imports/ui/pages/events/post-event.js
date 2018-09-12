@@ -1,9 +1,11 @@
-import React, { Component } from "react";
-import { Container } from "btech-layout";
+import React, {Component} from "react";
+import {Container} from "btech-layout";
 import InternalLayout from "../../components/InternalLayout/InternalLayout";
 import EventForm from "../../modules/event-module/form";
-import { Preview } from "../../../ui/components";
-import { withRouter } from "react-router-dom";
+import {Preview} from "../../../ui/components";
+import {withRouter} from "react-router-dom";
+import {CreateEvent} from '../../apollo-client/event';
+import {Mutation} from "react-apollo";
 
 /**
  * @module Events
@@ -21,7 +23,16 @@ class PostEvent extends Component {
     this.props.history.push(`/events`);
   }
 
-  onPostAction(query) {
+  onPostAction(createEvent, query) {
+    let event = {
+      title: query.title,
+      description: query.description,
+      category: query.others.map(item => item._id),
+      venueName: query.venueName,
+      attenders: query.attenders,
+      owner: "Qt5569uuKKd6YrDwS",//Meteor.userId(),
+    };
+    createEvent({variables: {entity: event}});
     console.log(query);
   }
 
@@ -29,10 +40,14 @@ class PostEvent extends Component {
     return (
       <InternalLayout>
         <Container fullY key={"leftSide"}>
-          <EventForm
-            onFinish={(data) => this.onPostAction(data)}
-            onCancel={() => this.onCancel()}
-          />
+          <Mutation mutation={CreateEvent}>
+            {(createEvent, {eventCreated}) => (
+              <EventForm
+                onFinish={(data) => this.onPostAction(createEvent, data)}
+                onCancel={() => this.onCancel()}
+              />
+            )}
+          </Mutation>
         </Container>
         <Preview
           key={"rightSide"}
@@ -44,7 +59,7 @@ class PostEvent extends Component {
               checkVisibility: () => {
                 return this.state.selectedItem && this.state.selectedItem.id;
               },
-              onClick: function() {
+              onClick: function () {
                 console.log("Remove");
               }
             }

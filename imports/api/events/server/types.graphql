@@ -46,8 +46,8 @@ input EventsInput {
     _id: String
     title: String!
     description: String
-    startDate: Date!
-    endDate: Date!
+    startDate: Date
+    endDate: Date
     owner: String!
     venueName: String
     venueEmail: String
@@ -57,8 +57,8 @@ input EventsInput {
     category: [String]!
     attenders: AttendersInput!
     image: String
-    ticketType: ObjectTypeInput!
-    eventType: ObjectTypeInput!
+    ticketType: ObjectTypeInput
+    eventType: ObjectTypeInput
 }
 
 input AttendersInput {

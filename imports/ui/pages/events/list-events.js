@@ -1,30 +1,31 @@
-import React, { Component } from "react";
-import { ItemsList, ListLayout, Preview } from "../../../ui/components";
+import React, {Component} from "react";
+import {ItemsList, ListLayout, Preview} from "../../../ui/components";
 import gql from "graphql-tag";
-import { Query } from "react-apollo";
-import { connect } from "react-redux";
-import { PreviewData } from "../../actions/PreviewActions";
+import {Query, Mutation} from "react-apollo";
+import {connect} from "react-redux";
+import {PreviewData} from "../../actions/PreviewActions";
+import {CreateEvent, DeleteEvent} from '../../apollo-client/event';
 
 const events = gql`
-  query Events($limit: Int!) {
-    events(limit: $limit) {
-      _id
-      title
-      description
-      venueName
-      image
-      owner {
-        _id
-      }
-      category {
-        label
-        value
-        name
-      }
-      entity
-      views
+    query Events($limit: Int!) {
+        events(limit: $limit) {
+            _id
+            title
+            description
+            venueName
+            image
+            owner {
+                _id
+            }
+            category {
+                label
+                value
+                name
+            }
+            entity
+            views
+        }
     }
-  }
 `;
 
 /**
@@ -44,7 +45,7 @@ class ListEvents extends Component {
   }
 
   onChangeSelection(item, key) {
-    this.setState({ selectedItem: item, selectedIndex: key });
+    this.setState({selectedItem: item, selectedIndex: key});
   }
 
   fetchMoreSelection() {
@@ -54,11 +55,12 @@ class ListEvents extends Component {
   }
 
   render() {
-    const { limit } = this.state;
+    const _this = this;
+    const {limit} = this.state;
     return (
       <ListLayout entityType={"events"}>
-        <Query key={"listComponent"} query={events} variables={{ limit }}>
-          {({ loading, error, data }) => {
+        <Query key={"listComponent"} query={events} variables={{limit}}>
+          {({loading, error, data}) => {
             // if (loading) return null;
             // if (error) return `Error!: ${error}`;
             return (
@@ -74,39 +76,43 @@ class ListEvents extends Component {
           }}
         </Query>
         {this.state.selectedItem ? (
-          <Preview
-            key={"rightSide"}
-            navlinks={["Details", "Vision", "Products", "Media"]}
-            navClicked={index => console.log(index)}
-            navOptions={[
-              {
-                text: "Follow",
-                checkVisibility: () => {
-                  return this.state.selectedItem && this.state.selectedItem._id;
-                },
-                onClick: () => {
-                  console.log("Adding");
+          <Mutation mutation={DeleteEvent}>
+            {(deleteEvent, {eventDeleted}) => (
+              <Preview
+                key={"rightSide"}
+                navlinks={["Details", "Vision", "Products", "Media"]}
+                navClicked={index => console.log(index)}
+                navOptions={[
+                  {
+                    text: "Follow",
+                    checkVisibility: () => {
+                      return this.state.selectedItem && this.state.selectedItem._id;
+                    },
+                    onClick: () => {
+                      console.log("Adding");
+                    }
+                  },
+                  {
+                    text: "Remove",
+                    icon: "delete",
+                    checkVisibility: () => {
+                      return this.state.selectedItem && this.state.selectedItem._id;
+                    },
+                    onClick: function () {
+                      deleteEvent({variables: {id: _this.state.selectedItem._id}});
+                    }
+                  }
+                ]}
+                index={this.state.selectedIndex}
+                data={this.state.selectedItem}
+                backGroundImage={
+                  this.state.selectedItem ? this.state.selectedItem.image : null
                 }
-              },
-              {
-                text: "Remove",
-                icon: "delete",
-                checkVisibility: () => {
-                  return this.state.selectedItem && this.state.selectedItem._id;
-                },
-                onClick: function() {
-                  console.log("Remove");
-                }
-              }
-            ]}
-            index={this.state.selectedIndex}
-            data={this.state.selectedItem}
-            backGroundImage={
-              this.state.selectedItem ? this.state.selectedItem.image : null
-            }
-          >
-            event preview data for event
-          </Preview>
+              >
+                event preview data for event
+              </Preview>
+            )}
+          </Mutation>
         ) : null}
       </ListLayout>
     );
@@ -114,7 +120,7 @@ class ListEvents extends Component {
 }
 
 const mapStateToProps = state => {
-  const { previewData } = state;
+  const {previewData} = state;
   return {
     previewData: previewData
   };
