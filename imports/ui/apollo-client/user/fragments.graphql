@@ -3,11 +3,15 @@ fragment userFragment on User {
   createdAt
   services
   profile {
-      info {
-          name
-          lastName
-          image
-      }
+      name
+      lastName
+      nickName
+      loginCount
+      image
+      cover
+      gender
+      website
+      phone
   }
   subscriptions {
     endpoint
