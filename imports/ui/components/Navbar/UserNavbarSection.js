@@ -55,6 +55,7 @@ class UserNavbarSection extends React.Component {
               <Link to={avatarLink}>
                 <HButtom
                   image={
+                    !!isAuthenticated ? isAuthenticated.profile.image :
                     "https://cdn.dribbble.com/users/199982/screenshots/4044699/furkan-avatar-dribbble.png"
                   }
                   onClick={() => this.loginRequest()}

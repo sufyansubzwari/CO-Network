@@ -1,33 +1,35 @@
 import React, { Component } from "react";
-import { Container } from "btech-layout";
+import { Layout, Container } from "btech-layout";
+import UserForm from "./../../modules/user-module/form/";
 import InternalLayout from "../../components/InternalLayout/InternalLayout";
-import OrganizationForm from "../../modules/organization-module/form";
 import { Preview } from "../../../ui/components";
-import { withRouter } from "react-router-dom";
 import { Mutation } from "react-apollo";
+import { withRouter } from "react-router-dom";
+import { CreateEvent } from "../../apollo-client/event";
 
 /**
- * @module Organization
- * @category post
+ * @module User
+ * @category user-profile
  */
-class PostOrganization extends Component {
+class UserProfile extends Component {
   constructor(props) {
     super(props);
+
     this.state = {
-      organization: {}
-    };
+        user: {}
+    }
   }
 
   onCancel() {
-    this.props.history.push(`/innovators`);
+    this.props.history.push(`/`);
   }
 
   render() {
     return (
       <InternalLayout>
         <Container fullY key={"leftSide"}>
-          <OrganizationForm
-            onFinish={() => console.log("TODO the finish of the form")}
+          <UserForm
+            onFinish={data => this.onPostAction(() => console.log(createProfile), data)}
             onCancel={() => this.onCancel()}
             {...this.props}
           />
@@ -53,11 +55,11 @@ class PostOrganization extends Component {
             this.state.selectedItem ? this.state.selectedItem.image : null
           }
         >
-          event preview data for organization
+          event preview data for user
         </Preview>
       </InternalLayout>
     );
   }
 }
 
-export default withRouter(PostOrganization);
+export default UserProfile;

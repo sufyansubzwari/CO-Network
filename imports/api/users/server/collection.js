@@ -1,6 +1,6 @@
-import {Meteor} from 'meteor/meteor';
-import SimpleSchema from 'simpl-schema';
-import Constants from '../../constants';
+import { Meteor } from "meteor/meteor";
+import SimpleSchema from "simpl-schema";
+import Constants from "../../constants";
 
 //------------------------------------------------------------------------------
 // COLLECTION:
@@ -26,13 +26,13 @@ const collection = Meteor.users;
 collection.allow({
   insert: () => false,
   update: () => false,
-  remove: () => false,
+  remove: () => false
 });
 
 collection.deny({
   insert: () => true,
   update: () => true,
-  remove: () => true,
+  remove: () => true
 });
 
 //------------------------------------------------------------------------------
@@ -42,265 +42,311 @@ collection.deny({
  * @see {@link http://themeteorchef.com/snippets/using-the-collection2-package/}
  */
 const schema = new SimpleSchema({
-
   createdAt: {
-    type: Date,
+    type: Date
   },
 
   profile: {
     type: Object,
-    optional: true,
+    optional: true
   },
-  'profile.info': {
+  profile: {
     type: Object,
-    optional: true,
+    optional: true
   },
-  'profile.info.name': {
+  "profile.name": {
     type: String,
     max: 150,
-    optional: true,
+    optional: true
   },
-  'profile.info.lastName': {
+  "profile.lastName": {
     type: String,
     max: 150,
-    optional: true,
+    optional: true
   },
-  'profile.info.image': {
+  "profile.image": {
     type: String,
-    optional: true,
+    optional: true
   },
-  'profile.info.cover': {
+  "profile.nickName": {
     type: String,
-    optional: true,
+    optional: true
   },
-  'profile.info.email': {
+  "profile.cover": {
     type: String,
-    optional: true,
+    optional: true
   },
-  'profile.info.gender': {
+  "profile.email": {
     type: String,
-    optional: true,
+    optional: true
   },
-  'profile.info.website': {
+  "profile.gender": {
     type: String,
-    optional: true,
+    optional: true
   },
-  'profile.info.phone': {
+  "profile.website": {
     type: String,
-    optional: true,
+    optional: true
   },
-  'profile.social': {
-    type: Object,
-    optional: true,
-  },
-  'profile.social.github': {
+  "profile.phone": {
     type: String,
-    optional: true,
+    optional: true
   },
-  'profile.social.facebook': {
-    type: String,
-    optional: true,
-  },
-  'profile.social.twitter': {
-    type: String,
-    optional: true,
-  },
-  'profile.social.linkedin': {
-    type: String,
-    optional: true,
-  },
-  'profile.aboutMe': {
-    type: Object,
-    optional: true,
-  },
-  'profile.aboutMe.yourPassion': {
-    type: String,
-    optional: true,
-  },
-  'profile.aboutMe.existingProblem': {
-    type: String,
-    optional: true,
-  },
-  'profile.aboutMe.steps': {
-    type: String,
-    optional: true,
-  },
-  'profile.knowledge': {
-    type: Object,
-    optional: true,
-  },
-  'profile.knowledge.languages': {
-    type: Array,
-    optional: true,
-  },
-  'profile.knowledge.languages.$': {
-    type: String,
-    optional: true,
-  },
-  'profile.knowledge.curiosity': {
-    type: Array,
-    optional: true,
-  },
-  'profile.knowledge.curiosity.$': {
-    type: String,
-    optional: true,
-  },
-  'profile.knowledge.lookingFor': {
-    type: Array,
-    optional: true,
-  },
-  'profile.knowledge.lookingFor.$': {
-    type: String,
-    optional: true,
-  },
-  'profile.professional': {
-    type: Object,
-    optional: true,
-  },
-  'profile.professional.seeking': {
-    type: Boolean,
-    optional: true,
-  },
-  'profile.professional.salaryRange': {
-    type: Object,
-    optional: true,
-  },
-  'profile.professional.salaryRange.min': {
+  "profile.loginCount": {
     type: Number,
-    optional: true,
+    optional: true
   },
-  'profile.professional.salaryRange.max': {
-    type: Number,
-    optional: true,
-  },
-  'profile.professional.jobType': {
+  "profile.identities": {
     type: Array,
-    optional: true,
+    optional: true
   },
-  'profile.professional.jobType.$': {
-    type: String,
-    optional: true,
-  },
-  'profile.speaker': {
+  "profile.identities.$": {
     type: Object,
-    optional: true,
+    optional: true
   },
-  'profile.speaker.join': {
+  "profile.identities.$.provider": {
+    type: String,
+    optional: true
+  },
+  "profile.identities.$.user_id": {
+    type: String,
+    optional: true
+  },
+  "profile.identities.$.connection": {
+    type: String,
+    optional: true
+  },
+  "profile.identities.$.isSocial": {
     type: Boolean,
-    optional: true,
+    optional: true
   },
-  'profile.speaker.topic': {
-    type: Array,
-    optional: true,
-  },
-  'profile.speaker.topic.$': {
-    type: String,
-    optional: true,
-  },
-  'profile.speaker.style': {
-    type: Array,
-    optional: true,
-  },
-  'profile.speaker.style.$': {
+  "profile.social": {
     type: Object,
-    optional: true,
+    optional: true
   },
-  'profile.speaker.style.$.label': {
+  "profile.social.github": {
     type: String,
-    optional: true,
+    optional: true
   },
-  'profile.speaker.style.$.value': {
+  "profile.social.facebook": {
     type: String,
-    optional: true,
+    optional: true
   },
-  'profile.speaker.stage': {
-    type: Array,
-    optional: true,
+  "profile.social.twitter": {
+    type: String,
+    optional: true
   },
-  'profile.speaker.stage.$': {
+  "profile.social.linkedin": {
+    type: String,
+    optional: true
+  },
+  "profile.aboutMe": {
     type: Object,
-    optional: true,
+    optional: true
   },
-  'profile.speaker.stage.$.label': {
+  "profile.aboutMe.yourPassion": {
     type: String,
-    optional: true,
+    optional: true
   },
-  'profile.speaker.stage.$.value': {
+  "profile.aboutMe.existingProblem": {
     type: String,
-    optional: true,
+    optional: true
+  },
+  "profile.aboutMe.steps": {
+    type: String,
+    optional: true
+  },
+  "profile.knowledge": {
+    type: Object,
+    optional: true
+  },
+  "profile.knowledge.languages": {
+    type: Array,
+    optional: true
+  },
+  "profile.knowledge.languages.$": {
+    type: String,
+    optional: true
+  },
+  "profile.knowledge.curiosity": {
+    type: Array,
+    optional: true
+  },
+  "profile.knowledge.curiosity.$": {
+    type: String,
+    optional: true
+  },
+  "profile.knowledge.lookingFor": {
+    type: Array,
+    optional: true
+  },
+  "profile.knowledge.lookingFor.$": {
+    type: String,
+    optional: true
+  },
+  "profile.professional": {
+    type: Object,
+    optional: true
+  },
+  "profile.professional.seeking": {
+    type: Boolean,
+    optional: true
+  },
+  "profile.professional.salaryRange": {
+    type: Object,
+    optional: true
+  },
+  "profile.professional.salaryRange.min": {
+    type: Number,
+    optional: true
+  },
+  "profile.professional.salaryRange.max": {
+    type: Number,
+    optional: true
+  },
+  "profile.professional.jobType": {
+    type: Array,
+    optional: true
+  },
+  "profile.professional.jobType.$": {
+    type: String,
+    optional: true
+  },
+  "profile.professional.industry": {
+    type: Array,
+    optional: true
+  },
+  "profile.professional.industry.$": {
+    type: Object,
+    optional: true
+  },
+  "profile.professional.industry.$.label": {
+    type: String,
+    optional: true
+  },
+  "profile.professional.industry.$.value": {
+    type: String,
+    optional: true
+  },
+  "profile.speaker": {
+    type: Object,
+    optional: true
+  },
+  "profile.speaker.join": {
+    type: Boolean,
+    optional: true
+  },
+  "profile.speaker.topic": {
+    type: Array,
+    optional: true
+  },
+  "profile.speaker.topic.$": {
+    type: String,
+    optional: true
+  },
+  "profile.speaker.style": {
+    type: Array,
+    optional: true
+  },
+  "profile.speaker.style.$": {
+    type: Object,
+    optional: true
+  },
+  "profile.speaker.style.$.label": {
+    type: String,
+    optional: true
+  },
+  "profile.speaker.style.$.value": {
+    type: String,
+    optional: true
+  },
+  "profile.speaker.stage": {
+    type: Array,
+    optional: true
+  },
+  "profile.speaker.stage.$": {
+    type: Object,
+    optional: true
+  },
+  "profile.speaker.stage.$.label": {
+    type: String,
+    optional: true
+  },
+  "profile.speaker.stage.$.value": {
+    type: String,
+    optional: true
   },
   //Emails
   emails: {
     type: Array,
-    label: '[{ address, verified }, ...]',
-    optional: true,
+    label: "[{ address, verified }, ...]",
+    optional: true
   },
 
-  'emails.$': {
-    type: Object,
+  "emails.$": {
+    type: Object
   },
 
-  'emails.$.address': {
+  "emails.$.address": {
     type: String,
-    regEx: SimpleSchema.RegEx.Email,
+    regEx: SimpleSchema.RegEx.Email
   },
-  'emails.$.verified': {
-    type: Boolean,
+  "emails.$.verified": {
+    type: Boolean
   },
   //Services
   services: {
     type: Object,
-    label: 'Auth services such as facebook, google plus or twitter',
+    label: "Auth services such as facebook, google plus or twitter",
     optional: true,
-    blackbox: true,
+    blackbox: true
   },
 
   roles: {
     type: Array,
-    defaultValue: [],
+    defaultValue: []
   },
 
-  'roles.$': {
+  "roles.$": {
     type: String,
-    allowedValues: Constants.ALL_ROLES,
+    allowedValues: Constants.ALL_ROLES
   },
 
   subscriptions: {
     type: Array,
-    label: 'Array of push subscriptions',
-    defaultValue: [],
+    label: "Array of push subscriptions",
+    defaultValue: []
   },
 
-  'subscriptions.$': {
+  "subscriptions.$": {
+    type: Object
+  },
+
+  "subscriptions.$.endpoint": {
+    type: String,
+    label: "Push subscription URL"
+  },
+
+  "subscriptions.$.keys": {
     type: Object,
+    label: "User encryption keys"
   },
 
-  'subscriptions.$.endpoint': {
+  "subscriptions.$.keys.auth": {
     type: String,
-    label: 'Push subscription URL',
+    label: "User public encryption key"
   },
 
-  'subscriptions.$.keys': {
-    type: Object,
-    label: 'User encryption keys',
-  },
-
-  'subscriptions.$.keys.auth': {
+  "subscriptions.$.keys.p256dh": {
     type: String,
-    label: 'User public encryption key',
-  },
-
-  'subscriptions.$.keys.p256dh': {
-    type: String,
-    label: 'User auth secret',
+    label: "User auth secret"
   },
 
   // In order to avoid an 'Exception in setInterval callback' from Meteor
   heartbeat: {
     type: Date,
-    optional: true,
-  },
-
+    optional: true
+  }
 });
 
 collection.attachSchema(schema);

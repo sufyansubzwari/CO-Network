@@ -1,66 +1,122 @@
-import React from 'react';
-import {MlWizardForm, WizardStepForm, WizardForm} from 'btech-base-forms-component';
-import {FirstStep, SecondStep, ThirdStep, FourthStep, FifthStep, SixthStep} from './Steps';
+import React from "react";
+import {
+  MlWizardForm,
+  WizardStepForm,
+  WizardForm
+} from "btech-base-forms-component";
+import {
+  FirstStep,
+  SecondStep,
+  ThirdStep,
+  FourthStep,
+  FifthStep,
+  SixthStep
+} from "./Steps";
 
-import {ORGANIZATION_TYPE} from "./constants/constants";
+import { ORGANIZATION_TYPE } from "./constants/constants";
+import SeventhStep from "./Steps/SeventhStep";
 
 class OrganizationForm extends React.Component {
-    constructor(props) {
-        super(props)
-        this.state = {
-            details: {
-                orgType: ORGANIZATION_TYPE
+  constructor(props) {
+    super(props);
+    this.state = {
+        organization: {
+            info : {
+                name: "",
+                employees: {
+                    value: "",
+                    label: ""
+                },
+                orgType: [],
+                description: [],
+                actively: [],
+                website: "",
+                location: {
+                    address: "",
+                    location: { lat: "", lng: "" },
+                    fullLocation: {}
+                },
+
             },
-            vision: {},
-            community: {},
-            technical: {},
-            products: {},
-            media: {}
+            social : {
+                github: "",
+                linkedin: "",
+                facebook: "",
+                twitter: "",
+                google: ""
+            },
+            contact: {
+                email: "",
+                phone: "",
+                name: ""
+            },
+            services: {
+                relocated: false,
+                seeking: true,
+                hostEvents: true
+            },
+            reason: {
+                languages: "",
+                bio: "",
+                mission: "",
+                culture: "",
+                orgDefine: "",
+                product: "",
+                industry: ""
+            },
+            tech: {
+                industry: [],
+                salaryRange: {
+                    min: "",
+                    max: ""
+                },
+                stack: [],
+                jobType: []
+            },
+            plan : 0
         }
+    };
+  }
 
-        this.handleStepChange = this.handleStepChange.bind(this);
-    }
-
-    handleStepChange(data, property) {
-        if (property == 'details') {
-            this.setState({
-                details: data
-            },() => this.forceUpdate())
-        }
-        if (property == 'vision') {
-            this.setState({
-                vision: data
-            })
-        }
-
-    }
-
-    render() {
-        return (
-            <div style={{width: 800, height:"100%"}}>
-                <MlWizardForm title={'Organization Profile'}>
-                    <WizardStepForm title={'Details'}>
-                        <FirstStep data={this.state.details} onChange={this.handleStepChange}/>
-                    </WizardStepForm>
-                    <WizardStepForm title={'Vision | Culture'}>
-                        <SecondStep data={this.state.vision}/>
-                    </WizardStepForm>
-                    <WizardStepForm title={'Community Engagement'}>
-                        <ThirdStep data={this.state.community}/>
-                    </WizardStepForm>
-                    <WizardStepForm title={'Technical Recruitment'}>
-                        <FourthStep data={this.state.technical}/>
-                    </WizardStepForm>
-                    <WizardStepForm title={'Products | Services'}>
-                        <FifthStep data={this.state.products}/>
-                    </WizardStepForm>
-                    <WizardStepForm title={'Media'}>
-                        <SixthStep data={this.state.media}/>
-                    </WizardStepForm>
-                </MlWizardForm>
-            </div>
-        );
-    }
+  render() {
+    return (
+      <MlWizardForm title={"Organization Profile"} onFinish={() =>
+          this.props.onFinish && this.props.onFinish(this.state.organization)
+      }
+                    onCancel={() => this.props.onCancel && this.props.onCancel()}>
+        <WizardStepForm title={"Details"}>
+          <FirstStep
+              data={this.state.organization}
+              onChange={organization => this.setState({ organization: organization })}
+          />
+        </WizardStepForm>
+        <WizardStepForm title={"Vision | Culture"}>
+          <SecondStep data={this.state.organization}
+                      onChange={organization => this.setState({ organization: organization })} />
+        </WizardStepForm>
+        <WizardStepForm title={"Community Engagement"}>
+          <ThirdStep data={this.state.organization}
+                     onChange={organization => this.setState({ organization: organization })} />
+        </WizardStepForm>
+        <WizardStepForm title={"Technical Recruitment"}>
+          <FourthStep data={this.state.organization}
+                      onChange={organization => this.setState({ organization: organization })} />
+        </WizardStepForm>
+        <WizardStepForm title={"Products | Services"}>
+          <FifthStep data={this.state.organization}
+                     onChange={organization => this.setState({ organization: organization })} />
+        </WizardStepForm>
+        <WizardStepForm title={"Media"}>
+          <SixthStep data={this.state.organization}
+                     onChange={organization => this.setState({ organization: organization })} />
+        </WizardStepForm>
+          <WizardStepForm title={"CO Network Services"}>
+              <SeventhStep data={this.state.organization}
+                         onChange={organization => this.setState({ organization: organization })} />
+          </WizardStepForm>
+      </MlWizardForm>
+    );
+  }
 }
 
-export default OrganizationForm
+export default OrganizationForm;
