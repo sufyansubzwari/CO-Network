@@ -117,7 +117,7 @@ class ListInnovators extends Component {
                 renderItem={this.customRenderItem}
                 key={"listComponent"}
                 title={this.state.currentTab.title}
-                data={data.organizations}
+                data={data ? data.organizations : []}
                 loading={this.state.loading}
                 onFetchData={() => this.fetchMoreSelection()}
                 onSelectCard={(item, key) => this.onChangeSelection(item, key)}

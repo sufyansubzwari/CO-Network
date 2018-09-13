@@ -69,6 +69,10 @@ const schema = new SimpleSchema({
     type: String,
     optional: true,
   },
+  'profile.info.nickname': {
+    type: String,
+    optional: true,
+  },
   'profile.info.cover': {
     type: String,
     optional: true,
@@ -87,6 +91,30 @@ const schema = new SimpleSchema({
   },
   'profile.info.phone': {
     type: String,
+    optional: true,
+  },
+  'profile.info.identities': {
+    type: Array,
+    optional: true,
+  },
+  'profile.info.identities.$': {
+    type: Object,
+    optional: true,
+  },
+  'profile.info.identities.$.provider': {
+    type: String,
+    optional: true,
+  },
+  'profile.info.identities.$.user_id': {
+    type: String,
+    optional: true,
+  },
+  'profile.info.identities.$.connection': {
+    type: String,
+    optional: true,
+  },
+  'profile.info.identities.$.isSocial': {
+    type: Boolean,
     optional: true,
   },
   'profile.social': {

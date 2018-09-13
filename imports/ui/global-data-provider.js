@@ -1,5 +1,6 @@
 import { Accounts } from "meteor/accounts-base";
 import React from "react";
+import { Meteor } from "meteor/meteor";
 import PropTypes from "prop-types";
 import { graphql } from "react-apollo";
 import { propType } from "graphql-anywhere";
@@ -53,6 +54,13 @@ GlobalDataProvider.propTypes = {
 };
 
 // Apollo integration
-const withData = graphql(userQuery, { name: "userData" });
+const withData = graphql(userQuery, {
+  name: "userData",
+  options: () => ({
+    variables: {
+      id: Meteor.userId()
+    }
+  })
+});
 
 export default withData(GlobalDataProvider);

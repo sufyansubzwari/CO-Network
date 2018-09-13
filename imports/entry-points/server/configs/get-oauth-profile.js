@@ -74,15 +74,19 @@ const parseTwitterData = (profile, service) => {
   return {
     email: profile.email ? profile.email : "",
     name: profile.name,
-    personalInfo: {
+    createdAt: profile.createdDate || Date.now(),
+    info: {
       name: name[0],
       lastName: name[1],
-      img: profile.picture,
-      emailAddress: profile.email ? profile.email : "",
+      nickname: profile.screen_name || profile.nickname,
+      image: profile.picture,
+      email: profile.email || "",
+      identities: profile.identities,
+      lastIp: profile.lastIp,
       location: "",
       gender: "",
       website: "",
-      phoneNumber: "",
+      phone: "",
       cover: ""
     },
     aboutMe: {

@@ -2,20 +2,19 @@ import { Meteor } from "meteor/meteor";
 import { check } from "meteor/check";
 import { Accounts } from "meteor/accounts-base";
 Meteor.methods({
-  "users.insertUserAuth0": function insertUserAuth0(profile, services) {
+  "users.insertUserAuth0": function insertUserAuth0(profile, service) {
     // todo integrate with the new grapql api
     check(profile, Object);
-    check(services, String);
+    check(service, String);
     let user = Accounts.updateOrCreateUserFromExternalService(
-      services,
+      service,
       { id: profile.user_id },
       {
         email: profile.email,
-        profile: { auth0: services, ...profile }
+        profile: { auth0: service, ...profile }
       }
     );
     let stampedLoginToken = Accounts._generateStampedLoginToken();
-    console.log("_insertLoginToken", user);
     Accounts._insertLoginToken(user.userId, stampedLoginToken);
     return stampedLoginToken;
   },

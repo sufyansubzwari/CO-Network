@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import { Modal, ModalBody } from "reactstrap";
-import { onLogin } from "../../actions/UserActions";
 import { loginModalHide } from "../../actions/LoginModalActions";
 import { Container, Layout } from "btech-layout";
 import styled from "styled-components";
@@ -33,7 +32,6 @@ class LoginModal extends Component {
   processAuthRequest(service) {
     Authorization.login(service, response => {
       if (response && response.isSignUp) {
-        this.props.onLogin();
         this.props.hideModal();
       }
     });
@@ -80,7 +78,6 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
   return {
-    onLogin: () => dispatch(onLogin()),
     hideModal: () => dispatch(loginModalHide())
   };
 };

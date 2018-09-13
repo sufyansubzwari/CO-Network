@@ -2,9 +2,12 @@ fragment userFragment on User {
   _id
   createdAt
   services
-  emails {
-    address
-    verified
+  profile {
+      info {
+          name
+          lastName
+          image
+      }
   }
   subscriptions {
     endpoint
