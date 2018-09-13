@@ -7,22 +7,35 @@ class Fifth extends React.Component {
     constructor(props) {
         super(props)
 
-        this.state = {}
+        let data = props.data ? props.data : {}
 
-        this.handleInput = this.handleInput.bind(this)
+        this.state = {
+            organization: data
+        }
+
+
     }
 
-    handleInput(model, name, value) {
+    componentWillReceiveProps(nextProps) {
+        if (nextProps.data && nextProps.data !== this.state.organization)
+            this.setState({organization: nextProps.data});
+    }
 
+    notifyParent(model, name, value) {
+        if (model && name && value) {
+            let organization = this.state.organization;
+            organization[name] = value;
+            this.setState(
+                {organization: organization},
+                () => this.props.onChange && this.props.onChange(this.state.organization)
+            );
+        } else this.props.onChange && this.props.onChange(this.state.organization);
     }
 
     render() {
         return (
-            <Layout rowGap={'40px'}>
-                <TextArea height={'100px'} value={'organization test text'} placeholderText={'Academic Background'}/>
-                <TextArea height={'100px'} value={'vision and mission test text'} placeholderText={'Audited Courses'}/>
-                <TextArea height={'100px'} value={'I do nothing to measure success'}
-                          placeholderText={'Patents'}/>
+            <Layout rowGap={'25px'}>
+               missing components
             </Layout>
         );
     }

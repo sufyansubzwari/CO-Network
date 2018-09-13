@@ -10,15 +10,24 @@ type Organizations {
     contact: Contact!
     services: Services
     reason: Reason!
+    tech: Tech!
+}
+
+type Tech {
+    stack: [Tags]!
+    salaryRange: SalaryRange
+    industry: [ObjectType]
+    jobType: [ObjectType]
 }
 
 type OrgInfo {
     name: String!
-    description: String!
+    description: [Tags]!
     image: String
     cover: String
     employees: ObjectType!
-    orgType: [Tags]!
+    orgType: [ObjectType]!
+    actively: [ObjectType]!
 }
 
 type Social {
@@ -43,7 +52,7 @@ type Services {
 
 type Reason {
     languages: [Tags]!
-    vision: String
+    bio: String
     mission: String
     culture: String
     orgDefine: String
@@ -69,11 +78,12 @@ input OrganizationsInput {
 
 input OrgInfoInput {
     name: String!
-    description: String!
+    description: [String]!
     image: String
     cover: String
     employees: ObjectTypeInput!
-    orgType: [String]!
+    orgType: [ObjectTypeInput]!
+    actively: [ObjectTypeInput]!
 }
 
 input SocialInput {
@@ -98,12 +108,19 @@ input ServicesInput {
 
 input ReasonInput {
     languages: [String]!
-    vision: String
+    bio: String
     mission: String
     culture: String
     orgDefine: String
     product: String
     industry: [String]!
+}
+
+input TechInput {
+    stack: [String]!
+    salaryRange: SalaryRangeInput
+    industry: [ObjectTypeInput]
+    jobType: [ObjectTypeInput]!
 }
 
 type Mutation {

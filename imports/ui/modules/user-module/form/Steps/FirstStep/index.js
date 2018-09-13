@@ -1,5 +1,5 @@
 import React from 'react';
-import {WizardStepForm, Input, CheckBoxList, SocialButton} from 'btech-base-forms-component';
+import {WizardStepForm, Input, SocialButton} from 'btech-base-forms-component';
 import {Container, Layout} from 'btech-layout';
 import {GeoInputLocation} from 'btech-location'
 import styled from 'styled-components'
@@ -54,7 +54,7 @@ class FirstStep extends React.Component {
 
         return (
 
-            <Layout rowGap={'40px'}>
+            <Layout rowGap={'25px'}>
                 <Layout templateColumns={2} colGap={'20px'}>
                     <Input name={'name'} model={this.state.user.info} placeholderText={'Organization Name'}
                            getValue={this.notifyParent.bind(this)}/>

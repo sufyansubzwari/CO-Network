@@ -36,7 +36,7 @@ class FifthStep extends React.Component {
 
     render() {
         return (
-            <Layout rowGap={'40px'}>
+            <Layout rowGap={'25px'}>
                <div>Missing components</div>
             </Layout>
         );

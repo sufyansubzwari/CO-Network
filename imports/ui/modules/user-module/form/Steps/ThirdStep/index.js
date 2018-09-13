@@ -72,7 +72,7 @@ class ThirdStep extends React.Component {
 
     render() {
         return (
-            <Layout rowGap={'40px'}>
+            <Layout rowGap={'25px'}>
                 <Container>
                     <InputAutoComplete
                         placeholderText={"Languages & Libraries"}
