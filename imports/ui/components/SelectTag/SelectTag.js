@@ -50,7 +50,7 @@ class MlSelectTag extends React.Component {
 
   handleSelectTag(tag, index) {}
 
-  handleTagClose(tag, index) {
+  handleTagClose(context,tag, index) {
     let newValue = { value: tag.name, label: tag.name };
     let tags = this.state.tags;
     let removedTag = tags.splice(index, 1);
@@ -78,6 +78,8 @@ class MlSelectTag extends React.Component {
           active={this.props.active}
           getValue={this.handleSelectChange}
           options={this.state.selectoptions}
+          model={this.props.model}
+          name={this.props.name}
         />
         <TagsContainer>
           <TagList
