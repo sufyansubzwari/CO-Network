@@ -1,5 +1,5 @@
 import React from 'react';
-import {WizardStepForm, Input, CheckBoxList, SocialButton} from 'btech-base-forms-component';
+import {WizardStepForm, Input, SocialButton} from 'btech-base-forms-component';
 import {Container, Layout} from 'btech-layout';
 import {GeoInputLocation} from 'btech-location'
 import styled from 'styled-components'

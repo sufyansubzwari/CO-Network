@@ -7,16 +7,29 @@ class SixthStep extends React.Component {
     constructor(props) {
         super(props)
 
+        let data = props.data ? props.data : {}
+
         this.state = {
-            media: {
-            }
+            organization: data
         }
 
-        this.handleInput = this.handleInput.bind(this)
+
     }
 
-    handleInput(model, name, value) {
+    componentWillReceiveProps(nextProps) {
+        if (nextProps.data && nextProps.data !== this.state.organization)
+            this.setState({organization: nextProps.data});
+    }
 
+    notifyParent(model, name, value) {
+        if (model && name && value) {
+            let organization = this.state.organization;
+            organization[name] = value;
+            this.setState(
+                {organization: organization},
+                () => this.props.onChange && this.props.onChange(this.state.organization)
+            );
+        } else this.props.onChange && this.props.onChange(this.state.organization);
     }
 
     render() {

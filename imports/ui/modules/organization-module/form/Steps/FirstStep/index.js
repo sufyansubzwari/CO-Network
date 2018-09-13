@@ -1,5 +1,6 @@
 import React from 'react';
 import {WizardStepForm, Input, CheckBoxList, SocialButton} from 'btech-base-forms-component';
+import {GeoInputLocation} from "btech-location";
 import {Container, Layout} from 'btech-layout';
 
 import {ORGANIZATION_TYPE,EMAIL_REGEX,PHONE_REGEX} from "../../constants/constants";
@@ -12,39 +13,51 @@ class FirstStep extends React.Component {
         let data = props.data ? props.data : {}
 
         this.state = {
-            details: data
+            organization: data,
+            orgtype: ORGANIZATION_TYPE
         }
 
-        this.handleInput = this.handleInput.bind(this)
-        this.handleCheckBoxClick = this.handleCheckBoxClick.bind(this)
     }
 
-    notifyParent(data) {
-        this.props.onChange && this.props.onChange(data,'details')
+    componentWillMount() {
+        if (this.props.data && this.props.data.info.orgType)
+            this.setState({
+                orgtype: ORGANIZATION_TYPE.map(e => {
+                    e["active"] = this.props.data.info.orgType.some(
+                        element => e.label === element.label
+                    );
+                    return e;
+                })
+            });
+    }
+
+    changeOrgTypes(actives) {
+        const selected = this.state.orgtype.map((org, index) => {
+            org["active"] = actives[index];
+            return org;
+        });
+        const orgstype = selected.filter(element => element.active);
+        const temp = this.state.organization;
+        temp["info"]["orgType"] = orgstype;
+        this.setState({orgtype: selected, organization: temp}, () =>
+            this.notifyParent()
+        )
     }
 
     componentWillReceiveProps(nextProps) {
-        if (nextProps.data) {
-            this.setState({
-                details: nextProps.data
-            }, () => this.notifyParent(this.state.details))
-        }
-
+        if (nextProps.data && nextProps.data !== this.state.organization)
+            this.setState({organization: nextProps.data});
     }
 
-    handleInput(model, name, value) {
-        console.log(this.state.details)
-    }
-
-    handleCheckBoxClick(actives){
-        let newOrgTypes = this.state.details.orgType;
-        actives.map( (ele,index) => newOrgTypes[index].active = ele )
-        this.setState({
-            details: {
-                ...this.state.details,
-                orgType: newOrgTypes
-            }
-        }, () => this.notifyParent(this.state.details))
+    notifyParent(model, name, value) {
+        if (model && name && value) {
+            let organization = this.state.organization;
+            organization[name] = value;
+            this.setState(
+                {organization: organization},
+                () => this.props.onChange && this.props.onChange(this.state.organization)
+            );
+        } else this.props.onChange && this.props.onChange(this.state.organization);
     }
 
     render() {
@@ -53,51 +66,51 @@ class FirstStep extends React.Component {
 
             <Layout rowGap={'40px'}>
                 <Layout templateColumns={2} colGap={'20px'}>
-                    <Input name={'name'} model={this.state.details} placeholderText={'Organization Name'}
-                           getValue={this.handleInput}/>
-                    <Input name={'location'} model={this.state.details} placeholderText={'Location(HQ)'}
-                           getValue={this.handleInput}/>
+                    <Input name={'name'} model={this.state.organization.info} placeholderText={'Organization Name'}
+                           getValue={this.notifyParent.bind(this)} />
+                    <GeoInputLocation model={this.state.organization.info} name={'location'} placeholder={"Location"} />
                 </Layout>
                 <CheckBoxList
                     placeholderText={'Organization Type'}
-                    options={this.state.details.orgType}
+                    options={this.state.orgtype}
                     columns={2}
                     checkboxVerticalSeparation={'10px'}
                     checkboxSize={'15px'}
-                    getValue={this.handleCheckBoxClick}
+                    getValue={actives => this.changeOrgTypes(actives)}
                 />
                 <Layout templateColumns={2} colGap={'20px'}>
-                    <Input name={'email'} model={this.state.details} placeholderText={'Verification Email'}
-                           getValue={this.handleInput} validate={EMAIL_REGEX}/>
-                    <Input name={'contactnumber'} model={this.state.details} placeholderText={'Contact Number'}
-                           getValue={this.handleInput} validate={PHONE_REGEX}/>
+                    <Input name={'email'} model={this.state.organization.contact} placeholderText={'Verification Email'}
+                           getValue={this.notifyParent.bind(this)} validate={EMAIL_REGEX}/>
+                    <Input name={'phone'} model={this.state.organization.contact} placeholderText={'Contact Number'}
+                           getValue={this.notifyParent.bind(this)} validate={PHONE_REGEX}/>
                 </Layout>
                 <Layout templateColumns={4} colGap={'10px'} height={'90px'}>
                     <SocialButton
                         social={'github'}
-                        connected={false}
-                        data={{account: 'myaccount', email: 'myemail@fortest.com'}}
+                        connected={this.state.organization.social.github !== ""}
+                        data={this.state.organization.social.github}
                         onClick={() => console.log('trying to log for github')}
                     />
                     <SocialButton
                         social={'google'}
-                        data={{account: 'myaccount', email: 'myemail@fortest.com'}}
+                        data={this.state.organization.social.google}
                         onClick={this.handleGoogle}
-                        connected={this.state.googleconnected}
                         onPlus={() => console.log('plus')}
+                        connected={this.state.organization.social.google !== ""}
                     />
                     <SocialButton
                         social={'facebook'}
-                        data={{account: 'myaccount', email: 'myemail@fortest.com'}}
+                        data={this.state.organization.social.facebook}
                         onClick={() => console.log('trying to log for facebook')}
                         fields={['account']}
+                        connected={this.state.organization.social.facebook !== ""}
                     />
                     <SocialButton
                         social={'twitter'}
-                        connected={false}
-                        data={{account: 'myaccount', email: 'myemail@fortest.com'}}
+                        data={this.state.organization.social.twitter}
                         onClick={() => console.log('trying to log for twitter')}
                         loading={false}
+                        connected={this.state.organization.social.twitter !== ""}
                     />
                 </Layout>
             </Layout>

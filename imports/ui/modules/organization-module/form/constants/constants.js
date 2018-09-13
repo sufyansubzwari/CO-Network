@@ -1,14 +1,28 @@
 export const ORGANIZATION_TYPE = [
-        {label: 'Academia', active: true},
-        {label: 'Corporation', active: false},
-        {label: 'Comunity', active: true},
-        {label: 'Government', active: false},
-        {label: 'Academia1', active: true},
-        {label: 'Corporation1', active: false},
-        {label: 'Comunity1', active: false},
-        {label: 'Government1', active: true}
+        {label: 'Academia'},
+        {label: 'Corporation'},
+        {label: 'Comunity'},
+        {label: 'Government'},
+        {label: 'Academia1'},
+        {label: 'Corporation1'},
+        {label: 'Comunity1'},
+        {label: 'Government1'}
     ]
 ;
+
+export const ACTIVELY = [
+    {label: 'Recruit Technical Talent'},
+    {label: 'Host Conferences | Events'},
+    {label: 'Sponsors Events'},
+];
+
+export const JOB_TYPE = [
+    { label: "Full Time" },
+    { label: "Part Time" },
+    { label: "Consulting" },
+    { label: "Internship" },
+    { label: "Volunteer" }
+]
 
 export const ORG_TYPE_NUMBER = [
     {label: 'Corporation', active: true, number: 12},
