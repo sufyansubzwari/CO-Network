@@ -7,17 +7,20 @@ type Jobs {
     owner: User!
     image: String
     organization: Organizations!
-    jobType: ObjectType!
+    jobType: [ObjectType]!
     salaryRange: SalaryRange!
     remote: Boolean
     languages: [Tags]
     industry: [Tags]!
-    jobResponsibilities: String
+    jobResponsibility: String
     culture: String
     aboutUsTeam: String
     candidateQuestions: String
     views: Int
     entity: String
+    jobExperience: [ObjectType]
+    location: Location
+    positionTags: [Tags]
 }
 
 type SalaryRange {
@@ -33,20 +36,23 @@ type Query {
 
 input JobsInput {
     _id: ID
-    title: String!
+    title: String
     description: String
-    owner: String!
+    owner: String
     image: String
-    organization: String!
-    jobType: ObjectTypeInput!
-    salaryRange: SalaryRangeInput!
+    organization: String
+    jobType: [ObjectTypeInput]
+    salaryRange: SalaryRangeInput
     remote: Boolean
     languages: [String]
-    industry: [String]!
-    jobResponsibilities: String
+    industry: [String]
+    jobResponsibility: String
     culture: String
     aboutUsTeam: String
     candidateQuestions: String
+    location: LocationInput
+    positionTags: [String]
+    jobExperience: [ObjectTypeInput]
 }
 
 input SalaryRangeInput {
@@ -56,7 +62,7 @@ input SalaryRangeInput {
 }
 
 type Mutation {
-    job(jobs: JobsInput!): Jobs
+    job(job: JobsInput!): Jobs
     updateJobsImage(_id: String!, image: String!): Jobs
     deleteJob(_id: String!): Jobs
 }

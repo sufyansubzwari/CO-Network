@@ -20,8 +20,8 @@ class ListEvents extends Component {
       selectedIndex: null,
       loading: false,
       limit: 10,
-      filter: {}
-    };
+      filter: ""
+    }
   }
 
   onChangeSelection(item, key) {

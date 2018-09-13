@@ -1,0 +1,9 @@
+
+query GetLocation{
+  places{
+    _id
+    owner
+    location
+    entity
+  }
+}

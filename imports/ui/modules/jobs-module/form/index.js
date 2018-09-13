@@ -8,19 +8,19 @@ class JobForm extends React.Component {
     super(props);
     this.state = {
       job: {
-        categories: [],
         title: "",
         description: "",
         location: {
           address: "",
-          location: { lat: "", lng: "" },
+          location: { lat: 0, lng: 0 },
           fullLocation: {}
         },
         languages: [],
         positionTags: [],
         culture: "",
         aboutUsTeam: "",
-        candidateQuestion: ""
+        candidateQuestions: "",
+        jobResponsibility: ""
       }
     };
   }

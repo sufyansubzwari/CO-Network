@@ -2,8 +2,8 @@ import Service from "../service";
 
 const Mutation = {};
 
-Mutation.job = async (root, {event}, context) => {
-  return Service.job(event);
+Mutation.job = async (root, {job}, context) => {
+  return Service.job(job);
 };
 
 Mutation.updateJobsImage = async (root, {_id, image}, context) => {

@@ -1,17 +1,11 @@
 mutation CreateJob($entity: JobsInput!) {
-    job(jobs: $entity) {
+    job(job: $entity) {
         _id
         title
         description
-        venueName
         image
         owner {
             _id
-        }
-        category {
-            label
-            value
-            name
         }
         entity
         views

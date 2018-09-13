@@ -16,8 +16,7 @@ if (Meteor.isServer) {
   import resolvers from "./server/resolvers";
   import service from "./server/service";
 
-    extend(Places, { collection, types, resolvers, service });
+  extend(Places, { collection, types, resolvers, service });
 }
 
 export default Places;
-

@@ -35,7 +35,7 @@ class PlacesService {
   /**
    * @name getPlace
    * @summary Get place by id
-   * @param {String} _id - Place id
+   * @param {String|Object} _id - Place id
    * @return {Object} Places
    */
   static getPlace = _id => {

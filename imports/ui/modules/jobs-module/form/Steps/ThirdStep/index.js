@@ -50,7 +50,7 @@ class ThirdStep extends React.Component {
           height={'100px'}
           placeholderText={'Do you have a question for the candidate?'}
           model={this.state.job}
-          name={'candidateQuestion'}
+          name={'candidateQuestions'}
           getValue={this.notifyParent.bind(this)}
         />
       </Layout>

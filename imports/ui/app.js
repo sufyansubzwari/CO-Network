@@ -13,7 +13,7 @@ import "bootstrap/dist/css/bootstrap.min.css";
 // To get started, create an ApolloClient instance and point it at your GraphQL
 // server (handled in our case by meteor-apollo). By default, this client will
 // send queries to the '/graphql' endpoint on the same host.
-const client = createApolloClient({});
+const client = createApolloClient({addTypename:false});
 
 // Given that we are implementing App Shell Architecture and, therefore,
 // injecting (via reactDOM.render) the Header, Menu and Main components into

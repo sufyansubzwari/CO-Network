@@ -1,7 +1,7 @@
 #import './fragments.graphql'
 
 query($id: String){
-  user(_id: $id) {
+  user(id: $id) {
     ...userFragment
   }
 }

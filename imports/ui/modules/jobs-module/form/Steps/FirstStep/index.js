@@ -58,14 +58,14 @@ class FirstStep extends React.Component {
     });
     const jobType = selected.filter(element => element.active);
     const temp = this.state.job;
-    temp["jobType"] = jobType;
+    temp["jobType"] = jobType.map(item => ({label: item.label, name: item.label, value: item.label}));
     this.setState({jobType: selected, job: temp}, () =>
       this.notifyParent()
     );
   }
 
   onAddTags(tag) {
-    let tags = this.state.job.positionTags;
+    let tags = this.state.job.positionTags || [];
     !tag.name ? tag.name = tag.label : null;
     tags.push(tag);
     this.state.job.positionTags = tags;

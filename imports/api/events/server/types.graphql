@@ -30,6 +30,8 @@ type Attenders {
 type ObjectType {
     label: String
     value: String
+    name: String
+    active: String
 }
 
 type Sponsors {
@@ -92,6 +94,8 @@ input AttendersInput {
 input ObjectTypeInput {
     label: String
     value: String
+    name: String
+    active: String
 }
 
 type Mutation {

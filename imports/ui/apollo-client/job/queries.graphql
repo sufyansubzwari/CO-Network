@@ -8,11 +8,37 @@ query GetJobs($limit: Int, $filter: String) {
       title
       description
       image
-      industry {
-        label
-        value
-        name
+      languages{
+          _id
+          label
+          value
+          name
       }
+      positionTags{
+          _id
+          label
+          value
+          name
+      }
+      salaryRange{
+          min
+          max
+      }
+      location{
+          address
+          location{
+              lat
+              lng
+          }
+          cityCountry{
+              city
+              country
+          }
+      }
+      jobResponsibility
+      culture
+      aboutUsTeam
+      candidateQuestions
       entity
       views
     }

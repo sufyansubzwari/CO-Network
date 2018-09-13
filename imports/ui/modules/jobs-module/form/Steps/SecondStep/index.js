@@ -53,7 +53,7 @@ class SecondStep extends React.Component {
   }
 
   onAddTags(tag) {
-    let tags = this.state.job.languages;
+    let tags = this.state.job.languages || [];
     !tag.name ? (tag.name = tag.label) : null;
     tags.push(tag);
     this.state.job.languages = tags;

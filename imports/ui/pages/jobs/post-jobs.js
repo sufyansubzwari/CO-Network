@@ -1,11 +1,11 @@
-import React, { Component } from "react";
-import { Container } from "btech-layout";
+import React, {Component} from "react";
+import {Container} from "btech-layout";
 import InternalLayout from "../../components/InternalLayout/InternalLayout";
 import JobForm from "../../modules/jobs-module/form";
-import { Preview } from "../../../ui/components";
-import { withRouter } from "react-router-dom";
-import { CreateJob } from "../../apollo-client/job";
-import { Mutation } from "react-apollo";
+import {Preview} from "../../../ui/components";
+import {withRouter} from "react-router-dom";
+import {CreateJob} from "../../apollo-client/job";
+import {Mutation} from "react-apollo";
 
 /**
  * @module Jobs
@@ -15,7 +15,7 @@ class PostJob extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      job: {}
+      job: {},
     };
   }
 
@@ -24,26 +24,34 @@ class PostJob extends Component {
   }
 
   onPostAction(createJob, query) {
+    let queryJob = query;
+    if (queryJob.languages && queryJob.languages.length > 0)
+      queryJob.languages = queryJob.languages.map(lang => lang._id);
+    if(queryJob.location && queryJob.location.fullLocation)
+      delete queryJob.location.fullLocation;
+    if(queryJob.salaryRange && queryJob.salaryRange.__typename)
+      delete queryJob.salaryRange.__typename;
     let job = {
-      title: query.title,
-      description: query.description,
-      category: query.others.map(item => item._id),
-      venueName: query.venueName,
-      attenders: query.attenders,
+      ...queryJob,
       owner: "Qt5569uuKKd6YrDwS" //Meteor.userId(),
     };
-    createJob({ variables: { entity: job } });
-    this.props.history.push("/jobs");
+    createJob({variables: {entity: job}});
+    this.props.history.push(`/jobs`);
   }
 
   render() {
     return (
       <InternalLayout>
         <Container fullY key={"leftSide"}>
-          <Mutation mutation={CreateJob}>
-            {(createJob, { jobCreated }) => (
+          <Mutation
+            mutation={CreateJob}
+          >
+            {(createJob, {jobCreated}) => (
               <JobForm
-                onFinish={data => this.onPostAction(createJob, data)}
+                onFinish={data => {
+                  this.onPostAction(createJob, data)
+                }
+                }
                 onCancel={() => this.onCancel()}
                 {...this.props}
               />
@@ -60,7 +68,7 @@ class PostJob extends Component {
               checkVisibility: () => {
                 return this.state.selectedItem && this.state.selectedItem.id;
               },
-              onClick: function() {
+              onClick: function () {
                 console.log("Remove");
               }
             }

@@ -52,6 +52,7 @@ Jobs.schema = new SimpleSchema({
   remote: {
     type: Boolean,
     label: 'The remote of the job.',
+    optional: true,
   },
   salaryRange: {
     optional: true,
@@ -80,13 +81,7 @@ Jobs.schema = new SimpleSchema({
   },
   'languages.$': {
     optional: true,
-    type: Object
-  },
-  'languages.$.value': {
-    type: String,
-  },
-  'languages.$.label': {
-    type: String,
+    type: String
   },
   jobType: {
     optional: true,
@@ -97,6 +92,14 @@ Jobs.schema = new SimpleSchema({
   },
   'jobType.label': {
     type: String,
+  },
+  positionTags: {
+    optional: true,
+    type: Array
+  },
+  'positionTags.$': {
+    optional: true,
+    type: String
   },
   jobResponsibility: {
     optional: true,
@@ -113,7 +116,7 @@ Jobs.schema = new SimpleSchema({
     type: String,
     label: 'The location of the job.',
   },
-  candidateQuestion: {
+  candidateQuestions: {
     optional: true,
     type: String,
     label: 'The location of the job.',

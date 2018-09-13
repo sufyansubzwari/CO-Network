@@ -2,7 +2,7 @@
 
 type Places {
     _id: ID
-    owner: User!
+    owner: String!
     location: Location!
     entity: String!
 }
@@ -10,19 +10,19 @@ type Places {
 type Location{
     address: String!
     location: Coordinates!
-    cityCountry: CityCountry!
+    cityCountry: CityCountry
 }
 
 type Coordinates{
-    lat: Int
-    lng: Int
+    lat: String
+    lng: String
 }
 
 type CityCountry{
-    city: String!
+    city: String
     state: String
     entire: String
-    country: String!
+    country: String
 }
 
 type Query {
@@ -32,7 +32,7 @@ type Query {
 
 input PlacesInput {
     _id: ID
-    owner: UserInput!
+    owner: String!
     location: LocationInput!
     entity: String!
 }
@@ -40,12 +40,12 @@ input PlacesInput {
 input LocationInput{
     address: String!
     location: CoordinatesInput!
-    cityCountry: CityCountryInput!
+    cityCountry: CityCountryInput
 }
 
 input CoordinatesInput{
-    lat: Int
-    lng: Int
+    lat: String
+    lng: String
 }
 
 input CityCountryInput{

@@ -1,0 +1,12 @@
+
+mutation InsertLocation($location: Place!) {
+  place(places: $location) {
+    _id
+  }
+}
+
+mutation DeleteLocation($id: String!) {
+  deletePlace(_id: $id) {
+    _id
+  }
+}

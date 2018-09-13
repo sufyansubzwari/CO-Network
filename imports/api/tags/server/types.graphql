@@ -1,7 +1,7 @@
 # types for Tags namespace
 
 type Tags {
-    _id: ID
+    _id: String
     name: String
     label: String!
     value: String!

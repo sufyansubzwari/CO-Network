@@ -1,4 +1,5 @@
 import Jobs from "../index";
+import PlaceServices from '../../places/server/service';
 import * as _ from "lodash";
 
 /**
@@ -15,11 +16,34 @@ class JobsService {
   static job = async data => {
     if (_.isUndefined(data._id)) {
       const id = Jobs.collection.insert(data);
+      if (data.location) {
+        let place = {};
+        place.location = data.location;
+        place.entity = "JOB";
+        place.owner = id;
+        PlaceServices.place(location);
+      }
       return Jobs.collection.findOne(id);
     } else {
       let id = data._id;
       delete data._id;
       await Jobs.collection.update(id, {$set: data});
+      console.log(data);
+      if (data.location) {
+        let place = PlaceServices.getPlace({owner: id});
+        if (place) {
+          place.location = data.location;
+        }
+        else {
+          place = {
+            location: data.location,
+            entity: "JOB",
+            owner: id,
+          }
+        }
+        console.log(place);
+        PlaceServices.place(place);
+      }
       return Jobs.collection.findOne(id);
     }
   };

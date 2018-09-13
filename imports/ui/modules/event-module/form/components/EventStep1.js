@@ -69,7 +69,7 @@ class EventStep1 extends Component {
   }
 
   onAddTags(tag) {
-    let tags = this.state.event.others;
+    let tags = this.state.event.others || [];
     !tag.name ? tag.name = tag.label : null;
     tags.push(tag);
     this.state.event.others = tags;

@@ -19,8 +19,8 @@ class ListJobs extends Component {
       selectedItem: null,
       selectedIndex: null,
       limit: 10,
-      filter: {}
-    };
+      filter: ""
+    }
   }
 
   onChangeSelection(item, key) {
@@ -35,6 +35,16 @@ class ListJobs extends Component {
 
   static removeJob(deleteJob, job) {
     deleteJob({ variables: { id: job._id } });
+  }
+  editJob(){
+    let job = JSON.parse(JSON.stringify(this.state.selectedItem));
+    delete job.entity;
+    delete job.views;
+    delete job.__typename;
+    job.location = {};
+    this.props.history.push("/post-job", {
+      job: job
+    });
   }
 
   onSearch(value) {
@@ -92,9 +102,7 @@ class ListJobs extends Component {
                   );
                 },
                 onClick: () => {
-                  _this.props.history.push("/post-job", {
-                    job: _this.state.selectedItem
-                  });
+                  _this.editJob();
                 }
               },
               {
