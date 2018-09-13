@@ -108,7 +108,7 @@ class SixthStep extends React.Component {
 
   render() {
     return (
-      <Layout rowGap={"40px"}>
+      <Layout rowGap={"25px"}>
         <SwitchButton
           onChange={value => {
             const user = this.state.user;

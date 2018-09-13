@@ -64,7 +64,7 @@ class FirstStep extends React.Component {
 
         return (
 
-            <Layout rowGap={'40px'}>
+            <Layout rowGap={'25px'}>
                 <Layout templateColumns={2} colGap={'20px'}>
                     <Input name={'name'} model={this.state.organization.info} placeholderText={'Organization Name'}
                            getValue={this.notifyParent.bind(this)} />

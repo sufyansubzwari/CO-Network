@@ -14,6 +14,7 @@ import {
 } from "./Steps";
 
 import { ORGANIZATION_TYPE } from "./constants/constants";
+import SeventhStep from "./Steps/SeventhStep";
 
 class OrganizationForm extends React.Component {
   constructor(props) {
@@ -71,7 +72,8 @@ class OrganizationForm extends React.Component {
                 },
                 stack: [],
                 jobType: []
-            }
+            },
+            plan : 0
         }
     };
   }
@@ -108,6 +110,10 @@ class OrganizationForm extends React.Component {
           <SixthStep data={this.state.organization}
                      onChange={organization => this.setState({ organization: organization })} />
         </WizardStepForm>
+          <WizardStepForm title={"CO Network Services"}>
+              <SeventhStep data={this.state.organization}
+                         onChange={organization => this.setState({ organization: organization })} />
+          </WizardStepForm>
       </MlWizardForm>
     );
   }

@@ -12,8 +12,6 @@ class SixthStep extends React.Component {
         this.state = {
             organization: data
         }
-
-
     }
 
     componentWillReceiveProps(nextProps) {
@@ -36,19 +34,8 @@ class SixthStep extends React.Component {
 
         return (
 
-            <Layout rowGap={'40px'}>
-                <Layout templateColumns={2} colGap={'20px'}>
-                    <Input name={'title'} model={this.state.media} placeholderText={'Title'}
-                           getValue={this.handleInput}/>
-                    <Input name={'source'} model={this.state.media} placeholderText={'Link to media source'}
-                           getValue={this.handleInput}/>
-                </Layout>
-                <Container width={'125px'}>
-                    <UploadFileButton placeholderText='Upload file' getValue={files => console.log(files)} />
-                </Container>
-                <Container >
-                    <TextArea height={'150px'} value={'organization test text'} placeholderText={'Org Bio'}/>
-                </Container>
+            <Layout rowGap={'25px'}>
+                missing components
             </Layout>
         );
     }

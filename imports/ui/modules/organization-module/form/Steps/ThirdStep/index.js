@@ -76,7 +76,7 @@ class ThirdStep extends React.Component {
 
     render() {
         return (
-            <Layout rowGap={'40px'}>
+            <Layout rowGap={'25px'}>
                 <CheckBoxList
                     placeholderText={'Does your organization actively...'}
                     options={this.state.actively}

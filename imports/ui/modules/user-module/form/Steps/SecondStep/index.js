@@ -34,7 +34,7 @@ class SecondStep extends React.Component {
 
     render() {
         return (
-            <Layout rowGap={'40px'}>
+            <Layout rowGap={'25px'}>
                 <TextArea height={'100px'} model={this.state.user.aboutMe} name={'yourPassion'} placeholderText={'Tell us about yourself'} getValue={this.notifyParent.bind(this)} />
                 <TextArea height={'100px'} model={this.state.user.aboutMe} name={'existingProblem'} placeholderText={'What is the most exciting real world problem you want to solve?'} getValue={this.notifyParent.bind(this)} />
                 <TextArea height={'100px'} model={this.state.user.aboutMe} name={'steps'} placeholderText={'What steps you already taken towards achieving this mission?'} getValue={this.notifyParent.bind(this)} />
