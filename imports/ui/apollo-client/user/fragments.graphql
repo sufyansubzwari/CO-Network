@@ -2,12 +2,17 @@ fragment userFragment on User {
   _id
   createdAt
   services
+  isSignUp
   profile {
-      info {
-          name
-          lastName
-          image
-      }
+      name
+      lastName
+      nickName
+      loginCount
+      image
+      cover
+      gender
+      website
+      phone
   }
   subscriptions {
     endpoint

@@ -32,7 +32,8 @@ class EventForm extends Component {
         },
         venueMin: "",
         venueMax: "",
-        organizer: ""
+        organizer: "",
+        tickets: []
       }
     };
   }

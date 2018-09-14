@@ -39,6 +39,8 @@ class GlobalDataProvider extends React.Component {
     const api = {
       curUser: user
     };
+    // check initial agreements
+    api.isSignUp = user ? user.isSignUp : true;
 
     return this.props.children(api);
   }

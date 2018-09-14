@@ -3,6 +3,7 @@
 type User {
   _id: String!
   createdAt: Date!
+  isSignUp: Boolean!
   services: [String]!
   emails: [Email]
   profile: Profile!
@@ -15,24 +16,22 @@ type Email {
 }
 
 type Profile {
-  info: Info
-  professional: Professional
-  social: Social
-  aboutMe: AboutMe
-  knowledge: Knowledge
-  speaker: Speaker
-  archivement: [Achievements]
-}
-
-type Info {
   name: String
   lastName: String
+  nickName: String
+  loginCount: Int
   image: String
   cover: String
   email: String
   gender: String
   website: String
   phone: String
+  professional: Professional
+  social: Social
+  aboutMe: AboutMe
+  knowledge: Knowledge
+  speaker: Speaker
+  archivement: [Achievements]
 }
 
 type AboutMe {
