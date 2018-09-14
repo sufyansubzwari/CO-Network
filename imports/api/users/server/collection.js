@@ -46,7 +46,8 @@ const schema = new SimpleSchema({
     type: Date
   },
   isSignUp: {
-    type: Boolean
+    type: Boolean,
+    optional: true
   },
   profile: {
     type: Object,
