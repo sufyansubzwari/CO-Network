@@ -3,6 +3,7 @@
 type User {
   _id: String!
   createdAt: Date!
+  isSignUp: Boolean!
   services: [String]!
   emails: [Email]
   profile: Profile!

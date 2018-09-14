@@ -37,7 +37,8 @@ class GlobalDataProvider extends React.Component {
     }
 
     const api = {
-      curUser: user
+      curUser: user,
+      isSignUp: user.isSignUp
     };
 
     return this.props.children(api);

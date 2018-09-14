@@ -1,11 +1,12 @@
-import React, {Component} from "react";
-import {Container} from "btech-layout";
+import React, { Component } from "react";
+import { Meteor } from "meteor/meteor";
+import { Container } from "btech-layout";
 import InternalLayout from "../../components/InternalLayout/InternalLayout";
 import EventForm from "../../modules/event-module/form";
-import {Preview} from "../../../ui/components";
-import {withRouter} from "react-router-dom";
-import {CreateEvent} from '../../apollo-client/event';
-import {Mutation} from "react-apollo";
+import { Preview } from "../../../ui/components";
+import { withRouter } from "react-router-dom";
+import { CreateEvent } from "../../apollo-client/event";
+import { Mutation } from "react-apollo";
 
 /**
  * @module Events
@@ -30,20 +31,20 @@ class PostEvent extends Component {
       category: query.others.map(item => item._id),
       venueName: query.venueName,
       attenders: query.attenders,
-      owner: "Qt5569uuKKd6YrDwS",//Meteor.userId(),
+      owner: Meteor.userId()
     };
-    createEvent({variables: {entity: event}});
+    createEvent({ variables: { entity: event } });
     this.props.history.push("events");
   }
 
   render() {
     return (
-      <InternalLayout>
+      <InternalLayout leftWidth={"52%"}>
         <Container fullY key={"leftSide"}>
           <Mutation mutation={CreateEvent}>
-            {(createEvent, {eventCreated}) => (
+            {(createEvent, { eventCreated }) => (
               <EventForm
-                onFinish={(data) => this.onPostAction(createEvent, data)}
+                onFinish={data => this.onPostAction(createEvent, data)}
                 onCancel={() => this.onCancel()}
                 {...this.props}
               />
@@ -60,7 +61,7 @@ class PostEvent extends Component {
               checkVisibility: () => {
                 return this.state.selectedItem && this.state.selectedItem.id;
               },
-              onClick: function () {
+              onClick: function() {
                 console.log("Remove");
               }
             }

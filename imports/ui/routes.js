@@ -12,6 +12,7 @@ import LoadableWrapper from "./components/dumb/loadable-wrapper";
 //
 import HomePage from "./pages/home-page";
 import ListEvents from "./pages/events/list-events";
+import SignUpPage from "./pages/sign-up-page";
 import ListJobs from "./pages/jobs/list-jobs";
 import ListInnovators from "./pages/innovators/list-innovators";
 import PostEvent from "./pages/events/post-event";
@@ -32,9 +33,14 @@ const Routes = props => (
   <ScrollToTop>
     <Switch>
       <Route exact name="Home" path="/" render={() => <HomePage />} />
+      <Route name="SignUp" path="/sign-up" render={() => <SignUpPage />} />
       <Route name="Events" path="/events" render={() => <ListEvents />} />
       <Route name="Jobs" path="/jobs" render={() => <ListJobs />} />
-        <Route name="User Profile" path="/profile" render={() => <UserProfile />} />
+      <Route
+        name="User Profile"
+        path="/profile"
+        render={() => <UserProfile />}
+      />
       <Route
         name="Innovators"
         path="/innovators"
@@ -46,7 +52,11 @@ const Routes = props => (
         render={() => <PostEvent />}
       />
       <Route name="Post a Job" path="/post-job" render={() => <PostJob />} />
-      <Route name="Post a Organization" path="/post-organization" render={() => <PostOrganization />} />
+      <Route
+        name="Post a Organization"
+        path="/post-organization"
+        render={() => <PostOrganization />}
+      />
       <Route
         path="/callback"
         render={props => {
