@@ -7,7 +7,7 @@ import { withRouter } from "react-router-dom";
  */
 class SignUpListener extends Component {
   render() {
-    if (this.props.curUser && !this.props.isSignUp)
+    if (this.props.curUser && !this.props.isSignUp && !(/sign-up/.test(this.props.location.pathname)))
       this.props.history.push("/sign-up");
     return false;
   }
