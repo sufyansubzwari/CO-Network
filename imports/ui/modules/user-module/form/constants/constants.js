@@ -63,9 +63,13 @@ export const INDUSTRY_SECTOR_OPTIONS = [
     ]
 ;
 
-export const SIGNUP_TEXT = "The \"CO Network\" is a technical social network engineered to accelerate global innovations in: Science, Technology and Culture. \n" +
-    "Welcome to a trusted marketplace for the exchange of powerful ideas between scientists, entrepreneurs, innovators and organizations.\n" +
-    "By registering for the “CO Network”, you are entering a binding agreement to exercise your passion and creativity on the world’s biggest challenges."
+export const SIGNUP_TEXT = "The \"CO Network\" is a technical social network engineered to accelerate global innovations in:"
+
+export const SIGNUP_TEXT_2 = "Welcome to a trusted marketplace for the exchange of powerful ideas between scientists, entrepreneurs, innovators and organizations."
+
+
+export const SIGNUP_TEXT_3 = "By registering for the “CO Network”, you are entering a binding agreement to exercise your passion and creativity on the world’s biggest challenges."
+
 
 export const SIGNUP_OPTIONS = [
     {label: 'Innovation emerges from unrestrained collaboration'},

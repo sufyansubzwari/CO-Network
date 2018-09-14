@@ -4,7 +4,12 @@ import { Container, Layout } from "btech-layout";
 
 import styled, { ThemeProvider } from "styled-components";
 
-import { SIGNUP_TEXT, SIGNUP_OPTIONS } from "../constants/constants";
+import {
+  SIGNUP_TEXT,
+  SIGNUP_TEXT_2,
+  SIGNUP_TEXT_3,
+  SIGNUP_OPTIONS
+} from "../constants/constants";
 import { theme } from "./../../../../theme";
 
 const Description = styled.p`
@@ -43,14 +48,41 @@ class SignUp extends React.Component {
               borderTop: `1px solid ${theme.signup.borderColor}`
             }}
           >
-            <Description>{SIGNUP_TEXT}</Description>
+            <Container>
+              <Description>
+                {SIGNUP_TEXT}
+                <p style={{ display: "inline",fontWeight: "bold" }}>Science, Technology, Culture.</p>
+              </Description>
+              <Description>{SIGNUP_TEXT_2}</Description>
+              <Description>{SIGNUP_TEXT_3}</Description>
+            </Container>
             <Container>
               <CheckBoxList
                 options={SIGNUP_OPTIONS}
                 getValue={this.props.getSignUpChecked}
+                checkboxVerticalSeparation={"15px"}
               />
-              <CheckBox active={this.state.agreeTerms} onSelected={() => this.setState({agreeTerms: !this.state.agreeTerms}, () => this.props.getAgree && this.props.getAgree(this.state.agreeTerms))} >
-                  <p>I agree to uphold the values, culture and ethics outlined in the CO Network’s <a style={{color:"blue", }}>Terms and Conditions</a>, GDPR Compliant <a style={{color:"blue"}}>Privacy Policy</a>, <a style={{color:"blue"}}>Anti-Spam Policy</a> agreement.</p>
+              <CheckBox
+                active={this.state.agreeTerms}
+                onSelected={() =>
+                  this.setState(
+                    { agreeTerms: !this.state.agreeTerms },
+                    () =>
+                      this.props.getAgree &&
+                      this.props.getAgree(this.state.agreeTerms)
+                  )
+                }
+              >
+                <p>
+                  I agree to uphold the values, culture and ethics outlined in
+                  the CO Network’s{" "}
+                  <a href={"www.google.com"} style={{ color: "blue" }}>
+                    Terms and Conditions
+                  </a>
+                  , GDPR Compliant{" "}
+                  <a style={{ color: "blue" }}>Privacy Policy</a>,{" "}
+                  <a style={{ color: "blue" }}>Anti-Spam Policy</a> agreement.
+                </p>
               </CheckBox>
             </Container>
           </Layout>
