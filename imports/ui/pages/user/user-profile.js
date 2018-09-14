@@ -31,6 +31,7 @@ class UserProfile extends Component {
           <UserForm
             onFinish={data => this.onPostAction(() => console.log(createProfile), data)}
             onCancel={() => this.onCancel()}
+            userLogged={false}
             {...this.props}
           />
         </Container>
