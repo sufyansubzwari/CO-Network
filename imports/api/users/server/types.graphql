@@ -8,6 +8,7 @@ type User {
   emails: [Email]
   profile: Profile!
   subscriptions: [Subscription]
+  views: Int
 }
 
 type Email {
@@ -85,12 +86,13 @@ type Query {
 }
 
 input UserInput {
-  _id: String!
-  createdAt: Date!
-  services: [String]!
+  _id: String
+  createdAt: Date
+  services: [String]
   emails: [EmailInput]
-  profile: ProfileInput!
+  profile: ProfileInput
   subscriptions: [SubscriptionInput]
+  isSignUp: Boolean
 }
 
 input ProfileInput {
@@ -145,6 +147,8 @@ input SpeakerInput {
 }
 
 type Mutation {
+  user(users: UserInput!): User
+  deleteUser(_id: String!): User
   sendVerificationEmail: User
   saveSubscription(subscription: SubscriptionInput!): User
   deleteSubscription(endpoint: String!): User

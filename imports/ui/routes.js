@@ -33,7 +33,7 @@ const Routes = props => (
   <ScrollToTop>
     <Switch>
       <Route exact name="Home" path="/" render={() => <HomePage />} />
-      <Route name="SignUp" path="/sign-up" render={() => <SignUpPage />} />
+      <Route name="SignUp" path="/sign-up" render={() => <SignUpPage user={props.curUser} />} />
       <Route name="Events" path="/events" render={() => <ListEvents />} />
       <Route name="Jobs" path="/jobs" render={() => <ListJobs />} />
       <Route

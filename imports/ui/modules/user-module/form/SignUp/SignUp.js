@@ -1,8 +1,16 @@
 import React from "react";
-import { Input, CheckBoxList, CheckBox } from "btech-base-forms-component";
+import {
+  Input,
+  CheckBoxList,
+  CheckBox,
+  Button
+} from "btech-base-forms-component";
 import { Container, Layout } from "btech-layout";
-
+import { withRouter } from "react-router-dom";
 import styled, { ThemeProvider } from "styled-components";
+import { Mutation } from "react-apollo";
+import { CreateUser } from "../../../../apollo-client/user"
+import { Meteor } from "meteor/meteor";
 
 import {
   SIGNUP_TEXT,
@@ -24,7 +32,51 @@ class SignUp extends React.Component {
   constructor(props) {
     super(props);
 
-    this.state = {};
+    this.state = {
+      agreeTerms: false,
+      actives: [],
+      disabled: false
+    };
+
+    this.handleCheckBoxes = this.handleCheckBoxes.bind(this);
+    this.handleCheckBox = this.handleCheckBox.bind(this);
+  }
+
+  handleContinue(createUser) {
+    let checkboxesActives = this.state.actives.some(function(element) {
+      return element === false;
+    });
+    const active = this.state.agreeTerms && !checkboxesActives;
+    if (active) {
+
+      let user = {
+          _id: this.props.user._id,
+          isSignUp: true
+      }
+      createUser({variables: {entity: user }})
+    }
+  }
+
+  handleCheckBoxes(actives) {
+      let checkboxesActives = actives.some(function(element) {
+          return element === false;
+      });
+      const active = this.state.agreeTerms && checkboxesActives;
+      this.setState({
+          actives: actives,
+          disabled: active
+      })
+  }
+
+  handleCheckBox(){
+      let checkboxesActives = this.state.actives.some(function(element) {
+          return element === false;
+      });
+      const active = this.state.agreeTerms && checkboxesActives;
+      this.setState({
+          agreeTerms: !this.state.agreeTerms,
+          disabled: active
+      })
   }
 
   render() {
@@ -32,8 +84,6 @@ class SignUp extends React.Component {
       <ThemeProvider theme={theme}>
         <Layout
           customTemplateRows={"187px 1fr"}
-          marginX={"-41px"}
-          mt={"-54px"}
           style={{ background: theme.signup.headerBackground }}
         >
           <Container style={{ margin: "auto" }}>
@@ -51,7 +101,9 @@ class SignUp extends React.Component {
             <Container>
               <Description>
                 {SIGNUP_TEXT}
-                <p style={{ display: "inline",fontWeight: "bold" }}>Science, Technology, Culture.</p>
+                <p style={{ display: "inline", fontWeight: "bold" }}>
+                  Science, Technology, Culture.
+                </p>
               </Description>
               <Description>{SIGNUP_TEXT_2}</Description>
               <Description>{SIGNUP_TEXT_3}</Description>
@@ -59,19 +111,12 @@ class SignUp extends React.Component {
             <Container>
               <CheckBoxList
                 options={SIGNUP_OPTIONS}
-                getValue={this.props.getSignUpChecked}
+                getValue={actives => this.setState({ actives: actives })}
                 checkboxVerticalSeparation={"15px"}
               />
               <CheckBox
                 active={this.state.agreeTerms}
-                onSelected={() =>
-                  this.setState(
-                    { agreeTerms: !this.state.agreeTerms },
-                    () =>
-                      this.props.getAgree &&
-                      this.props.getAgree(this.state.agreeTerms)
-                  )
-                }
+                onSelected={ this.handleCheckBox}
               >
                 <p>
                   I agree to uphold the values, culture and ethics outlined in
@@ -85,6 +130,19 @@ class SignUp extends React.Component {
                 </p>
               </CheckBox>
             </Container>
+            <Layout customTemplateColumns={"1fr auto"}>
+              <div />
+                <Mutation mutation={CreateUser} onCompleted={() => this.props.history.push(`/profile`)}  >
+                    {(createUser, {userCreated}) => {
+                        return <Button
+                            disabled={this.state.disabled}
+                            onClick={() => this.handleContinue(createUser)}
+                        >
+                            Continue
+                        </Button>
+                    }}
+                </Mutation>
+            </Layout>
           </Layout>
         </Layout>
       </ThemeProvider>
@@ -92,4 +150,4 @@ class SignUp extends React.Component {
   }
 }
 
-export default SignUp;
+export default withRouter(SignUp);
