@@ -2,6 +2,7 @@ import React from "react";
 import { Router } from "react-router-dom";
 import createBrowserHistory from "history/createBrowserHistory";
 import { createApolloClient } from "meteor/apollo";
+import { InMemoryCache } from "apollo-cache-inmemory";
 import { ApolloProvider } from "react-apollo";
 import { Provider } from "react-redux";
 import { ThemeProvider } from "styled-components";
@@ -13,7 +14,11 @@ import "bootstrap/dist/css/bootstrap.min.css";
 // To get started, create an ApolloClient instance and point it at your GraphQL
 // server (handled in our case by meteor-apollo). By default, this client will
 // send queries to the '/graphql' endpoint on the same host.
-const client = createApolloClient({addTypename:false});
+const client = createApolloClient({
+  cache: new InMemoryCache({
+    addTypename: false
+  })
+});
 
 // Given that we are implementing App Shell Architecture and, therefore,
 // injecting (via reactDOM.render) the Header, Menu and Main components into

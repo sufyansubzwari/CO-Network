@@ -27,13 +27,13 @@ class PostEvent extends Component {
     let event = {
       title: query.title,
       description: query.description,
-      category: query.others.map(item => item._id),
+      category: query.others.concat(query.categories),
       venueName: query.venueName,
       attenders: query.attenders,
       owner: "Qt5569uuKKd6YrDwS",//Meteor.userId(),
     };
     createEvent({variables: {entity: event}});
-    this.props.history.push("events");
+    //this.props.history.push("events");
   }
 
   render() {

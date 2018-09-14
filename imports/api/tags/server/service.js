@@ -13,14 +13,15 @@ class TagsService {
    * @return {Object} tag
    */
   static tag = async data => {
-    if (_.isUndefined(data._id)) {
+    let tags = Tags.collection.findOne({label: data.label});
+    if (_.isUndefined(data._id) && !tags) {
       const id = Tags.collection.insert(data);
       return Tags.collection.findOne(id);
     } else {
-      let id = data._id;
-      delete data._id;
-      await Tags.collection.update(id, {$set: data});
-      return Tags.collection.findOne(id);
+        let id = data._id || tags._id;
+        data._id ? delete data._id : null;
+        await Tags.collection.update(id, {$set: data});
+        return Tags.collection.findOne(id);
     }
   };
   /**
@@ -42,6 +43,20 @@ class TagsService {
   static tags = (query, limit) => {
     return Tags.collection.find(query, limit).fetch();
   };
+  static normalizeTags = async (entity) => {
+
+    let insertTags = entity.category.filter(item => !item._id);
+    let tagsInserted = insertTags.map(async tag => {
+      return await Tags.service.tag(tag);
+    });
+    return Promise.all(tagsInserted).then((completed) => {
+      let tags = entity.category.filter(item => item._id);
+      tags = tags.concat(completed);
+      delete entity.category;
+      entity.category = tags.map(item => item._id);
+      return entity;
+    });
+  }
 }
 
 export default TagsService;
