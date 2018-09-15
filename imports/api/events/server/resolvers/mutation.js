@@ -5,6 +5,7 @@ const Mutation = {};
 
 Mutation.event = async (root, {events}, context) => {
   let entity = await Tags.service.normalizeTags(events);
+  console.log(entity);
   return Service.event(entity);
 };
 

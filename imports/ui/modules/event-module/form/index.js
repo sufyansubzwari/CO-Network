@@ -19,7 +19,7 @@ class EventForm extends Component {
     super(props);
     this.state = {
       event: {
-        categories: [],
+        category: [],
         others: [],
         title: "",
         description: "",
