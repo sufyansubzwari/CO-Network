@@ -1,5 +1,6 @@
 import Users from "../index";
 import * as _ from "lodash";
+import Organizations from "../../organizations";
 
 /**
  * @class User Service
@@ -23,6 +24,15 @@ class UserService {
       return Users.collection.findOne(id);
     }
   };
+    /**
+     * @name deleteUser
+     * @summary Allow delete an user
+     * @param {String} id - User id
+     * @return {Object} User deleted
+     */
+    static deleteUser = async (id) => {
+        return await Users.collection.remove(id);
+    };
   /**
    * @name getUser
    * @summary Get Users by id

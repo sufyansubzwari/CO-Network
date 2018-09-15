@@ -36,6 +36,16 @@ const sidebar = {
   }
 };
 
+const signup = {
+    descriptionSize: "14px",
+    optionsSize: "12px",
+    family: "Roboto Mono",
+    fontcolor: "#2B2B2B",
+    headerBackground: 'white',
+    descriptionBackground: 'rgb(209,209,209,0.2)',
+    borderColor: '#dbdbdb'
+}
+
 const card = {
   border: 1,
   borderActive: 1,
@@ -145,5 +155,6 @@ export const theme = {
   preview,
   card,
   create,
+  signup,
   borderColor: color.grey
 };

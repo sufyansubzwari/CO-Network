@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import { Layout, Container } from "btech-layout";
+import PropTypes from "prop-types";
 
 /**
  * @module Common
@@ -17,12 +18,13 @@ class InternalLayout extends Component {
   }
 
   render() {
+    const structure = `${this.props.leftWidth} ${this.props.rightWidth}`;
     return (
       <Layout
         fullY
         customTemplateColumns={"1fr"}
-        mdCustomTemplateColumns={"47% 1fr"}
-        lgCustomTemplateColumns={"47% 1fr"}
+        mdCustomTemplateColumns={structure}
+        lgCustomTemplateColumns={structure}
         layoutAreas={{
           xs: `'leftSide'`,
           md: `'leftSide rightSide'`,
@@ -39,5 +41,15 @@ class InternalLayout extends Component {
     );
   }
 }
+
+InternalLayout.defaultProps = {
+  leftWidth: "47%",
+  rightWidth: "1fr"
+};
+
+InternalLayout.propTypes = {
+  rightWidth: PropTypes.string,
+  leftWidth: PropTypes.string
+};
 
 export default InternalLayout;

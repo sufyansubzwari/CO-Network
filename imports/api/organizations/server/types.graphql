@@ -92,6 +92,7 @@ input SocialInput {
     github: String
     linkedin: String
     website: String
+    google: String
 }
 
 input ContactInput {

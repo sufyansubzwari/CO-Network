@@ -6,6 +6,7 @@ import { connect } from "react-redux";
 import Navbar from "../../components/Navbar/Navbar";
 import SideBar from "../../components/SideBar/SideBar";
 import LoginModal from "../../components/LoginModal/LoginModal";
+import SignUpListener from "../../components/SignUpListener/SignUpListener";
 
 const MainLayout = props => {
   return (
@@ -25,6 +26,7 @@ const MainLayout = props => {
       }}
       fullWY
     >
+      <SignUpListener {...props} />
       <Navbar {...props} />
       <LoginModal />
       {props.showSidebar ? <SideBar {...props} /> : null}

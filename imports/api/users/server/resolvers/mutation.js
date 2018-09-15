@@ -6,6 +6,7 @@ import { Accounts } from 'meteor/accounts-base';
 import { GraphQLError } from 'graphql';
 import collection from '../collection';
 import utils from '../utils';
+import Service from '../service'
 
 const { privateKey: gcmPrivateKey } = Meteor.settings.firebase;
 const { publicKey: vapidPublicKey } = Meteor.settings.public.vapid;
@@ -108,5 +109,12 @@ Mutation.sendPushNotification = (root, args, context) => {
   });
 };
 //------------------------------------------------------------------------------
+Mutation.user = (root, {users}, context) => {
+  return Service.user(users);
+};
+//------------------------------------------------------------------------------
+Mutation.deleteUser = (root, {_id}, context) => {
+    return Service.deleteUser(_id);
+};
 
 export default Mutation;
