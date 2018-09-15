@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { Map, TileLayer, Marker, Popup } from "react-leaflet";
 
-class SimpleExample extends Component {
+class MapBackGround extends Component {
   state = {
     lat: 51.505,
     lng: -0.09,
@@ -26,4 +26,4 @@ class SimpleExample extends Component {
   }
 }
 
-export default SimpleExample;
+export default MapBackGround;

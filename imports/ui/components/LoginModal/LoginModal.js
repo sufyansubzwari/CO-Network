@@ -26,7 +26,7 @@ const SLoginSubTitle = styled.div`
 class LoginModal extends Component {
   constructor(props) {
     super(props);
-    this.services = services;
+    this.services = services.filter(element => element.visible);
   }
 
   processAuthRequest(service) {
@@ -49,12 +49,12 @@ class LoginModal extends Component {
               <SLoginSubTitle>Select from the options below</SLoginSubTitle>
             </Container>
             <Container>
-              <Layout templateColumns={3}>
+              <Layout templateColumns={this.services.length}>
                 {this.services.map((authService, index) => {
                   return (
                     <Container key={index} textCenter>
                       <AuthServiceButton
-                        service={authService}
+                        service={authService.service}
                         onSelected={service => this.processAuthRequest(service)}
                       />
                     </Container>

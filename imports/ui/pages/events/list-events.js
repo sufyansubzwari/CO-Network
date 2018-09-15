@@ -18,7 +18,6 @@ class ListEvents extends Component {
       openFilters: true,
       selectedItem: null,
       selectedIndex: null,
-      loading: false,
       limit: 10,
       filter: {}
     };
@@ -60,7 +59,7 @@ class ListEvents extends Component {
                 key={"listComponent"}
                 title={"Events"}
                 data={data && data.events}
-                loading={this.state.loading}
+                loading={loading && (!data.events || !data.events.length)}
                 onFetchData={() => this.fetchMoreSelection()}
                 onSelectCard={(item, key) => this.onChangeSelection(item, key)}
               />
