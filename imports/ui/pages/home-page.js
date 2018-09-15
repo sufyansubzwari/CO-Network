@@ -3,6 +3,7 @@ import styled from "styled-components";
 import { Layout, Container } from "btech-layout";
 import { connect } from "react-redux";
 import { toggleSideBar } from "../actions/SideBarActions";
+import SimpleExample from "../components/Map";
 
 const SPageTitle = styled(Container)`
   font-size: 3.6rem;
@@ -34,6 +35,7 @@ class HomePage extends Component {
       <Layout fullY customTemplateColumns={`1fr 700px 1fr`}>
         <Container />
         <STitleContainer>
+          <SimpleExample />
           <SPageTitle>Connect Physically Collaborate Digitally</SPageTitle>
         </STitleContainer>
         <Container />
