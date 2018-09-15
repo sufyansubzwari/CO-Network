@@ -32,9 +32,9 @@ type Query {
 
 input PlacesInput {
     _id: ID
-    owner: String!
+    owner: String
     location: LocationInput!
-    entity: String!
+    entity: String
 }
 
 input LocationInput{

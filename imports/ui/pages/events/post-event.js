@@ -29,7 +29,8 @@ class PostEvent extends Component {
     let e = Object.assign({}, query);
     e.category = _.uniq(e.others.concat(e.category));
     delete e.others;
-    delete e.location; //todo: remove when location insert work
+    //todo: remove when location improvement
+    e.place && e.place.location && e.place.location.fullLocation ?  delete e.place.location.fullLocation : null;
     let event = {
       ...e,
       owner: "Qt5569uuKKd6YrDwS",

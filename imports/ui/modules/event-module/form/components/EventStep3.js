@@ -16,6 +16,19 @@ class EventStep3 extends Component {
     };
   }
 
+  componentWillMount() {
+    if (this.props.data && !this.props.data.place) {
+      let event = this.props.data;
+      event.place = {
+        location: {
+          address: "",
+          location: {lng: "", lat: ""}
+        }
+      };
+      this.setState({event: event});
+    }
+  }
+
   componentWillReceiveProps(nextProps) {
     if (nextProps.data && nextProps.data !== this.state.event)
       this.setState({event: nextProps.data});
@@ -25,6 +38,16 @@ class EventStep3 extends Component {
     if (model && name && value) {
       let event = this.state.event;
       event[name] = value;
+      this.setState({event: event}, () => this.props.onChange && this.props.onChange(this.state.event));
+    }
+    else
+      this.props.onChange && this.props.onChange(this.state.event);
+  }
+
+  notifyParentLocation(model, name, value) {
+    if (model && name && value) {
+      let event = this.state.event;
+      event.place[name] = value;
       this.setState({event: event}, () => this.props.onChange && this.props.onChange(this.state.event));
     }
     else
@@ -57,10 +80,10 @@ class EventStep3 extends Component {
         <Container>
           <GeoInputLocation
             name={"location"}
-            model={this.state.event}
+            model={this.state.event.place}
             placeholder={"Location"}
             isGeoLocationAvailable={true}
-            onChange={(model, name, value) => this.notifyParent(model, name, value)}
+            onChange={(model, name, value) => this.notifyParentLocation(model, name, value)}
           />
         </Container>
         <Container>

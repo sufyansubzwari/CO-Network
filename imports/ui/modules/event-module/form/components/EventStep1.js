@@ -70,9 +70,10 @@ class EventStep1 extends Component {
   }
 
   onAddTags(tag) {
+    let newTag = Object.assign({}, tag);
     let tags = this.state.event.others || [];
-    !tag.name ? (tag.name = tag.label) : null;
-    tags.push(tag);
+    !newTag.name ? (newTag.name = newTag.label) : null;
+    tags.push(newTag);
     this.state.event.others = tags;
     this.setState({event: this.state.event}, () => this.notifyParent());
   }
@@ -120,7 +121,7 @@ class EventStep1 extends Component {
         <Container>
           <Layout rowGap={"10px"}>
             <Container>
-              <Query query={tags} pollInterval={5000}>
+              <Query query={tags}>
                 {({loading, error, data}) => {
                   if (loading) return <div>Fetching</div>;
                   if (error) return <div>Error</div>;

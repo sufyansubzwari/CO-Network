@@ -41,6 +41,9 @@ class PlacesService {
   static getPlace = _id => {
     return Places.collection.findOne(_id);
   };
+  static getPlaceByOwner = owner => {
+    return Places.collection.findOne({owner:owner});
+  };
   /**
    *@name places
    * @summary Get all places

@@ -20,6 +20,7 @@ type Events {
     tickets: [TicketsType]
     eventType: ObjectType
     sponsors: [Sponsors]
+    place: Places
 }
 
 type Attenders {
@@ -93,6 +94,7 @@ input EventsInput {
     image: String
     tickets: [TicketsTypeInput]
     eventType: ObjectTypeInput
+    place: PlacesInput
 }
 
 input AttendersInput {

@@ -25,14 +25,13 @@ class EventForm extends Component {
         description: "",
         venueName: "",
         venueEmail: "",
-        location: {
-          address: "",
-          location: { lat: "", lng: "" },
-          fullLocation: {}
+        place: {
+          location: {
+            address: "",
+            location: {lat: "", lng: ""},
+            fullLocation: {}
+          },
         },
-        venueMin: "",
-        venueMax: "",
-        organizer: "",
         tickets: []
       }
     };

@@ -42,7 +42,6 @@ class ListEvents extends Component {
     let event = JSON.parse(JSON.stringify(this.state.selectedItem));
     delete event.entity;
     delete event.views;
-    event.location = {};
     this.props.history.push("/post-event", {
       event: event
     });
