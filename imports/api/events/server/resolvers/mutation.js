@@ -1,9 +1,12 @@
 import Service from "../service";
+import Tags from '../../../tags';
 
 const Mutation = {};
 
 Mutation.event = async (root, {events}, context) => {
-  return Service.event(events);
+  let entity = await Tags.service.normalizeTags(events);
+  console.log(entity);
+  return Service.event(entity);
 };
 
 Mutation.updateEventImage = async (root, {_id, image}, context) => {

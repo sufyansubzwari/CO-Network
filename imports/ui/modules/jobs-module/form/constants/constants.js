@@ -1,5 +1,5 @@
 export const JOB_TYPE = [
-    {label: 'Full Time', value: 'Full Time', name: 'Full Time', active: true},
+    {label: 'Full Time', value: 'Full Time', name: 'Full Time', active: false},
     {label: 'Part Time', value: 'Part Time', name: 'Part Time', active: false},
     {label: 'Volunteer | Intern', value: 'Volunteer | Intern', name: 'Volunteer | Intern', active: false},
   ]

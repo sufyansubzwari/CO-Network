@@ -7,6 +7,7 @@ import { Preview } from "../../../ui/components";
 import { withRouter } from "react-router-dom";
 import { CreateEvent } from "../../apollo-client/event";
 import { Mutation } from "react-apollo";
+import _ from 'lodash';
 
 /**
  * @module Events
@@ -25,23 +26,23 @@ class PostEvent extends Component {
   }
 
   onPostAction(createEvent, query) {
+    let e = Object.assign({}, query);
+    e.category = _.uniq(e.others.concat(e.category));
+    delete e.others;
+    delete e.location; //todo: remove when location insert work
     let event = {
-      title: query.title,
-      description: query.description,
-      category: query.others.map(item => item._id),
-      venueName: query.venueName,
-      attenders: query.attenders,
-      owner: Meteor.userId()
+      ...e,
+      owner: "Qt5569uuKKd6YrDwS",
     };
     createEvent({ variables: { entity: event } });
-    this.props.history.push("events");
   }
 
   render() {
     return (
       <InternalLayout leftWidth={"52%"}>
         <Container fullY key={"leftSide"}>
-          <Mutation mutation={CreateEvent}>
+          <Mutation mutation={CreateEvent} onCompleted={() => this.props.history.push("/events")}
+                    onError={(error) => console.log("Error: ", error)}>
             {(createEvent, { eventCreated }) => (
               <EventForm
                 onFinish={data => this.onPostAction(createEvent, data)}

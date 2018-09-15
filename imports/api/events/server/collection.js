@@ -149,7 +149,7 @@ const schema = new SimpleSchema({
   },
   'category.$': {
     type: String,
-    label: 'The categorys of the event.',
+    label: 'The category of the event.',
     optional: true,
   },
   attenders: {

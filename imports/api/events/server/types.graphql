@@ -79,7 +79,7 @@ input EventsInput {
     organizer: String
     phone: String
     notes: String
-    category: [String]!
+    category: [ObjectTypeInput]!
     attenders: AttendersInput!
     image: String
     ticketType: ObjectTypeInput
@@ -92,6 +92,7 @@ input AttendersInput {
 }
 
 input ObjectTypeInput {
+    _id: String
     label: String
     value: String
     name: String

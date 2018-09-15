@@ -8,8 +8,8 @@ Events.owner = entity => {
   return Users.service.getUser(entity.owner);
 };
 
-Events.category = () => {
-  return Tags.service.tags({}, {limit: 1});
+Events.category = entity => {
+  return Tags.service.getTagList(entity.category);
 };
 
 export default Events;

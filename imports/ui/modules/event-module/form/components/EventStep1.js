@@ -21,15 +21,17 @@ class EventStep1 extends Component {
     super(props);
     this.state = {
       event: this.props.data,
-      categories: COMMUNITYEVENTCATEGORIES
+      category: COMMUNITYEVENTCATEGORIES
     };
   }
 
   componentWillMount() {
-    if (this.props.data && this.props.data.categories)
+    if (this.props.data && this.props.data.category) {
+      let event = this.props.data;
+      event.others = this.props.data.category.filter(item => COMMUNITYEVENTCATEGORIES.findIndex(c => c.label===item.label) === -1);
       this.setState({
-        categories: COMMUNITYEVENTCATEGORIES.map(e => {
-          e["active"] = this.props.data.categories.some(
+        category: COMMUNITYEVENTCATEGORIES.map(e => {
+          e["active"] = this.props.data.category.some(
             element => e.label === element.label
           );
           return e;
@@ -54,14 +56,14 @@ class EventStep1 extends Component {
   }
 
   changeCategoryEvents(actives) {
-    const selected = this.state.categories.map((category, index) => {
+    const selected = this.state.category.map((category, index) => {
       category["active"] = actives[index];
       return category;
     });
-    const categories = selected.filter(element => element.active);
+    const category = selected.filter(element => element.active);
     const temp = this.state.event;
-    temp["categories"] = categories;
-    this.setState({ categories: selected, event: temp }, () =>
+    temp["category"] = category;
+    this.setState({category: selected, event: temp}, () =>
       this.notifyParent()
     );
   }
@@ -80,6 +82,7 @@ class EventStep1 extends Component {
   }
 
   render() {
+    const { category } = this.state;
     return (
       <Layout rowGap={"25px"}>
         <Container>
@@ -109,14 +112,14 @@ class EventStep1 extends Component {
             columns={2}
             checkboxVerticalSeparation={"10px"}
             placeholderText={"Community Event Categories"}
-            options={this.state.categories}
+            options={this.state.category}
             getValue={actives => this.changeCategoryEvents(actives)}
           />
         </Container>
         <Container>
           <Layout rowGap={"10px"}>
             <Container>
-              <Query query={tags}>
+              <Query query={tags} pollInterval={5000}>
                 {({ loading, error, data }) => {
                   if (loading) return <div>Fetching</div>;
                   if (error) return <div>Error</div>;

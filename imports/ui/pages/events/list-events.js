@@ -38,6 +38,16 @@ class ListEvents extends Component {
     deleteEvent({ variables: { id: event._id } });
   }
 
+  editEvent(){
+    let event = JSON.parse(JSON.stringify(this.state.selectedItem));
+    delete event.entity;
+    delete event.views;
+    event.location = {};
+    this.props.history.push("/post-event", {
+      event: event
+    });
+  }
+
   onSearch(value) {
     this.setState({ filter: value });
   }
@@ -51,6 +61,7 @@ class ListEvents extends Component {
           key={"listComponent"}
           query={GetEvents}
           variables={{ limit, filter }}
+          pollInterval={5000}
         >
           {({ loading, error, data }) => {
             // if (loading) return null;
@@ -94,9 +105,7 @@ class ListEvents extends Component {
                       );
                     },
                     onClick: () => {
-                      _this.props.history.push("/post-event", {
-                        event: _this.state.selectedItem
-                      });
+                      _this.editEvent();
                     }
                   },
                   {
