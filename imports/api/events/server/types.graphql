@@ -17,8 +17,8 @@ type Events {
     image: String
     entity: String
     views: Int
-    ticketType: ObjectType!
-    eventType: ObjectType!
+    tickets: [TicketsType]
+    eventType: ObjectType
     sponsors: [Sponsors]
 }
 
@@ -42,6 +42,15 @@ type Sponsors {
 type Query {
     events(filter: String, limit: Int): [Events]
     event(_id: String): Events
+}
+
+type TicketsType{
+    name: String
+    description: String
+    type: String
+    available: Int
+    min: Float
+    max: Float
 }
 
 input EventsInputSearch {
@@ -82,7 +91,7 @@ input EventsInput {
     category: [ObjectTypeInput]!
     attenders: AttendersInput!
     image: String
-    ticketType: ObjectTypeInput
+    tickets: [TicketsTypeInput]
     eventType: ObjectTypeInput
 }
 
@@ -97,6 +106,15 @@ input ObjectTypeInput {
     value: String
     name: String
     active: String
+}
+
+input TicketsTypeInput{
+    name: String
+    description: String
+    type: String
+    available: Int
+    min: Float
+    max: Float
 }
 
 type Mutation {

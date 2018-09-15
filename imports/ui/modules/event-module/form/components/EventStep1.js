@@ -1,5 +1,5 @@
-import React, { Component } from "react";
-import { Container, Layout } from "btech-layout";
+import React, {Component} from "react";
+import {Container, Layout} from "btech-layout";
 import PropTypes from "prop-types";
 import {
   Input,
@@ -8,9 +8,9 @@ import {
   InputAutoComplete,
   TagList
 } from "btech-base-forms-component";
-import { COMMUNITYEVENTCATEGORIES } from "../constants/community-event-categories";
-import { Query } from "react-apollo";
-import { GetTags as tags } from "../../../../apollo-client/tag";
+import {COMMUNITYEVENTCATEGORIES} from "../constants/community-event-categories";
+import {Query} from "react-apollo";
+import {GetTags as tags} from "../../../../apollo-client/tag";
 
 /**
  * @module Event
@@ -28,7 +28,7 @@ class EventStep1 extends Component {
   componentWillMount() {
     if (this.props.data && this.props.data.category) {
       let event = this.props.data;
-      event.others = this.props.data.category.filter(item => COMMUNITYEVENTCATEGORIES.findIndex(c => c.label===item.label) === -1);
+      event.others = this.props.data.category.filter(item => COMMUNITYEVENTCATEGORIES.findIndex(c => c.label === item.label) === -1);
       this.setState({
         category: COMMUNITYEVENTCATEGORIES.map(e => {
           e["active"] = this.props.data.category.some(
@@ -37,11 +37,12 @@ class EventStep1 extends Component {
           return e;
         })
       });
+    }
   }
 
   componentWillReceiveProps(nextProps) {
     if (nextProps.data && nextProps.data !== this.state.event)
-      this.setState({ event: nextProps.data });
+      this.setState({event: nextProps.data});
   }
 
   notifyParent(model, name, value) {
@@ -49,7 +50,7 @@ class EventStep1 extends Component {
       let event = this.state.event;
       event[name] = value;
       this.setState(
-        { event: event },
+        {event: event},
         () => this.props.onChange && this.props.onChange(this.state.event)
       );
     } else this.props.onChange && this.props.onChange(this.state.event);
@@ -73,16 +74,16 @@ class EventStep1 extends Component {
     !tag.name ? (tag.name = tag.label) : null;
     tags.push(tag);
     this.state.event.others = tags;
-    this.setState({ event: this.state.event }, () => this.notifyParent());
+    this.setState({event: this.state.event}, () => this.notifyParent());
   }
 
   onCloseTags(e, tag, index) {
     this.state.event.others.splice(index, 1);
-    this.setState({ event: this.state.event }, () => this.notifyParent());
+    this.setState({event: this.state.event}, () => this.notifyParent());
   }
 
   render() {
-    const { category } = this.state;
+    const {category} = this.state;
     return (
       <Layout rowGap={"25px"}>
         <Container>
@@ -120,7 +121,7 @@ class EventStep1 extends Component {
           <Layout rowGap={"10px"}>
             <Container>
               <Query query={tags} pollInterval={5000}>
-                {({ loading, error, data }) => {
+                {({loading, error, data}) => {
                   if (loading) return <div>Fetching</div>;
                   if (error) return <div>Error</div>;
                   return (
@@ -129,7 +130,7 @@ class EventStep1 extends Component {
                       getAddedOptions={this.onAddTags.bind(this)}
                       getNewAddedOptions={this.onAddTags.bind(this)}
                       options={data.tags}
-                      model={{ others: [] }}
+                      model={{others: []}}
                       name={"others"}
                     />
                   );
@@ -141,9 +142,9 @@ class EventStep1 extends Component {
                 tags={
                   this.state.event.others && this.state.event.others.length > 0
                     ? this.state.event.others.map(item => ({
-                        active: true,
-                        ...item
-                      }))
+                      active: true,
+                      ...item
+                    }))
                     : []
                 }
                 // onSelect={tag => alert(`you select the tag '${tag.name}'`)}

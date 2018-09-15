@@ -30,9 +30,9 @@ class EventStep4 extends Component {
   }
 
   render() {
-    const tickets = this.state.event ? this.state.event.tickets : [];
+    const tickets = (this.state.event && this.state.event.tickets) || [];
     return (
-      <TicketTypes tickets={tickets} onChange={list => this.onChangeTickets} />
+      <TicketTypes tickets={tickets} onChange={this.onChangeTickets} />
     );
   }
 }

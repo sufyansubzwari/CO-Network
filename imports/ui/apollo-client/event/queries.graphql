@@ -19,6 +19,14 @@ query GetEvents($limit: Int, $filter: String) {
       min
       max
     }
+    tickets{
+      name
+      description
+      available
+      type
+      max
+      min
+    }
     entity
     views
   }

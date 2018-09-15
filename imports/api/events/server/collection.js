@@ -86,16 +86,36 @@ const schema = new SimpleSchema({
     label: 'The description of the event.',
     optional: true
   },
-  ticketType: {
+  tickets: {
+    type: Array,
+    optional: true
+  },
+  'tickets.$': {
     type: Object,
     optional: true
   },
-  'ticketType.label': {
+  'tickets.$.name': {
     type: String,
     optional: true
   },
-  'ticketType.value': {
+  'tickets.$.description': {
     type: String,
+    optional: true
+  },
+  'tickets.$.type': {
+    type: String,
+    optional: true
+  },
+  'tickets.$.available': {
+    type: Number,
+    optional: true
+  },
+  'tickets.$.min': {
+    type: Number,
+    optional: true
+  },
+  'tickets.$.max': {
+    type: Number,
     optional: true
   },
   eventType: {
