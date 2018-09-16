@@ -1,7 +1,7 @@
 import React from "react";
 import {Layout, Container} from "btech-layout";
 import styled from "styled-components";
-import {GeoInputLocation} from "btech-location";
+// import {GeoInputLocation} from "btech-location";
 import FilterContainer from "../../../components/FiltersContainer/FiltersContainer";
 import BigTag from "./../../../components/BigTag/BigTag";
 import {SalaryRange, CheckBoxList, Button} from "btech-base-forms-component";
@@ -49,11 +49,11 @@ class EventsFilters extends React.Component {
         onClose={() => this.props.onClose && this.props.onClose()}
       >
         <Filter>
-          <GeoInputLocation
-            name={"location"}
-            model={this.state}
-            placeholder={"Location"}
-          />
+          {/*<GeoInputLocation*/}
+            {/*name={"location"}*/}
+            {/*model={this.state}*/}
+            {/*placeholder={"Location"}*/}
+          {/*/>*/}
           <Layout
             mt={"10px"}
             customTemplateColumns={"70px 70px 70px"}

@@ -23,7 +23,7 @@ export const POSITION_TAGS = [
 ;
 
 export const EXPERIENCE_REQUIERED = [
-    {label: 'Entry Level', value: 'Entry Level', name: 'Entry Level', active: true},
+    {label: 'Entry Level', value: 'Entry Level', name: 'Entry Level', active: false},
     {label: 'Intermediate', value: 'Intermediate', name: 'Intermediate', active: false},
     {label: 'Expert', value: 'Expert', name: 'Expert', active: false}
 

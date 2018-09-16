@@ -19,8 +19,8 @@ type Jobs {
     views: Int
     entity: String
     jobExperience: [ObjectType]
-    location: Location
     positionTags: [Tags]
+    place: Places
 }
 
 type SalaryRange {
@@ -30,8 +30,16 @@ type SalaryRange {
 }
 
 type Query {
-    jobs(filter: String, limit: Int): [Jobs]
+    jobs(filter: String, limit: Int, jobs: JobsInputSearch): [Jobs]
     job(_id: String): Jobs
+}
+
+input JobsInputSearch {
+    title: TableStringFilterInput
+    description: TableStringFilterInput
+    startDate: Date
+    endDate: Date
+    owner: String
 }
 
 input JobsInput {
@@ -44,15 +52,15 @@ input JobsInput {
     jobType: [ObjectTypeInput]
     salaryRange: SalaryRangeInput
     remote: Boolean
-    languages: [String]
-    industry: [String]
+    languages: [TagsInput]
+    industry: [TagsInput]
     jobResponsibility: String
     culture: String
     aboutUsTeam: String
     candidateQuestions: String
-    location: LocationInput
-    positionTags: [String]
+    positionTags: [TagsInput]
     jobExperience: [ObjectTypeInput]
+    place: PlacesInput
 }
 
 input SalaryRangeInput {

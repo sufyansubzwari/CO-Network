@@ -55,7 +55,7 @@ Tags.schema = new SimpleSchema({
     type: String,
     optional: true,
   },
-  types: {
+  type: {
     type: String,
     optional: true,
   }

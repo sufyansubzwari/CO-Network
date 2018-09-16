@@ -1,7 +1,7 @@
 import React from "react";
 import { Container } from "btech-layout";
 import styled from "styled-components";
-import { GeoInputLocation } from "btech-location";
+// import { GeoInputLocation } from "btech-location";
 import {
   CheckBoxList,
   InputAutoComplete,
@@ -47,11 +47,11 @@ class OrganizationFilters extends React.Component {
       >
         <Separator />
         <Filter>
-          <GeoInputLocation
-            name={"location"}
-            model={this.state}
-            placeholder={"Location"}
-          />
+          {/*<GeoInputLocation*/}
+            {/*name={"location"}*/}
+            {/*model={this.state}*/}
+            {/*placeholder={"Location"}*/}
+          {/*/>*/}
         </Filter>
         <Separator />
         <Filter>

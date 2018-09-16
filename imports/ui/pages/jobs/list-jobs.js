@@ -40,8 +40,6 @@ class ListJobs extends Component {
     let job = JSON.parse(JSON.stringify(this.state.selectedItem));
     delete job.entity;
     delete job.views;
-    delete job.__typename;
-    job.location = {};
     this.props.history.push("/post-job", {
       job: job
     });
@@ -56,7 +54,12 @@ class ListJobs extends Component {
     const { limit, filter } = this.state;
     return (
       <ListLayout entityType={"jobs"} onSearchText={this.onSearch.bind(this)}>
-        <Query key={"listComponent"} query={GetJobs} variables={{ limit, filter }}>
+        <Query
+          key={"listComponent"}
+          query={GetJobs}
+          variables={{ limit, filter }}
+          pollInterval={5000}
+        >
           {({ loading, error, data }) => {
             // if (loading) return null;
             // if (error) return `Error!: ${error}`;

@@ -8,6 +8,16 @@ query GetJobs($limit: Int, $filter: String) {
       title
       description
       image
+      jobType{
+          label
+          value
+          name
+      }
+      jobExperience{
+          label
+          value
+          name
+      }
       languages{
           _id
           label
@@ -24,15 +34,16 @@ query GetJobs($limit: Int, $filter: String) {
           min
           max
       }
-      location{
-          address
+      place{
+          _id
+          owner
+          entity
           location{
-              lat
-              lng
-          }
-          cityCountry{
-              city
-              country
+              address
+              location{
+                  lat
+                  lng
+              }
           }
       }
       jobResponsibility

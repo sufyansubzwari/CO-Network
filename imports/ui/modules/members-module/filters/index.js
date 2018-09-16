@@ -2,7 +2,7 @@ import React from "react";
 import { Layout, Container } from "btech-layout";
 import styledfrom from "styled-components";
 import { Scrollbars } from "react-custom-scrollbars";
-import { GeoInputLocation } from "btech-location";
+// import { GeoInputLocation } from "btech-location";
 import MaterialIcon from "react-material-iconic-font";
 import BigTag from "./../../../components/BigTag/BigTag";
 import { CheckBoxList, Button } from "btech-base-forms-component";
@@ -101,11 +101,11 @@ class MembersFilters extends React.Component {
           </Layout>
           <Separator />
           <Filter>
-            <GeoInputLocation
-              name={"location"}
-              model={this.state}
-              placeholder={"Location"}
-            />
+            {/*<GeoInputLocation*/}
+              {/*name={"location"}*/}
+              {/*model={this.state}*/}
+              {/*placeholder={"Location"}*/}
+            {/*/>*/}
             <Layout
               mt={"10px"}
               customTemplateColumns={"80px 80px 80px"}

@@ -46,17 +46,16 @@ class TagsService {
   static tags = (query, limit) => {
     return Tags.collection.find(query, limit).fetch();
   };
-  static normalizeTags = async (entity) => {
-    let insertTags = entity.category.filter(item => !item._id);
-    let tags = entity.category.filter(item => item._id);
+  static normalizeTags = async (tag) => {
+    let insertTags = tag.filter(item => !item._id);
+    let tags = tag.filter(item => item._id);
     let tagsInserted = insertTags.map(async tag => {
       return await Tags.service.tag(tag);
     });
     return Promise.all(tagsInserted).then((completed) => {
       tags = tags.concat(completed);
-      delete entity.category;
-      entity.category = tags.map(item => item._id);
-      return entity;
+      console.log(tags);
+      return tags.map(item => item._id);
     });
   }
 }

@@ -1,7 +1,7 @@
 import React from 'react';
 import {WizardStepForm, Input, SocialButton} from 'btech-base-forms-component';
 import {Container, Layout} from 'btech-layout';
-import {GeoInputLocation} from 'btech-location'
+// import {GeoInputLocation} from 'btech-location'
 import styled from 'styled-components'
 
 import {ORGANIZATION_TYPE,EMAIL_REGEX} from "../../constants/constants";
@@ -61,7 +61,7 @@ class FirstStep extends React.Component {
                     <Input name={'lastName'} model={this.state.user.info} placeholderText={'Last Name'}
                            getValue={this.notifyParent.bind(this)}/>
                 </Layout>
-                <GeoInputLocation model={this.state.user.info} name={'location'} placeholder={"Location"} onChange={this.notifyParent.bind(this)} />
+                {/*<GeoInputLocation model={this.state.user.info} name={'location'} placeholder={"Location"} onChange={this.notifyParent.bind(this)} />*/}
                 <Layout templateColumns={2} colGap={'20px'}>
                     <Input name={'website'} model={this.state.user.info} placeholderText={'Website'}
                            getValue={this.notifyParent.bind(this)} />

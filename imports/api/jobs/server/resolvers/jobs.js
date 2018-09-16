@@ -1,7 +1,6 @@
-import Service from "../service";
 import Users from "../../../users";
 import Tags from "../../../tags";
-import Places from "../../../places/server/service";
+import Places from "../../../places";
 
 const Jobs = {};
 
@@ -14,7 +13,11 @@ Jobs.industry = entity => {
 Jobs.languages = entity => {
   return Tags.service.tags({_id: {$in: entity.languages}});
 };
-Jobs.location = entity => {
-  return Places.getPlace({owner: entity._id});
+Jobs.positionTags = entity => {
+  return Tags.service.tags({_id: {$in: entity.positionTags}});
+};
+
+Jobs.place = entity => {
+  return Places.service.getPlaceByOwner(entity._id);
 };
 export default Jobs;
