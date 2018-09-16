@@ -4,6 +4,7 @@ import { Container } from "btech-layout";
 import InternalLayout from "../../components/InternalLayout/InternalLayout";
 import EventForm from "../../modules/event-module/form";
 import { Preview } from "../../../ui/components";
+import EventPreviewBody from "../../components/Preview/EventPreviewBody";
 import { withRouter } from "react-router-dom";
 import { CreateEvent } from "../../apollo-client/event";
 import { Mutation } from "react-apollo";
@@ -17,7 +18,26 @@ class PostEvent extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      event: {}
+        event: {
+            category: [],
+            others: [],
+            title: "",
+            description: "",
+            venueName: "",
+            venueEmail: "",
+            place: {
+                location: {
+                    address: "",
+                    location: {lat: "", lng: ""},
+                    fullLocation: {}
+                },
+            },
+            attenders: {
+                min: "",
+                max: ""
+            },
+            tickets: []
+        }
     };
   }
 
@@ -48,6 +68,7 @@ class PostEvent extends Component {
               <EventForm
                 onFinish={data => this.onPostAction(createEvent, data)}
                 onCancel={() => this.onCancel()}
+                handleChangeEvent={(event) => this.setState({event: event})}
                 {...this.props}
               />
             )}
@@ -74,7 +95,7 @@ class PostEvent extends Component {
             this.state.selectedItem ? this.state.selectedItem.image : null
           }
         >
-          event preview data for event
+          <EventPreviewBody event={this.state.event} />
         </Preview>
       </InternalLayout>
     );

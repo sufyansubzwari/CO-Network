@@ -35,6 +35,7 @@ class EventForm extends Component {
         tickets: []
       }
     };
+    this.handleChange = this.handleChange.bind(this)
   }
 
   componentWillMount() {
@@ -49,6 +50,17 @@ class EventForm extends Component {
     }
   }
 
+  handleChange(event){
+      this.setState(
+          {
+              event: event
+          },
+          () =>
+              this.props.handleChangeEvent && this.props.handleChangeEvent(event)
+      );
+  }
+
+
   render() {
     return (
       <MlWizardForm
@@ -61,31 +73,31 @@ class EventForm extends Component {
         <WizardStepForm title={"Event Details"} isValid>
           <EventStep1
             data={this.state.event}
-            onChange={event => this.setState({ event: event })}
+            onChange={event => this.handleChange(event)}
           />
         </WizardStepForm>
         <WizardStepForm title={"Speaker & Sponsors"} isValid>
           <EventStep2
             data={this.state.event}
-            onChange={event => this.setState({ event: event })}
+            onChange={event => this.handleChange(event)}
           />
         </WizardStepForm>
         <WizardStepForm title={"Venue"} isValid>
           <EventStep3
             data={this.state.event}
-            onChange={event => this.setState({ event: event })}
+            onChange={event => this.handleChange(event)}
           />
         </WizardStepForm>
         <WizardStepForm title={"Ticket Type"} isValid>
           <EventStep4
             data={this.state.event}
-            onChange={event => this.setState({ event: event })}
+            onChange={event => this.handleChange(event)}
           />
         </WizardStepForm>
         <WizardStepForm title={"Receive Payments"} isValid>
           <EventStep5
             data={this.state.event}
-            onChange={event => this.setState({ event: event })}
+            onChange={event => this.handleChange(event)}
           />
         </WizardStepForm>
       </MlWizardForm>
