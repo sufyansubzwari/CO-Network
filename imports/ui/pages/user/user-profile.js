@@ -3,11 +3,7 @@ import { Layout, Container } from "btech-layout";
 import UserForm from "./../../modules/user-module/form/";
 import InternalLayout from "../../components/InternalLayout/InternalLayout";
 import { Preview } from "../../../ui/components";
-import Title  from "../../../ui/components/Preview/components/Title";
-import Location  from "../../../ui/components/Preview/components/Location";
-import Social  from "../../../ui/components/Preview/components/Social";
-import Text  from "../../../ui/components/Preview/components/Text";
-import TagsAdd from "../../components/Preview/components/TagsAdd";
+import UserPreviewBody from "../../components/Preview/UserPreviewBody";
 import { Mutation } from "react-apollo";
 import { withRouter } from "react-router-dom";
 import { CreateEvent } from "../../apollo-client/event";
@@ -21,7 +17,51 @@ class UserProfile extends Component {
     super(props);
 
     this.state = {
-        user: {}
+        user: {
+            info: {
+                name: "",
+                lastName: "",
+                email: "",
+                website: "",
+                location: {
+                    address: "",
+                    location: {lat: "", lng: ""},
+                    fullLocation: {}
+                }
+            },
+            social: {
+                github: "",
+                facebook: "",
+                twitter: "",
+                google: ""
+            },
+            aboutMe: {
+                yourPassion: "",
+                existingProblem: "",
+                steps: ""
+            },
+            knowledge: {
+                languages: [],
+                curiosity: [],
+                lookingFor: []
+            },
+            professional: {
+                salaryRange: {
+                    min: "",
+                    max: ""
+                },
+                jobType: [],
+                industry: []
+            },
+            speaker: {
+                lookingFor: [],
+                topic: [],
+                style: [],
+                stage: [],
+                otherlooking: [],
+                otherpreferred: []
+            }
+        }
     }
   }
 
@@ -37,6 +77,7 @@ class UserProfile extends Component {
             onFinish={data => this.onPostAction(() => console.log(createProfile), data)}
             onCancel={() => this.onCancel()}
             userLogged={false}
+            handleChangeProfile={(user) => this.setState({user: user})}
             {...this.props}
           />
         </Container>
@@ -61,13 +102,7 @@ class UserProfile extends Component {
             this.state.selectedItem ? this.state.selectedItem.image : null
           }
         >
-          <Layout>
-            <Title text={'Machine Learning Society'} />
-            <Location text={'SAN DIEGO | BOSTON | NEW YORK | BAY AREA'} />
-            <Social social={['github', 'google', 'facebook', 'twitter']} links={[{link: 'www.mlsociety.com', website: 'MLsociety.com'}]} />
-              <TagsAdd header={'Organization Type'} tags={[{name:'Academia', active: true},{name:'Comunity', active: true}]} />
-            <Text header={'Vision'} text={'Lorem ipsum dolorem orem ipsum dolorem orem ipsum dolorem orem ipsum dolorem orem ipsum dolorem ipsum dolorem orem ipsum dolorem ipsum dolorem orem ipsum dolorem ipsum dolorem orem ipsum dolorem ipsum dolorem orem ipsum dolorem'} />
-          </Layout>
+          <UserPreviewBody user={this.state.user} />
         </Preview>
       </InternalLayout>
     );

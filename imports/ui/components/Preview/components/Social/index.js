@@ -33,8 +33,8 @@ class Social extends React.Component{
         return (
             <ThemeProvider theme={theme}>
                 <Container>
-                    {socials}
-                    {links}
+                    {socials && socials.length ? socials : null}
+                    {links && links.length ? links : null}
                 </Container>
             </ThemeProvider>
         );
