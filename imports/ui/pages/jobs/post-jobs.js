@@ -3,6 +3,7 @@ import {Container} from "btech-layout";
 import InternalLayout from "../../components/InternalLayout/InternalLayout";
 import JobForm from "../../modules/jobs-module/form";
 import {Preview} from "../../../ui/components";
+import JobPreviewBody from "../../components/Preview/JobPreviewBody";
 import {withRouter} from "react-router-dom";
 import {CreateJob} from "../../apollo-client/job";
 import {Mutation} from "react-apollo";
@@ -15,7 +16,27 @@ class PostJob extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      job: {},
+        job: {
+            title: "",
+            description: "",
+            location: {
+                address: "",
+                location: { lat: 0, lng: 0 },
+                fullLocation: {}
+            },
+            languages: [],
+            positionTags: [],
+            culture: "",
+            aboutUsTeam: "",
+            candidateQuestions: "",
+            jobResponsibility: "",
+            jobType: [],
+            jobExperience: [],
+            salaryRange: {
+              min: "",
+              max: ""
+            }
+        },
     };
   }
 
@@ -54,6 +75,7 @@ class PostJob extends Component {
                 }
                 onCancel={() => this.onCancel()}
                 {...this.props}
+                handleJobChange={job => this.setState({job: job})}
               />
             )}
           </Mutation>
@@ -79,7 +101,7 @@ class PostJob extends Component {
             this.state.selectedItem ? this.state.selectedItem.image : null
           }
         >
-          job preview data for job
+          <JobPreviewBody job={this.state.job} />
         </Preview>
       </InternalLayout>
     );

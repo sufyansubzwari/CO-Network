@@ -3,6 +3,7 @@ import { ItemsList, ListLayout, Preview } from "../../../ui/components";
 import { Query, Mutation } from "react-apollo";
 import { connect } from "react-redux";
 import { PreviewData } from "../../actions/PreviewActions";
+import EventPreviewBody from "../../components/Preview/EventPreviewBody";
 import { CreateEvent, DeleteEvent } from "../../apollo-client/event";
 import { GetEvents } from "../../apollo-client/event";
 import { withRouter } from "react-router-dom";
@@ -20,7 +21,8 @@ class ListEvents extends Component {
       selectedIndex: null,
       loading: false,
       limit: 10,
-      filter: ""
+      filter: "",
+
     }
   }
 
@@ -129,7 +131,7 @@ class ListEvents extends Component {
                   this.state.selectedItem ? this.state.selectedItem.image : null
                 }
               >
-                event preview data for event
+                  <EventPreviewBody event={this.state.selectedItem} />
               </Preview>
             )}
           </Mutation>

@@ -23,6 +23,8 @@ class JobForm extends React.Component {
         jobResponsibility: ""
       }
     };
+
+    this.handleChange = this.handleChange.bind(this);
   }
 
   componentWillMount() {
@@ -35,6 +37,13 @@ class JobForm extends React.Component {
         this.props.history.push({ state: null })
       );
     }
+  }
+
+  handleChange(job){
+    this.setState({
+        job: job
+    },
+        () => this.props.handleJobChange && this.props.handleJobChange(job))
   }
 
   render() {
@@ -50,19 +59,19 @@ class JobForm extends React.Component {
           <WizardStepForm title={"Job Details"} isValid>
             <FirstStep
               data={this.state.job}
-              onChange={job => this.setState({ job: job })}
+              onChange={job => this.handleChange(job)}
             />
           </WizardStepForm>
           <WizardStepForm title={"Job Requirements"} isValid>
             <SecondStep
               data={this.state.job}
-              onChange={job => this.setState({ job: job })}
+              onChange={job => this.handleChange(job)}
             />
           </WizardStepForm>
           <WizardStepForm title={"Organizational Culture"} isValid>
             <ThirdStep
               data={this.state.job}
-              onChange={job => this.setState({ job: job })}
+              onChange={job => this.handleChange(job)}
             />
           </WizardStepForm>
           <WizardStepForm title={"Submit"}>
@@ -80,7 +89,8 @@ JobForm.defaultProps = {
 
 JobForm.propTypes = {
   onCancel: PropTypes.func,
-  onFinish: PropTypes.func
+  onFinish: PropTypes.func,
+    handleJobChange: PropTypes.func
 };
 
 export default JobForm;

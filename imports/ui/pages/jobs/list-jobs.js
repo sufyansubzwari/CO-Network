@@ -3,6 +3,7 @@ import { ItemsList, ListLayout, Preview } from "../../../ui/components";
 import { Query, Mutation } from "react-apollo";
 import { connect } from "react-redux";
 import { PreviewData } from "../../actions/PreviewActions";
+import JobPreviewBody from "../../components/Preview/JobPreviewBody"
 import {CreateJob, DeleteJob} from "../../apollo-client/job";
 import { GetJobs } from "../../apollo-client/job";
 import { withRouter } from "react-router-dom";
@@ -127,7 +128,7 @@ class ListJobs extends Component {
               this.state.selectedItem ? this.state.selectedItem.image : null
             }
           >
-            job preview data for job
+            <JobPreviewBody job={this.state.selectedItem} />
           </Preview>
             )}
           </Mutation>
