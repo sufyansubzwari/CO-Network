@@ -8,6 +8,7 @@ import {
 import { Query, Mutation } from "react-apollo";
 import { GetOrg, DeleteOrg } from "../../apollo-client/organization";
 import { withRouter } from "react-router-dom";
+import OrganizationPreviewBody from "../../components/Preview/OrganizationPreviewBody";
 
 /**
  * @module Events
@@ -191,7 +192,7 @@ class ListInnovators extends Component {
                     : null
                 }
               >
-                innovators preview data for innovators
+                  <OrganizationPreviewBody organization={this.state.selectedItem} />
               </Preview>
             )}
           </Mutation>

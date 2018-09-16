@@ -36,14 +36,14 @@ class FirstStep extends React.Component {
         })
       });
     if (this.props.data && !this.props.data.place) {
-      let event = this.props.data;
-      event.place = {
+      let job = this.props.data;
+        job.place = {
         location: {
           address: "",
           location: {lng: "", lat: ""}
         }
       };
-      this.setState({event: event});
+      this.setState({job: job});
     }
   }
 
@@ -65,12 +65,12 @@ class FirstStep extends React.Component {
 
   notifyParentLocation(model, name, value) {
     if (model && name && value) {
-      let event = this.state.event;
-      event.place[name] = value;
-      this.setState({event: event}, () => this.props.onChange && this.props.onChange(this.state.event));
+      let job = this.state.job;
+      job.place[name] = value;
+      this.setState({job: job}, () => this.props.onChange && this.props.onChange(this.state.job));
     }
     else
-      this.props.onChange && this.props.onChange(this.state.event);
+      this.props.onChange && this.props.onChange(this.state.job);
   }
 
   changeCategory(actives) {
@@ -116,7 +116,7 @@ class FirstStep extends React.Component {
           model={this.state.job.place}
           placeholder={"Location"}
           isGeoLocationAvailable={true}
-          onChange={this.notifyParent.bind(this)}
+          onChange={this.notifyParentLocation.bind(this)}
           />
         </Layout>
         <TextArea
