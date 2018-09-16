@@ -16,6 +16,12 @@ query GetOrganizations($limit: Int, $filter: String) {
             }
             image
             cover
+            orgType{
+                label
+            }
+            actively{
+                label
+            }
         }
         place{
             _id

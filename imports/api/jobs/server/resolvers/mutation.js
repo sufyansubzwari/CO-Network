@@ -16,7 +16,7 @@ Mutation.job = async (root, {job}, context) => {
     let place = Object.assign({}, job.place);
     if (!place._id) {
       place.owner = inserted._id;
-      place.entity = "EVENT";
+      place.entity = "JOB";
     }
     delete place.location.fullLocation;
     await Places.service.place(place);

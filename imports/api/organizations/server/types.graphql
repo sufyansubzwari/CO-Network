@@ -70,18 +70,18 @@ input OrganizationsInput {
     contact: ContactInput
     services: ServicesInput
     reason: ReasonInput
-    tech: TechInput!
+    tech: TechInput
     place: PlacesInput
 }
 
 input OrgInfoInput {
-    name: String!
-    description: [String]!
+    name: String
+    description: [TagsInput]
     image: String
     cover: String
-    employees: ObjectTypeInput!
-    orgType: [ObjectTypeInput]!
-    actively: [ObjectTypeInput]!
+    employees: ObjectTypeInput
+    orgType: [ObjectTypeInput]
+    actively: [ObjectTypeInput]
     website: String
 }
 
@@ -94,7 +94,7 @@ input SocialInput {
 }
 
 input ContactInput {
-    email: String!
+    email: String
     phone: String
 }
 
@@ -111,10 +111,10 @@ input ReasonInput {
 }
 
 input TechInput {
-    stack: [String]!
+    stack: [TagsInput]
     salaryRange: SalaryRangeInput
     industry: [String]
-    jobType: [ObjectTypeInput]!
+    jobType: [ObjectTypeInput]
 }
 
 type Mutation {
