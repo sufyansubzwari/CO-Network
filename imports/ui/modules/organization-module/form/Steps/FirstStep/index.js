@@ -1,6 +1,6 @@
 import React from 'react';
 import {WizardStepForm, Input, CheckBoxList, SocialButton} from 'btech-base-forms-component';
-// import {GeoInputLocation} from "btech-location";
+import {GeoInputLocation} from "btech-location";
 import {Container, Layout} from 'btech-layout';
 
 import {ORGANIZATION_TYPE,EMAIL_REGEX,PHONE_REGEX} from "../../constants/constants";
@@ -68,7 +68,7 @@ class FirstStep extends React.Component {
                 <Layout templateColumns={2} colGap={'20px'}>
                     <Input name={'name'} model={this.state.organization.info} placeholderText={'Organization Name'}
                            getValue={this.notifyParent.bind(this,"info")} />
-                    {/*<GeoInputLocation model={this.state.organization.info} name={'location'} placeholder={"Location"} />*/}
+                    <GeoInputLocation model={this.state.organization.info} name={'location'} placeholder={"Location"} />
                 </Layout>
                 <CheckBoxList
                     placeholderText={'Organization Type'}

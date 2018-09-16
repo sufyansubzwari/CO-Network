@@ -2,7 +2,7 @@ import React, {Component} from "react";
 import {Container, Layout} from "btech-layout";
 import PropTypes from "prop-types";
 import {Input, SalaryRange} from "btech-base-forms-component";
-// import {GeoInputLocation} from "btech-location";
+import {GeoInputLocation} from "btech-location";
 
 /**
  * @module Event
@@ -78,13 +78,13 @@ class EventStep3 extends Component {
           </Layout>
         </Container>
         <Container>
-          {/*<GeoInputLocation*/}
-            {/*name={"location"}*/}
-            {/*model={this.state.event.place}*/}
-            {/*placeholder={"Location"}*/}
-            {/*isGeoLocationAvailable={true}*/}
-            {/*onChange={(model, name, value) => this.notifyParentLocation(model, name, value)}*/}
-          {/*/>*/}
+          <GeoInputLocation
+            name={"location"}
+            model={this.state.event.place}
+            placeholder={"Location"}
+            isGeoLocationAvailable={true}
+            onChange={(model, name, value) => this.notifyParentLocation(model, name, value)}
+          />
         </Container>
         <Container>
           <Layout

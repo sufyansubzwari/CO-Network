@@ -1,6 +1,6 @@
 import React from 'react';
 import {Input, CheckBoxList, SocialButton, Steeper, PlanCard} from 'btech-base-forms-component';
-// import {GeoInputLocation} from "btech-location";
+import {GeoInputLocation} from "btech-location";
 import {Container, Layout} from 'btech-layout';
 
 import {ORGANIZATION_TYPE,EMAIL_REGEX,PHONE_REGEX} from "../../constants/constants";

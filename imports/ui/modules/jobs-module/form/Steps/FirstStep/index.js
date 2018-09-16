@@ -8,7 +8,7 @@ import {
   InputAutoComplete,
   TagList
 } from "btech-base-forms-component";
-// import {GeoInputLocation} from "btech-location";
+import {GeoInputLocation} from "btech-location";
 import {Container, Layout} from "btech-layout";
 import {JOB_TYPE, POSITION_TAGS} from "../../constants/constants";
 import PropTypes from "prop-types";
@@ -111,15 +111,15 @@ class FirstStep extends React.Component {
             placeholderText={"Position Title"}
             getValue={this.notifyParent.bind(this)}
           />
-          {/*<GeoInputLocation*/}
-          {/*name={"location"}*/}
-          {/*model={this.state.job.place}*/}
-          {/*placeholder={"Location"}*/}
-          {/*isGeoLocationAvailable={true}*/}
-          {/*onChange={(model, name, value) =>*/}
-          {/*this.notifyParentLocation(model, name, value)*/}
-          {/*}*/}
-          {/*/>*/}
+          <GeoInputLocation
+          name={"location"}
+          model={this.state.job.place}
+          placeholder={"Location"}
+          isGeoLocationAvailable={true}
+          onChange={(model, name, value) =>
+          this.notifyParentLocation(model, name, value)
+          }
+          />
         </Layout>
         <TextArea
           height={"100px"}
