@@ -11,7 +11,7 @@ import {
   USER_TAGS,
   LOOKING_FOR,
   PREFERRED_STAGE,
-  LOOKING_FOR_DEFAULT
+    LOOKING_FOR_DEFAULT_SPEAKER
 } from "../../constants/constants";
 
 class SixthStep extends React.Component {
@@ -22,7 +22,7 @@ class SixthStep extends React.Component {
 
     this.state = {
       user: data,
-      lookingfor: LOOKING_FOR_DEFAULT,
+      lookingfor: LOOKING_FOR_DEFAULT_SPEAKER,
       preferred: PREFERRED_STAGE
     };
   }
@@ -30,7 +30,7 @@ class SixthStep extends React.Component {
   componentWillMount() {
     if (this.props.data && this.props.data.speaker.lookingFor)
       this.setState({
-        lookingfor: LOOKING_FOR_DEFAULT.map(e => {
+        lookingfor: LOOKING_FOR_DEFAULT_SPEAKER.map(e => {
           e["active"] = this.props.data.speaker.lookingFor.some(
             element => e.label === element.label
           );

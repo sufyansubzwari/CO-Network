@@ -49,86 +49,97 @@ class UserForm extends Component {
                     lookingFor: []
                 },
                 professional: {
-                    seeking: true,
                     salaryRange: {
-                        min: 0,
+                        min: "",
                         max: ""
                     },
                     jobType: [],
                     industry: []
                 },
                 speaker: {
-                    join: true,
+                    lookingFor: [],
                     topic: [],
                     style: [],
                     stage: [],
                     otherlooking: [],
                     otherpreferred: []
                 }
-            },
+            }
         };
+        this.handleChange = this.handleChange.bind(this);
+    }
+
+    handleChange(user) {
+        this.setState(
+            {
+                user: user
+            },
+            () =>
+                this.props.handleChangeProfile && this.props.handleChangeProfile(user)
+        );
     }
 
     componentWillMount() {
     }
 
     render() {
-        return <MlWizardForm
-            title={"Member Profile"}
-            onFinish={() =>
-                this.props.onFinish && this.props.onFinish(this.state.event)
-            }
-            onCancel={() => this.props.onCancel && this.props.onCancel()}
-        >
-            <WizardStepForm title={"User Details"} isValid>
-                <FirstStep
-                    data={this.state.user}
-                    onChange={user => this.setState({user: user})}
-                />
-            </WizardStepForm>
-            <WizardStepForm title={"About Me | Passion"} isValid>
-                <SecondStep
-                    data={this.state.user}
-                    onChange={user => this.setState({user: user})}
-                />
-            </WizardStepForm>
-            <WizardStepForm title={"Knowledge"} isValid>
-                <ThirdStep
-                    data={this.state.user}
-                    onChange={user => this.setState({user: user})}
-                />
-            </WizardStepForm>
-            <WizardStepForm title={"Professional"} isValid>
-                <FourthStep
-                    data={this.state.user}
-                    onChange={user => this.setState({user: user})}
-                />
-            </WizardStepForm>
-            <WizardStepForm title={"Achievements"} isValid>
-                <FifthStep
-                    data={this.state.user}
-                    onChange={user => this.setState({user: user})}
-                />
-            </WizardStepForm>
-            <WizardStepForm title={"Speak Directory"} isValid>
-                <SixthStep
-                    data={this.state.user}
-                    onChange={user => this.setState({user: user})}
-                />
-            </WizardStepForm>
-        </MlWizardForm>
+        return (
+            <MlWizardForm
+                title={"Member Profile"}
+                onFinish={() =>
+                    this.props.onFinish && this.props.onFinish(this.state.event)
+                }
+                onCancel={() => this.props.onCancel && this.props.onCancel()}
+            >
+                <WizardStepForm title={"User Details"} isValid>
+                    <FirstStep
+                        data={this.state.user}
+                        onChange={user => this.handleChange(user)}
+                    />
+                </WizardStepForm>
+                <WizardStepForm title={"About Me | Passion"} isValid>
+                    <SecondStep
+                        data={this.state.user}
+                        onChange={user => this.handleChange(user)}
+                    />
+                </WizardStepForm>
+                <WizardStepForm title={"Knowledge"} isValid>
+                    <ThirdStep
+                        data={this.state.user}
+                        onChange={user => this.handleChange(user)}
+                    />
+                </WizardStepForm>
+                <WizardStepForm title={"Professional"} isValid>
+                    <FourthStep
+                        data={this.state.user}
+                        onChange={user => this.handleChange(user)}
+                    />
+                </WizardStepForm>
+                <WizardStepForm title={"Achievements"} isValid>
+                    <FifthStep
+                        data={this.state.user}
+                        onChange={user => this.handleChange(user)}
+                    />
+                </WizardStepForm>
+                <WizardStepForm title={"Speak Directory"} isValid>
+                    <SixthStep
+                        data={this.state.user}
+                        onChange={user => this.handleChange(user)}
+                    />
+                </WizardStepForm>
+            </MlWizardForm>
+        );
     }
 }
 
-UserForm
-    .defaultProps = {
+UserForm.defaultProps = {
     data: {}
 };
 
-UserForm
-    .propTypes = {
+UserForm.propTypes = {
     onCancel: PropTypes.func,
-    onFinish: PropTypes.func
+    onFinish: PropTypes.func,
+    handleChangeProfile: PropTypes.func
 };
 
 export default UserForm;

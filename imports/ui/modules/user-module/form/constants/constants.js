@@ -31,6 +31,17 @@ export const LOOKING_FOR_DEFAULT = [
     {label: 'Study Group Companions'},
 ]
 
+export const LOOKING_FOR_DEFAULT_SPEAKER = [
+    {label: 'Co-Founders for Startup'},
+    {label: 'Competition Teammates'},
+    {label: 'Individuals to Mentor'},
+    {label: 'Mentorship'},
+    {label: 'Teach Project Partners'},
+    {label: 'Data Trading'},
+    {label: 'Scientific Collaborations'},
+    {label: 'Study Group Companions'},
+]
+
 export const JOB_TYPE = [
     {label: 'Full Time', active: true},
     {label: 'Part Time', active: false},
