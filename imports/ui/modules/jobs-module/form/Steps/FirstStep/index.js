@@ -87,10 +87,11 @@ class FirstStep extends React.Component {
   }
 
   onAddTags(tag) {
+    let newTag = Object.assign({}, tag);
     let tags = this.state.job.positionTags || [];
-    !tag.name ? tag.name = tag.label : null;
-    tag.type = "JobPosition";
-    tags.push(tag);
+    !newTag.name ? newTag.name = newTag.label : null;
+    newTag.type = "JobPosition";
+    tags.push(newTag);
     this.state.job.positionTags = tags;
     this.setState({job: this.state.job}, () => this.notifyParent());
   }

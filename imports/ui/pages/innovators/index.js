@@ -1,4 +1,4 @@
-import PostInnovators from "./post-event";
+import PostInnovators from "./post-innovators";
 import ListInnovators from "./list-innovators";
 
 export { ListInnovators, PostInnovators };

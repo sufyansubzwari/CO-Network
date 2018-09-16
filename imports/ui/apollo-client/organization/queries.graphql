@@ -1,20 +1,63 @@
-
-query GetEvents($limit: Int, $filter: String) {
-  events(limit: $limit, events: $filter) {
-    _id
-    title
-    description
-    venueName
-    image
-    owner {
-      _id
+query GetOrganizations($limit: Int, $filter: String) {
+    organizations(limit: $limit, filter: $filter) {
+        _id
+        owner {
+            _id
+        }
+        entity
+        views
+        info {
+            name
+            description{
+                _id
+                label
+                value
+                name
+            }
+            image
+            cover
+        }
+        place{
+            _id
+            location{
+                address
+                location{
+                    lat
+                    lng
+                }
+            }
+        }
+        social{
+            github
+            linkedin
+            facebook
+            twitter
+            google
+        }
+        contact{
+            email
+            phone
+        }
+        reason{
+            bio
+            vision
+            orgDefine
+        }
+        tech{
+            industry
+            salaryRange{
+                min
+                max
+            }
+            stack{
+                _id
+                label
+                value
+                name
+            }
+            jobType{
+                label
+            }
+        }
     }
-    category {
-      label
-      value
-      name
-    }
-    entity
-    views
-  }
 }

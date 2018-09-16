@@ -14,7 +14,7 @@ class FirstStep extends React.Component {
 
         this.state = {
             organization: data,
-            orgtype: ORGANIZATION_TYPE
+            orgType: ORGANIZATION_TYPE
         }
 
     }
@@ -22,7 +22,7 @@ class FirstStep extends React.Component {
     componentWillMount() {
         if (this.props.data && this.props.data.info.orgType)
             this.setState({
-                orgtype: ORGANIZATION_TYPE.map(e => {
+                orgType: ORGANIZATION_TYPE.map(e => {
                     e["active"] = this.props.data.info.orgType.some(
                         element => e.label === element.label
                     );
@@ -32,14 +32,14 @@ class FirstStep extends React.Component {
     }
 
     changeOrgTypes(actives) {
-        const selected = this.state.orgtype.map((org, index) => {
+        const selected = this.state.orgType.map((org, index) => {
             org["active"] = actives[index];
             return org;
         });
         const orgstype = selected.filter(element => element.active);
         const temp = this.state.organization;
         temp["info"]["orgType"] = orgstype;
-        this.setState({orgtype: selected, organization: temp}, () =>
+        this.setState({orgType: selected, organization: temp}, () =>
             this.notifyParent()
         )
     }
@@ -49,10 +49,10 @@ class FirstStep extends React.Component {
             this.setState({organization: nextProps.data});
     }
 
-    notifyParent(model, name, value) {
+    notifyParent(section, model, name, value) {
         if (model && name && value) {
             let organization = this.state.organization;
-            organization[name] = value;
+            organization[section][name] = value;
             this.setState(
                 {organization: organization},
                 () => this.props.onChange && this.props.onChange(this.state.organization)
@@ -67,12 +67,12 @@ class FirstStep extends React.Component {
             <Layout rowGap={'25px'}>
                 <Layout templateColumns={2} colGap={'20px'}>
                     <Input name={'name'} model={this.state.organization.info} placeholderText={'Organization Name'}
-                           getValue={this.notifyParent.bind(this)} />
+                           getValue={this.notifyParent.bind(this,"info")} />
                     {/*<GeoInputLocation model={this.state.organization.info} name={'location'} placeholder={"Location"} />*/}
                 </Layout>
                 <CheckBoxList
                     placeholderText={'Organization Type'}
-                    options={this.state.orgtype}
+                    options={this.state.orgType}
                     columns={2}
                     checkboxVerticalSeparation={'10px'}
                     checkboxSize={'15px'}
@@ -80,9 +80,9 @@ class FirstStep extends React.Component {
                 />
                 <Layout templateColumns={2} colGap={'20px'}>
                     <Input name={'email'} model={this.state.organization.contact} placeholderText={'Verification Email'}
-                           getValue={this.notifyParent.bind(this)} validate={EMAIL_REGEX}/>
+                           getValue={this.notifyParent.bind(this,"contact")} validate={EMAIL_REGEX}/>
                     <Input name={'phone'} model={this.state.organization.contact} placeholderText={'Contact Number'}
-                           getValue={this.notifyParent.bind(this)} validate={PHONE_REGEX}/>
+                           getValue={this.notifyParent.bind(this,"contact")} validate={PHONE_REGEX}/>
                 </Layout>
                 <Layout templateColumns={4} colGap={'10px'} height={'90px'}>
                     <SocialButton

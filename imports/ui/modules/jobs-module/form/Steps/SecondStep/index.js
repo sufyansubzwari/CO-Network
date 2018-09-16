@@ -11,7 +11,6 @@ import { EXPERIENCE_REQUIERED } from "../../constants/constants";
 import { GetTags } from "../../../../../apollo-client/tag";
 import { Query } from "react-apollo";
 import PropTypes from "prop-types";
-import EventStep1 from "../../../../event-module/form/components/EventStep1";
 
 class SecondStep extends React.Component {
   constructor(props) {
@@ -53,10 +52,11 @@ class SecondStep extends React.Component {
   }
 
   onAddTags(tag) {
+    let newTag = Object.assign({}, tag);
     let tags = this.state.job.languages || [];
-    !tag.name ? (tag.name = tag.label) : null;
-    tag.type = "Languages";
-    tags.push(tag);
+    !newTag.name ? (newTag.name = newTag.label) : null;
+    newTag.type = "Languages";
+    tags.push(newTag);
     this.state.job.languages = tags;
     this.setState({ job: this.state.job }, () => this.notifyParent());
   }

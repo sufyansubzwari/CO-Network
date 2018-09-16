@@ -1,19 +1,25 @@
 import Users from "../../../users";
 import Tags from "../../../tags";
+import Places from "../../../places";
 
 const Organizations = {};
-const Reason = {};
 
 Organizations.owner = entity => {
   return Users.service.getUser(entity.owner);
 };
 
-Reason.industry = () => {
-  return Tags.service.tags({}, {limit:2});
+Organizations.place = entity => {
+  return Places.service.getPlaceByOwner(entity._id);
 };
 
-Organizations.reason = () => {
-  return Reason
+Organizations.info = entity => {
+  const info = {description: Tags.service.getTagList(entity.description)};
+  return Object.assign(entity.info, info);
+
+};
+Organizations.tech = entity => {
+  const tech = {stack: Tags.service.getTagList(entity.stack)};
+  return Object.assign(entity.tech, tech);
 };
 
 export default Organizations;

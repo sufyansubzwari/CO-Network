@@ -11,7 +11,8 @@ Query.organizations = (root, { filter, limit }, context) => {
     query = {
       $or: [
         { "info.name": { $regex: filter, $options: "i" } },
-        { "info.description": { $regex: filter, $options: "i" } }
+        { "reason.bio": { $regex: filter, $options: "i" } },
+        { "reason.vision": { $regex: filter, $options: "i" } },
       ]
     };
   }

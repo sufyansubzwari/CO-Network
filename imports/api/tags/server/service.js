@@ -34,7 +34,7 @@ class TagsService {
     return Tags.collection.findOne(_id);
   };
   static getTagList = tags => {
-    return Tags.collection.find({_id: {"$in": tags}});
+    return Tags.collection.find({_id: {"$in": tags}}).fetch();
   };
   /**
    *@name tags

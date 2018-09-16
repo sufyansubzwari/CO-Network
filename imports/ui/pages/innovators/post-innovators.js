@@ -4,6 +4,7 @@ import InternalLayout from "../../components/InternalLayout/InternalLayout";
 import OrganizationForm from "../../modules/organization-module/form";
 import { Preview } from "../../../ui/components";
 import { withRouter } from "react-router-dom";
+import { CreateOrg } from "../../apollo-client/organization";
 import { Mutation } from "react-apollo";
 
 /**
@@ -22,15 +23,31 @@ class PostOrganization extends Component {
     this.props.history.push(`/innovators`);
   }
 
+  onPostAction(createOrg, query) {
+    let orgQuery = Object.assign({}, query);
+    //todo: remove when location improvement
+    orgQuery.place && orgQuery.place.location && orgQuery.place.location.fullLocation ?  delete orgQuery.place.location.fullLocation : null;
+    let organization = {
+      ...orgQuery,
+      owner: "Qt5569uuKKd6YrDwS",
+    };
+    createOrg({ variables: { entity: organization } });
+  }
+
   render() {
     return (
       <InternalLayout>
         <Container fullY key={"leftSide"}>
+          <Mutation mutation={CreateOrg} onCompleted={() => this.props.history.push("/innovators")}
+                    onError={(error) => console.log("Error: ", error)}>
+            {(createOrg, { orgCreated }) => (
           <OrganizationForm
-            onFinish={() => console.log("TODO the finish of the form")}
+            onFinish={data => this.onPostAction(createOrg, data)}
             onCancel={() => this.onCancel()}
             {...this.props}
           />
+            )}
+          </Mutation>
         </Container>
         <Preview
           key={"rightSide"}
