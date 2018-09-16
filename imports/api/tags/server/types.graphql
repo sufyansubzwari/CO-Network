@@ -7,7 +7,7 @@ type Tags {
     value: String!
     used: Int
     categories: [String]
-    types: String
+    type: String
 }
 
 type Query {
@@ -18,11 +18,12 @@ type Query {
 input TagsInput {
     _id: String
     name: String
-    label: String!
-    value: String!
+    label: String
+    value: String
     used: Int
     categories: [String]
-    types: String
+    active: String
+    type: String
 }
 
 type Mutation {

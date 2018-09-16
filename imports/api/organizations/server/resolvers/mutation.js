@@ -1,9 +1,27 @@
 import Service from "../service";
+import Places from "../../../places";
+import Tags from "../../../tags";
 
 const Mutation = {};
 
-Mutation.organization = async (root, {entity}, context) => {
-  return Service.organization(entity);
+Mutation.organization = async (root, {organizations}, context) => {
+  let entity = Object.assign({}, organizations);
+  if (organizations.info && organizations.info.description)
+    entity.info.description = await Tags.service.normalizeTags(organizations.info.description);
+  if (organizations.tech && organizations.tech.stack)
+    entity.tech.stack = await Tags.service.normalizeTags(organizations.tech.stack);
+  const inserted = await Service.event(entity);
+  //inserting location
+  if (organizations.place && organizations.place.location && organizations.place.location.address) {
+    let place = Object.assign({}, organizations.place);
+    if (!place._id) {
+      place.owner = inserted._id;
+      place.entity = "EVENT";
+    }
+    delete place.location.fullLocation;
+    await Places.service.place(place);
+  }
+  return inserted;
 };
 
 Mutation.updateImage = async (root, {_id, image, cover}, context) => {

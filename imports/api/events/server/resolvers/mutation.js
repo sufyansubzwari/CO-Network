@@ -5,17 +5,20 @@ import Places from '../../../places';
 const Mutation = {};
 
 Mutation.event = async (root, {events}, context) => {
-  let place = Object.assign({},events.place);
-  let entity = await Tags.service.normalizeTags(events);
+  let entity = Object.assign({}, events);
+  if (events.category)
+    entity.category = await Tags.service.normalizeTags(events.category);
   const eventInserted = await Service.event(entity);
-//inserting location
-  if(!place._id) {
-    place.owner = eventInserted._id;
-    place.entity = "EVENT";
+  //inserting location
+  if (events.place && events.place.location && events.place.location.address) {
+    let place = Object.assign({}, events.place);
+    if (!place._id) {
+      place.owner = eventInserted._id;
+      place.entity = "EVENT";
+    }
+    delete place.location.fullLocation;
+    await Places.service.place(place);
   }
-  delete place.location.fullLocation;
-  await Places.service.place(place);
-
   return eventInserted;
 };
 

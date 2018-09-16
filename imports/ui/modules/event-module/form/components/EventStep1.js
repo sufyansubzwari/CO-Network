@@ -121,7 +121,7 @@ class EventStep1 extends Component {
         <Container>
           <Layout rowGap={"10px"}>
             <Container>
-              <Query query={tags}>
+              <Query query={tags} variables={{tags: {type: "EVENT"}}}>
                 {({loading, error, data}) => {
                   if (loading) return <div>Fetching</div>;
                   if (error) return <div>Error</div>;

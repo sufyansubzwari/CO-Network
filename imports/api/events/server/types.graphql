@@ -102,7 +102,7 @@ input EventsInput {
     organizer: String
     phone: String
     notes: String
-    category: [ObjectTypeInput]!
+    category: [TagsInput]!
     attenders: AttendersInput!
     image: String
     tickets: [TicketsTypeInput]

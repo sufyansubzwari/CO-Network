@@ -18,8 +18,7 @@ Query.events = (root, {filter, limit, events}, context) => {
     }
   }
   if(events){
-    let newQuery = wrapOperators(events);
-    query = newQuery;
+    query = wrapOperators(events);
   }
   let limitQuery = limit ? {limit: limit} : {};
   return Service.events(query, limitQuery)

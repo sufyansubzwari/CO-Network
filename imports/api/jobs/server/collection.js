@@ -85,12 +85,28 @@ Jobs.schema = new SimpleSchema({
   },
   jobType: {
     optional: true,
+    type: Array,
+  },
+  'jobType.$': {
     type: Object,
   },
-  'jobType.value': {
+  'jobType.$.value': {
     type: String,
   },
-  'jobType.label': {
+  'jobType.$.label': {
+    type: String,
+  },
+  jobExperience: {
+    optional: true,
+    type: Array,
+  },
+  'jobExperience.$': {
+    type: Object,
+  },
+  'jobExperience.$.value': {
+    type: String,
+  },
+  'jobExperience.$.label': {
     type: String,
   },
   positionTags: {

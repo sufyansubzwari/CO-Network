@@ -5,29 +5,31 @@ type Organizations {
     owner: User!
     entity: String
     views: Int
-    info: OrgInfo!
+    info: OrgInfo
     social: Social
-    contact: Contact!
+    contact: Contact
     services: Services
-    reason: Reason!
-    tech: Tech!
+    reason: Reason
+    tech: Tech
+    place: Places
 }
 
 type Tech {
-    stack: [Tags]!
+    stack: [Tags]
     salaryRange: SalaryRange
-    industry: [ObjectType]
+    industry: [String]
     jobType: [ObjectType]
 }
 
 type OrgInfo {
-    name: String!
-    description: [Tags]!
+    name: String
+    description: [Tags]
     image: String
     cover: String
-    employees: ObjectType!
-    orgType: [ObjectType]!
-    actively: [ObjectType]!
+    employees: ObjectType
+    orgType: [ObjectType]
+    actively: [ObjectType]
+    website: String
 }
 
 type Social {
@@ -35,11 +37,10 @@ type Social {
     twitter: String
     github: String
     linkedin: String
-    website: String
+    google: String
 }
 
 type Contact {
-    name: String
     email: String!
     phone: String
 }
@@ -51,13 +52,9 @@ type Services {
 }
 
 type Reason {
-    languages: [Tags]!
     bio: String
-    mission: String
-    culture: String
+    vision: String
     orgDefine: String
-    product: String
-    industry: [Tags]!
 }
 
 type Query {
@@ -73,7 +70,8 @@ input OrganizationsInput {
     contact: ContactInput
     services: ServicesInput
     reason: ReasonInput
-
+    tech: TechInput!
+    place: PlacesInput
 }
 
 input OrgInfoInput {
@@ -84,6 +82,7 @@ input OrgInfoInput {
     employees: ObjectTypeInput!
     orgType: [ObjectTypeInput]!
     actively: [ObjectTypeInput]!
+    website: String
 }
 
 input SocialInput {
@@ -91,12 +90,10 @@ input SocialInput {
     twitter: String
     github: String
     linkedin: String
-    website: String
     google: String
 }
 
 input ContactInput {
-    name: String
     email: String!
     phone: String
 }
@@ -108,19 +105,15 @@ input ServicesInput {
 }
 
 input ReasonInput {
-    languages: [String]!
     bio: String
-    mission: String
-    culture: String
+    vision: String
     orgDefine: String
-    product: String
-    industry: [String]!
 }
 
 input TechInput {
     stack: [String]!
     salaryRange: SalaryRangeInput
-    industry: [ObjectTypeInput]
+    industry: [String]
     jobType: [ObjectTypeInput]!
 }
 

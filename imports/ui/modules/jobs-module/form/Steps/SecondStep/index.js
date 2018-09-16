@@ -7,11 +7,10 @@ import {
   InputAutoComplete
 } from "btech-base-forms-component";
 import { Container, Layout } from "btech-layout";
-import { JOB_TYPE, EXPERIENCE_REQUIERED } from "../../constants/constants";
+import { EXPERIENCE_REQUIERED } from "../../constants/constants";
 import { GetTags } from "../../../../../apollo-client/tag";
 import { Query } from "react-apollo";
 import PropTypes from "prop-types";
-import EventStep1 from "../../../../event-module/form/components/EventStep1";
 
 class SecondStep extends React.Component {
   constructor(props) {
@@ -25,7 +24,7 @@ class SecondStep extends React.Component {
   componentWillMount() {
     if (this.props.data && this.props.data.jobExperience)
       this.setState({
-        jobExperience: JOB_TYPE.map(e => {
+        jobExperience: EXPERIENCE_REQUIERED.map(e => {
           e["active"] = this.props.data.jobExperience.some(
             element => e.label === element.label
           );
@@ -53,9 +52,11 @@ class SecondStep extends React.Component {
   }
 
   onAddTags(tag) {
+    let newTag = Object.assign({}, tag);
     let tags = this.state.job.languages || [];
-    !tag.name ? (tag.name = tag.label) : null;
-    tags.push(tag);
+    !newTag.name ? (newTag.name = newTag.label) : null;
+    newTag.type = "Languages";
+    tags.push(newTag);
     this.state.job.languages = tags;
     this.setState({ job: this.state.job }, () => this.notifyParent());
   }
@@ -88,7 +89,7 @@ class SecondStep extends React.Component {
         <Container>
           <Layout rowGap={"10px"}>
             <Container>
-              <Query query={GetTags}>
+              <Query query={GetTags} variables={{tags:{type:"Languages"}}}>
                 {({ loading, error, data }) => {
                   if (loading) return <div>Fetching</div>;
                   if (error) return <div>Error</div>;

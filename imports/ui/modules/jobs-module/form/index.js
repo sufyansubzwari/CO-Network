@@ -10,10 +10,12 @@ class JobForm extends React.Component {
       job: {
         title: "",
         description: "",
-        location: {
-          address: "",
-          location: { lat: 0, lng: 0 },
-          fullLocation: {}
+        place: {
+          location: {
+            address: "",
+            location: {lat: "", lng: ""},
+            fullLocation: {}
+          },
         },
         languages: [],
         positionTags: [],

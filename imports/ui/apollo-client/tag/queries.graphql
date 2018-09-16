@@ -1,9 +1,8 @@
-
-query GetTags {
-  tags {
-    _id
-    name
-    label
-    value
-  }
+query GetTags($tags: TagsInput) {
+    tags(tags: $tags) {
+        _id
+        name
+        label
+        value
+    }
 }

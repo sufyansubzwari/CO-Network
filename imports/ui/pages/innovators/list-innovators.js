@@ -5,35 +5,9 @@ import {
   Preview,
   CardItem
 } from "../../../ui/components";
-import gql from "graphql-tag";
-import { Query } from "react-apollo";
-import { COMMUNITYEVENTCATEGORIES } from "../../modules/event-module/form/constants/community-event-categories";
-
-const organizations = gql`
-  query Organizations($limit: Int!) {
-    organizations(limit: $limit) {
-      _id
-      owner {
-        _id
-      }
-      entity
-      views
-      info {
-        name
-        description
-        image
-        cover
-      }
-      reason {
-        industry {
-          name
-          label
-          value
-        }
-      }
-    }
-  }
-`;
+import { Query, Mutation } from "react-apollo";
+import { GetOrg, DeleteOrg } from "../../apollo-client/organization";
+import { withRouter } from "react-router-dom";
 
 /**
  * @module Events
@@ -65,7 +39,8 @@ class ListInnovators extends Component {
         value: "corporations"
       },
       loading: false,
-      limit: 10
+      limit: 10,
+      filter: ""
     };
     this.customRenderItem = this.customRenderItem.bind(this);
   }
@@ -91,7 +66,7 @@ class ListInnovators extends Component {
         }
         loading={this.state.loading}
         title={item.info ? item.info.name : ""}
-        subTitle={item.info ? item.info.description : ""}
+        subTitle={item.reason ? item.reason.bio : ""}
         image={item.info ? item.info.image : null}
         tags={item.reason ? item.reason.industry : []}
         views={item.views}
@@ -100,14 +75,36 @@ class ListInnovators extends Component {
     );
   }
 
+  static removeOrg(deleteOrg, org) {
+    deleteOrg({ variables: { id: org._id } });
+  }
+
+  editOrg() {
+    let org = JSON.parse(JSON.stringify(this.state.selectedItem));
+    delete org.entity;
+    delete org.views;
+    this.props.history.push("/post-organization", {
+      organization: org
+    });
+  }
+
+  onSearch(value) {
+    this.setState({ filter: value });
+  }
+
   render() {
-    const { limit } = this.state;
+    const _this = this;
+    const { limit, filter } = this.state;
     return (
-      <ListLayout entityType={this.state.currentTab.value}>
+      <ListLayout
+        entityType={this.state.currentTab.value}
+        onSearchText={this.onSearch.bind(this)}
+      >
         <Query
           key={"listComponent"}
-          query={organizations}
-          variables={{ limit }}
+          query={GetOrg}
+          variables={{ limit, filter }}
+          pollInterval={5000}
         >
           {({ loading, error, data }) => {
             // if (loading) return null;
@@ -126,60 +123,82 @@ class ListInnovators extends Component {
           }}
         </Query>
         {this.state.selectedItem ? (
-          <Preview
-            key={"rightSide"}
-            navlinks={[
-              "Details",
-              "Vision",
-              "Engagements",
-              "..."
-              // "Recruitment",
-              // "Services",
-              // "Media"
-            ]}
-            navClicked={index => console.log(index)}
-            navOptions={[
-              {
-                text: "Apply",
-                primary: true,
-                checkVisibility: () => {
-                  return this.state.selectedItem && this.state.selectedItem._id;
-                },
-                onClick: () => {
-                  console.log("Adding");
+          <Mutation key={"rightSide"} mutation={DeleteOrg}>
+            {(deleteOrg, { orgDeleted }) => (
+              <Preview
+                key={"rightSide"}
+                navlinks={[
+                  "Details",
+                  "Vision",
+                  "Engagements",
+                  "..."
+                  // "Recruitment",
+                  // "Services",
+                  // "Media"
+                ]}
+                navClicked={index => console.log(index)}
+                navOptions={[
+                  {
+                    text: "Apply",
+                    primary: true,
+                    checkVisibility: () => {
+                      return (
+                        this.state.selectedItem && this.state.selectedItem._id
+                      );
+                    },
+                    onClick: () => {
+                      console.log("Adding");
+                    }
+                  },
+                  {
+                    text: "Edit",
+                    checkVisibility: () => {
+                      return (
+                        this.state.selectedItem && this.state.selectedItem._id
+                      );
+                    },
+                    onClick: () => {
+                      _this.editOrg();
+                    }
+                  },
+                  {
+                    text: "Remove",
+                    icon: "delete",
+                    checkVisibility: () => {
+                      return (
+                        this.state.selectedItem && this.state.selectedItem._id
+                      );
+                    },
+                    onClick: function() {
+                      ListInnovators.removeOrg(
+                        deleteOrg,
+                        _this.state.selectedItem
+                      );
+                    }
+                  }
+                ]}
+                showAvatar
+                index={this.state.selectedIndex}
+                data={this.state.selectedItem}
+                image={
+                  this.state.selectedItem.info
+                    ? this.state.selectedItem.info.image
+                    : null
                 }
-              },
-              {
-                text: "Remove",
-                icon: "delete",
-                checkVisibility: () => {
-                  return this.state.selectedItem && this.state.selectedItem._id;
-                },
-                onClick: function() {
-                  console.log("Remove");
+                backGroundImage={
+                  this.state.selectedItem.info
+                    ? this.state.selectedItem.info.image
+                    : null
                 }
-              }
-            ]}
-            showAvatar
-            index={this.state.selectedIndex}
-            data={this.state.selectedItem}
-            image={
-              this.state.selectedItem.info
-                ? this.state.selectedItem.info.image
-                : null
-            }
-            backGroundImage={
-              this.state.selectedItem.info
-                ? this.state.selectedItem.info.image
-                : null
-            }
-          >
-            innovators preview data for innovators
-          </Preview>
+              >
+                innovators preview data for innovators
+              </Preview>
+            )}
+          </Mutation>
         ) : null}
       </ListLayout>
     );
   }
 }
 
-export default ListInnovators;
+export default withRouter(ListInnovators);

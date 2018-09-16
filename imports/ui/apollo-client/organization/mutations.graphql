@@ -1,26 +1,12 @@
 
-mutation CreateEvent($entity: EventsInput!) {
-  event(events: $entity) {
+mutation CreateOrg($entity: OrganizationsInput!) {
+  organization(organizations: $entity) {
     _id
-    title
-    description
-    venueName
-    image
-    owner {
-      _id
-    }
-    category {
-      label
-      value
-      name
-    }
-    entity
-    views
   }
 }
 
-mutation DeleteEvent($id: String!) {
-  deleteEvent(_id: $id) {
+mutation DeleteOrg($id: String!) {
+  deleteOrganization(_id: $id) {
     _id
   }
 }

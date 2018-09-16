@@ -45,19 +45,14 @@ class PostJob extends Component {
   }
 
   onPostAction(createJob, query) {
-    let queryJob = query;
-    if (queryJob.languages && queryJob.languages.length > 0)
-      queryJob.languages = queryJob.languages.map(lang => lang._id);
-    if(queryJob.location && queryJob.location.fullLocation)
-      delete queryJob.location.fullLocation;
-    if(queryJob.salaryRange && queryJob.salaryRange.__typename)
-      delete queryJob.salaryRange.__typename;
+    let queryJob = Object.assign({}, query);
+    //todo: remove when location improvement
+    queryJob.place && queryJob.place.location && queryJob.place.location.fullLocation ?  delete queryJob.place.location.fullLocation : null;
     let job = {
       ...queryJob,
       owner: "Qt5569uuKKd6YrDwS" //Meteor.userId(),
     };
     createJob({variables: {entity: job}});
-    this.props.history.push(`/jobs`);
   }
 
   render() {
@@ -66,6 +61,8 @@ class PostJob extends Component {
         <Container fullY key={"leftSide"}>
           <Mutation
             mutation={CreateJob}
+            onCompleted={() => this.props.history.push("/jobs")}
+            onError={(error) => console.log("Error: ", error)}
           >
             {(createJob, {jobCreated}) => (
               <JobForm

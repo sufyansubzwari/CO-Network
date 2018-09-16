@@ -12,6 +12,8 @@ import {GeoInputLocation} from "btech-location";
 import {Container, Layout} from "btech-layout";
 import {JOB_TYPE, POSITION_TAGS} from "../../constants/constants";
 import PropTypes from "prop-types";
+import {Query} from "react-apollo";
+import {GetTags as tags} from "../../../../../apollo-client/tag";
 
 class FirstStep extends React.Component {
   constructor(props) {
@@ -33,6 +35,16 @@ class FirstStep extends React.Component {
           return e;
         })
       });
+    if (this.props.data && !this.props.data.place) {
+      let event = this.props.data;
+      event.place = {
+        location: {
+          address: "",
+          location: {lng: "", lat: ""}
+        }
+      };
+      this.setState({event: event});
+    }
   }
 
   componentWillReceiveProps(nextProps) {
@@ -51,6 +63,16 @@ class FirstStep extends React.Component {
     } else this.props.onChange && this.props.onChange(this.state.job);
   }
 
+  notifyParentLocation(model, name, value) {
+    if (model && name && value) {
+      let event = this.state.event;
+      event.place[name] = value;
+      this.setState({event: event}, () => this.props.onChange && this.props.onChange(this.state.event));
+    }
+    else
+      this.props.onChange && this.props.onChange(this.state.event);
+  }
+
   changeCategory(actives) {
     const selected = this.state.jobType.map((category, index) => {
       category["active"] = actives[index];
@@ -65,9 +87,11 @@ class FirstStep extends React.Component {
   }
 
   onAddTags(tag) {
+    let newTag = Object.assign({}, tag);
     let tags = this.state.job.positionTags || [];
-    !tag.name ? tag.name = tag.label : null;
-    tags.push(tag);
+    !newTag.name ? newTag.name = newTag.label : null;
+    newTag.type = "JobPosition";
+    tags.push(newTag);
     this.state.job.positionTags = tags;
     this.setState({job: this.state.job}, () => this.notifyParent());
   }
@@ -88,13 +112,13 @@ class FirstStep extends React.Component {
             getValue={this.notifyParent.bind(this)}
           />
           <GeoInputLocation
-            name={"location"}
-            model={this.state.job}
-            placeholder={"Location"}
-            isGeoLocationAvailable={true}
-            onChange={(model, name, value) =>
-              this.notifyParent(model, name, value)
-            }
+          name={"location"}
+          model={this.state.job.place}
+          placeholder={"Location"}
+          isGeoLocationAvailable={true}
+          onChange={(model, name, value) =>
+          this.notifyParentLocation(model, name, value)
+          }
           />
         </Layout>
         <TextArea
@@ -133,14 +157,22 @@ class FirstStep extends React.Component {
         <Container>
           <Layout rowGap={"10px"}>
             <Container>
-              <InputAutoComplete
-                placeholderText={"Position Tags"}
-                getAddedOptions={this.onAddTags.bind(this)}
-                getNewAddedOptions={this.onAddTags.bind(this)}
-                options={this.state.posTagsList}
-                model={{positionTags: []}}
-                name={'positionTags'}
-              />
+              <Query query={tags} variables={{tags:{type:"JobPosition"}}}>
+                {({loading, error, data}) => {
+                  if (loading) return <div>Fetching</div>;
+                  if (error) return <div>Error</div>;
+                  return (
+                    <InputAutoComplete
+                      placeholderText={"Position Tags"}
+                      getAddedOptions={this.onAddTags.bind(this)}
+                      getNewAddedOptions={this.onAddTags.bind(this)}
+                      options={data.tags}
+                      model={{positionTags: []}}
+                      name={'positionTags'}
+                    />
+                  );
+                }}
+              </Query>
             </Container>
             <Container>
               <TagList
