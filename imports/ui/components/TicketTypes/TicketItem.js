@@ -83,7 +83,7 @@ class TicketItem extends Component {
           {this.props.isPaid ? (
             <Container>
               <SalaryRange
-                labelText={"Salary Range"}
+                labelText={"Price Range"}
                 placeholder={"000"}
                 min={Number(this.state.ticket.min) || 0}
                 max={Number(this.state.ticket.max) || 0}

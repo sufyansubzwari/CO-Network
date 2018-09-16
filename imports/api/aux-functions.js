@@ -1,5 +1,5 @@
-import { Meteor } from 'meteor/meteor';
-import { check } from 'meteor/check';
+import {Meteor} from 'meteor/meteor';
+import {check} from 'meteor/check';
 
 /**
  * @namespace AuxFunctions
@@ -8,8 +8,8 @@ const AuxFunctions = {};
 
 //------------------------------------------------------------------------------
 /**
-* @summary Display alert message after ms milliseconds.
-*/
+ * @summary Display alert message after ms milliseconds.
+ */
 AuxFunctions.delayedAlert = (msg, ms) => {
   check(msg, String);
   check(ms, Number);
@@ -20,5 +20,24 @@ AuxFunctions.delayedAlert = (msg, ms) => {
   }, ms);
 };
 //------------------------------------------------------------------------------
+
+const operators = ["and", "or", "ne", "le", "ge", "gt", "gt", "contains", "notContains", "between", "beginsWith", "regex", "elemMatch"];
+
+export const wrapOperators = (json) => {
+  let shadowCopy = Object.assign({}, json);
+  for (let key in json) {
+    let value = json[key];
+    if (typeof value === 'object') {
+      shadowCopy[key] = wrapOperators(shadowCopy[key]);
+    }
+    if (operators.indexOf(key) > -1) {
+      const ownValue = shadowCopy[key];
+      delete shadowCopy[key];
+      shadowCopy[("$" + key)] = ownValue;
+    }
+  }
+  console.log(JSON.stringify(shadowCopy));
+  return shadowCopy;
+};
 
 export default AuxFunctions;

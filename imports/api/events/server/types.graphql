@@ -41,7 +41,7 @@ type Sponsors {
 }
 
 type Query {
-    events(filter: String, limit: Int): [Events]
+    events(filter: String, limit: Int, events: EventsInputSearch): [Events]
     event(_id: String): Events
 }
 
@@ -61,15 +61,28 @@ input EventsInputSearch {
     endDate: Date
     owner: String
     venueName: TableStringFilterInput
+    tickets: ticketsElemMatch
+}
+input ticketsElemMatch{
+    elemMatch: TicketsInputSearch
+}
+
+input TicketsInputSearch{
+    name: TableStringFilterInput
+    description: TableStringFilterInput
+    type: TableStringFilterInput
+    available: TableStringFilterInput
+    min: TableStringFilterInput
+    max: TableStringFilterInput
 }
 
 input TableStringFilterInput{
     ne: String
     eq: String
     le: String
-    lt: String
+    lt: Float
     ge: String
-    gt: String
+    gt: Float
     contains: String
     notContains: String
     between: [String]
