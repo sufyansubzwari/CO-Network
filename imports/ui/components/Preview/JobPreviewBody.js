@@ -33,7 +33,7 @@ class JobPreviewBody extends React.Component {
         return (
             <Layout rowGap={'15px'}>
                 <Title text={this.state.job.title}/>
-                <Location text={this.state.job.location.address.toUpperCase()}/>
+                <Location text={this.state.job.place && this.state.job.place.location && this.state.job.place.location.address.toUpperCase()}/>
                 {this.state.job.description !== '' ?
                     <Text header={'Job Description'}
                           text={this.state.job.description}/> : null}

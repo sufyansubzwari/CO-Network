@@ -22,42 +22,58 @@ class OrganizationPreviewBody extends React.Component {
 
     render() {
 
+        let socials = []
+        for (let social in this.state.organization.social) {
+            if (this.state.organization.social[social] !== '')
+                socials.push(social)
+        }
+
         //tags
-        let position = this.state.organization.positionTags.map(posi => ({...posi, active: true}))
-        let languages = this.state.organization.languages.map(lang => ({...lang, active: true}))
+        let description = this.state.organization.info.description && this.state.organization.info.description.map(item => ({...item, active: true}))
+        let stacks = this.state.organization.tech.stack && this.state.organization.tech.stack.map(stack => ({...stack, active: true}))
+        let industry = this.state.organization.tech.industry && this.state.organization.tech.industry.map(ind => ({name: ind, active: true}))
 
         //checkboxes
-        let organizationtype = this.state.organization.organizationType && this.state.organization.organizationType.map(organization => <div>{organization.label}</div>)
-        let organizationExperience = this.state.organization.organizationExperience && this.state.organization.organizationExperience.map(exp => <div>{exp.label}</div>)
+        let organizationtype = this.state.organization.info.orgType && this.state.organization.info.orgType.map(organization => <div>{organization.label}</div>)
+        let actively = this.state.organization.info.actively && this.state.organization.info.actively.map(item => <div>{item.label}</div>)
+        let jobType = this.state.organization.tech.jobType && this.state.organization.tech.jobType.map(item => <div>{item.label}</div>)
 
         return (
             <Layout rowGap={'15px'}>
-                <Title text={this.state.organization.title}/>
-                <Location text={this.state.organization.location.address.toUpperCase()}/>
-                {this.state.organization.description !== '' ?
-                    <Text header={'organization Description'}
-                          text={this.state.organization.description}/> : null}
+                <Title text={this.state.organization.info.name}/>
+                <Location text={this.state.organization.info.location && this.state.organization.info.location.address.toUpperCase()}/>
+                <Social social={socials} links={[]}/>
+                {organizationtype && organizationtype.length ? <Text header={'Organization Type'}>{organizationtype}</Text> : null}
                 <Layout templateColumns={2}>
-                    {organizationtype && organizationtype.length ? <Text header={'organization Type'}>{organizationtype}</Text> : null}
-                    {this.state.organization.salaryRange && (this.state.organization.salaryRange.min !== "" || this.state.organization.salaryRange.max !== "") ?
-                        <Text header={'Salary Range'}
-                              text={`${this.state.organization.salaryRange.min !== "" ? this.state.organization.salaryRange.min : null} - ${this.state.organization.salaryRange.max !== "" ? this.state.organization.salaryRange.max : null}`}/> : null}
+                    {this.state.organization.contact.email !== '' ?
+                        <Text header={'Verification Email'}
+                              text={this.state.organization.contact.email}/> : null}
+                    {this.state.organization.contact.phone !== '' ?
+                        <Text header={'Contact Number'}
+                              text={this.state.organization.contact.phone}/> : null}
                 </Layout>
-                {position && position.length ? <TagsAdd header={'Position Tags'} tags={position}/> : null}
-                {this.state.organization.organizationResponsibility !== '' ?
-                    <Text header={'organization Responsibility'}
-                          text={this.state.organization.organizationResponsibility}/> : null}
-                {languages && languages.length ? <TagsAdd header={'Languages | Libraries'} tags={languages}/> : null}
-                {organizationExperience && organizationExperience.length ? <Text header={'Experience Requiered'}>{organizationExperience}</Text> : null}
-                {this.state.organization.culture !== '' ?
-                    <Text header={'What make your culture unique'}
-                          text={this.state.organization.culture}/> : null}
-                {this.state.organization.aboutUsTeam !== '' ?
-                    <Text header={'Tell us about the team'}
-                          text={this.state.organization.aboutUsTeam}/> : null}
-                {this.state.organization.candidateQuestions !== '' ?
-                    <Text header={'Questions for the candidate'}
-                          text={this.state.organization.candidateQuestions}/> : null}
+                {this.state.organization.reason.bio !== '' ?
+                    <Text header={'Org Bio'}
+                          text={this.state.organization.reason.bio}/> : null}
+                {this.state.organization.reason.vision !== '' ?
+                    <Text header={'Vision | Mission'}
+                          text={this.state.organization.reason.vision}/> : null}
+                 {this.state.organization.reason.orgDefine !== '' ?
+                    <Text header={'How does the organization define / measure success?'}
+                         text={this.state.organization.reason.orgDefine}/> : null}
+                {actively && actively.length ? <Text header={'Does your organization actively'}>{actively}</Text> : null}
+                {description && description.length ? <TagsAdd header={'Tags that best describe your organization'} tags={description}/> : null}
+
+                <Layout templateColumns={2}>
+                    {this.state.organization.tech.salaryRange && (this.state.organization.tech.salaryRange.min !== "" || this.state.organization.tech.salaryRange.max !== "") ?
+                        <Text header={'Salary Range'}
+                              text={`${this.state.organization.tech.salaryRange.min !== "" ? this.state.organization.tech.salaryRange.min : null} - ${this.state.organization.tech.salaryRange.max !== "" ? this.state.organization.tech.salaryRange.max : null}`}/> : null}
+                    {jobType && jobType.length ? <Text header={'Job Type'}>{jobType}</Text> : null}
+                </Layout>
+                <Layout templateColumns={2}>
+                    {stacks && stacks.length ? <TagsAdd header={'Languages, Libraries, Skills Tags'} tags={stacks}/> : null}
+                    {industry && industry.length ? <TagsAdd header={'Industry | Sector'} tags={industry}/> : null}
+                </Layout>
             </Layout>
         );
     }

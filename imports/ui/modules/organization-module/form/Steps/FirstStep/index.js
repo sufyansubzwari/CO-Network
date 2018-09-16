@@ -68,7 +68,7 @@ class FirstStep extends React.Component {
                 <Layout templateColumns={2} colGap={'20px'}>
                     <Input name={'name'} model={this.state.organization.info} placeholderText={'Organization Name'}
                            getValue={this.notifyParent.bind(this,"info")} />
-                    <GeoInputLocation model={this.state.organization.info} name={'location'} placeholder={"Location"} />
+                    <GeoInputLocation model={this.state.organization.info} name={'location'} placeholder={"Location"} onChange={this.notifyParent.bind(this,"info")} />
                 </Layout>
                 <CheckBoxList
                     placeholderText={'Organization Type'}

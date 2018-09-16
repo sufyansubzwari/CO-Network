@@ -80,7 +80,7 @@ class OrganizationForm extends React.Component {
       this.setState({
           organization: org
       },
-          () => this.handleOrgChange && this.handleOrgChange(org))
+          () => this.props.handleOrgChange && this.props.handleOrgChange(org))
   }
 
   componentWillMount() {

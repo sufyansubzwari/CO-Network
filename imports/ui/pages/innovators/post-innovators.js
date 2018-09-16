@@ -3,6 +3,7 @@ import { Container } from "btech-layout";
 import InternalLayout from "../../components/InternalLayout/InternalLayout";
 import OrganizationForm from "../../modules/organization-module/form";
 import { Preview } from "../../../ui/components";
+import OrganizationPreviewBody from "../../components/Preview/OrganizationPreviewBody";
 import { withRouter } from "react-router-dom";
 import { CreateOrg } from "../../apollo-client/organization";
 import { Mutation } from "react-apollo";
@@ -15,7 +16,57 @@ class PostOrganization extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      organization: {}
+        organization: {
+            info: {
+                name: "",
+                employees: {
+                    value: "",
+                    label: ""
+                },
+                orgType: [],
+                description: [],
+                actively: [],
+                website: "",
+            },
+            social: {
+                github: "",
+                linkedin: "",
+                facebook: "",
+                twitter: "",
+                google: ""
+            },
+            contact: {
+                email: "",
+                phone: ""
+            },
+            services: {
+                relocated: false,
+                seeking: true,
+                hostEvents: true
+            },
+            reason: {
+                bio: "",
+                vision: "",
+                orgDefine: "",
+            },
+            tech: {
+                industry: [],
+                salaryRange: {
+                    min: "",
+                    max: ""
+                },
+                stack: [],
+                jobType: []
+            },
+            place: {
+                location: {
+                    address: "",
+                    location: {lat: "", lng: ""},
+                    fullLocation: {}
+                }
+            },
+            //plan: 0
+        }
     };
   }
 
@@ -44,6 +95,7 @@ class PostOrganization extends Component {
           <OrganizationForm
             onFinish={data => this.onPostAction(createOrg, data)}
             onCancel={() => this.onCancel()}
+            handleOrgChange={ ( organization) => this.setState({organization: organization})}
             {...this.props}
           />
             )}
@@ -70,7 +122,7 @@ class PostOrganization extends Component {
             this.state.selectedItem ? this.state.selectedItem.image : null
           }
         >
-          event preview data for organization
+          <OrganizationPreviewBody organization={this.state.organization} />
         </Preview>
       </InternalLayout>
     );

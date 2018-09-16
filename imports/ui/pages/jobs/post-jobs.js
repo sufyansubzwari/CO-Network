@@ -72,7 +72,7 @@ class PostJob extends Component {
                 }
                 onCancel={() => this.onCancel()}
                 {...this.props}
-                handleJobChange={job => this.setState({job: job})}
+                handleJobChange={(job) => this.setState({job: job})}
               />
             )}
           </Mutation>

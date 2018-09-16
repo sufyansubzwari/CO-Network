@@ -23,11 +23,11 @@ class EventPreviewBody extends React.Component {
     render() {
 
         //tags
-        let others = this.state.event.others.map(other => ({...other, active: true}))
+        let others = this.state.event.other && this.state.event.others.map(other => ({...other, active: true}))
         // let industry = this.state.user.professional.industry.map(ind => ({name: ind, active: true}))
 
         //checkboxes
-        let community = this.state.event.category.map(comm => <div>{comm.label}</div>)
+        let community = this.state.event.category && this.state.event.category.map(comm => <div>{comm.label}</div>)
 
         let tickets = this.state.event.tickets.map( ticket => {
              return ticket.type === 'paid'
