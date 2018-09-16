@@ -68,7 +68,7 @@ class ListInnovators extends Component {
         title={item.info ? item.info.name : ""}
         subTitle={item.reason ? item.reason.bio : ""}
         image={item.info ? item.info.image : null}
-        tags={item.reason ? item.reason.industry : []}
+        tags={item.info ? item.info.description : []}
         views={item.views}
         key={key}
       />
