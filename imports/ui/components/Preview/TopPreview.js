@@ -19,6 +19,15 @@ const Photo = styled(Container)`
   background-size: cover;
 `;
 
+const SBackground = styled(Container)`
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  background: linear-gradient(180deg, #32363d00, #202225);
+`;
+
 const SImageAction = styled.span`
   font-size: ${props =>
     props.theme ? props.theme.preview.photo.fontsize : "14px"};
@@ -65,7 +74,8 @@ class TopPreview extends Component {
 
   render() {
     return (
-      <Photo paddingX={"100px"} image={this.props.backGroundImage}>
+      <Photo relative paddingX={"100px"} image={this.props.backGroundImage}>
+        <SBackground />
         <Layout
           fullY
           relative

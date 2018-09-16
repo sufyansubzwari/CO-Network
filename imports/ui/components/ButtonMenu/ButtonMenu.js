@@ -11,6 +11,7 @@ import styled from "styled-components";
 import { theme } from "../../theme";
 
 const SDropdownItem = styled(DropdownItem)`
+  cursor: pointer;
   :hover {
     background-color: ${props =>
       props.optionBackColor
@@ -54,13 +55,16 @@ class ButtonMenu extends Component {
         <DropdownToggle
           size="sm"
           style={{
+            padding: this.props.padding ? this.props.padding : "initial",
             color: this.props.textColor,
             border: "none",
             "box-shadow": "none",
             backgroundColor: "transparent"
           }}
         >
-          <MaterialIcon type={this.props.iconClass} />
+          {this.props.showIcon ? (
+            <MaterialIcon type={this.props.iconClass} />
+          ) : null}
           <STitle>{this.props.title || "Without Title"}</STitle>
         </DropdownToggle>
         <DropdownMenu>
@@ -72,7 +76,9 @@ class ButtonMenu extends Component {
                   this.props.onSelect && this.props.onSelect(option, key)
                 }
               >
-                {option.label}
+                {this.props.renderOptionItem
+                  ? this.props.renderOptionItem(option, key)
+                  : option.label}
               </SDropdownItem>
             );
           })}
@@ -85,13 +91,16 @@ class ButtonMenu extends Component {
 ButtonMenu.defaultProps = {
   options: [],
   textColor: "black",
+  showIcon: true,
   iconClass: "caret-down-circle"
 };
 
 ButtonMenu.propTypes = {
   textColor: PropTypes.string,
   title: PropTypes.string,
+  showIcon: PropTypes.bool,
   iconClass: PropTypes.string,
+  renderOptionItem: PropTypes.func,
   optionBackColor: PropTypes.string,
   optionTextColor: PropTypes.string,
   options: PropTypes.array,

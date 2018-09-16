@@ -5,6 +5,7 @@ import PropTypes from "prop-types";
 import { Container, Layout } from "btech-layout";
 import { Card } from "btech-card-list-component";
 import { TagList } from "btech-base-forms-component";
+import ReportToggle from "./ReportToggle";
 
 const TitleCardContainer = Styled.div`
     font-family: Helvetica Neue LT Std;
@@ -73,7 +74,9 @@ class CardItem extends Component {
                   </Layout>
                 </Container>
                 <Container>
-                  <SViewsContainer>...</SViewsContainer>
+                  <SViewsContainer>
+                    <ReportToggle onSelect={(item, key) => alert(key)} />
+                  </SViewsContainer>
                 </Container>
               </Layout>
             </Container>

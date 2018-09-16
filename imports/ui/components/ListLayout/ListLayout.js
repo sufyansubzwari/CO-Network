@@ -25,7 +25,7 @@ class ListLayout extends Component {
   }
 
   componentWillMount() {
-    this.props.toggleSideBar(this.props.autoOpenFilters, this.props.entityType);
+    // this.props.toggleSideBar(this.props.autoOpenFilters, this.props.entityType);
   }
 
   getComponent(key) {

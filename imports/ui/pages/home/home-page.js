@@ -25,7 +25,7 @@ class HomePage extends Component {
   }
 
   componentWillMount() {
-    this.props.toggleSideBar(false);
+    // this.props.toggleSideBar(false);
   }
 
   processAuthRequest(service) {
