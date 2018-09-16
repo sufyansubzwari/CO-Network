@@ -54,7 +54,6 @@ class TagsService {
     });
     return Promise.all(tagsInserted).then((completed) => {
       tags = tags.concat(completed);
-      console.log(tags);
       return tags.map(item => item._id);
     });
   }
