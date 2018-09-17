@@ -74,7 +74,6 @@ class HomePage extends Component {
             />
           </Layout>
         </SHomeActions>
-        <Signature />
       </Container>
     );
   }

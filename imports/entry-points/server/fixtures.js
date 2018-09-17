@@ -1,5 +1,5 @@
-import {Roles} from "meteor/alanning:roles";
-import {Accounts} from "meteor/accounts-base";
+import { Roles } from "meteor/alanning:roles";
+import { Accounts } from "meteor/accounts-base";
 import Users from "../../api/users/";
 
 // OBSERVATION: use the following mutation to set email to verified:
@@ -125,7 +125,7 @@ function fakeSponsor(faker) {
   return result;
 }
 
-const TagsSeed = (type) => ({
+const TagsSeed = type => ({
   collection: Tags,
   environments: env,
   modelCount: LANGUAGES_LIBRARIES.length,
@@ -191,30 +191,28 @@ const JobsSeed = userId => ({
       aboutUsTeam: faker.lorem.words(Math.floor(Math.random() * 15) + 6),
       candidateQuestions: faker.lorem.words(Math.floor(Math.random() * 3) + 3),
       equity: true,
-      jobExperience: [{
-        label: "Senior",
-        value: "Senior"
-      }],
+      jobExperience: [
+        {
+          label: "Senior",
+          value: "Senior"
+        }
+      ],
       image: image("jobs"),
       jobResponsibility: faker.lorem.words(Math.floor(Math.random() * 10) + 5),
-      jobType: [{
-        value: "Full time",
-        label: "Full time"
-      }],
-      languages: Tags.aggregate(
-        [{$sample: {size: 1}}]
-      )._id,
-      positionTags: Tags.aggregate(
-        [{$sample: {size: 1}}]
-      )._id,
-      },
+      jobType: [
+        {
+          value: "Full time",
+          label: "Full time"
+        }
+      ],
       languages: Tags.aggregate([{ $sample: { size: 1 } }])._id,
+      positionTags: Tags.aggregate([{ $sample: { size: 1 } }])._id,
       location: getLocationFake(faker),
       relocation: false,
       remote: true,
       salaryRange: {
-        min: "500", max: "6000",
-
+        min: "500",
+        max: "6000"
       },
       // statement: faker.lorem.words(Math.floor(Math.random() * 5) + 2),
       // technologies: randomLookingFor().map(item => ({
@@ -241,9 +239,18 @@ const EventsSeed = userId => ({
     return {
       venueName: faker.company.companyName(),
       venueEmail: faker.internet.email(),
-      tickets: [{name: "free", description: "free", type: "free", available: 5},
-      {name: "paid", description: "paid", type: "paid", available: 5, min: 10, max: 20}],
-        attenders: {
+      tickets: [
+        { name: "free", description: "free", type: "free", available: 5 },
+        {
+          name: "paid",
+          description: "paid",
+          type: "paid",
+          available: 5,
+          min: 10,
+          max: 20
+        }
+      ],
+      attenders: {
         min: 10,
         max: 20
       },
@@ -281,9 +288,7 @@ const OrganizationSeed = userId => ({
         cover: image("user"),
         name: faker.company.companyName(),
         // employees: {value: "1-10", label: "1-10"},
-        description: Tags.aggregate(
-          [{$sample: {size: 1}}]
-        )._id,
+        description: Tags.aggregate([{ $sample: { size: 1 } }])._id,
         website: faker.internet.url(),
         location: getLocationFake(faker)
       },
@@ -307,19 +312,17 @@ const OrganizationSeed = userId => ({
         vision: faker.lorem.words(Math.floor(Math.random() * 50) + 20),
         bio: faker.lorem.words(Math.floor(Math.random() * 50) + 20),
         // culture: faker.lorem.words(Math.floor(Math.random() * 50) + 20),
-        orgDefine: faker.lorem.words(Math.floor(Math.random() * 50) + 20),
+        orgDefine: faker.lorem.words(Math.floor(Math.random() * 50) + 20)
         // product: faker.lorem.words(Math.floor(Math.random() * 50) + 20)
       },
       tech: {
-        stack: Tags.aggregate(
-          [{$sample: {size: 1}}]
-        )._id,
+        stack: Tags.aggregate([{ $sample: { size: 1 } }])._id,
         salaryRange: {
           min: 500,
-          max: 1000,
+          max: 1000
         },
-        jobType: [{label: "Full Time"}],
-        industry: ["Energy & Utilities"],
+        jobType: [{ label: "Full Time" }],
+        industry: ["Energy & Utilities"]
       },
       owner: userId,
       data(entityId) {
@@ -333,7 +336,7 @@ seeder(Meteor.users, {
   environments: env,
   noLimit: true,
   data: [],
-  modelCount: 5,
+  modelCount: 30,
   model(index, faker) {
     const userCount = index + 1;
     const email = faker.internet.email();
@@ -361,7 +364,6 @@ seeder(Meteor.users, {
       },
       roles: ["normal"],
       data(userId) {
-        console.log(userCount % 4);
         switch (userCount % 4) {
           case 0:
             return EventsSeed(userId);
@@ -376,4 +378,4 @@ seeder(Meteor.users, {
     };
   }
 });
-
+*/

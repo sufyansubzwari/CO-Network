@@ -8,7 +8,7 @@ const STitle = styled.label`
     color: ${props => props.color ? props.color: props.theme.preview.title.color};
     font-family: ${props => props.family ? props.family: props.theme.preview.title.family};
     font-size: ${props => props.size ? props.size: props.theme.preview.title.size};
-    line-height: ${props => props.lineheight ? props.lineheight: props.theme.preview.title.lineheight};    
+    line-height: ${props => props.lineheight ? props.lineheight: 'initial'};    
 `;
 
 
