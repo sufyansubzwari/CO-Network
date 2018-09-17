@@ -69,7 +69,7 @@ class ListJobs extends Component {
                 key={"listComponent"}
                 title={"Jobs"}
                 data={data && data.jobs}
-                loading={this.state.loading}
+                loading={loading && (!data.jobs || !data.jobs.length)}
                 onFetchData={() => this.fetchMoreSelection()}
                 onSelectCard={(item, key) => this.onChangeSelection(item, key)}
               />

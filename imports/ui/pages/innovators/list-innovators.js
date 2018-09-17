@@ -5,6 +5,33 @@ import {
   Preview,
   CardItem
 } from "../../../ui/components";
+import gql from "graphql-tag";
+import { Query } from "react-apollo";
+
+const organizations = gql`
+  query Organizations($limit: Int!) {
+    organizations(limit: $limit) {
+      _id
+      owner {
+        _id
+      }
+      entity
+      views
+      info {
+        name
+        image
+        cover
+      }
+      reason {
+        industry {
+          name
+          label
+          value
+        }
+      }
+    }
+  }
+`;
 import { Query, Mutation } from "react-apollo";
 import { GetOrg, DeleteOrg } from "../../apollo-client/organization";
 import { withRouter } from "react-router-dom";
@@ -56,7 +83,7 @@ class ListInnovators extends Component {
     });
   }
 
-  customRenderItem(item, key) {
+  customRenderItem(item, key, isLoading) {
     return (
       <CardItem
         onSelect={() => this.onChangeSelection(item, key)}
@@ -65,7 +92,7 @@ class ListInnovators extends Component {
             ? this.state.selectedIndex === key
             : false
         }
-        loading={this.state.loading}
+        loading={isLoading}
         title={item.info ? item.info.name : ""}
         subTitle={item.reason ? item.reason.bio : ""}
         image={item.info ? item.info.image : null}
@@ -112,11 +139,20 @@ class ListInnovators extends Component {
             // if (error) return `Error!: ${error}`;
             return (
               <ItemsList
-                renderItem={this.customRenderItem}
                 key={"listComponent"}
                 title={this.state.currentTab.title}
                 data={data ? data.organizations : []}
-                loading={this.state.loading}
+                renderItem={(item, key) =>
+                  this.customRenderItem(
+                    item,
+                    key,
+                    loading &&
+                      (!data.organizations || !data.organizations.length)
+                  )
+                }
+                loading={
+                  loading && (!data.organizations || !data.organizations.length)
+                }
                 onFetchData={() => this.fetchMoreSelection()}
                 onSelectCard={(item, key) => this.onChangeSelection(item, key)}
               />
@@ -188,7 +224,7 @@ class ListInnovators extends Component {
                 }
                 backGroundImage={
                   this.state.selectedItem.info
-                    ? this.state.selectedItem.info.image
+                    ? this.state.selectedItem.info.cover
                     : null
                 }
               >

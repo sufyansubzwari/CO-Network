@@ -2,6 +2,7 @@ import React from "react";
 import { Container } from "btech-layout";
 import styled from "styled-components";
 import PropsTypes from "prop-types";
+import { PlaceHolder } from "btech-placeholder-component";
 
 const Photo = styled(Container)`
   width: ${props =>
@@ -35,19 +36,49 @@ const SImage = styled.img`
 class UserPhoto extends React.Component {
   constructor(props) {
     super(props);
-
     this.state = {
-      photo: props.photo
+      loadingImage: true
     };
+    if (props.photo) {
+      this.loadImage(props.photo);
+    }
+  }
+
+  componentWillReceiveProps(newProps) {
+    if (!newProps.photo) return;
+    if (newProps.photo !== this.props.photo) this.loadImage(newProps.photo);
+  }
+
+  loadImage(imageSrc) {
+    this.setState({ loadingImage: true, imageError: false });
+    if (imageSrc) {
+      let image = new Image();
+      image.onload = (data, error) => {
+        this.setState({ loadingImage: false });
+      };
+      image.onerror = (data, error) => {
+        this.setState({ loadingImage: false, imageError: true });
+      };
+      image.src = imageSrc;
+    }
   }
 
   render() {
-    let photo = this.state.photo ? (
-      <SImage src={this.props.photo} style={{ width: "100%", height: "100%" }} />
+    const loading =
+      this.props.loading || (this.props.photo && this.state.loadingImage);
+    let photo = this.props.photo ? (
+      <SImage
+        src={this.props.photo}
+        style={{ width: "100%", height: "100%" }}
+      />
     ) : (
       <Label>{this.props.noPhotoText}</Label>
     );
-    return <Photo photo={this.props.photo}>{photo}</Photo>;
+    return loading ? (
+      <PlaceHolder rect loading={loading} width={350} height={325} />
+    ) : (
+      <Photo photo={this.props.photo}>{photo}</Photo>
+    );
   }
 }
 
@@ -57,6 +88,7 @@ UserPhoto.defaultProps = {
 
 UserPhoto.propTypes = {
   photo: PropsTypes.string,
+  loading: PropsTypes.bool,
   noPhotoText: PropsTypes.string
 };
 

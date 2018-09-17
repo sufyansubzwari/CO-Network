@@ -10,14 +10,6 @@ import {
 import Authorization from "./services/authorization";
 import LoadableWrapper from "./components/dumb/loadable-wrapper";
 //
-import HomePage from "./pages/home-page";
-import ListEvents from "./pages/events/list-events";
-import SignUpPage from "./pages/sign-up-page";
-import ListJobs from "./pages/jobs/list-jobs";
-import ListInnovators from "./pages/innovators/list-innovators";
-import PostEvent from "./pages/events/post-event";
-import PostJob from "./pages/jobs/post-jobs";
-import UserProfile from "./pages/user/user-profile";
 import PostOrganization from "./pages/innovators/post-innovators";
 
 const handleAuthentication = props => {
@@ -32,30 +24,95 @@ const handleAuthentication = props => {
 const Routes = props => (
   <ScrollToTop>
     <Switch>
-      <Route exact name="Home" path="/" render={() => <HomePage />} />
-      <Route name="SignUp" path="/sign-up" render={() => <SignUpPage user={props.curUser} />} />
-      <Route name="Events" path="/events" render={() => <ListEvents />} />
-      <Route name="Jobs" path="/jobs" render={() => <ListJobs />} />
-      <Route
-        name="User Profile"
-        path="/profile"
-        render={() => <UserProfile />}
+      <RouteWithProps
+        exact
+        name="home"
+        path="/"
+        component={LoadableWrapper({
+          loader: () => import("./pages/home/home-page"),
+          delay: 0
+        })}
+        {...props}
       />
-      <Route
-        name="Innovators"
-        path="/innovators"
-        render={() => <ListInnovators />}
+      <RouteWithProps
+        exact
+        name="Events"
+        path="/events"
+        component={LoadableWrapper({
+          loader: () => import("./pages/events/list-events"),
+          delay: 0
+        })}
+        {...props}
       />
-      <Route
+      <RouteWithProps
+        exact
         name="Post a Event"
         path="/post-event"
-        render={() => <PostEvent />}
+        component={LoadableWrapper({
+          loader: () => import("./pages/events/post-event"),
+          delay: 0
+        })}
+        {...props}
       />
-      <Route name="Post a Job" path="/post-job" render={() => <PostJob />} />
-      <Route
+      <RouteWithProps
+        exact
+        name="SignUp"
+        path="/sign-up"
+        component={LoadableWrapper({
+          loader: () => import("./pages/sign-up-page"),
+          delay: 0
+        })}
+        {...props}
+      />
+      <RouteWithProps
+        exact
+        name="User Profile"
+        path="/profile"
+        component={LoadableWrapper({
+          loader: () => import("./pages/user/user-profile"),
+          delay: 0
+        })}
+        {...props}
+      />
+      <RouteWithProps
+        exact
+        name="Jobs"
+        path="/jobs"
+        component={LoadableWrapper({
+          loader: () => import("./pages/jobs/list-jobs"),
+          delay: 0
+        })}
+        {...props}
+      />
+      <RouteWithProps
+        exact
+        name="Post a Job"
+        path="/post-job"
+        component={LoadableWrapper({
+          loader: () => import("./pages/jobs/post-jobs"),
+          delay: 0
+        })}
+        {...props}
+      />
+      <RouteWithProps
+        exact
+        name="Innovators"
+        path="/innovators"
+        component={LoadableWrapper({
+          loader: () => import("./pages/innovators/list-innovators"),
+          delay: 0
+        })}
+        {...props}
+      />
+      <RouteWithProps
+        exact
         name="Post a Organization"
         path="/post-organization"
-        render={() => <PostOrganization />}
+        component={LoadableWrapper({
+          loader: () => import("./pages/innovators/post-innovators"),
+          delay: 0
+        })}
+        {...props}
       />
       <Route
         path="/callback"
