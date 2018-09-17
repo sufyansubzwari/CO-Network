@@ -29,11 +29,7 @@ class HomePage extends Component {
   }
 
   processAuthRequest(service) {
-    Authorization.login(service, response => {
-      if (response && response.isSignUp) {
-        this.props.forceUpdate();
-      }
-    });
+    Authorization.login(service);
   }
 
   onChangeZoom(isPlus) {
@@ -49,6 +45,7 @@ class HomePage extends Component {
     const isAuthenticated = this.props.curUser;
     return (
       <Container fullY relative>
+        <MapBackGround />
         <Container maxW={"350px"} fullY>
           <Layout
             paddingX={"50px"}

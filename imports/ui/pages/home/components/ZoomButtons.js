@@ -52,14 +52,14 @@ const ZoomButtons = function(props) {
           <SPlusZoomContainer>
             <HButtom size={size} onClick={() => props.onPlus && props.onPlus()}>
               <SAddMaterialIcon>
-                <MaterialIcon type={"search"} />
+                <MaterialIcon type={"zoom-in"} />
               </SAddMaterialIcon>
             </HButtom>
           </SPlusZoomContainer>
           <SLessZoomContainer>
             <HButtom size={size} onClick={() => props.onLess && props.onLess()}>
               <SAddMaterialIcon>
-                <MaterialIcon type={"search"} />
+                <MaterialIcon type={"zoom-out"} />
               </SAddMaterialIcon>
             </HButtom>
           </SLessZoomContainer>
