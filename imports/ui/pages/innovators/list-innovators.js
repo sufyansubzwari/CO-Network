@@ -5,33 +5,6 @@ import {
   Preview,
   CardItem
 } from "../../../ui/components";
-import gql from "graphql-tag";
-import { Query } from "react-apollo";
-
-const organizations = gql`
-  query Organizations($limit: Int!) {
-    organizations(limit: $limit) {
-      _id
-      owner {
-        _id
-      }
-      entity
-      views
-      info {
-        name
-        image
-        cover
-      }
-      reason {
-        industry {
-          name
-          label
-          value
-        }
-      }
-    }
-  }
-`;
 import { Query, Mutation } from "react-apollo";
 import { GetOrg, DeleteOrg } from "../../apollo-client/organization";
 import { withRouter } from "react-router-dom";
