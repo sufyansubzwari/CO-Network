@@ -276,7 +276,7 @@ const OrganizationSeed = userId => ({
   model(dataIndex, faker) {
     return {
       info: {
-        image: faker.image.avatar(),
+        image: faker.image.business(),
         cover: image("user"),
         name: faker.company.companyName(),
         // employees: {value: "1-10", label: "1-10"},

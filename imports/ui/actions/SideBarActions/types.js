@@ -2,3 +2,5 @@ export const SHOW_SIDEBAR = "SHOW_SIDEBAR";
 export const HIDE_SIDEBAR = "HIDDE_SIDEBAR";
 export const SHOW_ADD_SIDEBAR = "SHOW_ADD_SIDEBAR";
 export const HIDE_ADD_SIDEBAR = "HIDE_ADD_SIDEBAR";
+export const SET_FILTERS = "SET_FILTERS";
+export const CLEAN_FILTERS = "CLEAN_FILTERS";

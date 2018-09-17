@@ -7,6 +7,7 @@ import EventPreviewBody from "../../components/Preview/EventPreviewBody";
 import { CreateEvent, DeleteEvent } from "../../apollo-client/event";
 import { GetEvents } from "../../apollo-client/event";
 import { withRouter } from "react-router-dom";
+import {filterStatus} from "../../redux/reducers/SideBarView";
 
 /**
  * @module Events
@@ -24,6 +25,10 @@ class ListEvents extends Component {
       filter: "",
 
     }
+  }
+
+  componentWillReceiveProps(nextProps){
+    console.log(nextProps);
   }
 
   onChangeSelection(item, key) {
@@ -61,7 +66,7 @@ class ListEvents extends Component {
         <Query
           key={"listComponent"}
           query={GetEvents}
-          variables={{ limit, filter }}
+          variables={{ limit, filter, events: this.props.filterStatus.filters }}
           pollInterval={5000}
         >
           {({ loading, error, data }) => {
@@ -142,9 +147,10 @@ class ListEvents extends Component {
 }
 
 const mapStateToProps = state => {
-  const { previewData } = state;
+  const { previewData, filterStatus } = state;
   return {
-    previewData: previewData
+    previewData: previewData,
+    filterStatus: filterStatus,
   };
 };
 

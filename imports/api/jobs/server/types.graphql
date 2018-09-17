@@ -37,9 +37,16 @@ type Query {
 input JobsInputSearch {
     title: TableStringFilterInput
     description: TableStringFilterInput
-    startDate: Date
-    endDate: Date
+    salaryRange_DOT_min: TableStringFilterInput
+    salaryRange_DOT_max: TableStringFilterInput
+    startDate: TableDateFilterInput
+    endDate: TableDateFilterInput
     owner: String
+}
+
+input SalaryRangeInputSearch{
+    min: TableStringFilterInput
+    max: TableStringFilterInput
 }
 
 input JobsInput {

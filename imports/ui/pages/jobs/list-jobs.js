@@ -58,7 +58,7 @@ class ListJobs extends Component {
         <Query
           key={"listComponent"}
           query={GetJobs}
-          variables={{ limit, filter }}
+          variables={{ limit, filter, jobs: this.props.filterStatus.filters }}
           pollInterval={5000}
         >
           {({ loading, error, data }) => {
@@ -143,9 +143,10 @@ class ListJobs extends Component {
 
 
 const mapStateToProps = state => {
-  const { previewData } = state;
+  const { previewData, filterStatus } = state;
   return {
-    previewData: previewData
+    previewData: previewData,
+    filterStatus: filterStatus,
   };
 };
 

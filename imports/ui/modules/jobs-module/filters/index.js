@@ -14,6 +14,8 @@ import {
   EXPERIENCE_REQUIERED_NUMBER
 } from "../form/constants/constants";
 import PropsTypes from "prop-types";
+import {cleanFilters, setFilters} from "../../../actions/SideBarActions";
+import {connect} from "react-redux";
 
 const Filter = styled(Container)`
   padding: 20px 10px;
@@ -36,8 +38,13 @@ class JobsFilters extends React.Component {
         location: { lat: "", lng: "" },
         fullLocation: {}
       },
-      industry: ""
+      industry: "",
+      filters:{}
     };
+  }
+
+  componentWillMount() {
+    this.props.cleanFilters();
   }
 
   render() {
@@ -63,7 +70,24 @@ class JobsFilters extends React.Component {
         </Filter>
         <Separator />
         <Filter>
-          <SalaryRange labelText={"Salary Range"} placeholder={"000"} />
+          <SalaryRange
+            labelText={"Salary Range"}
+            placeholder={"000"}
+            min={this.state.salary && this.state.salary.min}
+            max={this.state.salary && this.state.salary.max}
+            getValue={data => {
+              let filters = this.state.filters;
+              data.min ? filters.salaryRange_DOT_min = {gte: data.min} : null;
+              data.max ? filters.salaryRange_DOT_max = {lte: data.max} : null;
+
+              this.setState(
+                {
+                  filters: filters, salary: data
+                },
+                () => this.props.setFilters("jobs", this.state.filters)
+              );
+            }}
+          />
         </Filter>
         <Separator />
         <Filter>
@@ -129,4 +153,19 @@ JobsFilters.propTypes = {
   onClose: PropsTypes.func
 };
 
-export default JobsFilters;
+const mapStateToProps = state => {
+  const {} = state;
+  return {};
+};
+
+const mapDispatchToProps = dispatch => {
+  return {
+    setFilters: (type, filters) => dispatch(setFilters(type, filters)),
+    cleanFilters: () => dispatch(cleanFilters())
+  };
+};
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(JobsFilters);

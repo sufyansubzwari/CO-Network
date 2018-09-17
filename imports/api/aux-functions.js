@@ -21,7 +21,8 @@ AuxFunctions.delayedAlert = (msg, ms) => {
 };
 //------------------------------------------------------------------------------
 
-const operators = ["and", "or", "ne", "le", "ge", "gt", "gt", "contains", "notContains", "between", "beginsWith", "regex", "elemMatch"];
+const operators = ["and", "or", "ne", "lte", "gte", "gt", "gt", "contains", "notContains", "between", "beginsWith", "regex", "elemMatch"];
+const nestedDocs = "_DOT_";
 
 export const wrapOperators = (json) => {
   let shadowCopy = Object.assign({}, json);
@@ -34,6 +35,12 @@ export const wrapOperators = (json) => {
       const ownValue = shadowCopy[key];
       delete shadowCopy[key];
       shadowCopy[("$" + key)] = ownValue;
+    }
+    if(key.indexOf(nestedDocs)){
+      console.log(key.indexOf(nestedDocs))
+      const ownValue = shadowCopy[key];
+      delete shadowCopy[key];
+      shadowCopy[(key.replace(nestedDocs,"."))] = ownValue;
     }
   }
   console.log(JSON.stringify(shadowCopy));
