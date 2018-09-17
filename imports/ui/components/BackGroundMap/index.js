@@ -11,20 +11,28 @@ const SMapContainer = styled(Map)`
   left: 0;
   right: 0;
   bottom: 0;
-  z-index: -1;
+  z-index: 1;
 `;
 
 class MapBackGround extends Component {
   state = {
-    lat: 51.505,
-    lng: -0.09,
-    zoom: 3
+    lat: 24,
+    lng: 0,
+    minZoom: 3,
+    maxZoom: 18
   };
 
   render() {
     const position = [this.state.lat, this.state.lng];
     return (
-      <SMapContainer center={position} maxZoom={18} zoom={this.state.zoom}>
+      <SMapContainer
+        zoomControl={false}
+        attributionControl={false}
+        center={position}
+        minZoom={this.state.minZoom}
+        maxZoom={this.state.maxZoom}
+        zoom={this.props.zoomMap || 3}
+      >
         <TileLayer
           attribution="&copy; <a href=&quot;http://www.openstreetmap.org/copyright&quot;>OpenStreetMap</a> &copy; <a href=&quot;http://cartodb.com/attributions&quot;>CartoDB</a>"
           subdomains="abcd"
@@ -37,7 +45,6 @@ class MapBackGround extends Component {
         >
           <Query query={GetLocations} pollInterval={5000}>
             {({ loading, error, data }) => {
-              console.log(data);
               return data && data.places
                 ? data.places.map((element, index) => {
                     const location = element.location;

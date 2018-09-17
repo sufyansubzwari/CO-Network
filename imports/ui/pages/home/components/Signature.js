@@ -14,6 +14,7 @@ const SMainContainer = styled(Container)`
   bottom: 20px;
   right: 50px;
   max-width: 350px;
+  z-index: 2;
 `;
 
 /**

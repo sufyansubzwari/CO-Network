@@ -15,12 +15,16 @@ const SPageTitle = styled(Container)`
   text-transform: uppercase;
 `;
 
+const SHomeActions = styled(Container)`
+  z-index: 2;
+`;
+
 class HomePage extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      zoomMap: 13,
-      zoomStep: 5
+      zoomMap: 3,
+      zoomStep: 1
     };
   }
 
@@ -45,8 +49,8 @@ class HomePage extends Component {
     const isAuthenticated = this.props.curUser;
     return (
       <Container fullY relative>
-        <MapBackGround />
-        <Container maxW={"350px"} fullY>
+        <MapBackGround zoomMap={this.state.zoomMap}/>
+        <SHomeActions maxW={"350px"} relative fullY>
           <Layout
             paddingX={"50px"}
             paddingY={"30px"}
@@ -69,7 +73,7 @@ class HomePage extends Component {
               onPlus={() => this.onChangeZoom(true)}
             />
           </Layout>
-        </Container>
+        </SHomeActions>
         <Signature />
       </Container>
     );
