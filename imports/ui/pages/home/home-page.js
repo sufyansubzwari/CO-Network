@@ -4,7 +4,7 @@ import { Layout, Container } from "btech-layout";
 import { connect } from "react-redux";
 import { toggleSideBar } from "../../actions/SideBarActions/index";
 import Authorization from "../../services/authorization/index";
-import MapBackGround from "../../components/Map/index";
+import MapBackGround from "../../components/BackGroundMap/index";
 import { LoginButtons, ZoomButtons, Signature } from "./components";
 
 const SPageTitle = styled(Container)`

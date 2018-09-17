@@ -1,9 +1,15 @@
 
-query GetLocation{
+query GetLocations{
   places{
     _id
     owner
-    location
+    location {
+      address
+      location{
+        lat
+        lng
+      }
+    }
     entity
   }
 }
