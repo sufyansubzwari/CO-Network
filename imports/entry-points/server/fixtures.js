@@ -1,5 +1,5 @@
-import { Roles } from "meteor/alanning:roles";
-import { Accounts } from "meteor/accounts-base";
+import {Roles} from "meteor/alanning:roles";
+import {Accounts} from "meteor/accounts-base";
 import Users from "../../api/users/";
 
 // OBSERVATION: use the following mutation to set email to verified:
@@ -27,7 +27,7 @@ import Users from "../../api/users/";
 //   Roles.addUsersToRoles(userId, roles);
 // });
 
-/*
+
 import seeder from "@cleverbeagle/seeder";
 import {Meteor} from "meteor/meteor";
 import Jobs from "../../api/jobs/server/collection";
@@ -125,7 +125,7 @@ function fakeSponsor(faker) {
   return result;
 }
 
-const TagsSeed = () => ({
+const TagsSeed = (type) => ({
   collection: Tags,
   environments: env,
   modelCount: LANGUAGES_LIBRARIES.length,
@@ -141,7 +141,7 @@ const TagsSeed = () => ({
           skill.categories && skill.categories.length > 0
             ? skill.categories
             : ["custom"],
-        types: "languages",
+        types: type,
         createdAt: new Date().toISOString,
         updatedAt: new Date().toISOString
       };
@@ -180,7 +180,7 @@ const JobsSeed = userId => ({
   collection: Jobs,
   environments: env,
   noLimit: true,
-  modelCount: 5,
+  modelCount: 2,
   model(dataIndex, faker) {
     return {
       owner: userId,
@@ -189,50 +189,41 @@ const JobsSeed = userId => ({
       updatedAt: new Date().toISOString(),
       description: faker.lorem.words(Math.floor(Math.random() * 10) + 5),
       aboutUsTeam: faker.lorem.words(Math.floor(Math.random() * 15) + 6),
-      candidateQuestion: faker.lorem.words(
+      candidateQuestions: faker.lorem.words(
         Math.floor(Math.random() * 3) + 3
       ),
       equity: true,
-      experience: {
+      jobExperience: [{
         label: "Senior",
         value: "Senior"
-      },
+      }],
       image: image("jobs"),
       jobResponsibility: faker.lorem.words(
         Math.floor(Math.random() * 10) + 5
       ),
-      jobType: {
+      jobType: [{
         value: "Full time",
         label: "Full time"
-      },
+      }],
       languages: Tags.aggregate(
         [{$sample: {size: 1}}]
       )._id,
-      location: {
-        address: "a243 S Cicero Ave, Alsip, IL 60803, USA",
-        cityCountry: {
-          city: faker.address.city(),
-          country: faker.address.country()
-        },
-        location: {
-          lat: 41.67929549999999,
-          lng: -87.73874719999998
-        }
-      },
+      positionTags: Tags.aggregate(
+        [{$sample: {size: 1}}]
+      )._id,
       relocation: false,
       remote: true,
       salaryRange: {
-        salary: {min: "500", max: "6000"},
-        frequency: "Monthly"
+        min: "500", max: "6000",
       },
-      statement: faker.lorem.words(Math.floor(Math.random() * 5) + 2),
-      technologies: randomLookingFor().map(item => ({
-        label: item,
-        value: item,
-        level: "experienced"
-      })),
-      visaSponsorship: false,
-      workForUs: faker.lorem.words(Math.floor(Math.random() * 5) + 2),
+      // statement: faker.lorem.words(Math.floor(Math.random() * 5) + 2),
+      // technologies: randomLookingFor().map(item => ({
+      //   label: item,
+      //   value: item,
+      //   level: "experienced"
+      // })),
+      // visaSponsorship: false,
+      // workForUs: faker.lorem.words(Math.floor(Math.random() * 5) + 2),
       entity: "JOB",
       data(entityId) {
         return locationSeed(entityId, "JOB");
@@ -245,31 +236,30 @@ const EventsSeed = userId => ({
   collection: Events,
   environments: env,
   noLimit: true,
-  modelCount: 5,
+  modelCount: 2,
   model(dataIndex, faker) {
     return {
       venueName: faker.company.companyName(),
-      ticketType: {value: "Volunteer", label: "Volunteer"},
-      eventType: {
-        value: "Technical Workshop",
-        label: "Technical Workshop"
+      venueEmail: faker.internet.email(),
+      tickets: [{name: "free", description: "free", type: "free", available: 5},
+        {name: "paid", description: "paid", type: "paid", available: 5, min: 10, max: 20}],
+      attenders: {
+        min: 10,
+        max: 20
       },
       organizer: faker.company.companyName(),
       phone: faker.phone.phoneNumber(),
       notes: faker.lorem.sentence(),
-      category: randomLookingFor(),
+      // category: randomLookingFor(),
       owner: userId,
       title: faker.commerce.department(),
       createdAt: new Date().toISOString(),
       updatedAt: new Date().toISOString(),
       image: image("events"),
       description: faker.lorem.words(Math.floor(Math.random() * 50) + 20),
-      from:
-        "The type of owner (organization, communities or register user).",
       startDate: new Date().toISOString(),
       endDate: new Date().toISOString(),
-      sponsors: fakeSponsor(faker),
-      size: "100-150",
+      // sponsors: fakeSponsor(faker),
       entity: "EVENT",
       data(entityId) {
         return locationSeed(entityId, "EVENT");
@@ -282,40 +272,29 @@ const OrganizationSeed = userId => ({
   collection: Organizations,
   environments: env,
   noLimit: true,
-  modelCount: 10,
+  modelCount: 2,
   model(dataIndex, faker) {
     return {
       info: {
         image: faker.image.avatar(),
         cover: image("user"),
         name: faker.company.companyName(),
-        employees: {value: "1-10", label: "1-10"},
-        description: faker.lorem.words(
-          Math.floor(Math.random() * 50) + 20
-        ),
-        location: {
-          address: "3186  Jacobs Street,SMITHBORO, IL 62284, USA",
-          cityCountry: {
-            city: faker.address.city(),
-            country: faker.address.country()
-          },
-          location: {
-            lat: 41.67929549999999,
-            lng: -87.73874719999998
-          }
-        }
+        // employees: {value: "1-10", label: "1-10"},
+        description: Tags.aggregate(
+          [{$sample: {size: 1}}]
+        )._id,
+        website: faker.internet.url()
       },
       social: {
         github: faker.internet.userName(),
-        lkdin: faker.internet.userName(),
-        fb: faker.internet.userName(),
-        twter: faker.internet.userName(),
-        website: faker.internet.url()
+        linkedin: faker.internet.userName(),
+        facebook: faker.internet.userName(),
+        twitter: faker.internet.userName(),
+        google: faker.internet.userName()
       },
       contact: {
         email: faker.internet.email(),
-        phone: faker.phone.phoneNumber(),
-        full_name: faker.name.firstName()
+        phone: faker.phone.phoneNumber()
       },
       services: {
         relocated: true,
@@ -323,20 +302,25 @@ const OrganizationSeed = userId => ({
         host_events: true
       },
       reason: {
-        lang: [
-          {label: "Agile", value: "Agile"},
-          {label: "Arduino", value: "Arduino"},
-          {label: "Ansible", value: "Ansible"}
-        ],
         vision: faker.lorem.words(Math.floor(Math.random() * 50) + 20),
-        mission: faker.lorem.words(Math.floor(Math.random() * 50) + 20),
-        culture: faker.lorem.words(Math.floor(Math.random() * 50) + 20),
-        orgdefine: faker.lorem.words(
+        bio: faker.lorem.words(Math.floor(Math.random() * 50) + 20),
+        // culture: faker.lorem.words(Math.floor(Math.random() * 50) + 20),
+        orgDefine: faker.lorem.words(
           Math.floor(Math.random() * 50) + 20
         ),
-        product: faker.lorem.words(Math.floor(Math.random() * 50) + 20)
+        // product: faker.lorem.words(Math.floor(Math.random() * 50) + 20)
       },
-      industry: ["Aerospace & Defense", "Agricultural", "Culture"],
+      tech: {
+        stack: Tags.aggregate(
+          [{$sample: {size: 1}}]
+        )._id,
+        salaryRange: {
+          min: 500,
+          max: 1000,
+        },
+        jobType: [{label: "Full Time"}],
+        industry: ["Energy & Utilities"],
+      },
       owner: userId,
       data(entityId) {
         return locationSeed(entityId, "ORGANIZATION");
@@ -349,7 +333,7 @@ seeder(Meteor.users, {
   environments: env,
   noLimit: true,
   data: [],
-  modelCount: 6,
+  modelCount: 5,
   model(index, faker) {
     const userCount = index + 1;
     const email = faker.internet.email();
@@ -359,27 +343,13 @@ seeder(Meteor.users, {
       password: "password",
       profile: {
         name,
-        personalInfo: {
-          name,
-          lastName: faker.name.lastName(),
-          img: faker.image.avatar(),
-          email,
-          location: {
-            cityCountry: {
-              city: faker.address.city(),
-              country: faker.address.country()
-            },
-            address: "a243 S Cicero Ave, Alsip, IL 60803, USA",
-            location: {
-              lat: 41.67929549999999,
-              lng: -87.73874719999998
-            }
-          },
-          gender: gender(),
-          website: faker.internet.url(),
-          phoneNumber: faker.phone.phoneNumber(),
-          cover: image("user")
-        },
+        lastName: faker.name.lastName(),
+        image: faker.image.avatar(),
+        email,
+        gender: gender(),
+        website: faker.internet.url(),
+        phoneNumber: faker.phone.phoneNumber(),
+        cover: image("user"),
         aboutMe: {
           yourPassion: faker.lorem.words(
             Math.floor(Math.random() * 15) + 6
@@ -396,7 +366,7 @@ seeder(Meteor.users, {
           )
         }
       },
-      roles: ["admin"],
+      roles: ["normal"],
       data(userId) {
         console.log(userCount % 4);
         switch (userCount % 4) {
@@ -413,4 +383,4 @@ seeder(Meteor.users, {
     };
   }
 });
-*/
+

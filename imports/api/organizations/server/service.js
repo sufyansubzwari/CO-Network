@@ -66,7 +66,7 @@ class OrganizationsService {
    * @return {Object}||[{Object }] Return one or all organizations
    */
   static organizations = (query, limit) => {
-    return Organizations.collection.find(query, limit).fetch();
+    return Organizations.collection.find(query, {...limit, sort: {createdAt: -1}}).fetch();
   };
 }
 
