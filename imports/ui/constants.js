@@ -12,12 +12,14 @@ export const FILTER_INNOVATORS = [
   { label: "Organization", entity: "organization" },
   { label: "Member", entity: "user" }
 ];
+
 export const FILTER_MY_VIEW = [
   { label: "All", entity: ["event", "organization", "user"] },
   { label: "My events", entity: "event" },
   { label: "Colaborators", entity: "user" },
   { label: "Organizations", entity: "organization" }
 ];
+
 export const POST_JOB_ACTION = [{ link: "/post-job?new", title: "POST JOB" }];
 
 export const POST_EVENT_ACTION = [{ link: "/post-event", title: "POST EVENT" }];
@@ -564,11 +566,13 @@ export const EVENT_SIZE = [
   { value: "2000-5000", label: "2000-5000" },
   { value: "5000+", label: "5000+" }
 ];
+
 export const TIKET_TYPE = [
   { value: "Paid", label: "Paid" },
   { value: "Free", label: "Free" },
   { value: "Volunteer", label: "Volunteer" }
 ];
+
 export const EVENT_TYPE = [
   { value: "Technical Workshop", label: "Technical Workshop" },
   { value: "Panel Discussion", label: "Panel Discussion" },
@@ -580,6 +584,7 @@ export const EVENT_TYPE = [
   },
   { value: "Networking", label: "Networking" }
 ];
+
 export const defaultFilter = [
   { name: "Data Science", value: "Data Science", active: true },
   {
@@ -608,4 +613,214 @@ export const defaultFilter = [
   { name: "Smart Cities", value: "Smart Cities", active: true },
   { name: "Cybersecurity", value: "Cybersecurity", active: true },
   { name: "Neuroscience", value: "Neuroscience", active: true }
+];
+
+export const LOCATIONS = [
+  {
+    location: {
+      lat: 61.19533942,
+      lng: -149.9054948
+    },
+    address:
+      "Carrs-Anchorage #1805_1650 W Northern Lights Blvd_Anchorage, Alaska 99503"
+  },
+  {
+    location: {
+      lat: 45.16814002,
+      lng: -93.23255345
+    },
+    address:
+      "Super Target Blaine ST-1832_1500 109th Ave NE_Blaine, Minnesota 55449"
+  },
+  {
+    location: {
+      lat: 33.5081,
+      lng: -117.057
+    },
+    address: "Albertsons - Temecula #6734_Temecula, California 92592"
+  },
+  {
+    location: {
+      lat: 34.02267128,
+      lng: -118.4387225
+    },
+    address:
+      "National & Barrington_11705 National Blvd._Los Angeles, California 900643644_(310) 914-4585"
+  },
+  {
+    location: {
+      lat: 39.19963807,
+      lng: -84.37823047
+    },
+    address: "Kenwood_7896 Montgomery Road_Cincinnati, Ohio 452364301"
+  },
+  {
+    location: {
+      lat: 35.38337,
+      lng: -119.14679
+    },
+    address:
+      "Albertsons-Bakersfield #6377_13045 Rosedale Hwy_Bakersfield, California 93312"
+  },
+  {
+    "location": {
+      "lat": 42.79750285,
+      "lng": -86.13275107
+    },
+    "address": "D & W Foods - Holland #249_50 Douglas Ave_Holland, Michigan 49464"
+  },
+  {
+    "location": {
+      "lat": 42.78323459,
+      "lng": -86.07600381
+    },
+    "address": "Meijer-Holland #47_746 E 16th St_Holland, Michigan 49423"
+  },
+  {
+    "location": {
+      "lat": 42.828321,
+      "lng": -86.092646
+    },
+    "address": "Meijer-Holland Twp #217_3320 West Shore Dr_Holland, Michigan 49424"
+  },
+  {
+    "location": {
+      "lat": 42.82743,
+      "lng": -86.091708
+    },
+    "address": "Holland_3259 West Shore Drive_Holland, Michigan 49424"
+  },
+  {
+    "location": {
+      "lat": 42.587721,
+      "lng": -83.876697
+    },
+    "address": "Meijer-Howell #172_3883 E Grand River_Howell, Michigan 48843"
+  },
+  {
+    "location": {
+      "lat": 42.633025,
+      "lng": -83.754669
+    },
+    "address": "Target Hartland T-1971_10025 E Highland Rd_Howell, Michigan 48843"
+  },
+  {
+    "location": {
+      "lat": 42.25684019,
+      "lng": -84.3597484
+    },
+    "address": "Meijer-Jackson #056_3333 E Michigan Ave_Jackson, Michigan 49202"
+  },
+  {
+    "location": {
+      "lat": 42.268927,
+      "lng": -84.424813
+    },
+    "address": "Jackson, I-94 and M50_1801 North West Ave._Jackson, Michigan 49202"
+  },
+  {
+    "location": {
+      "lat": 42.29574836,
+      "lng": -85.68147197
+    },
+    "address": "Meijers-Kalamazoo #119_6660 W Main St_Kalamazoo, Michigan 490098925"
+  },
+  {
+    "location": {
+      "lat": 42.25941639,
+      "lng": -85.61479013
+    },
+    "address": "D & W Foods-Kalamazoo #430_2130 Parkview_Kalamazoo, Michigan 49008"
+  },
+  {
+    "location": {
+      "lat": 42.296156,
+      "lng": -85.65501
+    },
+    "address": "Target  Kalamazoo T-901_5350 W Main St_Kalamazoo, Michigan 49009"
+  },
+  {
+    "location": {
+      "lat": 42.2961411,
+      "lng": -85.65537381
+    },
+    "address": "Kalamazoo - West Main_5370 West Main Street_Kalamazoo, Michigan 49009"
+  },
+  {
+    "location": {
+      "lat": 42.78893033,
+      "lng": -83.24554959
+    },
+    "address": "Kroger-Lake Orion #637_460 N Laper Rd_Lake Orion, Michigan 48362"
+  },
+  {
+    "location": {
+      "lat": 42.773185,
+      "lng": -83.239069
+    },
+    "address": "Lake Orion_590 Lapeer Rd_Lake Orion, Michigan 48362"
+  },
+  {
+    "location": {
+      "lat": 42.74102205,
+      "lng": -84.63645985
+    },
+    "address": "Kroger-Lansing #888_6430 W Saginaw Hwy_Lansing, Michigan 489171106"
+  },
+  {
+    "location": {
+      "lat": 42.7578,
+      "lng": -84.5243
+    },
+    "address": "Eastwood Towne Center_2941 Preyde Blvd_Lansing, Michigan 489125624"
+  },
+  {
+    "location": {
+      "lat": 42.39782554,
+      "lng": -83.34945414
+    },
+    "address": "Kroger-Livonia #618_30935 5 Mile Rd_Livonia, Michigan 48154"
+  },
+  {
+    "location": {
+      "lat": 42.5046,
+      "lng": -83.112566
+    },
+    "address": "Madison Hgts, 12 Mile & Dartmouth_660 W. 12 Mile Rd_Madison Heights, Michigan 48071"
+  },
+  {
+    "location": {
+      "lat": 46.556614,
+      "lng": -87.396396
+    },
+    "address": "Northern Michigan U/Marquette_1401 Presque Isle Ave_Marquette, Michigan 49855"
+  },
+  {
+    "location": {
+      "lat": 46.5493,
+      "lng": -87.455822
+    },
+    "address": "Marquette, MI-Hwy 41 & 41 & Hwy 492_3105 US 41 West_Marquette, Michigan 49855"
+  },
+  {
+    "location": {
+      "lat": 42.91386,
+      "lng": -82.50029
+    },
+    "address": "Meijer-Marysville #229_205 S Range Rd_Marysville, Michigan 48040"
+  },
+  {
+    "location": {
+      "lat": 43.7557,
+      "lng": -84.2468
+    },
+    "address": "Midland, M-10 & Eastman_7201 Eastman Avenue_Midland, Michigan 48642"
+  },
+  {
+    "location": {
+      "lat": 42.59206587,
+      "lng": -83.60034748
+    },
+    "address": "Milford_525 N. Main_Milford, Michigan 48381"
+  },
 ];

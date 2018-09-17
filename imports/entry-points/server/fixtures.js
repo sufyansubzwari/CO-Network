@@ -9,33 +9,32 @@ import Users from "../../api/users/";
 // )
 
 // Insert admin user
-// const users = [
-//   { email: "admin@admin.com", password: "123456", roles: ["admin"] },
-//   { email: "user@user.com", password: "123456", roles: ["user"] }
-// ];
-//
-// users.forEach(({ email, password, roles }) => {
-//   const userExists = Users.collection.findOne({ "emails.address": email });
-//
-//   // In case user already exists, do nothing
-//   if (userExists) {
-//     return;
-//   }
-//
-//   // Otherwise, insert user and set his role to 'admin'
-//   const userId = Accounts.createUser({ email, password });
-//   Roles.addUsersToRoles(userId, roles);
-// });
+const users = [
+  { email: "admin@admin.com", password: "123456", roles: ["admin"] },
+  { email: "user@user.com", password: "123456", roles: ["normal"] }
+];
 
-/*
+users.forEach(({ email, password, roles }) => {
+  const userExists = Users.collection.findOne({ "emails.address": email });
+
+  // In case user already exists, do nothing
+  if (userExists) {
+    return;
+  }
+
+  // Otherwise, insert user and set his role to 'admin'
+  const userId = Accounts.createUser({ email, password });
+  Roles.addUsersToRoles(userId, roles);
+});
+
 import seeder from "@cleverbeagle/seeder";
-import {Meteor} from "meteor/meteor";
+import { Meteor } from "meteor/meteor";
 import Jobs from "../../api/jobs/server/collection";
 import Events from "../../api/events/server/collection";
 import Organizations from "../../api/organizations/server/collection";
 import Places from "../../api/places/server/collection";
 import Tags from "../../api/tags/server/collection";
-import {LANGUAGES_LIBRARIES} from "../../ui/constants";
+import { LANGUAGES_LIBRARIES, LOCATIONS } from "../../ui/constants";
 
 const env = ["development"];
 
@@ -108,7 +107,7 @@ function randomLookingForProfile() {
   let result = [];
   for (let i = 0; i <= num; i++) {
     let str = array[Math.floor(Math.random() * (array.length - 1))];
-    result.push({label: str, value: str});
+    result.push({ label: str, value: str });
   }
   return Array.from(new Set(result));
 }
@@ -120,7 +119,7 @@ function fakeSponsor(faker) {
     result.push({
       email: faker.internet.email(),
       organization: faker.commerce.department(),
-      logo: {imgSrc: image("events"), imgFile: {}}
+      logo: { imgSrc: image("events"), imgFile: {} }
     });
   return result;
 }
@@ -149,29 +148,29 @@ const TagsSeed = () => ({
   }
 });
 
+function getLocationFake(faker) {
+  let location = LOCATIONS[Math.floor(Math.random() * (LOCATIONS.length - 1))];
+
+  const address = {
+    cityCountry: {
+      city: faker.address.city(),
+      country: faker.address.country(),
+      entire: faker.address.city() + ", " + faker.address.country()
+    }
+  };
+  return Object.assign(location, address);
+}
+
 const locationSeed = (owner, entityId) => ({
   collection: Places,
   environments: env,
   noLimit: true,
   modelCount: 1,
   model(dataIndex, faker) {
-    const city = faker.address.city();
-    const country = faker.address.country();
     return {
       owner: owner,
       entity: entityId,
-      location: {
-        address: "a243 S Cicero Ave, Alsip, IL 60803, USA",
-        cityCountry: {
-          city: city,
-          country: country,
-          entire: city + ", " + country
-        },
-        location: {
-          lat: 41.67929549999999,
-          lng: -87.73874719999998
-        }
-      }
+      location: getLocationFake(faker)
     };
   }
 });
@@ -189,40 +188,24 @@ const JobsSeed = userId => ({
       updatedAt: new Date().toISOString(),
       description: faker.lorem.words(Math.floor(Math.random() * 10) + 5),
       aboutUsTeam: faker.lorem.words(Math.floor(Math.random() * 15) + 6),
-      candidateQuestion: faker.lorem.words(
-        Math.floor(Math.random() * 3) + 3
-      ),
+      candidateQuestion: faker.lorem.words(Math.floor(Math.random() * 3) + 3),
       equity: true,
       experience: {
         label: "Senior",
         value: "Senior"
       },
       image: image("jobs"),
-      jobResponsibility: faker.lorem.words(
-        Math.floor(Math.random() * 10) + 5
-      ),
+      jobResponsibility: faker.lorem.words(Math.floor(Math.random() * 10) + 5),
       jobType: {
         value: "Full time",
         label: "Full time"
       },
-      languages: Tags.aggregate(
-        [{$sample: {size: 1}}]
-      )._id,
-      location: {
-        address: "a243 S Cicero Ave, Alsip, IL 60803, USA",
-        cityCountry: {
-          city: faker.address.city(),
-          country: faker.address.country()
-        },
-        location: {
-          lat: 41.67929549999999,
-          lng: -87.73874719999998
-        }
-      },
+      languages: Tags.aggregate([{ $sample: { size: 1 } }])._id,
+      location: getLocationFake(faker),
       relocation: false,
       remote: true,
       salaryRange: {
-        salary: {min: "500", max: "6000"},
+        salary: { min: "500", max: "6000" },
         frequency: "Monthly"
       },
       statement: faker.lorem.words(Math.floor(Math.random() * 5) + 2),
@@ -249,7 +232,7 @@ const EventsSeed = userId => ({
   model(dataIndex, faker) {
     return {
       venueName: faker.company.companyName(),
-      ticketType: {value: "Volunteer", label: "Volunteer"},
+      ticketType: { value: "Volunteer", label: "Volunteer" },
       eventType: {
         value: "Technical Workshop",
         label: "Technical Workshop"
@@ -264,8 +247,7 @@ const EventsSeed = userId => ({
       updatedAt: new Date().toISOString(),
       image: image("events"),
       description: faker.lorem.words(Math.floor(Math.random() * 50) + 20),
-      from:
-        "The type of owner (organization, communities or register user).",
+      from: "The type of owner (organization, communities or register user).",
       startDate: new Date().toISOString(),
       endDate: new Date().toISOString(),
       sponsors: fakeSponsor(faker),
@@ -289,21 +271,9 @@ const OrganizationSeed = userId => ({
         image: faker.image.avatar(),
         cover: image("user"),
         name: faker.company.companyName(),
-        employees: {value: "1-10", label: "1-10"},
-        description: faker.lorem.words(
-          Math.floor(Math.random() * 50) + 20
-        ),
-        location: {
-          address: "3186  Jacobs Street,SMITHBORO, IL 62284, USA",
-          cityCountry: {
-            city: faker.address.city(),
-            country: faker.address.country()
-          },
-          location: {
-            lat: 41.67929549999999,
-            lng: -87.73874719999998
-          }
-        }
+        employees: { value: "1-10", label: "1-10" },
+        description: faker.lorem.words(Math.floor(Math.random() * 50) + 20),
+        location: getLocationFake(faker)
       },
       social: {
         github: faker.internet.userName(),
@@ -324,16 +294,14 @@ const OrganizationSeed = userId => ({
       },
       reason: {
         lang: [
-          {label: "Agile", value: "Agile"},
-          {label: "Arduino", value: "Arduino"},
-          {label: "Ansible", value: "Ansible"}
+          { label: "Agile", value: "Agile" },
+          { label: "Arduino", value: "Arduino" },
+          { label: "Ansible", value: "Ansible" }
         ],
         vision: faker.lorem.words(Math.floor(Math.random() * 50) + 20),
         mission: faker.lorem.words(Math.floor(Math.random() * 50) + 20),
         culture: faker.lorem.words(Math.floor(Math.random() * 50) + 20),
-        orgdefine: faker.lorem.words(
-          Math.floor(Math.random() * 50) + 20
-        ),
+        orgdefine: faker.lorem.words(Math.floor(Math.random() * 50) + 20),
         product: faker.lorem.words(Math.floor(Math.random() * 50) + 20)
       },
       industry: ["Aerospace & Defense", "Agricultural", "Culture"],
@@ -364,36 +332,18 @@ seeder(Meteor.users, {
           lastName: faker.name.lastName(),
           img: faker.image.avatar(),
           email,
-          location: {
-            cityCountry: {
-              city: faker.address.city(),
-              country: faker.address.country()
-            },
-            address: "a243 S Cicero Ave, Alsip, IL 60803, USA",
-            location: {
-              lat: 41.67929549999999,
-              lng: -87.73874719999998
-            }
-          },
+          location: getLocationFake(faker),
           gender: gender(),
           website: faker.internet.url(),
           phoneNumber: faker.phone.phoneNumber(),
           cover: image("user")
         },
         aboutMe: {
-          yourPassion: faker.lorem.words(
-            Math.floor(Math.random() * 15) + 6
-          ),
-          exitingProblem: faker.lorem.words(
-            Math.floor(Math.random() * 15) + 6
-          ),
-          steps: faker.lorem.words(
-            Math.floor(Math.random() * 15) + 6
-          ),
+          yourPassion: faker.lorem.words(Math.floor(Math.random() * 15) + 6),
+          exitingProblem: faker.lorem.words(Math.floor(Math.random() * 15) + 6),
+          steps: faker.lorem.words(Math.floor(Math.random() * 15) + 6),
           lockingFor: randomLookingForProfile(),
-          description: faker.lorem.words(
-            Math.floor(Math.random() * 15) + 6
-          )
+          description: faker.lorem.words(Math.floor(Math.random() * 15) + 6)
         }
       },
       roles: ["admin"],
@@ -413,4 +363,3 @@ seeder(Meteor.users, {
     };
   }
 });
-*/
