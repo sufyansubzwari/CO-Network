@@ -86,7 +86,7 @@ class JobsService {
    * @return {Object}||[{Object }] Return one or all events
    */
   static jobs = (query, limit) => {
-    return Jobs.collection.find(query, limit).fetch();
+    return Jobs.collection.find(query, {...limit, sort: {createdAt: -1}}).fetch();
   };
 }
 
