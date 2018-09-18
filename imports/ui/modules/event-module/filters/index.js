@@ -66,8 +66,9 @@ class EventsFilters extends React.Component {
   notifyParentLocation(model, name, value) {
     if (model && name && value) {
       delete value.fullLocation;
+      let locationNew = Object.assign({}, value);
       let locationArray = this.state.locationTags;
-      locationArray.push(value);
+      locationArray.push(locationNew);
       this.setState({locationTags: locationArray});
     }
   }
