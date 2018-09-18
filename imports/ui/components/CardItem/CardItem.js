@@ -6,6 +6,7 @@ import { Container, Layout } from "btech-layout";
 import { Card } from "btech-card-list-component";
 import { TagList } from "btech-base-forms-component";
 import ReportToggle from "./ReportToggle";
+import { PlaceHolder } from "btech-placeholder-component";
 
 const TitleCardContainer = Styled.div`
     font-family: Helvetica Neue LT Std;
@@ -53,14 +54,50 @@ const NullImageContainer = Styled.div`
  * @description This component is a wrapper for the ml-society card
  */
 class CardItem extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      loadingImage: true
+    };
+    if (props.image) {
+      this.loadImage(props.image);
+    }
+  }
+
+  componentWillReceiveProps(newProps) {
+    if (!newProps.image) return;
+    if (newProps.image !== this.props.image) this.loadImage(newProps.image);
+  }
+
+  loadImage(imageSrc) {
+    this.setState({ loadingImage: true, imageError: false });
+    if (imageSrc) {
+      let image = new Image();
+      image.onload = (data, error) => {
+        this.setState({ loadingImage: false });
+      };
+      image.onerror = (data, error) => {
+        this.setState({ loadingImage: false, imageError: true });
+      };
+      image.src = imageSrc;
+    }
+  }
+
   renderLeftSide() {
     const tags = this.props.tags.map(tag => ({ active: true, ...tag }));
     return (
-      <Layout fullY rowGap={"5px"} customTemplateRows={"1fr auto"}>
+      <Layout
+        fullY
+        customTemplateRows={"1fr"}
+        mdCustomTemplateColumns={"1fr auto"}
+      >
         <Container>
-          <Layout fullY rowGap={"5px"} customTemplateRows={"auto auto 1fr"}>
+          <Layout fullY customTemplateRows={"auto auto 1fr"}>
             <Container>
-              <Layout customTemplateColumns={"1fr auto"}>
+              <Layout
+                customTemplateColumns={"1fr"}
+                mdCustomTemplateColumns={"1fr auto"}
+              >
                 <Container>
                   <Layout customTemplateColumns={"20px auto"}>
                     <Container>
@@ -73,7 +110,7 @@ class CardItem extends Component {
                     </Container>
                   </Layout>
                 </Container>
-                <Container>
+                <Container hide mdShow>
                   <SViewsContainer>
                     <ReportToggle onSelect={(item, key) => alert(key)} />
                   </SViewsContainer>
@@ -96,7 +133,7 @@ class CardItem extends Component {
             </Container>
           </Layout>
         </Container>
-        <Container>
+        <Container hide mdShow>
           {tags.length ? (
             <TagList
               tags={tags}
@@ -115,9 +152,16 @@ class CardItem extends Component {
   }
 
   getRightSide() {
+    const loading =
+      this.props.loading || (this.props.image && this.state.loadingImage);
+    const imageElement = loading ? (
+      <PlaceHolder rect loading={loading} height={325} />
+    ) : (
+      <img width="100%" height="100%" src={this.props.image} />
+    );
     return this.props.image && this.props.image ? (
       <Container relative fullView>
-        <img width="100%" height="100%" src={this.props.image} />
+        {imageElement}
       </Container>
     ) : (
       <Container relative fullView>
@@ -134,6 +178,7 @@ class CardItem extends Component {
     return (
       <Container style={{ cursor: "pointer" }}>
         <SMLCard
+          customTemplateColumns={"90px 1fr"}
           background={"white"}
           onSelect={() =>
             this.props.onSelect && this.props.onSelect({ ...this.props.data })

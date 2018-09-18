@@ -53,7 +53,7 @@ class ListLayout extends Component {
                   }
                 >
                   {!this.props.sidebarIsOpen ? (
-                    <Container hide mdShow lgShow>
+                    <Container hide mdShow>
                       <Button
                         width={"35px"}
                         fontSize={"18px"}

@@ -78,7 +78,6 @@ class SideBar extends Component {
         background={"white"}
         hide
         mdShow
-        lgShow
         fullY
         gridArea="SideBar"
       >

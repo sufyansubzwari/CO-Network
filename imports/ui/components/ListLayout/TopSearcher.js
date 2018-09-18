@@ -44,7 +44,7 @@ class TopSearcher extends Component {
               }
             />
           </Container>
-          <Container>
+          <Container hide mdShow>
             <Button
               width={"35px"}
               fontSize={"18px"}
