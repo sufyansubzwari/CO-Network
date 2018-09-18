@@ -44,9 +44,7 @@ class EventForm extends Component {
       this.props.location.state &&
       this.props.location.state.event
     ) {
-      this.setState({ event: this.props.location.state.event }, () =>
-        this.props.history.push({ state: null })
-      );
+      this.setState({ event: this.props.location.state.event });
     }
   }
 

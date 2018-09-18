@@ -38,9 +38,14 @@ class JobsFilters extends React.Component {
         location: {lat: "", lng: ""},
         fullLocation: {}
       },
+      locationTags: [],
       industry: "",
       jobType: JOB_TYPE_NUMBER.map(item => ({label: item.label, active: item.active, number: item.number})),
-      jobExperience: EXPERIENCE_REQUIERED_NUMBER.map(item => ({label: item.label, active: item.active, number: item.number})),
+      jobExperience: EXPERIENCE_REQUIERED_NUMBER.map(item => ({
+        label: item.label,
+        active: item.active,
+        number: item.number
+      })),
       filters: {}
     };
   }
@@ -64,6 +69,25 @@ class JobsFilters extends React.Component {
     );
   }
 
+  notifyParentLocation(model, name, value) {
+    if (model && name && value) {
+      let locationArray = this.state.locationTags;
+      locationArray.push(value);
+      this.setState({locationTags: locationArray});
+    }
+  }
+
+  tagSelection(key) {
+    let tags = this.state.locationTags;
+    tags[key].active = !tags[key].active;
+    this.setState({locationTags: tags}, () => this.addFilters())
+
+  }
+
+  addFilters(){
+
+  }
+
   render() {
     return (
       <FilterContainer
@@ -74,15 +98,18 @@ class JobsFilters extends React.Component {
             name={"location"}
             model={this.state}
             placeholder={"Location"}
+            isGeoLocationAvailable={true}
+            onChange={this.notifyParentLocation.bind(this)}
           />
           <Layout
             mt={"10px"}
             customTemplateColumns={"80px 80px 80px"}
             colGap={"10px"}
           >
-            <BigTag text={"New York"} icon={"pin"} connected={false}/>
-            <BigTag text={"United States"} icon={"pin"} connected={true}/>
-            <BigTag text={"California"} icon={"pin"} connected={true}/>
+            {this.state.locationTags.length > 0 ? this.state.locationTags.map((item, key) =>
+              <BigTag key={key} text={item.address} icon={"pin"} connected={item.active}
+                      onClick={this.tagSelection.bind(this, key)}/>
+            ) : null}
           </Layout>
         </Filter>
         <Separator/>
