@@ -28,7 +28,7 @@ export const wrapOperators = (json) => {
   let shadowCopy = Object.assign({}, json);
   for (let key in json) {
     let value = json[key];
-    if (typeof value === 'object') {
+    if (typeof value === 'object' && !Array.isArray(value)) {
       shadowCopy[key] = wrapOperators(shadowCopy[key]);
     }
     if (operators.indexOf(key) > -1) {
@@ -36,14 +36,13 @@ export const wrapOperators = (json) => {
       delete shadowCopy[key];
       shadowCopy[("$" + key)] = ownValue;
     }
-    if(key.indexOf(nestedDocs)){
-      console.log(key.indexOf(nestedDocs))
+    if (key.indexOf(nestedDocs) > -1) {
       const ownValue = shadowCopy[key];
       delete shadowCopy[key];
-      shadowCopy[(key.replace(nestedDocs,"."))] = ownValue;
+      shadowCopy[(key.replace(nestedDocs, "."))] = ownValue;
     }
   }
-  console.log(JSON.stringify(shadowCopy));
+  console.log("wrapOperators", JSON.stringify(shadowCopy));
   return shadowCopy;
 };
 

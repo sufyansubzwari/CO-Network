@@ -39,9 +39,24 @@ input JobsInputSearch {
     description: TableStringFilterInput
     salaryRange_DOT_min: TableStringFilterInput
     salaryRange_DOT_max: TableStringFilterInput
+    jobType: JobTypeElemMatch
+    jobExperience: JobTypeElemMatch
     startDate: TableDateFilterInput
     endDate: TableDateFilterInput
     owner: String
+}
+
+input JobTypeElemMatch{
+    elemMatch: JobTypeOr
+}
+
+input JobTypeOr{
+    or: [JobTypeInputSearch]
+}
+
+input JobTypeInputSearch{
+    label: String
+    value: String
 }
 
 input SalaryRangeInputSearch{

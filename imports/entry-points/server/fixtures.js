@@ -202,8 +202,8 @@ const JobsSeed = userId => ({
         Math.floor(Math.random() * 10) + 5
       ),
       jobType: [{
-        value: "Full time",
-        label: "Full time"
+        value: "Volunteer | Intern",
+        label: "Volunteer | Intern"
       }],
       languages: Tags.aggregate(
         [{$sample: {size: 1}}]
