@@ -20,26 +20,26 @@ class ListEvents extends Component {
       selectedItem: null,
       selectedIndex: null,
       limit: 10,
-      filter: "",
-
-    }
+      filter: ""
+    };
   }
 
   onChangeSelection(item, key) {
     this.setState({ selectedItem: item, selectedIndex: key });
   }
 
-  fetchMoreSelection() {
-    this.setState({
-      limit: this.state.limit + 10
-    });
+  fetchMoreSelection(isLoading) {
+    if (!isLoading)
+      this.setState({
+        limit: this.state.limit + 10
+      });
   }
 
   static removeEvent(deleteEvent, event) {
     deleteEvent({ variables: { id: event._id } });
   }
 
-  editEvent(){
+  editEvent() {
     let event = JSON.parse(JSON.stringify(this.state.selectedItem));
     delete event.entity;
     delete event.views;
@@ -64,6 +64,7 @@ class ListEvents extends Component {
           pollInterval={5000}
         >
           {({ loading, error, data }) => {
+            const isLoading = loading && (!data.events || !data.events.length);
             // if (loading) return null;
             // if (error) return `Error!: ${error}`;
             return (
@@ -71,8 +72,8 @@ class ListEvents extends Component {
                 key={"listComponent"}
                 title={"Events"}
                 data={data && data.events}
-                loading={loading && (!data.events || !data.events.length)}
-                onFetchData={() => this.fetchMoreSelection()}
+                loading={isLoading}
+                onFetchData={() => this.fetchMoreSelection(isLoading)}
                 onSelectCard={(item, key) => this.onChangeSelection(item, key)}
               />
             );
@@ -130,7 +131,7 @@ class ListEvents extends Component {
                   this.state.selectedItem ? this.state.selectedItem.image : null
                 }
               >
-                  <EventPreviewBody event={this.state.selectedItem} />
+                <EventPreviewBody event={this.state.selectedItem} />
               </Preview>
             )}
           </Mutation>

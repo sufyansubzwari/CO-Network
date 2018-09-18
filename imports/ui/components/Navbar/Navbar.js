@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { Layout, Container } from "btech-layout";
 import { withRouter } from "react-router-dom";
+import Styled from "styled-components";
 import {
   HNavbar,
   HNavItem,
@@ -9,6 +10,10 @@ import {
 } from "btech-horizantal-navbar";
 import UserNavbarSection from "./UserNavbarSection";
 import navs from "./nav.constant";
+
+const SNavBarContainer = Styled(Container)`
+    z-index: 1;
+`;
 
 /**
  * @module Data
@@ -28,7 +33,7 @@ class Navbar extends Component {
 
   render() {
     return (
-      <Container fullY gridArea="Navbar" background={"white"}>
+      <SNavBarContainer fullY gridArea="Navbar" background={"white"}>
         <HNavbar
           mdRowGap={10}
           links={navs}
@@ -47,7 +52,7 @@ class Navbar extends Component {
           </Layout>
           <UserNavbarSection key={"footer"} curUser={this.props.curUser} />
         </HNavbar>
-      </Container>
+      </SNavBarContainer>
     );
   }
 }
