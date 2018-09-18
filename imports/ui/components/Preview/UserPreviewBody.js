@@ -47,9 +47,9 @@ class UserPreviewBody extends React.Component {
             <Layout rowGap={'15px'}>
                 <Title text={ this.state.user.name + " " + this.state.user.lastName}/>
                 <Location text={this.state.user.info && this.state.user.info.location && this.state.user.info.location.address.toUpperCase()}/>
-                {this.state.user.info && this.state.user.info.email !== '' ? <Text header={'Email'} text={this.state.user.info.email}/> : null}
+                {this.state.user && this.state.user.email !== '' ? <Text header={'Email'} text={this.state.user.email}/> : null}
                 <Social social={socials}
-                        links={[{link: this.state.user.info && this.state.user.info.website, website: this.state.user.info && this.state.user.info.website}]}/>
+                        links={[{link: this.state.user && this.state.user.website, website: this.state.user && this.state.user.website}]}/>
                 <Container>
                     <Layout templateColumns={2}>
                         {languages && languages.length ? <TagsAdd header={'Languages'} tags={languages}/> : null}

@@ -21,6 +21,7 @@ class UserForm extends Component {
         super(props);
         this.state = {
             user: {
+                ...this.props.user,
                 info: {
                     name: "",
                     lastName: "",
@@ -139,7 +140,8 @@ UserForm.defaultProps = {
 UserForm.propTypes = {
     onCancel: PropTypes.func,
     onFinish: PropTypes.func,
-    handleChangeProfile: PropTypes.func
+    handleChangeProfile: PropTypes.func,
+    user: PropTypes.object
 };
 
 export default UserForm;

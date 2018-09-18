@@ -81,6 +81,7 @@ class UserProfile extends Component {
             onCancel={() => this.onCancel()}
             userLogged={false}
             handleChangeProfile={(user) => this.setState({user: user})}
+            user={this.state.user}
             {...this.props}
           />
         </Container>

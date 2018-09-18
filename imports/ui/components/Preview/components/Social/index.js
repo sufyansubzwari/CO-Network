@@ -28,8 +28,8 @@ class Social extends React.Component{
     }
 
     render(){
-        let socials = this.props.social && this.props.social.length && this.props.social.map( element => <SocialItem><MaterialIcon type={element} /></SocialItem> );
-        let links = this.props.links && this.props.links.length && this.props.links.map( element => <SLink><a href={element.link}>{element.website}</a></SLink> );
+        let socials = this.props.social && this.props.social.length && this.props.social.map( (element,index) => <SocialItem key={index}><MaterialIcon type={element} /></SocialItem> );
+        let links = this.props.links && this.props.links.length && this.props.links.map( (element,index) => <SLink key={index}><a href={element.link}>{element.website}</a></SLink> );
         return (
             <ThemeProvider theme={theme}>
                 <Container>
