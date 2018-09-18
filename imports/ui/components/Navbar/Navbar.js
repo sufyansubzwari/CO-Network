@@ -35,8 +35,8 @@ class Navbar extends Component {
           activeEval={this.activeEval}
           itemOptions={{ title: { hide: true, mdShow: true } }}
         >
-          <Layout key={"header"} mb={"30px"} mt={"30px"}>
-            <Container ml={"-8px"}>
+          <Layout key={"header"} mdMarginY={"30px"} lgMarginY={"30px"}>
+            <Container ml={{ xs: 0, sm: 0, md: -8, lg: -8 }}>
               <HNavItem
                 link={"/"}
                 icon={{ size: 60, src: "/images/logo/home.gif" }}
