@@ -71,8 +71,10 @@ class JobsFilters extends React.Component {
 
   notifyParentLocation(model, name, value) {
     if (model && name && value) {
+      delete value.fullLocation;
+      let locationNew = Object.assign({}, value);
       let locationArray = this.state.locationTags;
-      locationArray.push(value);
+      locationArray.push(locationNew);
       this.setState({locationTags: locationArray});
     }
   }
@@ -80,8 +82,15 @@ class JobsFilters extends React.Component {
   tagSelection(key) {
     let tags = this.state.locationTags;
     tags[key].active = !tags[key].active;
-    this.setState({locationTags: tags}, () => this.addFilters())
+    this.setState({locationTags: tags}, () => this.checkFilters())
 
+  }
+
+  checkFilters(){
+    let actives = this.state.locationTags.filter(item => item.active);
+    let filters = this.state.filters;
+    actives.length > 0 ? filters.location = actives : delete filters.location;
+    this.setState({filters: filters}, () => this.props.setFilters("events", filters));
   }
 
   render() {

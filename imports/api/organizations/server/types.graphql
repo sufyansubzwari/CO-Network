@@ -68,6 +68,7 @@ input OrganizationSearchInput{
     info_DOT_orgType: JobTypeElemMatch
     startDate: TableDateFilterInput
     endDate: TableDateFilterInput
+    location: [LocationInput]
 }
 
 input OrganizationsInput {

@@ -1,5 +1,5 @@
 import React from "react";
-import { Container } from "btech-layout";
+import {Layout, Container } from "btech-layout";
 import styled from "styled-components";
 import { GeoInputLocation } from "btech-location";
 import {
@@ -16,6 +16,7 @@ import PropsTypes from "prop-types";
 import FilterContainer from "../../../components/FiltersContainer/FiltersContainer";
 import {cleanFilters, setFilters} from "../../../actions/SideBarActions";
 import {connect} from "react-redux";
+import BigTag from "./../../../components/BigTag/BigTag";
 
 const Filter = styled(Container)`
   padding: 20px 10px;
@@ -38,6 +39,7 @@ class OrganizationFilters extends React.Component {
         location: { lat: "", lng: "" },
         fullLocation: {}
       },
+      locationTags: [],
       info_DOT_orgType: ORG_TYPE_NUMBER.map(item => ({label: item.label, active: item.active, number: item.number})),
       industry: "",
       filters:{}
@@ -63,6 +65,30 @@ class OrganizationFilters extends React.Component {
     );
   }
 
+  notifyParentLocation(model, name, value) {
+    if (model && name && value) {
+      delete value.fullLocation;
+      let locationNew = Object.assign({}, value);
+      let locationArray = this.state.locationTags;
+      locationArray.push(locationNew);
+      this.setState({locationTags: locationArray});
+    }
+  }
+
+  tagSelection(key) {
+    let tags = this.state.locationTags;
+    tags[key].active = !tags[key].active;
+    this.setState({locationTags: tags}, () => this.checkFilters())
+
+  }
+
+  checkFilters(){
+    let actives = this.state.locationTags.filter(item => item.active);
+    let filters = this.state.filters;
+    actives.length > 0 ? filters.location = actives : delete filters.location;
+    this.setState({filters: filters}, () => this.props.setFilters("events", filters));
+  }
+
   render() {
     return (
       <FilterContainer
@@ -74,7 +100,19 @@ class OrganizationFilters extends React.Component {
             name={"location"}
             model={this.state}
             placeholder={"Location"}
+            isGeoLocationAvailable={true}
+            onChange={this.notifyParentLocation.bind(this)}
           />
+          <Layout
+            mt={"10px"}
+            customTemplateColumns={"70px 70px 70px"}
+            colGap={"10px"}
+          >
+            {this.state.locationTags.length > 0 ? this.state.locationTags.map((item, key) =>
+              <BigTag key={key} text={item.address} icon={"pin"} connected={item.active}
+                      onClick={this.tagSelection.bind(this, key)}/>
+            ) : null}
+          </Layout>
         </Filter>
         <Separator />
         <Filter>
