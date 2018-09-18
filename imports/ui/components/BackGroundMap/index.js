@@ -29,11 +29,13 @@ class MapBackGround extends Component {
         zoomControl={false}
         attributionControl={false}
         center={position}
+        detectRetina
         minZoom={this.state.minZoom}
         maxZoom={this.state.maxZoom}
         zoom={this.props.zoomMap || 3}
       >
         <TileLayer
+          detectRetina
           attribution="&copy; <a href=&quot;http://www.openstreetmap.org/copyright&quot;>OpenStreetMap</a> &copy; <a href=&quot;http://cartodb.com/attributions&quot;>CartoDB</a>"
           subdomains="abcd"
           maxZoom={18}
