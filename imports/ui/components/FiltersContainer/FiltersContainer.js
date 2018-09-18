@@ -49,12 +49,12 @@ const Separator = styled.div`
 const FiltersContainer = function(props) {
   return (
     <SContainer fullY>
-      <Scrollbars
-        universal
-        autoHide
-        autoHideDuration={props.autoHideDuration}
-        style={{ height: "100%" }}
-      >
+      {/*<Scrollbars*/}
+        {/*universal*/}
+        {/*autoHide*/}
+        {/*autoHideDuration={props.autoHideDuration}*/}
+        {/*style={{ height: "100%", overflow: 'display' }}*/}
+      {/*>*/}
         <Layout customTemplateColumns={"1fr auto"}>
           <h6>Filters</h6>
           <SButton
@@ -69,7 +69,7 @@ const FiltersContainer = function(props) {
         </Layout>
         <Separator />
         {props.children}
-      </Scrollbars>
+      {/*</Scrollbars>*/}
     </SContainer>
   );
 };

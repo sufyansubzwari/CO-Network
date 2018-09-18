@@ -16,8 +16,8 @@ class UserProfile extends Component {
   constructor(props) {
     super(props);
 
-    this.state = {
-        user: {
+    let user = props.curUser ? props.curUser.profile :
+        {
             info: {
                 name: "",
                 lastName: "",
@@ -62,6 +62,9 @@ class UserProfile extends Component {
                 otherpreferred: []
             }
         }
+
+    this.state = {
+        user: user
     }
   }
 
@@ -82,6 +85,8 @@ class UserProfile extends Component {
           />
         </Container>
         <Preview
+          showAvatar={true}
+          image={ this.state.user && this.state.user.image}
           key={"rightSide"}
           navClicked={index => console.log(index)}
           navOptions={[

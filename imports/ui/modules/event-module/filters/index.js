@@ -4,7 +4,7 @@ import styled from "styled-components";
 import {GeoInputLocation} from "btech-location";
 import FilterContainer from "../../../components/FiltersContainer/FiltersContainer";
 import BigTag from "./../../../components/BigTag/BigTag";
-import {SalaryRange, CheckBoxList, Button} from "btech-base-forms-component";
+import {SalaryRange, CheckBoxList, Button, DatePickerRange} from "btech-base-forms-component";
 import PropsTypes from "prop-types";
 
 const Filter = styled(Container)`
@@ -66,7 +66,7 @@ class EventsFilters extends React.Component {
         </Filter>
         <Separator/>
         <Filter>
-          <SalaryRange labelText={"Dates"} placeholder={"000"}/>
+          <DatePickerRange format={'DD-MM'} labelText={'Dates'} placeholder={'dd/mm'} />
         </Filter>
         <Separator/>
         <Filter>
