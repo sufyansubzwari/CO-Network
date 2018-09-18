@@ -2,11 +2,12 @@ import React, { Component } from "react";
 import { Layout, Container } from "btech-layout";
 import { withRouter } from "react-router-dom";
 import {
-  HNavbar,
   HNavItem,
   HButtonGroup,
   HButtom
 } from "btech-horizantal-navbar";
+
+import HNavbar from "./HNavbar";
 import UserNavbarSection from "./UserNavbarSection";
 import navs from "./nav.constant";
 
@@ -27,10 +28,19 @@ class Navbar extends Component {
   }
 
   render() {
+    let activeLink = -1;
+    navs.some((item, index) => {
+      if (this.activeEval(item)) {
+        activeLink = index;
+        return true;
+      }
+    });
     return (
-      <Container fullY gridArea="Navbar" background={"white"}>
+      <Container fullY gridArea="Navbar">
         <HNavbar
           mdRowGap={10}
+          activeLink={activeLink}
+          isOpen={this.props.isOpen}
           links={navs}
           activeEval={this.activeEval}
           itemOptions={{ title: { hide: true, mdShow: true } }}
