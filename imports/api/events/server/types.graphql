@@ -60,8 +60,10 @@ input EventsInputSearch {
     startDate: TableDateFilterInput
     endDate: TableDateFilterInput
     owner: String
+    category: TableStringFilterInput
     venueName: TableStringFilterInput
     tickets: ticketsElemMatch
+    location: [LocationInput]
 }
 input ticketsElemMatch{
     elemMatch: TicketsInputSearch
@@ -88,6 +90,7 @@ input TableStringFilterInput{
     between: [String]
     beginsWith: String
     regex: String
+    in: [String]
 }
 input TableDateFilterInput{
     ne: Date

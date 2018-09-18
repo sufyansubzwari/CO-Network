@@ -84,10 +84,6 @@ class JobsFilters extends React.Component {
 
   }
 
-  addFilters(){
-
-  }
-
   render() {
     return (
       <FilterContainer
