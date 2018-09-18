@@ -39,8 +39,8 @@ class JobsFilters extends React.Component {
         fullLocation: {}
       },
       industry: "",
-      jobType: JOB_TYPE_NUMBER,
-      jobExperience: EXPERIENCE_REQUIERED_NUMBER,
+      jobType: JOB_TYPE_NUMBER.map(item => ({label: item.label, active: item.active, number: item.number})),
+      jobExperience: EXPERIENCE_REQUIERED_NUMBER.map(item => ({label: item.label, active: item.active, number: item.number})),
       filters: {}
     };
   }

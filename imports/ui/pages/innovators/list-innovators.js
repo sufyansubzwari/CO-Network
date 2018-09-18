@@ -9,6 +9,8 @@ import { Query, Mutation } from "react-apollo";
 import { GetOrg, DeleteOrg } from "../../apollo-client/organization";
 import { withRouter } from "react-router-dom";
 import OrganizationPreviewBody from "../../components/Preview/OrganizationPreviewBody";
+import {connect} from "react-redux";
+import {PreviewData} from "../../actions/PreviewActions";
 
 /**
  * @module Events
@@ -104,7 +106,7 @@ class ListInnovators extends Component {
         <Query
           key={"listComponent"}
           query={GetOrg}
-          variables={{ limit, filter }}
+          variables={{ limit, filter, organizations: this.props.filterStatus.filters }}
           pollInterval={5000}
         >
           {({ loading, error, data }) => {
@@ -202,4 +204,24 @@ class ListInnovators extends Component {
   }
 }
 
-export default withRouter(ListInnovators);
+
+const mapStateToProps = state => {
+  const { previewData, filterStatus } = state;
+  return {
+    previewData: previewData,
+    filterStatus: filterStatus,
+  };
+};
+
+const mapDispatchToProps = dispatch => {
+  return {
+    sendPreviewData: (item, key, type) => dispatch(PreviewData(item, key, type))
+  };
+};
+
+export default withRouter(
+  connect(
+    mapStateToProps,
+    mapDispatchToProps
+  )(ListInnovators)
+);
