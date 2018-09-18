@@ -1,7 +1,7 @@
 import React from "react";
-import { Layout, Container } from "btech-layout";
+import {Layout, Container} from "btech-layout";
 import styled from "styled-components";
-import { GeoInputLocation } from "btech-location";
+import {GeoInputLocation} from "btech-location";
 import FilterContainer from "../../../components/FiltersContainer/FiltersContainer";
 import BigTag from "./../../../components/BigTag/BigTag";
 import {
@@ -14,6 +14,8 @@ import {
   EXPERIENCE_REQUIERED_NUMBER
 } from "../form/constants/constants";
 import PropsTypes from "prop-types";
+import {cleanFilters, setFilters} from "../../../actions/SideBarActions";
+import {connect} from "react-redux";
 
 const Filter = styled(Container)`
   padding: 20px 10px;
@@ -24,7 +26,7 @@ const Separator = styled.div`
   width: 100%;
   opacity: 0.5;
   background-color: ${props =>
-    props.theme ? props.theme.filter.separatorColor : "black"};
+  props.theme ? props.theme.filter.separatorColor : "black"};
 `;
 
 class JobsFilters extends React.Component {
@@ -33,11 +35,33 @@ class JobsFilters extends React.Component {
     this.state = {
       location: {
         address: "",
-        location: { lat: "", lng: "" },
+        location: {lat: "", lng: ""},
         fullLocation: {}
       },
-      industry: ""
+      industry: "",
+      jobType: JOB_TYPE_NUMBER.map(item => ({label: item.label, active: item.active, number: item.number})),
+      jobExperience: EXPERIENCE_REQUIERED_NUMBER.map(item => ({label: item.label, active: item.active, number: item.number})),
+      filters: {}
     };
+  }
+
+  componentWillMount() {
+    this.props.cleanFilters();
+  }
+
+  addFilters(type, actives) {
+    const selected = this.state[type].map((category, index) => {
+      category["active"] = actives[index];
+      return category;
+    });
+    const activeSelected = selected.filter(element => element.active);
+    const temp = this.state.filters;
+    const checked = activeSelected.map(item => ({label: item.label, value: item.label}));
+    temp[type] = {elemMatch: {or: checked}};
+    checked.length === 0 ? delete temp[type] : null;
+    this.setState({[type]: selected, filters: temp}, () =>
+      this.props.setFilters("jobs", this.state.filters)
+    );
   }
 
   render() {
@@ -56,39 +80,58 @@ class JobsFilters extends React.Component {
             customTemplateColumns={"80px 80px 80px"}
             colGap={"10px"}
           >
-            <BigTag text={"New York"} icon={"pin"} connected={false} />
-            <BigTag text={"United States"} icon={"pin"} connected={true} />
-            <BigTag text={"California"} icon={"pin"} connected={true} />
+            <BigTag text={"New York"} icon={"pin"} connected={false}/>
+            <BigTag text={"United States"} icon={"pin"} connected={true}/>
+            <BigTag text={"California"} icon={"pin"} connected={true}/>
           </Layout>
         </Filter>
-        <Separator />
+        <Separator/>
         <Filter>
-          <SalaryRange labelText={"Salary Range"} placeholder={"000"} />
+          <SalaryRange
+            labelText={"Salary Range"}
+            placeholder={"000"}
+            min={this.state.salary && this.state.salary.min}
+            max={this.state.salary && this.state.salary.max}
+            getValue={data => {
+              let filters = this.state.filters;
+              data.min ? filters.salaryRange_DOT_min = {gte: data.min} : delete filters.salaryRange_DOT_max;
+              data.max ? filters.salaryRange_DOT_max = {lte: data.max} : delete filters.salaryRange_DOT_min;
+
+              this.setState(
+                {
+                  filters: filters, salary: data
+                },
+                () => this.props.setFilters("jobs", this.state.filters)
+              );
+            }}
+          />
         </Filter>
-        <Separator />
+        <Separator/>
         <Filter>
           <CheckBoxList
             placeholderText={"Job Type"}
-            options={JOB_TYPE_NUMBER}
+            options={this.state.jobType}
+            getValue={(selected) => this.addFilters("jobType", selected)}
           />
         </Filter>
-        <Separator />
+        <Separator/>
         <Filter>
           <CheckBoxList
             placeholderText={"Experience Requiered"}
-            options={EXPERIENCE_REQUIERED_NUMBER}
+            options={this.state.jobExperience}
+            getValue={(selected) => this.addFilters("jobExperience", selected)}
           />
         </Filter>
-        <Separator />
+        <Separator/>
         <Filter>
           <InputAutoComplete
             placeholderText={"Industry | Sector"}
             name={"industry"}
             model={this.state}
             options={[
-              { label: "option1", value: "option1" },
-              { label: "option2", value: "option2" },
-              { label: "option3", value: "option3" }
+              {label: "option1", value: "option1"},
+              {label: "option2", value: "option2"},
+              {label: "option3", value: "option3"}
             ]}
           />
           <Layout
@@ -96,8 +139,8 @@ class JobsFilters extends React.Component {
             customTemplateColumns={"80px 80px 80px"}
             colGap={"10px"}
           >
-            <BigTag text={"Biotechnology"} icon={"label"} connected={false} />
-            <BigTag text={"Oil & Gas"} icon={"label"} connected={true} />
+            <BigTag text={"Biotechnology"} icon={"label"} connected={false}/>
+            <BigTag text={"Oil & Gas"} icon={"label"} connected={true}/>
             <BigTag
               text={"Application & BioInformatics"}
               icon={"label"}
@@ -105,7 +148,7 @@ class JobsFilters extends React.Component {
             />
           </Layout>
         </Filter>
-        <Separator />
+        <Separator/>
         <Filter>
           <CheckBoxList
             placeholderText={"My Jobs"}
@@ -115,11 +158,11 @@ class JobsFilters extends React.Component {
                 active: true,
                 number: 12
               },
-              { label: "Interested Employers", active: false, number: 3 }
+              {label: "Interested Employers", active: false, number: 3}
             ]}
           />
         </Filter>
-        <Separator />
+        <Separator/>
       </FilterContainer>
     );
   }
@@ -129,4 +172,19 @@ JobsFilters.propTypes = {
   onClose: PropsTypes.func
 };
 
-export default JobsFilters;
+const mapStateToProps = state => {
+  const {} = state;
+  return {};
+};
+
+const mapDispatchToProps = dispatch => {
+  return {
+    setFilters: (type, filters) => dispatch(setFilters(type, filters)),
+    cleanFilters: () => dispatch(cleanFilters())
+  };
+};
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(JobsFilters);

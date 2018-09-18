@@ -58,8 +58,16 @@ type Reason {
 }
 
 type Query {
-    organizations(filter: String, limit: Int): [Organizations]
+    organizations(filter: String, limit: Int, organizations: OrganizationSearchInput): [Organizations]
     organization(_id: String): Organizations
+}
+
+input OrganizationSearchInput{
+    title: TableStringFilterInput
+    info_DOT_description: TableStringFilterInput
+    info_DOT_orgType: JobTypeElemMatch
+    startDate: TableDateFilterInput
+    endDate: TableDateFilterInput
 }
 
 input OrganizationsInput {

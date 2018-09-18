@@ -6,9 +6,9 @@ export const JOB_TYPE = [
 ;
 
 export const JOB_TYPE_NUMBER = [
-    {label: 'Full Time', active: true, number: 12},
-    {label: 'Part Time', active: false, number: 5},
-    {label: 'Volunteer | Intern', active: false, number: 10},
+    {label: 'Full Time', active: false, number: 0},
+    {label: 'Part Time', active: false, number: 0},
+    {label: 'Volunteer | Intern', active: false, number: 0},
   ]
 ;
 
@@ -31,9 +31,9 @@ export const EXPERIENCE_REQUIERED = [
 ;
 
 export const EXPERIENCE_REQUIERED_NUMBER = [
-    {label: 'Entry Level', active: true, number: 12},
-    {label: 'Intermediate', active: false, number: 3},
-    {label: 'Expert', active: false, number: 22}
+    {label: 'Entry Level', active: false, number: 0},
+    {label: 'Intermediate', active: false, number: 0},
+    {label: 'Expert', active: false, number: 0}
 
   ]
 ;

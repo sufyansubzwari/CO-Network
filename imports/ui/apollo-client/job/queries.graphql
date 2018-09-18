@@ -1,6 +1,6 @@
 
-query GetJobs($limit: Int, $filter: String) {
-  jobs(limit: $limit, filter: $filter) {
+query GetJobs($limit: Int, $filter: String, $jobs: JobsInputSearch) {
+  jobs(limit: $limit, filter: $filter, jobs: $jobs) {
       _id
       owner {
         _id

@@ -6,6 +6,9 @@ import FilterContainer from "../../../components/FiltersContainer/FiltersContain
 import BigTag from "./../../../components/BigTag/BigTag";
 import {SalaryRange, CheckBoxList, Button, DatePickerRange} from "btech-base-forms-component";
 import PropsTypes from "prop-types";
+import {connect} from "react-redux";
+import {setFilters, cleanFilters} from "../../../actions/SideBarActions";
+import * as type from "../../../actions/SideBarActions/types";
 
 const Filter = styled(Container)`
   padding: 20px 10px;
@@ -29,18 +32,13 @@ class EventsFilters extends React.Component {
         fullLocation: {}
       },
       industry: "",
-      filters:{},
+      filters: {},
     };
 
   }
-  notifyParent(model, name, value) {
-    if (model && name && value) {
-      let event = this.state.event;
-      event[name] = value;
-      this.setState({event: event}, () => this.props.onChange && this.props.onChange(this.state.event));
-    }
-    else
-      this.props.onChange && this.props.onChange(this.state);
+
+  componentWillMount() {
+    this.props.cleanFilters();
   }
 
   render() {
@@ -73,14 +71,23 @@ class EventsFilters extends React.Component {
           <SalaryRange
             labelText={"Prices"}
             placeholder={"000"}
+            min={this.state.price && this.state.price.min}
+            max={this.state.price && this.state.price.max}
             getValue={data => {
               let filters = this.state.filters;
-              filters.price = data;
+              let options = {};
+              data.min ? options.min = {gte: data.min} : null;
+              data.max ? options.max = {lte: data.max} : null;
+              filters.tickets = {
+                elemMatch: {
+                  ...options,
+                }
+              };
               this.setState(
                 {
-                  filters: filters
+                  filters: filters, price: data
                 },
-                () => this.notifyParent()
+                () => this.props.setFilters("events", this.state.filters)
               );
             }}
           />
@@ -102,12 +109,29 @@ class EventsFilters extends React.Component {
         </Filter>
         <Separator/>
       </FilterContainer>
-    );
+    )
+      ;
   }
 }
 
 EventsFilters.propTypes = {
-  onClose: PropsTypes.func
+  onClose: PropsTypes.func,
+  onChange: PropsTypes.func
 };
 
-export default EventsFilters;
+const mapStateToProps = state => {
+  const {} = state;
+  return {};
+};
+
+const mapDispatchToProps = dispatch => {
+  return {
+    setFilters: (type, filters) => dispatch(setFilters(type, filters)),
+    cleanFilters: () => dispatch(cleanFilters())
+  };
+};
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(EventsFilters);
