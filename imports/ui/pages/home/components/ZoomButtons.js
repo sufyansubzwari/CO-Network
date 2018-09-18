@@ -8,7 +8,7 @@ import styled from "styled-components";
 const SAddMaterialIcon = styled.span`
   position: absolute;
   right: 7px;
-  bottom: 3px;
+  bottom: -4px;
 
   > i {
     line-height: 30px;
