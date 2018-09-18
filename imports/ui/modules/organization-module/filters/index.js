@@ -14,6 +14,8 @@ import {
 } from "../form/constants/constants";
 import PropsTypes from "prop-types";
 import FilterContainer from "../../../components/FiltersContainer/FiltersContainer";
+import {cleanFilters, setFilters} from "../../../actions/SideBarActions";
+import {connect} from "react-redux";
 
 const Filter = styled(Container)`
   padding: 20px 10px;
@@ -36,8 +38,29 @@ class OrganizationFilters extends React.Component {
         location: { lat: "", lng: "" },
         fullLocation: {}
       },
-      industry: ""
+      info_DOT_orgType: ORG_TYPE_NUMBER.map(item => ({label: item.label, active: item.active, number: item.number})),
+      industry: "",
+      filters:{}
     };
+  }
+
+  componentWillMount() {
+    this.props.cleanFilters();
+  }
+
+  addFilters(type, actives) {
+    const selected = this.state[type].map((category, index) => {
+      category["active"] = actives[index];
+      return category;
+    });
+    const activeSelected = selected.filter(element => element.active);
+    const temp = this.state.filters;
+    const checked = activeSelected.map(item => ({label: item.label}));
+    temp[type] = {elemMatch: {or: checked}};
+    checked.length === 0 ? delete temp[type] : null;
+    this.setState({[type]: selected, filters: temp}, () =>
+      this.props.setFilters("organizations", this.state.filters)
+    );
   }
 
   render() {
@@ -80,7 +103,8 @@ class OrganizationFilters extends React.Component {
         <Filter>
           <CheckBoxList
             placeholderText={"Org Type"}
-            options={ORG_TYPE_NUMBER}
+            options={this.state.info_DOT_orgType}
+            getValue={(selected) => this.addFilters("info_DOT_orgType", selected)}
           />
         </Filter>
         <Separator />
@@ -119,4 +143,19 @@ OrganizationFilters.propTypes = {
   onClose: PropsTypes.func
 };
 
-export default OrganizationFilters;
+const mapStateToProps = state => {
+  const {} = state;
+  return {};
+};
+
+const mapDispatchToProps = dispatch => {
+  return {
+    setFilters: (type, filters) => dispatch(setFilters(type, filters)),
+    cleanFilters: () => dispatch(cleanFilters())
+  };
+};
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(OrganizationFilters);

@@ -6,6 +6,12 @@ const initial = {
   entityType: null
 };
 
+const initialFilters = {
+  type: null,
+  entityType: null,
+  filters: null,
+};
+
 const sideBarStatus = (state = initial, action) => {
   switch (action.type) {
     case type.SHOW_SIDEBAR:
@@ -20,4 +26,17 @@ const sideBarStatus = (state = initial, action) => {
       return state;
   }
 };
+
+export const filterStatus = (state = initialFilters, action) => {
+  console.log(action.type, state);
+  switch (action.type) {
+    case type.SET_FILTERS:
+      return Object.assign({}, state, action);
+    case type.CLEAN_FILTERS:
+      return Object.assign({}, state, action);
+    default:
+      return state;
+  }
+};
+
 export default sideBarStatus;

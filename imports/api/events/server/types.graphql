@@ -57,8 +57,8 @@ type TicketsType{
 input EventsInputSearch {
     title: TableStringFilterInput
     description: TableStringFilterInput
-    startDate: Date
-    endDate: Date
+    startDate: TableDateFilterInput
+    endDate: TableDateFilterInput
     owner: String
     venueName: TableStringFilterInput
     tickets: ticketsElemMatch
@@ -79,15 +79,23 @@ input TicketsInputSearch{
 input TableStringFilterInput{
     ne: String
     eq: String
-    le: String
+    lte: Float
     lt: Float
-    ge: String
+    gte: Float
     gt: Float
     contains: String
     notContains: String
     between: [String]
     beginsWith: String
     regex: String
+}
+input TableDateFilterInput{
+    ne: Date
+    eq: Date
+    lte: Date
+    lt: Date
+    gte: Date
+    gt: Date
 }
 
 input EventsInput {
