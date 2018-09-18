@@ -50,24 +50,27 @@ const parseGithubData = profile => {
   };
 };
 
-const parseFacebookData = service => ({
-  email: service.email,
-  name: `${service.first_name} ${service.last_name}`,
-  createdAt: service.createdDate || Date.now(),
-  info: {
-    name: service.first_name,
-    loginCount: service.logins_count || 0,
-    lastName: service.last_name,
-    img: service.picture,
-    email: service.email,
-    location: "",
-    gender: "",
-    website: "",
-    phone: "",
-    cover: ""
-  },
-  aboutMe: aboutMe
-});
+const parseFacebookData = profile => {
+  return {
+    email: profile.email,
+    name: `${profile.name}`,
+    createdAt: profile.createdDate || Date.now(),
+    info: {
+      name: profile.given_name,
+      loginCount: profile.logins_count || 0,
+      lastName: profile.family_name,
+      nickName: profile.nickname,
+      image: profile.picture,
+      email: profile.email,
+      location: "",
+      gender: profile.gender,
+      website: "",
+      phone: "",
+      cover: profile.cover ? profile.cover.source : ""
+    },
+    aboutMe: aboutMe
+  };
+};
 
 const parseTwitterData = (profile, service) => {
   const name = profile.name.split(" ");
