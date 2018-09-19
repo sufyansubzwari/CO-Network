@@ -40,6 +40,13 @@ const ActiveLinkLink = styled.div`
 `;
 const ActiveLink = posed(ActiveLinkLink)(poseOptions);
 
+
+const NavItemStyled=styled.div`
+    ${({index})=>{
+      const isSecondLine = index%6>2;
+      return isSecondLine?'transform: translateX(64%);':''
+}}
+`;
 const NavItem = posed.div({
   show: { opacity: 1, y: "0%" },
   hide: { opacity: 0, y: "30%" },
@@ -70,7 +77,8 @@ const HNavbar = function(props) {
       <Layout>
         <Container mdMt={"38px"}>
           {getComponent("header")}
-          <Layout mdCustomTemplateColumns={"5px 1fr"} customTemplateColumns={"1fr"}>
+          <Layout mdCustomTemplateColumns={"5px 1fr"}
+                  customTemplateColumns={"1fr"} maxW={"195px"} margin={"0 auto"}>
             <Container hide mdShow>
               <ActiveLink pose={`pose${props.activeLink}`} />
             </Container>
@@ -85,7 +93,8 @@ const HNavbar = function(props) {
             >
               {props.links
                 ? props.links.map((item, key) => (
-                    <NavItem key={key}>
+                  <NavItemStyled index={key}>
+                    <NavItem key={key} >
                       <HNavItem
                         {...item}
                         activeEval={props.activeEval}
@@ -93,6 +102,7 @@ const HNavbar = function(props) {
                         itemOptions={props.itemOptions}
                       />
                     </NavItem>
+                  </NavItemStyled>
                   ))
                 : ""}
             </Layout>

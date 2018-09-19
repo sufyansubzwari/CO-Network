@@ -18,7 +18,7 @@ const SNavBarContainerStyled = Styled(Container)`
 const SNavBarContainer = posed(SNavBarContainerStyled)({
   open: {
     y: "-100%",
-    marginTop: "132px",
+    marginTop: "121px",
     staggerChildren: 100,
     transition: {
       ease: "circOut" //circOut
