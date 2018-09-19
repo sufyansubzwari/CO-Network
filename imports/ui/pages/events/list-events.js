@@ -1,12 +1,12 @@
-import React, {Component} from "react";
-import {ItemsList, ListLayout, Preview} from "../../../ui/components";
-import {Mutation, graphql} from "react-apollo";
-import {connect} from "react-redux";
-import {PreviewData} from "../../actions/PreviewActions";
+import React, { Component } from "react";
+import { ItemsList, ListLayout, Preview } from "../../../ui/components";
+import { Query, Mutation, graphql } from "react-apollo";
+import { connect } from "react-redux";
+import { PreviewData } from "../../actions/PreviewActions";
 import EventPreviewBody from "../../components/Preview/EventPreviewBody";
-import {DeleteEvent} from "../../apollo-client/event";
-import {GetEvents} from "../../apollo-client/event";
-import {withRouter} from "react-router-dom";
+import { DeleteEvent } from "../../apollo-client/event";
+import { GetEvents } from "../../apollo-client/event";
+import { withRouter } from "react-router-dom";
 
 /**
  * @module Events
@@ -20,26 +20,26 @@ class ListEvents extends Component {
       selectedItem: null,
       selectedIndex: null,
       limit: 10,
-      filter: ""
-
-events: [],
-      update: true,
-    }
+      filter: "",
+      events: [],
+      update: true
+    };
   }
 
   componentWillMount() {
     if (this.props.data && !this.props.data.loading && this.props.data.events) {
-      this.setState({events: this.props.data.events, update: false})
+      this.setState({ events: this.props.data.events, update: false });
     }
   }
 
   reFetchQuery() {
-    this.setState({update: true}, () =>
+    this.setState({ update: true }, () =>
       this.props.data.refetch({
         limit: this.state.limit,
         filter: this.state.filter,
         events: this.props.filterStatus.filters
-      }));
+      })
+    );
   }
 
   componentWillReceiveProps(nextProps) {
@@ -48,23 +48,27 @@ events: [],
     //   this.setState({events: events, update: false})
     // }
     if (nextProps.filterStatus && nextProps.filterStatus.filters) {
-      this.reFetchQuery();    };
+      this.reFetchQuery();
+    }
   }
 
   onChangeSelection(item, key) {
-    this.setState({selectedItem: item, selectedIndex: key});
+    this.setState({ selectedItem: item, selectedIndex: key });
   }
 
   fetchMoreSelection(isLoading) {
     if (!isLoading)
-      this.setState({
-        limit: this.state.limit + 10
-      }, () => this.reFetchQuery());
+      this.setState(
+        {
+          limit: this.state.limit + 10
+        },
+        () => this.reFetchQuery()
+      );
   }
 
   removeEvent(deleteEvent, event) {
-    deleteEvent({variables: {id: event._id}});
-    this.setState({selectedItem: null});
+    deleteEvent({ variables: { id: event._id } });
+    this.setState({ selectedItem: null });
     this.reFetchQuery();
   }
 
@@ -78,11 +82,12 @@ events: [],
   }
 
   onSearch(value) {
-    this.setState({filter: value}, () => this.reFetchQuery());
+    this.setState({ filter: value }, () => this.reFetchQuery());
   }
 
   render() {
     const _this = this;
+    const { limit, filter } = this.state;
     return (
       <ListLayout entityType={"events"} onSearchText={this.onSearch.bind(this)}>
         <Query
@@ -108,61 +113,58 @@ events: [],
           }}
         </Query>
         {/*{this.state.selectedItem ? (*/}
-          <Mutation key={"rightSide"} mutation={DeleteEvent}>
-            {(deleteEvent, {eventDeleted}) => (
-              <Preview
-                key={"rightSide"}
-                navlinks={["Details", "Vision", "Products", "Media"]}
-                navClicked={index => console.log(index)}
-                navOptions={[
-                  {
-                    text: "Follow",
-                    checkVisibility: () => {
-                      return (
-                        this.state.selectedItem && this.state.selectedItem._id
-                      );
-                    },
-                    onClick: () => {
-                      console.log("Adding");
-                    }
+        <Mutation key={"rightSide"} mutation={DeleteEvent}>
+          {(deleteEvent, { eventDeleted }) => (
+            <Preview
+              key={"rightSide"}
+              navlinks={["Details", "Vision", "Products", "Media"]}
+              navClicked={index => console.log(index)}
+              navOptions={[
+                {
+                  text: "Follow",
+                  checkVisibility: () => {
+                    return (
+                      this.state.selectedItem && this.state.selectedItem._id
+                    );
                   },
-                  {
-                    text: "Edit",
-                    checkVisibility: () => {
-                      return (
-                        this.state.selectedItem && this.state.selectedItem._id
-                      );
-                    },
-                    onClick: () => {
-                      _this.editEvent();
-                    }
-                  },
-                  {
-                    text: "Remove",
-                    icon: "delete",
-                    checkVisibility: () => {
-                      return (
-                        this.state.selectedItem && this.state.selectedItem._id
-                      );
-                    },
-                    onClick: function () {
-                      _this.removeEvent(
-                        deleteEvent,
-                        _this.state.selectedItem
-                      );
-                    }
+                  onClick: () => {
+                    console.log("Adding");
                   }
-                ]}
-                index={this.state.selectedIndex}
-                data={this.state.selectedItem}
-                backGroundImage={
-                  this.state.selectedItem ? this.state.selectedItem.image : null
+                },
+                {
+                  text: "Edit",
+                  checkVisibility: () => {
+                    return (
+                      this.state.selectedItem && this.state.selectedItem._id
+                    );
+                  },
+                  onClick: () => {
+                    _this.editEvent();
+                  }
+                },
+                {
+                  text: "Remove",
+                  icon: "delete",
+                  checkVisibility: () => {
+                    return (
+                      this.state.selectedItem && this.state.selectedItem._id
+                    );
+                  },
+                  onClick: function() {
+                    _this.removeEvent(deleteEvent, _this.state.selectedItem);
+                  }
                 }
-              >
-                <EventPreviewBody event={this.state.selectedItem}/>
-              </Preview>
-            )}
-          </Mutation>
+              ]}
+              index={this.state.selectedIndex}
+              data={this.state.selectedItem}
+              backGroundImage={
+                this.state.selectedItem ? this.state.selectedItem.image : null
+              }
+            >
+              <EventPreviewBody event={this.state.selectedItem} />
+            </Preview>
+          )}
+        </Mutation>
         // ) : null}
       </ListLayout>
     );
@@ -170,10 +172,10 @@ events: [],
 }
 
 const mapStateToProps = state => {
-  const {previewData, filterStatus} = state;
+  const { previewData, filterStatus } = state;
   return {
     previewData: previewData,
-    filterStatus: filterStatus,
+    filterStatus: filterStatus
   };
 };
 
@@ -187,11 +189,13 @@ export default withRouter(
   connect(
     mapStateToProps,
     mapDispatchToProps
-  )(graphql(GetEvents, {
-    options: () => ({
-      variables: {
-        limit: 10,
-      },
-    }),
-  })(ListEvents))
+  )(
+    graphql(GetEvents, {
+      options: () => ({
+        variables: {
+          limit: 10
+        }
+      })
+    })(ListEvents)
+  )
 );
