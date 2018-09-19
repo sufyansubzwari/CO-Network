@@ -89,9 +89,7 @@ class OrganizationForm extends React.Component {
       this.props.location.state &&
       this.props.location.state.organization
     ) {
-      this.setState({organization: this.props.location.state.organization}, () =>
-        this.props.history.push({state: null})
-      );
+      this.setState({organization: this.props.location.state.organization});
     }
   }
 

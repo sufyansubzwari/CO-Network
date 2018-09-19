@@ -5,16 +5,16 @@
  * new scalar which is basically another type.
  * @see {@link https://janikvonrotz.ch/2016/10/09/graphql-with-apollo-meteor-and-react/}
  */
-const Date = {};
+const DateType = {};
 
 //------------------------------------------------------------------------------
 // Value from the client
-Date.__parseValue = value => new Date(value);
+DateType.__parseValue = value => new Date(value);
 //------------------------------------------------------------------------------
 // Value sent to the client
-Date.__serialize = value => value.toISOString();
+DateType.__serialize = value => value.toISOString();
 //------------------------------------------------------------------------------
-Date.__parseLiteral = ast => ast.value;
+DateType.__parseLiteral = ast => ast.value;
 //------------------------------------------------------------------------------
 
-export default Date;
+export default DateType;
