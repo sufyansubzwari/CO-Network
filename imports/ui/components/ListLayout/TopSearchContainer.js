@@ -15,11 +15,11 @@ const TopSearchContainer = styled(Container)`
   box-shadow: ${props => "0 1px 0 0 " + props.theme.color.grey};
 
   @media screen and (max-width: 376px) {
-    padding: 20px 15px;
+    padding: 15px;
   }
 
   @media screen and (max-width: 768px) {
-    padding: 20px 15px;
+    padding: 15px;
   }
 `;
 

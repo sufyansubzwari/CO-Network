@@ -109,7 +109,7 @@ class Authorization extends react.Component {
       Meteor.call("users.findUser", this.userProfile.user_id, (err, result) => {
         if (!err) {
           if (result.length > 0) {
-            _this.callback({ isSignUp: false });
+            _this.callback && _this.callback({ isSignUp: false });
           } else {
             // insert user from Auth0
             Meteor.call(
@@ -118,8 +118,9 @@ class Authorization extends react.Component {
               localStorage.getItem("currentService"),
               (err, result) => {
                 if (!err)
-                  Meteor.loginWithToken(result.token, () =>
-                    _this.callback({ isSignUp: true })
+                  Meteor.loginWithToken(
+                    result.token,
+                    () => _this.callback && _this.callback({ isSignUp: true })
                   );
               }
             );

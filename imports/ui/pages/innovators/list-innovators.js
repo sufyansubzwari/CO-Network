@@ -52,10 +52,11 @@ class ListInnovators extends Component {
     this.setState({ selectedItem: item, selectedIndex: key });
   }
 
-  fetchMoreSelection() {
-    this.setState({
-      limit: this.state.limit + 10
-    });
+  fetchMoreSelection(isLoading) {
+    if (!isLoading)
+      this.setState({
+        limit: this.state.limit + 10
+      });
   }
 
   customRenderItem(item, key, isLoading) {
@@ -110,6 +111,7 @@ class ListInnovators extends Component {
           pollInterval={5000}
         >
           {({ loading, error, data }) => {
+            const isLoading = loading && (!data.events || !data.events.length);
             // if (loading) return null;
             // if (error) return `Error!: ${error}`;
             return (
@@ -118,16 +120,9 @@ class ListInnovators extends Component {
                 title={this.state.currentTab.title}
                 data={data ? data.organizations : []}
                 renderItem={(item, key) =>
-                  this.customRenderItem(
-                    item,
-                    key,
-                    loading &&
-                      (!data.organizations || !data.organizations.length)
-                  )
+                  this.customRenderItem(item, key, isLoading)
                 }
-                loading={
-                  loading && (!data.organizations || !data.organizations.length)
-                }
+                loading={isLoading}
                 onFetchData={() => this.fetchMoreSelection()}
                 onSelectCard={(item, key) => this.onChangeSelection(item, key)}
               />
@@ -203,7 +198,9 @@ class ListInnovators extends Component {
                     : null
                 }
               >
-                  <OrganizationPreviewBody organization={this.state.selectedItem} />
+                <OrganizationPreviewBody
+                  organization={this.state.selectedItem}
+                />
               </Preview>
             )}
           </Mutation>

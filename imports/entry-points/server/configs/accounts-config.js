@@ -18,6 +18,5 @@ Accounts.onCreateUser((options, user) => {
     // sendWelcomeEmail(userToCreate);
   }
   userToCreate.roles = ["normal"]; // Set default roles for new sign ups.
-  console.log({ ...userToCreate });
   return { ...userToCreate };
 });

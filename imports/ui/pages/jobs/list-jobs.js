@@ -3,8 +3,8 @@ import { ItemsList, ListLayout, Preview } from "../../../ui/components";
 import { Query, Mutation } from "react-apollo";
 import { connect } from "react-redux";
 import { PreviewData } from "../../actions/PreviewActions";
-import JobPreviewBody from "../../components/Preview/JobPreviewBody"
-import {CreateJob, DeleteJob} from "../../apollo-client/job";
+import JobPreviewBody from "../../components/Preview/JobPreviewBody";
+import { CreateJob, DeleteJob } from "../../apollo-client/job";
 import { GetJobs } from "../../apollo-client/job";
 import { withRouter } from "react-router-dom";
 
@@ -21,23 +21,24 @@ class ListJobs extends Component {
       selectedIndex: null,
       limit: 10,
       filter: ""
-    }
+    };
   }
 
   onChangeSelection(item, key) {
     this.setState({ selectedItem: item, selectedIndex: key });
   }
 
-  fetchMoreSelection() {
-    this.setState({
-      limit: this.state.limit + 10
-    });
+  fetchMoreSelection(isLoading) {
+    if (!isLoading)
+      this.setState({
+        limit: this.state.limit + 10
+      });
   }
 
   static removeJob(deleteJob, job) {
     deleteJob({ variables: { id: job._id } });
   }
-  editJob(){
+  editJob() {
     let job = JSON.parse(JSON.stringify(this.state.selectedItem));
     delete job.entity;
     delete job.views;
@@ -62,6 +63,7 @@ class ListJobs extends Component {
           pollInterval={5000}
         >
           {({ loading, error, data }) => {
+            const isLoading = loading && (!data.events || !data.events.length);
             // if (loading) return null;
             // if (error) return `Error!: ${error}`;
             return (
@@ -69,8 +71,8 @@ class ListJobs extends Component {
                 key={"listComponent"}
                 title={"Jobs"}
                 data={data && data.jobs}
-                loading={loading && (!data.jobs || !data.jobs.length)}
-                onFetchData={() => this.fetchMoreSelection()}
+                loading={isLoading}
+                onFetchData={() => this.fetchMoreSelection(isLoading)}
                 onSelectCard={(item, key) => this.onChangeSelection(item, key)}
               />
             );
@@ -79,60 +81,59 @@ class ListJobs extends Component {
         {this.state.selectedItem ? (
           <Mutation key={"rightSide"} mutation={DeleteJob}>
             {(deleteJob, { jobDeleted }) => (
-          <Preview
-            key={"rightSide"}
-            navlinks={[
-              "Details",
-              "Requirements",
-              "Organizational Culture",
-              "Payment"
-            ]}
-            navClicked={index => console.log(index)}
-            navOptions={[
-              {
-                text: "Apply",
-                checkVisibility: () => {
-                  return this.state.selectedItem && this.state.selectedItem._id;
-                },
-                onClick: () => {
-                  console.log("Adding");
+              <Preview
+                key={"rightSide"}
+                navlinks={[
+                  "Details",
+                  "Requirements",
+                  "Organizational Culture",
+                  "Payment"
+                ]}
+                navClicked={index => console.log(index)}
+                navOptions={[
+                  {
+                    text: "Apply",
+                    checkVisibility: () => {
+                      return (
+                        this.state.selectedItem && this.state.selectedItem._id
+                      );
+                    },
+                    onClick: () => {
+                      console.log("Adding");
+                    }
+                  },
+                  {
+                    text: "Edit",
+                    checkVisibility: () => {
+                      return (
+                        this.state.selectedItem && this.state.selectedItem._id
+                      );
+                    },
+                    onClick: () => {
+                      _this.editJob();
+                    }
+                  },
+                  {
+                    text: "Remove",
+                    icon: "delete",
+                    checkVisibility: () => {
+                      return (
+                        this.state.selectedItem && this.state.selectedItem._id
+                      );
+                    },
+                    onClick: function() {
+                      ListJobs.removeJob(deleteJob, _this.state.selectedItem);
+                    }
+                  }
+                ]}
+                index={this.state.selectedIndex}
+                data={this.state.selectedItem}
+                backGroundImage={
+                  this.state.selectedItem ? this.state.selectedItem.image : null
                 }
-              },
-              {
-                text: "Edit",
-                checkVisibility: () => {
-                  return (
-                    this.state.selectedItem && this.state.selectedItem._id
-                  );
-                },
-                onClick: () => {
-                  _this.editJob();
-                }
-              },
-              {
-                text: "Remove",
-                icon: "delete",
-                checkVisibility: () => {
-                  return (
-                    this.state.selectedItem && this.state.selectedItem._id
-                  );
-                },
-                onClick: function() {
-                  ListJobs.removeJob(
-                    deleteJob,
-                    _this.state.selectedItem
-                  );
-                }
-              }
-            ]}
-            index={this.state.selectedIndex}
-            data={this.state.selectedItem}
-            backGroundImage={
-              this.state.selectedItem ? this.state.selectedItem.image : null
-            }
-          >
-            <JobPreviewBody job={this.state.selectedItem} />
-          </Preview>
+              >
+                <JobPreviewBody job={this.state.selectedItem} />
+              </Preview>
             )}
           </Mutation>
         ) : null}
@@ -140,7 +141,6 @@ class ListJobs extends Component {
     );
   }
 }
-
 
 const mapStateToProps = state => {
   const { previewData, filterStatus } = state;

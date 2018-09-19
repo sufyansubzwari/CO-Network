@@ -20,8 +20,9 @@ class ListEvents extends Component {
       selectedItem: null,
       selectedIndex: null,
       limit: 10,
-      filter: "",
-      events: [],
+      filter: ""
+
+events: [],
       update: true,
     }
   }
@@ -47,18 +48,18 @@ class ListEvents extends Component {
     //   this.setState({events: events, update: false})
     // }
     if (nextProps.filterStatus && nextProps.filterStatus.filters) {
-      this.reFetchQuery();
-    }
+      this.reFetchQuery();    };
   }
 
   onChangeSelection(item, key) {
     this.setState({selectedItem: item, selectedIndex: key});
   }
 
-  fetchMoreSelection() {
-    this.setState({
-      limit: this.state.limit + 10
-    }, () => this.reFetchQuery());
+  fetchMoreSelection(isLoading) {
+    if (!isLoading)
+      this.setState({
+        limit: this.state.limit + 10
+      }, () => this.reFetchQuery());
   }
 
   removeEvent(deleteEvent, event) {
@@ -84,15 +85,29 @@ class ListEvents extends Component {
     const _this = this;
     return (
       <ListLayout entityType={"events"} onSearchText={this.onSearch.bind(this)}>
-        <ItemsList
+        <Query
           key={"listComponent"}
-          title={"Events"}
-          data={this.props.data.events}
-          loading={this.props.data.loading && (!this.props.data.events || !this.props.data.events.length)}
-          onFetchData={() => this.fetchMoreSelection()}
-          onSelectCard={(item, key) => this.onChangeSelection(item, key)}
-        />
-        {this.state.selectedItem ? (
+          query={GetEvents}
+          variables={{ limit, filter }}
+          pollInterval={5000}
+        >
+          {({ loading, error, data }) => {
+            const isLoading = loading && (!data.events || !data.events.length);
+            // if (loading) return null;
+            // if (error) return `Error!: ${error}`;
+            return (
+              <ItemsList
+                key={"listComponent"}
+                title={"Events"}
+                data={data && data.events}
+                loading={isLoading}
+                onFetchData={() => this.fetchMoreSelection(isLoading)}
+                onSelectCard={(item, key) => this.onChangeSelection(item, key)}
+              />
+            );
+          }}
+        </Query>
+        {/*{this.state.selectedItem ? (*/}
           <Mutation key={"rightSide"} mutation={DeleteEvent}>
             {(deleteEvent, {eventDeleted}) => (
               <Preview
@@ -148,7 +163,7 @@ class ListEvents extends Component {
               </Preview>
             )}
           </Mutation>
-        ) : null}
+        // ) : null}
       </ListLayout>
     );
   }

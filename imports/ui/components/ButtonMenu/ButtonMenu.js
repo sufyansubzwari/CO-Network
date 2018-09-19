@@ -58,7 +58,7 @@ class ButtonMenu extends Component {
             padding: this.props.padding ? this.props.padding : "initial",
             color: this.props.textColor,
             border: "none",
-            "box-shadow": "none",
+            boxShadow: "none",
             backgroundColor: "transparent"
           }}
         >

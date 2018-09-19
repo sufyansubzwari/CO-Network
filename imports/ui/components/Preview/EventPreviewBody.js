@@ -24,21 +24,22 @@ class EventPreviewBody extends React.Component {
     let others =
       this.state.event.other &&
       this.state.event.others.map(other => ({ ...other, active: true }));
-    // let industry = this.state.user.professional.industry.map(ind => ({name: ind, active: true}))
 
     //checkboxes
     let community =
       this.state.event.category &&
-      this.state.event.category.map(comm => <div>{comm.label}</div>);
+      this.state.event.category.map((comm, index) => (
+        <div key={index}>{comm.label}</div>
+      ));
 
     //tickets
     let tickets = this.state.event.tickets
-      ? this.state.event.tickets.map(ticket => {
+      ? this.state.event.tickets.map((ticket, index) => {
           return ticket.type === "paid" ? (
-            <Container>
+            <Container key={index}>
               <Layout templateColumns={3}>
                 <Text header={"Ticket Name"} text={ticket.name} />
-                <Text header={"Available"} text={ticket.available} />
+                <Text header={"Available"} text={`${ticket.available}`} />
                 <Text
                   header={"Salary Range"}
                   text={`${this.state.event.attenders.min} - ${
@@ -49,10 +50,10 @@ class EventPreviewBody extends React.Component {
               <Text header={"Ticket Description"} text={ticket.description} />
             </Container>
           ) : (
-            <Container>
+            <Container key={index}>
               <Layout templateColumns={2}>
                 <Text header={"Ticket Name"} text={ticket.name} />
-                <Text header={"Available"} text={ticket.available} />
+                <Text header={"Available"} text={`${ticket.available}`} />
               </Layout>
               <Text header={"Ticket Description"} text={ticket.description} />
             </Container>

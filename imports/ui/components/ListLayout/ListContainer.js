@@ -16,7 +16,7 @@ const ListContainer = styled(Container)`
   background-color: ${props => props.theme.color.innerBackground};
 
   @media screen and (max-width: 376px) {
-    padding: 20px 15px;
+    padding: 15px 10px;
   }
 
   @media screen and (max-width: 768px) {
