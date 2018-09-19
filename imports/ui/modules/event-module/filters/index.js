@@ -4,8 +4,13 @@ import styled from "styled-components";
 import {GeoInputLocation} from "btech-location";
 import FilterContainer from "../../../components/FiltersContainer/FiltersContainer";
 import BigTag from "./../../../components/BigTag/BigTag";
-import {SalaryRange, CheckBoxList, Button} from "btech-base-forms-component";
+import {SalaryRange, CheckBoxList, Button, DatePickerRange} from "btech-base-forms-component";
 import PropsTypes from "prop-types";
+import {connect} from "react-redux";
+import {setFilters, cleanFilters} from "../../../actions/SideBarActions";
+import * as type from "../../../actions/SideBarActions/types";
+import {GetTags} from "../../../apollo-client/tag";
+import {Query, graphql} from "react-apollo";
 
 const Filter = styled(Container)`
   padding: 20px 10px;
@@ -28,19 +33,58 @@ class EventsFilters extends React.Component {
         location: {lat: "", lng: ""},
         fullLocation: {}
       },
+      locationTags: [],
       industry: "",
-      filters:{},
+      filters: {},
+      category: [],
     };
 
   }
-  notifyParent(model, name, value) {
-    if (model && name && value) {
-      let event = this.state.event;
-      event[name] = value;
-      this.setState({event: event}, () => this.props.onChange && this.props.onChange(this.state.event));
+
+  componentWillMount() {
+    this.props.cleanFilters();
+  }
+
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.data && !nextProps.data.loading && nextProps.data.tags) {
+      let category = JSON.parse(JSON.stringify(nextProps.data.tags));
+      this.setState({category: category})
     }
-    else
-      this.props.onChange && this.props.onChange(this.state);
+  }
+
+  addFilters(type, actives) {
+    let filters = this.state.filters;
+    const selected = this.state[type].map((category, index) => {
+      category["active"] = actives[index];
+      return category;
+    });
+    const activeSelected = selected.filter(element => element.active);
+    activeSelected.length> 0 ? filters.category = {"in": activeSelected.map(item => item._id)} : delete filters.category;
+    this.setState({filters: filters}, () => this.props.setFilters("events", filters));
+  }
+
+  notifyParentLocation(model, name, value) {
+    if (model && name && value) {
+      delete value.fullLocation;
+      let locationNew = Object.assign({}, value);
+      let locationArray = this.state.locationTags;
+      locationArray.push(locationNew);
+      this.setState({locationTags: locationArray});
+    }
+  }
+
+  tagSelection(key) {
+    let tags = this.state.locationTags;
+    tags[key].active = !tags[key].active;
+    this.setState({locationTags: tags}, () => this.checkFilters())
+
+  }
+
+  checkFilters(){
+    let actives = this.state.locationTags.filter(item => item.active);
+    let filters = this.state.filters;
+    actives.length > 0 ? filters.location = actives : delete filters.location;
+    this.setState({filters: filters}, () => this.props.setFilters("events", filters));
   }
 
   render() {
@@ -53,34 +97,62 @@ class EventsFilters extends React.Component {
             name={"location"}
             model={this.state}
             placeholder={"Location"}
+            isGeoLocationAvailable={true}
+            onChange={this.notifyParentLocation.bind(this)}
           />
           <Layout
             mt={"10px"}
             customTemplateColumns={"70px 70px 70px"}
             colGap={"10px"}
           >
-            <BigTag text={"New York"} icon={"pin"} connected={false}/>
-            <BigTag text={"United States"} icon={"pin"} connected={true}/>
-            <BigTag text={"California"} icon={"pin"} connected={true}/>
+            {this.state.locationTags.length > 0 ? this.state.locationTags.map((item, key) =>
+              <BigTag key={key} text={item.address} icon={"pin"} connected={item.active}
+                      onClick={this.tagSelection.bind(this, key)}/>
+            ) : null}
           </Layout>
         </Filter>
         <Separator/>
         <Filter>
-          <SalaryRange labelText={"Dates"} placeholder={"000"}/>
+          <DatePickerRange
+            format={'DD-MM'}
+            labelText={'Dates'}
+            placeholder={'dd/mm'}
+            getValue={(startDate, endDate) => {
+              let filters = this.state.filters;
+              startDate ? filters.startDate = {gte: startDate.toISOString()} : delete filters.startDate;
+              endDate ? filters.endDate = {lte: endDate.toISOString()} : delete filters.endDate;
+
+              this.setState(
+                {
+                  filters: filters,
+                },
+                () => this.props.setFilters("events", this.state.filters)
+              );
+            }}
+          />
         </Filter>
         <Separator/>
         <Filter>
           <SalaryRange
             labelText={"Prices"}
             placeholder={"000"}
+            min={this.state.price && this.state.price.min}
+            max={this.state.price && this.state.price.max}
             getValue={data => {
               let filters = this.state.filters;
-              filters.price = data;
+              let options = {};
+              data.min ? options.min = {gte: data.min} : null;
+              data.max ? options.max = {lte: data.max} : null;
+              filters.tickets = {
+                elemMatch: {
+                  ...options,
+                }
+              };
               this.setState(
                 {
-                  filters: filters
+                  filters: filters, price: data
                 },
-                () => this.notifyParent()
+                () => this.props.setFilters("events", this.state.filters)
               );
             }}
           />
@@ -89,25 +161,41 @@ class EventsFilters extends React.Component {
         <Filter>
           <CheckBoxList
             placeholderText={"Event Category"}
-            options={[
-              {
-                label: "Hackthon",
-                active: true,
-                number: 12
-              },
-              {label: "Data Center", active: false, number: 3},
-              {label: "Carrer Fair", active: false, number: 22}
-            ]}
+            options={this.state.category}
+            getValue={(selected) => this.addFilters("category", selected)}
           />
         </Filter>
         <Separator/>
       </FilterContainer>
-    );
+    )
+      ;
   }
 }
 
 EventsFilters.propTypes = {
-  onClose: PropsTypes.func
+  onClose: PropsTypes.func,
+  onChange: PropsTypes.func
 };
 
-export default EventsFilters;
+const mapStateToProps = state => {
+  const {} = state;
+  return {};
+};
+
+const mapDispatchToProps = dispatch => {
+  return {
+    setFilters: (type, filters) => dispatch(setFilters(type, filters)),
+    cleanFilters: () => dispatch(cleanFilters())
+  };
+};
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(graphql(GetTags, {
+  options: () => ({
+    variables: {
+      tags: {type: "EVENT"}
+    },
+  }),
+})(EventsFilters));

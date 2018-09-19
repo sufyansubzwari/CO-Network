@@ -15,6 +15,7 @@ BrowserPolicy.content.allowOriginForAll('https://at.alicdn.com');
 BrowserPolicy.content.allowSameOriginForAll();
 BrowserPolicy.content.allowOriginForAll("https://*");
 BrowserPolicy.content.allowOriginForAll("http://*");
+BrowserPolicy.content.allowOriginForAll('blob:');
 BrowserPolicy.content.allowEval();
 
 // Allow Meteor DDP Connections

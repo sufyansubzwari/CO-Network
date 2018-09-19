@@ -56,16 +56,16 @@ class FirstStep extends React.Component {
 
             <Layout rowGap={'25px'}>
                 <Layout templateColumns={2} colGap={'20px'}>
-                    <Input name={'name'} model={this.state.user.info} placeholderText={'First Name'}
+                    <Input name={'name'} model={this.state.user} placeholderText={'First Name'}
                            getValue={this.notifyParent.bind(this)}/>
-                    <Input name={'lastName'} model={this.state.user.info} placeholderText={'Last Name'}
+                    <Input name={'lastName'} model={this.state.user} placeholderText={'Last Name'}
                            getValue={this.notifyParent.bind(this)}/>
                 </Layout>
                 <GeoInputLocation model={this.state.user.info} name={'location'} placeholder={"Location"} onChange={this.notifyParent.bind(this)} />
                 <Layout templateColumns={2} colGap={'20px'}>
-                    <Input name={'website'} model={this.state.user.info} placeholderText={'Website'}
+                    <Input name={'website'} model={this.state.user} placeholderText={'Website'}
                            getValue={this.notifyParent.bind(this)} />
-                    <Input name={'email'} model={this.state.user.info} placeholderText={'Verification Email'}
+                    <Input name={'email'} model={this.state.user} placeholderText={'Verification Email'}
                            getValue={this.notifyParent.bind(this)} validate={EMAIL_REGEX}/>
                 </Layout>
                 <Label>Connect Networks</Label>

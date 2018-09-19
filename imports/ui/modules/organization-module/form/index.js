@@ -83,15 +83,20 @@ class OrganizationForm extends React.Component {
           () => this.props.handleOrgChange && this.props.handleOrgChange(org))
   }
 
+    componentWillReceiveProps(nextProps) {
+        if(nextProps.organization){
+            this.setState({
+                organization: nextProps.organization
+            })
+        }
+    }
   componentWillMount() {
     if (
       this.props.location &&
       this.props.location.state &&
       this.props.location.state.organization
     ) {
-      this.setState({organization: this.props.location.state.organization}, () =>
-        this.props.history.push({state: null})
-      );
+      this.setState({organization: this.props.location.state.organization});
     }
   }
 

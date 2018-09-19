@@ -1,5 +1,5 @@
-query GetOrganizations($limit: Int, $filter: String) {
-    organizations(limit: $limit, filter: $filter) {
+query GetOrganizations($limit: Int, $filter: String, $organizations: OrganizationSearchInput) {
+    organizations(limit: $limit, filter: $filter, organizations: $organizations) {
         _id
         owner {
             _id
@@ -50,7 +50,12 @@ query GetOrganizations($limit: Int, $filter: String) {
             orgDefine
         }
         tech{
-            industry
+            industry{
+                _id
+                label
+                value
+                name
+            }
             salaryRange{
                 min
                 max

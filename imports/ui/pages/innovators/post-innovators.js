@@ -68,7 +68,32 @@ class PostOrganization extends Component {
             //plan: 0
         }
     };
+      this.handleBackgroundChange = this.handleBackgroundChange.bind(this)
+      this.handleUserPhotoChange = this.handleUserPhotoChange.bind(this)
   }
+
+    handleBackgroundChange(src){
+        this.setState({
+            organization: {
+                ...this.state.organization,
+                info: {
+                    ...this.state.organization.info,
+                    cover: src
+                }
+            }})
+    }
+
+    handleUserPhotoChange(src){
+
+        this.setState({
+            organization: {
+                ...this.state.organization,
+                info: {
+                    ...this.state.organization.info,
+                    image: src
+                }
+            }})
+    }
 
   onCancel() {
     this.props.history.push(`/innovators`);
@@ -95,7 +120,8 @@ class PostOrganization extends Component {
           <OrganizationForm
             onFinish={data => this.onPostAction(createOrg, data)}
             onCancel={() => this.onCancel()}
-            handleOrgChange={ ( organization) => this.setState({organization: organization})}
+            handleOrgChange={ ( organization) => this.setState({organization: {...this.state.organization,...organization}})}
+            organization={this.state.organization}
             {...this.props}
           />
             )}
@@ -118,9 +144,12 @@ class PostOrganization extends Component {
           ]}
           index={this.state.selectedIndex}
           data={this.state.selectedItem}
-          backGroundImage={
-            this.state.selectedItem ? this.state.selectedItem.image : null
-          }
+
+          showAvatar={true}
+          image={ this.state.organization.info && this.state.organization.info.image}
+          backGroundImage={ this.state.organization.info && this.state.organization.info.cover }
+          onBackgroundChange={ this.handleBackgroundChange }
+          onUserPhotoChange={ this.handleUserPhotoChange }
         >
           <OrganizationPreviewBody organization={this.state.organization} />
         </Preview>

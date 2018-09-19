@@ -1,5 +1,5 @@
 import React from "react";
-import { Layout } from "btech-layout";
+import { Layout, Container } from "btech-layout";
 import styled from "styled-components";
 import { Scrollbars } from "react-custom-scrollbars";
 import PropTypes from "prop-types";
@@ -49,12 +49,13 @@ const Separator = styled.div`
 const FiltersContainer = function(props) {
   return (
     <SContainer fullY>
-      <Scrollbars
-        universal
-        autoHide
-        autoHideDuration={props.autoHideDuration}
-        style={{ height: "100%" }}
-      >
+      {/*<Scrollbars*/}
+        {/*universal*/}
+        {/*autoHide*/}
+        {/*autoHideDuration={props.autoHideDuration}*/}
+        {/*style={{ height: "100%", overflow: 'display' }}*/}
+      {/*>*/}
+      <Container fullY>
         <Layout customTemplateColumns={"1fr auto"}>
           <h6>Filters</h6>
           <SButton
@@ -69,7 +70,8 @@ const FiltersContainer = function(props) {
         </Layout>
         <Separator />
         {props.children}
-      </Scrollbars>
+      {/*</Scrollbars>*/}
+      </Container>
     </SContainer>
   );
 };

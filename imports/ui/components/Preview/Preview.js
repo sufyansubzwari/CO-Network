@@ -46,9 +46,32 @@ export default class Preview extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      selectedLink: 0
+      selectedLink: 0,
+      image: props.image ? props.image : '',
+      backGroundImage: props.backGroundImage ? props.backGroundImage : ''
     };
+    this.handleUploadChange = this.handleUploadChange.bind(this)
   }
+
+    componentWillReceiveProps(nextProps){
+        if(nextProps.image){
+            this.setState({
+                image: nextProps.image
+            })
+        }
+        if(nextProps.backGroundImage){
+            this.setState({
+                backGroundImage: nextProps.backGroundImage
+            })
+        }
+    }
+
+    handleUploadChange(src,element) {
+       if (element === 'background')
+           this.props.onBackgroundChange && this.props.onBackgroundChange(src)
+        if(element === 'userphoto')
+            this.props.onUserPhotoChange && this.props.onUserPhotoChange(src)
+    }
 
   render() {
     let navlinks =
@@ -85,7 +108,8 @@ export default class Preview extends React.Component {
       : [];
     return (
       <Layout fullY customTemplateRows={"190px 70px 1fr"} background={"white"}>
-        <TopPreview {...this.props} />
+        <TopPreview handleUpload={this.handleUploadChange }
+                    image={this.state.image} backGroundImage={this.state.backGroundImage} showAvatar={this.props.showAvatar} />
         <SLayout
           paddingX={"100px"}
           customTemplateColumns={
@@ -138,5 +162,6 @@ Preview.propTypes = {
   navOptions: PropsTypes.array,
   image: PropsTypes.string,
   changeProfile: PropsTypes.func,
-  changeBackground: PropsTypes.func
+  onBackgroundChange: PropsTypes.func,
+  onUserPhotoChange: PropsTypes.func
 };

@@ -17,7 +17,7 @@ type Organizations {
 type Tech {
     stack: [Tags]
     salaryRange: SalaryRange
-    industry: [String]
+    industry: [Tags]
     jobType: [ObjectType]
 }
 
@@ -58,8 +58,17 @@ type Reason {
 }
 
 type Query {
-    organizations(filter: String, limit: Int): [Organizations]
+    organizations(filter: String, limit: Int, organizations: OrganizationSearchInput): [Organizations]
     organization(_id: String): Organizations
+}
+
+input OrganizationSearchInput{
+    title: TableStringFilterInput
+    info_DOT_description: TableStringFilterInput
+    info_DOT_orgType: JobTypeElemMatch
+    startDate: TableDateFilterInput
+    endDate: TableDateFilterInput
+    location: [LocationInput]
 }
 
 input OrganizationsInput {
@@ -113,7 +122,7 @@ input ReasonInput {
 input TechInput {
     stack: [TagsInput]
     salaryRange: SalaryRangeInput
-    industry: [String]
+    industry: [TagsInput]
     jobType: [ObjectTypeInput]
 }
 

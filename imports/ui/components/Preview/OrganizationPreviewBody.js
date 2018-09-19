@@ -31,7 +31,7 @@ class OrganizationPreviewBody extends React.Component {
         //tags
         let description = this.state.organization.info.description && this.state.organization.info.description.map(item => ({...item, active: true}))
         let stacks = this.state.organization.tech.stack && this.state.organization.tech.stack.map(stack => ({...stack, active: true}))
-        let industry = this.state.organization.tech.industry && this.state.organization.tech.industry.map(ind => ({name: ind, active: true}))
+        let industry = this.state.organization.tech.industry && this.state.organization.tech.industry.map(ind => ({...ind, active: true}))
 
         //checkboxes
         let organizationtype = this.state.organization.info.orgType && this.state.organization.info.orgType.map(organization => <div>{organization.label}</div>)

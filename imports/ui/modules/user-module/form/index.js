@@ -21,6 +21,7 @@ class UserForm extends Component {
         super(props);
         this.state = {
             user: {
+                ...props.user.profile,
                 info: {
                     name: "",
                     lastName: "",
@@ -77,6 +78,14 @@ class UserForm extends Component {
             () =>
                 this.props.handleChangeProfile && this.props.handleChangeProfile(user)
         );
+    }
+
+    componentWillReceiveProps(nextProps) {
+        if(nextProps.user){
+            this.setState({
+                user: nextProps.user
+            })
+        }
     }
 
     componentWillMount() {
@@ -139,7 +148,8 @@ UserForm.defaultProps = {
 UserForm.propTypes = {
     onCancel: PropTypes.func,
     onFinish: PropTypes.func,
-    handleChangeProfile: PropTypes.func
+    handleChangeProfile: PropTypes.func,
+    user: PropTypes.object
 };
 
 export default UserForm;

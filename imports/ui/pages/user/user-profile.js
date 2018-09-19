@@ -16,8 +16,8 @@ class UserProfile extends Component {
   constructor(props) {
     super(props);
 
-    this.state = {
-        user: {
+    let user = {
+            ...props.curUser.profile,
             info: {
                 name: "",
                 lastName: "",
@@ -62,12 +62,35 @@ class UserProfile extends Component {
                 otherpreferred: []
             }
         }
+
+    this.state = {
+        user: user
     }
+
+    this.handleBackgroundChange = this.handleBackgroundChange.bind(this)
+    this.handleUserPhotoChange = this.handleUserPhotoChange.bind(this)
   }
 
   onCancel() {
     this.props.history.push(`/`);
   }
+
+  handleBackgroundChange(src){
+      this.setState({
+          user: {
+              ...this.state.user,
+              cover: src
+          }})
+  }
+
+    handleUserPhotoChange(src){
+
+      this.setState({
+            user: {
+                ...this.state.user,
+                image: src
+            }})
+    }
 
   render() {
     return (
@@ -77,11 +100,14 @@ class UserProfile extends Component {
             onFinish={data => this.onPostAction(() => console.log(createProfile), data)}
             onCancel={() => this.onCancel()}
             userLogged={false}
-            handleChangeProfile={(user) => this.setState({user: user})}
+            handleChangeProfile={(user) => this.setState({user: {...this.state.user,...user}})}
+            user={this.state.user}
             {...this.props}
           />
         </Container>
         <Preview
+          showAvatar={true}
+          image={ this.state.user && this.state.user.image}
           key={"rightSide"}
           navClicked={index => console.log(index)}
           navOptions={[
@@ -98,9 +124,9 @@ class UserProfile extends Component {
           ]}
           index={this.state.selectedIndex}
           data={this.state.selectedItem}
-          backGroundImage={
-            this.state.selectedItem ? this.state.selectedItem.image : null
-          }
+          backGroundImage={ this.state.user && this.state.user.cover }
+          onBackgroundChange={ this.handleBackgroundChange }
+          onUserPhotoChange={ this.handleUserPhotoChange }
         >
           <UserPreviewBody user={this.state.user} />
         </Preview>

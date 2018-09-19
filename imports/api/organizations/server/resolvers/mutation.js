@@ -6,15 +6,13 @@ const Mutation = {};
 
 Mutation.organization = async (root, {organizations}, context) => {
   let entity = Object.assign({}, organizations);
-  console.log("------------------");
-  console.log(organizations.info.orgType);
-  console.log(organizations.tech.jobType);
-  console.log(organizations.info.actively);
 
   if (organizations.info && organizations.info.description)
     entity.info.description = await Tags.service.normalizeTags(organizations.info.description);
   if (organizations.tech && organizations.tech.stack)
     entity.tech.stack = await Tags.service.normalizeTags(organizations.tech.stack);
+  if (organizations.tech.industry && organizations.tech.industry)
+    entity.tech.industry = await Tags.service.normalizeTags(organizations.tech.industry);
   const inserted = await Service.organization(entity);
   //inserting location
   if (organizations.place && organizations.place.location && organizations.place.location.address) {

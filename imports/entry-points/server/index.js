@@ -5,6 +5,7 @@ import "./startup";
 
 // Import methods
 import "../../api/users/methods";
+import "../../api/utils/server/methods";
 
 // Import all your server-side collections
 // import '../../api/installers/collection';
