@@ -19,7 +19,8 @@ const HItemContainerLayout = posed(HNavLayout)({
   show: {
     opacity: 1,
     x: "0%",
-    staggerChildren: 100
+    staggerChildren: 100,
+    delayChildren : 200
   },
   hide: { opacity: 0, x: "-100%" },
 
@@ -41,9 +42,7 @@ const ActiveLink = posed(ActiveLinkLink)(poseOptions);
 
 const NavItem = posed.div({
   show: { opacity: 1, y: "0%" },
-  hide: { opacity: 0, y: "30%" },
-  open: { opacity: 1, y: "0%"},
-  close: { opacity: 0, y: "100%" }
+  hide: { opacity: 0, y: "30%" }
 });
 
 const HNavbar = function(props) {
