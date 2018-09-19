@@ -1,8 +1,7 @@
 import React, { Component } from "react";
-import { Layout, Container , mixins} from "btech-layout";
+import { Layout, Container, mixins } from "btech-layout";
 import { withRouter } from "react-router-dom";
 import Styled from "styled-components";
-
 
 import HNavbar from "./HNavbar";
 import HomeButton from "./HomeButton";
@@ -17,9 +16,24 @@ const SNavBarContainerStyled = Styled(Container)`
 `;
 
 const SNavBarContainer = posed(SNavBarContainerStyled)({
-  open: { y: '-100%',marginTop:"110px", staggerChildren: 100 },
-  close: {  y: '0%',marginTop:"0px", staggerChildren: 100 },
+  open: {
+    y: "-100%",
+    marginTop: "132px",
+    staggerChildren: 100,
+    transition: {
+      ease: "circOut" //circOut
+    }
+  },
+  close: {
+    y: "0%",
+    marginTop: "0px",
+    staggerChildren: 100,
+    transition: {
+      ease: "circOut" //circOut
+    }
+  }
 });
+
 /**
  * @module Data
  * @category Component
@@ -34,7 +48,7 @@ class Navbar extends Component {
 
   constructor(props) {
     super(props);
-    this.state={isOpen:false}
+    this.state = { isOpen: false };
   }
 
   render() {
@@ -46,10 +60,13 @@ class Navbar extends Component {
       }
     });
     return (
-      <SNavBarContainer fullY gridArea="Navbar"
-                        height="100vh"
-                        mdHeight="inherit"
-                        pose={this.state.isOpen ? "open" : "close"}>
+      <SNavBarContainer
+        fullY
+        gridArea="Navbar"
+        height="100vh"
+        mdHeight="inherit"
+        pose={this.state.isOpen ? "open" : "close"}
+      >
         <HNavbar
           mdRowGap={10}
           activeLink={activeLink}
@@ -59,7 +76,9 @@ class Navbar extends Component {
           itemOptions={{ title: { hide: true, mdShow: true } }}
         >
           <Layout key={"header"} mdMarginY={"30px"} lgMarginY={"30px"}>
-            <HomeButton onOpenNavbar={()=>this.setState({isOpen:!this.state.isOpen})}/>
+            <HomeButton
+              onOpenNavbar={() => this.setState({ isOpen: !this.state.isOpen })}
+            />
           </Layout>
           <UserNavbarSection key={"footer"} curUser={this.props.curUser} />
         </HNavbar>
