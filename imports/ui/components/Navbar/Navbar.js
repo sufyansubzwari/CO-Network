@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Layout, Container } from "btech-layout";
+import { Layout, Container , mixins} from "btech-layout";
 import { withRouter } from "react-router-dom";
 import Styled from "styled-components";
 
@@ -8,11 +8,18 @@ import HNavbar from "./HNavbar";
 import HomeButton from "./HomeButton";
 import UserNavbarSection from "./UserNavbarSection";
 import navs from "./nav.constant";
+import posed from "react-pose/lib/index";
 
-const SNavBarContainer = Styled(Container)`
-    z-index: 1;
+const SNavBarContainerStyled = Styled(Container)`
+    z-index: 10;
+//    hack for pose
+   ${mixins.media.desktop`margin-top:0px!important;transform:none!important;`}
 `;
 
+const SNavBarContainer = posed(SNavBarContainerStyled)({
+  open: { y: '-100%',marginTop:"110px", staggerChildren: 100 },
+  close: {  y: '0%',marginTop:"0px", staggerChildren: 100 },
+});
 /**
  * @module Data
  * @category Component
@@ -27,6 +34,7 @@ class Navbar extends Component {
 
   constructor(props) {
     super(props);
+    this.state={isOpen:false}
   }
 
   render() {
@@ -38,17 +46,20 @@ class Navbar extends Component {
       }
     });
     return (
-      <SNavBarContainer fullY gridArea="Navbar">
+      <SNavBarContainer fullY gridArea="Navbar"
+                        height="100vh"
+                        mdHeight="inherit"
+                        pose={this.state.isOpen ? "open" : "close"}>
         <HNavbar
           mdRowGap={10}
           activeLink={activeLink}
-          isOpen={this.props.isOpen}
+          isShow={this.props.isShow}
           links={navs}
           activeEval={this.activeEval}
           itemOptions={{ title: { hide: true, mdShow: true } }}
         >
           <Layout key={"header"} mdMarginY={"30px"} lgMarginY={"30px"}>
-            <HomeButton/>
+            <HomeButton onOpenNavbar={()=>this.setState({isOpen:!this.state.isOpen})}/>
           </Layout>
           <UserNavbarSection key={"footer"} curUser={this.props.curUser} />
         </HNavbar>

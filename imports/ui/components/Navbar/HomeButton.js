@@ -3,12 +3,9 @@ import { Link } from "react-router-dom";
 import { Container, mixins } from "btech-layout";
 import Styled from "styled-components";
 
-import {
-  HIcon
-} from "btech-horizantal-navbar";
+import { HIcon } from "btech-horizantal-navbar";
 
-
-const HomeContainer=Styled.div`
+const HomeContainer = Styled.div`
     padding: 1px;
     border-radius: 50%;
     margin-top: -32px;
@@ -18,7 +15,7 @@ const HomeContainer=Styled.div`
     img{
       border-radius: 50%;
     }
-`
+`;
 
 /**
  * @module Data
@@ -36,7 +33,12 @@ const HomeButton = function(props) {
       </Container>
       <Container mdHide>
         <HomeContainer>
-          <HIcon size={60} src={"/images/logo/home.gif"} centerSize={30} />
+          <HIcon
+            size={60}
+            src={"/images/logo/home.gif"}
+            centerSize={30}
+            onClick={() => props.onOpenNavbar && props.onOpenNavbar()}
+          />
         </HomeContainer>
       </Container>
     </Container>
@@ -44,5 +46,3 @@ const HomeButton = function(props) {
 };
 
 export default HomeButton;
-
-

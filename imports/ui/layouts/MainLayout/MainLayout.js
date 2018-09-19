@@ -19,11 +19,11 @@ class MainLayout extends Component {
 
   constructor(props) {
     super(props);
-    this.state= { open: false };
+    this.state= { isShow: false };
   }
   componentDidMount() {
     setTimeout(() => {
-      this.setState({ open: true });
+      this.setState({ isShow: true });
     }, 50);
   }
 
@@ -47,10 +47,10 @@ class MainLayout extends Component {
         fullWY
       >
         <SignUpListener {...props} />
-        <Navbar {...props}  isOpen={this.state.open} />
+        <Navbar {...props}  isShow={this.state.isShow} />
         <LoginModal />
         {props.showSidebar ? <SideBar {...props} /> : null}
-        <ContentContainerPose pose={this.state.open ? "open" : "closed"} fullY gridArea="content">
+        <ContentContainerPose pose={this.state.isShow ? "open" : "closed"} fullY gridArea="content">
           <Scrollbars
             universal
             autoHide
