@@ -27,7 +27,6 @@ users.forEach(({ email, password, roles }) => {
   Roles.addUsersToRoles(userId, roles);
 });
 
-/*
 import seeder from "@cleverbeagle/seeder";
 import { Meteor } from "meteor/meteor";
 import Jobs from "../../api/jobs/server/collection";
@@ -37,7 +36,7 @@ import Places from "../../api/places/server/collection";
 import Tags from "../../api/tags/server/collection";
 import { LANGUAGES_LIBRARIES, LOCATIONS } from "../../ui/constants";
 
-const env = ["development"];
+const env = ["production"];
 
 function image(folder) {
   return `/mock/${folder}/${Math.floor(Math.random() * 4)}.jpeg`;
@@ -378,4 +377,3 @@ seeder(Meteor.users, {
     };
   }
 });
-*/
