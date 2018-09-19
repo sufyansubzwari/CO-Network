@@ -8,6 +8,7 @@ import SideBar from "../../components/SideBar/SideBar";
 import LoginModal from "../../components/LoginModal/LoginModal";
 import SignUpListener from "../../components/SignUpListener/SignUpListener";
 import posed from "react-pose/lib/index";
+import { Scrollbars } from "react-custom-scrollbars";
 
 const ContentContainerPose = posed(Container)({
   open: { opacity: 1, },
@@ -18,11 +19,11 @@ class MainLayout extends Component {
 
   constructor(props) {
     super(props);
-    this.state= { open: false };
+    this.state= { isShow: false };
   }
   componentDidMount() {
     setTimeout(() => {
-      this.setState({ open: true });
+      this.setState({ isShow: true });
     }, 50);
   }
 
@@ -31,7 +32,7 @@ class MainLayout extends Component {
     return (
       <Layout
         customTemplateColumns={"1fr"}
-        customTemplateRows={"1fr 80px"}
+        customTemplateRows={"1fr 56px"}
         mdCustomTemplateColumns={
           props.showSidebar ? "72px 275px 1fr" : "72px 1fr"
         }
@@ -46,11 +47,17 @@ class MainLayout extends Component {
         fullWY
       >
         <SignUpListener {...props} />
-        <Navbar {...props}  isOpen={this.state.open} />
+        <Navbar {...props}  isShow={this.state.isShow} />
         <LoginModal />
         {props.showSidebar ? <SideBar {...props} /> : null}
-        <ContentContainerPose pose={this.state.open ? "open" : "closed"} fullY gridArea="content">
+        <ContentContainerPose pose={this.state.isShow ? "open" : "closed"} fullY gridArea="content">
+          <Scrollbars
+            universal
+            autoHide
+            style={{ height: "100%" }}
+          >
           <Routes {...props} />
+          </Scrollbars>
         </ContentContainerPose>
       </Layout>
     );
