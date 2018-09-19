@@ -10,6 +10,7 @@ import styled from "styled-components";
  */
 
 const SideBarLink = styled.a`
+  
   font-size: ${props =>
     props.fontSize || props.theme.sidebar.bottomLinks.fontSize};
   text-decoration: none;
