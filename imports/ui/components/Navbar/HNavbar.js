@@ -75,6 +75,9 @@ const HNavbar = function(props) {
     <HItemContainerLayout
       height="100vh"
       mdHeight="inherit"
+      padding={"0 0 68px 0"}
+      mdPadding={"0"}
+      pad
       pose={props.isShow ? "show" : "hide"}
       fullY
       style={{ gridArea: props.gridArea }}
