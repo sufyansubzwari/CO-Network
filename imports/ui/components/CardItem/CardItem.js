@@ -91,7 +91,7 @@ class CardItem extends Component {
         customTemplateRows={"1fr"}
         mdCustomTemplateColumns={"1fr auto"}
       >
-        <Container minH={"100px"}>
+        <Container minH={"initial"} mdMinH={"100px"}>
           <Layout fullY customTemplateRows={"auto auto 1fr"}>
             <Container>
               <Layout

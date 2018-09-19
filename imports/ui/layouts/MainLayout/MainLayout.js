@@ -11,15 +11,14 @@ import posed from "react-pose/lib/index";
 import { Scrollbars } from "react-custom-scrollbars";
 
 const ContentContainerPose = posed(Container)({
-  open: { opacity: 1, },
-  closed: { opacity: 0  }
+  open: { opacity: 1 },
+  closed: { opacity: 0 }
 });
 
 class MainLayout extends Component {
-
   constructor(props) {
     super(props);
-    this.state= { isShow: false };
+    this.state = { isShow: false };
   }
   componentDidMount() {
     setTimeout(() => {
@@ -42,27 +41,27 @@ class MainLayout extends Component {
         mdCustomTemplateRows={"1fr"}
         layoutAreas={{
           xs: `'content' 'Navbar'`,
-          md: props.showSidebar ? `'Navbar SideBar content'` : `'Navbar content'`
+          md: props.showSidebar
+            ? `'Navbar SideBar content'`
+            : `'Navbar content'`
         }}
         fullWY
       >
         <SignUpListener {...props} />
-        <Navbar {...props}  isShow={this.state.isShow} />
+        <Navbar {...props} isShow={this.state.isShow} />
         <LoginModal />
         {props.showSidebar ? <SideBar {...props} /> : null}
-        <ContentContainerPose pose={this.state.isShow ? "open" : "closed"} fullY gridArea="content">
-          <Scrollbars
-            universal
-            autoHide
-            style={{ height: "100%" }}
-          >
+        <ContentContainerPose
+          pose={this.state.isShow ? "open" : "closed"}
+          fullY
+          gridArea="content"
+        >
           <Routes {...props} />
-          </Scrollbars>
         </ContentContainerPose>
       </Layout>
     );
   }
-};
+}
 
 MainLayout.defaultProps = {
   showSidebar: false

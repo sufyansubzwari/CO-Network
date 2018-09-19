@@ -1,15 +1,15 @@
-import React, {Component} from "react";
-import {Layout, Container} from "btech-layout";
+import React, { Component } from "react";
+import { Layout, Container } from "btech-layout";
 import PropTypes from "prop-types";
 import TopSearcher from "./TopSearcher";
 import InternalLayout from "../InternalLayout/InternalLayout";
 import MaterialIcon from "react-material-iconic-font";
-import {Button} from "btech-base-forms-component";
+import { Button } from "btech-base-forms-component";
 import styled from "styled-components";
 import ListContainer from "./ListContainer";
 import TopSearchContainer from "./TopSearchContainer";
-import {connect} from "react-redux";
-import {toggleSideBar} from "../../actions/SideBarActions";
+import { connect } from "react-redux";
+import { toggleSideBar } from "../../actions/SideBarActions";
 
 const SListContainer = styled(Container)`
   border-right: ${props => "1px solid " + props.theme.color.grey};
@@ -29,7 +29,7 @@ class ListLayout extends Component {
   }
 
   getComponent(key) {
-    return this.props.children.filter(function (comp) {
+    return this.props.children.filter(function(comp) {
       return comp && comp.key === key;
     });
   }
@@ -43,17 +43,20 @@ class ListLayout extends Component {
       <InternalLayout>
         <Layout fullY key={"leftSide"}>
           <SListContainer>
-            <Layout fullY customTemplateRows={"75px 1fr"}>
+            <Layout
+              fullY
+              customTemplateRows={"65px 1fr"}
+              mdCustomTemplateRows={"75px 1fr"}
+            >
               <TopSearchContainer {...this.state} background={"white"}>
                 <Layout
                   colGap={"10px"}
-                  customTemplateColumns={"1fr"}
-                  mdCustomTemplateColumns={
+                  customTemplateColumns={
                     !this.props.sidebarIsOpen ? "auto 1fr" : "1fr"
                   }
                 >
                   {!this.props.sidebarIsOpen ? (
-                    <Container hide mdShow>
+                    <Container>
                       <Button
                         width={"35px"}
                         fontSize={"18px"}
@@ -63,7 +66,7 @@ class ListLayout extends Component {
                           this.props.toggleSideBar(true, this.props.entityType)
                         }
                       >
-                        <MaterialIcon type={"sort"}/>
+                        <MaterialIcon type={"sort"} />
                       </Button>
                     </Container>
                   ) : null}
@@ -103,11 +106,11 @@ ListLayout.propTypes = {
   renderSearcher: PropTypes.func,
   entityType: PropTypes.string,
   autoOpenFilters: PropTypes.bool,
-  onSearchText: PropTypes.func,
+  onSearchText: PropTypes.func
 };
 
 const mapStateToProps = state => {
-  const {sideBarStatus} = state;
+  const { sideBarStatus } = state;
   return {
     sidebarIsOpen: sideBarStatus
       ? sideBarStatus.isAdd

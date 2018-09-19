@@ -79,7 +79,7 @@ class ListEvents extends Component {
             );
           }}
         </Query>
-        {this.state.selectedItem ? (
+        {/*{this.state.selectedItem ? (*/}
           <Mutation key={"rightSide"} mutation={DeleteEvent}>
             {(deleteEvent, { eventDeleted }) => (
               <Preview
@@ -135,7 +135,7 @@ class ListEvents extends Component {
               </Preview>
             )}
           </Mutation>
-        ) : null}
+        // ) : null}
       </ListLayout>
     );
   }

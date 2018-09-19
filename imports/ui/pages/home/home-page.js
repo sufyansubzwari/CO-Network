@@ -49,7 +49,7 @@ class HomePage extends Component {
     const isAuthenticated = this.props.curUser;
     return (
       <Container fullY relative>
-        {/*<MapBackGround zoomMap={this.state.zoomMap} />*/}
+        <MapBackGround zoomMap={this.state.zoomMap} />
         <SHomeActions mdMaxW={"350px"} lgMaxW={"350px"} relative fullY>
           <Layout
             paddingX={"50px"}
