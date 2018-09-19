@@ -32,6 +32,7 @@
     "btech-layout": "^1.1.0",
     "btech-location": "^1.0.5",
     "btech-placeholder-component": "^1.1.0",
+    "canvas-compress": "^1.1.5",
     "classnames": "^2.2.5",
     "express": "^4.16.2",
     "graphql": "^0.13.1",

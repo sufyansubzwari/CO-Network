@@ -21,7 +21,7 @@ class UserForm extends Component {
         super(props);
         this.state = {
             user: {
-                ...this.props.user,
+                ...props.user.profile,
                 info: {
                     name: "",
                     lastName: "",
@@ -78,6 +78,14 @@ class UserForm extends Component {
             () =>
                 this.props.handleChangeProfile && this.props.handleChangeProfile(user)
         );
+    }
+
+    componentWillReceiveProps(nextProps) {
+        if(nextProps.user){
+            this.setState({
+                user: nextProps.user
+            })
+        }
     }
 
     componentWillMount() {
