@@ -13,6 +13,7 @@ imports/ui/layouts/default/
 # dependencies
 /node_modules
 npm-shrinkwrap.json
+package-lock.json
 
 # IDEs and editors
 /.idea
