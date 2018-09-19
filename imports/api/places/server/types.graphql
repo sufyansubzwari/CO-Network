@@ -41,6 +41,7 @@ input LocationInput{
     address: String!
     location: CoordinatesInput!
     cityCountry: CityCountryInput
+    active: Boolean
 }
 
 input CoordinatesInput{

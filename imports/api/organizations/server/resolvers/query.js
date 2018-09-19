@@ -1,5 +1,6 @@
 import Service from "../service";
 import {wrapOperators} from "../../../aux-functions";
+import Places from "../../../places";
 
 const Query = {};
 
@@ -9,6 +10,12 @@ Query.organization = (root, { _id }, context) => {
 Query.organizations = (root, { filter, limit, organizations }, context) => {
   let query = {};
   if(organizations){
+    if (organizations.location) {
+      console.log(organizations.location.map(item => item.address));
+      let loc = Places.service.places({'location.address': {"$in": organizations.location.map(item => item.address)}});
+      organizations["_id"] = {"$in": loc.map(item => item.owner)};
+      delete organizations.location;
+    }
     query = wrapOperators(organizations);
   }
   if (filter) {

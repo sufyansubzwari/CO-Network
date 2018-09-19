@@ -29,15 +29,13 @@ class JobForm extends React.Component {
     this.handleChange = this.handleChange.bind(this);
   }
 
-  componentWillMount() {
+  componentDidMount() {
     if (
       this.props.location &&
       this.props.location.state &&
       this.props.location.state.job
     ) {
-      this.setState({ job: this.props.location.state.job }, () =>
-        this.props.history.push({ state: null })
-      );
+      this.setState({ job: this.props.location.state.job });
     }
   }
 

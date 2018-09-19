@@ -50,7 +50,12 @@ query GetOrganizations($limit: Int, $filter: String, $organizations: Organizatio
             orgDefine
         }
         tech{
-            industry
+            industry{
+                _id
+                label
+                value
+                name
+            }
             salaryRange{
                 min
                 max

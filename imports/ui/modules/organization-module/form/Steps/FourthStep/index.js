@@ -14,7 +14,7 @@ import {
   ORGANIZATION_TYPE
 } from "../../constants/constants";
 import {GetTags} from "../../../../../apollo-client/tag";
-import { Query } from "react-apollo";
+import {Query} from "react-apollo";
 
 class FourthStep extends React.Component {
   constructor(props) {
@@ -30,23 +30,6 @@ class FourthStep extends React.Component {
   }
 
   componentWillMount() {
-    if (
-      this.props.data &&
-      this.props.data.tech.industry &&
-      this.props.data.tech.industry.length > 0
-    ) {
-      let tags = this.props.data.tech.industry.map(element => ({
-        name: element,
-        active: true,
-        userAdd: true,
-        closable: true,
-        useIcon: true
-      }));
-      this.setState({
-        industry: tags
-      });
-    }
-
     if (this.props.data && this.props.data.tech.jobType)
       this.setState({
         jobtype: JOB_TYPE.map(e => {
@@ -72,7 +55,12 @@ class FourthStep extends React.Component {
   }
 
   handleIndustry(obj) {
-    let newtags = obj.map(element => element.name);
+    let newtags = obj.map(element => ({
+      name: element.name,
+      value: element.name,
+      label: element.name,
+      type: "INDUSTRY"
+    }));
 
     let organization = this.state.organization;
     organization["tech"]["industry"] = newtags;
@@ -178,17 +166,31 @@ class FourthStep extends React.Component {
           />
           <div/>
         </Layout>
-        <SelectTag
-          placeholderText={"Industry | Sector"}
-          tags={this.state.industry}
-          selectOptions={INDUSTRY_SECTOR_OPTIONS}
-          getTags={obj => this.handleIndustry(obj)}
-          model={{obj: []}}
-          name={"obj"}
-          tagsCloseable={true}
-          tagsIcon={"star"}
-          tagsUseIcon={true}
-        />
+        <Query query={GetTags} variables={{tags: {type: "INDUSTRY"}}}>
+          {({loading, error, data}) => {
+            if (loading) return <div>Fetching</div>;
+            if (error) return <div>Error</div>;
+            return (
+              <SelectTag
+                placeholderText={"Industry | Sector"}
+                tags={this.state.organization.tech && this.state.organization.tech.industry &&this.state.organization.tech.industry.map(element => ({
+                  name: element.name,
+                  active: true,
+                  userAdd: true,
+                  closable: true,
+                  useIcon: true
+                }))}
+                selectOptions={data.tags}
+                getTags={obj => this.handleIndustry(obj)}
+                model={{obj: []}}
+                name={"obj"}
+                tagsCloseable={true}
+                tagsIcon={"star"}
+                tagsUseIcon={true}
+              />
+            );
+          }}
+        </Query>
         <CheckBoxList
           placeholderText={"Job Type"}
           options={this.state.jobtype}
