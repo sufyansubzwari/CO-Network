@@ -17,6 +17,8 @@ import FilterContainer from "../../../components/FiltersContainer/FiltersContain
 import {cleanFilters, setFilters} from "../../../actions/SideBarActions";
 import {connect} from "react-redux";
 import BigTag from "./../../../components/BigTag/BigTag";
+import {graphql} from "react-apollo";
+import {GetTags} from "../../../apollo-client/tag";
 
 const Filter = styled(Container)`
   padding: 20px 10px;
@@ -42,12 +44,20 @@ class OrganizationFilters extends React.Component {
       locationTags: [],
       info_DOT_orgType: ORG_TYPE_NUMBER.map(item => ({label: item.label, active: item.active, number: item.number})),
       industry: "",
-      filters:{}
+      filters:{},
+      industryOptions: []
     };
   }
 
   componentWillMount() {
     this.props.cleanFilters();
+  }
+
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.data && !nextProps.data.loading && nextProps.data.tags) {
+      let industryOptions = JSON.parse(JSON.stringify(nextProps.data.tags));
+      this.setState({industryOptions: industryOptions})
+    }
   }
 
   addFilters(type, actives) {
@@ -151,11 +161,7 @@ class OrganizationFilters extends React.Component {
             placeholderText={"Industry | Sector"}
             name={"industry"}
             model={this.state}
-            options={[
-              { label: "option1", value: "option1" },
-              { label: "option2", value: "option2" },
-              { label: "option3", value: "option3" }
-            ]}
+            options={this.state.industryOptions}
           />
         </Filter>
         <Separator />
@@ -196,4 +202,10 @@ const mapDispatchToProps = dispatch => {
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(OrganizationFilters);
+)(graphql(GetTags, {
+  options: () => ({
+    variables: {
+      tags: {type: "INDUSTRY"}
+    },
+  }),
+})(OrganizationFilters));

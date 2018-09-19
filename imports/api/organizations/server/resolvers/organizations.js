@@ -20,7 +20,8 @@ Organizations.info = entity => {
 Organizations.tech = entity => {
   if (entity && entity.tech) {
     const tech = entity.tech.stack ? {stack: Tags.service.getTagList(entity.tech.stack)} : {};
-    return Object.assign(entity.tech, tech);
+    const techInd = entity.tech.industry ? {industry: Tags.service.getTagList(entity.tech.industry)} : {};
+    return Object.assign(entity.tech, tech, techInd);
   }
   return {}
 };
