@@ -40,11 +40,21 @@ class PostJob extends Component {
             }
         },
     };
+      this.handleBackgroundChange = this.handleBackgroundChange.bind(this);
   }
 
   onCancel() {
     this.props.history.push(`/jobs`);
   }
+
+    handleBackgroundChange(src) {
+        this.setState({
+            job: {
+                ...this.state.job,
+                image: src
+            }
+        });
+    }
 
   onPostAction(createJob, query) {
     let queryJob = Object.assign({}, query);
@@ -74,7 +84,8 @@ class PostJob extends Component {
                 }
                 onCancel={() => this.onCancel()}
                 {...this.props}
-                handleJobChange={(job) => this.setState({job: job})}
+                handleJobChange={(job) => this.setState({job : { ...this.state.job, ...job }})}
+                job={this.state.job}
               />
             )}
           </Mutation>
@@ -96,9 +107,8 @@ class PostJob extends Component {
           ]}
           index={this.state.selectedIndex}
           data={this.state.selectedItem}
-          backGroundImage={
-            this.state.selectedItem ? this.state.selectedItem.image : null
-          }
+          backGroundImage={this.state.event && this.state.event.image}
+          onBackgroundChange={this.handleBackgroundChange}
         >
           <JobPreviewBody job={this.state.job} />
         </Preview>

@@ -29,6 +29,14 @@ class JobForm extends React.Component {
     this.handleChange = this.handleChange.bind(this);
   }
 
+    componentWillReceiveProps(nextProps) {
+        if(nextProps.job){
+            this.setState({
+                job: nextProps.job
+            })
+        }
+    }
+
   componentDidMount() {
     if (
       this.props.location &&

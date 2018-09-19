@@ -48,6 +48,14 @@ class EventForm extends Component {
     }
   }
 
+    componentWillReceiveProps(nextProps) {
+        if(nextProps.event){
+            this.setState({
+                event: nextProps.event
+            })
+        }
+    }
+
   handleChange(event){
       this.setState(
           {
