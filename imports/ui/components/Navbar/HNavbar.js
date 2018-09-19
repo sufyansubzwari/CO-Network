@@ -47,6 +47,12 @@ const NavItemStyled=styled.div`
       return isSecondLine?'transform: translateX(64%);':''
 }}
 `;
+
+const XsTextDescription=styled.div`
+     font-size: 12px;
+     margin-top: 25px;
+     color: #95939b;
+`;
 const NavItem = posed.div({
   show: { opacity: 1, y: "0%" },
   hide: { opacity: 0, y: "30%" },
@@ -107,6 +113,9 @@ const HNavbar = function(props) {
                 : ""}
             </Layout>
           </Layout>
+          <Container mdHide maxW={"190px"} margin={"0 auto"} textCenter>
+            <XsTextDescription>Lorem ipsum dolor sit amet consectetur adipisicing</XsTextDescription>
+          </Container>
         </Container>
         <Container>{getComponent("footer")}</Container>
       </Layout>
@@ -125,3 +134,4 @@ HNavbar.propTypes = {
 };
 
 export default HNavbar;
+
