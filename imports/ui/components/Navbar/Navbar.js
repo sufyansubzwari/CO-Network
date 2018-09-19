@@ -2,13 +2,10 @@ import React, { Component } from "react";
 import { Layout, Container } from "btech-layout";
 import { withRouter } from "react-router-dom";
 import Styled from "styled-components";
-import {
-  HNavItem,
-  HButtonGroup,
-  HButtom
-} from "btech-horizantal-navbar";
+
 
 import HNavbar from "./HNavbar";
+import HomeButton from "./HomeButton";
 import UserNavbarSection from "./UserNavbarSection";
 import navs from "./nav.constant";
 
@@ -51,14 +48,7 @@ class Navbar extends Component {
           itemOptions={{ title: { hide: true, mdShow: true } }}
         >
           <Layout key={"header"} mdMarginY={"30px"} lgMarginY={"30px"}>
-            <Container ml={{ xs: 0, sm: 0, md: -8, lg: -8 }}>
-              <HNavItem
-                link={"/"}
-                icon={{ size: 60, src: "/images/logo/home.gif" }}
-                activeEval={this.activeEval}
-                hideHexagon
-              />
-            </Container>
+            <HomeButton/>
           </Layout>
           <UserNavbarSection key={"footer"} curUser={this.props.curUser} />
         </HNavbar>

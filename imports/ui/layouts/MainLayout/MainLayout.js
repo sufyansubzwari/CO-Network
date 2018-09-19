@@ -8,6 +8,7 @@ import SideBar from "../../components/SideBar/SideBar";
 import LoginModal from "../../components/LoginModal/LoginModal";
 import SignUpListener from "../../components/SignUpListener/SignUpListener";
 import posed from "react-pose/lib/index";
+import { Scrollbars } from "react-custom-scrollbars";
 
 const ContentContainerPose = posed(Container)({
   open: { opacity: 1, },
@@ -31,7 +32,7 @@ class MainLayout extends Component {
     return (
       <Layout
         customTemplateColumns={"1fr"}
-        customTemplateRows={"1fr 80px"}
+        customTemplateRows={"1fr 56px"}
         mdCustomTemplateColumns={
           props.showSidebar ? "72px 275px 1fr" : "72px 1fr"
         }
@@ -50,7 +51,13 @@ class MainLayout extends Component {
         <LoginModal />
         {props.showSidebar ? <SideBar {...props} /> : null}
         <ContentContainerPose pose={this.state.open ? "open" : "closed"} fullY gridArea="content">
+          <Scrollbars
+            universal
+            autoHide
+            style={{ height: "100%" }}
+          >
           <Routes {...props} />
+          </Scrollbars>
         </ContentContainerPose>
       </Layout>
     );
