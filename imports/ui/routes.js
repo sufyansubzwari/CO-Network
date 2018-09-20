@@ -4,20 +4,9 @@ import { propType } from "graphql-anywhere";
 import { userFragment } from "./apollo-client/user";
 import {
   ScrollToTop,
-  RouteWithProps,
-  AdminRoute
+  RouteWithProps
 } from "./components/smart/route-wrappers";
-import Authorization from "./services/authorization";
 import LoadableWrapper from "./components/dumb/loadable-wrapper";
-//
-import PostOrganization from "./pages/innovators/post-innovators";
-
-const handleAuthentication = props => {
-  alert('pepe')
-  if (/access_token|id_token|error/.test(props.location.hash)) {
-    Authorization.auth0.popup.callback();
-  }
-};
 
 //------------------------------------------------------------------------------
 // COMPONENT:

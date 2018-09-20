@@ -18,7 +18,7 @@ import {
   SIGNUP_OPTIONS
 } from "../constants/constants";
 import { theme } from "./../../../../theme";
-import { Accounts } from "meteor/accounts-base";
+import links from "./links.constant";
 
 const Description = styled.p`
   font-size: ${props =>
@@ -31,7 +31,7 @@ const Description = styled.p`
 class SignUp extends React.Component {
   constructor(props) {
     super(props);
-
+    this.links = links;
     this.state = {
       agreeTerms: false,
       actives: [],
@@ -128,11 +128,30 @@ class SignUp extends React.Component {
               <p>
                 I agree to uphold the values, culture and ethics outlined in the
                 CO Network’s{" "}
-                <a href={"www.google.com"} style={{ color: "blue" }}>
+                <a
+                  href={this.links.termsConditions.link}
+                  target={this.links.termsConditions.target}
+                  style={{ color: this.links.termsConditions.target }}
+                >
                   Terms and Conditions
                 </a>
-                , GDPR Compliant <a style={{ color: "blue" }}>Privacy Policy</a>
-                , <a style={{ color: "blue" }}>Anti-Spam Policy</a> agreement.
+                , GDPR Compliant{" "}
+                <a
+                  href={this.links.privacyPolicy.link}
+                  target={this.links.privacyPolicy.target}
+                  style={{ color: this.links.privacyPolicy.target }}
+                >
+                  Privacy Policy
+                </a>
+                ,{" "}
+                <a
+                  href={this.links.spamPolicy.link}
+                  target={this.links.spamPolicy.target}
+                  style={{ color: this.links.spamPolicy.target }}
+                >
+                  Anti-Spam Policy
+                </a>{" "}
+                agreement.
               </p>
             </CheckBox>
           </Container>
@@ -140,6 +159,7 @@ class SignUp extends React.Component {
             <div />
             <Mutation
               mutation={CreateUser}
+              onError={() => alert(`error`)}
               onCompleted={() => this.props.history.push(`/profile`)}
             >
               {(createUser, { userCreated }) => {

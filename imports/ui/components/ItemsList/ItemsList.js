@@ -45,6 +45,7 @@ class ItemsList extends Component {
   renderItem(item, key) {
     return (
       <CardItem
+        lgCustomTemplateColumns={"135px 1fr"}
         onSelect={() => this.onChangeSelection(item, key)}
         isActive={
           this.state.activeIndex !== null

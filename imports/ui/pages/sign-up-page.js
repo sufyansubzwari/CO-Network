@@ -1,15 +1,21 @@
-import React, {Component} from "react";
-import SignUp from "./../../ui/modules/user-module/form/SignUp/SignUp"
-import {Layout, Container} from "btech-layout";
+import React, { Component } from "react";
+import { Container } from "btech-layout";
+import SignUp from "./../modules/user-module/form/SignUp/SignUp";
+import InternalLayout from "../components/InternalLayout/InternalLayout";
 
 class SignUpPage extends Component {
-    constructor(props) {
-        super(props);
-    }
+  constructor(props) {
+    super(props);
+  }
 
-    render() {
-        return  <Container fullWY style={{width: '47%'}}><SignUp {...this.props} /></Container>;
-    }
+  render() {
+    return (
+      <InternalLayout>
+        <SignUp fullY key={"leftSide"} {...this.props} />
+        {/*<Container fullY key={"rightSide"} />*/}
+      </InternalLayout>
+    );
+  }
 }
 
 SignUpPage.propTypes = {};

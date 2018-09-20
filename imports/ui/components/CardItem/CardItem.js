@@ -178,7 +178,6 @@ class CardItem extends Component {
     return (
       <Container style={{ cursor: "pointer" }}>
         <SMLCard
-          customTemplateColumns={"90px 1fr"}
           background={"white"}
           onSelect={() =>
             this.props.onSelect && this.props.onSelect({ ...this.props.data })

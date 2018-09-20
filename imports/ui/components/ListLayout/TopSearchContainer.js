@@ -21,6 +21,10 @@ const TopSearchContainer = styled(Container)`
   @media screen and (max-width: 768px) {
     padding: 15px;
   }
+
+  @media screen and (max-width: 1368px) {
+    padding: ${props => (!props.isOpenFilters ? "20px 35px" : "20px 48px")};
+  }
 `;
 
 export default TopSearchContainer;
