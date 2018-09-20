@@ -17,6 +17,11 @@ const HomeContainer = Styled.div`
     }
 `;
 
+
+const border = {
+  bottom: {size:1, color:'#d4d3d7'}
+}
+
 /**
  * @module Data
  * @category Component
@@ -32,14 +37,17 @@ const HomeButton = function(props) {
         </Link>
       </Container>
       <Container mdHide>
-        <HomeContainer>
-          <HIcon
-            size={60}
-            src={"/images/logo/home.gif"}
-            centerSize={30}
-            onClick={() => props.onOpenNavbar && props.onOpenNavbar()}
-          />
-        </HomeContainer>
+        <Container inLine>
+          <HomeContainer>
+            <HIcon
+              size={60}
+              src={"/images/logo/home.gif"}
+              centerSize={30}
+              onClick={() => props.onOpenNavbar && props.onOpenNavbar()}
+            />
+          </HomeContainer>
+          <Container border={border} width={"41px"} margin={"20px auto"}/>
+        </Container>
       </Container>
     </Container>
   );
