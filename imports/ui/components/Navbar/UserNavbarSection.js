@@ -22,30 +22,28 @@ const SAddMaterialIcon = styled.span`
  * @description This component is a wrapper for the react-table
  */
 
-
- /**
-  * @module Data
-  * @category Component
-  * @description This component is a wrapper for the react-table
-  */
- const Group = (props) => {
-     // some logic
-     return (
-       <Container>
-         <Container hide mdShow>
-           <HButtonGroup rows={[1, 2, 1]} gap={8} rowGap={-2}>
-             {props.children}
-           </HButtonGroup>
-         </Container>
-         <Container mdHide inLine>
-           <Layout mdHide colGap={"24px"} templateColumns={props.children.length}>
-              {props.children}
-           </Layout>
-         </Container>
-       </Container>
-     );
- };
-
+/**
+ * @module Data
+ * @category Component
+ * @description This component is a wrapper for the react-table
+ */
+const Group = props => {
+  // some logic
+  return (
+    <Container>
+      <Container hide mdShow>
+        <HButtonGroup rows={[1, 2, 1]} gap={8} rowGap={-2}>
+          {props.children}
+        </HButtonGroup>
+      </Container>
+      <Container mdHide inLine>
+        <Layout mdHide colGap={"24px"} templateColumns={props.children.length}>
+          {props.children}
+        </Layout>
+      </Container>
+    </Container>
+  );
+};
 
 class UserNavbarSection extends React.Component {
   constructor(props) {
@@ -73,51 +71,52 @@ class UserNavbarSection extends React.Component {
         <Container>
           <Layout rowGap="15px">
             <Group>
-                  <Link to={avatarLink}>
-                    <HButtom
-                      image={
-                        !!isAuthenticated
-                          ? isAuthenticated.profile.image
-                          : "https://cdn.dribbble.com/users/199982/screenshots/4044699/furkan-avatar-dribbble.png"
-                      }
-                      size={this.size}
-                    />
-                  </Link>
-                  <HNavItem
-                    mt={{xs:"5px",md:"0"}}
-                    size={this.notSize}
-                    icon={{ size: 20, src: "/images/logo/home.gif" }}
-                    number={{
-                      top: "-5px",
-                      right: "-5px",
-                      value: Math.floor(Math.random() * 120),
-                      primary: true,
-                      size: { width: 22, height: 24 }
-                    }}
-                    activeEval={this.activeEval}
-                  />
-                  <HNavItem
-                    mt={{xs:"5px",md:"0"}}
-                    size={this.notSize}
-                    icon={{ size: 20, src: "/images/logo/home.gif" }}
-                    number={{
-                      top: "-5px",
-                      right: "-5px",
-                      value: Math.floor(Math.random() * 120),
-                      primary: true,
-                      size: { width: 22, height: 24 }
-                    }}
-                    activeEval={this.activeEval}
-                  />
-                  <HButtom
-                    primary
-                    size={this.size}
-                    onClick={() => this.onAddToggle()}
-                  >
-                    <SAddMaterialIcon>
-                      <MaterialIcon type={"plus"} size={2} />
-                    </SAddMaterialIcon>
-                  </HButtom>
+              <HButtom
+                primary
+                size={this.size}
+                onClick={() => this.onAddToggle()}
+              >
+                <SAddMaterialIcon>
+                  <MaterialIcon type={"plus"} size={2} />
+                </SAddMaterialIcon>
+              </HButtom>
+              <HNavItem
+                mt={{ xs: "5px", md: "0" }}
+                size={this.notSize}
+                icon={{ size: 20, src: "/images/logo/home.gif" }}
+                number={{
+                  top: "-5px",
+                  right: "-5px",
+                  value: Math.floor(Math.random() * 120),
+                  primary: true,
+                  size: { width: 22, height: 24 }
+                }}
+                activeEval={this.activeEval}
+              />
+              <HNavItem
+                mt={{ xs: "5px", md: "0" }}
+                size={this.notSize}
+                icon={{ size: 20, src: "/images/logo/home.gif" }}
+                number={{
+                  top: "-5px",
+                  right: "-5px",
+                  value: Math.floor(Math.random() * 120),
+                  primary: true,
+                  size: { width: 22, height: 24 }
+                }}
+                activeEval={this.activeEval}
+              />
+
+              <Link to={avatarLink}>
+                <HButtom
+                  image={
+                    !!isAuthenticated
+                      ? isAuthenticated.profile.image
+                      : "https://cdn.dribbble.com/users/199982/screenshots/4044699/furkan-avatar-dribbble.png"
+                  }
+                  size={this.size}
+                />
+              </Link>
             </Group>
             <Layout
               rowGap="5px"
@@ -126,7 +125,7 @@ class UserNavbarSection extends React.Component {
             >
               <ThemeProvider theme={theme}>
                 <Layout rowGap="10px">
-                  <Container mdHide> <SideBarLink> Log Out </SideBarLink></Container>
+                  <SideBarLink> Log Out </SideBarLink>
                   <SideBarLink href={this.policy}> Terms Policies </SideBarLink>
                   <SideBarLink> CONetwork © 2018 </SideBarLink>
                 </Layout>
