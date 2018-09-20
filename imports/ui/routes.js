@@ -114,6 +114,16 @@ const Routes = props => (
         })}
         {...props}
       />
+      <RouteWithProps
+        exact
+        name="Messages"
+        path="/messages"
+        component={LoadableWrapper({
+          loader: () => import("./components/Messages/Messages"),
+          delay: 0
+        })}
+        {...props}
+      />
       <Route
         path="/callback"
         render={props => {

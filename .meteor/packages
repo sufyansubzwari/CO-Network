@@ -30,3 +30,5 @@ practicalmeteor:sinon
 meteortesting:mocha
 hwillson:stub-collections
 react-meteor-data
+reywood:publish-composite
+aldeed:collection2-core

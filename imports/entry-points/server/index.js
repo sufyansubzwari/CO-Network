@@ -6,6 +6,11 @@ import "./startup";
 // Import methods
 import "../../api/users/methods";
 
+// Import Messages methods and subscription
+import '../../api/messages/server/indexes';
+import '../../api/messages/server/publications';
+import '../../api/messages/methods';
+
 // Import all your server-side collections
 // import '../../api/installers/collection';
 // import '../../api/customers/collection';

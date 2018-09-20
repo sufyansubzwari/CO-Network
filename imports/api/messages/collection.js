@@ -34,10 +34,6 @@ Messages.schema = new SimpleSchema({
       if (this.isInsert || this.isUpdate) return new Date();
     },
   },
-  from: {
-    type: String,
-    label: 'The conversation that the message belong.',
-  },
   receptor: {
     type: String,
     label: 'The user or community that the message is to.',
@@ -54,6 +50,14 @@ Messages.schema = new SimpleSchema({
     autoValue() {
       return false;
     },
+    optional: true,
+  },
+  replies:{
+    type: Array,
+    optional: true,
+  },
+  'replies.$':{
+    type: this,
     optional: true,
   },
   attachment: {
