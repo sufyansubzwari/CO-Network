@@ -86,14 +86,18 @@ class PostEvent extends Component {
         <Container fullY key={"leftSide"}>
           <Mutation
             mutation={CreateEvent}
-            onCompleted={() => this.props.history.push("/events")}
+            onCompleted={() =>
+              this.props.history.push("/events", { postEvent: true })
+            }
             onError={error => console.log("Error: ", error)}
           >
             {(createEvent, { eventCreated }) => (
               <EventForm
                 onFinish={data => this.onPostAction(createEvent, data)}
                 onCancel={() => this.onCancel()}
-                handleChangeEvent={event => this.setState({event : { ...this.state.event, ...event }})}
+                handleChangeEvent={event =>
+                  this.setState({ event: { ...this.state.event, ...event } })
+                }
                 event={this.state.event}
                 {...this.props}
               />

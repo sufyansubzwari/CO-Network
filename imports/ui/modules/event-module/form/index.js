@@ -28,14 +28,14 @@ class EventForm extends Component {
         place: {
           location: {
             address: "",
-            location: {lat: "", lng: ""},
+            location: { lat: "", lng: "" },
             fullLocation: {}
-          },
+          }
         },
         tickets: []
       }
     };
-    this.handleChange = this.handleChange.bind(this)
+    this.handleChange = this.handleChange.bind(this);
   }
 
   componentWillMount() {
@@ -48,24 +48,22 @@ class EventForm extends Component {
     }
   }
 
-    componentWillReceiveProps(nextProps) {
-        if(nextProps.event){
-            this.setState({
-                event: nextProps.event
-            })
-        }
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.event) {
+      this.setState({
+        event: nextProps.event
+      });
     }
-
-  handleChange(event){
-      this.setState(
-          {
-              event: event
-          },
-          () =>
-              this.props.handleChangeEvent && this.props.handleChangeEvent(event)
-      );
   }
 
+  handleChange(event) {
+    this.setState(
+      {
+        event: event
+      },
+      () => this.props.handleChangeEvent && this.props.handleChangeEvent(event)
+    );
+  }
 
   render() {
     return (
