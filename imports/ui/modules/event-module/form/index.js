@@ -8,6 +8,7 @@ import {
 } from "./components/index";
 import { MlWizardForm, WizardStepForm } from "btech-base-forms-component";
 import PropTypes from "prop-types";
+import moment from "moment";
 
 /**
  * @module Event
@@ -44,7 +45,10 @@ class EventForm extends Component {
       this.props.location.state &&
       this.props.location.state.event
     ) {
-      this.setState({ event: this.props.location.state.event });
+      let event = this.props.location.state.event;
+      event.startDate = moment(event.startDate);
+      event.endDate = moment(event.endDate);
+      this.setState({ event: event });
     }
   }
 

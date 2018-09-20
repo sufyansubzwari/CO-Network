@@ -121,7 +121,8 @@ class EventStep1 extends Component {
             placeholderEndDate={'End Date'}
             startDate={this.state.event && this.state.event.startDate}
             endDate={this.state.event && this.state.event.endDate}
-            format={'MM/DD/YYYY'}
+            format={'MM/DD/YYYY HH:mm'}
+            showTimeSelect
             getValue={(startDate, endDate) => this.onDatesChange(startDate, endDate)}
           />
         </Container>

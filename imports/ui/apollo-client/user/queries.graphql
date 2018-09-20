@@ -1,7 +1,27 @@
-#import './fragments.graphql'
 
 query($id: String){
   user(id: $id) {
-    ...userFragment
+    _id
+    createdAt
+    services
+    isSignUp
+    profile {
+      name
+      lastName
+      nickName
+      loginCount
+      image
+      cover
+      gender
+      website
+      phone
+    }
+    subscriptions {
+      endpoint
+      keys {
+        auth
+        p256dh
+      }
+    }
   }
 }
