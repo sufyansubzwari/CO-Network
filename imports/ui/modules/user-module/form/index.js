@@ -21,7 +21,7 @@ class UserForm extends Component {
         super(props);
         this.state = {
             user: {
-                ...props.user.profile,
+                ...props.user,
                 info: {
                     name: "",
                     lastName: "",
