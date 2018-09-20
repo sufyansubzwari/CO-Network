@@ -10,6 +10,7 @@ import { Link } from "react-router-dom";
 import { connect } from "react-redux";
 import { toggleSideBar } from "../../actions/SideBarActions";
 import styled from "styled-components";
+import LogoutBtn from "../smart/auth/logout-btn";
 
 const SAddMaterialIcon = styled.span`
   > i {
@@ -125,7 +126,7 @@ class UserNavbarSection extends React.Component {
             >
               <ThemeProvider theme={theme}>
                 <Layout rowGap="10px">
-                  <SideBarLink> Log Out </SideBarLink>
+                  <LogoutBtn/>
                   <SideBarLink href={this.policy}> Terms Policies </SideBarLink>
                   <SideBarLink> CONetwork © 2018 </SideBarLink>
                 </Layout>
