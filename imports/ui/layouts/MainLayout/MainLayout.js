@@ -36,7 +36,7 @@ class MainLayout extends Component {
           props.showSidebar ? "72px 275px 1fr" : "72px 1fr"
         }
         lgCustomTemplateColumns={
-          props.showSidebar ? "100px 275px 1fr" : "100px 1fr"
+          props.showSidebar ? "100px 275px 1fr" : "0.05495fr 1fr"
         }
         mdCustomTemplateRows={"1fr"}
         layoutAreas={{

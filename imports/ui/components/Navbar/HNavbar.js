@@ -13,6 +13,13 @@ const HNavLayout = styled(Layout)`
    background: ${props => {
      return `${StyleUtil.getThemeValue(props, "theme.color.default")};`;
    }}
+  zoom: 100%;
+  @media (min-width: 62em){
+     zoom: 85%;
+  }
+  @media (min-width: 85.375em){
+    zoom: 100%;
+  }
 `;
 
 const HItemContainerLayout = posed(HNavLayout)({
@@ -34,9 +41,15 @@ for (let i = 0; i < 20; i++) {
   poseOptions[`pose${i}`] = { y: i * 86, x: "0%" };
 }
 const ActiveLinkLink = styled.div`
- background: ${props =>
+  background: ${props =>
    `${StyleUtil.getThemeValue(props, "theme.color.primary")};`}
- height:65px;
+  height:65px;
+  //@media (min-width: 62em){
+  //   height:56px;
+  //}
+  //@media (min-width: 85.375em){
+  //  height:65px;
+  //}
 `;
 const ActiveLink = posed(ActiveLinkLink)(poseOptions);
 
@@ -52,6 +65,7 @@ const NavItemStyled=styled.div`
           stroke:${props => `${StyleUtil.getThemeValue(props, "theme.color.primary")};`}
       }
   }
+ 
 `;
 
 const XsTextDescription=styled.div`
