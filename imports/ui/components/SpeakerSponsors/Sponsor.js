@@ -4,9 +4,8 @@ import styled from "styled-components";
 import { Button, Input, Select, TextArea } from "btech-base-forms-component";
 import MaterialIcon from "react-material-iconic-font";
 import LineSeparator from "./LineSeparator";
-import {EXPERIENCE_LEVEL} from './constants';
 
-export default ProfessionalExperience = function (props) {
+export default Sponsor = function (props) {
 
     return (
 
@@ -17,25 +16,21 @@ export default ProfessionalExperience = function (props) {
             <Container style={{ background: "rgb(209,209,209,0.2)" }}>
                 <Layout templateColumns={2} colGap={"20px"}>
                     <Input
-                        placeholderText={"Organization Name"}
+                        placeholderText={"Sponsor Name"}
                         name={"name"}
                         model={props.model}
                     />
                     <Input
-                        placeholderText={"Position"}
-                        name={"position"}
+                        placeholderText={"Sponsor Email"}
+                        name={"email"}
                         model={props.model}
                     />
                 </Layout>
-                <Layout templateColumns={2}>
-                    <Select placeholderText={"Level"} model={props.model} name={'level'} options={EXPERIENCE_LEVEL} />
-                    <div />
-                </Layout>
                 <TextArea
                     placeholderText={
-                        "What did you help to discover or create?"
+                        "Sponsorship Details"
                     }
-                    name={"help"}
+                    name={"details"}
                     model={props.model}
                 />
                 <Container mt={"10px"}>

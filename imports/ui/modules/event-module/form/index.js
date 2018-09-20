@@ -32,6 +32,7 @@ class EventForm extends Component {
             fullLocation: {}
           },
         },
+        sponsors: [],
         tickets: []
       }
     };
