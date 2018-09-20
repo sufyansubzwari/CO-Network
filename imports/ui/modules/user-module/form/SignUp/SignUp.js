@@ -45,7 +45,7 @@ class SignUp extends React.Component {
   componentWillMount() {
     if (
       !this.props.curUser ||
-      (this.props.curUser && this.props.curUser.isSignUp)
+      (this.props.curUser && this.props.curUser.profile.isSignUp)
     )
       this.props.history.push("/");
   }
@@ -58,7 +58,7 @@ class SignUp extends React.Component {
     if (active) {
       let user = {
         _id: this.props.curUser._id,
-        isSignUp: true
+         profile: Object.assign({},this.props.curUser.profile,{isSignUp: true})
       };
       createUser({ variables: { entity: user } });
     }

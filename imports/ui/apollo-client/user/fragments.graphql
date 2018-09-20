@@ -2,8 +2,9 @@ fragment userFragment on User {
   _id
   createdAt
   services
-  isSignUp
+
   profile {
+      isSignUp
       name
       lastName
       nickName

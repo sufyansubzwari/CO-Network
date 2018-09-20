@@ -28,7 +28,7 @@ class MainLayout extends Component {
 
   render() {
     let props = this.props;
-    const isSignUp = props.userState ? props.userState.isSignUp : true
+    const isSignUp = props.userState ? props.userState.profile.isSignUp : true
     let propsProvider = {curUser:props.userState,isSignUp };
     return (
       <Layout

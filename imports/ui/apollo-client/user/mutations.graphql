@@ -3,12 +3,12 @@ mutation CreateUser($entity: UserInput!) {
         _id
         createdAt
         services
-        isSignUp
         emails {
             address
             verified
         }
         profile {
+            isSignUp
             professional {
                 salaryRange {
                     min
