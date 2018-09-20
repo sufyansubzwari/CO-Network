@@ -9,8 +9,8 @@ import { Query, Mutation } from "react-apollo";
 import { GetOrg, DeleteOrg } from "../../apollo-client/organization";
 import { withRouter } from "react-router-dom";
 import OrganizationPreviewBody from "../../components/Preview/OrganizationPreviewBody";
-import {connect} from "react-redux";
-import {PreviewData} from "../../actions/PreviewActions";
+import { connect } from "react-redux";
+import { PreviewData } from "../../actions/PreviewActions";
 
 /**
  * @module Events
@@ -62,6 +62,7 @@ class ListInnovators extends Component {
   customRenderItem(item, key, isLoading) {
     return (
       <CardItem
+        lgCustomTemplateColumns={"155px 1fr"}
         onSelect={() => this.onChangeSelection(item, key)}
         isActive={
           this.state.selectedIndex !== null
@@ -107,11 +108,16 @@ class ListInnovators extends Component {
         <Query
           key={"listComponent"}
           query={GetOrg}
-          variables={{ limit, filter, organizations: this.props.filterStatus.filters }}
+          variables={{
+            limit,
+            filter,
+            organizations: this.props.filterStatus.filters
+          }}
           pollInterval={5000}
         >
           {({ loading, error, data }) => {
-            const isLoading = loading && (!data.events || !data.events.length);
+            const isLoading =
+              loading && (!data.organizations || !data.organizations.length);
             // if (loading) return null;
             // if (error) return `Error!: ${error}`;
             return (
@@ -210,12 +216,11 @@ class ListInnovators extends Component {
   }
 }
 
-
 const mapStateToProps = state => {
   const { previewData, filterStatus } = state;
   return {
     previewData: previewData,
-    filterStatus: filterStatus,
+    filterStatus: filterStatus
   };
 };
 

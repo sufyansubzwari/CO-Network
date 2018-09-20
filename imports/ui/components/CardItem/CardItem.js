@@ -155,7 +155,7 @@ class CardItem extends Component {
     const loading =
       this.props.loading || (this.props.image && this.state.loadingImage);
     const imageElement = loading ? (
-      <PlaceHolder rect loading={loading} height={325} />
+      <PlaceHolder rect loading={loading} height={384} />
     ) : (
       <img width="100%" height="100%" src={this.props.image} />
     );

@@ -17,97 +17,91 @@ class UserProfile extends Component {
     super(props);
 
     let user = {
-            ...props.curUser.profile,
-            info: {
-                name: "",
-                lastName: "",
-                email: "",
-                website: "",
-                location: {
-                    address: "",
-                    location: {lat: "", lng: ""},
-                    fullLocation: {}
-                }
-            },
-            social: {
-                github: "",
-                facebook: "",
-                twitter: "",
-                google: ""
-            },
-            aboutMe: {
-                yourPassion: "",
-                existingProblem: "",
-                steps: ""
-            },
-            knowledge: {
-                languages: [],
-                curiosity: [],
-                lookingFor: []
-            },
-            professional: {
-                salaryRange: {
-                    min: "",
-                    max: ""
-                },
-                jobType: [],
-                industry: []
-            },
-            speaker: {
-                lookingFor: [],
-                topic: [],
-                style: [],
-                stage: [],
-                otherlooking: [],
-                otherpreferred: []
-            }
-        }
+      ...props.curUser.profile,
+      social: {
+        github: "",
+        facebook: "",
+        twitter: "",
+        google: ""
+      },
+      aboutMe: {
+        yourPassion: "",
+        existingProblem: "",
+        steps: ""
+      },
+      knowledge: {
+        languages: [],
+        curiosity: [],
+        lookingFor: []
+      },
+      professional: {
+        salaryRange: {
+          min: "",
+          max: ""
+        },
+        jobType: [],
+        industry: []
+      },
+      speaker: {
+        lookingFor: [],
+        topic: [],
+        style: [],
+        stage: [],
+        otherlooking: [],
+        otherpreferred: []
+      }
+    };
 
     this.state = {
-        user: user
-    }
+      user: user
+    };
 
-    this.handleBackgroundChange = this.handleBackgroundChange.bind(this)
-    this.handleUserPhotoChange = this.handleUserPhotoChange.bind(this)
+    this.handleBackgroundChange = this.handleBackgroundChange.bind(this);
+    this.handleUserPhotoChange = this.handleUserPhotoChange.bind(this);
   }
 
   onCancel() {
     this.props.history.push(`/`);
   }
 
-  handleBackgroundChange(src){
-      this.setState({
-          user: {
-              ...this.state.user,
-              cover: src
-          }})
+  handleBackgroundChange(src) {
+    this.setState({
+      user: {
+        ...this.state.user,
+        cover: src
+      }
+    });
   }
 
-    handleUserPhotoChange(src){
-
-      this.setState({
-            user: {
-                ...this.state.user,
-                image: src
-            }})
-    }
+  handleUserPhotoChange(src) {
+    this.setState({
+      user: {
+        ...this.state.user,
+        image: src
+      }
+    });
+  }
 
   render() {
     return (
       <InternalLayout>
         <Container fullY key={"leftSide"}>
           <UserForm
-            onFinish={data => this.onPostAction(() => console.log(createProfile), data)}
+            onFinish={data =>
+              this.onPostAction(() => console.log(createProfile), data)
+            }
             onCancel={() => this.onCancel()}
             userLogged={false}
-            handleChangeProfile={(user) => this.setState({user: {...this.state.user,...user}})}
+            handleChangeProfile={user =>
+              this.setState({ user: { ...this.state.user, ...user } })
+            }
             user={this.state.user}
             {...this.props}
           />
         </Container>
         <Preview
           showAvatar={true}
-          image={ this.state.user && this.state.user.image}
+          image={this.state.user && this.state.user.image}
           key={"rightSide"}
           navClicked={index => console.log(index)}
           navOptions={[
@@ -124,9 +118,9 @@ class UserProfile extends Component {
           ]}
           index={this.state.selectedIndex}
           data={this.state.selectedItem}
-          backGroundImage={ this.state.user && this.state.user.cover }
-          onBackgroundChange={ this.handleBackgroundChange }
-          onUserPhotoChange={ this.handleUserPhotoChange }
+          backGroundImage={this.state.user && this.state.user.cover}
+          onBackgroundChange={this.handleBackgroundChange}
+          onUserPhotoChange={this.handleUserPhotoChange}
         >
           <UserPreviewBody user={this.state.user} />
         </Preview>

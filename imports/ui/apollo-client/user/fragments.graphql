@@ -8,6 +8,7 @@ fragment userFragment on User {
       lastName
       nickName
       loginCount
+      email
       image
       cover
       gender
