@@ -1,14 +1,14 @@
 import React from "react";
 import { Layout, Container } from "btech-layout";
-import styled, { ThemeProvider } from "styled-components";
+import styled from "styled-components";
 import PropsTypes from "prop-types";
-import { theme } from "./../../theme";
 import { Link } from "react-router-dom";
 
 const Header = styled.div`
-    background: linear-gradient(180deg, #E826F9, #F92672);
+    background-image: url("/images/create-head.png");
+    background-size: cover;
     width: 100%;
-    height: 160px;
+    height: 175px;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -90,7 +90,9 @@ const Option = props => {
       <Link to={props.link} onClick={() => props.onSelect && props.onSelect()}>
         <Name>{props.name}</Name>
       </Link>
-      <Description>{props.description}</Description>
+      {props.description ? (
+        <Description>{props.description}</Description>
+      ) : null}
     </Container>
   );
 };
@@ -109,33 +111,35 @@ class Create extends React.Component {
         />
       ));
     return (
-      <ThemeProvider theme={theme}>
-        <Layout fullY customTemplateRows={"auto 1fr"}>
-          <Header>
-            <SHeading>CREATE</SHeading>
-            <SSubHeading>Nice & easy!</SSubHeading>
-          </Header>
-          <Container paddingX={"45px"} paddingY={"35px"} paddingT={"45px"}>
-            <Container fullY>
-              <Layout fullY customTemplateRows={"1fr auto"}>
+      <Layout
+        fullY
+        customTemplateRows={"auto 1fr"}
+        onBlur={() => this.prop.onBlur && this.prop.onBlur()}
+      >
+        <Header>
+          <SHeading>CREATE</SHeading>
+          <SSubHeading>Nice & easy!</SSubHeading>
+        </Header>
+        <Container paddingX={"45px"} paddingY={"35px"} paddingT={"25px"}>
+          <Container fullY>
+            <Layout fullY customTemplateRows={"1fr auto"}>
+              <Container>
+                <Layout style={{ textAlign: "center", rowGap: 20 }}>
+                  {elements}
+                </Layout>
+              </Container>
+              <Container hide={!this.props.noteText || this.props.hideNote}>
                 <Container>
-                  <Layout style={{ textAlign: "center", rowGap: 20 }}>
-                    {elements}
-                  </Layout>
+                  <SNote>{this.props.noteLabel}</SNote>
                 </Container>
-                <Container hide={!this.props.noteText}>
-                  <Container>
-                    <SNote>{this.props.noteLabel}</SNote>
-                  </Container>
-                  <Container>
-                    <SNoteDescription>{this.props.noteText}</SNoteDescription>
-                  </Container>
+                <Container>
+                  <SNoteDescription>{this.props.noteText}</SNoteDescription>
                 </Container>
-              </Layout>
-            </Container>
+              </Container>
+            </Layout>
           </Container>
-        </Layout>
-      </ThemeProvider>
+        </Container>
+      </Layout>
     );
   }
 }
@@ -143,12 +147,15 @@ class Create extends React.Component {
 export default Create;
 
 Create.defaultProps = {
-  noteLabel: "Note"
+  noteLabel: "Note",
+  hideNote: true
 };
 
 Create.propTypes = {
   options: PropsTypes.array,
   noteText: PropsTypes.string,
+  hideNote: PropsTypes.bool,
   noteLabel: PropsTypes.string,
-  onChangeRoute: PropsTypes.func
+  onChangeRoute: PropsTypes.func,
+  onBlur: PropsTypes.func
 };

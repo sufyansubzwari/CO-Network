@@ -16,84 +16,89 @@ class PostOrganization extends Component {
   constructor(props) {
     super(props);
     this.state = {
-        organization: {
-            info: {
-                name: "",
-                employees: {
-                    value: "",
-                    label: ""
-                },
-                orgType: [],
-                description: [],
-                actively: [],
-                website: "",
-            },
-            social: {
-                github: "",
-                linkedin: "",
-                facebook: "",
-                twitter: "",
-                google: ""
-            },
-            contact: {
-                email: "",
-                phone: ""
-            },
-            services: {
-                relocated: false,
-                seeking: true,
-                hostEvents: true
-            },
-            reason: {
-                bio: "",
-                vision: "",
-                orgDefine: "",
-            },
-            tech: {
-                industry: [],
-                salaryRange: {
-                    min: "",
-                    max: ""
-                },
-                stack: [],
-                jobType: []
-            },
-            place: {
-                location: {
-                    address: "",
-                    location: {lat: "", lng: ""},
-                    fullLocation: {}
-                }
-            },
-            //plan: 0
+      organization: {
+        info: {
+          name: "",
+          employees: {
+            value: "",
+            label: ""
+          },
+          orgType: [],
+          description: [],
+          actively: [],
+          website: ""
+        },
+        social: {
+          github: "",
+          linkedin: "",
+          facebook: "",
+          twitter: "",
+          google: ""
+        },
+        contact: {
+          email: "",
+          phone: ""
+        },
+        services: {
+          relocated: false,
+          seeking: true,
+          hostEvents: true
+        },
+        reason: {
+          bio: "",
+          vision: "",
+          orgDefine: ""
+        },
+        tech: {
+          industry: [],
+          salaryRange: {
+            min: "",
+            max: ""
+          },
+          stack: [],
+          jobType: []
+        },
+        place: {
+          location: {
+            address: "",
+            location: { lat: "", lng: "" },
+            fullLocation: {}
+          }
         }
+        //plan: 0
+      }
     };
-      this.handleBackgroundChange = this.handleBackgroundChange.bind(this)
-      this.handleUserPhotoChange = this.handleUserPhotoChange.bind(this)
+    this.handleBackgroundChange = this.handleBackgroundChange.bind(this);
+    this.handleUserPhotoChange = this.handleUserPhotoChange.bind(this);
   }
 
-    handleBackgroundChange(src){
-        this.setState({
-            organization: {
-                ...this.state.organization,
-                info: {
-                    ...this.state.organization.info,
-                    cover: src
-                }
-            }})
-    }
+  handleBackgroundChange(src) {
+    this.setState({
+      organization: {
+        ...this.state.organization,
+        info: {
+          ...this.state.organization.info,
+          cover: src
+        }
+      }
+    });
+  }
 
-    handleUserPhotoChange(src){
+  handleUserPhotoChange(src) {
+    this.setState({
+      organization: {
+        ...this.state.organization,
+        info: {
+          ...this.state.organization.info,
+          image: src
+        }
+      }
+    });
+  }
 
-        this.setState({
-            organization: {
-                ...this.state.organization,
-                info: {
-                    ...this.state.organization.info,
-                    image: src
-                }
-            }})
-    }
+  componentWillMount() {
+    this.props.toggleSideBar(false);
+  }
 
   onCancel() {
     this.props.history.push(`/innovators`);
@@ -102,28 +107,42 @@ class PostOrganization extends Component {
   onPostAction(createOrg, query) {
     let orgQuery = Object.assign({}, query);
     //todo: remove when location improvement
-    orgQuery.place && orgQuery.place.location && orgQuery.place.location.fullLocation ?  delete orgQuery.place.location.fullLocation : null;
+    orgQuery.place &&
+    orgQuery.place.location &&
+    orgQuery.place.location.fullLocation
+      ? delete orgQuery.place.location.fullLocation
+      : null;
     let organization = {
       ...orgQuery,
-      owner: "Qt5569uuKKd6YrDwS",
+      owner: "Qt5569uuKKd6YrDwS"
     };
     createOrg({ variables: { entity: organization } });
   }
 
   render() {
     return (
-      <InternalLayout>
+      <InternalLayout leftWidth={"52%"}>
         <Container fullY key={"leftSide"}>
-          <Mutation mutation={CreateOrg} onCompleted={() => this.props.history.push("/innovators")}
-                    onError={(error) => console.log("Error: ", error)}>
+          <Mutation
+            mutation={CreateOrg}
+            onCompleted={() => this.props.history.push("/innovators")}
+            onError={error => console.log("Error: ", error)}
+          >
             {(createOrg, { orgCreated }) => (
-          <OrganizationForm
-            onFinish={data => this.onPostAction(createOrg, data)}
-            onCancel={() => this.onCancel()}
-            handleOrgChange={ ( organization) => this.setState({organization: {...this.state.organization,...organization}})}
-            organization={this.state.organization}
-            {...this.props}
-          />
+              <OrganizationForm
+                onFinish={data => this.onPostAction(createOrg, data)}
+                onCancel={() => this.onCancel()}
+                handleOrgChange={organization =>
+                  this.setState({
+                    organization: {
+                      ...this.state.organization,
+                      ...organization
+                    }
+                  })
+                }
+                organization={this.state.organization}
+                {...this.props}
+              />
             )}
           </Mutation>
         </Container>
@@ -144,12 +163,15 @@ class PostOrganization extends Component {
           ]}
           index={this.state.selectedIndex}
           data={this.state.selectedItem}
-
           showAvatar={true}
-          image={ this.state.organization.info && this.state.organization.info.image}
-          backGroundImage={ this.state.organization.info && this.state.organization.info.cover }
-          onBackgroundChange={ this.handleBackgroundChange }
-          onUserPhotoChange={ this.handleUserPhotoChange }
+          image={
+            this.state.organization.info && this.state.organization.info.image
+          }
+          backGroundImage={
+            this.state.organization.info && this.state.organization.info.cover
+          }
+          onBackgroundChange={this.handleBackgroundChange}
+          onUserPhotoChange={this.handleUserPhotoChange}
         >
           <OrganizationPreviewBody organization={this.state.organization} />
         </Preview>

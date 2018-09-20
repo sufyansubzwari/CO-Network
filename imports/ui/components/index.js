@@ -9,6 +9,7 @@ import Create from "./Create/Create";
 import Preview from "./Preview/Preview";
 import UserPhoto from "./UserPhoto/UserPhoto";
 import CardItem from "./CardItem/CardItem";
+import ClusterIcon from "./ClusterIcon/ClusterIcon";
 
 export {
   ItemsList,
@@ -21,5 +22,6 @@ export {
   CardItem,
   Create,
   Preview,
-  UserPhoto
+  UserPhoto,
+  ClusterIcon
 };

@@ -88,51 +88,51 @@ class CardItem extends Component {
     return (
       <Layout
         fullY
+        minH={"initial"}
+        mdMinH={"100px"}
         customTemplateRows={"1fr"}
-        mdCustomTemplateColumns={"1fr auto"}
+        mdCustomTemplateRows={"1fr auto"}
       >
-        <Container minH={"initial"} mdMinH={"100px"}>
-          <Layout fullY customTemplateRows={"auto auto 1fr"}>
-            <Container>
-              <Layout
-                customTemplateColumns={"1fr"}
-                mdCustomTemplateColumns={"1fr auto"}
-              >
-                <Container>
-                  <Layout customTemplateColumns={"20px auto"}>
-                    <Container>
-                      <SViewIconContainer>
-                        <MaterialIcon type={this.props.iconClass} />
-                      </SViewIconContainer>
-                    </Container>
-                    <Container>
-                      <SViewsContainer>{this.props.views}</SViewsContainer>
-                    </Container>
-                  </Layout>
-                </Container>
-                <Container hide mdShow>
-                  <SViewsContainer>
-                    <ReportToggle onSelect={(item, key) => alert(key)} />
-                  </SViewsContainer>
-                </Container>
-              </Layout>
-            </Container>
-            <Container>
-              <Layout customTemplateRows={"1fr"}>
-                <TitleCardContainer>
-                  {this.props.title || "No title"}
-                </TitleCardContainer>
-              </Layout>
-            </Container>
-            <Container>
-              <Layout customTemplateRows={"1fr"}>
-                <SubTitleCardContainer>
-                  {this.props.subTitle || "No description"}
-                </SubTitleCardContainer>
-              </Layout>
-            </Container>
-          </Layout>
-        </Container>
+        <Layout fullY customTemplateRows={"auto auto 1fr"}>
+          <Container>
+            <Layout
+              customTemplateColumns={"1fr"}
+              mdCustomTemplateColumns={"1fr auto"}
+            >
+              <Container>
+                <Layout customTemplateColumns={"20px auto"}>
+                  <Container>
+                    <SViewIconContainer>
+                      <MaterialIcon type={this.props.iconClass} />
+                    </SViewIconContainer>
+                  </Container>
+                  <Container>
+                    <SViewsContainer>{this.props.views}</SViewsContainer>
+                  </Container>
+                </Layout>
+              </Container>
+              <Container hide mdShow>
+                <SViewsContainer>
+                  <ReportToggle onSelect={(item, key) => alert(key)} />
+                </SViewsContainer>
+              </Container>
+            </Layout>
+          </Container>
+          <Container>
+            <Layout customTemplateRows={"1fr"}>
+              <TitleCardContainer>
+                {this.props.title || "No title"}
+              </TitleCardContainer>
+            </Layout>
+          </Container>
+          <Container>
+            <Layout customTemplateRows={"1fr"}>
+              <SubTitleCardContainer>
+                {this.props.subTitle || "No description"}
+              </SubTitleCardContainer>
+            </Layout>
+          </Container>
+        </Layout>
         <Container hide mdShow>
           {tags.length ? (
             <TagList
@@ -178,7 +178,6 @@ class CardItem extends Component {
     return (
       <Container style={{ cursor: "pointer" }}>
         <SMLCard
-          customTemplateColumns={"90px 1fr"}
           background={"white"}
           onSelect={() =>
             this.props.onSelect && this.props.onSelect({ ...this.props.data })

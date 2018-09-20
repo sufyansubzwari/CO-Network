@@ -54,7 +54,7 @@ class LoginModal extends Component {
                   return (
                     <Container key={index} textCenter>
                       <AuthServiceButton
-                        service={authService.service}
+                        service={authService.label || authService.service}
                         onSelected={service => this.processAuthRequest(service)}
                       />
                     </Container>

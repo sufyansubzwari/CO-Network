@@ -13,6 +13,13 @@ const HNavLayout = styled(Layout)`
    background: ${props => {
      return `${StyleUtil.getThemeValue(props, "theme.color.default")};`;
    }}
+  zoom: 100%;
+  @media (min-width: 62em){
+     zoom: 85%;
+  }
+  @media (min-width: 85.375em){
+    zoom: 100%;
+  }
 `;
 
 const HItemContainerLayout = posed(HNavLayout)({
@@ -24,25 +31,53 @@ const HItemContainerLayout = posed(HNavLayout)({
   },
   hide: { opacity: 0, x: "-100%" },
 
-  // open: { staggerChildren: 100, delayChildren : 200},
-  // close: { staggerChildren: 100 , delay:200 }
+  // open: { staggerChildren: 100, delayChildren : 100},
+  // close: { staggerChildren: 100 }
 });
 
 // create all navs
 let poseOptions = { "pose-1": { x: "-100%" } };
 for (let i = 0; i < 20; i++) {
-  poseOptions[`pose${i}`] = { y: i * 91, x: "0%" };
+  poseOptions[`pose${i}`] = { y: i * 86, x: "0%" };
 }
 const ActiveLinkLink = styled.div`
- background: ${props =>
+  background: ${props =>
    `${StyleUtil.getThemeValue(props, "theme.color.primary")};`}
- height:75px;
+  height:65px;
+  //@media (min-width: 62em){
+  //   height:56px;
+  //}
+  //@media (min-width: 85.375em){
+  //  height:65px;
+  //}
 `;
 const ActiveLink = posed(ActiveLinkLink)(poseOptions);
 
+const NavItemStyled=styled.div`
+    ${({index})=>{
+      const isSecondLine = index%6>2;
+      return isSecondLine?'transform: translateX(64%);':''
+  
+}}
+  &:hover {
+      svg path{
+          fill:${props => `${StyleUtil.getThemeValue(props, "theme.color.primary")};`}
+          stroke:${props => `${StyleUtil.getThemeValue(props, "theme.color.primary")};`}
+      }
+  }
+ 
+`;
+
+const XsTextDescription=styled.div`
+     font-size: 12px;
+     margin-top: 25px;
+     color: #95939b;
+`;
 const NavItem = posed.div({
   show: { opacity: 1, y: "0%" },
-  hide: { opacity: 0, y: "30%" }
+  hide: { opacity: 0, y: "30%" },
+  // open: { opacity: 1, y: "0%"},
+  // close: { opacity: 0, y: "50%" }
 });
 
 const HNavbar = function(props) {
@@ -59,7 +94,10 @@ const HNavbar = function(props) {
   return (
     <HItemContainerLayout
       height="100vh"
-      mdHeight="inherit"
+      mdHeight="100%"
+      padding={"0 0 68px 0"}
+      mdPadding={"0"}
+      pad
       pose={props.isShow ? "show" : "hide"}
       fullY
       style={{ gridArea: props.gridArea }}
@@ -68,7 +106,8 @@ const HNavbar = function(props) {
       <Layout>
         <Container mdMt={"38px"}>
           {getComponent("header")}
-          <Layout mdCustomTemplateColumns={"5px 1fr"} customTemplateColumns={"1fr"}>
+          <Layout mdCustomTemplateColumns={"5px 1fr"}
+                  customTemplateColumns={"1fr"} maxW={"195px"} margin={"0 auto"}>
             <Container hide mdShow>
               <ActiveLink pose={`pose${props.activeLink}`} />
             </Container>
@@ -83,7 +122,8 @@ const HNavbar = function(props) {
             >
               {props.links
                 ? props.links.map((item, key) => (
-                    <NavItem key={key}>
+                  <NavItemStyled index={key}>
+                    <NavItem key={key} >
                       <HNavItem
                         {...item}
                         activeEval={props.activeEval}
@@ -91,10 +131,14 @@ const HNavbar = function(props) {
                         itemOptions={props.itemOptions}
                       />
                     </NavItem>
+                  </NavItemStyled>
                   ))
                 : ""}
             </Layout>
           </Layout>
+          <Container mdHide maxW={"190px"} margin={"0 auto"} textCenter>
+            <XsTextDescription>Lorem ipsum dolor sit amet consectetur adipisicing</XsTextDescription>
+          </Container>
         </Container>
         <Container>{getComponent("footer")}</Container>
       </Layout>
@@ -113,3 +157,4 @@ HNavbar.propTypes = {
 };
 
 export default HNavbar;
+

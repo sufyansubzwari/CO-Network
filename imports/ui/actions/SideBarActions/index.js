@@ -1,6 +1,6 @@
 import * as types from "./types";
 
-export function toggleSideBar(status, type, add) {
+export function toggleSideBar(status, add) {
   return {
     type: status
       ? add
@@ -9,9 +9,15 @@ export function toggleSideBar(status, type, add) {
       : add
         ? types.HIDE_ADD_SIDEBAR
         : types.HIDE_SIDEBAR,
-    entityType: type || null,
     isAdd: add,
     status: status
+  };
+}
+
+export function setFilterEntity(type) {
+  return {
+    type: types.CHANGE_ENTITY,
+    entityType: type || null
   };
 }
 

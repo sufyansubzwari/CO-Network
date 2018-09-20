@@ -1,6 +1,7 @@
 export default [
   {
-    service: "google",
+    label: "google",
+    service: "google-oauth2",
     visible: true
   },
   {

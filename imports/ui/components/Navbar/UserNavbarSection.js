@@ -21,16 +21,41 @@ const SAddMaterialIcon = styled.span`
  * @category Component
  * @description This component is a wrapper for the react-table
  */
+
+/**
+ * @module Data
+ * @category Component
+ * @description This component is a wrapper for the react-table
+ */
+const Group = props => {
+  // some logic
+  return (
+    <Container>
+      <Container hide mdShow>
+        <HButtonGroup rows={[1, 2, 1]} gap={8} rowGap={-2}>
+          {props.children}
+        </HButtonGroup>
+      </Container>
+      <Container mdHide inLine>
+        <Layout mdHide colGap={"24px"} templateColumns={props.children.length}>
+          {props.children}
+        </Layout>
+      </Container>
+    </Container>
+  );
+};
+
 class UserNavbarSection extends React.Component {
   constructor(props) {
     super(props);
     this.policy = Meteor.settings.public.policyUrl;
     this.size = { width: 46, height: 53 };
     this.notSize = { width: 33, height: 39 };
+    this.isOpenCreateSidebar = false;
   }
 
   onAddToggle() {
-    this.props.toggleSideBar(true, null);
+    this.props.toggleSideBar(!this.props.addSidebarIsOpen);
   }
 
   render() {
@@ -46,7 +71,43 @@ class UserNavbarSection extends React.Component {
         <Container />
         <Container>
           <Layout rowGap="15px">
-            <HButtonGroup rows={[1, 2, 1]} gap={8} rowGap={-2}>
+            <Group>
+              <HButtom
+                primary
+                size={this.size}
+                onClick={() => this.onAddToggle()}
+              >
+                <SAddMaterialIcon>
+                  <MaterialIcon type={"plus"} size={2} />
+                </SAddMaterialIcon>
+              </HButtom>
+              <HNavItem
+                mt={{ xs: "5px", md: "0" }}
+                size={this.notSize}
+                icon={{ size: 20, src: "/images/logo/home.gif" }}
+                number={{
+                  top: "-5px",
+                  right: "-5px",
+                  value: Math.floor(Math.random() * 120),
+                  primary: true,
+                  size: { width: 22, height: 24 }
+                }}
+                activeEval={this.activeEval}
+              />
+              <HNavItem
+                mt={{ xs: "5px", md: "0" }}
+                size={this.notSize}
+                icon={{ size: 20, src: "/images/logo/home.gif" }}
+                number={{
+                  top: "-5px",
+                  right: "-5px",
+                  value: Math.floor(Math.random() * 120),
+                  primary: true,
+                  size: { width: 22, height: 24 }
+                }}
+                activeEval={this.activeEval}
+              />
+
               <Link to={avatarLink}>
                 <HButtom
                   image={
@@ -57,40 +118,7 @@ class UserNavbarSection extends React.Component {
                   size={this.size}
                 />
               </Link>
-              <HNavItem
-                size={this.notSize}
-                icon={{ size: 20, src: "/images/logo/home.gif" }}
-                number={{
-                  top: "-5px",
-                  right: "-5px",
-                  value: Math.floor(Math.random() * 120),
-                  primary: true,
-                  size: { width: 22, height: 24 }
-                }}
-                activeEval={this.activeEval}
-              />
-              <HNavItem
-                size={this.notSize}
-                icon={{ size: 20, src: "/images/logo/home.gif" }}
-                number={{
-                  top: "-5px",
-                  right: "-5px",
-                  value: Math.floor(Math.random() * 120),
-                  primary: true,
-                  size: { width: 22, height: 24 }
-                }}
-                activeEval={this.activeEval}
-              />
-              <HButtom
-                primary
-                size={this.size}
-                onClick={() => this.onAddToggle()}
-              >
-                <SAddMaterialIcon>
-                  <MaterialIcon type={"plus"} size={2} />
-                </SAddMaterialIcon>
-              </HButtom>
-            </HButtonGroup>
+            </Group>
             <Layout
               rowGap="5px"
               padding="0 20px 20px;"
@@ -98,6 +126,7 @@ class UserNavbarSection extends React.Component {
             >
               <ThemeProvider theme={theme}>
                 <Layout rowGap="10px">
+                  <SideBarLink> Log Out </SideBarLink>
                   <SideBarLink href={this.policy}> Terms Policies </SideBarLink>
                   <SideBarLink> CONetwork © 2018 </SideBarLink>
                 </Layout>
@@ -110,13 +139,16 @@ class UserNavbarSection extends React.Component {
   }
 }
 
-const mapStateToProps = () => {
-  return {};
+const mapStateToProps = state => {
+  const { sideBarStatus } = state;
+  return {
+    addSidebarIsOpen: sideBarStatus.status && sideBarStatus.isAdd
+  };
 };
 
 const mapDispatchToProps = dispatch => {
   return {
-    toggleSideBar: (status, type) => dispatch(toggleSideBar(status, type, true))
+    toggleSideBar: status => dispatch(toggleSideBar(status, true))
   };
 };
 

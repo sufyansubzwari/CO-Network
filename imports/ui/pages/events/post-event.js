@@ -43,6 +43,10 @@ class PostEvent extends Component {
     // this.handleUserPhotoChange = this.handleUserPhotoChange.bind(this);
   }
 
+  componentWillMount() {
+    this.props.toggleSideBar(false);
+  }
+
   onCancel() {
     this.props.history.push(`/events`);
   }

@@ -11,7 +11,7 @@ async function renderAsync() {
     import('react'),
     import('react-dom'),
     import('../../ui/app'),
-    import('../../ui/layouts/MainLayout/MainLayout'),
+    import('../../ui/layouts/App-Route'),
   ]);
 
   // Inject react app components into App's Shell

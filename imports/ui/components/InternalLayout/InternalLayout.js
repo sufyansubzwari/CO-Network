@@ -12,9 +12,15 @@ class InternalLayout extends Component {
   }
 
   getComponent(key) {
-    return this.props.children.filter(function(comp) {
-      return comp && comp.key === key;
-    });
+    const element = this.props.children;
+    const needFilter = typeof element === "object" && element.length;
+    return needFilter
+      ? element.filter(function(comp) {
+          return comp && comp.key === key;
+        })
+      : element.key === key
+        ? element
+        : null;
   }
 
   render() {

@@ -4,19 +4,9 @@ import { propType } from "graphql-anywhere";
 import { userFragment } from "./apollo-client/user";
 import {
   ScrollToTop,
-  RouteWithProps,
-  AdminRoute
+  RouteWithProps
 } from "./components/smart/route-wrappers";
-import Authorization from "./services/authorization";
 import LoadableWrapper from "./components/dumb/loadable-wrapper";
-//
-import PostOrganization from "./pages/innovators/post-innovators";
-
-const handleAuthentication = props => {
-  if (/access_token|id_token|error/.test(props.location.hash)) {
-    Authorization.auth0.popup.callback();
-  }
-};
 
 //------------------------------------------------------------------------------
 // COMPONENT:
@@ -113,23 +103,6 @@ const Routes = props => (
           delay: 0
         })}
         {...props}
-      />
-      <Route
-        path="/callback"
-        render={props => {
-          handleAuthentication(props);
-          return (
-            <div
-              style={{
-                height: "600pc",
-                width: "500px",
-                backgroundColor: "white",
-                position: "fixed",
-                zIndex: 10000
-              }}
-            />
-          );
-        }}
       />
       <Route
         name="notFound"
