@@ -9,7 +9,7 @@ import styled from "styled-components";
 import ListContainer from "./ListContainer";
 import TopSearchContainer from "./TopSearchContainer";
 import { connect } from "react-redux";
-import { toggleSideBar } from "../../actions/SideBarActions";
+import { setFilterEntity, toggleSideBar } from "../../actions/SideBarActions";
 
 const SListContainer = styled(Container)`
   border-right: ${props => "1px solid " + props.theme.color.grey};
@@ -25,13 +25,17 @@ class ListLayout extends Component {
   }
 
   componentWillMount() {
-    // this.props.toggleSideBar(this.props.autoOpenFilters, this.props.entityType);
+    this.props.setFilterEntity(this.props.entityType);
   }
 
   getComponent(key) {
     return this.props.children.filter(function(comp) {
       return comp && comp.key === key;
     });
+  }
+
+  onAddToggle() {
+    this.props.toggleSideBar(!this.props.addSidebarIsOpen, true);
   }
 
   onSearch(value) {
@@ -62,9 +66,7 @@ class ListLayout extends Component {
                         fontSize={"18px"}
                         color={"black"}
                         secondary
-                        onClick={() =>
-                          this.props.toggleSideBar(true, this.props.entityType)
-                        }
+                        onClick={() => this.props.toggleSideBar(true)}
                       >
                         <MaterialIcon type={"sort"} />
                       </Button>
@@ -73,13 +75,7 @@ class ListLayout extends Component {
                   <Container>
                     <TopSearcher
                       onSearchAction={value => this.onSearch(value)}
-                      onCreateAction={() =>
-                        this.props.toggleSideBar(
-                          true,
-                          this.props.entityType,
-                          true
-                        )
-                      }
+                      onCreateAction={() => this.onAddToggle()}
                     />
                   </Container>
                 </Layout>
@@ -116,14 +112,15 @@ const mapStateToProps = state => {
       ? sideBarStatus.isAdd
         ? false
         : sideBarStatus.status
-      : false
+      : false,
+    addSidebarIsOpen: sideBarStatus.status && sideBarStatus.isAdd
   };
 };
 
 const mapDispatchToProps = dispatch => {
   return {
-    toggleSideBar: (status, entityType, isAdd) =>
-      dispatch(toggleSideBar(status, entityType, isAdd))
+    toggleSideBar: (status, isAdd) => dispatch(toggleSideBar(status, isAdd)),
+    setFilterEntity: entityType => dispatch(setFilterEntity(entityType))
   };
 };
 

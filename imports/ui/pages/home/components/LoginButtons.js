@@ -38,7 +38,7 @@ const SAddMaterialIcon = styled.span`
  * @description This component is a wrapper for the LoginButtons
  */
 const LoginButtons = function(props) {
-  const size = { width: 43, height: 50 }
+  const size = { width: 43, height: 50 };
   return (
     <Container hidden={!props.show}>
       <Layout rowGap={"15px"}>
@@ -58,7 +58,7 @@ const LoginButtons = function(props) {
                   }
                 >
                   <SAddMaterialIcon>
-                    <MaterialIcon type={element.service} />
+                    <MaterialIcon type={element.label || element.service} />
                   </SAddMaterialIcon>
                 </HButtom>
               ) : (

@@ -27,10 +27,11 @@ class UserNavbarSection extends React.Component {
     this.policy = Meteor.settings.public.policyUrl;
     this.size = { width: 46, height: 53 };
     this.notSize = { width: 33, height: 39 };
+    this.isOpenCreateSidebar = false;
   }
 
   onAddToggle() {
-    this.props.toggleSideBar(true, null);
+    this.props.toggleSideBar(!this.props.addSidebarIsOpen);
   }
 
   render() {
@@ -110,13 +111,16 @@ class UserNavbarSection extends React.Component {
   }
 }
 
-const mapStateToProps = () => {
-  return {};
+const mapStateToProps = state => {
+  const { sideBarStatus } = state;
+  return {
+    addSidebarIsOpen: sideBarStatus.status && sideBarStatus.isAdd
+  };
 };
 
 const mapDispatchToProps = dispatch => {
   return {
-    toggleSideBar: (status, type) => dispatch(toggleSideBar(status, type, true))
+    toggleSideBar: status => dispatch(toggleSideBar(status, true))
   };
 };
 

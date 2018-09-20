@@ -2,6 +2,9 @@ import React, { Component } from "react";
 import { Map, TileLayer, Marker, Popup, Tooltip } from "react-leaflet";
 import styled from "styled-components";
 import { Query } from "react-apollo";
+import L from "leaflet";
+import ReactDOMServer from "react-dom/server";
+import ClusterIcon from "../ClusterIcon/ClusterIcon";
 import MarkerClusterGroup from "react-leaflet-markercluster";
 import { GetLocations } from "../../apollo-client/location";
 
@@ -21,6 +24,24 @@ class MapBackGround extends Component {
     minZoom: 3,
     maxZoom: 18
   };
+
+  createClusterCustomIcon(cluster) {
+    return L.divIcon({
+      html: ReactDOMServer.renderToString(
+        <ClusterIcon number={cluster.getChildCount()} />
+      ),
+      className: "marker-cluster-custom",
+      iconSize: L.point(40, 40, true)
+    });
+  }
+
+  createMarkerIcon() {
+    return L.icon({
+      iconUrl: "my-icon.png",
+      iconSize: [38, 95],
+      iconAnchor: [22, 94]
+    });
+  }
 
   render() {
     const position = [this.state.lat, this.state.lng];
@@ -42,6 +63,7 @@ class MapBackGround extends Component {
           url="https://cartodb-basemaps-{s}.global.ssl.fastly.net/dark_nolabels/{z}/{x}/{y}{r}.png"
         />
         <MarkerClusterGroup
+          iconCreateFunction={this.createClusterCustomIcon}
           showCoverageOnHover={false}
           spiderfyDistanceMultiplier={2}
         >

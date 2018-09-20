@@ -3,10 +3,8 @@ import { Container } from "btech-layout";
 import styled from "styled-components";
 import { connect } from "react-redux";
 import { toggleSideBar } from "../../actions/SideBarActions";
-import * as type from "../../actions/SideBarActions/types";
 import { Create } from "../../components";
 import { CREATE_LINKS } from "./create-links";
-
 import EventsFilters from "../../modules/event-module/filters";
 import JobsFilters from "../../modules/jobs-module/filters";
 import OrganizationFilters from "../../modules/organization-module/filters";
@@ -26,48 +24,48 @@ class SideBar extends Component {
   }
 
   renderSidebar() {
-    const data = this.props.sidebar;
-    if (data) {
-      if (data.isAdd) {
-        return (
-          <Create
-            options={CREATE_LINKS}
-            noteText={
-              "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore."
-            }
-            onChangeRoute={() => this.props.toggleSideBar(false, null, true)}
-            onBlur={() => console.log("adsdasdasdasd")}
-          />
-        );
-      } else {
-        switch (data.entityType.toLowerCase()) {
-          case "events":
-            return (
-              <EventsFilters
-                onClose={() =>
-                  this.props.toggleSideBar && this.props.toggleSideBar(false)
-                }
-              />
-            );
-          case "jobs":
-            return (
-              <JobsFilters
-                onClose={() =>
-                  this.props.toggleSideBar && this.props.toggleSideBar(false)
-                }
-              />
-            );
-          case "corporations":
-            return (
-              <OrganizationFilters
-                onClose={() =>
-                  this.props.toggleSideBar && this.props.toggleSideBar(false)
-                }
-              />
-            );
-          default:
-            return <div>You must implement this filters</div>;
-        }
+    if (this.props.isAddAction) {
+      return (
+        <Create
+          options={CREATE_LINKS}
+          onChangeRoute={() => this.props.toggleSideBar(false, null, true)}
+          onBlur={() => console.log("adsdasdasdasd")}
+        />
+      );
+    } else {
+      const typeEntity = this.props.filterEntityType || "events";
+      switch (typeEntity.toLowerCase()) {
+        case "events":
+          return (
+            <EventsFilters
+              onClose={() =>
+                this.props.toggleSideBar && this.props.toggleSideBar(false)
+              }
+            />
+          );
+        case "jobs":
+          return (
+            <JobsFilters
+              onClose={() =>
+                this.props.toggleSideBar && this.props.toggleSideBar(false)
+              }
+            />
+          );
+        case "corporations":
+          return (
+            <OrganizationFilters
+              onClose={() =>
+                this.props.toggleSideBar && this.props.toggleSideBar(false)
+              }
+            />
+          );
+        default:
+          return (
+            <div>
+              You must implement the filters for {this.props.filterEntityType}
+              entity type
+            </div>
+          );
       }
     }
   }
@@ -88,13 +86,10 @@ class SideBar extends Component {
 }
 
 const mapStateToProps = state => {
-  const { sideBarStatus } = state;
+  const { sideBarStatus, sideBarEntity } = state;
   return {
-    sidebar: sideBarStatus || {
-      status: false,
-      type: type.HIDE_SIDEBAR,
-      entityType: null
-    }
+    isAddAction: sideBarStatus ? sideBarStatus.isAdd : false,
+    filterEntityType: sideBarEntity ? sideBarEntity.entityType : null
   };
 };
 

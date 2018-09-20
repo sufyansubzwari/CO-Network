@@ -1,27 +1,27 @@
 export const CREATE_LINKS = [
   {
     name: "Event",
-    description: "Consec dipinsing",
+    // description: "Consec dipinsing",
     link: "/post-event"
   },
   {
     name: "Job",
-    description: "Consec tetur adip",
+    // description: "Consec tetur adip",
     link: "/post-job"
   },
-  {
-    name: "Data Story",
-    description: "Detur adipinsincg",
-    link: "/post-story"
-  },
+  // {
+  //   name: "Data Story",
+  //   // description: "Detur adipinsincg",
+  //   link: "/post-story"
+  // },
   {
     name: "Organization",
-    description: "Aadipinsincg",
+    // description: "Aadipinsincg",
     link: "/post-organization"
-  },
-  {
-    name: "Colloquium",
-    description: "Consec tetur",
-    link: "/post-colloquium"
   }
+  // {
+  //   name: "Colloquium",
+  //   // description: "Consec tetur",
+  //   link: "/post-colloquium"
+  // }
 ];
