@@ -11,6 +11,7 @@ import { connect } from "react-redux";
 import { toggleSideBar } from "../../actions/SideBarActions";
 import styled from "styled-components";
 import LogoutBtn from "../smart/auth/logout-btn";
+import NavbarUserButton from "../NavbarUserButton/NavbarUserButton";
 
 const SAddMaterialIcon = styled.span`
   > i {
@@ -109,12 +110,7 @@ class UserNavbarSection extends React.Component {
               />
 
               <Link to={avatarLink}>
-                <HButtom
-                  image={
-                    !!isAuthenticated
-                      ? isAuthenticated.profile.image
-                      : "https://cdn.dribbble.com/users/199982/screenshots/4044699/furkan-avatar-dribbble.png"
-                  }
+                <NavbarUserButton
                   size={this.size}
                 />
               </Link>

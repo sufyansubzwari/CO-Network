@@ -11,7 +11,6 @@ import Authorization from "../services/authorization";
 import MainLayout from './MainLayout/MainLayout'
 
 const handleAuthentication = props => {
-  alert('pepe')
   if (/access_token|id_token|error/.test(props.location.hash)) {
     Authorization.auth0.popup.callback();
   }
