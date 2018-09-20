@@ -80,7 +80,7 @@ const HNavbar = function(props) {
   return (
     <HItemContainerLayout
       height="100vh"
-      mdHeight="inherit"
+      mdHeight="100%"
       padding={"0 0 68px 0"}
       mdPadding={"0"}
       pad

@@ -45,7 +45,7 @@ class MainLayout extends Component {
             ? `'Navbar SideBar content'`
             : `'Navbar content'`
         }}
-        fullWY
+        minH="100vh"
       >
         <SignUpListener {...props} />
         <Navbar {...props} isShow={this.state.isShow} />
