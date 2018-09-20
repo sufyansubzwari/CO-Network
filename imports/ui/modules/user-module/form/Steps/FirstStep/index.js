@@ -1,14 +1,11 @@
 import React from "react";
-import {
-  WizardStepForm,
-  Input,
-  SocialButton
-} from "btech-base-forms-component";
+import { Input, SocialButton } from "btech-base-forms-component";
 import { Container, Layout } from "btech-layout";
 import { GeoInputLocation } from "btech-location";
 import styled from "styled-components";
 import services from "../../../../../components/LoginModal/service.constant";
 import { EMAIL_REGEX } from "../../constants/constants";
+import Authorization from "../../../../../services/authorization";
 
 const Label = styled.label`
   font-size: 12px;
@@ -47,7 +44,19 @@ class FirstStep extends React.Component {
     } else this.props.onChange && this.props.onChange(this.state.user);
   }
 
+  handleLinkAccount(service) {
+    Authorization.initLink(service);
+  }
+
+  getLinkedAccountData(provider) {
+    const userIdentities = this.state.user ? this.state.user.identities : [];
+    return userIdentities.find((element, index) => {
+      return element.provider === provider;
+    });
+  }
+
   render() {
+    console.log(this.state.user);
     return (
       <Layout rowGap={"25px"}>
         <Layout templateColumns={2} colGap={"20px"}>
@@ -89,17 +98,19 @@ class FirstStep extends React.Component {
         <Layout
           templateColumns={this.services.length}
           colGap={"10px"}
-          height={"90px"}
+          minH={"90px"}
         >
           {this.services.map((authService, index) => {
             const service = authService.label || authService.service;
+            const data = this.getLinkedAccountData(authService.service);
             return (
               <SocialButton
                 key={index}
                 social={service}
-                connected={this.state.user.social[service] !== ""}
-                data={this.state.user.social[service]}
-                onClick={() => console.log("trying to log for github")}
+                connected={!!data}
+                data={data}
+                fields={["name", "email"]}
+                onClick={() => this.handleLinkAccount(authService.service)}
               />
             );
           })}

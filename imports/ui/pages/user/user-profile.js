@@ -18,12 +18,6 @@ class UserProfile extends Component {
 
     let user = {
       ...props.curUser.profile,
-      social: {
-        github: "",
-        facebook: "",
-        twitter: "",
-        google: ""
-      },
       aboutMe: {
         yourPassion: "",
         existingProblem: "",
@@ -58,6 +52,10 @@ class UserProfile extends Component {
 
     this.handleBackgroundChange = this.handleBackgroundChange.bind(this);
     this.handleUserPhotoChange = this.handleUserPhotoChange.bind(this);
+  }
+
+  componentWillMount() {
+    if (!this.props.curUser) this.props.history.push("/");
   }
 
   onCancel() {

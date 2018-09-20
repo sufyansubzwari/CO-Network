@@ -20,12 +20,12 @@ class UserPreviewBody extends React.Component {
   }
 
   render() {
-    let socials = [];
-    if (this.state.user.social) {
-      for (let social in this.state.user.social) {
-        if (this.state.user.social[social] !== "") socials.push(social);
-      }
-    }
+    // let socials = [];
+    // if (this.state.user.social) {
+    //   for (let socialIndex in this.state.user.social) {
+    //     if (this.state.user.social[socialIndex] !== "") socials.push(social);
+    //   }
+    // }
     //tags
     let languages =
       this.state.user.knowledge &&
@@ -106,15 +106,15 @@ class UserPreviewBody extends React.Component {
         {this.state.user && this.state.user.email !== "" ? (
           <Text header={"Email"} text={this.state.user.email} />
         ) : null}
-        <Social
-          social={socials}
-          links={[
-            {
-              link: this.state.user && this.state.user.website,
-              website: this.state.user && this.state.user.website
-            }
-          ]}
-        />
+        {/*<Social*/}
+          {/*social={socials}*/}
+          {/*links={[*/}
+            {/*{*/}
+              {/*link: this.state.user && this.state.user.website,*/}
+              {/*website: this.state.user && this.state.user.website*/}
+            {/*}*/}
+          {/*]}*/}
+        {/*/>*/}
         <Container>
           <Layout templateColumns={2}>
             {languages && languages.length ? (

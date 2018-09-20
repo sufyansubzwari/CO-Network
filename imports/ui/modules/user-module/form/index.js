@@ -46,7 +46,6 @@ class UserForm extends Component {
   componentWillMount() {}
 
   render() {
-    console.log("MlWizardForm", this.state.user);
     return (
       <MlWizardForm
         title={"Member Profile"}

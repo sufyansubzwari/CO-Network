@@ -15,6 +15,12 @@ const handleAuthentication = props => {
   }
 };
 
+const handleLinkAccount = props => {
+  if (/access_token|id_token|error/.test(props.location.hash)) {
+    Authorization.getAuthForLink().popup.callback();
+  }
+};
+
 //------------------------------------------------------------------------------
 // COMPONENT:
 //------------------------------------------------------------------------------
@@ -25,6 +31,23 @@ const Routes = props => (
         path="/callback"
         render={props => {
           handleAuthentication(props);
+          return (
+            <div
+              style={{
+                height: "600pc",
+                width: "500px",
+                backgroundColor: "white",
+                position: "fixed",
+                zIndex: 10000
+              }}
+            />
+          );
+        }}
+      />
+      <Route
+        path="/link"
+        render={props => {
+          handleLinkAccount(props);
           return (
             <div
               style={{

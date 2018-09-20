@@ -8,6 +8,16 @@ fragment userFragment on User {
       lastName
       nickName
       loginCount
+      identities {
+          provider
+          user_id
+          profileData {
+              name
+              lastName
+              email
+              image
+          }
+      }
       email
       image
       cover
