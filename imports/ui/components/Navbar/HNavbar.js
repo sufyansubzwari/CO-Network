@@ -31,21 +31,27 @@ const HItemContainerLayout = posed(HNavLayout)({
 // create all navs
 let poseOptions = { "pose-1": { x: "-100%" } };
 for (let i = 0; i < 20; i++) {
-  poseOptions[`pose${i}`] = { y: i * 91, x: "0%" };
+  poseOptions[`pose${i}`] = { y: i * 86, x: "0%" };
 }
 const ActiveLinkLink = styled.div`
  background: ${props =>
    `${StyleUtil.getThemeValue(props, "theme.color.primary")};`}
- height:75px;
+ height:65px;
 `;
 const ActiveLink = posed(ActiveLinkLink)(poseOptions);
-
 
 const NavItemStyled=styled.div`
     ${({index})=>{
       const isSecondLine = index%6>2;
       return isSecondLine?'transform: translateX(64%);':''
+  
 }}
+  &:hover {
+      svg path{
+          fill:${props => `${StyleUtil.getThemeValue(props, "theme.color.primary")};`}
+          stroke:${props => `${StyleUtil.getThemeValue(props, "theme.color.primary")};`}
+      }
+  }
 `;
 
 const XsTextDescription=styled.div`
