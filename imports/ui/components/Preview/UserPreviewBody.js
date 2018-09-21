@@ -36,6 +36,9 @@ class UserPreviewBody extends React.Component {
         let otherlook = this.state.user.speaker && this.state.user.speaker.otherlooking && this.state.user.speaker.otherlooking.map(look => ({...look, active: true}))
         let otherpre = this.state.user.speaker && this.state.user.speaker.otherpreferred && this.state.user.speaker.otherpreferred.map(pre => ({...pre, active: true}))
         let topics = this.state.user.speaker && this.state.user.speaker.topic && this.state.user.speaker.topic.map(top => ({...top, active: true}))
+        let achieAudited = this.state.user.achievements && this.state.user.achievements.category && this.state.user.achievements.category.filter.map(tag => tag ({...tag, active: true}))
+        let achiePatent = this.state.user.achievements && this.state.user.achievements.category && this.state.user.achievements.category.map(tag => ({...tag, active: true}))
+        let achiePublications = this.state.user.achievements && this.state.user.achievements.category && this.state.user.achievements.category.map(tag => ({...tag, active: true}))
 
         //checkboxes
         let lookingfor = this.state.user.knowledge && this.state.user.knowledge.lookingFor && this.state.user.knowledge.lookingFor.map(look => <div>{look.label}</div>)
@@ -46,7 +49,7 @@ class UserPreviewBody extends React.Component {
         return (
             <Layout rowGap={'15px'}>
                 <Title text={ this.state.user.name + " " + this.state.user.lastName}/>
-                <Location text={this.state.user.info && this.state.user.info.location && this.state.user.info.location.address.toUpperCase()}/>
+                <Location text={this.state.user.place && this.state.user.place.location && this.state.user.place.location.address.toUpperCase()}/>
                 {this.state.user && this.state.user.email !== '' ? <Text header={'Email'} text={this.state.user.email}/> : null}
                 <Social social={socials}
                         links={[{link: this.state.user && this.state.user.website, website: this.state.user && this.state.user.website}]}/>
