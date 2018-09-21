@@ -1,5 +1,6 @@
+#import './fragments.graphql'
 
-query($id: String){
+query userQuery($id: String){
   user(id: $id) {
     _id
     createdAt
@@ -23,5 +24,11 @@ query($id: String){
         p256dh
       }
     }
+  }
+}
+
+query userList{
+  users{
+    ...userFragment
   }
 }

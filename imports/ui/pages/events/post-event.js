@@ -33,6 +33,7 @@ class PostEvent extends Component {
           min: "",
           max: ""
         },
+        sponsors: [],
         tickets: []
       }
     };
