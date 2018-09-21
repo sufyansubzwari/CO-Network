@@ -55,6 +55,16 @@ Achievements.schema = new SimpleSchema({
     optional: true,
   },
   degree: {
+    type: Object,
+    label: "The achievement fields used in (academic)",
+    optional: true,
+  },
+  'degree.label': {
+    type: String,
+    label: "The achievement fields used in (academic)",
+    optional: true,
+  },
+  'degree.type': {
     type: String,
     label: "The achievement fields used in (academic)",
     optional: true,
@@ -90,6 +100,16 @@ Achievements.schema = new SimpleSchema({
     optional: true,
   },
   level: {
+    type: Object,
+    label: "The achievement fields used in (course)",
+    optional: true,
+  },
+  'level.label': {
+    type: String,
+    label: "The achievement fields used in (course)",
+    optional: true,
+  },
+  'level.type': {
     type: String,
     label: "The achievement fields used in (course)",
     optional: true,

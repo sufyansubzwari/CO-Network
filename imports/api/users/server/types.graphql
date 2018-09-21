@@ -33,6 +33,7 @@ type Profile {
     knowledge: Knowledge
     speaker: Speaker
     achievements: [Achievements]
+    place: Places
 }
 
 type AboutMe {
@@ -51,6 +52,7 @@ type Professional {
     industry: [Tags]
     salaryRange: SalaryRange
     jobType: [ObjectType]
+    seeking: Boolean
 }
 
 type Speaker {

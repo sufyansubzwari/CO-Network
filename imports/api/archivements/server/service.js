@@ -1,6 +1,7 @@
 import Achievements from "../index";
 import * as _ from "lodash";
 import Places from "../../places";
+import Tags from "../../tags";
 
 /**
  * @class Achievements Service
@@ -14,11 +15,14 @@ class AchievementsService {
    * @return {Object} Achievement
    */
   static achievement = async data => {
-    console.log("Achievement => ", data);
     if (_.isUndefined(data._id)) {
+      if (data.category)
+        data.category = await Tags.service.normalizeTags(data.category);
       const id = Achievements.collection.insert(data);
       return Achievements.collection.findOne(id);
     } else {
+      if (data.category)
+        data.category = await Tags.service.normalizeTags(data.category);
       let id = data._id;
       delete data._id;
       await Achievements.collection.update(id, {$set: data});
@@ -50,7 +54,7 @@ class AchievementsService {
    * @return {Object} Achievement
    */
   static getAchievementByOwner = owner => {
-    return Achievements.collection.findOne({owner:owner});
+    return Achievements.collection.find({owner:owner}).fetch();
   };
   /**
    *@name achievements

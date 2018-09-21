@@ -34,7 +34,7 @@ User.profile = entity => {
   entity.profile.speaker && entity.profile.speaker.otherlooking ? entity.profile.speaker.otherlooking = Tags.service.getTagList(entity.profile.speaker.otherlooking) : null;
   entity.profile.place = Places.service.getPlaceByOwner(entity._id);
   entity.profile.achievements = Achievements.getAchievementByOwner(entity._id);
-
+console.log("achhhh => ", entity.profile.achievements);
   return entity.profile
 
 };
