@@ -8,6 +8,7 @@ import {
 } from "./components/index";
 import { MlWizardForm, WizardStepForm } from "btech-base-forms-component";
 import PropTypes from "prop-types";
+import moment from "moment";
 
 /**
  * @module Event
@@ -28,14 +29,14 @@ class EventForm extends Component {
         place: {
           location: {
             address: "",
-            location: {lat: "", lng: ""},
+            location: { lat: "", lng: "" },
             fullLocation: {}
-          },
+          }
         },
         tickets: []
       }
     };
-    this.handleChange = this.handleChange.bind(this)
+    this.handleChange = this.handleChange.bind(this);
   }
 
   componentWillMount() {
@@ -44,28 +45,29 @@ class EventForm extends Component {
       this.props.location.state &&
       this.props.location.state.event
     ) {
-      this.setState({ event: this.props.location.state.event });
+      let event = this.props.location.state.event;
+      event.startDate = moment(event.startDate);
+      event.endDate = moment(event.endDate);
+      this.setState({ event: event });
     }
   }
 
-    componentWillReceiveProps(nextProps) {
-        if(nextProps.event){
-            this.setState({
-                event: nextProps.event
-            })
-        }
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.event) {
+      this.setState({
+        event: nextProps.event
+      });
     }
-
-  handleChange(event){
-      this.setState(
-          {
-              event: event
-          },
-          () =>
-              this.props.handleChangeEvent && this.props.handleChangeEvent(event)
-      );
   }
 
+  handleChange(event) {
+    this.setState(
+      {
+        event: event
+      },
+      () => this.props.handleChangeEvent && this.props.handleChangeEvent(event)
+    );
+  }
 
   render() {
     return (

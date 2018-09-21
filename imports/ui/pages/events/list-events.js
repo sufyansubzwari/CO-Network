@@ -21,32 +21,31 @@ class ListEvents extends Component {
       selectedIndex: null,
       limit: 10,
       filter: "",
-      events: [],
-      update: true
+      // events: [],
+      flag: true
     };
   }
 
   componentWillMount() {
-    if (this.props.data && !this.props.data.loading && this.props.data.events) {
-      this.setState({ events: this.props.data.events, update: false });
+    if (
+      this.props.location &&
+      this.props.location.state &&
+      this.props.location.state.postEvent
+    ) {
+      this.reFetchQuery();
+      this.props.history.replace({ state: {} });
     }
   }
 
   reFetchQuery() {
-    this.setState({ update: true }, () =>
-      this.props.data.refetch({
-        limit: this.state.limit,
-        filter: this.state.filter,
-        events: this.props.filterStatus.filters
-      })
-    );
+    this.props.data.refetch({
+      limit: this.state.limit,
+      filter: this.state.filter || "",
+      events: this.props.filterStatus.filters || {}
+    });
   }
 
   componentWillReceiveProps(nextProps) {
-    // if (nextProps.data && !nextProps.data.loading && nextProps.data.events && this.state.update) {
-    //   let events = JSON.parse(JSON.stringify(nextProps.data.events));
-    //   this.setState({events: events, update: false})
-    // }
     if (nextProps.filterStatus && nextProps.filterStatus.filters) {
       this.reFetchQuery();
     }
@@ -87,85 +86,73 @@ class ListEvents extends Component {
 
   render() {
     const _this = this;
-    const { limit, filter } = this.state;
+    const isLoading =
+      this.props.data.loading &&
+      (!this.props.data.events || !this.props.data.events.length);
     return (
       <ListLayout entityType={"events"} onSearchText={this.onSearch.bind(this)}>
-        <Query
+        <ItemsList
           key={"listComponent"}
-          query={GetEvents}
-          variables={{ limit, filter }}
-          pollInterval={5000}
-        >
-          {({ loading, error, data }) => {
-            const isLoading = loading && (!data.events || !data.events.length);
-            // if (loading) return null;
-            // if (error) return `Error!: ${error}`;
-            return (
-              <ItemsList
-                key={"listComponent"}
-                title={"Events"}
-                data={data && data.events}
-                loading={isLoading}
-                onFetchData={() => this.fetchMoreSelection(isLoading)}
-                onSelectCard={(item, key) => this.onChangeSelection(item, key)}
-              />
-            );
-          }}
-        </Query>
-        {this.state.selectedItem ? (
-          <Mutation key={"rightSide"} mutation={DeleteEvent}>
-            {(deleteEvent, { eventDeleted }) => (
-              <Preview
-                key={"rightSide"}
-                navlinks={["Details", "Vision", "Products", "Media"]}
-                navClicked={index => console.log(index)}
-                navOptions={[
-                  {
-                    text: "Follow",
-                    checkVisibility: () => {
-                      return (
-                        this.state.selectedItem && this.state.selectedItem._id
-                      );
-                    },
-                    onClick: () => {
-                      console.log("Adding");
-                    }
+          title={"Events"}
+          data={this.props.data.events}
+          loading={isLoading}
+          onFetchData={() => this.fetchMoreSelection(isLoading)}
+          onSelectCard={(item, key) => this.onChangeSelection(item, key)}
+        />
+        {/*{this.state.selectedItem ? (*/}
+        <Mutation key={"rightSide"} mutation={DeleteEvent}>
+          {(deleteEvent, { eventDeleted }) => (
+            <Preview
+              key={"rightSide"}
+              navlinks={["Details", "Vision", "Products", "Media"]}
+              navClicked={index => console.log(index)}
+              navOptions={[
+                {
+                  text: "Follow",
+                  checkVisibility: () => {
+                    return (
+                      this.state.selectedItem && this.state.selectedItem._id
+                    );
                   },
-                  {
-                    text: "Edit",
-                    checkVisibility: () => {
-                      return (
-                        this.state.selectedItem && this.state.selectedItem._id
-                      );
-                    },
-                    onClick: () => {
-                      _this.editEvent();
-                    }
-                  },
-                  {
-                    text: "Remove",
-                    icon: "delete",
-                    checkVisibility: () => {
-                      return (
-                        this.state.selectedItem && this.state.selectedItem._id
-                      );
-                    },
-                    onClick: function() {
-                      _this.removeEvent(deleteEvent, _this.state.selectedItem);
-                    }
+                  onClick: () => {
+                    console.log("Adding");
                   }
-                ]}
-                index={this.state.selectedIndex}
-                data={this.state.selectedItem}
-                backGroundImage={
-                  this.state.selectedItem ? this.state.selectedItem.image : null
+                },
+                {
+                  text: "Edit",
+                  checkVisibility: () => {
+                    return (
+                      this.state.selectedItem && this.state.selectedItem._id
+                    );
+                  },
+                  onClick: () => {
+                    _this.editEvent();
+                  }
+                },
+                {
+                  text: "Remove",
+                  icon: "delete",
+                  checkVisibility: () => {
+                    return (
+                      this.state.selectedItem && this.state.selectedItem._id
+                    );
+                  },
+                  onClick: function() {
+                    _this.removeEvent(deleteEvent, _this.state.selectedItem);
+                  }
                 }
-              >
-                <EventPreviewBody event={this.state.selectedItem} />
-              </Preview>
-            )}
-          </Mutation>
-        ) : null}
+              ]}
+              index={this.state.selectedIndex}
+              data={this.state.selectedItem}
+              backGroundImage={
+                this.state.selectedItem ? this.state.selectedItem.image : null
+              }
+            >
+              <EventPreviewBody event={this.state.selectedItem} />
+            </Preview>
+          )}
+        </Mutation>
+        // ) : null}
       </ListLayout>
     );
   }
@@ -194,7 +181,8 @@ export default withRouter(
       options: () => ({
         variables: {
           limit: 10
-        }
+        },
+        fetchPolicy: "cache-and-network"
       })
     })(ListEvents)
   )

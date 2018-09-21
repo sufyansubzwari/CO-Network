@@ -10,6 +10,8 @@ import { Link } from "react-router-dom";
 import { connect } from "react-redux";
 import { toggleSideBar } from "../../actions/SideBarActions";
 import styled from "styled-components";
+import LogoutBtn from "../smart/auth/logout-btn";
+import NavbarUserButton from "../NavbarUserButton/NavbarUserButton";
 
 const SAddMaterialIcon = styled.span`
   > i {
@@ -133,15 +135,7 @@ class UserNavbarSection extends React.Component {
               />
 
               <Link to={avatarLink}>
-                <HButtom
-                  title={!!isAuthenticated ? `${isAuthenticated.profile.name} ${
-                    isAuthenticated.profile.lastName
-                    }`: ''}
-                  image={
-                    !!isAuthenticated
-                      ? isAuthenticated.profile.image
-                      : "https://cdn.dribbble.com/users/199982/screenshots/4044699/furkan-avatar-dribbble.png"
-                  }
+                <NavbarUserButton
                   size={this.size}
                 >
                   <SInitialsContainer>{initials}</SInitialsContainer>
@@ -155,7 +149,7 @@ class UserNavbarSection extends React.Component {
             >
               <ThemeProvider theme={theme}>
                 <Layout rowGap="10px">
-                  <SideBarLink> Log Out </SideBarLink>
+                  <LogoutBtn/>
                   <SideBarLink href={this.policy}> Terms Policies </SideBarLink>
                   <SideBarLink> CONetwork © 2018 </SideBarLink>
                 </Layout>

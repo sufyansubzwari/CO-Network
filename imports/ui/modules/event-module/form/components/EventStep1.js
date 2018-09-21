@@ -6,7 +6,8 @@ import {
   TextArea,
   CheckBoxList,
   InputAutoComplete,
-  TagList
+  TagList,
+  DatePickerRange
 } from "btech-base-forms-component";
 import {COMMUNITYEVENTCATEGORIES} from "../constants/community-event-categories";
 import {Query} from "react-apollo";
@@ -59,6 +60,7 @@ class EventStep1 extends Component {
   changeCategoryEvents(actives) {
     const selected = this.state.category.map((category, index) => {
       category["active"] = actives[index];
+      category["type"] = "EVENT";
       return category;
     });
     const category = selected.filter(element => element.active);
@@ -73,6 +75,7 @@ class EventStep1 extends Component {
     let newTag = Object.assign({}, tag);
     let tags = this.state.event.others || [];
     !newTag.name ? (newTag.name = newTag.label) : null;
+    newTag.type = "EVENT";
     tags.push(newTag);
     this.state.event.others = tags;
     this.setState({event: this.state.event}, () => this.notifyParent());
@@ -81,6 +84,13 @@ class EventStep1 extends Component {
   onCloseTags(e, tag, index) {
     this.state.event.others.splice(index, 1);
     this.setState({event: this.state.event}, () => this.notifyParent());
+  }
+
+  onDatesChange(startDate, endDate) {
+    let event = this.state.event;
+    event.startDate = startDate;
+    event.endDate = endDate;
+    this.setState({event: event});
   }
 
   render() {
@@ -103,12 +113,19 @@ class EventStep1 extends Component {
             getValue={this.notifyParent.bind(this)}
           />
         </Container>
-        {/*<Container>*/}
-        {/*<Layout templateColumns={2}>*/}
-        {/*<Container>date 1</Container>*/}
-        {/*<Container>date 2</Container>*/}
-        {/*</Layout>*/}
-        {/*</Container>*/}
+        <Container>
+          <DatePickerRange
+            required={true}
+            reverse={true}
+            placeholderStartDate={"Start Date"}
+            placeholderEndDate={'End Date'}
+            startDate={this.state.event && this.state.event.startDate}
+            endDate={this.state.event && this.state.event.endDate}
+            format={'MM/DD/YYYY HH:mm'}
+            showTimeSelect
+            getValue={(startDate, endDate) => this.onDatesChange(startDate, endDate)}
+          />
+        </Container>
         <Container>
           <CheckBoxList
             columns={2}

@@ -1,12 +1,12 @@
-import React, { Component } from "react";
-import { Layout, Container } from "btech-layout";
+import React, {Component} from "react";
+import {Layout, Container} from "btech-layout";
 import UserForm from "./../../modules/user-module/form/";
 import InternalLayout from "../../components/InternalLayout/InternalLayout";
-import { Preview } from "../../../ui/components";
+import {Preview} from "../../../ui/components";
 import UserPreviewBody from "../../components/Preview/UserPreviewBody";
-import { Mutation } from "react-apollo";
-import { withRouter } from "react-router-dom";
-import { CreateEvent } from "../../apollo-client/event";
+import {Mutation} from "react-apollo";
+import {withRouter} from "react-router-dom";
+import {CreateUser} from "../../apollo-client/user";
 
 /**
  * @module User
@@ -22,6 +22,12 @@ class UserProfile extends Component {
         yourPassion: "",
         existingProblem: "",
         steps: ""
+      },
+      social: {
+        github: "",
+        facebook: "",
+        twitter: "",
+        google: ""
       },
       knowledge: {
         languages: [],
@@ -84,18 +90,28 @@ class UserProfile extends Component {
     return (
       <InternalLayout>
         <Container fullY key={"leftSide"}>
-          <UserForm
-            onFinish={data =>
+          <Mutation
+            mutation={CreateUser}
+            onCompleted={() =>
+              this.props.history.push("/", {userCreate: true})
+            }
+            onError={error => console.log("Error: ", error)}
+          >
+            {(createProfile, {profileCreated}) => (
+              <UserForm
+                onFinish={data =>
               this.onPostAction(() => console.log(createProfile), data)
             }
-            onCancel={() => this.onCancel()}
-            userLogged={false}
-            handleChangeProfile={user =>
+                onCancel={() => this.onCancel()}
+                userLogged={false}
+                handleChangeProfile={user =>
               this.setState({ user: { ...this.state.user, ...user } })
             }
-            user={this.state.user}
-            {...this.props}
-          />
+                user={this.state.user}
+                {...this.props}
+              />
+            )}
+          </Mutation>
         </Container>
         <Preview
           showAvatar={true}
@@ -109,7 +125,7 @@ class UserProfile extends Component {
               checkVisibility: () => {
                 return this.state.selectedItem && this.state.selectedItem.id;
               },
-              onClick: function() {
+              onClick: function () {
                 console.log("Remove");
               }
             }
@@ -120,7 +136,7 @@ class UserProfile extends Component {
           onBackgroundChange={this.handleBackgroundChange}
           onUserPhotoChange={this.handleUserPhotoChange}
         >
-          <UserPreviewBody user={this.state.user} />
+          <UserPreviewBody user={this.state.user}/>
         </Preview>
       </InternalLayout>
     );

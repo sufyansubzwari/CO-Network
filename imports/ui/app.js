@@ -8,7 +8,6 @@ import { Provider } from "react-redux";
 import { ThemeProvider } from "styled-components";
 import store from "./redux/store.js";
 import { theme } from "./theme";
-import GlobalDataProvider from "./global-data-provider";
 
 import "bootstrap/dist/css/bootstrap.min.css";
 import "react-leaflet-markercluster/dist/styles.min.css";
@@ -39,11 +38,7 @@ const App = ({ component }) => (
     <Router history={history}>
       <Provider store={store}>
         <ApolloProvider client={client}>
-          <GlobalDataProvider>
-            {globalDataProps =>
-              React.createElement(component, { ...globalDataProps })
-            }
-          </GlobalDataProvider>
+          {React.createElement(component )}
         </ApolloProvider>
       </Provider>
     </Router>
@@ -51,3 +46,7 @@ const App = ({ component }) => (
 );
 
 export default App;
+
+// {globalDataProps =>
+//   React.createElement(component, { ...globalDataProps })
+// }

@@ -6,6 +6,8 @@ query GetEvents($limit: Int, $filter: String, $events: EventsInputSearch) {
     description
     venueName
     image
+    startDate
+    endDate
     owner {
       _id
     }
