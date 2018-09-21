@@ -2,11 +2,23 @@ import React from "react";
 import { Switch, Route } from "react-router-dom";
 import { propType } from "graphql-anywhere";
 import { userFragment } from "./apollo-client/user";
-import {
-  ScrollToTop,
-  RouteWithProps
-} from "./components/smart/route-wrappers";
+import { ScrollToTop, RouteWithProps } from "./components/smart/route-wrappers";
 import LoadableWrapper from "./components/dumb/loadable-wrapper";
+
+//
+import HomePage from "./pages/home/home-page";
+import SignUpPage from "./pages/sign-up-page";
+import UserProfile from "./pages/user/user-profile";
+import NotFoundPage from "./pages/not-found-page";
+// events
+import ListEvents from "./pages/events/list-events";
+import PostEvent from "./pages/events/post-event";
+// jobs
+import ListJobs from "./pages/jobs/list-jobs"
+import PostJob from "./pages/jobs/post-jobs"
+// innovators
+import ListInnovators from  "./pages/innovators/list-innovators"
+import PostOrganization from  "./pages/innovators/post-innovators"
 
 //------------------------------------------------------------------------------
 // COMPONENT:
@@ -18,97 +30,69 @@ const Routes = props => (
         exact
         name="home"
         path="/"
-        component={LoadableWrapper({
-          loader: () => import("./pages/home/home-page"),
-          delay: 0
-        })}
+        component={HomePage}
         {...props}
       />
       <RouteWithProps
         exact
         name="Events"
         path="/events"
-        component={LoadableWrapper({
-          loader: () => import("./pages/events/list-events"),
-          delay: 0
-        })}
+        component={ListEvents}
         {...props}
       />
       <RouteWithProps
         exact
         name="Post a Event"
         path="/post-event"
-        component={LoadableWrapper({
-          loader: () => import("./pages/events/post-event"),
-          delay: 0
-        })}
+        component={PostEvent}
         {...props}
       />
       <RouteWithProps
         exact
         name="SignUp"
         path="/sign-up"
-        component={LoadableWrapper({
-          loader: () => import("./pages/sign-up-page"),
-          delay: 0
-        })}
+        component={SignUpPage}
         {...props}
       />
       <RouteWithProps
         exact
         name="User Profile"
         path="/profile"
-        component={LoadableWrapper({
-          loader: () => import("./pages/user/user-profile"),
-          delay: 0
-        })}
+        component={UserProfile}
         {...props}
       />
       <RouteWithProps
         exact
         name="Jobs"
         path="/jobs"
-        component={LoadableWrapper({
-          loader: () => import("./pages/jobs/list-jobs"),
-          delay: 0
-        })}
+        component={ListJobs}
         {...props}
       />
       <RouteWithProps
         exact
         name="Post a Job"
         path="/post-job"
-        component={LoadableWrapper({
-          loader: () => import("./pages/jobs/post-jobs"),
-          delay: 0
-        })}
+        component={PostJob}
         {...props}
       />
       <RouteWithProps
         exact
         name="Innovators"
         path="/innovators"
-        component={LoadableWrapper({
-          loader: () => import("./pages/innovators/list-innovators"),
-          delay: 0
-        })}
+        component={ListInnovators}
         {...props}
       />
       <RouteWithProps
         exact
         name="Post a Organization"
         path="/post-organization"
-        component={LoadableWrapper({
-          loader: () => import("./pages/innovators/post-innovators"),
-          delay: 0
-        })}
+        component={PostOrganization}
         {...props}
       />
-      <Route
+      <RouteWithProps
         name="notFound"
-        component={LoadableWrapper({
-          loader: () => import("./pages/not-found-page")
-        })}
+        component={NotFoundPage}
+        {...props}
       />
     </Switch>
   </ScrollToTop>

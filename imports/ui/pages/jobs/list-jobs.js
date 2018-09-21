@@ -146,7 +146,7 @@ const mapStateToProps = state => {
   const { previewData, filterStatus } = state;
   return {
     previewData: previewData,
-    filterStatus: filterStatus,
+    filterStatus: filterStatus
   };
 };
 

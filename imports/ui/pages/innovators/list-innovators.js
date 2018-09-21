@@ -9,8 +9,8 @@ import { Query, Mutation } from "react-apollo";
 import { GetOrg, DeleteOrg } from "../../apollo-client/organization";
 import { withRouter } from "react-router-dom";
 import OrganizationPreviewBody from "../../components/Preview/OrganizationPreviewBody";
-import {connect} from "react-redux";
-import {PreviewData} from "../../actions/PreviewActions";
+import { connect } from "react-redux";
+import { PreviewData } from "../../actions/PreviewActions";
 
 /**
  * @module Events
@@ -107,7 +107,11 @@ class ListInnovators extends Component {
         <Query
           key={"listComponent"}
           query={GetOrg}
-          variables={{ limit, filter, organizations: this.props.filterStatus.filters }}
+          variables={{
+            limit,
+            filter,
+            organizations: this.props.filterStatus.filters
+          }}
           pollInterval={5000}
         >
           {({ loading, error, data }) => {
@@ -210,12 +214,11 @@ class ListInnovators extends Component {
   }
 }
 
-
 const mapStateToProps = state => {
   const { previewData, filterStatus } = state;
   return {
     previewData: previewData,
-    filterStatus: filterStatus,
+    filterStatus: filterStatus
   };
 };
 
