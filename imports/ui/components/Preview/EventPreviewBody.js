@@ -22,7 +22,7 @@ class EventPreviewBody extends React.Component {
   render() {
     //tags
     let others =
-      this.state.event.other &&
+      this.state.event.others &&
       this.state.event.others.map(other => ({ ...other, active: true }));
 
     //checkboxes
