@@ -16,6 +16,12 @@ const SAddMaterialIcon = styled.span`
     line-height: 55px;
   }
 `;
+
+const SInitialsContainer = styled.span`
+  font-family: "Helvetica Neue Light";
+  font-weight: bold;
+  letter-spacing: 1px;
+`;
 /**
  * @module Data
  * @category Component
@@ -58,9 +64,27 @@ class UserNavbarSection extends React.Component {
     this.props.toggleSideBar(!this.props.addSidebarIsOpen);
   }
 
+  getUserInitials(namespace) {
+    const result = [];
+    if (typeof namespace === "string") {
+      const word = namespace.split(" ");
+      for (let i = word.length - 1; i >= 0; i--) {
+        result[i] = word[i][0];
+      }
+      return result.join("");
+    } else return "";
+  }
+
   render() {
     const isAuthenticated = this.props.curUser;
     const avatarLink = isAuthenticated ? "/profile" : "/";
+    const initials = isAuthenticated
+      ? this.getUserInitials(
+          `${isAuthenticated.profile.name} ${
+            isAuthenticated.profile.lastName
+          }` || isAuthenticated.profile.email
+        )
+      : null;
     return (
       <Layout
         customTemplateRows={"1fr auto"}
@@ -110,13 +134,18 @@ class UserNavbarSection extends React.Component {
 
               <Link to={avatarLink}>
                 <HButtom
+                  title={!!isAuthenticated ? `${isAuthenticated.profile.name} ${
+                    isAuthenticated.profile.lastName
+                    }`: ''}
                   image={
                     !!isAuthenticated
                       ? isAuthenticated.profile.image
                       : "https://cdn.dribbble.com/users/199982/screenshots/4044699/furkan-avatar-dribbble.png"
                   }
                   size={this.size}
-                />
+                >
+                  <SInitialsContainer>{initials}</SInitialsContainer>
+                </HButtom>
               </Link>
             </Group>
             <Layout
