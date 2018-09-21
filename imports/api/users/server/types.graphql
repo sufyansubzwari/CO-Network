@@ -32,7 +32,7 @@ type Profile {
     aboutMe: AboutMe
     knowledge: Knowledge
     speaker: Speaker
-    archivement: [Achievements]
+    achievements: [Achievements]
 }
 
 type AboutMe {
@@ -42,22 +42,24 @@ type AboutMe {
 }
 
 type Knowledge {
-    languages: [String]
-    curiosity: [String]
-    lookingFor: [String]
+    languages: [Tags]
+    curiosity: [Tags]
+    lookingFor: [ObjectType]
 }
 
 type Professional {
-    languages: [Tags]
+    industry: [Tags]
     salaryRange: SalaryRange
-    jobType: [String]
+    jobType: [ObjectType]
 }
 
 type Speaker {
     join: Boolean
-    topic: SalaryRange
+    topic: [Tags]
     style: [ObjectType]
     stage: [ObjectType]
+    otherlooking: [Tags]
+    otherpreferred: [Tags]
 }
 
 type Subscription {
