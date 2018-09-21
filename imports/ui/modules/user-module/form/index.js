@@ -52,7 +52,7 @@ class UserForm extends Component {
       <MlWizardForm
         title={"Member Profile"}
         onFinish={() =>
-          this.props.onFinish && this.props.onFinish(this.state.event)
+          this.props.onFinish && this.props.onFinish(this.state.user)
         }
         onCancel={() => this.props.onCancel && this.props.onCancel()}
       >

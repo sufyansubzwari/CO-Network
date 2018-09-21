@@ -97,7 +97,7 @@ class PostOrganization extends Component {
   }
 
   componentWillMount() {
-    this.props.toggleSideBar(false);
+    // this.props.toggleSideBar(false);
   }
 
   onCancel() {

@@ -42,22 +42,6 @@ class ThirdStep extends React.Component {
           return e;
         })
       });
-    if (
-      this.props.data &&
-      this.props.data.professional.industry &&
-      this.props.data.professional.industry.length > 0
-    ) {
-      let tags = this.props.data.professional.industry.map(element => ({
-        name: element,
-        active: true,
-        userAdd: true,
-        closable: true,
-        useIcon: true
-      }));
-      this.setState({
-        tags: tags
-      });
-    }
   }
 
   changeCategoryEvents(actives) {
@@ -186,6 +170,8 @@ class ThirdStep extends React.Component {
                 model={{ obj: [] }}
                 name={"obj"}
                 tagsCloseable={true}
+                tagsIcon={"star"}
+                tagsUseIcon={true}
               />
             );
           }}
