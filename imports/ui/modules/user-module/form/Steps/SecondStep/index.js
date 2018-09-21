@@ -24,7 +24,7 @@ class SecondStep extends React.Component {
     notifyParent(model, name, value) {
         if (model && name && value) {
             let user = this.state.user;
-            user[name] = value;
+            user.aboutMe[name] = value;
             this.setState(
                 {user: user},
                 () => this.props.onChange && this.props.onChange(this.state.user)

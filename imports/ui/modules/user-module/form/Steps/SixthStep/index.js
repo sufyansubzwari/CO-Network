@@ -11,8 +11,10 @@ import {
   USER_TAGS,
   LOOKING_FOR,
   PREFERRED_STAGE,
-    LOOKING_FOR_DEFAULT_SPEAKER
+  LOOKING_FOR_DEFAULT_SPEAKER
 } from "../../constants/constants";
+import { GetTags } from "../../../../../apollo-client/tag";
+import { Query } from "react-apollo";
 
 class SixthStep extends React.Component {
   constructor(props) {
@@ -38,17 +40,15 @@ class SixthStep extends React.Component {
         })
       });
 
-      if (this.props.data && this.props.data.speaker.stage)
-          this.setState({
-              preferred: PREFERRED_STAGE.map(e => {
-                  e["active"] = this.props.data.speaker.stage.some(
-                      element => e.label === element.label
-                  );
-                  return e;
-              })
-          });
-
-
+    if (this.props.data && this.props.data.speaker.stage)
+      this.setState({
+        preferred: PREFERRED_STAGE.map(e => {
+          e["active"] = this.props.data.speaker.stage.some(
+            element => e.label === element.label
+          );
+          return e;
+        })
+      });
   }
 
   changeCategoryEvents(actives) {
@@ -64,18 +64,18 @@ class SixthStep extends React.Component {
     );
   }
 
-    changePreferredStages(actives) {
-        const selected = this.state.preferred.map((preferred, index) => {
-            preferred["active"] = actives[index];
-            return preferred;
-        });
-        const stages = selected.filter(element => element.active);
-        const temp = this.state.user;
-        temp["speaker"]["stage"] = stages;
-        this.setState({ preferred: selected, user: temp }, () =>
-            this.notifyParent()
-        );
-    }
+  changePreferredStages(actives) {
+    const selected = this.state.preferred.map((preferred, index) => {
+      preferred["active"] = actives[index];
+      return preferred;
+    });
+    const stages = selected.filter(element => element.active);
+    const temp = this.state.user;
+    temp["speaker"]["stage"] = stages;
+    this.setState({ preferred: selected, user: temp }, () =>
+      this.notifyParent()
+    );
+  }
 
   componentWillReceiveProps(nextProps) {
     if (nextProps.data && nextProps.data !== this.state.user)
@@ -93,10 +93,11 @@ class SixthStep extends React.Component {
     } else this.props.onChange && this.props.onChange(this.state.user);
   }
 
-  onAddTags(name, tag) {
+  onAddTags(name, type, tag) {
     let tags = this.state.user.speaker[name];
     !tag.name ? (tag.name = tag.label) : null;
     tags.push(tag);
+    tag.type = type;
     this.state.user.speaker[name] = tags;
     this.setState({ speaker: this.state.user }, () => this.notifyParent());
   }
@@ -132,18 +133,33 @@ class SixthStep extends React.Component {
           />
           <Layout customTemplateColumns={"1fr 1fr"}>
             <Container>
-              <InputAutoComplete
-                placeholderText={"Other"}
-                getAddedOptions={this.onAddTags.bind(this, "otherlooking")}
-                getNewAddedOptions={this.onAddTags.bind(this, "otherlooking")}
-                options={[
-                  { label: "option1", value: "option1" },
-                  { label: "option2", value: "option2" },
-                  { label: "option3", value: "option3" }
-                ]}
-                model={{ others: [] }}
-                name={"others"}
-              />
+              <Query
+                query={GetTags}
+                variables={{ tags: { type: "LookingFor" } }}
+              >
+                {({ loading, error, data }) => {
+                  if (loading) return <div>Fetching</div>;
+                  if (error) return <div>Error</div>;
+                  return (
+                    <InputAutoComplete
+                      placeholderText={"Other"}
+                      getAddedOptions={this.onAddTags.bind(
+                        this,
+                        "otherlooking",
+                        "LookingFor"
+                      )}
+                      getNewAddedOptions={this.onAddTags.bind(
+                        this,
+                        "otherlooking",
+                        "LookingFor"
+                      )}
+                      options={data.tags}
+                      model={{ others: [] }}
+                      name={"others"}
+                    />
+                  );
+                }}
+              </Query>
               <Container mt={"10px"}>
                 <TagList
                   tags={
@@ -167,18 +183,26 @@ class SixthStep extends React.Component {
           <div />
         </Container>
         <Container>
-          <InputAutoComplete
-            placeholderText={"Topics you speak about"}
-            getAddedOptions={this.onAddTags.bind(this, "topic")}
-            getNewAddedOptions={this.onAddTags.bind(this, "topic")}
-            options={[
-              { label: "option1", value: "option1" },
-              { label: "option2", value: "option2" },
-              { label: "option3", value: "option3" }
-            ]}
-            model={{ others: [] }}
-            name={"others"}
-          />
+          <Query query={GetTags} variables={{ tags: { type: "Topic" } }}>
+            {({ loading, error, data }) => {
+              if (loading) return <div>Fetching</div>;
+              if (error) return <div>Error</div>;
+              return (
+                <InputAutoComplete
+                  placeholderText={"Topics you speak about"}
+                  getAddedOptions={this.onAddTags.bind(this, "topic", "Topic")}
+                  getNewAddedOptions={this.onAddTags.bind(
+                    this,
+                    "topic",
+                    "Topic"
+                  )}
+                  options={data.tags}
+                  model={{ others: [] }}
+                  name={"others"}
+                />
+              );
+            }}
+          </Query>
           <Container mt={"10px"}>
             <TagList
               tags={
@@ -197,51 +221,61 @@ class SixthStep extends React.Component {
             />
           </Container>
         </Container>
-          <Container>
-              <CheckBoxList
-                  placeholderText={"Preferred stage"}
-                  options={this.state.preferred}
-                  checkboxVerticalSeparation={"10px"}
-                  checkboxSize={"15px"}
-                  getValue={actives => this.changePreferredStages(actives)}
-                  columns={2}
-              />
-              <Layout customTemplateColumns={"1fr 1fr"}>
-                  <Container>
-                      <InputAutoComplete
-                          placeholderText={"Other"}
-                          getAddedOptions={this.onAddTags.bind(this, "otherpreferred")}
-                          getNewAddedOptions={this.onAddTags.bind(this, "otherpreferred")}
-                          options={[
-                              { label: "option1", value: "option1" },
-                              { label: "option2", value: "option2" },
-                              { label: "option3", value: "option3" }
-                          ]}
-                          model={{ others: [] }}
-                          name={"others"}
-                      />
-                      <Container mt={"10px"}>
-                          <TagList
-                              tags={
-                                  this.state.user.speaker.otherpreferred &&
-                                  this.state.user.speaker.otherpreferred.length > 0
-                                      ? this.state.user.speaker.otherpreferred.map(item => ({
-                                          active: true,
-                                          ...item
-                                      }))
-                                      : []
-                              }
-                              closeable={true}
-                              onClose={(e, tag, index) =>
-                                  this.onCloseTags(e, tag, index, "otherpreferred")
-                              }
-                          />
-                      </Container>
-                  </Container>
-                  <div />
-              </Layout>
-              <div />
-          </Container>
+        <Container>
+          <CheckBoxList
+            placeholderText={"Preferred stage"}
+            options={this.state.preferred}
+            checkboxVerticalSeparation={"10px"}
+            checkboxSize={"15px"}
+            getValue={actives => this.changePreferredStages(actives)}
+            columns={2}
+          />
+          <Layout customTemplateColumns={"1fr 1fr"}>
+            <Container>
+              <Query query={GetTags} variables={{ tags: { type: "Preferred" } }}>
+                {({ loading, error, data }) => {
+                  if (loading) return <div>Fetching</div>;
+                  if (error) return <div>Error</div>;
+                  return (
+                    <InputAutoComplete
+                      placeholderText={"Other"}
+                      getAddedOptions={this.onAddTags.bind(
+                        this,
+                        "otherpreferred", "Preferred"
+                      )}
+                      getNewAddedOptions={this.onAddTags.bind(
+                        this,
+                        "otherpreferred", "Preferred"
+                      )}
+                      options={data.tags}
+                      model={{ others: [] }}
+                      name={"others"}
+                    />
+                  );
+                }}
+              </Query>
+              <Container mt={"10px"}>
+                <TagList
+                  tags={
+                    this.state.user.speaker.otherpreferred &&
+                    this.state.user.speaker.otherpreferred.length > 0
+                      ? this.state.user.speaker.otherpreferred.map(item => ({
+                          active: true,
+                          ...item
+                        }))
+                      : []
+                  }
+                  closeable={true}
+                  onClose={(e, tag, index) =>
+                    this.onCloseTags(e, tag, index, "otherpreferred")
+                  }
+                />
+              </Container>
+            </Container>
+            <div />
+          </Layout>
+          <div />
+        </Container>
       </Layout>
     );
   }

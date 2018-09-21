@@ -21,12 +21,7 @@ class FirstStep extends React.Component {
         let data = props.data ? props.data : {}
 
         this.state = {
-            user: data,
-            location: {
-                address: "",
-                location: { lat: "", lng: "" },
-                fullLocation: {}
-            }
+            user: data
         }
     }
 
@@ -46,10 +41,6 @@ class FirstStep extends React.Component {
         } else this.props.onChange && this.props.onChange(this.state.user);
     }
 
-    handleInput(model, name, value) {
-        console.log(this.state.user)
-    }
-
     render() {
 
         return (
@@ -61,7 +52,7 @@ class FirstStep extends React.Component {
                     <Input name={'lastName'} model={this.state.user} placeholderText={'Last Name'}
                            getValue={this.notifyParent.bind(this)}/>
                 </Layout>
-                <GeoInputLocation model={this.state.user.info} name={'location'} placeholder={"Location"} onChange={this.notifyParent.bind(this)} />
+                <GeoInputLocation model={this.state.user.place} name={'location'} placeholder={"Location"} onChange={this.notifyParent.bind(this)} />
                 <Layout templateColumns={2} colGap={'20px'}>
                     <Input name={'website'} model={this.state.user} placeholderText={'Website'}
                            getValue={this.notifyParent.bind(this)} />

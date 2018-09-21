@@ -16,6 +16,8 @@ import {
   JOB_TYPE,
   JOB_TYPE_DEFAULT
 } from "../../constants/constants";
+import { GetTags } from "../../../../../apollo-client/tag";
+import { Query } from "react-apollo";
 
 class ThirdStep extends React.Component {
   constructor(props) {
@@ -86,7 +88,12 @@ class ThirdStep extends React.Component {
   }
 
   handleTags(obj) {
-    let newtags = obj.map(element => element.name);
+    let newtags = obj.map(element => ({
+      name: element.name,
+      value: element.name,
+      label: element.name,
+      type: "INDUSTRY"
+    }));
 
     let user = this.state.user;
     user["professional"]["industry"] = newtags;
@@ -156,15 +163,33 @@ class ThirdStep extends React.Component {
           />
           <div />
         </Layout>
-        <SelectTag
-          placeholderText={"Industry | Sector"}
-          tags={this.state.tags}
-          selectOptions={INDUSTRY_SECTOR_OPTIONS}
-          getTags={obj => this.handleTags(obj)}
-          model={{ obj: [] }}
-          name={"obj"}
-          tagsCloseable={true}
-        />
+        <Query query={GetTags} variables={{ tags: { type: "INDUSTRY" } }}>
+          {({ loading, error, data }) => {
+            if (loading) return <div>Fetching</div>;
+            if (error) return <div>Error</div>;
+            return (
+              <SelectTag
+                placeholderText={"Industry | Sector"}
+                tags={
+                  this.state.user.professional &&
+                  this.state.user.professional.industry &&
+                  this.state.user.professional.industry.map(element => ({
+                    name: element.name,
+                    active: true,
+                    userAdd: true,
+                    closable: true,
+                    useIcon: true
+                  }))
+                }
+                selectOptions={data.tags}
+                getTags={obj => this.handleTags(obj)}
+                model={{ obj: [] }}
+                name={"obj"}
+                tagsCloseable={true}
+              />
+            );
+          }}
+        </Query>
         <CheckBoxList
           placeholderText={"Job Type"}
           options={this.state.jobtype}
