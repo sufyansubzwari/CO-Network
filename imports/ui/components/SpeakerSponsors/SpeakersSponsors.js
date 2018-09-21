@@ -26,7 +26,8 @@ class SpeakersSponsor extends  React.Component {
         this.state = {
             sponsors : this.props.sponsors && this.props.sponsors.length ? this.props.sponsors : [],
             editIndex: -1,
-            menuOptions: SPEAKERS_SPONSORS
+            menuOptions: SPEAKERS_SPONSORS,
+            users: props.users && props.users.length ? props.users : []
         }
 
         this.onSelectToAdd = this.onSelectToAdd.bind(this)
@@ -36,6 +37,8 @@ class SpeakersSponsor extends  React.Component {
     notifyParent() {
         this.props.onChange && this.props.onChange(this.state.sponsors);
     }
+
+
 
     handleChange(spo){
         this.setState({
@@ -55,6 +58,14 @@ class SpeakersSponsor extends  React.Component {
 
     }
 
+    componentWillReceiveProps(nextProps){
+        if(nextProps.users){
+        this.setState({
+         users: nextProps.users
+        })
+        }
+    }
+
     render() {
 
         return (
@@ -71,10 +82,10 @@ class SpeakersSponsor extends  React.Component {
                         </Layout>
                     </Container>
                     <Container>
-                        <SponsorsList data={this.state.sponsors} onChange={ this.handleChange } type={'Speakers'} />
+                        <SponsorsList users={this.state.users} data={this.state.sponsors} onChange={ this.handleChange } type={'Speakers'} />
                     </Container>
                     <Container>
-                        <SponsorsList data={this.state.sponsors} onChange={ this.handleChange } type={'Sponsors'} />
+                        <SponsorsList users={this.state.users} data={this.state.sponsors} onChange={ this.handleChange } type={'Sponsors'} />
                     </Container>
                 </Layout>
             </Container>
@@ -89,7 +100,8 @@ SpeakersSponsor.defaultProps = {
 SpeakersSponsor.propTypes = {
     sponsors: PropTypes.array,
     onChange: PropTypes.func,
-    type: PropTypes.func
+    type: PropTypes.func,
+    users: PropTypes.array
 };
 
 export default SpeakersSponsor

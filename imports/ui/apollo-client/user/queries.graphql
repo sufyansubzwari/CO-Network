@@ -1,7 +1,13 @@
 #import './fragments.graphql'
 
-query($id: String){
+query userQuery($id: String){
   user(id: $id) {
+    ...userFragment
+  }
+}
+
+query userList{
+  users{
     ...userFragment
   }
 }

@@ -102,19 +102,16 @@ class SponsorsList extends React.Component {
     );
   }
 
-    onAddTags(index,tag) {
-        let tags = this.state.sponsors[index] && this.state.sponsors[index].category ? this.state.sponsors[index].category : [];
-        !tag.name ? tag.name = tag.label : null;
-        let newTag = {...tag, type: this.props.type}
-        tags.push(newTag);
-        this.state.sponsors[index].category = tags;
-        this.setState({sponsors: this.state.sponsors}, () => this.notifyParent());
+  onAdd(index, label,name){
+    if(label){
+        let spo = this.state.sponsors;
+        spo[index][name] = label;
+      this.setState({
+          sponsors: spo
+      },
+          () => this.notifyParent())
     }
-
-    onCloseTags(e, tag, i,index) {
-        this.state.sponsors[index].category.splice(i, 1);
-        this.setState({sponsors: this.state.sponsors}, () => this.notifyParent());
-    }
+  }
 
   notifyParent() {
     this.props.onChange && this.props.onChange(this.state.sponsors);
@@ -181,8 +178,8 @@ class SponsorsList extends React.Component {
               (item, index) =>
                 item.type === this.props.type ? (
                   item.edit ? (
-                    item.type === 'Speakers' ? <Speaker model={this.state.sponsors[index]} handleSave={() => this.handleSave(index)} onInvite={this.props.onInviteSpeaker} /> :
-                    item.type === 'Sponsors' ? <Sponsor model={this.state.sponsors[index]} handleSave={() => this.handleSave(index)} onInvite={this.props.onInviteSponsor} /> : null
+                    item.type === 'Speakers' ? <Speaker users={this.props.users} model={this.state.sponsors[index]} handleSave={() => this.handleSave(index)} onInvite={this.props.onInviteSpeaker} onAdd={(label,name) => this.onAdd(index,label,name)} /> :
+                    item.type === 'Sponsors' ? <Sponsor users={this.props.users} model={this.state.sponsors[index]} handleSave={() => this.handleSave(index)} onInvite={this.props.onInviteSponsor} onAdd={(label,name) => this.onAdd(index,label,name)} /> : null
                 ): (
                     <Layout
                       paddingY={"10px"}
@@ -244,7 +241,8 @@ SponsorsList.propTypes = {
   background: PropTypes.string,
   isEditable: PropTypes.bool,
   onInviteSpeaker: PropTypes.func,
-  onInviteSponsor: PropTypes.func
+  onInviteSponsor: PropTypes.func,
+  users: PropTypes.func
 };
 
 export default SponsorsList;

@@ -3,6 +3,8 @@ import { Container } from "btech-layout";
 import PropTypes from "prop-types";
 import { Layout } from "btech-layout";
 import SpeakersSponsors from "../../../../components/SpeakerSponsors/SpeakersSponsors";
+import {userList as users} from "../../../../apollo-client/user";
+import {Query} from "react-apollo";
 
 /**
  * @module Event
@@ -51,10 +53,19 @@ class EventStep2 extends Component {
   render() {
     return (
       <Layout rowGap={"25px"}>
-          <SpeakersSponsors
-              onChange={this.handleChange}
-              sponsors={this.state.event.sponsors}
-          />
+        <Query query={users}>
+            {({loading, error, data}) => {
+                if (loading) return <div>Fetching</div>;
+                if (error) return <div>Error</div>;
+                return (
+                    <SpeakersSponsors
+                        onChange={this.handleChange}
+                        sponsors={this.state.event.sponsors}
+                        users={data.users}
+                    />
+                );
+            }}
+        </Query>
       </Layout>
     );
   }
