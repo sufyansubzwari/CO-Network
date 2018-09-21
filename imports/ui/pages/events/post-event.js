@@ -64,18 +64,23 @@ class PostEvent extends Component {
   // }
 
   onPostAction(createEvent, query) {
-    let e = Object.assign({}, query);
-    e.category = _.uniq(e.others.concat(e.category));
-    delete e.others;
+    let queryEvent = Object.assign({}, query);
+    queryEvent.category = _.uniq(queryEvent.others.concat(queryEvent.category));
+    delete queryEvent.others;
     //todo: remove when location improvement
-    e.place && e.place.location && e.place.location.fullLocation
-      ? delete e.place.location.fullLocation
+    queryEvent.place &&
+    queryEvent.place.location &&
+    queryEvent.place.location.fullLocation
+      ? delete queryEvent.place.location.fullLocation
       : null;
-    let event = {
-      ...e,
-      owner: "Qt5569uuKKd6YrDwS"
-    };
-    createEvent({ variables: { entity: event } });
+    let event = { ...queryEvent };
+    if (this.props.curUser) {
+      event.owner = this.props.curUser._id;
+      createEvent({ variables: { entity: event } });
+    } else {
+      // todo login the user and then create the event or notify the user must login
+      alert('You must be logged')
+    }
   }
 
   render() {

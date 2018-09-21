@@ -60,10 +60,11 @@ class PostJob extends Component {
       : null;
     let job = { ...queryJob };
     if (this.props.curUser) {
-      job.owner = this.props.curUser.id;
+      job.owner = this.props.curUser._id;
       createJob({ variables: { entity: job } });
     } else {
       // todo login the user and then create the event or notify the user must login
+      alert('You must be logged')
     }
   }
 

@@ -106,11 +106,14 @@ class PostOrganization extends Component {
     orgQuery.place.location.fullLocation
       ? delete orgQuery.place.location.fullLocation
       : null;
-    let organization = {
-      ...orgQuery,
-      owner: "Qt5569uuKKd6YrDwS"
-    };
-    createOrg({ variables: { entity: organization } });
+    let organization = { ...orgQuery };
+    if (this.props.curUser) {
+      organization.owner = this.props.curUser._id;
+      createOrg({ variables: { entity: organization } });
+    } else {
+      // todo login the user and then create the event or notify the user must login
+      alert('You must be logged')
+    }
   }
 
   render() {
