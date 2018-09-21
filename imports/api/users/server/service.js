@@ -19,7 +19,7 @@ class UserService {
     } else {
       let id = data._id;
       delete data._id;
-      await Users.collection.update(id, { $set: data });
+      await Users.collection.update(id, { $set: {'profile': data.profile} });
       return Users.collection.findOne(id);
     }
   };

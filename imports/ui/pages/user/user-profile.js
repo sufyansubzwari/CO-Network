@@ -1,12 +1,12 @@
-import React, { Component } from "react";
-import { Layout, Container } from "btech-layout";
+import React, {Component} from "react";
+import {Layout, Container} from "btech-layout";
 import UserForm from "./../../modules/user-module/form/";
 import InternalLayout from "../../components/InternalLayout/InternalLayout";
-import { Preview } from "../../../ui/components";
+import {Preview} from "../../../ui/components";
 import UserPreviewBody from "../../components/Preview/UserPreviewBody";
-import { Mutation } from "react-apollo";
-import { withRouter } from "react-router-dom";
-import { CreateUser } from "../../apollo-client/user";
+import {Mutation} from "react-apollo";
+import {withRouter} from "react-router-dom";
+import {CreateUser} from "../../apollo-client/user";
 
 /**
  * @module User
@@ -50,7 +50,6 @@ class UserProfile extends Component {
       speaker: {
         lookingFor: [],
         topic: [],
-        style: [],
         stage: [],
         otherlooking: [],
         otherpreferred: []
@@ -58,17 +57,18 @@ class UserProfile extends Component {
       place: {
         location: {
           address: "",
-          location: { lat: "", lng: "" },
+          location: {lat: "", lng: ""},
           fullLocation: {}
         }
       }
     };
     let currentUser = JSON.parse(JSON.stringify(props.curUser.profile));
     Object.keys(currentUser).forEach((key) => (currentUser[key] == null) && delete currentUser[key]);
-    let userObject = Object.assign(user, currentUser);
 
     this.state = {
-      user: userObject
+      user: {
+        ...user, ...currentUser
+      }
     };
 
     this.handleBackgroundChange = this.handleBackgroundChange.bind(this);
@@ -105,10 +105,13 @@ class UserProfile extends Component {
     profile.place.location.fullLocation
       ? delete profile.place.location.fullLocation
       : null;
+    delete profile.identities;
+    delete profile.loginCount;
     let user = {
-      ...profile
+      _id: this.props.curUser._id,
+      profile: profile
     };
-    createProfile({ variables: { entity: user } });
+    createProfile({variables: {entity: user}});
   }
 
   render() {
@@ -118,17 +121,17 @@ class UserProfile extends Component {
           <Mutation
             mutation={CreateUser}
             onCompleted={() =>
-              this.props.history.push("/", { userCreate: true })
+              this.props.history.push("/", {userCreate: true})
             }
             onError={error => console.log("Error: ", error)}
           >
-            {(createProfile, { profileCreated }) => (
+            {(createProfile, {profileCreated}) => (
               <UserForm
                 onFinish={data => this.onPostAction(createProfile, data)}
                 onCancel={() => this.onCancel()}
                 userLogged={false}
                 handleChangeProfile={user =>
-                  this.setState({ user: { ...this.state.user, ...user } })
+                  this.setState({user: {...this.state.user, ...user}})
                 }
                 user={this.state.user}
                 {...this.props}
@@ -148,7 +151,7 @@ class UserProfile extends Component {
               checkVisibility: () => {
                 return this.state.selectedItem && this.state.selectedItem.id;
               },
-              onClick: function() {
+              onClick: function () {
                 console.log("Remove");
               }
             }
@@ -159,7 +162,7 @@ class UserProfile extends Component {
           onBackgroundChange={this.handleBackgroundChange}
           onUserPhotoChange={this.handleUserPhotoChange}
         >
-          <UserPreviewBody user={this.state.user} />
+          <UserPreviewBody user={this.state.user}/>
         </Preview>
       </InternalLayout>
     );

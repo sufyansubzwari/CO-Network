@@ -1,5 +1,5 @@
 mutation CreateUser($entity: UserInput!) {
-    user(users: $entity) {
+    user(user: $entity) {
         _id
         createdAt
         services

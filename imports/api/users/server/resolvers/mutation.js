@@ -7,6 +7,9 @@ import { GraphQLError } from "graphql";
 import collection from "../collection";
 import utils from "../utils";
 import Service from "../service";
+import Tags from "../../../tags";
+import Places from "../../../places";
+import Achievement from "../../../archivements";
 
 const { privateKey: gcmPrivateKey } = Meteor.settings.firebase;
 const { publicKey: vapidPublicKey } = Meteor.settings.public.vapid;
@@ -122,8 +125,48 @@ Mutation.sendPushNotification = (root, args, context) => {
   });
 };
 //------------------------------------------------------------------------------
-Mutation.user = (root, { users }, context) => {
-  return Service.user(users);
+Mutation.user = async (root, { user }, context) => {
+
+  let profile = Object.assign({}, user.profile);
+  /****** Updating tags in database ******/
+  if (profile.knowledge && profile.knowledge.languages)
+    profile.knowledge.languages = await Tags.service.normalizeTags(profile.knowledge.languages);
+  if (profile.knowledge && profile.knowledge.curiosity)
+    profile.knowledge.curiosity = await Tags.service.normalizeTags(profile.knowledge.curiosity);
+  if (profile.professional && profile.professional.industry)
+    profile.professional.industry = await Tags.service.normalizeTags(profile.professional.industry);
+  if (profile.speaker && profile.speaker.otherpreferred)
+    profile.speaker.otherpreferred = await Tags.service.normalizeTags(profile.speaker.otherpreferred);
+  if (profile.speaker && profile.speaker.otherlooking)
+    profile.speaker.otherlooking = await Tags.service.normalizeTags(profile.speaker.otherlooking);
+  if (profile.speaker && profile.speaker.topic)
+    profile.speaker.topic = await Tags.service.normalizeTags(profile.speaker.topic);
+
+  user.profile = profile;
+
+  const inserted = await Service.user(user);
+//inserting location
+  if (user.profile.place && user.profile.place.location && user.profile.place.location.address) {
+    let place = Object.assign({}, user.profile.place);
+    if (!place._id) {
+      place.owner = inserted._id;
+      place.entity = "USER";
+    }
+    delete place.location.fullLocation;
+    await Places.service.place(place);
+  }
+
+  if (user.profile.achievements && user.profile.achievements.length > 0) {
+    let achievements = Object.assign({}, user.profile.achievements);
+    achievements.forEach(ach => {
+      if (!ach._id) {
+        ach.owner = inserted._id;
+      }
+      Achievement.service.achievement(ach);
+    });
+  }
+
+  return inserted;
 };
 //------------------------------------------------------------------------------
 Mutation.deleteUser = (root, { _id }, context) => {

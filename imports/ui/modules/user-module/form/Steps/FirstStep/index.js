@@ -40,6 +40,15 @@ class FirstStep extends React.Component {
             );
         } else this.props.onChange && this.props.onChange(this.state.user);
     }
+  notifyParentLocation(model, name, value) {
+    if (model && name && value) {
+      let user = this.state.user;
+      user.place[name] = value;
+      this.setState({user: user}, () => this.props.onChange && this.props.onChange(this.state.user));
+    }
+    else
+      this.props.onChange && this.props.onChange(this.state.user);
+  }
 
     render() {
 
@@ -52,7 +61,7 @@ class FirstStep extends React.Component {
                     <Input name={'lastName'} model={this.state.user} placeholderText={'Last Name'}
                            getValue={this.notifyParent.bind(this)}/>
                 </Layout>
-                <GeoInputLocation model={this.state.user.place} name={'location'} placeholder={"Location"} onChange={this.notifyParent.bind(this)} />
+                <GeoInputLocation model={this.state.user.place} name={'location'} placeholder={"Location"} onChange={this.notifyParentLocation.bind(this)} />
                 <Layout templateColumns={2} colGap={'20px'}>
                     <Input name={'website'} model={this.state.user} placeholderText={'Website'}
                            getValue={this.notifyParent.bind(this)} />

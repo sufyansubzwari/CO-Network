@@ -1,157 +1,174 @@
 # types for Users namespace
 
 type User {
-  _id: String!
-  createdAt: Date!
-  services: [String]!
-  emails: [Email]
-  profile: Profile!
-  subscriptions: [Subscription]
-  views: Int
+    _id: String!
+    createdAt: Date!
+    services: [String]!
+    emails: [Email]
+    profile: Profile!
+    subscriptions: [Subscription]
+    views: Int
 }
 
 type Email {
-  address: String
-  verified: Boolean
+    address: String
+    verified: Boolean
 }
 
 type Profile {
-  name: String
-  isSignUp: Boolean!
-  lastName: String
-  nickName: String
-  loginCount: Int
-  image: String
-  cover: String
-  email: String
-  gender: String
-  website: String
-  phone: String
-  professional: Professional
-  social: Social
-  aboutMe: AboutMe
-  knowledge: Knowledge
-  speaker: Speaker
-  archivement: [Achievements]
+    name: String
+    isSignUp: Boolean!
+    lastName: String
+    nickName: String
+    loginCount: Int
+    image: String
+    cover: String
+    email: String
+    gender: String
+    website: String
+    phone: String
+    professional: Professional
+    social: Social
+    aboutMe: AboutMe
+    knowledge: Knowledge
+    speaker: Speaker
+    archivement: [Achievements]
 }
 
 type AboutMe {
-  yourPassion: String
-  existingProblem: String
-  steps: String
+    yourPassion: String
+    existingProblem: String
+    steps: String
 }
 
 type Knowledge {
-  languages: [String]
-  curiosity: [String]
-  lookingFor: [String]
+    languages: [String]
+    curiosity: [String]
+    lookingFor: [String]
 }
 
 type Professional {
-  languages: [Tags]
-  salaryRange: SalaryRange
-  jobType: [String]
+    languages: [Tags]
+    salaryRange: SalaryRange
+    jobType: [String]
 }
 
 type Speaker {
-  join: Boolean
-  topic: SalaryRange
-  style: [ObjectType]
-  stage: [ObjectType]
+    join: Boolean
+    topic: SalaryRange
+    style: [ObjectType]
+    stage: [ObjectType]
 }
 
 type Subscription {
-  endpoint: String!
-  keys: Keys!
+    endpoint: String!
+    keys: Keys!
 }
 
 type Keys {
-  auth: String!
-  p256dh: String!
+    auth: String!
+    p256dh: String!
 }
 
 input KeysInput {
-  auth: String!
-  p256dh: String!
+    auth: String!
+    p256dh: String!
 }
 
 input SubscriptionInput {
-  endpoint: String!
-  keys: KeysInput!
+    endpoint: String!
+    keys: KeysInput!
 }
 
 type Query {
-  users(user: UserInput, limit: Int): [User]
-  user(id: String): User
+    users(user: UsersInputSearch, filter: String, limit: Int): [User]
+    user(id: String): User
+}
+
+input UsersInputSearch {
+    title: TableStringFilterInput
+    description: TableStringFilterInput
+    location: [LocationInput]
 }
 
 input UserInput {
-  _id: String
-  createdAt: Date
-  services: [String]
-  emails: [EmailInput]
-  profile: ProfileInput
-  subscriptions: [SubscriptionInput]
+    _id: String
+    createdAt: Date
+    services: [String]
+    emails: [EmailInput]
+    profile: ProfileInput
+    subscriptions: [SubscriptionInput]
 }
 
 input ProfileInput {
-  isSignUp: Boolean
-  info: InfoInput
-  professional: ProfessionalInput
-  social: SocialInput
-  aboutMe: AboutMeInput
-  knowledge: KnowledgeInput
-  speaker: SpeakerInput
-  archivement: [AchievementsInput]
+    isSignUp: Boolean
+    name: String
+    lastName: String
+    image: String
+    cover: String
+    email: String
+    gender: String
+    website: String
+    phone: String
+    professional: ProfessionalInput
+    social: SocialInput
+    aboutMe: AboutMeInput
+    knowledge: KnowledgeInput
+    speaker: SpeakerInput
+    achievements: [AchievementsInput]
+    place: PlacesInput
 }
 
 input EmailInput {
-  address: String
-  verified: Boolean
+    address: String
+    verified: Boolean
 }
 
 input InfoInput {
-  name: String
-  lastName: String
-  image: String
-  cover: String
-  email: String
-  gender: String
-  website: String
-  phone: String
+    name: String
+    lastName: String
+    image: String
+    cover: String
+    email: String
+    gender: String
+    website: String
+    phone: String
 }
 
 input AboutMeInput {
-  yourPassion: String
-  existingProblem: String
-  steps: String
+    yourPassion: String
+    existingProblem: String
+    steps: String
 }
 
 input KnowledgeInput {
-  languages: [String]
-  curiosity: [String]
-  lookingFor: [String]
+    languages: [TagsInput]
+    curiosity: [TagsInput]
+    lookingFor: [ObjectTypeInput]
 }
 
 input ProfessionalInput {
-  languages: [String]
-  salaryRange: SalaryRangeInput
-  jobType: [String]
+    industry: [TagsInput]
+    salaryRange: SalaryRangeInput
+    jobType: [ObjectTypeInput]
+    seeking: Boolean
 }
 
 input SpeakerInput {
-  join: Boolean
-  topic: SalaryRangeInput
-  style: [ObjectTypeInput]
-  stage: [ObjectTypeInput]
+    join: Boolean
+    topic: [TagsInput]
+    otherlooking: [TagsInput]
+    otherpreferred: [TagsInput]
+    lookingFor: [ObjectTypeInput]
+    stage: [ObjectTypeInput]
 }
 
 type Mutation {
-  user(users: UserInput!): User
-  deleteUser(_id: String!): User
-  updateSignUpStatus(_id: String!, status: Boolean!): User
-  sendVerificationEmail: User
-  saveSubscription(subscription: SubscriptionInput!): User
-  deleteSubscription(endpoint: String!): User
-  sendPushNotification: User
+    user(user: UserInput!): User
+    deleteUser(_id: String!): User
+    updateSignUpStatus(_id: String!, status: Boolean!): User
+    sendVerificationEmail: User
+    saveSubscription(subscription: SubscriptionInput!): User
+    deleteSubscription(endpoint: String!): User
+    sendPushNotification: User
 }

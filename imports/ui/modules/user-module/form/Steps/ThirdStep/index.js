@@ -68,10 +68,11 @@ class ThirdStep extends React.Component {
   }
 
   onAddTags(name, type, tag) {
+    let newTag = Object.assign({}, tag);
     let tags = this.state.user.knowledge[name];
-    !tag.name ? (tag.name = tag.label) : null;
-    tags.push(tag);
-    tag.type = type;
+    !newTag.name ? (newTag.name = newTag.label) : null;
+    newTag.type = type;
+    tags.push(newTag);
     this.state.user.knowledge[name] = tags;
     this.setState({ user: this.state.user }, () => this.notifyParent());
   }
