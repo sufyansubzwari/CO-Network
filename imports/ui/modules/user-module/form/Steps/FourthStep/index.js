@@ -76,6 +76,10 @@ class ThirdStep extends React.Component {
       name: element.name,
       value: element.name,
       label: element.name,
+      active: true,
+      userAdd: true,
+      closable: true,
+      useIcon: true,
       type: "INDUSTRY"
     }));
 
@@ -156,14 +160,7 @@ class ThirdStep extends React.Component {
                 placeholderText={"Industry | Sector"}
                 tags={
                   this.state.user.professional &&
-                  this.state.user.professional.industry &&
-                  this.state.user.professional.industry.map(element => ({
-                    name: element.name,
-                    active: true,
-                    userAdd: true,
-                    closable: true,
-                    useIcon: true
-                  }))
+                  this.state.user.professional.industry
                 }
                 selectOptions={data.tags}
                 getTags={obj => this.handleTags(obj)}
