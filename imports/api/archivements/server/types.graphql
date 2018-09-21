@@ -28,7 +28,7 @@ type Query {
 
 input AchievementsInput {
     _id: ID
-    owner: String!
+    owner: String
     type: String!
     institution: String
     study: String
@@ -45,6 +45,7 @@ input AchievementsInput {
     id: String
     year: String
     explain: String
+    edit: Boolean
 }
 
 type Mutation {

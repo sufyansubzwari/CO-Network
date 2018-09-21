@@ -5,7 +5,7 @@ import extend from 'lodash/extend';
  * @namespace Users
  * @summary defines utilities related to User entities.
  */
-const Users = {};
+const User = {};
 
 // Load client-only or client-server utilities if any
 
@@ -17,7 +17,7 @@ if (Meteor.isServer) {
   import utils from './server/utils';
   import service from './server/service';
 
-  extend(Users, { collection, types, resolvers, utils, service });
+  extend(User, { collection, types, resolvers, utils, service });
 }
 
-export default Users;
+export default User;

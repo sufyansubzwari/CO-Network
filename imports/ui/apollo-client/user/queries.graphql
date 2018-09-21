@@ -4,7 +4,6 @@ query($id: String){
     _id
     createdAt
     services
-    isSignUp
     profile {
       name
       lastName
@@ -15,6 +14,84 @@ query($id: String){
       gender
       website
       phone
+      isSignUp
+      professional{
+        industry{
+          name
+          label
+          value
+          type
+        }
+        salaryRange{
+          min
+          max
+        }
+        jobType{
+          label
+          value
+          name
+          active
+        }
+      }
+      social{
+        facebook
+        twitter
+        github
+        linkedin
+        google
+      }
+      aboutMe{
+        yourPassion
+        existingProblem
+        steps
+      }
+      knowledge{
+        languages{
+          name
+          label
+          value
+          type
+        }
+        curiosity{
+          name
+          label
+          value
+          type
+        }
+        lookingFor{
+          label
+          value
+          name
+          active
+        }
+      }
+      speaker{
+        join
+        topic{
+          name
+          label
+          value
+          type
+        }
+        stage{
+          name
+          label
+          value
+          active
+        }
+        otherlooking{
+          name
+          label
+          value
+          type
+        }
+        otherpreferred{
+          name
+          label
+          value
+          type
+        }
+      }
     }
     subscriptions {
       endpoint

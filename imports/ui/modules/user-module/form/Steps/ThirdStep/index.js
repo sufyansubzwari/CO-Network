@@ -68,10 +68,11 @@ class ThirdStep extends React.Component {
   }
 
   onAddTags(name, type, tag) {
-    let tags = this.state.user.knowledge[name];
-    !tag.name ? (tag.name = tag.label) : null;
-    tags.push(tag);
-    tag.type = type;
+    let newTag = Object.assign({}, tag);
+    let tags = (this.state.user.knowledge && this.state.user.knowledge[name]) || [];
+    !newTag.name ? (newTag.name = newTag.label) : null;
+    newTag.type = type;
+    tags.push(newTag);
     this.state.user.knowledge[name] = tags;
     this.setState({ user: this.state.user }, () => this.notifyParent());
   }
@@ -128,7 +129,7 @@ class ThirdStep extends React.Component {
           </Container>
         </Container>
         <Container>
-          <Query query={GetTags} variables={{ tags: { type: "Languages" } }}>
+          <Query query={GetTags} variables={{ tags: { type: "Curiosity" } }}>
             {({ loading, error, data }) => {
               if (loading) return <div>Fetching</div>;
               if (error) return <div>Error</div>;

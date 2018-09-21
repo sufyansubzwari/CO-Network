@@ -4,9 +4,9 @@ import Mutation from './mutation';
 
 // Users namespace resolvers
 const resolvers = {
-  User,
   Query,
   Mutation,
+  User,
 };
 
 export default resolvers;

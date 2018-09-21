@@ -180,6 +180,14 @@ const schema = new SimpleSchema({
     optional: true
   },
   "profile.knowledge.lookingFor.$": {
+    type: Object,
+    optional: true
+  },
+  "profile.knowledge.lookingFor.label": {
+    type: String,
+    optional: true
+  },
+  "profile.knowledge.lookingFor.value": {
     type: String,
     optional: true
   },
@@ -208,6 +216,14 @@ const schema = new SimpleSchema({
     optional: true
   },
   "profile.professional.jobType.$": {
+    type: Object,
+    optional: true
+  },
+  "profile.professional.jobType.label": {
+    type: String,
+    optional: true
+  },
+  "profile.professional.jobType.value": {
     type: String,
     optional: true
   },
@@ -272,6 +288,38 @@ const schema = new SimpleSchema({
     optional: true
   },
   "profile.speaker.stage.$.value": {
+    type: String,
+    optional: true
+  },
+  "profile.speaker.otherpreferred": {
+    type: Array,
+    optional: true
+  },
+  "profile.speaker.otherpreferred.$": {
+    type: String,
+    optional: true
+  },
+  "profile.speaker.lookingFor": {
+    type: Array,
+    optional: true
+  },
+  "profile.speaker.lookingFor.$": {
+    type: Object,
+    optional: true
+  },
+  "profile.speaker.lookingFor.$.label": {
+    type: String,
+    optional: true
+  },
+  "profile.speaker.lookingFor.$.value": {
+    type: String,
+    optional: true
+  },
+  "profile.speaker.otherlooking": {
+    type: Array,
+    optional: true
+  },
+  "profile.speaker.otherlooking.$": {
     type: String,
     optional: true
   },
