@@ -9,7 +9,7 @@ import { Container, Layout } from "btech-layout";
 import { withRouter } from "react-router-dom";
 import styled from "styled-components";
 import { Mutation } from "react-apollo";
-import { CreateUser } from "../../../../apollo-client/user";
+import { UpdateSignUpStatus } from "../../../../apollo-client/user";
 
 import {
   SIGNUP_TEXT,
@@ -45,22 +45,23 @@ class SignUp extends React.Component {
   componentWillMount() {
     if (
       !this.props.curUser ||
-      (this.props.curUser && this.props.curUser.isSignUp)
+      (this.props.curUser && this.props.curUser.profile.isSignUp)
     )
       this.props.history.push("/");
   }
 
-  handleContinue(createUser) {
+  handleContinue(updateStatus) {
     let checkboxesActives = this.state.actives.some(function(element) {
       return element === false;
     });
     const active = this.state.agreeTerms && !checkboxesActives;
     if (active) {
-      let user = {
-        _id: this.props.curUser._id,
-        isSignUp: true
-      };
-      createUser({ variables: { entity: user } });
+      updateStatus({
+        variables: {
+          id: this.props.curUser._id,
+          status: true
+        }
+      });
     }
   }
 
@@ -158,15 +159,15 @@ class SignUp extends React.Component {
           <Layout customTemplateColumns={"1fr auto"}>
             <div />
             <Mutation
-              mutation={CreateUser}
+              mutation={UpdateSignUpStatus}
               onError={() => alert(`error`)}
               onCompleted={() => this.props.history.push(`/profile`)}
             >
-              {(createUser, { userCreated }) => {
+              {(updateStatus, { userCreated }) => {
                 return (
                   <Button
                     disabled={this.state.disabled}
-                    onClick={() => this.handleContinue(createUser)}
+                    onClick={() => this.handleContinue(updateStatus)}
                   >
                     Continue
                   </Button>

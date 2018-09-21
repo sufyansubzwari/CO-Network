@@ -45,10 +45,6 @@ const schema = new SimpleSchema({
   createdAt: {
     type: Date
   },
-  isSignUp: {
-    type: Boolean,
-    optional: true
-  },
   profile: {
     type: Object,
     optional: true
@@ -56,6 +52,10 @@ const schema = new SimpleSchema({
   "profile.name": {
     type: String,
     max: 150,
+    optional: true
+  },
+  "profile.isSignUp": {
+  type: Boolean,
     optional: true
   },
   "profile.lastName": {

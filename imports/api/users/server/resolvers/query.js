@@ -3,6 +3,7 @@ import Service from '../service';
 const Query = {};
 
 Query.user = (root, {id}, context) => {
+  console.log("user",id);
   return id ? Service.getUser(id): null
 };
 
