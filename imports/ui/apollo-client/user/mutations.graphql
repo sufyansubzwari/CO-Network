@@ -53,3 +53,12 @@ mutation DeleteUser($id: String!) {
         _id
     }
 }
+
+mutation UpdateSignUpStatus($id: String!, $status: Boolean!) {
+    updateSignUpStatus(_id: $id, status: $status) {
+        _id
+        profile {
+            isSignUp
+        }
+    }
+}

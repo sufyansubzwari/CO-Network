@@ -149,6 +149,7 @@ input SpeakerInput {
 type Mutation {
   user(users: UserInput!): User
   deleteUser(_id: String!): User
+  updateSignUpStatus(_id: String!, status: Boolean!): User
   sendVerificationEmail: User
   saveSubscription(subscription: SubscriptionInput!): User
   deleteSubscription(endpoint: String!): User
