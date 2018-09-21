@@ -36,15 +36,70 @@ class UserPreviewBody extends React.Component {
         let otherlook = this.state.user.speaker && this.state.user.speaker.otherlooking && this.state.user.speaker.otherlooking.map(look => ({...look, active: true}))
         let otherpre = this.state.user.speaker && this.state.user.speaker.otherpreferred && this.state.user.speaker.otherpreferred.map(pre => ({...pre, active: true}))
         let topics = this.state.user.speaker && this.state.user.speaker.topic && this.state.user.speaker.topic.map(top => ({...top, active: true}))
-        let achieAudited = this.state.user.achievements && this.state.user.achievements.category && this.state.user.achievements.category.filter.map(tag => tag ({...tag, active: true}))
-        let achiePatent = this.state.user.achievements && this.state.user.achievements.category && this.state.user.achievements.category.map(tag => ({...tag, active: true}))
-        let achiePublications = this.state.user.achievements && this.state.user.achievements.category && this.state.user.achievements.category.map(tag => ({...tag, active: true}))
 
         //checkboxes
         let lookingfor = this.state.user.knowledge && this.state.user.knowledge.lookingFor && this.state.user.knowledge.lookingFor.map(look => <div>{look.label}</div>)
         let jobtype = this.state.user.professional && this.state.user.professional.jobType && this.state.user.professional.jobType.map(job => <div>{job.label}</div>)
         let lookingforS = this.state.user.speaker && this.state.user.speaker.lookingFor &&  this.state.user.speaker.lookingFor.map(look => <div>{look.label}</div>)
         let preferred = this.state.user.speaker && this.state.user.speaker.stage && this.state.user.speaker.stage.map(stage => <div>{stage.label}</div>)
+
+        let achieve = this.state.user.achievements ? this.state.user.achievements.map( (ach, index) => {
+            let tags = ach.category && ach.category.map( tag => ({...tag, active: true}) );
+            return ach.type === 'Academic Background' ? (
+                <Container key={index}>
+                    <Text header={'Academic Background'} />
+                    <Layout templateColumns={3}>
+                        <Text header={'Institution Name'} text={ach.name} />
+                        <Text header={'Area of study'} text={ach.study} />
+                        <Text header={'Degree'} text={ach.degree && ach.degree.label} />
+                    </Layout>
+                    <Text header={'Tell us a story'} text={ach.story} />
+                </Container>
+            ) : ach.type === 'Audited Courses' ? (
+                <Container key={index}>
+                    <Text header={'Audited Courses'} />
+                    <Layout templateColumns={3}>
+                        <Text header={'Course Name'} text={ach.name} />
+                        <Text header={'Link to the Course'} text={ach.link} />
+                        <Text header={'Level'} text={ach.level && ach.level.label} />
+                    </Layout>
+                    {tags && tags.length ? <TagsAdd header={'Category'} tags={tags}/> : null}
+                </Container>
+            ) : ach.type === 'Professional Experience' ? (
+                <Container key={index}>
+                    <Text header={'Professional Experience'} />
+                    <Layout templateColumns={3}>
+                        <Text header={'Organization Name'} text={ach.name} />
+                        <Text header={'Position'} text={ach.position} />
+                        <Text header={'Level'} text={ach.level && ach.level.label} />
+                    </Layout>
+                    <Text header={'What did you help to discover or create?'} text={ach.help} />
+                    {tags && tags.length ? <TagsAdd header={'Category'} tags={tags}/> : null}
+                </Container>
+            ) : ach.type === 'Patents' ? (
+                <Container key={index}>
+                    <Text header={'Patent'} />
+                    <Layout templateColumns={3}>
+                        <Text header={'Patent ID'} text={ach.id} />
+                        <Text header={'Link to the Patent'} text={ach.link} />
+                        <Text header={'Patent Name'} text={ach.name} />
+                    </Layout>
+                    {tags && tags.length ? <TagsAdd header={'Category'} tags={tags}/> : null}
+                </Container>
+            ) : ach.type === 'Publication' ? (
+                <Container key={index}>
+                    <Text header={'Publications'} />
+                    <Layout templateColumns={3}>
+                        <Text header={'Publication Name'} text={ach.name} />
+                        <Text header={'Link to Publication'} text={ach.link} />
+                        <Text header={'Year Published'} text={ach.year} />
+                    </Layout>
+                    <Text header={'Explain your Observation'} text={ach.explain} />
+                    {tags && tags.length ? <TagsAdd header={'Category'} tags={tags}/> : null}
+                </Container>
+            ) : null
+
+        }) : null
 
         return (
             <Layout rowGap={'15px'}>
@@ -78,6 +133,7 @@ class UserPreviewBody extends React.Component {
                               text={`${this.state.user.professional.salaryRange.min !== "" ? this.state.user.professional.salaryRange.min : null} - ${this.state.user.professional.salaryRange.max !== "" ? this.state.user.professional.salaryRange.max : null}`}/> : null}
                     {jobtype && jobtype.length ? <Text header={'Job Type'}>{jobtype}</Text> : null}
                 </Layout>
+                {achieve && achieve.length ? achieve : null}
                 {this.state.user.speaker && this.state.user.speaker.join !== undefined ?
                     <Text header={'Join the Speaker Directory'}
                           text={this.state.user.speaker.join ? "Yes" : "No"}/> : null}
