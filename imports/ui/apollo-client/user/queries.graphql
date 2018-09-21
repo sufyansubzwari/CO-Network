@@ -32,6 +32,7 @@ query($id: String){
           name
           active
         }
+        seeking
       }
       social{
         facebook

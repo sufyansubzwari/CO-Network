@@ -14,6 +14,7 @@ class AchievementsService {
    * @return {Object} Achievement
    */
   static achievement = async data => {
+    console.log("Achievement => ", data);
     if (_.isUndefined(data._id)) {
       const id = Achievements.collection.insert(data);
       return Achievements.collection.findOne(id);

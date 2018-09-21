@@ -143,7 +143,7 @@ Mutation.user = async (root, { user }, context) => {
     profile.speaker.topic = await Tags.service.normalizeTags(profile.speaker.topic);
 
   user.profile = profile;
-
+console.log(JSON.stringify(user));
   const inserted = await Service.user(user);
 //inserting location
   if (user.profile.place && user.profile.place.location && user.profile.place.location.address) {

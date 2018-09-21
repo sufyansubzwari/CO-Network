@@ -3,47 +3,6 @@ mutation CreateUser($entity: UserInput!) {
         _id
         createdAt
         services
-        emails {
-            address
-            verified
-        }
-        profile {
-            isSignUp
-            professional {
-                salaryRange {
-                    min
-                    max
-                }
-                jobType
-            }
-            aboutMe {
-                yourPassion
-                existingProblem
-                steps
-            }
-            knowledge {
-                languages
-                curiosity
-                lookingFor
-            }
-            archivement {
-                type
-                institution
-                study
-                story
-                degree
-                organization
-                position
-                help
-                experience
-                name
-                link
-                level
-                id
-                year
-                explain
-            }
-        }
         views
     }
 }

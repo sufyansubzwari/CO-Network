@@ -13,6 +13,7 @@ class PlacesService {
    * @return {Object} Places
    */
   static place = async data => {
+      console.log("Places => ", data);
     if (_.isUndefined(data._id)) {
       const id = Places.collection.insert(data);
       return Places.collection.findOne(id);

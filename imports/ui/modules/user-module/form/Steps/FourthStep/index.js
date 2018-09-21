@@ -76,10 +76,6 @@ class ThirdStep extends React.Component {
       name: element.name,
       value: element.name,
       label: element.name,
-      active: true,
-      userAdd: true,
-      closable: true,
-      useIcon: true,
       type: "INDUSTRY"
     }));
 

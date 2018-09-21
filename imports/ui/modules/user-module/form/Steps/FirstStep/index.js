@@ -72,30 +72,30 @@ class FirstStep extends React.Component {
                 <Layout templateColumns={4} colGap={'10px'} height={'90px'}>
                     <SocialButton
                         social={'github'}
-                        connected={this.state.user.social.github !== ""}
-                        data={this.state.user.social.github}
+                        connected={this.state.user.social && this.state.user.social.github !== ""}
+                        data={this.state.user.social && this.state.user.social.github}
                         onClick={() => console.log('trying to log for github')}
                     />
                     <SocialButton
                         social={'google'}
-                        data={this.state.user.social.google}
+                        data={this.state.user.social && this.state.user.social.google}
                         onClick={this.handleGoogle}
                         onPlus={() => console.log('plus')}
-                        connected={this.state.user.social.google !== ""}
+                        connected={this.state.user.social && this.state.user.social.google !== ""}
                     />
                     <SocialButton
                         social={'facebook'}
-                        data={this.state.user.social.facebook}
+                        data={this.state.user.social && this.state.user.social.facebook}
                         onClick={() => console.log('trying to log for facebook')}
                         fields={['account']}
-                        connected={this.state.user.social.facebook !== ""}
+                        connected={this.state.user.social && this.state.user.social.facebook !== ""}
                     />
                     <SocialButton
                         social={'twitter'}
-                        data={this.state.user.social.twitter}
+                        data={this.state.user.social && this.state.user.social.twitter}
                         onClick={() => console.log('trying to log for twitter')}
                         loading={false}
-                        connected={this.state.user.social.twitter !== ""}
+                        connected={this.state.user.social && this.state.user.social.twitter !== ""}
                     />
                 </Layout>
             </Layout>

@@ -106,6 +106,7 @@ input ProfileInput {
     isSignUp: Boolean
     name: String
     lastName: String
+    nickName: String
     image: String
     cover: String
     email: String

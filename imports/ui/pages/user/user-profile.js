@@ -79,7 +79,9 @@ class UserProfile extends Component {
 
   componentWillReceiveProps(nextProps) {
     if (nextProps.data && nextProps.data.user) {
-      let user = Object.assign(this.state.user, nextProps.data.user.profile);
+        let data = JSON.parse(JSON.stringify(nextProps.data.user.profile));
+        Object.keys(data).forEach((key) => (data[key] == null) && delete data[key]);
+      let user = Object.assign(this.state.user, data);
       this.setState({user: user});
     }
   }
