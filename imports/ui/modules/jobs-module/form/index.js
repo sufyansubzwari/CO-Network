@@ -13,9 +13,9 @@ class JobForm extends React.Component {
         place: {
           location: {
             address: "",
-            location: {lat: "", lng: ""},
+            location: { lat: "", lng: "" },
             fullLocation: {}
-          },
+          }
         },
         languages: [],
         positionTags: [],
@@ -29,13 +29,13 @@ class JobForm extends React.Component {
     this.handleChange = this.handleChange.bind(this);
   }
 
-    componentWillReceiveProps(nextProps) {
-        if(nextProps.job){
-            this.setState({
-                job: nextProps.job
-            })
-        }
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.job) {
+      this.setState({
+        job: nextProps.job
+      });
     }
+  }
 
   componentDidMount() {
     if (
@@ -47,46 +47,46 @@ class JobForm extends React.Component {
     }
   }
 
-  handleChange(job){
-    this.setState({
+  handleChange(job) {
+    this.setState(
+      {
         job: job
-    },
-        () => this.props.handleJobChange && this.props.handleJobChange(job))
+      },
+      () => this.props.handleJobChange && this.props.handleJobChange(job)
+    );
   }
 
   render() {
     return (
-      <div style={{ width: 800, height: "100%" }}>
-        <MlWizardForm
-          title={"Post a Job"}
-          onFinish={() =>
-            this.props.onFinish && this.props.onFinish(this.state.job)
-          }
-          onCancel={() => this.props.onCancel && this.props.onCancel()}
-        >
-          <WizardStepForm title={"Job Details"} isValid>
-            <FirstStep
-              data={this.state.job}
-              onChange={job => this.handleChange(job)}
-            />
-          </WizardStepForm>
-          <WizardStepForm title={"Job Requirements"} isValid>
-            <SecondStep
-              data={this.state.job}
-              onChange={job => this.handleChange(job)}
-            />
-          </WizardStepForm>
-          <WizardStepForm title={"Organizational Culture"} isValid>
-            <ThirdStep
-              data={this.state.job}
-              onChange={job => this.handleChange(job)}
-            />
-          </WizardStepForm>
-          <WizardStepForm title={"Submit"}>
-            <div>HERE GOES THE PAY SECTION</div>
-          </WizardStepForm>
-        </MlWizardForm>
-      </div>
+      <MlWizardForm
+        title={"Post a Job"}
+        onFinish={() =>
+          this.props.onFinish && this.props.onFinish(this.state.job)
+        }
+        onCancel={() => this.props.onCancel && this.props.onCancel()}
+      >
+        <WizardStepForm title={"Job Details"} isValid>
+          <FirstStep
+            data={this.state.job}
+            onChange={job => this.handleChange(job)}
+          />
+        </WizardStepForm>
+        <WizardStepForm title={"Job Requirements"} isValid>
+          <SecondStep
+            data={this.state.job}
+            onChange={job => this.handleChange(job)}
+          />
+        </WizardStepForm>
+        <WizardStepForm title={"Organizational Culture"} isValid>
+          <ThirdStep
+            data={this.state.job}
+            onChange={job => this.handleChange(job)}
+          />
+        </WizardStepForm>
+        <WizardStepForm title={"Submit"}>
+          <div>HERE GOES THE PAY SECTION</div>
+        </WizardStepForm>
+      </MlWizardForm>
     );
   }
 }
@@ -98,7 +98,7 @@ JobForm.defaultProps = {
 JobForm.propTypes = {
   onCancel: PropTypes.func,
   onFinish: PropTypes.func,
-    handleJobChange: PropTypes.func
+  handleJobChange: PropTypes.func
 };
 
 export default JobForm;

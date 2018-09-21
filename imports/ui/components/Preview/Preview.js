@@ -2,7 +2,6 @@ import React from "react";
 import { Layout, Container } from "btech-layout";
 import styled from "styled-components";
 import PropsTypes from "prop-types";
-import UserPhoto from "./../UserPhoto/UserPhoto";
 import MaterialIcon from "react-material-iconic-font";
 import { Scrollbars } from "react-custom-scrollbars";
 import { Button } from "btech-base-forms-component";
@@ -47,31 +46,31 @@ export default class Preview extends React.Component {
     super(props);
     this.state = {
       selectedLink: 0,
-      image: props.image ? props.image : '',
-      backGroundImage: props.backGroundImage ? props.backGroundImage : ''
+      image: props.image ? props.image : "",
+      backGroundImage: props.backGroundImage ? props.backGroundImage : ""
     };
-    this.handleUploadChange = this.handleUploadChange.bind(this)
+    this.handleUploadChange = this.handleUploadChange.bind(this);
   }
 
-    componentWillReceiveProps(nextProps){
-        if(nextProps.image){
-            this.setState({
-                image: nextProps.image
-            })
-        }
-        if(nextProps.backGroundImage){
-            this.setState({
-                backGroundImage: nextProps.backGroundImage
-            })
-        }
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.image) {
+      this.setState({
+        image: nextProps.image
+      });
     }
+    if (nextProps.backGroundImage) {
+      this.setState({
+        backGroundImage: nextProps.backGroundImage
+      });
+    }
+  }
 
-    handleUploadChange(src,element) {
-       if (element === 'background')
-           this.props.onBackgroundChange && this.props.onBackgroundChange(src)
-        if(element === 'userphoto')
-            this.props.onUserPhotoChange && this.props.onUserPhotoChange(src)
-    }
+  handleUploadChange(src, element) {
+    if (element === "background")
+      this.props.onBackgroundChange && this.props.onBackgroundChange(src);
+    if (element === "userphoto")
+      this.props.onUserPhotoChange && this.props.onUserPhotoChange(src);
+  }
 
   render() {
     let navlinks =
@@ -108,8 +107,12 @@ export default class Preview extends React.Component {
       : [];
     return (
       <Layout fullY customTemplateRows={"190px 70px 1fr"} background={"white"}>
-        <TopPreview handleUpload={this.handleUploadChange }
-                    image={this.state.image} backGroundImage={this.state.backGroundImage} showAvatar={this.props.showAvatar} />
+        <TopPreview
+          handleUpload={this.handleUploadChange}
+          image={this.state.image}
+          backGroundImage={this.state.backGroundImage}
+          showAvatar={this.props.showAvatar}
+        />
         <SLayout
           paddingX={"100px"}
           customTemplateColumns={

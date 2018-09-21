@@ -38,7 +38,6 @@ class PostJob extends Component {
         }
       }
     };
-    this.handleBackgroundChange = this.handleBackgroundChange.bind(this);
   }
 
   onCancel() {
@@ -46,12 +45,9 @@ class PostJob extends Component {
   }
 
   handleBackgroundChange(src) {
-    this.setState({
-      job: {
-        ...this.state.job,
-        image: src
-      }
-    });
+    const job = this.state.job;
+    if (src) job.image = src;
+    this.setState({ job: job });
   }
 
   onPostAction(createJob, query) {
@@ -62,11 +58,13 @@ class PostJob extends Component {
     queryJob.place.location.fullLocation
       ? delete queryJob.place.location.fullLocation
       : null;
-    let job = {
-      ...queryJob,
-      owner: "Qt5569uuKKd6YrDwS" //Meteor.userId(),
-    };
-    createJob({ variables: { entity: job } });
+    let job = { ...queryJob };
+    if (this.props.curUser) {
+      job.owner = this.props.curUser.id;
+      createJob({ variables: { entity: job } });
+    } else {
+      // todo login the user and then create the event or notify the user must login
+    }
   }
 
   render() {
@@ -109,8 +107,8 @@ class PostJob extends Component {
           ]}
           index={this.state.selectedIndex}
           data={this.state.selectedItem}
-          backGroundImage={this.state.event && this.state.event.image}
-          onBackgroundChange={this.handleBackgroundChange}
+          backGroundImage={this.state.job && this.state.job.image}
+          onBackgroundChange={imageSrc => this.handleBackgroundChange(imageSrc)}
         >
           <JobPreviewBody job={this.state.job} />
         </Preview>
