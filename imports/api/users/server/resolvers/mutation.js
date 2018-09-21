@@ -1,16 +1,19 @@
-import { Meteor } from 'meteor/meteor';
-import webPush from 'web-push';
-import map from 'lodash/map';
-import flatten from 'lodash/flatten';
-import { Accounts } from 'meteor/accounts-base';
-import { GraphQLError } from 'graphql';
-import collection from '../collection';
-import utils from '../utils';
-import Service from '../service'
+import { Meteor } from "meteor/meteor";
+import webPush from "web-push";
+import map from "lodash/map";
+import flatten from "lodash/flatten";
+import { Accounts } from "meteor/accounts-base";
+import { GraphQLError } from "graphql";
+import collection from "../collection";
+import utils from "../utils";
+import Service from "../service";
 
 const { privateKey: gcmPrivateKey } = Meteor.settings.firebase;
 const { publicKey: vapidPublicKey } = Meteor.settings.public.vapid;
-const { subject: vapidSubject, privateKey: vapidPrivateKey } = Meteor.settings.vapid;
+const {
+  subject: vapidSubject,
+  privateKey: vapidPrivateKey
+} = Meteor.settings.vapid;
 
 // Wrap collection and utils around namespace for clarity
 const Users = { collection, utils };
@@ -20,26 +23,28 @@ const Mutation = {};
 
 //------------------------------------------------------------------------------
 /**
-* @summary Send email account verification email to current logged in user.
-*/
+ * @summary Send email account verification email to current logged in user.
+ */
 Mutation.sendVerificationEmail = (root, args, context) => {
-  console.log('About to send verification email...');
+  console.log("About to send verification email...");
   const { userId } = context;
 
   Users.utils.checkLoggedInAndNotVerified(userId);
 
   try {
     Accounts.sendVerificationEmail(userId);
-    console.log('Verification email sent!');
+    console.log("Verification email sent!");
     return { _id: userId };
   } catch (exc) {
-    throw new GraphQLError(`Verification email couldn't be delivered. Reason: ${exc.response}`);
+    throw new GraphQLError(
+      `Verification email couldn't be delivered. Reason: ${exc.response}`
+    );
   }
 };
 //------------------------------------------------------------------------------
 /**
-* @summary Save subscription into user's record.
-*/
+ * @summary Save subscription into user's record.
+ */
 Mutation.saveSubscription = (root, args, context) => {
   const { subscription } = args;
   const { userId } = context;
@@ -54,8 +59,8 @@ Mutation.saveSubscription = (root, args, context) => {
 };
 //------------------------------------------------------------------------------
 /**
-* @summary Remove subscription from user's record.
-*/
+ * @summary Remove subscription from user's record.
+ */
 Mutation.deleteSubscription = (root, args, context) => {
   const { endpoint } = args;
   const { userId } = context;
@@ -70,8 +75,8 @@ Mutation.deleteSubscription = (root, args, context) => {
 };
 //------------------------------------------------------------------------------
 /**
-* @summary Send push notification to all subscribed users.
-*/
+ * @summary Send push notification to all subscribed users.
+ */
 Mutation.sendPushNotification = (root, args, context) => {
   const { userId } = context;
 
@@ -82,39 +87,51 @@ Mutation.sendPushNotification = (root, args, context) => {
   webPush.setVapidDetails(vapidSubject, vapidPublicKey, vapidPrivateKey);
 
   const payload = JSON.stringify({
-    title: 'Welcome',
-    body: 'Thank you for enabling push notifications',
-    icon: '/android-chrome-192x192.png',
+    title: "Welcome",
+    body: "Thank you for enabling push notifications",
+    icon: "/android-chrome-192x192.png"
   });
 
   const options = {
-    TTL: 60, // time to live in seconds
+    TTL: 60 // time to live in seconds
   };
 
   // Gather all subscriptions from all subscribed users
   const selector = { subscriptions: { $exists: true, $ne: [] } };
   const projection = { fields: { _id: true, subscriptions: true } };
   const users = Users.collection.find(selector, projection).fetch();
-  const subscriptions = flatten(map(users, 'subscriptions'));
+  const subscriptions = flatten(map(users, "subscriptions"));
 
   // Actually send the messages
-  subscriptions.forEach((subscription) => {
-    webPush.sendNotification(subscription, payload, options)
+  subscriptions.forEach(subscription => {
+    webPush
+      .sendNotification(subscription, payload, options)
       .then(() => {})
-      .catch((err) => {
-        console.log(`Error when trying to deliver message for ${subscription.endpoint}`, err);
+      .catch(err => {
+        console.log(
+          `Error when trying to deliver message for ${subscription.endpoint}`,
+          err
+        );
         // This is probably an old subscription, remove it
-        Mutation.deleteSubscription(null, { endpoint: subscription.endpoint }, { userId });
+        Mutation.deleteSubscription(
+          null,
+          { endpoint: subscription.endpoint },
+          { userId }
+        );
       });
   });
 };
 //------------------------------------------------------------------------------
-Mutation.user = (root, {users}, context) => {
+Mutation.user = (root, { users }, context) => {
   return Service.user(users);
 };
 //------------------------------------------------------------------------------
-Mutation.deleteUser = (root, {_id}, context) => {
-    return Service.deleteUser(_id);
+Mutation.deleteUser = (root, { _id }, context) => {
+  return Service.deleteUser(_id);
+};
+
+Mutation.updateSignUpStatus = (root, { _id, status }, context) => {
+  return Service.signUpUser(_id, status);
 };
 
 export default Mutation;

@@ -1,0 +1,2 @@
+
+export const EVENT_UPDATE_USER = 'EVENT_UPDATE_USER';

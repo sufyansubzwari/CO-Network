@@ -15,6 +15,7 @@ const SideBarLink = styled.a`
     props.fontSize || props.theme.sidebar.bottomLinks.fontSize};
   text-decoration: none;
   color: ${props => props.color || props.theme.sidebar.bottomLinks.color};
+  ${props => props.pointer &&  'cursor:pointer;'};
 `;
 
 export default SideBarLink;

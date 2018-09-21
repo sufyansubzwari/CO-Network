@@ -1,6 +1,5 @@
 import Users from "../index";
 import * as _ from "lodash";
-import Organizations from "../../organizations";
 
 /**
  * @class User Service
@@ -20,19 +19,32 @@ class UserService {
     } else {
       let id = data._id;
       delete data._id;
-      await Users.collection.update(id, {$set: data});
+      await Users.collection.update(id, { $set: data });
       return Users.collection.findOne(id);
     }
   };
-    /**
-     * @name deleteUser
-     * @summary Allow delete an user
-     * @param {String} id - User id
-     * @return {Object} User deleted
-     */
-    static deleteUser = async (id) => {
-        return await Users.collection.remove(id);
-    };
+  /**
+   * @name deleteUser
+   * @summary Allow delete an user
+   * @param {String} id - User id
+   * @return {Object} User deleted
+   */
+  static deleteUser = async id => {
+    return await Users.collection.remove(id);
+  };
+  /**
+   * @name updateSigUpState
+   * @summary Change the signup state an user
+   * @param {String} id - User id
+   * @param {String} status - current status
+   * @return {Object} User updated
+   */
+  static signUpUser = async (id, status) => {
+    await Users.collection.update(id, {
+      $set: { "profile.isSignUp": status }
+    });
+    return Users.collection.findOne(id);
+  };
   /**
    * @name getUser
    * @summary Get Users by id
@@ -52,7 +64,6 @@ class UserService {
   static users = (query, limit) => {
     return Users.collection.find(query, limit).fetch();
   };
-
 }
 
 export default UserService;

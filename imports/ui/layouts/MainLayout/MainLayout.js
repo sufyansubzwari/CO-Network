@@ -28,6 +28,8 @@ class MainLayout extends Component {
 
   render() {
     let props = this.props;
+    const isSignUp = props.userState ? props.userState.profile.isSignUp : true
+    let propsProvider = {curUser:props.userState,isSignUp };
     return (
       <Layout
         customTemplateColumns={"1fr"}
@@ -47,16 +49,18 @@ class MainLayout extends Component {
         }}
         minH="100vh"
       >
-        <SignUpListener {...props} />
-        <Navbar {...props} isShow={this.state.isShow} />
+        <SignUpListener {...propsProvider} />
+        <Navbar {...propsProvider} isShow={this.state.isShow} />
         <LoginModal />
-        {props.showSidebar ? <SideBar {...props} /> : null}
+        {props.showSidebar ? <SideBar {...propsProvider} /> : null}
         <ContentContainerPose
           pose={this.state.isShow ? "open" : "closed"}
           fullY
           gridArea="content"
         >
-          <Routes {...props} />
+          <Scrollbars>
+            <Routes {...propsProvider} />
+          </Scrollbars>
         </ContentContainerPose>
       </Layout>
     );
@@ -70,9 +74,10 @@ MainLayout.defaultProps = {
 MainLayout.propTypes = {};
 
 const mapStateToProps = state => {
-  const { sideBarStatus } = state;
+  const { sideBarStatus ,userState } = state;
   return {
-    showSidebar: sideBarStatus ? sideBarStatus.status : false
+    showSidebar: sideBarStatus ? sideBarStatus.status : false,
+    userState
   };
 };
 

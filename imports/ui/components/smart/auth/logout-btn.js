@@ -2,15 +2,14 @@ import { Meteor } from 'meteor/meteor';
 import React from 'react';
 import PropTypes from 'prop-types';
 import { withApollo } from 'react-apollo';
-import Button from '../../dumb/button';
+import Button from '../../Navbar/SideBarLink';
 
 //------------------------------------------------------------------------------
 // COMPONENT:
 //------------------------------------------------------------------------------
 const LogoutBtn = ({ client, btnType, disabled, onLogoutHook }) => (
   <Button
-    type={btnType}
-    disabled={disabled}
+    pointer
     onClick={(evt) => {
       if (evt) { evt.preventDefault(); }
       Meteor.logout(() => {
