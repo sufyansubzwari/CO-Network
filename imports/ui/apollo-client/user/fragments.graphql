@@ -6,6 +6,7 @@ fragment userFragment on User {
   profile {
       isSignUp
       name
+      user_id
       lastName
       nickName
       loginCount

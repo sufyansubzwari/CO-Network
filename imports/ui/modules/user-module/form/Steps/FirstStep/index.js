@@ -48,15 +48,20 @@ class FirstStep extends React.Component {
     Authorization.initLink(service);
   }
 
-  getLinkedAccountData(provider) {
-    const userIdentities = this.state.user ? this.state.user.identities : [];
-    return userIdentities.find((element, index) => {
-      return element.provider === provider;
+  handleUnLinkAccount(service, data) {
+    Authorization.unlinkAccount(service, data);
+  }
+
+  getIdentitiesLinked(provider) {
+    return this.state.user.identities.filter(element => {
+      return (
+        `${provider}|${element.user_id}` !== this.state.user.user_id &&
+        provider === element.provider
+      );
     });
   }
 
   render() {
-    console.log(this.state.user);
     return (
       <Layout rowGap={"25px"}>
         <Layout templateColumns={2} colGap={"20px"}>
@@ -100,19 +105,34 @@ class FirstStep extends React.Component {
           colGap={"10px"}
           minH={"90px"}
         >
-          {this.services.map((authService, index) => {
+          {this.services.map((authService, position) => {
             const service = authService.label || authService.service;
-            const data = this.getLinkedAccountData(authService.service);
-            return (
-              <SocialButton
-                key={index}
-                social={service}
-                connected={!!data}
-                data={data}
-                fields={["name", "email"]}
-                onClick={() => this.handleLinkAccount(authService.service)}
-              />
-            );
+            const identities = this.getIdentitiesLinked(authService.service);
+            if (identities.length) {
+              return identities.map((element, index) => {
+                console.log(element);
+                return (
+                  <SocialButton
+                    key={index}
+                    social={service}
+                    connected={!!element}
+                    data={element}
+                    fields={["name", "email"]}
+                    onPlus={() => this.handleLinkAccount(authService.service)}
+                    onClose={() =>
+                      this.handleUnLinkAccount(authService.service, element)
+                    }
+                  />
+                );
+              });
+            } else
+              return (
+                <SocialButton
+                  key={position}
+                  social={service}
+                  onClick={() => this.handleLinkAccount(authService.service)}
+                />
+              );
           })}
         </Layout>
       </Layout>

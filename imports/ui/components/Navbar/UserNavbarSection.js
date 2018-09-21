@@ -19,11 +19,6 @@ const SAddMaterialIcon = styled.span`
   }
 `;
 
-const SInitialsContainer = styled.span`
-  font-family: "Helvetica Neue Light";
-  font-weight: bold;
-  letter-spacing: 1px;
-`;
 /**
  * @module Data
  * @category Component
@@ -66,27 +61,9 @@ class UserNavbarSection extends React.Component {
     this.props.toggleSideBar(!this.props.addSidebarIsOpen);
   }
 
-  getUserInitials(namespace) {
-    const result = [];
-    if (typeof namespace === "string") {
-      const word = namespace.split(" ");
-      for (let i = word.length - 1; i >= 0; i--) {
-        result[i] = word[i][0];
-      }
-      return result.join("");
-    } else return "";
-  }
-
   render() {
     const isAuthenticated = this.props.curUser;
     const avatarLink = isAuthenticated ? "/profile" : "/";
-    const initials = isAuthenticated
-      ? this.getUserInitials(
-          `${isAuthenticated.profile.name} ${
-            isAuthenticated.profile.lastName
-          }` || isAuthenticated.profile.email
-        )
-      : null;
     return (
       <Layout
         customTemplateRows={"1fr auto"}
@@ -133,13 +110,8 @@ class UserNavbarSection extends React.Component {
                 }}
                 activeEval={this.activeEval}
               />
-
               <Link to={avatarLink}>
-                <NavbarUserButton
-                  size={this.size}
-                >
-                  <SInitialsContainer>{initials}</SInitialsContainer>
-                </HButtom>
+                <NavbarUserButton size={this.size} />
               </Link>
             </Group>
             <Layout
@@ -149,7 +121,7 @@ class UserNavbarSection extends React.Component {
             >
               <ThemeProvider theme={theme}>
                 <Layout rowGap="10px">
-                  <LogoutBtn/>
+                  <LogoutBtn />
                   <SideBarLink href={this.policy}> Terms Policies </SideBarLink>
                   <SideBarLink> CONetwork © 2018 </SideBarLink>
                 </Layout>
