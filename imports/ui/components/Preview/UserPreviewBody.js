@@ -32,7 +32,7 @@ class UserPreviewBody extends React.Component {
         //tags
         let languages = this.state.user.knowledge && this.state.user.knowledge.languages && this.state.user.knowledge.languages.map(lang => ({...lang, active: true}))
         let curious = this.state.user.knowledge && this.state.user.knowledge.curiosity && this.state.user.knowledge.curiosity.map(cur => ({...cur, active: true}))
-        let industry = this.state.user.professional && this.state.user.professional.industry && this.state.user.professional.industry.map(ind => ({name: ind, active: true}))
+        let industry = this.state.user.professional && this.state.user.professional.industry && this.state.user.professional.industry.map(ind => ({...ind, active: true}))
         let otherlook = this.state.user.speaker && this.state.user.speaker.otherlooking && this.state.user.speaker.otherlooking.map(look => ({...look, active: true}))
         let otherpre = this.state.user.speaker && this.state.user.speaker.otherpreferred && this.state.user.speaker.otherpreferred.map(pre => ({...pre, active: true}))
         let topics = this.state.user.speaker && this.state.user.speaker.topic && this.state.user.speaker.topic.map(top => ({...top, active: true}))

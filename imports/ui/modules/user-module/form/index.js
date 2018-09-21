@@ -55,11 +55,14 @@ class UserForm extends Component {
           this.props.onFinish && this.props.onFinish(this.state.user)
         }
         onCancel={() => this.props.onCancel && this.props.onCancel()}
+        showProgress={true}
+        radioColor={'#000000'}
       >
         <WizardStepForm title={"User Details"} isValid>
           <FirstStep
             data={this.state.user}
             onChange={user => this.handleChange(user)}
+            getNavigationLinks={(links) => console.log(links)}
           />
         </WizardStepForm>
         <WizardStepForm title={"About Me | Passion"} isValid>
