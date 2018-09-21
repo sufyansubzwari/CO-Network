@@ -1,3 +1,4 @@
+#import './fragments.graphql'
 
 query userQuery($id: String){
   user(id: $id) {
