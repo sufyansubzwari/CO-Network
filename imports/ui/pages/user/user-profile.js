@@ -4,9 +4,8 @@ import UserForm from "./../../modules/user-module/form/";
 import InternalLayout from "../../components/InternalLayout/InternalLayout";
 import {Preview} from "../../../ui/components";
 import UserPreviewBody from "../../components/Preview/UserPreviewBody";
-import {Mutation} from "react-apollo";
-import {withRouter} from "react-router-dom";
-import {CreateUser} from "../../apollo-client/user";
+import {Mutation, graphql} from "react-apollo";
+import {CreateUser, userQuery} from "../../apollo-client/user";
 
 /**
  * @module User
@@ -64,11 +63,10 @@ class UserProfile extends Component {
     };
     let currentUser = JSON.parse(JSON.stringify(props.curUser.profile));
     Object.keys(currentUser).forEach((key) => (currentUser[key] == null) && delete currentUser[key]);
+    let userObject = Object.assign(user, currentUser);
 
     this.state = {
-      user: {
-        ...user, ...currentUser
-      }
+      user: userObject
     };
 
     this.handleBackgroundChange = this.handleBackgroundChange.bind(this);
@@ -77,6 +75,13 @@ class UserProfile extends Component {
 
   onCancel() {
     this.props.history.push(`/`);
+  }
+
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.data && nextProps.data.user) {
+      let user = Object.assign(this.state.user, nextProps.data.user.profile);
+      this.setState({user: user});
+    }
   }
 
   handleBackgroundChange(src) {
@@ -169,4 +174,11 @@ class UserProfile extends Component {
   }
 }
 
-export default UserProfile;
+export default graphql(userQuery, {
+  options: () => ({
+    variables: {
+      id: Meteor.userId()
+    },
+    fetchPolicy: "cache-and-network"
+  })
+})(UserProfile);
