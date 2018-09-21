@@ -154,10 +154,9 @@ class CardItem extends Component {
   }
 
   getRightSide() {
-    const loading =
-      this.props.loading || (this.props.image && this.state.loadingImage);
+    const loading = true;
     const imageElement = loading ? (
-      <PlaceHolder rect loading={loading} height={325} />
+      <PlaceHolder rect loading={loading} height={398} width={395} />
     ) : (
       <img width="100%" height="100%" src={this.props.image} />
     );

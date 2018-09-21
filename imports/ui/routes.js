@@ -14,11 +14,11 @@ import NotFoundPage from "./pages/not-found-page";
 import ListEvents from "./pages/events/list-events";
 import PostEvent from "./pages/events/post-event";
 // jobs
-import ListJobs from "./pages/jobs/list-jobs"
-import PostJob from "./pages/jobs/post-jobs"
+import ListJobs from "./pages/jobs/list-jobs";
+import PostJob from "./pages/jobs/post-jobs";
 // innovators
-import ListInnovators from  "./pages/innovators/list-innovators"
-import PostOrganization from  "./pages/innovators/post-innovators"
+import ListInnovators from "./pages/innovators/list-innovators";
+import PostOrganization from "./pages/innovators/post-innovators";
 
 //------------------------------------------------------------------------------
 // COMPONENT:
@@ -89,11 +89,7 @@ const Routes = props => (
         component={PostOrganization}
         {...props}
       />
-      <RouteWithProps
-        name="notFound"
-        component={NotFoundPage}
-        {...props}
-      />
+      <RouteWithProps name="notFound" component={NotFoundPage} {...props} />
     </Switch>
   </ScrollToTop>
 );
