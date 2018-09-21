@@ -3,6 +3,7 @@ import { Meteor } from "meteor/meteor";
 import react from "react";
 import Axios from "axios";
 import { userQuery } from "../../apollo-client/user";
+import { Accounts } from "meteor/accounts-base";
 
 class Authorization extends react.Component {
   constructor() {
@@ -101,30 +102,19 @@ class Authorization extends react.Component {
   }
 
   loginMeteor(profile) {
-    let _this = this;
-
     if (profile) {
       this.userProfile = profile;
       profile.expireIn = localStorage.expires_at;
-      Meteor.call("users.findUser", this.userProfile.user_id, (err, result) => {
+      const service = localStorage.getItem("currentService");
+      // insert user from Auth0
+      Meteor.call("users.insertUserAuth0", profile, service, (err, result) => {
         if (!err) {
-          if (result.length > 0) {
-            _this.callback && _this.callback({ isSignUp: false });
-          } else {
-            // insert user from Auth0
-            Meteor.call(
-              "users.insertUserAuth0",
-              profile,
-              localStorage.getItem("currentService"),
-              (err, result) => {
-                if (!err)
-                  Meteor.loginWithToken(
-                    result.token,
-                    () => _this.callback && _this.callback({ isSignUp: true })
-                  );
-              }
-            );
-          }
+          Meteor.loginWithToken(
+            result.token,
+            () => this.callback && this.callback({ error: null, user: result })
+          );
+        } else {
+          this.callback && this.callback({ error: err });
         }
       });
     }

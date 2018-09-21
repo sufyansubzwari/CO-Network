@@ -94,10 +94,10 @@ class CardItem extends Component {
         mdCustomTemplateRows={"1fr auto"}
       >
         <Layout fullY customTemplateRows={"auto auto 1fr"}>
-          <Container>
+          <Container mdMinH={"25px"}>
             <Layout
               customTemplateColumns={"1fr"}
-              mdCustomTemplateColumns={"1fr auto"}
+              mdCustomTemplateColumns={this.props.showMenu ? "1fr auto" : "1f"}
             >
               <Container>
                 <Layout customTemplateColumns={"20px auto"}>
@@ -111,11 +111,13 @@ class CardItem extends Component {
                   </Container>
                 </Layout>
               </Container>
-              <Container hide mdShow>
-                <SViewsContainer>
-                  <ReportToggle onSelect={(item, key) => alert(key)} />
-                </SViewsContainer>
-              </Container>
+              {this.props.showMenu ? (
+                <Container hide mdShow>
+                  <SViewsContainer>
+                    <ReportToggle onSelect={(item, key) => alert(key)} />
+                  </SViewsContainer>
+                </Container>
+              ) : null}
             </Layout>
           </Container>
           <Container>
@@ -198,6 +200,7 @@ CardItem.defaultProps = {
   ...Card.defaultProps,
   tags: [],
   views: 0,
+  showMenu: false,
   image: null,
   iconClass: "eye"
 };
@@ -208,6 +211,7 @@ CardItem.propTypes = {
   title: PropTypes.string,
   image: PropTypes.string,
   subTitle: PropTypes.string,
+  showMenu: PropTypes.bool,
   iconClass: PropTypes.string,
   onSelectTag: PropTypes.func,
   tags: PropTypes.array,

@@ -1,8 +1,6 @@
 import React, { Component } from "react";
-import { Container } from "btech-layout";
-import InternalLayout from "../../components/InternalLayout/InternalLayout";
 import OrganizationForm from "../../modules/organization-module/form";
-import { Preview } from "../../../ui/components";
+import { Preview, PostLayout } from "../../../ui/components";
 import OrganizationPreviewBody from "../../components/Preview/OrganizationPreviewBody";
 import { withRouter } from "react-router-dom";
 import { CreateOrg } from "../../apollo-client/organization";
@@ -96,10 +94,6 @@ class PostOrganization extends Component {
     });
   }
 
-  componentWillMount() {
-    this.props.toggleSideBar(false);
-  }
-
   onCancel() {
     this.props.history.push(`/innovators`);
   }
@@ -121,31 +115,30 @@ class PostOrganization extends Component {
 
   render() {
     return (
-      <InternalLayout leftWidth={"52%"}>
-        <Container fullY key={"leftSide"}>
-          <Mutation
-            mutation={CreateOrg}
-            onCompleted={() => this.props.history.push("/innovators")}
-            onError={error => console.log("Error: ", error)}
-          >
-            {(createOrg, { orgCreated }) => (
-              <OrganizationForm
-                onFinish={data => this.onPostAction(createOrg, data)}
-                onCancel={() => this.onCancel()}
-                handleOrgChange={organization =>
-                  this.setState({
-                    organization: {
-                      ...this.state.organization,
-                      ...organization
-                    }
-                  })
-                }
-                organization={this.state.organization}
-                {...this.props}
-              />
-            )}
-          </Mutation>
-        </Container>
+      <PostLayout>
+        <Mutation
+          key={"leftSide"}
+          mutation={CreateOrg}
+          onCompleted={() => this.props.history.push("/innovators")}
+          onError={error => console.log("Error: ", error)}
+        >
+          {(createOrg, { orgCreated }) => (
+            <OrganizationForm
+              onFinish={data => this.onPostAction(createOrg, data)}
+              onCancel={() => this.onCancel()}
+              handleOrgChange={organization =>
+                this.setState({
+                  organization: {
+                    ...this.state.organization,
+                    ...organization
+                  }
+                })
+              }
+              organization={this.state.organization}
+              {...this.props}
+            />
+          )}
+        </Mutation>
         <Preview
           key={"rightSide"}
           navClicked={index => console.log(index)}
@@ -175,7 +168,7 @@ class PostOrganization extends Component {
         >
           <OrganizationPreviewBody organization={this.state.organization} />
         </Preview>
-      </InternalLayout>
+      </PostLayout>
     );
   }
 }

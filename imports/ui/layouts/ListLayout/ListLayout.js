@@ -9,7 +9,7 @@ import styled from "styled-components";
 import ListContainer from "./ListContainer";
 import TopSearchContainer from "./TopSearchContainer";
 import { connect } from "react-redux";
-import { setFilterEntity, toggleSideBar } from "../../actions/SideBarActions";
+import { setFilterEntity, toggleSideBar } from "../../actions/SideBarActions/index";
 
 const SListContainer = styled(Container)`
   border-right: ${props => "1px solid " + props.theme.color.grey};

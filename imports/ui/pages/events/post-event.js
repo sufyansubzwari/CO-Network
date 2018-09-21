@@ -1,9 +1,6 @@
 import React, { Component } from "react";
-import { Meteor } from "meteor/meteor";
-import { Container } from "btech-layout";
-import InternalLayout from "../../components/InternalLayout/InternalLayout";
 import EventForm from "../../modules/event-module/form";
-import { Preview } from "../../../ui/components";
+import { Preview, PostLayout } from "../../../ui/components";
 import EventPreviewBody from "../../components/Preview/EventPreviewBody";
 import { withRouter } from "react-router-dom";
 import { CreateEvent } from "../../apollo-client/event";
@@ -42,10 +39,6 @@ class PostEvent extends Component {
     };
     this.handleBackgroundChange = this.handleBackgroundChange.bind(this);
     // this.handleUserPhotoChange = this.handleUserPhotoChange.bind(this);
-  }
-
-  componentWillMount() {
-    this.props.toggleSideBar(false);
   }
 
   onCancel() {
@@ -87,28 +80,27 @@ class PostEvent extends Component {
 
   render() {
     return (
-      <InternalLayout leftWidth={"52%"}>
-        <Container fullY key={"leftSide"}>
-          <Mutation
-            mutation={CreateEvent}
-            onCompleted={() =>
-              this.props.history.push("/events", { postEvent: true })
-            }
-            onError={error => console.log("Error: ", error)}
-          >
-            {(createEvent, { eventCreated }) => (
-              <EventForm
-                onFinish={data => this.onPostAction(createEvent, data)}
-                onCancel={() => this.onCancel()}
-                handleChangeEvent={event =>
-                  this.setState({ event: { ...this.state.event, ...event } })
-                }
-                event={this.state.event}
-                {...this.props}
-              />
-            )}
-          </Mutation>
-        </Container>
+      <PostLayout>
+        <Mutation
+          key={"leftSide"}
+          mutation={CreateEvent}
+          onCompleted={() =>
+            this.props.history.push("/events", { postEvent: true })
+          }
+          onError={error => console.log("Error: ", error)}
+        >
+          {(createEvent, { eventCreated }) => (
+            <EventForm
+              onFinish={data => this.onPostAction(createEvent, data)}
+              onCancel={() => this.onCancel()}
+              handleChangeEvent={event =>
+                this.setState({ event: { ...this.state.event, ...event } })
+              }
+              event={this.state.event}
+              {...this.props}
+            />
+          )}
+        </Mutation>
         <Preview
           key={"rightSide"}
           navClicked={index => console.log(index)}
@@ -132,7 +124,7 @@ class PostEvent extends Component {
         >
           <EventPreviewBody event={this.state.event} />
         </Preview>
-      </InternalLayout>
+      </PostLayout>
     );
   }
 }

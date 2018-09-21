@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { Container } from "btech-layout";
 import SignUp from "./../modules/user-module/form/SignUp/SignUp";
-import InternalLayout from "../components/InternalLayout/InternalLayout";
+import InternalLayout from "../layouts/InternalLayout/InternalLayout";
 
 class SignUpPage extends Component {
   constructor(props) {
