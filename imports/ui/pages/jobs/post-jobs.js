@@ -1,8 +1,6 @@
 import React, { Component } from "react";
-import { Container } from "btech-layout";
-import InternalLayout from "../../components/InternalLayout/InternalLayout";
 import JobForm from "../../modules/jobs-module/form";
-import { Preview } from "../../../ui/components";
+import { Preview, PostLayout } from "../../../ui/components";
 import JobPreviewBody from "../../components/Preview/JobPreviewBody";
 import { withRouter } from "react-router-dom";
 import { CreateJob } from "../../apollo-client/job";
@@ -47,10 +45,6 @@ class PostJob extends Component {
     this.props.history.push(`/jobs`);
   }
 
-  componentWillMount() {
-    this.props.toggleSideBar(false);
-  }
-
   handleBackgroundChange(src) {
     this.setState({
       job: {
@@ -77,28 +71,27 @@ class PostJob extends Component {
 
   render() {
     return (
-      <InternalLayout leftWidth={"52%"}>
-        <Container fullY key={"leftSide"}>
-          <Mutation
-            mutation={CreateJob}
-            onCompleted={() => this.props.history.push("/jobs")}
-            onError={error => console.log("Error: ", error)}
-          >
-            {(createJob, { jobCreated }) => (
-              <JobForm
-                onFinish={data => {
-                  this.onPostAction(createJob, data);
-                }}
-                onCancel={() => this.onCancel()}
-                {...this.props}
-                handleJobChange={job =>
-                  this.setState({ job: { ...this.state.job, ...job } })
-                }
-                job={this.state.job}
-              />
-            )}
-          </Mutation>
-        </Container>
+      <PostLayout>
+        <Mutation
+          key={"leftSide"}
+          mutation={CreateJob}
+          onCompleted={() => this.props.history.push("/jobs")}
+          onError={error => console.log("Error: ", error)}
+        >
+          {(createJob, { jobCreated }) => (
+            <JobForm
+              onFinish={data => {
+                this.onPostAction(createJob, data);
+              }}
+              onCancel={() => this.onCancel()}
+              {...this.props}
+              handleJobChange={job =>
+                this.setState({ job: { ...this.state.job, ...job } })
+              }
+              job={this.state.job}
+            />
+          )}
+        </Mutation>
         <Preview
           key={"rightSide"}
           navClicked={index => console.log(index)}
@@ -121,7 +114,7 @@ class PostJob extends Component {
         >
           <JobPreviewBody job={this.state.job} />
         </Preview>
-      </InternalLayout>
+      </PostLayout>
     );
   }
 }

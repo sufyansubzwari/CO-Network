@@ -1,7 +1,7 @@
 import React, {Component} from "react";
 import {Layout, Container} from "btech-layout";
 import UserForm from "./../../modules/user-module/form/";
-import InternalLayout from "../../components/InternalLayout/InternalLayout";
+import InternalLayout from "../../layouts/InternalLayout/InternalLayout";
 import {Preview} from "../../../ui/components";
 import UserPreviewBody from "../../components/Preview/UserPreviewBody";
 import {Mutation} from "react-apollo";
