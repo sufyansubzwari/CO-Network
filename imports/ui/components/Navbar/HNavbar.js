@@ -58,14 +58,7 @@ const NavItemStyled=styled.div`
       const isSecondLine = index%6>2;
       return isSecondLine?'transform: translateX(64%);':''
   
-}}
-  &:hover {
-      svg path{
-          fill:${props => `${StyleUtil.getThemeValue(props, "theme.color.primary")};`}
-          stroke:${props => `${StyleUtil.getThemeValue(props, "theme.color.primary")};`}
-      }
-  }
- 
+}} 
 `;
 
 const XsTextDescription=styled.div`
