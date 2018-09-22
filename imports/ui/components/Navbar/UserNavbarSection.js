@@ -73,49 +73,62 @@ class UserNavbarSection extends React.Component {
         <Container />
         <Container>
           <Layout rowGap="15px">
-            <Group>
+            {isAuthenticated ?
+              <Group>
+                <HButtom
+                  primary
+                  size={this.size}
+                  onClick={() => this.onAddToggle()}
+                >
+                  <SAddMaterialIcon>
+                    <MaterialIcon type={"plus"} size={2}/>
+                  </SAddMaterialIcon>
+                </HButtom>
+                <HNavItem
+                  mt={{ xs: "5px", md: "0" }}
+                  size={this.notSize}
+                  icon={{ size: 20, src: "/images/logo/home.gif" }}
+                  number={{
+                    top: "-5px",
+                    right: "-5px",
+                    value: Math.floor(Math.random() * 120),
+                    primary: true,
+                    size: { width: 22, height: 24 }
+                  }}
+                  activeEval={this.activeEval}
+                />
+                <HNavItem
+                  mt={{ xs: "5px", md: "0" }}
+                  size={this.notSize}
+                  icon={{ size: 20, src: "/images/logo/home.gif" }}
+                  number={{
+                    top: "-5px",
+                    right: "-5px",
+                    value: Math.floor(Math.random() * 120),
+                    primary: true,
+                    size: { width: 22, height: 24 }
+                  }}
+                  activeEval={this.activeEval}
+                />
+
+                <Link to={avatarLink}>
+                  <NavbarUserButton
+                    size={this.size}
+                  />
+                </Link>
+              </Group>:
               <HButtom
                 primary
                 size={this.size}
                 onClick={() => this.onAddToggle()}
               >
                 <SAddMaterialIcon>
-                  <MaterialIcon type={"plus"} size={2} />
+                  <span style={{fontSize:20}}>
+                      <MaterialIcon type={"square-right"} />
+                  </span>
                 </SAddMaterialIcon>
               </HButtom>
-              <HNavItem
-                mt={{ xs: "5px", md: "0" }}
-                size={this.notSize}
-                icon={{ size: 20, src: "/images/logo/home.gif" }}
-                number={{
-                  top: "-5px",
-                  right: "-5px",
-                  value: Math.floor(Math.random() * 120),
-                  primary: true,
-                  size: { width: 22, height: 24 }
-                }}
-                activeEval={this.activeEval}
-              />
-              <HNavItem
-                mt={{ xs: "5px", md: "0" }}
-                size={this.notSize}
-                icon={{ size: 20, src: "/images/logo/home.gif" }}
-                number={{
-                  top: "-5px",
-                  right: "-5px",
-                  value: Math.floor(Math.random() * 120),
-                  primary: true,
-                  size: { width: 22, height: 24 }
-                }}
-                activeEval={this.activeEval}
-              />
-
-              <Link to={avatarLink}>
-                <NavbarUserButton
-                  size={this.size}
-                />
-              </Link>
-            </Group>
+            }
             <Layout
               rowGap="5px"
               padding="0 20px 20px;"

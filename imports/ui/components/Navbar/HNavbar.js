@@ -115,8 +115,8 @@ const HNavbar = function(props) {
             >
               {props.links
                 ? props.links.map((item, key) => (
-                  <NavItemStyled index={key}>
-                    <NavItem key={key} >
+                  <NavItemStyled index={key} key={key} >
+                    <NavItem >
                       <HNavItem
                         {...item}
                         activeEval={props.activeEval}
