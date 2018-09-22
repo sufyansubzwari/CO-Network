@@ -30,7 +30,7 @@ const SAddMaterialIcon = styled.span`
  * @category Component
  * @description This component is a wrapper for the react-table
  */
-const Group = props => {
+const Group = (props) => {
   // some logic
   return (
     <Container>
@@ -95,8 +95,8 @@ class UserNavbarSection extends React.Component {
             <GroupContainer
               pose={isAuthenticated ? "showUserOptions" : "hideUserOptions"}
             >
-              <Group>
-                <RenderCondition condition={isAuthenticated}>
+              <Group authenticated={isAuthenticated}>
+                <RenderCondition>
                   <HButtom
                     primary
                     size={this.size}
@@ -107,7 +107,7 @@ class UserNavbarSection extends React.Component {
                     </SAddMaterialIcon>
                   </HButtom>
                 </RenderCondition>
-                <RenderCondition condition={isAuthenticated}>
+                <RenderCondition>
                   <HNavItem
                     mt={{ xs: "5px", md: "0" }}
                     size={this.notSize}
@@ -122,7 +122,7 @@ class UserNavbarSection extends React.Component {
                     activeEval={this.activeEval}
                   />
                 </RenderCondition>
-                <RenderCondition condition={isAuthenticated}>
+                <RenderCondition>
                   <HNavItem
                     mt={{ xs: "5px", md: "0" }}
                     size={this.notSize}

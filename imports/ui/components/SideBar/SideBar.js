@@ -8,10 +8,32 @@ import { CREATE_LINKS } from "./create-links";
 import EventsFilters from "../../modules/event-module/filters";
 import JobsFilters from "../../modules/jobs-module/filters";
 import OrganizationFilters from "../../modules/organization-module/filters";
+import posed from "react-pose";
 
-const SSideBarContainer = styled(Container)`
-  border-right: ${props => "1px solid " + props.theme.color.grey};
+const SSideBarContainerStyed = styled(Container)`
+  border-right: ${props => "1px solid " + props.theme.borderColor};
 `;
+const SSideBarContainer = posed(SSideBarContainerStyed)({
+  openSidebar: {
+    x: "0%",
+    staggerChildren: 50,
+    transition: {
+      ease: "circOut" //circOut
+    }
+  },
+  closedSidebarRight: {
+    x: "100%",
+    transition: {
+      ease: "circOut" //circOut
+    }
+  },
+  closedSidebar: {
+    x: "-100%",
+    transition: {
+      ease: "circOut" //circOut
+    }
+  }
+});
 
 /**
  * @module Data
@@ -71,8 +93,11 @@ class SideBar extends Component {
   }
 
   render() {
+    const isOpen= this.props.isOpen;
+    const right= this.props.right;
     return (
       <SSideBarContainer
+        pose={isOpen ? "openSidebar" : (right?"closedSidebarRight":"closedSidebar")}
         background={"white"}
         hide
         mdShow

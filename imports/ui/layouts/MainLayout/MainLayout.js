@@ -7,7 +7,7 @@ import Navbar from "../../components/Navbar/Navbar";
 import SideBar from "../../components/SideBar/SideBar";
 import LoginModal from "../../components/LoginModal/LoginModal";
 import SignUpListener from "../../components/SignUpListener/SignUpListener";
-import posed from "react-pose/lib/index";
+import posed from "react-pose";
 import { Scrollbars } from "react-custom-scrollbars";
 
 const ContentContainerPose = posed(Container)({
@@ -35,24 +35,22 @@ class MainLayout extends Component {
         customTemplateColumns={"1fr"}
         customTemplateRows={"1fr 56px"}
         mdCustomTemplateColumns={
-          props.showSidebar ? "72px 275px 1fr" : "72px 1fr"
+          "72px 275px 1fr"
         }
         lgCustomTemplateColumns={
-          props.showSidebar ? "100px 275px 1fr" : "0.05495fr 1fr"
+          "0.05498fr 275px 1fr"
         }
         mdCustomTemplateRows={"1fr"}
         layoutAreas={{
           xs: `'content' 'Navbar'`,
-          md: props.showSidebar
-            ? `'Navbar SideBar content'`
-            : `'Navbar content'`
+          md: `'Navbar SideBar content'`
         }}
         minH="100vh"
       >
         <SignUpListener {...propsProvider} />
         <Navbar {...propsProvider} isShow={this.state.isShow} />
         <LoginModal />
-        {props.showSidebar ? <SideBar {...propsProvider} /> : null}
+        <SideBar {...propsProvider} isOpen={props.showSidebar}/>
         <ContentContainerPose
           pose={this.state.isShow ? "open" : "closed"}
           fullY
