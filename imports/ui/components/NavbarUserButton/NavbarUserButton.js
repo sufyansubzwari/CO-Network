@@ -4,6 +4,7 @@ import { Meteor } from "meteor/meteor";
 import { withTracker } from "meteor/react-meteor-data";
 import { connect } from 'react-redux';
 import UserRedux  from '../../redux/user';
+import MaterialIcon from "react-material-iconic-font";
 
 
 /**
@@ -20,8 +21,12 @@ class NavbarUserButton extends Component {
     let { user } = this.props;
     this.props.setUser(user);
     return (
-      <HButtom image={!!user ? user.profile.image : ""} size={this.props.size}>
-        {!user ? <span style={{ fontSize: "9px" }} >Login</span> : ""}
+      <HButtom image={!!user ? user.profile.image : ""} size={this.props.size} primary={!user}>
+        {!user ?
+            <span style={{fontSize:20}}>
+               <MaterialIcon type={"square-right"} />
+            </span>
+          : ""}
       </HButtom>
     );
   }
