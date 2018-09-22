@@ -12,6 +12,8 @@ import posed from "react-pose";
 
 const SSideBarContainerStyed = styled(Container)`
   border-right: ${props => "1px solid " + props.theme.borderColor};
+  overflow: hidden;
+  z-index: 10;
 `;
 const SSideBarContainer = posed(SSideBarContainerStyed)({
   openSidebar: {
@@ -99,8 +101,6 @@ class SideBar extends Component {
       <SSideBarContainer
         pose={isOpen ? "openSidebar" : (right?"closedSidebarRight":"closedSidebar")}
         background={"white"}
-        hide
-        mdShow
         fullY
         gridArea="SideBar"
       >

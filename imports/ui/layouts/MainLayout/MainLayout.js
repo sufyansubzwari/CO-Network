@@ -10,9 +10,23 @@ import SignUpListener from "../../components/SignUpListener/SignUpListener";
 import posed from "react-pose";
 import { Scrollbars } from "react-custom-scrollbars";
 
-const ContentContainerPose = posed(Container)({
-  open: { opacity: 1 },
-  closed: { opacity: 0 }
+const leftWidth = 19;
+
+const ContentContainerPose = posed(Layout)({
+  leftOpen: {
+    marginLeft: "0%",
+    marginRight: "0%",
+    transition: {
+      ease: "circOut" //circOut
+    }
+  },
+  leftClose: {
+    marginLeft: `-${leftWidth}%`,
+    marginRight: "0%",
+    transition: {
+      ease: "circOut" //circOut
+    }
+  }
 });
 
 class MainLayout extends Component {
@@ -28,21 +42,18 @@ class MainLayout extends Component {
 
   render() {
     let props = this.props;
-    const isSignUp = props.userState ? props.userState.profile.isSignUp : true
-    let propsProvider = {curUser:props.userState,isSignUp };
+    const isSignUp = props.userState ? props.userState.profile.isSignUp : true;
+    let propsProvider = { curUser: props.userState, isSignUp };
+    const contentPose = props.showSidebar ? "leftOpen" : "leftClose";
+
     return (
       <Layout
-        customTemplateColumns={"1fr"}
+        customTemplateColumns={`1fr 1fr`}
         customTemplateRows={"1fr 56px"}
-        mdCustomTemplateColumns={
-          "72px 275px 1fr"
-        }
-        lgCustomTemplateColumns={
-          "0.05498fr 275px 1fr"
-        }
+        mdCustomTemplateColumns={`0.05498fr 0.${leftWidth}fr 1fr`}
         mdCustomTemplateRows={"1fr"}
         layoutAreas={{
-          xs: `'content' 'Navbar'`,
+          xs: `'SideBar content' 'Navbar Navbar'`,
           md: `'Navbar SideBar content'`
         }}
         minH="100vh"
@@ -50,12 +61,8 @@ class MainLayout extends Component {
         <SignUpListener {...propsProvider} />
         <Navbar {...propsProvider} isShow={this.state.isShow} />
         <LoginModal />
-        <SideBar {...propsProvider} isOpen={props.showSidebar}/>
-        <ContentContainerPose
-          pose={this.state.isShow ? "open" : "closed"}
-          fullY
-          gridArea="content"
-        >
+        <SideBar {...propsProvider} isOpen={props.showSidebar} />
+        <ContentContainerPose pose={contentPose} fullY gridArea="content">
           <Scrollbars>
             <Routes {...propsProvider} />
           </Scrollbars>
@@ -72,7 +79,7 @@ MainLayout.defaultProps = {
 MainLayout.propTypes = {};
 
 const mapStateToProps = state => {
-  const { sideBarStatus ,userState } = state;
+  const { sideBarStatus, userState } = state;
   return {
     showSidebar: sideBarStatus ? sideBarStatus.status : false,
     userState
