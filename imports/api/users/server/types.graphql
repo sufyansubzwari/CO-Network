@@ -136,23 +136,12 @@ input ProfileInput {
     place: PlacesInput
 }
 
-input ProfileSocialInput{
-    email: String
-    name: String
-    isSocial: Boolean
-    given_name: String
-    family_name: String
-    picture: String
-    locale: String
-    connection: String
-    provider: String
-    user_id: String
-}
-
 input SocialIdentityInput {
     provider: String
-    profileData: ProfileInput
+    profileData: Json
     user_id: String
+    connection: String
+    isSocial: Boolean
 }
 
 input EmailInput {
