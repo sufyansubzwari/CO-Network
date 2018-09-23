@@ -7,18 +7,23 @@ type Achievements {
     institution: String
     study: String
     story: String
-    degree: String
+    degree: LevelType
     organization: String
     position: String
     help: String
     experience: String
     name: String
     link: String
-    level: String
+    level: LevelType
     category: [Tags]
     id: String
     year: String
     explain: String
+}
+
+type LevelType{
+    label: String
+    type: String
 }
 
 type Query {
@@ -26,28 +31,34 @@ type Query {
     achievement(_id: String): Achievements
 }
 
+input LevelTypeInput{
+    label: String
+    type: String
+}
+
 input AchievementsInput {
     _id: ID
-    owner: String!
+    owner: String
     type: String!
     institution: String
     study: String
     story: String
-    degree: String
+    degree: LevelTypeInput
     organization: String
     position: String
     help: String
     experience: String
     name: String
     link: String
-    level: String
-    category: [String]
+    level: LevelTypeInput
+    category: [TagsInput]
     id: String
     year: String
     explain: String
+    edit: Boolean
 }
 
 type Mutation {
-    achievement(achievements: AchievementsInput!): Achievements
+    achievement(achievement: AchievementsInput!): Achievements
     deleteAchievement(_id: String!): Achievements
 }

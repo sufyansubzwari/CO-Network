@@ -94,10 +94,11 @@ class SixthStep extends React.Component {
   }
 
   onAddTags(name, type, tag) {
-    let tags = this.state.user.speaker[name];
-    !tag.name ? (tag.name = tag.label) : null;
-    tags.push(tag);
-    tag.type = type;
+    let newTag = Object.assign({}, tag);
+    let tags = (this.state.user.speaker && this.state.user.speaker[name]) || [];
+    !newTag.name ? (newTag.name = newTag.label) : null;
+    newTag.type = type;
+    tags.push(newTag);
     this.state.user.speaker[name] = tags;
     this.setState({ speaker: this.state.user }, () => this.notifyParent());
   }

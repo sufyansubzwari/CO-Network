@@ -1,5 +1,7 @@
 import Achievements from "../index";
 import * as _ from "lodash";
+import Places from "../../places";
+import Tags from "../../tags";
 
 /**
  * @class Achievements Service
@@ -9,14 +11,18 @@ class AchievementsService {
   /**
    * @name achievement
    * @summary function for save and update
-   * @param {Object} data - achievement information. If had id then this operation should be an update
-   * @return {Object} achievement
+   * @param {Object} data - Achievement information. If had id then this operation should be an update
+   * @return {Object} Achievement
    */
   static achievement = async data => {
     if (_.isUndefined(data._id)) {
+      if (data.category)
+        data.category = await Tags.service.normalizeTags(data.category);
       const id = Achievements.collection.insert(data);
       return Achievements.collection.findOne(id);
     } else {
+      if (data.category)
+        data.category = await Tags.service.normalizeTags(data.category);
       let id = data._id;
       delete data._id;
       await Achievements.collection.update(id, {$set: data});
@@ -42,13 +48,23 @@ class AchievementsService {
     return Achievements.collection.findOne(_id);
   };
   /**
+   * @name getAchievementByOwner
+   * @summary Get achievement by owner
+   * @param {String} owner - Achievement owner
+   * @return {Object} Achievement
+   */
+  static getAchievementByOwner = owner => {
+    return Achievements.collection.find({owner:owner}).fetch();
+  };
+  /**
    *@name achievements
    * @summary Get all achievements
    * @param {Object} query - query parameters
+   * @param {Number} limit - limit parameters
    * @return {Object}||[{Object }] Return one or all achievements
    */
-  static achievements = query => {
-    return Achievements.collection.find(query).fetch();
+  static achievements = (query, limit) => {
+    return Achievements.collection.find(query, {...limit, sort: {createdAt: -1}}).fetch();
   };
 }
 

@@ -40,6 +40,15 @@ class FirstStep extends React.Component {
             );
         } else this.props.onChange && this.props.onChange(this.state.user);
     }
+  notifyParentLocation(model, name, value) {
+    if (model && name && value) {
+      let user = this.state.user;
+      user.place[name] = value;
+      this.setState({user: user}, () => this.props.onChange && this.props.onChange(this.state.user));
+    }
+    else
+      this.props.onChange && this.props.onChange(this.state.user);
+  }
 
     render() {
 
@@ -52,7 +61,7 @@ class FirstStep extends React.Component {
                     <Input name={'lastName'} model={this.state.user} placeholderText={'Last Name'}
                            getValue={this.notifyParent.bind(this)}/>
                 </Layout>
-                <GeoInputLocation model={this.state.user.place} name={'location'} placeholder={"Location"} onChange={this.notifyParent.bind(this)} />
+                <GeoInputLocation model={this.state.user.place} name={'location'} placeholder={"Location"} onChange={this.notifyParentLocation.bind(this)} />
                 <Layout templateColumns={2} colGap={'20px'}>
                     <Input name={'website'} model={this.state.user} placeholderText={'Website'}
                            getValue={this.notifyParent.bind(this)} />
@@ -63,30 +72,30 @@ class FirstStep extends React.Component {
                 <Layout templateColumns={4} colGap={'10px'} height={'90px'}>
                     <SocialButton
                         social={'github'}
-                        connected={this.state.user.social.github !== ""}
-                        data={this.state.user.social.github}
+                        connected={this.state.user.social && this.state.user.social.github !== ""}
+                        data={this.state.user.social && this.state.user.social.github}
                         onClick={() => console.log('trying to log for github')}
                     />
                     <SocialButton
                         social={'google'}
-                        data={this.state.user.social.google}
+                        data={this.state.user.social && this.state.user.social.google}
                         onClick={this.handleGoogle}
                         onPlus={() => console.log('plus')}
-                        connected={this.state.user.social.google !== ""}
+                        connected={this.state.user.social && this.state.user.social.google !== ""}
                     />
                     <SocialButton
                         social={'facebook'}
-                        data={this.state.user.social.facebook}
+                        data={this.state.user.social && this.state.user.social.facebook}
                         onClick={() => console.log('trying to log for facebook')}
                         fields={['account']}
-                        connected={this.state.user.social.facebook !== ""}
+                        connected={this.state.user.social && this.state.user.social.facebook !== ""}
                     />
                     <SocialButton
                         social={'twitter'}
-                        data={this.state.user.social.twitter}
+                        data={this.state.user.social && this.state.user.social.twitter}
                         onClick={() => console.log('trying to log for twitter')}
                         loading={false}
-                        connected={this.state.user.social.twitter !== ""}
+                        connected={this.state.user.social && this.state.user.social.twitter !== ""}
                     />
                 </Layout>
             </Layout>

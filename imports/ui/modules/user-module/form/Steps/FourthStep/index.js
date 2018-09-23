@@ -156,14 +156,7 @@ class ThirdStep extends React.Component {
                 placeholderText={"Industry | Sector"}
                 tags={
                   this.state.user.professional &&
-                  this.state.user.professional.industry &&
-                  this.state.user.professional.industry.map(element => ({
-                    name: element.name,
-                    active: true,
-                    userAdd: true,
-                    closable: true,
-                    useIcon: true
-                  }))
+                  this.state.user.professional.industry
                 }
                 selectOptions={data.tags}
                 getTags={obj => this.handleTags(obj)}
