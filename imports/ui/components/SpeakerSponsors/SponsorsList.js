@@ -106,6 +106,7 @@ class SponsorsList extends React.Component {
     if(label){
         let spo = this.state.sponsors;
         spo[index][name] = label;
+
       this.setState({
           sponsors: spo
       },
