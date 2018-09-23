@@ -176,4 +176,8 @@ Mutation.updateSignUpStatus = (root, {_id, status}, context) => {
   return Service.signUpUser(_id, status);
 };
 
+Mutation.updateIdentities = (root, {_id, identities}, context) => {
+  return Service.updateIdentities(_id, identities);
+};
+
 export default Mutation;

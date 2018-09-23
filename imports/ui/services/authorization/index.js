@@ -121,12 +121,12 @@ class Authorization extends react.Component {
   }
 
   getProfile(cb) {
-    let accessToken = this.getAccessToken();
-    let _this = this;
     this.authManage.getUser(localStorage.user_id, (err, profile) => {
-      _this.profile = profile;
+      this.profile = profile;
       if (!err) cb(profile);
-      // todo: alert for error
+      else {
+        // todo: alert for error
+      }
     });
   }
 
@@ -149,17 +149,54 @@ class Authorization extends react.Component {
     });
   }
 
-  initLink(service) {
+  initLink(service, callback) {
     if (!this.linkAuth) this.linkAuth = this.getAuthForLink();
-    let _this = this;
-    this.linkAuth.popup.authorize(
-      {
-        connection: service
-      },
-      (error, auth) => {
-        if (!error) _this.linkAccountCallback(auth, service);
-      }
-    );
+    this.linkAuth.popup.authorize({ connection: service }, (error, auth) => {
+      if (!error) this.linkAccountCallback(auth, service, callback);
+    });
+  }
+
+  linkAccountCallback(authResult, service, callback) {
+    localStorage.setItem(service, authResult.idTokenPayload.sub);
+    this.linkAccount(authResult.idToken, callback);
+  }
+
+  linkAccount(secondaryIdToken, callback) {
+    const primaryUserId = localStorage.getItem("user_id");
+    this.authManage.linkUser(primaryUserId, secondaryIdToken, error => {
+      if (error) {
+        // todo: alert for error
+      } else
+        this.getProfile(profile => {
+          let prof = Meteor.user();
+          prof = Object.assign(prof.profile, profile);
+          callback && callback(Meteor.userId(), prof);
+        });
+    });
+  }
+
+  unlinkAccount(service, serviceData, callback) {
+    if (!this.authManage) this.getAuthForLink();
+    if (!this.isAuthenticated()) {
+      this.renewToken();
+    } else {
+      const serviceId = serviceData ? serviceData.user_id : null;
+      if (serviceId)
+        Axios.delete(
+          `https://${this.settings.domain}/api/v2/users/${
+            localStorage.user_id
+          }/identities/${service}/${serviceId}`,
+          {
+            headers: { authorization: "Bearer " + localStorage.access_token }
+          }
+        ).then(res => {
+          this.getProfile(profile => {
+            let prof = Meteor.user();
+            prof = Object.assign(prof.profile, profile);
+            callback && callback(Meteor.userId(), prof);
+          });
+        });
+    }
   }
 
   getAuthForLink() {
@@ -176,56 +213,6 @@ class Authorization extends react.Component {
       token: localStorage.access_token
     });
     return this.auth0Link;
-  }
-
-  linkAccountCallback(authResult, service) {
-    localStorage.setItem(service, authResult.idTokenPayload.sub);
-    this.linkAccount(authResult.idToken);
-  }
-
-  linkAccount(secondaryIdToken) {
-    const primaryAccessToken = localStorage.getItem("id_token");
-    const primaryUserId = localStorage.getItem("user_id");
-    let _this = this;
-    this.authManage.linkUser(primaryUserId, secondaryIdToken, error => {
-      if (error) {
-        // todo: alert for error
-      } else
-        _this.getProfile(profile => {
-          let prof = Meteor.user();
-          prof = Object.assign(prof.profile, profile);
-          // todo: update the profile
-          // UpdUserProfile(prof);
-        });
-    });
-  }
-
-  unlinkAccount(service, serviceData) {
-    let _this = this;
-
-    if (!this.authManage) this.getAuthForLink();
-
-    if (!this.isAuthenticated()) {
-      this.renewToken();
-    } else {
-      const serviceId = serviceData ? serviceData.user_id : null;
-      if (serviceId)
-        Axios.delete(
-          `https://${this.settings.domain}/api/v2/users/${
-            localStorage.user_id
-          }/identities/${service}/${serviceId}`,
-          {
-            headers: { authorization: "Bearer " + localStorage.access_token }
-          }
-        ).then(res => {
-          _this.getProfile(profile => {
-            let prof = Meteor.user();
-            prof = Object.assign(prof.profile, profile);
-            // todo: update the profile
-            // UpdUserProfile(prof);
-          });
-        });
-    }
   }
 }
 export default new Authorization();

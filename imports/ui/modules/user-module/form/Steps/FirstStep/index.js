@@ -6,6 +6,8 @@ import styled from "styled-components";
 import services from "../../../../../components/LoginModal/service.constant";
 import { EMAIL_REGEX } from "../../constants/constants";
 import Authorization from "../../../../../services/authorization";
+import { UpdateIdentities } from "../../../../../apollo-client/user";
+import { Mutation } from "react-apollo";
 
 const Label = styled.label`
   font-size: 12px;
@@ -16,12 +18,9 @@ const Label = styled.label`
 class FirstStep extends React.Component {
   constructor(props) {
     super(props);
-
     let data = props.data ? props.data : {};
     this.services = services.filter(element => element.visible);
-    this.state = {
-      user: data
-    };
+    this.state = { user: data };
   }
 
   componentWillReceiveProps(nextProps) {
@@ -40,12 +39,26 @@ class FirstStep extends React.Component {
     } else this.props.onChange && this.props.onChange(this.state.user);
   }
 
-  handleLinkAccount(service) {
-    Authorization.initLink(service);
+  handleLinkAccount(service, updateProfileFunction) {
+    Authorization.initLink(service, (userId, profile) => {
+      updateProfileFunction({
+        variables: {
+          id: userId,
+          identities: profile.identities
+        }
+      });
+    });
   }
 
-  handleUnLinkAccount(service, data) {
-    Authorization.unlinkAccount(service, data);
+  handleUnLinkAccount(service, data, updateProfileFunction) {
+    Authorization.unlinkAccount(service, data, (userId, profile) => {
+      updateProfileFunction({
+        variables: {
+          id: userId,
+          identities: profile.identities
+        }
+      });
+    });
   }
 
   getIdentitiesLinked(provider) {
@@ -61,12 +74,12 @@ class FirstStep extends React.Component {
 
   handleDataToShow(element) {
     const data = element ? element.profileData : {};
-    data.nickName = data.screen_name || data.given_name;
-    if (!data.nickName) {
-      if (data.email) {
-        const gettingNick = data.email.split("@");
-        data.nickName = gettingNick[0];
-      }
+    if (data.email) {
+      const gettingNick = data.email.split("@");
+      data.nickName = gettingNick[0];
+    } else if (data.name) {
+      const gettingNick = data.name.split(" ");
+      data.nickName = gettingNick[0];
     }
     return data;
   }
@@ -80,6 +93,21 @@ class FirstStep extends React.Component {
         () => this.props.onChange && this.props.onChange(this.state.user)
       );
     } else this.props.onChange && this.props.onChange(this.state.user);
+  }
+
+  handleLinkSuccess(result) {
+    const { updateIdentities } = result;
+    const { _id, profile } = updateIdentities;
+    const user = this.state.user;
+    user.identities = profile.identities;
+    this.setState(
+      { user: user },
+      () => this.props.onChange && this.props.onChange(this.state.user)
+    );
+  }
+
+  handleLinkError(error) {
+    console.log("Error: ", error);
   }
 
   render() {
@@ -120,42 +148,68 @@ class FirstStep extends React.Component {
             validate={EMAIL_REGEX}
           />
         </Layout>
-        <Label>Connect Networks</Label>
-        <Layout
-          templateColumns={this.services.length}
-          colGap={"10px"}
-          minH={"90px"}
+        <Mutation
+          mutation={UpdateIdentities}
+          onCompleted={profile => this.handleLinkSuccess(profile)}
+          onError={error => this.handleLinkError(error)}
         >
-          {this.services.map((authService, position) => {
-            const service = authService.label || authService.service;
-            const identities = this.getIdentitiesLinked(authService.service);
-            if (identities.length) {
-              return identities.map((element, index) => {
-                const data = this.handleDataToShow(element);
-                return (
-                  <SocialButton
-                    key={index}
-                    social={service}
-                    connected={!!element}
-                    data={data}
-                    fields={["nickName"]}
-                    onPlus={() => this.handleLinkAccount(authService.service)}
-                    onClose={() =>
-                      this.handleUnLinkAccount(authService.service, element)
-                    }
-                  />
-                );
-              });
-            } else
-              return (
-                <SocialButton
-                  key={position}
-                  social={service}
-                  onClick={() => this.handleLinkAccount(authService.service)}
-                />
-              );
-          })}
-        </Layout>
+          {(updateIdentities, { profile }) => (
+            <Container>
+              <Label>Connect Networks</Label>
+              <Layout
+                templateColumns={this.services.length}
+                colGap={"10px"}
+                minH={"90px"}
+              >
+                {this.services.map((authService, position) => {
+                  const service = authService.label || authService.service;
+                  const identities = this.getIdentitiesLinked(
+                    authService.service
+                  );
+                  if (identities.length) {
+                    return identities.map((element, index) => {
+                      const data = this.handleDataToShow(element);
+                      return (
+                        <SocialButton
+                          key={index}
+                          social={service}
+                          connected={!!element}
+                          data={data}
+                          fields={["nickName"]}
+                          onPlus={() =>
+                            this.handleLinkAccount(
+                              authService.service,
+                              updateIdentities
+                            )
+                          }
+                          onClose={() =>
+                            this.handleUnLinkAccount(
+                              authService.service,
+                              element,
+                              updateIdentities
+                            )
+                          }
+                        />
+                      );
+                    });
+                  } else
+                    return (
+                      <SocialButton
+                        key={position}
+                        social={service}
+                        onClick={() =>
+                          this.handleLinkAccount(
+                            authService.service,
+                            updateIdentities
+                          )
+                        }
+                      />
+                    );
+                })}
+              </Layout>
+            </Container>
+          )}
+        </Mutation>
       </Layout>
     );
   }
