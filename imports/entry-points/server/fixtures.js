@@ -1,6 +1,6 @@
-import { Roles } from "meteor/alanning:roles";
-import { Accounts } from "meteor/accounts-base";
-import Users from "../../api/users/";
+// import { Roles } from "meteor/alanning:roles";
+// import { Accounts } from "meteor/accounts-base";
+// import Users from "../../api/users/";
 
 // OBSERVATION: use the following mutation to set email to verified:
 // db.users.update(
@@ -26,7 +26,7 @@ import Users from "../../api/users/";
 //   const userId = Accounts.createUser({ email, password });
 //   Roles.addUsersToRoles(userId, roles);
 // });
-
+/*
 import seeder from "@cleverbeagle/seeder";
 import { Meteor } from "meteor/meteor";
 import Jobs from "../../api/jobs/server/collection";
@@ -375,3 +375,4 @@ seeder(Meteor.users, {
     };
   }
 });
+*/
