@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { ItemsList, ListLayout, Preview } from "../../../ui/components";
-import { Query, Mutation } from "react-apollo";
+import { graphql, Mutation } from "react-apollo";
 import { connect } from "react-redux";
 import { PreviewData } from "../../actions/PreviewActions";
 import JobPreviewBody from "../../components/Preview/JobPreviewBody";
@@ -24,19 +24,48 @@ class ListJobs extends Component {
     };
   }
 
+  componentWillMount() {
+    if (
+      this.props.location &&
+      this.props.location.state &&
+      this.props.location.state.postJob
+    ) {
+      this.reFetchQuery();
+      this.props.history.replace({ state: {} });
+    }
+  }
+
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.filterStatus && nextProps.filterStatus.filters) {
+      this.reFetchQuery();
+    }
+  }
+
+  reFetchQuery() {
+    this.props.data.refetch({
+      limit: this.state.limit,
+      filter: this.state.filter || "",
+      jobs: this.props.filterStatus.filters || {}
+    });
+  }
+
   onChangeSelection(item, key) {
     this.setState({ selectedItem: item, selectedIndex: key });
   }
 
   fetchMoreSelection(isLoading) {
     if (!isLoading)
-      this.setState({
-        limit: this.state.limit + 10
-      });
+      this.setState(
+        {
+          limit: this.state.limit + 10
+        },
+        () => this.reFetchQuery()
+      );
   }
 
-  static removeJob(deleteJob, job) {
+  removeJob(deleteJob, job) {
     deleteJob({ variables: { id: job._id } });
+    this.setState({ selectedItem: null }, () => this.reFetchQuery());
   }
 
   editJob() {
@@ -49,36 +78,23 @@ class ListJobs extends Component {
   }
 
   onSearch(value) {
-    this.setState({ filter: value });
+    this.setState({ filter: value }, () => this.reFetchQuery());
   }
 
   render() {
-    const _this = this;
-    const { limit, filter } = this.state;
+    const isLoading =
+      this.props.data.loading &&
+      (!this.props.data.jobs || !this.props.data.jobs.length);
     return (
       <ListLayout entityType={"jobs"} onSearchText={this.onSearch.bind(this)}>
-        <Query
+        <ItemsList
           key={"listComponent"}
-          query={GetJobs}
-          variables={{ limit, filter, jobs: this.props.filterStatus.filters }}
-          pollInterval={5000}
-        >
-          {({ loading, error, data }) => {
-            const isLoading = loading && (!data.events || !data.events.length);
-            // if (loading) return null;
-            // if (error) return `Error!: ${error}`;
-            return (
-              <ItemsList
-                key={"listComponent"}
-                title={"Jobs"}
-                data={data && data.jobs}
-                loading={isLoading}
-                onFetchData={() => this.fetchMoreSelection(isLoading)}
-                onSelectCard={(item, key) => this.onChangeSelection(item, key)}
-              />
-            );
-          }}
-        </Query>
+          title={"Jobs"}
+          data={this.props.data.jobs}
+          loading={isLoading}
+          onFetchData={() => this.fetchMoreSelection(isLoading)}
+          onSelectCard={(item, key) => this.onChangeSelection(item, key)}
+        />
         {this.state.selectedItem ? (
           <Mutation key={"rightSide"} mutation={DeleteJob}>
             {(deleteJob, { jobDeleted }) => (
@@ -106,24 +122,32 @@ class ListJobs extends Component {
                   {
                     text: "Edit",
                     checkVisibility: () => {
+                      const element = this.state.selectedItem;
                       return (
-                        this.state.selectedItem && this.state.selectedItem._id
+                        element &&
+                        element._id &&
+                        element.owner &&
+                        element.owner._id === this.props.curUser._id
                       );
                     },
                     onClick: () => {
-                      _this.editJob();
+                      this.editJob();
                     }
                   },
                   {
                     text: "Remove",
                     icon: "delete",
                     checkVisibility: () => {
+                      const element = this.state.selectedItem;
                       return (
-                        this.state.selectedItem && this.state.selectedItem._id
+                        element &&
+                        element._id &&
+                        element.owner &&
+                        element.owner._id === this.props.curUser._id
                       );
                     },
-                    onClick: function() {
-                      ListJobs.removeJob(deleteJob, _this.state.selectedItem);
+                    onClick: () => {
+                      this.removeJob(deleteJob, this.state.selectedItem);
                     }
                   }
                 ]}
@@ -161,5 +185,14 @@ export default withRouter(
   connect(
     mapStateToProps,
     mapDispatchToProps
-  )(ListJobs)
+  )(
+    graphql(GetJobs, {
+      options: () => ({
+        variables: {
+          limit: 10
+        },
+        fetchPolicy: "cache-and-network"
+      })
+    })(ListJobs)
+  )
 );

@@ -122,7 +122,9 @@ class PostOrganization extends Component {
         <Mutation
           key={"leftSide"}
           mutation={CreateOrg}
-          onCompleted={() => this.props.history.push("/innovators")}
+          onCompleted={() =>
+            this.props.history.push("/innovators", { postInnovator: true })
+          }
           onError={error => console.log("Error: ", error)}
         >
           {(createOrg, { orgCreated }) => (

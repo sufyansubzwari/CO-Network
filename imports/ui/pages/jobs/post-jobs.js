@@ -64,7 +64,7 @@ class PostJob extends Component {
       createJob({ variables: { entity: job } });
     } else {
       // todo login the user and then create the event or notify the user must login
-      alert('You must be logged')
+      alert("You must be logged");
     }
   }
 
@@ -74,7 +74,9 @@ class PostJob extends Component {
         <Mutation
           key={"leftSide"}
           mutation={CreateJob}
-          onCompleted={() => this.props.history.push("/jobs")}
+          onCompleted={() =>
+            this.props.history.push("/jobs", { postJob: true })
+          }
           onError={error => console.log("Error: ", error)}
         >
           {(createJob, { jobCreated }) => (

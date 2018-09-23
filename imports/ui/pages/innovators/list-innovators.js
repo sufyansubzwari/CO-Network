@@ -5,7 +5,7 @@ import {
   Preview,
   CardItem
 } from "../../../ui/components";
-import { Query, Mutation } from "react-apollo";
+import { graphql, Mutation } from "react-apollo";
 import { GetOrg, DeleteOrg } from "../../apollo-client/organization";
 import { withRouter } from "react-router-dom";
 import OrganizationPreviewBody from "../../components/Preview/OrganizationPreviewBody";
@@ -48,15 +48,48 @@ class ListInnovators extends Component {
     this.customRenderItem = this.customRenderItem.bind(this);
   }
 
+  componentWillMount() {
+    if (
+      this.props.location &&
+      this.props.location.state &&
+      this.props.location.state.postInnovator
+    ) {
+      this.reFetchQuery();
+      this.props.history.replace({ state: {} });
+    }
+  }
+
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.filterStatus && nextProps.filterStatus.filters) {
+      this.reFetchQuery();
+    }
+  }
+
+  reFetchQuery() {
+    this.props.data.refetch({
+      limit: this.state.limit,
+      filter: this.state.filter || "",
+      organizations: this.props.filterStatus.filters || {}
+    });
+  }
+
   onChangeSelection(item, key) {
     this.setState({ selectedItem: item, selectedIndex: key });
   }
 
   fetchMoreSelection(isLoading) {
     if (!isLoading)
-      this.setState({
-        limit: this.state.limit + 10
-      });
+      this.setState(
+        {
+          limit: this.state.limit + 10
+        },
+        () => this.reFetchQuery()
+      );
+  }
+
+  removeOrg(deleteOrg, org) {
+    deleteOrg({ variables: { id: org._id } });
+    this.setState({ selectedItem: null }, () => this.reFetchQuery());
   }
 
   customRenderItem(item, key, isLoading) {
@@ -80,10 +113,6 @@ class ListInnovators extends Component {
     );
   }
 
-  static removeOrg(deleteOrg, org) {
-    deleteOrg({ variables: { id: org._id } });
-  }
-
   editOrg() {
     let org = JSON.parse(JSON.stringify(this.state.selectedItem));
     delete org.entity;
@@ -94,99 +123,66 @@ class ListInnovators extends Component {
   }
 
   onSearch(value) {
-    this.setState({ filter: value });
+    this.setState({ filter: value }, () => this.reFetchQuery());
   }
 
   render() {
-    const _this = this;
-    const { limit, filter } = this.state;
+    const isLoading =
+      this.props.data.loading &&
+      (!this.props.data.organizations || !this.props.data.organizations.length);
     return (
       <ListLayout
         entityType={this.state.currentTab.value}
         onSearchText={this.onSearch.bind(this)}
       >
-        <Query
+        <ItemsList
           key={"listComponent"}
-          query={GetOrg}
-          variables={{
-            limit,
-            filter,
-            organizations: this.props.filterStatus.filters
-          }}
-          pollInterval={5000}
-        >
-          {({ loading, error, data }) => {
-            const isLoading =
-              loading && (!data.organizations || !data.organizations.length);
-            // if (loading) return null;
-            // if (error) return `Error!: ${error}`;
-            return (
-              <ItemsList
-                key={"listComponent"}
-                title={this.state.currentTab.title}
-                data={data ? data.organizations : []}
-                renderItem={(item, key) =>
-                  this.customRenderItem(item, key, isLoading)
-                }
-                loading={isLoading}
-                onFetchData={() => this.fetchMoreSelection()}
-                onSelectCard={(item, key) => this.onChangeSelection(item, key)}
-              />
-            );
-          }}
-        </Query>
+          title={this.state.currentTab.title}
+          data={this.props.data.organizations}
+          renderItem={(item, key) =>
+            this.customRenderItem(item, key, isLoading)
+          }
+          loading={isLoading}
+          onFetchData={() => this.fetchMoreSelection(isLoading)}
+          onSelectCard={(item, key) => this.onChangeSelection(item, key)}
+        />
         {this.state.selectedItem ? (
           <Mutation key={"rightSide"} mutation={DeleteOrg}>
             {(deleteOrg, { orgDeleted }) => (
               <Preview
                 key={"rightSide"}
-                navlinks={[
-                  "Details",
-                  "Vision",
-                  "Engagements",
-                  "..."
-                  // "Recruitment",
-                  // "Services",
-                  // "Media"
-                ]}
+                navlinks={["Details", "Vision", "Engagements", "..."]}
                 navClicked={index => console.log(index)}
                 navOptions={[
                   {
-                    text: "Apply",
-                    primary: true,
-                    checkVisibility: () => {
-                      return (
-                        this.state.selectedItem && this.state.selectedItem._id
-                      );
-                    },
-                    onClick: () => {
-                      console.log("Adding");
-                    }
-                  },
-                  {
                     text: "Edit",
                     checkVisibility: () => {
+                      const element = this.state.selectedItem;
                       return (
-                        this.state.selectedItem && this.state.selectedItem._id
+                        element &&
+                        element._id &&
+                        element.owner &&
+                        element.owner._id === this.props.curUser._id
                       );
                     },
                     onClick: () => {
-                      _this.editOrg();
+                      this.editOrg();
                     }
                   },
                   {
                     text: "Remove",
                     icon: "delete",
                     checkVisibility: () => {
+                      const element = this.state.selectedItem;
                       return (
-                        this.state.selectedItem && this.state.selectedItem._id
+                        element &&
+                        element._id &&
+                        element.owner &&
+                        element.owner._id === this.props.curUser._id
                       );
                     },
-                    onClick: function() {
-                      ListInnovators.removeOrg(
-                        deleteOrg,
-                        _this.state.selectedItem
-                      );
+                    onClick: () => {
+                      this.removeOrg(deleteOrg, this.state.selectedItem);
                     }
                   }
                 ]}
@@ -234,5 +230,14 @@ export default withRouter(
   connect(
     mapStateToProps,
     mapDispatchToProps
-  )(ListInnovators)
+  )(
+    graphql(GetOrg, {
+      options: () => ({
+        variables: {
+          limit: 10
+        },
+        fetchPolicy: "cache-and-network"
+      })
+    })(ListInnovators)
+  )
 );

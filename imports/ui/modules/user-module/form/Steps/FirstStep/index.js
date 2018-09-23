@@ -51,12 +51,26 @@ this.services = services.filter(element => element.visible);
   }
 
   getIdentitiesLinked(provider) {
-    return this.state.user.identities.filter(element => {
-      return (
-        `${provider}|${element.user_id}` !== this.state.user.user_id &&
-        provider === element.provider
-      );
-    });
+    return this.state.user && this.state.user.identities
+      ? this.state.user.identities.filter(element => {
+          return (
+            `${provider}|${element.user_id}` !== this.state.user.user_id &&
+            provider === element.provider
+          );
+        })
+      : [];
+  }
+
+  handleDataToShow(element) {
+    const data = element ? element.profileData : {};
+    data.nickName = data.screen_name || data.given_name;
+    if (!data.nickName) {
+      if (data.email) {
+        const gettingNick = data.email.split("@");
+        data.nickName = gettingNick[0];
+      }
+    }
+    return data;
   }
 
 
@@ -119,14 +133,14 @@ this.services = services.filter(element => element.visible);
             const identities = this.getIdentitiesLinked(authService.service);
             if (identities.length) {
               return identities.map((element, index) => {
-                console.log(element);
+                const data = this.handleDataToShow(element);
                 return (
                   <SocialButton
                     key={index}
                     social={service}
                     connected={!!element}
-                    data={element}
-                    fields={["name", "email"]}
+                    data={data}
+                    fields={["nickName"]}
                     onPlus={() => this.handleLinkAccount(authService.service)}
                     onClose={() =>
                       this.handleUnLinkAccount(authService.service, element)

@@ -20,6 +20,7 @@ type Profile {
   isSignUp: Boolean!
   lastName: String
   nickName: String
+  user_id: String
   loginCount: Int
   image: String
   cover: String
@@ -111,8 +112,8 @@ input UserInput {
 }
 
 input ProfileInput {
-    isSignUp: Boolean
-    name: String
+  isSignUp: Boolean
+  name: String
     lastName: String
     nickName: String
     image: String
@@ -121,13 +122,12 @@ input ProfileInput {
     gender: String
     website: String
     phone: String
-    professional: ProfessionalInput
-    social: SocialInput
-    aboutMe: AboutMeInput
-    knowledge: KnowledgeInput
-    speaker: SpeakerInput
-    achievements: [AchievementsInput]
-    place: PlacesInput
+  user_id: Stringprofessional: ProfessionalInput
+  social: SocialInput
+  aboutMe: AboutMeInput
+  knowledge: KnowledgeInput
+  speaker: SpeakerInput
+  achievements: [AchievementsInput]place: PlacesInput
 }
 
 input EmailInput {

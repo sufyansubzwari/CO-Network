@@ -1,11 +1,11 @@
-import React, {Component} from "react";
-import {Container} from "btech-layout";
+import React, { Component } from "react";
+import {  Container } from "btech-layout";
 import UserForm from "./../../modules/user-module/form/";
 import InternalLayout from "../../layouts/InternalLayout/InternalLayout";
 import {Preview} from "../../../ui/components";
 import UserPreviewBody from "../../components/Preview/UserPreviewBody";
-import {Mutation, graphql} from "react-apollo";
-import {CreateUser, userQuery} from "../../apollo-client/user";
+import { Mutation , graphql} from "react-apollo";
+import { CreateUser , userQuery} from "../../apollo-client/user";
 
 /**
  * @module User
@@ -16,12 +16,12 @@ class UserProfile extends Component {
     super(props);
 
     let user = {
-        name: "",
-        lastName: "",
+      name: "",
+      lastName: "",
         email: "",
-        website: "",
-        cover: "",
-          image: "",
+          website: "",
+          cover: "",
+      image: "",
       social: {
         github: "",
         facebook: "",
@@ -63,13 +63,8 @@ class UserProfile extends Component {
     this.state = {
       user: userObject
     };
-
     this.handleBackgroundChange = this.handleBackgroundChange.bind(this);
     this.handleUserPhotoChange = this.handleUserPhotoChange.bind(this);
-  }
-
-  componentWillMount() {
-    if (!this.props.curUser) this.props.history.push("/");
   }
 
   onCancel() {
@@ -133,10 +128,14 @@ class UserProfile extends Component {
           >
             {(createProfile, {profileCreated}) => (
               <UserForm
-                onFinish={data => this.onPostAction(createProfile, data)}
+                onFinish={data =>
+                  this.onPostAction(createProfile, data)
+                }
                 onCancel={() => this.onCancel()}
                 userLogged={false}
-                handleChangeProfile={user => this.setState({user: {...this.state.user, ...user}})}
+                handleChangeProfile={user =>
+                  this.setState({ user: { ...this.state.user, ...user } })
+                }
                 user={this.state.user}
                 {...this.props}
               />
@@ -144,24 +143,11 @@ class UserProfile extends Component {
           </Mutation>
         </Container>
         <Preview
-          showAvatar={true}
-          image={this.state.user && this.state.user.image}
+          showAvatar
           key={"rightSide"}
-          navClicked={index => console.log(index)}
-          navOptions={[
-            {
-              text: "Remove",
-              icon: "delete",
-              checkVisibility: () => {
-                return this.state.selectedItem && this.state.selectedItem.id;
-              },
-              onClick: function () {
-                console.log("Remove");
-              }
-            }
-          ]}
           index={this.state.selectedIndex}
           data={this.state.selectedItem}
+          image={this.state.user && this.state.user.image}
           backGroundImage={this.state.user && this.state.user.cover}
           onBackgroundChange={this.handleBackgroundChange}
           onUserPhotoChange={this.handleUserPhotoChange}
