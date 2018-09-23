@@ -25,6 +25,14 @@ class MlSelectTag extends React.Component {
     this.handleTagClose = this.handleTagClose.bind(this);
   }
 
+  componentWillReceiveProps(nextProps){
+    if(nextProps.tags){
+    this.setState({
+        tags: nextProps.tags
+    })
+    }
+  }
+
   handleSelectChange(obj) {
     let selectOpt = this.state.selectoptions.filter(
       option => option.value !== obj.value

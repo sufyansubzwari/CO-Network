@@ -10,6 +10,7 @@ Query.achievements = (root, {achievement}, context) => {
   if (achievement) {
     query = achievement;
   }
-  return Service.achievements(query)
+  let limitQuery = limit ? {limit: limit} : {};
+  return Service.achievements(query, limitQuery);
 };
 export default Query;

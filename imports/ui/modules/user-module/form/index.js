@@ -20,7 +20,9 @@ class UserForm extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      user: { ...props.user }
+      user: {
+        ...props.user,
+      }
     };
     this.handleChange = this.handleChange.bind(this);
   }
@@ -50,14 +52,17 @@ class UserForm extends Component {
       <MlWizardForm
         title={"Member Profile"}
         onFinish={() =>
-          this.props.onFinish && this.props.onFinish(this.state.event)
+          this.props.onFinish && this.props.onFinish(this.state.user)
         }
         onCancel={() => this.props.onCancel && this.props.onCancel()}
+        showProgress={true}
+        radioColor={'#000000'}
       >
         <WizardStepForm title={"User Details"} isValid>
           <FirstStep
             data={this.state.user}
             onChange={user => this.handleChange(user)}
+            getNavigationLinks={(links) => console.log(links)}
           />
         </WizardStepForm>
         <WizardStepForm title={"About Me | Passion"} isValid>

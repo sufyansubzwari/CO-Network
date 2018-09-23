@@ -12,6 +12,7 @@ import { toggleSideBar } from "../../actions/SideBarActions";
 import styled from "styled-components";
 import LogoutBtn from "../smart/auth/logout-btn";
 import NavbarUserButton from "../NavbarUserButton/NavbarUserButton";
+import posed from "react-pose";
 
 const SAddMaterialIcon = styled.span`
   > i {
@@ -30,7 +31,7 @@ const SAddMaterialIcon = styled.span`
  * @category Component
  * @description This component is a wrapper for the react-table
  */
-const Group = props => {
+const Group = (props) => {
   // some logic
   return (
     <Container>
@@ -47,6 +48,24 @@ const Group = props => {
     </Container>
   );
 };
+
+const GroupContainer = posed.div({
+  showUserOptions: {
+    staggerChildren: 100,
+  },
+  hideUserOptions: {
+    staggerChildren: 100
+  }
+});
+
+const RenderCondition = posed.div({
+  showUserOptions: { opacity: 1, y: "0" , scale : 1},
+  hideUserOptions: { opacity: 0, y: "50px", scale : 0}
+});
+
+// const RenderCondition = props => {
+//   return props.condition ? props.children : "";
+// };
 
 class UserNavbarSection extends React.Component {
   constructor(props) {
@@ -74,7 +93,11 @@ class UserNavbarSection extends React.Component {
         <Container />
         <Container>
           <Layout rowGap="15px">
-            <Group>
+            <GroupContainer
+              pose={isAuthenticated ? "showUserOptions" : "hideUserOptions"}
+            >
+              <Groupauthenticated={isAuthenticated}>
+                <RenderCondition>
               <HButtom
                 primary
                 size={this.size}
@@ -84,7 +107,9 @@ class UserNavbarSection extends React.Component {
                   <MaterialIcon type={"plus"} size={2} />
                 </SAddMaterialIcon>
               </HButtom>
-              <HNavItem
+              </RenderCondition>
+                <RenderCondition>
+                  <HNavItem
                 mt={{ xs: "5px", md: "0" }}
                 size={this.notSize}
                 icon={{ size: 20, src: "/images/logo/home.gif" }}
@@ -97,7 +122,9 @@ class UserNavbarSection extends React.Component {
                 }}
                 activeEval={this.activeEval}
               />
-              <HNavItem
+              </RenderCondition>
+                <RenderCondition>
+                  <HNavItem
                 mt={{ xs: "5px", md: "0" }}
                 size={this.notSize}
                 icon={{ size: 20, src: "/images/logo/home.gif" }}
@@ -110,10 +137,13 @@ class UserNavbarSection extends React.Component {
                 }}
                 activeEval={this.activeEval}
               />
-              <Link to={avatarLink}>
-                <NavbarUserButton size={this.size} />
+
+</RenderCondition>              <Link to={avatarLink}>
+                <NavbarUserButton
+                  size={this.size}
+                />
               </Link>
-            </Group>
+            </Group></GroupContainer>
             <Layout
               rowGap="5px"
               padding="0 20px 20px;"

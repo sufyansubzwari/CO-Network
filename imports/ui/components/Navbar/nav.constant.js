@@ -1,6 +1,6 @@
 const base = {
   link: "/events",
-  title: "Events",
+  label: "Events",
   border: 1.5,
   number: {
     value: Math.floor(Math.random() * 120),
@@ -12,7 +12,7 @@ const base = {
 };
 let event = Object.assign({}, base, {
   link: "/events",
-  title: "Events"
+  label: "Events"
 });
 event.number = {
   value: 0,
@@ -22,7 +22,7 @@ event.number = {
 
 let jobs = Object.assign({}, base, {
   link: "/jobs",
-  title: "Jobs",
+  label: "Jobs",
   icon: { size: 30, src: "/images/nav/jobs.svg" }
 });
 jobs.number = {
@@ -32,7 +32,7 @@ jobs.number = {
 };
 let innovators = Object.assign({}, base, {
   link: "/innovators",
-  title: "Innovators",
+  label: "Innovators",
   icon: { size: 34, src: "/images/nav/innovators.svg" }
 });
 innovators.number = {
@@ -43,13 +43,13 @@ innovators.number = {
 
 let data = Object.assign({}, base, {
   link: "/data-story",
-  title: "Data Story",
+  label: "Data Story",
   icon: { size: 30, src: "/images/nav/Colloquium.svg" }
 });
 
 let Colloquium = Object.assign({}, base, {
   link: "/colloquium",
-  title: "Colloquium",
+  label: "Colloquium",
   icon: { size: 30, src: "/images/nav/Colloquium.svg" }
 });
 

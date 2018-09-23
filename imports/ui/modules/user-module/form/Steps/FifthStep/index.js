@@ -34,15 +34,8 @@ class FifthStep extends React.Component {
     );
   }
 
-  notifyParent(model, name, value) {
-    if (model && name && value) {
-      let user = this.state.user;
-      user[name] = value;
-      this.setState(
-        { user: user },
-        () => this.props.onChange && this.props.onChange(this.state.user)
-      );
-    } else this.props.onChange && this.props.onChange(this.state.user);
+  notifyParent() {
+    this.props.onChange && this.props.onChange(this.state.user);
   }
 
   render() {

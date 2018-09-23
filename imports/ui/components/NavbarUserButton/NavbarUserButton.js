@@ -5,6 +5,7 @@ import { withTracker } from "meteor/react-meteor-data";
 import { connect } from "react-redux";
 import UserRedux from "../../redux/user";
 import styled from "styled-components";
+import MaterialIcon from "react-material-iconic-font";
 
 const SInitialsContainer = styled.span`
   font-family: "Helvetica Neue Light";
@@ -42,10 +43,9 @@ class NavbarUserButton extends Component {
       : null;
     this.props.setUser(user);
     return (
-      <HButtom image={!!user ? user.profile.image : ""} size={this.props.size}>
-        {!user ? (
-          <span style={{ fontSize: "9px" }}>Login</span>
-        ) : !user.profile.image ? (
+      <HButtom image={!!user ? user.profile.image : ""} size={this.props.size}primary={!user}>
+        {!user ?( <span style={{ fontSize: 20}}>
+               <MaterialIcon type={"square-right"} /></span> ) : !user.profile.image ? (
           <SInitialsContainer>{initials}</SInitialsContainer>
         ) : null}
       </HButtom>
