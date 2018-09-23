@@ -11,7 +11,7 @@ import posed from "react-pose";
 import { Scrollbars } from "react-custom-scrollbars";
 import Styled from "styled-components";
 
-const leftWidth = 19;
+const leftWidth = 274;
 const ContentStyled = Styled(Layout)`
   //hack for pose animation in movile view
   @media (max-width: 61.999em){
@@ -20,15 +20,13 @@ const ContentStyled = Styled(Layout)`
 `;
 const ContentContainerPose = posed(ContentStyled)({
   leftOpen: {
-    marginLeft: "0%",
-    marginRight: "0%",
+    marginLeft: "0px",
     transition: {
       ease: "circOut" //circOut
     }
   },
   leftClose: {
-    marginLeft: `-${leftWidth}%`,
-    marginRight: "0%",
+    marginLeft: `-${leftWidth}px`,
     transition: {
       ease: "circOut" //circOut
     }
@@ -56,7 +54,7 @@ class MainLayout extends Component {
       <Layout
         customTemplateColumns={`1fr 1fr`}
         customTemplateRows={"1fr 56px"}
-        mdCustomTemplateColumns={`0.05498fr 0.${leftWidth}fr 1fr`}
+        mdCustomTemplateColumns={`0.05498fr ${leftWidth}px 1fr`}
         mdCustomTemplateRows={"1fr"}
         layoutAreas={{
           xs: `'SideBar content' 'Navbar Navbar'`,

@@ -99,6 +99,8 @@ class SideBar extends Component {
     const right= this.props.right;
     return (
       <SSideBarContainer
+        padding={"0 30px"}
+        mdPadding={"0"}
         pose={isOpen ? "openSidebar" : (right?"closedSidebarRight":"closedSidebar")}
         background={"white"}
         fullY
