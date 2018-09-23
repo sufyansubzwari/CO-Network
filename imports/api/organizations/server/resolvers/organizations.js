@@ -15,8 +15,7 @@ Organizations.place = entity => {
 };
 
 Organizations.description = entity => {
-  const tags = Tags.service.getTagList(entity.description);
-  return Object.assign(entity, { description: tags });
+  return Tags.service.getTagList(entity.description);
 };
 
 Organizations.tech = entity => {

@@ -7,7 +7,7 @@ query GetOrganizations($limit: Int, $filter: String, $organizations: Organizatio
         entity
         views
         name
-        description{
+        description {
             _id
             label
             value

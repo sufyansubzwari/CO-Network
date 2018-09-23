@@ -4,18 +4,27 @@ import Tags from "../../../tags";
 
 const Mutation = {};
 
-Mutation.organization = async (root, {organizations}, context) => {
+Mutation.organization = async (root, { organizations }, context) => {
   let entity = Object.assign({}, organizations);
-
   if (organizations.description)
-    entity.description = await Tags.service.normalizeTags(organizations.description);
+    entity.description = await Tags.service.normalizeTags(
+      organizations.description
+    );
   if (organizations.tech && organizations.tech.stack)
-    entity.tech.stack = await Tags.service.normalizeTags(organizations.tech.stack);
+    entity.tech.stack = await Tags.service.normalizeTags(
+      organizations.tech.stack
+    );
   if (organizations.tech.industry && organizations.tech.industry)
-    entity.tech.industry = await Tags.service.normalizeTags(organizations.tech.industry);
+    entity.tech.industry = await Tags.service.normalizeTags(
+      organizations.tech.industry
+    );
   const inserted = await Service.organization(entity);
   //inserting location
-  if (organizations.place && organizations.place.location && organizations.place.location.address) {
+  if (
+    organizations.place &&
+    organizations.place.location &&
+    organizations.place.location.address
+  ) {
     let place = Object.assign({}, organizations.place);
     if (!place._id) {
       place.owner = inserted._id;
@@ -27,11 +36,11 @@ Mutation.organization = async (root, {organizations}, context) => {
   return inserted;
 };
 
-Mutation.updateImage = async (root, {_id, image, cover}, context) => {
+Mutation.updateImage = async (root, { _id, image, cover }, context) => {
   return Service.updateImage(_id, image, cover);
 };
 
-Mutation.deleteOrganization = async (root, {_id}, context) => {
+Mutation.deleteOrganization = async (root, { _id }, context) => {
   return Service.deleteOrganization(_id);
 };
 

@@ -10,14 +10,11 @@ class FirstStep extends React.Component {
 
   constructor(props) {
     super(props)
-
     let data = props.data ? props.data : {}
-
     this.state = {
       organization: data,
       orgType: ORGANIZATION_TYPE
     }
-
   }
 
   componentWillMount() {
