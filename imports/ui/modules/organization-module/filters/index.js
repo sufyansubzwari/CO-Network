@@ -106,13 +106,13 @@ class OrganizationFilters extends React.Component {
       >
         <Separator />
         <Filter>
-          {/*<GeoInputLocation*/}
-            {/*name={"location"}*/}
-            {/*model={this.state}*/}
-            {/*placeholder={"Location"}*/}
-            {/*isGeoLocationAvailable={true}*/}
-            {/*onChange={this.notifyParentLocation.bind(this)}*/}
-          {/*/>*/}
+          <GeoInputLocation
+            name={"location"}
+            model={this.state}
+            placeholder={"Location"}
+            isGeoLocationAvailable={true}
+            onChange={this.notifyParentLocation.bind(this)}
+          />
           <Layout
             mt={"10px"}
             customTemplateColumns={"70px 70px 70px"}

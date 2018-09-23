@@ -101,11 +101,11 @@ class MembersFilters extends React.Component {
           </Layout>
           <Separator />
           <Filter>
-            {/*<GeoInputLocation*/}
-              {/*name={"location"}*/}
-              {/*model={this.state}*/}
-              {/*placeholder={"Location"}*/}
-            {/*/>*/}
+            <GeoInputLocation
+              name={"location"}
+              model={this.state}
+              placeholder={"Location"}
+            />
             <Layout
               mt={"10px"}
               customTemplateColumns={"80px 80px 80px"}

@@ -61,7 +61,7 @@ class FirstStep extends React.Component {
                     <Input name={'lastName'} model={this.state.user} placeholderText={'Last Name'}
                            getValue={this.notifyParent.bind(this)}/>
                 </Layout>
-                {/*<GeoInputLocation model={this.state.user.info} name={'location'} placeholder={"Location"} onChange={this.notifyParent.bind(this)} />*/}
+                <GeoInputLocation model={this.state.user.info} name={'location'} placeholder={"Location"} onChange={this.notifyParent.bind(this)} />
                 <Layout templateColumns={2} colGap={'20px'}>
                     <Input name={'website'} model={this.state.user} placeholderText={'Website'}
                            getValue={this.notifyParent.bind(this)} />
