@@ -99,13 +99,13 @@ class JobsFilters extends React.Component {
         onClose={() => this.props.onClose && this.props.onClose()}
       >
         <Filter>
-          <GeoInputLocation
-            name={"location"}
-            model={this.state}
-            placeholder={"Location"}
-            isGeoLocationAvailable={true}
-            onChange={this.notifyParentLocation.bind(this)}
-          />
+          {/*<GeoInputLocation*/}
+            {/*name={"location"}*/}
+            {/*model={this.state}*/}
+            {/*placeholder={"Location"}*/}
+            {/*isGeoLocationAvailable={true}*/}
+            {/*onChange={this.notifyParentLocation.bind(this)}*/}
+          {/*/>*/}
           <Layout
             mt={"10px"}
             customTemplateColumns={"80px 80px 80px"}

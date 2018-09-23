@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { withRouter } from "react-router-dom";
-import { Layout, Container } from "btech-layout";
+import { Layout, Container , mixins} from "btech-layout";
 import Routes from "../../routes";
 import { connect } from "react-redux";
 import Navbar from "../../components/Navbar/Navbar";
@@ -9,10 +9,16 @@ import LoginModal from "../../components/LoginModal/LoginModal";
 import SignUpListener from "../../components/SignUpListener/SignUpListener";
 import posed from "react-pose";
 import { Scrollbars } from "react-custom-scrollbars";
+import Styled from "styled-components";
 
 const leftWidth = 19;
-
-const ContentContainerPose = posed(Layout)({
+const ContentStyled = Styled(Layout)`
+  //hack for pose animation in movile view
+  @media (max-width: 61.999em){
+     margin-left:-100%!important;
+  }
+`;
+const ContentContainerPose = posed(ContentStyled)({
   leftOpen: {
     marginLeft: "0%",
     marginRight: "0%",

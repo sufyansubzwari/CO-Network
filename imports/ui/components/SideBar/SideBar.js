@@ -103,6 +103,8 @@ class SideBar extends Component {
         background={"white"}
         fullY
         gridArea="SideBar"
+        width={"200%"}
+        mdWidth={"100%"}
       >
         {this.renderSidebar()}
       </SSideBarContainer>

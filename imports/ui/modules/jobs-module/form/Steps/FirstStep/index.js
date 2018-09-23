@@ -111,12 +111,12 @@ class FirstStep extends React.Component {
             placeholderText={"Position Title"}
             getValue={this.notifyParent.bind(this)}
           />
-          <GeoInputLocation
-          name={"location"}
-          model={this.state.job.place}
-          placeholder={"Location"}
-          isGeoLocationAvailable={true}
-          onChange={this.notifyParentLocation.bind(this)}
+          {/*<GeoInputLocation*/}
+          {/*name={"location"}*/}
+          {/*model={this.state.job.place}*/}
+          {/*placeholder={"Location"}*/}
+          {/*isGeoLocationAvailable={true}*/}
+          {/*onChange={this.notifyParentLocation.bind(this)}*/}
           />
         </Layout>
         <TextArea
