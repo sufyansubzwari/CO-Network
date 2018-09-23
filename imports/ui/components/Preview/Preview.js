@@ -53,16 +53,12 @@ export default class Preview extends React.Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    if (nextProps.image) {
-      this.setState({
-        image: nextProps.image
-      });
-    }
-    if (nextProps.backGroundImage) {
-      this.setState({
-        backGroundImage: nextProps.backGroundImage
-      });
-    }
+    this.setState({
+      image: nextProps.image ? nextProps.image : null,
+      backGroundImage: nextProps.backGroundImage
+        ? nextProps.backGroundImage
+        : null
+    });
   }
 
   handleUploadChange(src, element) {
@@ -112,6 +108,7 @@ export default class Preview extends React.Component {
           image={this.state.image}
           backGroundImage={this.state.backGroundImage}
           showAvatar={this.props.showAvatar}
+          allowChangeImages={this.props.allowChangeImages}
         />
         <SLayout
           paddingX={"100px"}
@@ -154,7 +151,8 @@ export default class Preview extends React.Component {
 }
 
 Preview.defaultProps = {
-  showAvatar: false
+  showAvatar: false,
+  allowChangeImages: false
 };
 
 Preview.propTypes = {
@@ -163,6 +161,7 @@ Preview.propTypes = {
   showAvatar: PropsTypes.bool,
   navClicked: PropsTypes.func,
   navOptions: PropsTypes.array,
+  allowChangeImages: PropsTypes.bool,
   image: PropsTypes.string,
   changeProfile: PropsTypes.func,
   onBackgroundChange: PropsTypes.func,

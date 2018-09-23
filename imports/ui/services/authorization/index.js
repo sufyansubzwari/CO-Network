@@ -200,10 +200,7 @@ class Authorization extends react.Component {
     });
   }
 
-  unlinkAccount(service) {
-    const userData = localStorage.getItem(service);
-    let secondary_user = null;
-    if (userData) secondary_user = userData.split("|")[1];
+  unlinkAccount(service, serviceData) {
     let _this = this;
 
     if (!this.authManage) this.getAuthForLink();
@@ -211,11 +208,12 @@ class Authorization extends react.Component {
     if (!this.isAuthenticated()) {
       this.renewToken();
     } else {
-      if (secondary_user)
+      const serviceId = serviceData ? serviceData.user_id : null;
+      if (serviceId)
         Axios.delete(
           `https://${this.settings.domain}/api/v2/users/${
             localStorage.user_id
-          }/identities/${service}/${secondary_user}`,
+          }/identities/${service}/${serviceId}`,
           {
             headers: { authorization: "Bearer " + localStorage.access_token }
           }

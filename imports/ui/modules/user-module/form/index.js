@@ -8,7 +8,6 @@ import {
   SixthStep
 } from "./Steps/index";
 import { MlWizardForm, WizardStepForm } from "btech-base-forms-component";
-import SignUp from "./SignUp/SignUp";
 import PropTypes from "prop-types";
 
 /**

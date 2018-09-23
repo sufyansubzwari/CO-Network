@@ -54,15 +54,6 @@ class PostEvent extends Component {
     });
   }
 
-  // handleUserPhotoChange(src) {
-  //   this.setState({
-  //     event: {
-  //       ...this.state.event,
-  //       image: src
-  //     }
-  //   });
-  // }
-
   onPostAction(createEvent, query) {
     let queryEvent = Object.assign({}, query);
     queryEvent.category = _.uniq(queryEvent.others.concat(queryEvent.category));
@@ -79,7 +70,7 @@ class PostEvent extends Component {
       createEvent({ variables: { entity: event } });
     } else {
       // todo login the user and then create the event or notify the user must login
-      alert('You must be logged')
+      alert("You must be logged");
     }
   }
 

@@ -64,16 +64,12 @@ class TopPreview extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    if (nextProps.image) {
-      this.setState({
-        image: nextProps.image
-      });
-    }
-    if (nextProps.backGroundImage) {
-      this.setState({
-        backGroundImage: nextProps.backGroundImage
-      });
-    }
+    this.setState({
+      image: nextProps.image ? nextProps.image : null,
+      backGroundImage: nextProps.backGroundImage
+        ? nextProps.backGroundImage
+        : null
+    });
   }
 
   onUploadRequest(files, element) {
@@ -115,15 +111,17 @@ class TopPreview extends Component {
                     <UserPhoto photo={this.state.image} />
                   </Container>
                   <Container relative>
-                    <SPhotoLabelContainer>
-                      <UploadFile
-                        iconClass={"landscape"}
-                        text={"Change profile"}
-                        onSelect={files =>
-                          this.onUploadRequest(files, "userphoto")
-                        }
-                      />
-                    </SPhotoLabelContainer>
+                    {this.props.allowChangeImages ? (
+                      <SPhotoLabelContainer>
+                        <UploadFile
+                          iconClass={"landscape"}
+                          text={"Change profile"}
+                          onSelect={files =>
+                            this.onUploadRequest(files, "userphoto")
+                          }
+                        />
+                      </SPhotoLabelContainer>
+                    ) : null}
                   </Container>
                 </Layout>
               </SPhotoContainer>
@@ -131,13 +129,15 @@ class TopPreview extends Component {
           ) : null}
           <Container />
           <Container relative>
-            <SBackLabelContainer>
-              <UploadFile
-                iconClass={"landscape"}
-                text={"Change background"}
-                onSelect={files => this.onUploadRequest(files, "background")}
-              />
-            </SBackLabelContainer>
+            {this.props.allowChangeImages ? (
+              <SBackLabelContainer>
+                <UploadFile
+                  iconClass={"landscape"}
+                  text={"Change background"}
+                  onSelect={files => this.onUploadRequest(files, "background")}
+                />
+              </SBackLabelContainer>
+            ) : null}
           </Container>
         </Layout>
       </Photo>
@@ -148,6 +148,7 @@ class TopPreview extends Component {
 TopPreview.propTypes = {
   backGroundImage: PropsTypes.string,
   showAvatar: PropsTypes.bool,
+  allowChangeImages: PropsTypes.bool,
   image: PropsTypes.string,
   changeProfile: PropsTypes.func,
   changeBackground: PropsTypes.func,

@@ -1,11 +1,10 @@
 import React, { Component } from "react";
-import { Layout, Container } from "btech-layout";
+import { Container } from "btech-layout";
 import UserForm from "./../../modules/user-module/form/";
 import InternalLayout from "../../layouts/InternalLayout/InternalLayout";
 import { Preview } from "../../../ui/components";
 import UserPreviewBody from "../../components/Preview/UserPreviewBody";
 import { Mutation } from "react-apollo";
-import { withRouter } from "react-router-dom";
 import { CreateUser } from "../../apollo-client/user";
 
 /**
@@ -20,8 +19,8 @@ class UserProfile extends Component {
       ...props.curUser.profile,
       aboutMe: {
         yourPassion: "",
-          existingProblem: "",
-          steps: ""
+        existingProblem: "",
+        steps: ""
       },
       social: {
         github: "",
@@ -51,17 +50,11 @@ class UserProfile extends Component {
         otherpreferred: []
       }
     };
-
     this.state = {
       user: user
     };
-
     this.handleBackgroundChange = this.handleBackgroundChange.bind(this);
     this.handleUserPhotoChange = this.handleUserPhotoChange.bind(this);
-  }
-
-  componentWillMount() {
-    if (!this.props.curUser) this.props.history.push("/");
   }
 
   onCancel() {
@@ -99,10 +92,14 @@ class UserProfile extends Component {
           >
             {(createProfile, { profileCreated }) => (
               <UserForm
-                onFinish={data => this.onPostAction(() => console.log(createProfile), data)}
+                onFinish={data =>
+                  this.onPostAction(() => console.log(createProfile), data)
+                }
                 onCancel={() => this.onCancel()}
                 userLogged={false}
-                handleChangeProfile={user => this.setState({user: {...this.state.user, ...user}})}
+                handleChangeProfile={user =>
+                  this.setState({ user: { ...this.state.user, ...user } })
+                }
                 user={this.state.user}
                 {...this.props}
               />
@@ -110,24 +107,11 @@ class UserProfile extends Component {
           </Mutation>
         </Container>
         <Preview
-          showAvatar={true}
-          image={this.state.user && this.state.user.image}
+          showAvatar
           key={"rightSide"}
-          navClicked={index => console.log(index)}
-          navOptions={[
-            {
-              text: "Remove",
-              icon: "delete",
-              checkVisibility: () => {
-                return this.state.selectedItem && this.state.selectedItem.id;
-              },
-              onClick: function() {
-                console.log("Remove");
-              }
-            }
-          ]}
           index={this.state.selectedIndex}
           data={this.state.selectedItem}
+          image={this.state.user && this.state.user.image}
           backGroundImage={this.state.user && this.state.user.cover}
           onBackgroundChange={this.handleBackgroundChange}
           onUserPhotoChange={this.handleUserPhotoChange}

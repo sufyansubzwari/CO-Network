@@ -1,8 +1,8 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import { Route, Redirect } from 'react-router-dom';
-import { propType } from 'graphql-anywhere';
-import { userFragment } from '../../../apollo-client/user';
+import React from "react";
+import PropTypes from "prop-types";
+import { Route, Redirect } from "react-router-dom";
+import { propType } from "graphql-anywhere";
+import { userFragment } from "../../../apollo-client/user";
 
 //------------------------------------------------------------------------------
 // COMPONENT:
@@ -23,25 +23,18 @@ const LoggedInRoute = ({
 }) => (
   <Route
     {...rest}
-    render={(ownProps) => {
+    render={ownProps => {
       // User NOT logged in resolver
-      const resolver = redirectTo.trim().length > 0
-        ? <Redirect to={redirectTo.trim()} />
-        : React.createElement(overlay, { curUser, ...rest, ...ownProps });
+      const resolver =
+        redirectTo.trim().length > 0 ? (
+          <Redirect to={redirectTo.trim()} />
+        ) : (
+          React.createElement(overlay, { curUser, ...rest, ...ownProps })
+        );
 
       if (!curUser) {
         return resolver;
       }
-
-      // TODO: use current loggedIn service instead of all available services
-      const isPasswordService = curUser.services.indexOf('password') !== -1;
-      const isEmailVerified = isPasswordService && curUser.emails[0].verified === true;
-
-      // If password service and email is NOT verified, resolve...
-      if (isPasswordService && !isEmailVerified) {
-        return React.createElement(emailNotVerifiedOverlay, { curUser, ...rest, ...ownProps });
-      }
-
       // ...Otherwise, render requested component
       return React.createElement(component, { curUser, ...rest, ...ownProps });
     }}
@@ -53,13 +46,13 @@ LoggedInRoute.propTypes = {
   component: PropTypes.func.isRequired,
   redirectTo: PropTypes.string,
   overlay: PropTypes.func,
-  emailNotVerifiedOverlay: PropTypes.func.isRequired,
+  emailNotVerifiedOverlay: PropTypes.func.isRequired
 };
 
 LoggedInRoute.defaultProps = {
   curUser: null,
-  redirectTo: '',
-  overlay: () => {},
+  redirectTo: "/",
+  overlay: () => {}
 };
 
 export default LoggedInRoute;

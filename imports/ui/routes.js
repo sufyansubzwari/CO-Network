@@ -2,9 +2,11 @@ import React from "react";
 import { Switch, Route } from "react-router-dom";
 import { propType } from "graphql-anywhere";
 import { userFragment } from "./apollo-client/user";
-import { ScrollToTop, RouteWithProps } from "./components/smart/route-wrappers";
-import LoadableWrapper from "./components/dumb/loadable-wrapper";
-
+import {
+  ScrollToTop,
+  RouteWithProps,
+  LoggedInRoute
+} from "./components/smart/route-wrappers";
 //
 import HomePage from "./pages/home/home-page";
 import SignUpPage from "./pages/sign-up-page";
@@ -47,17 +49,19 @@ const Routes = props => (
         component={PostEvent}
         {...props}
       />
-      <RouteWithProps
+      <LoggedInRoute
         exact
+        isSignUp
         name="SignUp"
         path="/sign-up"
         component={SignUpPage}
         {...props}
       />
-      <RouteWithProps
+      <LoggedInRoute
         exact
         name="User Profile"
         path="/profile"
+        redirectTo={"/"}
         component={UserProfile}
         {...props}
       />

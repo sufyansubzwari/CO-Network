@@ -112,7 +112,7 @@ class PostOrganization extends Component {
       createOrg({ variables: { entity: organization } });
     } else {
       // todo login the user and then create the event or notify the user must login
-      alert('You must be logged')
+      alert("You must be logged");
     }
   }
 
@@ -122,7 +122,9 @@ class PostOrganization extends Component {
         <Mutation
           key={"leftSide"}
           mutation={CreateOrg}
-          onCompleted={() => this.props.history.push("/innovators")}
+          onCompleted={() =>
+            this.props.history.push("/innovators", { postInnovator: true })
+          }
           onError={error => console.log("Error: ", error)}
         >
           {(createOrg, { orgCreated }) => (

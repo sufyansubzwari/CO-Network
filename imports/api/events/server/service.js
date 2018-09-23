@@ -19,7 +19,7 @@ class EventsService {
     } else {
       let id = data._id;
       delete data._id;
-      await Events.collection.update(id, {$set: data});
+      await Events.collection.update(id, { $set: data });
       return Events.collection.findOne(id);
     }
   };
@@ -29,7 +29,7 @@ class EventsService {
    * @param {String} id - Event id
    * @return {Object} Event deleted
    */
-  static deleteEvent = async (id) => {
+  static deleteEvent = async id => {
     return await Events.collection.remove(id);
   };
   /**
@@ -40,9 +40,15 @@ class EventsService {
    * @return {Object} Event updated
    */
   static updateImage = async (id, image) => {
-    await Events.collection.update(id, {
-      $addToSet: {image: image}
-    });
+    const event = await Events.collection.findOne(id);
+    if (event.image)
+      await Events.collection.update(id, {
+        $set: { image: image }
+      });
+    else
+      await Events.collection.update(id, {
+        $addToSet: { image: image }
+      });
     return await Events.collection.findOne(id);
   };
   /**
@@ -62,7 +68,9 @@ class EventsService {
    * @return {Object}||[{Object }] Return one or all events
    */
   static events = (query, limit) => {
-    return Events.collection.find(query, {...limit, sort: {createdAt: -1}}).fetch();
+    return Events.collection
+      .find(query, { ...limit, sort: { createdAt: -1 } })
+      .fetch();
   };
 }
 
