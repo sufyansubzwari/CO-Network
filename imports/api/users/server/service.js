@@ -21,7 +21,7 @@ class UserService {
       let id = data._id;
       delete data._id;
       console.log("insert ======> ", JSON.stringify(data.profile));
-      await Users.collection.update(id, { $set: {'profile': data.profile} });
+      await Users.collection.update(id, { $set: { profile: data.profile } });
       return Users.collection.findOne(id);
     }
   };
@@ -65,6 +65,19 @@ class UserService {
    */
   static users = (query, limit) => {
     return Users.collection.find(query, limit).fetch();
+  };
+  /**
+   * @name updateIdentities
+   * @summary Change the identities
+   * @param {String} id - User id
+   * @param {String} identities - current status
+   * @return {Object} User updated
+   */
+  static updateIdentities = async (id, identities) => {
+    await Users.collection.update(id, {
+      $set: { "profile.identities": identities }
+    });
+    return Users.collection.findOne(id);
   };
 }
 

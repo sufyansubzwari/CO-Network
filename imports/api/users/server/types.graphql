@@ -192,6 +192,7 @@ type Mutation {
     user(user: UserInput!): User
     deleteUser(_id: String!): User
     updateSignUpStatus(_id: String!, status: Boolean!): User
+    updateIdentities(_id: String!, identities: [SocialIdentityInput]!): User
     sendVerificationEmail: User
     saveSubscription(subscription: SubscriptionInput!): User
     deleteSubscription(endpoint: String!): User

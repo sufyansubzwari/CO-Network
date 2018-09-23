@@ -60,7 +60,7 @@ class UserProfile extends Component {
         }
       }
     };
-    let currentUser = {...props.curUser.profile};
+    let currentUser = { ...props.curUser.profile };
     Object.keys(currentUser).forEach(
       key => currentUser[key] == null && delete currentUser[key]
     );
@@ -125,7 +125,7 @@ class UserProfile extends Component {
           <Mutation
             mutation={CreateUser}
             onCompleted={() =>
-              this.props.history.push("/", { userCreate: true })
+              this.props.history.push("/profile", { userCreate: true })
             }
             onError={error => console.log("Error: ", error)}
           >

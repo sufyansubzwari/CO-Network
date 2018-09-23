@@ -60,28 +60,23 @@ class UserPreviewBody extends React.Component {
       this.state.user.speaker &&
       this.state.user.speaker.topic &&
       this.state.user.speaker.topic.map(top => ({ ...top, active: true }));
-
     //checkboxes
     let lookingfor =
       this.state.user.knowledge &&
       this.state.user.knowledge.lookingFor &&
       this.state.user.knowledge.lookingFor.map(look => <div>{look.label}</div>);
-
     let jobtype =
       this.state.user.professional &&
       this.state.user.professional.jobType &&
       this.state.user.professional.jobType.map(job => <div>{job.label}</div>);
-
     let lookingforS =
       this.state.user.speaker &&
       this.state.user.speaker.lookingFor &&
       this.state.user.speaker.lookingFor.map(look => <div>{look.label}</div>);
-
     let preferred =
       this.state.user.speaker &&
       this.state.user.speaker.stage &&
       this.state.user.speaker.stage.map(stage => <div>{stage.label}</div>);
-
     let achieve = this.state.user.achievements
       ? this.state.user.achievements.map((ach, index) => {
           let tags =
@@ -152,7 +147,6 @@ class UserPreviewBody extends React.Component {
           ) : null;
         })
       : null;
-
     return (
       <Layout rowGap={"15px"}>
         <Title text={this.state.user.name + " " + this.state.user.lastName} />
@@ -167,19 +161,23 @@ class UserPreviewBody extends React.Component {
           <Text header={"Email"} text={this.state.user.email} />
         ) : null}
         {/*todo: show the linked accounts*/}
-        <Container>
-          <Layout templateColumns={2}>
-            {languages && languages.length ? (
-              <TagsAdd header={"Languages"} tags={languages} />
+        {(languages && languages.length) ||
+        (industry && industry.length) ||
+        (curious && curious.length) ? (
+          <Container>
+            <Layout templateColumns={2}>
+              {languages && languages.length ? (
+                <TagsAdd header={"Languages"} tags={languages} />
+              ) : null}
+              {industry && industry.length ? (
+                <TagsAdd header={"Industry | Sector"} tags={industry} />
+              ) : null}
+            </Layout>
+            {curious && curious.length ? (
+              <TagsAdd header={"Seeking"} tags={curious} />
             ) : null}
-            {industry && industry.length ? (
-              <TagsAdd header={"Industry | Sector"} tags={industry} />
-            ) : null}
-          </Layout>
-          {curious && curious.length ? (
-            <TagsAdd header={"Seeking"} tags={curious} />
-          ) : null}
-        </Container>
+          </Container>
+        ) : null}
         {this.state.user.aboutMe &&
         this.state.user.aboutMe.yourPassion !== "" ? (
           <Text

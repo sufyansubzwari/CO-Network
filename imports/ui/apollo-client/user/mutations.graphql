@@ -21,3 +21,19 @@ mutation UpdateSignUpStatus($id: String!, $status: Boolean!) {
         }
     }
 }
+
+mutation UpdateIdentities($id: String!, $identities: [SocialIdentityInput]!) {
+    updateIdentities(_id: $id, identities: $identities) {
+        _id
+        profile {
+            identities {
+                provider
+                user_id
+                profileData {
+                    name
+                    email
+                }
+            }
+        }
+    }
+}

@@ -14,9 +14,7 @@ fragment userFragment on User {
           user_id
           profileData {
               name
-              lastName
               email
-              image
           }
       }
       email
