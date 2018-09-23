@@ -81,6 +81,8 @@ class EventForm extends Component {
         onFinish={() =>
           this.props.onFinish && this.props.onFinish(this.state.event)
         }
+        showProgress
+        radioColor={"#000000"}
         onCancel={() => this.props.onCancel && this.props.onCancel()}
       >
         <WizardStepForm title={"Event Details"} isValid>

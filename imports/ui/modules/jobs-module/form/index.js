@@ -68,6 +68,8 @@ class JobForm extends React.Component {
         onFinish={() =>
           this.props.onFinish && this.props.onFinish(this.state.job)
         }
+        showProgress
+        radioColor={"#000000"}
         onCancel={() => this.props.onCancel && this.props.onCancel()}
       >
         <WizardStepForm title={"Job Details"} isValid>
