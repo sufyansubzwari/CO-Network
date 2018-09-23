@@ -49,7 +49,11 @@ class EventForm extends Component {
       let event = this.props.location.state.event;
       event.startDate = moment(event.startDate);
       event.endDate = moment(event.endDate);
-      this.setState({ event: event });
+      this.setState(
+        { event: event },
+        () =>
+          this.props.handleChangeEvent && this.props.handleChangeEvent(event)
+      );
     }
   }
 
@@ -120,7 +124,8 @@ EventForm.defaultProps = {
 
 EventForm.propTypes = {
   onCancel: PropTypes.func,
-  onFinish: PropTypes.func
+  onFinish: PropTypes.func,
+  handleChangeEvent: PropTypes.func
 };
 
 export default EventForm;
