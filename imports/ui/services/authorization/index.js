@@ -163,7 +163,6 @@ class Authorization extends react.Component {
   }
 
   getAuthForLink() {
-    localStorage.setItem("linking", "linking");
     this.auth0Link = new WebAuth({
       domain: this.settings.domain,
       clientID: this.settings.clientID,
@@ -185,8 +184,8 @@ class Authorization extends react.Component {
   }
 
   linkAccount(secondaryIdToken) {
-    var primaryAccessToken = localStorage.getItem("id_token");
-    var primaryUserId = localStorage.getItem("user_id");
+    const primaryAccessToken = localStorage.getItem("id_token");
+    const primaryUserId = localStorage.getItem("user_id");
     let _this = this;
     this.authManage.linkUser(primaryUserId, secondaryIdToken, error => {
       if (error) {

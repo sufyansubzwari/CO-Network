@@ -5,9 +5,21 @@ fragment userFragment on User {
   profile {
       isSignUp
       name
+      user_id
       lastName
       nickName
       loginCount
+      identities {
+          provider
+          user_id
+          profileData {
+              name
+              lastName
+              email
+              image
+          }
+      }
+      email
       image
       cover
       gender

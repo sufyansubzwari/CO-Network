@@ -54,6 +54,10 @@ const schema = new SimpleSchema({
     max: 150,
     optional: true
   },
+  "profile.user_id": {
+    type: String,
+    optional: true
+  },
   "profile.isSignUp": {
   type: Boolean,
     optional: true

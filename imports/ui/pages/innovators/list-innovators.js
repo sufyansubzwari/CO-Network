@@ -62,6 +62,7 @@ class ListInnovators extends Component {
   customRenderItem(item, key, isLoading) {
     return (
       <CardItem
+        lgCustomTemplateColumns={"155px 1fr"}
         onSelect={() => this.onChangeSelection(item, key)}
         isActive={
           this.state.selectedIndex !== null
@@ -115,7 +116,8 @@ class ListInnovators extends Component {
           pollInterval={5000}
         >
           {({ loading, error, data }) => {
-            const isLoading = loading && (!data.events || !data.events.length);
+            const isLoading =
+              loading && (!data.organizations || !data.organizations.length);
             // if (loading) return null;
             // if (error) return `Error!: ${error}`;
             return (

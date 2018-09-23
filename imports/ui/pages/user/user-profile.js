@@ -18,27 +18,16 @@ class UserProfile extends Component {
 
     let user = {
       ...props.curUser.profile,
-      info: {
-        name: "",
-        lastName: "",
-        email: "",
-        website: "",
-        location: {
-          address: "",
-          location: { lat: "", lng: "" },
-          fullLocation: {}
-        }
+      aboutMe: {
+        yourPassion: "",
+          existingProblem: "",
+          steps: ""
       },
       social: {
         github: "",
         facebook: "",
         twitter: "",
         google: ""
-      },
-      aboutMe: {
-        yourPassion: "",
-        existingProblem: "",
-        steps: ""
       },
       knowledge: {
         languages: [],
@@ -69,6 +58,10 @@ class UserProfile extends Component {
 
     this.handleBackgroundChange = this.handleBackgroundChange.bind(this);
     this.handleUserPhotoChange = this.handleUserPhotoChange.bind(this);
+  }
+
+  componentWillMount() {
+    if (!this.props.curUser) this.props.history.push("/");
   }
 
   onCancel() {
@@ -106,14 +99,10 @@ class UserProfile extends Component {
           >
             {(createProfile, { profileCreated }) => (
               <UserForm
-                onFinish={data =>
-                  this.onPostAction(() => console.log(createProfile), data)
-                }
+                onFinish={data => this.onPostAction(() => console.log(createProfile), data)}
                 onCancel={() => this.onCancel()}
                 userLogged={false}
-                handleChangeProfile={user =>
-                  this.setState({ user: { ...this.state.user, ...user } })
-                }
+                handleChangeProfile={user => this.setState({user: {...this.state.user, ...user}})}
                 user={this.state.user}
                 {...this.props}
               />

@@ -18,6 +18,7 @@ const SAddMaterialIcon = styled.span`
     line-height: 55px;
   }
 `;
+
 /**
  * @module Data
  * @category Component
@@ -109,11 +110,8 @@ class UserNavbarSection extends React.Component {
                 }}
                 activeEval={this.activeEval}
               />
-
               <Link to={avatarLink}>
-                <NavbarUserButton
-                  size={this.size}
-                />
+                <NavbarUserButton size={this.size} />
               </Link>
             </Group>
             <Layout
@@ -123,7 +121,7 @@ class UserNavbarSection extends React.Component {
             >
               <ThemeProvider theme={theme}>
                 <Layout rowGap="10px">
-                  <LogoutBtn/>
+                  <LogoutBtn />
                   <SideBarLink href={this.policy}> Terms Policies </SideBarLink>
                   <SideBarLink> CONetwork © 2018 </SideBarLink>
                 </Layout>
