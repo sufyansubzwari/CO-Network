@@ -27,7 +27,8 @@ type Profile {
   email: String
   gender: String
   website: String
-  identities: [SocialIdentity]phone: String
+  identities: [SocialIdentity]
+  phone: String
   professional: Professional
   social: Social
   aboutMe: AboutMe
@@ -121,8 +122,11 @@ input ProfileInput {
     email: String
     gender: String
     website: String
+    gender: String
     phone: String
     user_id: String
+    loginCount: Int
+    identities: [SocialIdentityInput]
     professional: ProfessionalInput
     social: SocialInput
     aboutMe: AboutMeInput
@@ -130,6 +134,25 @@ input ProfileInput {
     speaker: SpeakerInput
     achievements: [AchievementsInput]
     place: PlacesInput
+}
+
+input ProfileSocialInput{
+    email: String
+    name: String
+    isSocial: Boolean
+    given_name: String
+    family_name: String
+    picture: String
+    locale: String
+    connection: String
+    provider: String
+    user_id: String
+}
+
+input SocialIdentityInput {
+    provider: String
+    profileData: ProfileInput
+    user_id: String
 }
 
 input EmailInput {

@@ -110,6 +110,7 @@ class PostJob extends Component {
           ]}
           index={this.state.selectedIndex}
           data={this.state.selectedItem}
+          allowChangeImages
           backGroundImage={this.state.job && this.state.job.image}
           onBackgroundChange={imageSrc => this.handleBackgroundChange(imageSrc)}
         >
