@@ -1,6 +1,6 @@
-// import { Roles } from "meteor/alanning:roles";
-// import { Accounts } from "meteor/accounts-base";
-// import Users from "../../api/users/";
+import { Roles } from "meteor/alanning:roles";
+import { Accounts } from "meteor/accounts-base";
+import Users from "../../api/users/";
 
 // OBSERVATION: use the following mutation to set email to verified:
 // db.users.update(
@@ -27,7 +27,6 @@
 //   Roles.addUsersToRoles(userId, roles);
 // });
 
-/*
 import seeder from "@cleverbeagle/seeder";
 import { Meteor } from "meteor/meteor";
 import Jobs from "../../api/jobs/server/collection";
@@ -37,7 +36,7 @@ import Places from "../../api/places/server/collection";
 import Tags from "../../api/tags/server/collection";
 import { LANGUAGES_LIBRARIES, LOCATIONS } from "../../ui/constants";
 
-const env = ["development"];
+const env = ["production"];
 
 function image(folder) {
   return `/mock/${folder}/${Math.floor(Math.random() * 4)}.jpeg`;
@@ -283,7 +282,7 @@ const OrganizationSeed = userId => ({
   modelCount: 2,
   model(dataIndex, faker) {
     return {
-      image: faker.image.business(),
+      image: image("events"),
       cover: image("user"),
       name: faker.company.companyName(),
       description: Tags.aggregate([{ $sample: { size: 1 } }])._id,
@@ -376,4 +375,3 @@ seeder(Meteor.users, {
     };
   }
 });
-*/
