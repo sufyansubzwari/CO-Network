@@ -14,33 +14,31 @@ const Label = styled.label`
 `;
 
 class FirstStep extends React.Component {
+  constructor(props) {
+    super(props);
 
-    constructor(props) {
-        super(props);
-
-        let data = props.data ? props.data : {};
-this.services = services.filter(element => element.visible);
-        this.state = {
-            user: data
-
-        };
-    }
+    let data = props.data ? props.data : {};
+    this.services = services.filter(element => element.visible);
+    this.state = {
+      user: data
+    };
+  }
 
   componentWillReceiveProps(nextProps) {
     if (nextProps.data && nextProps.data !== this.state.user)
       this.setState({ user: nextProps.data });
   }
 
-    notifyParent(model, name, value) {
-        if (model && name && value) {
-            let user = this.state.user;
-            user[name] = value;
-            this.setState(
-                {user: user},
-                () => this.props.onChange && this.props.onChange(this.state.user)
-            );
-        } else this.props.onChange && this.props.onChange(this.state.user);
-    }
+  notifyParent(model, name, value) {
+    if (model && name && value) {
+      let user = this.state.user;
+      user[name] = value;
+      this.setState(
+        { user: user },
+        () => this.props.onChange && this.props.onChange(this.state.user)
+      );
+    } else this.props.onChange && this.props.onChange(this.state.user);
+  }
 
   handleLinkAccount(service) {
     Authorization.initLink(service);
@@ -73,15 +71,15 @@ this.services = services.filter(element => element.visible);
     return data;
   }
 
-
   notifyParentLocation(model, name, value) {
     if (model && name && value) {
       let user = this.state.user;
       user.place[name] = value;
-      this.setState({user: user}, () => this.props.onChange && this.props.onChange(this.state.user));
-    }
-    else
-      this.props.onChange && this.props.onChange(this.state.user);
+      this.setState(
+        { user: user },
+        () => this.props.onChange && this.props.onChange(this.state.user)
+      );
+    } else this.props.onChange && this.props.onChange(this.state.user);
   }
 
   render() {
@@ -105,7 +103,7 @@ this.services = services.filter(element => element.visible);
           model={this.state.user.place}
           name={"location"}
           placeholder={"Location"}
-          onChange={this.notifyParent.bind(this)}
+          onChange={this.notifyParentLocation.bind(this)}
         />
         <Layout templateColumns={2} colGap={"20px"}>
           <Input

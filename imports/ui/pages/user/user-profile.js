@@ -1,11 +1,11 @@
 import React, { Component } from "react";
-import {  Container } from "btech-layout";
+import { Container } from "btech-layout";
 import UserForm from "./../../modules/user-module/form/";
-import InternalLayout from "../../layouts/InternalLayout/InternalLayout";
-import {Preview} from "../../../ui/components";
+import PostLayout from "../../layouts/PostLayout/PostLayout";
+import { Preview } from "../../../ui/components";
 import UserPreviewBody from "../../components/Preview/UserPreviewBody";
-import { Mutation , graphql} from "react-apollo";
-import { CreateUser , userQuery} from "../../apollo-client/user";
+import { Mutation, graphql } from "react-apollo";
+import { CreateUser, userQuery } from "../../apollo-client/user";
 
 /**
  * @module User
@@ -14,14 +14,18 @@ import { CreateUser , userQuery} from "../../apollo-client/user";
 class UserProfile extends Component {
   constructor(props) {
     super(props);
-
     let user = {
       name: "",
       lastName: "",
-        email: "",
-          website: "",
-          cover: "",
+      email: "",
+      website: "",
+      cover: "",
       image: "",
+      aboutMe: {
+        yourPassion: "",
+        existingProblem: "",
+        steps: ""
+      },
       social: {
         github: "",
         facebook: "",
@@ -51,15 +55,16 @@ class UserProfile extends Component {
       place: {
         location: {
           address: "",
-          location: {lat: "", lng: ""},
+          location: { lat: "", lng: "" },
           fullLocation: {}
         }
       }
     };
-    let currentUser = JSON.parse(JSON.stringify(props.curUser.profile));
-    Object.keys(currentUser).forEach((key) => (currentUser[key] == null) && delete currentUser[key]);
+    let currentUser = {...props.curUser.profile};
+    Object.keys(currentUser).forEach(
+      key => currentUser[key] == null && delete currentUser[key]
+    );
     let userObject = Object.assign(user, currentUser);
-
     this.state = {
       user: userObject
     };
@@ -73,10 +78,10 @@ class UserProfile extends Component {
 
   componentWillReceiveProps(nextProps) {
     if (nextProps.data && nextProps.data.user) {
-        let data = JSON.parse(JSON.stringify(nextProps.data.user.profile));
-        Object.keys(data).forEach((key) => (data[key] == null) && delete data[key]);
+      let data = JSON.parse(JSON.stringify(nextProps.data.user.profile));
+      Object.keys(data).forEach(key => data[key] == null && delete data[key]);
       let user = Object.assign(this.state.user, data);
-      this.setState({user: user});
+      this.setState({ user: user });
     }
   }
 
@@ -106,31 +111,27 @@ class UserProfile extends Component {
     profile.place.location.fullLocation
       ? delete profile.place.location.fullLocation
       : null;
-    delete profile.identities;
-    delete profile.loginCount;
     let user = {
       _id: this.props.curUser._id,
       profile: profile
     };
-    createProfile({variables: {entity: user}});
+    createProfile({ variables: { entity: user } });
   }
 
   render() {
     return (
-      <InternalLayout>
+      <PostLayout>
         <Container fullY key={"leftSide"}>
           <Mutation
             mutation={CreateUser}
             onCompleted={() =>
-              this.props.history.push("/", {userCreate: true})
+              this.props.history.push("/", { userCreate: true })
             }
             onError={error => console.log("Error: ", error)}
           >
-            {(createProfile, {profileCreated}) => (
+            {(createProfile, { profileCreated }) => (
               <UserForm
-                onFinish={data =>
-                  this.onPostAction(createProfile, data)
-                }
+                onFinish={data => this.onPostAction(createProfile, data)}
                 onCancel={() => this.onCancel()}
                 userLogged={false}
                 handleChangeProfile={user =>
@@ -149,12 +150,13 @@ class UserProfile extends Component {
           data={this.state.selectedItem}
           image={this.state.user && this.state.user.image}
           backGroundImage={this.state.user && this.state.user.cover}
+          allowChangeImages
           onBackgroundChange={this.handleBackgroundChange}
           onUserPhotoChange={this.handleUserPhotoChange}
         >
-          <UserPreviewBody user={this.state.user}/>
+          <UserPreviewBody user={this.state.user} />
         </Preview>
-      </InternalLayout>
+      </PostLayout>
     );
   }
 }

@@ -123,6 +123,11 @@ const schema = new SimpleSchema({
     type: Boolean,
     optional: true
   },
+  "profile.identities.$.profileData": {
+    type: Object,
+    blackbox: true,
+    optional: true
+  },
   "profile.social": {
     type: Object,
     optional: true

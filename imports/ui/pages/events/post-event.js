@@ -114,6 +114,7 @@ class PostEvent extends Component {
           ]}
           index={this.state.selectedIndex}
           data={this.state.selectedItem}
+          allowChangeImages
           backGroundImage={this.state.event && this.state.event.image}
           onBackgroundChange={this.handleBackgroundChange}
           onUserPhotoChange={this.handleUserPhotoChange}

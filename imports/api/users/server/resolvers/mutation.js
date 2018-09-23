@@ -127,7 +127,6 @@ Mutation.sendPushNotification = (root, args, context) => {
 };
 //------------------------------------------------------------------------------
 Mutation.user = async (root, {user}, context) => {
-
   let profile = Object.assign({}, user.profile);
   /****** Updating tags in database ******/
   if (profile.knowledge && profile.knowledge.languages)
@@ -142,16 +141,11 @@ Mutation.user = async (root, {user}, context) => {
     profile.speaker.otherlooking = await Tags.service.normalizeTags(profile.speaker.otherlooking);
   if (profile.speaker && profile.speaker.topic)
     profile.speaker.topic = await Tags.service.normalizeTags(profile.speaker.topic);
-
-  console.log("mutation => ", user.profile);
-  console.log(Object.assign(user.profile, profile));
   user.profile = Object.assign(user.profile, profile);
   const achievementsList = Object.assign([], profile.achievements);
   const placesList = Object.assign({}, profile.place);
-
-  console.log("proke no inserta", JSON.stringify(user));
   const inserted = await Service.user(user);
-//inserting location
+  //inserting location
   if (placesList && placesList.location && placesList.location.address) {
     let place = Object.assign({}, placesList);
     if (!place._id) {

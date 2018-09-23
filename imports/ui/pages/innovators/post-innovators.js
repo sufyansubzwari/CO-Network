@@ -154,6 +154,7 @@ class PostOrganization extends Component {
           index={this.state.selectedIndex}
           data={this.state.selectedItem}
           showAvatar={true}
+          allowChangeImages
           image={this.state.organization && this.state.organization.image}
           backGroundImage={
             this.state.organization && this.state.organization.cover
