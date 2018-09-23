@@ -1,3 +1,5 @@
 # types and scalars for Base namespace
 
 scalar Date
+
+scalar Json
