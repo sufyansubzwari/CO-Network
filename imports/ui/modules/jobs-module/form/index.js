@@ -43,7 +43,12 @@ class JobForm extends React.Component {
       this.props.location.state &&
       this.props.location.state.job
     ) {
-      this.setState({ job: this.props.location.state.job });
+      this.setState(
+        { job: this.props.location.state.job },
+        () =>
+          this.props.handleJobChange &&
+          this.props.handleJobChange(this.props.location.state.job)
+      );
     }
   }
 
