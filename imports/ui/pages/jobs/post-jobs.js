@@ -1,8 +1,6 @@
 import React, { Component } from "react";
-import { Container } from "btech-layout";
-import InternalLayout from "../../components/InternalLayout/InternalLayout";
 import JobForm from "../../modules/jobs-module/form";
-import { Preview } from "../../../ui/components";
+import { Preview, PostLayout } from "../../../ui/components";
 import JobPreviewBody from "../../components/Preview/JobPreviewBody";
 import { withRouter } from "react-router-dom";
 import { CreateJob } from "../../apollo-client/job";
@@ -40,24 +38,16 @@ class PostJob extends Component {
         }
       }
     };
-    this.handleBackgroundChange = this.handleBackgroundChange.bind(this);
   }
 
   onCancel() {
     this.props.history.push(`/jobs`);
   }
 
-  componentWillMount() {
-    this.props.toggleSideBar(false);
-  }
-
   handleBackgroundChange(src) {
-    this.setState({
-      job: {
-        ...this.state.job,
-        image: src
-      }
-    });
+    const job = this.state.job;
+    if (src) job.image = src;
+    this.setState({ job: job });
   }
 
   onPostAction(createJob, query) {
@@ -68,37 +58,39 @@ class PostJob extends Component {
     queryJob.place.location.fullLocation
       ? delete queryJob.place.location.fullLocation
       : null;
-    let job = {
-      ...queryJob,
-      owner: "Qt5569uuKKd6YrDwS" //Meteor.userId(),
-    };
-    createJob({ variables: { entity: job } });
+    let job = { ...queryJob };
+    if (this.props.curUser) {
+      job.owner = this.props.curUser._id;
+      createJob({ variables: { entity: job } });
+    } else {
+      // todo login the user and then create the event or notify the user must login
+      alert('You must be logged')
+    }
   }
 
   render() {
     return (
-      <InternalLayout leftWidth={"52%"}>
-        <Container fullY key={"leftSide"}>
-          <Mutation
-            mutation={CreateJob}
-            onCompleted={() => this.props.history.push("/jobs")}
-            onError={error => console.log("Error: ", error)}
-          >
-            {(createJob, { jobCreated }) => (
-              <JobForm
-                onFinish={data => {
-                  this.onPostAction(createJob, data);
-                }}
-                onCancel={() => this.onCancel()}
-                {...this.props}
-                handleJobChange={job =>
-                  this.setState({ job: { ...this.state.job, ...job } })
-                }
-                job={this.state.job}
-              />
-            )}
-          </Mutation>
-        </Container>
+      <PostLayout>
+        <Mutation
+          key={"leftSide"}
+          mutation={CreateJob}
+          onCompleted={() => this.props.history.push("/jobs")}
+          onError={error => console.log("Error: ", error)}
+        >
+          {(createJob, { jobCreated }) => (
+            <JobForm
+              onFinish={data => {
+                this.onPostAction(createJob, data);
+              }}
+              onCancel={() => this.onCancel()}
+              {...this.props}
+              handleJobChange={job =>
+                this.setState({ job: { ...this.state.job, ...job } })
+              }
+              job={this.state.job}
+            />
+          )}
+        </Mutation>
         <Preview
           key={"rightSide"}
           navClicked={index => console.log(index)}
@@ -116,12 +108,12 @@ class PostJob extends Component {
           ]}
           index={this.state.selectedIndex}
           data={this.state.selectedItem}
-          backGroundImage={this.state.event && this.state.event.image}
-          onBackgroundChange={this.handleBackgroundChange}
+          backGroundImage={this.state.job && this.state.job.image}
+          onBackgroundChange={imageSrc => this.handleBackgroundChange(imageSrc)}
         >
           <JobPreviewBody job={this.state.job} />
         </Preview>
-      </InternalLayout>
+      </PostLayout>
     );
   }
 }

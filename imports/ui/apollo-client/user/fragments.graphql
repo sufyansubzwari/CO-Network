@@ -1,6 +1,5 @@
 fragment userFragment on User {
   _id
-  createdAt
   services
 
   profile {

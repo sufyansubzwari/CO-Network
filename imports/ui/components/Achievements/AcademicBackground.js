@@ -51,7 +51,7 @@ export default AcademicBackground = function (props) {
                             hoverColor={"initial"}
                             onClick={props.handleSave}
                         >
-                            <MaterialIcon type={"plus-circle"} />
+                            <MaterialIcon type={"save"} />
                             <span style={{ paddingLeft: "5px" }}>Save</span>
                         </Button>
                     </Layout>

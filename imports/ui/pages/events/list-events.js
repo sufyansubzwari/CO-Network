@@ -99,60 +99,60 @@ class ListEvents extends Component {
           onFetchData={() => this.fetchMoreSelection(isLoading)}
           onSelectCard={(item, key) => this.onChangeSelection(item, key)}
         />
-        {/*{this.state.selectedItem ? (*/}
-        <Mutation key={"rightSide"} mutation={DeleteEvent}>
-          {(deleteEvent, { eventDeleted }) => (
-            <Preview
-              key={"rightSide"}
-              navlinks={["Details", "Vision", "Products", "Media"]}
-              navClicked={index => console.log(index)}
-              navOptions={[
-                {
-                  text: "Follow",
-                  checkVisibility: () => {
-                    return (
-                      this.state.selectedItem && this.state.selectedItem._id
-                    );
+        {this.state.selectedItem ? (
+          <Mutation key={"rightSide"} mutation={DeleteEvent}>
+            {(deleteEvent, { eventDeleted }) => (
+              <Preview
+                key={"rightSide"}
+                navlinks={["Details", "Vision", "Products", "Media"]}
+                navClicked={index => console.log(index)}
+                navOptions={[
+                  {
+                    text: "Follow",
+                    checkVisibility: () => {
+                      return (
+                        this.state.selectedItem && this.state.selectedItem._id
+                      );
+                    },
+                    onClick: () => {
+                      console.log("Adding");
+                    }
                   },
-                  onClick: () => {
-                    console.log("Adding");
-                  }
-                },
-                {
-                  text: "Edit",
-                  checkVisibility: () => {
-                    return (
-                      this.state.selectedItem && this.state.selectedItem._id
-                    );
+                  {
+                    text: "Edit",
+                    checkVisibility: () => {
+                      return (
+                        this.state.selectedItem && this.state.selectedItem._id
+                      );
+                    },
+                    onClick: () => {
+                      _this.editEvent();
+                    }
                   },
-                  onClick: () => {
-                    _this.editEvent();
+                  {
+                    text: "Remove",
+                    icon: "delete",
+                    checkVisibility: () => {
+                      return (
+                        this.state.selectedItem && this.state.selectedItem._id
+                      );
+                    },
+                    onClick: function() {
+                      _this.removeEvent(deleteEvent, _this.state.selectedItem);
+                    }
                   }
-                },
-                {
-                  text: "Remove",
-                  icon: "delete",
-                  checkVisibility: () => {
-                    return (
-                      this.state.selectedItem && this.state.selectedItem._id
-                    );
-                  },
-                  onClick: function() {
-                    _this.removeEvent(deleteEvent, _this.state.selectedItem);
-                  }
+                ]}
+                index={this.state.selectedIndex}
+                data={this.state.selectedItem}
+                backGroundImage={
+                  this.state.selectedItem ? this.state.selectedItem.image : null
                 }
-              ]}
-              index={this.state.selectedIndex}
-              data={this.state.selectedItem}
-              backGroundImage={
-                this.state.selectedItem ? this.state.selectedItem.image : null
-              }
-            >
-              <EventPreviewBody event={this.state.selectedItem} />
-            </Preview>
-          )}
-        </Mutation>
-        // ) : null}
+              >
+                <EventPreviewBody event={this.state.selectedItem} />
+              </Preview>
+            )}
+          </Mutation>
+        ) : null}
       </ListLayout>
     );
   }

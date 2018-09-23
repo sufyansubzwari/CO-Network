@@ -38,6 +38,7 @@ class ListJobs extends Component {
   static removeJob(deleteJob, job) {
     deleteJob({ variables: { id: job._id } });
   }
+
   editJob() {
     let job = JSON.parse(JSON.stringify(this.state.selectedItem));
     delete job.entity;
@@ -146,7 +147,7 @@ const mapStateToProps = state => {
   const { previewData, filterStatus } = state;
   return {
     previewData: previewData,
-    filterStatus: filterStatus,
+    filterStatus: filterStatus
   };
 };
 

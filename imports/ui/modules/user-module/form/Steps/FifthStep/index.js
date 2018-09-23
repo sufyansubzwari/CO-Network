@@ -1,6 +1,5 @@
 import React from "react";
 import { Container, Layout } from "btech-layout";
-import { HButtonGroup, HButtom, HNavItem } from "btech-horizantal-navbar";
 import Achievements from "../../../../../components/Achievements/Achievements";
 
 import { USER_TAGS, LOOKING_FOR } from "../../constants/constants";

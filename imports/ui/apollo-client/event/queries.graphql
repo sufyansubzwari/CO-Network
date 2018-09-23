@@ -31,6 +31,13 @@ query GetEvents($limit: Int, $filter: String, $events: EventsInputSearch) {
     }
     entity
     views
+    sponsors {
+        type
+        name
+        email
+        prepare
+        details
+    }
     place{
       _id
       owner

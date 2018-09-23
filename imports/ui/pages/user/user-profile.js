@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { Layout, Container } from "btech-layout";
 import UserForm from "./../../modules/user-module/form/";
-import InternalLayout from "../../components/InternalLayout/InternalLayout";
+import InternalLayout from "../../layouts/InternalLayout/InternalLayout";
 import { Preview } from "../../../ui/components";
 import UserPreviewBody from "../../components/Preview/UserPreviewBody";
 import { Mutation } from "react-apollo";
@@ -17,12 +17,13 @@ class UserProfile extends Component {
     super(props);
 
     let user = {
-      name: "",
-      lastName: "",
-      email: "",
-      website: "",
-      cover: "",
-      image: "",
+
+        name: "",
+        lastName: "",
+        email: "",
+        website: "",
+        cover: "",
+          image: "",
       social: {
         github: "",
         facebook: "",
@@ -124,7 +125,9 @@ class UserProfile extends Component {
           >
             {(createProfile, { profileCreated }) => (
               <UserForm
-                onFinish={data => this.onPostAction(createProfile, data)}
+                onFinish={data =>
+                  this.onPostAction(createProfile, data)
+                }
                 onCancel={() => this.onCancel()}
                 userLogged={false}
                 handleChangeProfile={user =>

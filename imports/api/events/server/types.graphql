@@ -36,8 +36,11 @@ type ObjectType {
 }
 
 type Sponsors {
+    type: String
     name: String
     email: String
+    prepare: String
+    details: String
 }
 
 type Query {
@@ -100,6 +103,14 @@ input TableDateFilterInput{
     gte: Date
     gt: Date
 }
+input SponsorsInput {
+    type: String
+    name: String
+    email: String
+    prepare: String
+    details: String
+    edit: Boolean
+}
 
 input EventsInput {
     _id: String
@@ -119,6 +130,7 @@ input EventsInput {
     tickets: [TicketsTypeInput]
     eventType: ObjectTypeInput
     place: PlacesInput
+    sponsors: [SponsorsInput]
 }
 
 input AttendersInput {

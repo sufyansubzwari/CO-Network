@@ -8,10 +8,34 @@ import { CREATE_LINKS } from "./create-links";
 import EventsFilters from "../../modules/event-module/filters";
 import JobsFilters from "../../modules/jobs-module/filters";
 import OrganizationFilters from "../../modules/organization-module/filters";
+import posed from "react-pose";
 
-const SSideBarContainer = styled(Container)`
-  border-right: ${props => "1px solid " + props.theme.color.grey};
+const SSideBarContainerStyed = styled(Container)`
+  border-right: ${props => "1px solid " + props.theme.borderColor};
+  overflow: hidden;
+  z-index: 10;
 `;
+const SSideBarContainer = posed(SSideBarContainerStyed)({
+  openSidebar: {
+    x: "0%",
+    staggerChildren: 50,
+    transition: {
+      ease: "circOut" //circOut
+    }
+  },
+  closedSidebarRight: {
+    x: "100%",
+    transition: {
+      ease: "circOut" //circOut
+    }
+  },
+  closedSidebar: {
+    x: "-100%",
+    transition: {
+      ease: "circOut" //circOut
+    }
+  }
+});
 
 /**
  * @module Data
@@ -71,13 +95,18 @@ class SideBar extends Component {
   }
 
   render() {
+    const isOpen= this.props.isOpen;
+    const right= this.props.right;
     return (
       <SSideBarContainer
+        padding={"0 30px"}
+        mdPadding={"0"}
+        pose={isOpen ? "openSidebar" : (right?"closedSidebarRight":"closedSidebar")}
         background={"white"}
-        hide
-        mdShow
         fullY
         gridArea="SideBar"
+        width={"200%"}
+        mdWidth={"100%"}
       >
         {this.renderSidebar()}
       </SSideBarContainer>

@@ -10,7 +10,7 @@ import navs from "./nav.constant";
 import posed from "react-pose/lib/index";
 
 const SNavBarContainerStyled = Styled(Container)`
-    z-index: 10;
+    z-index: 15;
 //    hack for pose
    ${mixins.media.desktop`margin-top:0px!important;transform:none!important;`}
 `;

@@ -138,9 +138,14 @@ const schema = new SimpleSchema({
   'sponsors.$': {
     type: Object,
   },
+    'sponsors.$.type': {
+        type: String,
+        label: 'Speaker or sponsor type.',
+        optional: true,
+    },
   'sponsors.$.name': {
     type: String,
-    label: 'Link to organization in our system.',
+    label: 'Name of the speaker or sponsor.',
     optional: true,
   },
   'sponsors.$.email': {
@@ -148,6 +153,16 @@ const schema = new SimpleSchema({
     label: 'External email of sponsor not in our system.',
     optional: true,
   },
+    'sponsors.$.prepare': {
+        type: String,
+        label: 'What the speaker should prepare.',
+        optional: true,
+    },
+    'sponsors.$.details': {
+        type: String,
+        label: 'Sponsorship details.',
+        optional: true,
+    },
   'sponsors.$.logo': {
     type: Object,
     label: 'External logo of sponsor not in our system.',

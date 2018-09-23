@@ -1,9 +1,6 @@
 import React, { Component } from "react";
-import { Meteor } from "meteor/meteor";
-import { Container } from "btech-layout";
-import InternalLayout from "../../components/InternalLayout/InternalLayout";
 import EventForm from "../../modules/event-module/form";
-import { Preview } from "../../../ui/components";
+import { Preview, PostLayout } from "../../../ui/components";
 import EventPreviewBody from "../../components/Preview/EventPreviewBody";
 import { withRouter } from "react-router-dom";
 import { CreateEvent } from "../../apollo-client/event";
@@ -36,15 +33,12 @@ class PostEvent extends Component {
           min: "",
           max: ""
         },
+        sponsors: [],
         tickets: []
       }
     };
     this.handleBackgroundChange = this.handleBackgroundChange.bind(this);
     // this.handleUserPhotoChange = this.handleUserPhotoChange.bind(this);
-  }
-
-  componentWillMount() {
-    this.props.toggleSideBar(false);
   }
 
   onCancel() {
@@ -70,44 +64,48 @@ class PostEvent extends Component {
   // }
 
   onPostAction(createEvent, query) {
-    let e = Object.assign({}, query);
-    e.category = _.uniq(e.others.concat(e.category));
-    delete e.others;
+    let queryEvent = Object.assign({}, query);
+    queryEvent.category = _.uniq(queryEvent.others.concat(queryEvent.category));
+    delete queryEvent.others;
     //todo: remove when location improvement
-    e.place && e.place.location && e.place.location.fullLocation
-      ? delete e.place.location.fullLocation
+    queryEvent.place &&
+    queryEvent.place.location &&
+    queryEvent.place.location.fullLocation
+      ? delete queryEvent.place.location.fullLocation
       : null;
-    let event = {
-      ...e,
-      owner: "Qt5569uuKKd6YrDwS"
-    };
-    createEvent({ variables: { entity: event } });
+    let event = { ...queryEvent };
+    if (this.props.curUser) {
+      event.owner = this.props.curUser._id;
+      createEvent({ variables: { entity: event } });
+    } else {
+      // todo login the user and then create the event or notify the user must login
+      alert('You must be logged')
+    }
   }
 
   render() {
     return (
-      <InternalLayout leftWidth={"52%"}>
-        <Container fullY key={"leftSide"}>
-          <Mutation
-            mutation={CreateEvent}
-            onCompleted={() =>
-              this.props.history.push("/events", { postEvent: true })
-            }
-            onError={error => console.log("Error: ", error)}
-          >
-            {(createEvent, { eventCreated }) => (
-              <EventForm
-                onFinish={data => this.onPostAction(createEvent, data)}
-                onCancel={() => this.onCancel()}
-                handleChangeEvent={event =>
-                  this.setState({ event: { ...this.state.event, ...event } })
-                }
-                event={this.state.event}
-                {...this.props}
-              />
-            )}
-          </Mutation>
-        </Container>
+      <PostLayout>
+        <Mutation
+          key={"leftSide"}
+          mutation={CreateEvent}
+          onCompleted={() =>
+            this.props.history.push("/events", { postEvent: true })
+          }
+          onError={error => console.log("Error: ", error)}
+        >
+          {(createEvent, { eventCreated }) => (
+            <EventForm
+              onFinish={data => this.onPostAction(createEvent, data)}
+              onCancel={() => this.onCancel()}
+              handleChangeEvent={event =>
+                this.setState({ event: { ...this.state.event, ...event } })
+              }
+              event={this.state.event}
+              {...this.props}
+            />
+          )}
+        </Mutation>
         <Preview
           key={"rightSide"}
           navClicked={index => console.log(index)}
@@ -131,7 +129,7 @@ class PostEvent extends Component {
         >
           <EventPreviewBody event={this.state.event} />
         </Preview>
-      </InternalLayout>
+      </PostLayout>
     );
   }
 }
