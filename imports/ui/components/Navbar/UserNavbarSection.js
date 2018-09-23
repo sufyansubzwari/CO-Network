@@ -96,7 +96,7 @@ class UserNavbarSection extends React.Component {
             <GroupContainer
               pose={isAuthenticated ? "showUserOptions" : "hideUserOptions"}
             >
-              <Groupauthenticated={isAuthenticated}>
+              <Group authenticated={isAuthenticated}>
                 <RenderCondition>
               <HButtom
                 primary
