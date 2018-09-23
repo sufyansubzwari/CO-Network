@@ -25,11 +25,11 @@ class PostOrganization extends Component {
         actively: [],
         website: "",
         social: {
-          github: "",
-          linkedin: "",
-          facebook: "",
-          twitter: "",
-          google: ""
+          github: null,
+          linkedin: null,
+          facebook: null,
+          twitter: null,
+          google: null
         },
         contact: {
           email: "",

@@ -43,9 +43,16 @@ class NavbarUserButton extends Component {
       : null;
     this.props.setUser(user);
     return (
-      <HButtom image={!!user ? user.profile.image : ""} size={this.props.size}primary={!user}>
-        {!user ?( <span style={{ fontSize: 20}}>
-               <MaterialIcon type={"square-right"} /></span> ) : !user.profile.image ? (
+      <HButtom
+        image={!!user ? user.profile.image : ""}
+        size={this.props.size}
+        primary={!user}
+      >
+        {!user ? (
+          <span style={{ fontSize: 20 }}>
+            <MaterialIcon type={"square-right"} />
+          </span>
+        ) : !user.profile.image ? (
           <SInitialsContainer>{initials}</SInitialsContainer>
         ) : null}
       </HButtom>

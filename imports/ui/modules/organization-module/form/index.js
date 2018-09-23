@@ -1,9 +1,5 @@
 import React from "react";
-import {
-  MlWizardForm,
-  WizardStepForm,
-  WizardForm
-} from "btech-base-forms-component";
+import { MlWizardForm, WizardStepForm } from "btech-base-forms-component";
 import {
   FirstStep,
   SecondStep,
@@ -13,62 +9,14 @@ import {
   SixthStep
 } from "./Steps";
 
-import { ORGANIZATION_TYPE } from "./constants/constants";
 import SeventhStep from "./Steps/SeventhStep";
+import PropTypes from "prop-types";
 
 class OrganizationForm extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      organization: {
-        name: "",
-        employees: {
-          value: "",
-          label: ""
-        },
-        orgType: [],
-        description: [],
-        actively: [],
-        website: "",
-        social: {
-          github: "",
-          linkedin: "",
-          facebook: "",
-          twitter: "",
-          google: ""
-        },
-        contact: {
-          email: "",
-          phone: ""
-        },
-        services: {
-          relocated: false,
-          seeking: true,
-          hostEvents: true
-        },
-        reason: {
-          bio: "",
-          vision: "",
-          orgDefine: ""
-        },
-        tech: {
-          industry: [],
-          salaryRange: {
-            min: "",
-            max: ""
-          },
-          stack: [],
-          jobType: []
-        },
-        place: {
-          location: {
-            address: "",
-            location: { lat: "", lng: "" },
-            fullLocation: {}
-          }
-        }
-        //plan: 0
-      }
+      organization: this.props.organization || {}
     };
 
     this.handleChange = this.handleChange.bind(this);
@@ -90,13 +38,19 @@ class OrganizationForm extends React.Component {
       });
     }
   }
-  componentWillMount() {
+
+  componentDidMount() {
     if (
       this.props.location &&
       this.props.location.state &&
       this.props.location.state.organization
     ) {
-      this.setState({ organization: this.props.location.state.organization });
+      this.setState(
+        { organization: this.props.location.state.organization },
+        () =>
+          this.props.handleOrgChange &&
+          this.props.handleOrgChange(this.props.location.state.organization)
+      );
     }
   }
 
@@ -155,5 +109,15 @@ class OrganizationForm extends React.Component {
     );
   }
 }
+
+OrganizationForm.defaultProps = {
+  data: {}
+};
+
+OrganizationForm.propTypes = {
+  onCancel: PropTypes.func,
+  onFinish: PropTypes.func,
+  handleOrgChange: PropTypes.func
+};
 
 export default OrganizationForm;

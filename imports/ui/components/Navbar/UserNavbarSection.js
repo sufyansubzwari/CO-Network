@@ -150,7 +150,7 @@ class UserNavbarSection extends React.Component {
             >
               <ThemeProvider theme={theme}>
                 <Layout rowGap="10px">
-                  <LogoutBtn />
+                  {!!isAuthenticated ? <LogoutBtn /> : null}
                   <SideBarLink href={this.policy}> Terms Policies </SideBarLink>
                   <SideBarLink> CONetwork © 2018 </SideBarLink>
                 </Layout>
