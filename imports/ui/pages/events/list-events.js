@@ -92,7 +92,10 @@ class ListEvents extends Component {
     });
   }
 
-  errorOnBackgroundChange(e) {}
+  errorOnBackgroundChange(e) {
+    // todo: handle error notification
+    console.log('Error to change the image')
+  }
 
   onSearch(value) {
     this.setState({ filter: value }, () => this.reFetchQuery());

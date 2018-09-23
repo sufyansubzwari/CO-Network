@@ -22,10 +22,10 @@ class ThirdStep extends React.Component {
   }
 
   componentWillMount() {
-    if (this.props.data && this.props.data.info.actively)
+    if (this.props.data && this.props.data.actively)
       this.setState({
         orgtype: ACTIVELY.map(e => {
-          e["active"] = this.props.data.info.actively.some(
+          e["active"] = this.props.data.actively.some(
             element => e.label === element.label
           );
           return e;
@@ -40,7 +40,7 @@ class ThirdStep extends React.Component {
     });
     const activelys = selected.filter(element => element.active);
     const temp = this.state.organization;
-    temp["info"]["actively"] = activelys;
+    temp["actively"] = activelys;
     this.setState({actively: selected, organization: temp}, () =>
       this.notifyParent()
     )
@@ -64,16 +64,16 @@ class ThirdStep extends React.Component {
 
   onAddTags(name, tag) {
     let newTag = Object.assign({}, tag);
-    let tags = this.state.organization.info[name];
+    let tags = this.state.organization[name];
     !newTag.name ? newTag.name = newTag.label : null;
     newTag.type = "OrgDesc";
     tags.push(newTag);
-    this.state.organization.info[name] = tags;
+    this.state.organization[name] = tags;
     this.setState({organization: this.state.organization}, () => this.notifyParent());
   }
 
   onCloseTags(e, tag, index, name) {
-    this.state.organization.info[name].splice(index, 1);
+    this.state.organization[name].splice(index, 1);
     this.setState({organization: this.state.organization}, () => this.notifyParent());
   }
 
@@ -106,7 +106,7 @@ class ThirdStep extends React.Component {
           </Query>
           <Container mt={'10px'}>
             <TagList
-              tags={this.state.organization.info.description && this.state.organization.info.description.length > 0 ? this.state.organization.info.description.map(item => ({active: true, ...item})) : []}
+              tags={this.state.organization.description && this.state.organization.description.length > 0 ? this.state.organization.description.map(item => ({active: true, ...item})) : []}
               closeable={true}
               onClose={(e, tag, index) => this.onCloseTags(e, tag, index, 'description')}
             />

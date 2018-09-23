@@ -7,8 +7,8 @@ const Mutation = {};
 Mutation.organization = async (root, {organizations}, context) => {
   let entity = Object.assign({}, organizations);
 
-  if (organizations.info && organizations.info.description)
-    entity.info.description = await Tags.service.normalizeTags(organizations.info.description);
+  if (organizations.description)
+    entity.description = await Tags.service.normalizeTags(organizations.description);
   if (organizations.tech && organizations.tech.stack)
     entity.tech.stack = await Tags.service.normalizeTags(organizations.tech.stack);
   if (organizations.tech.industry && organizations.tech.industry)

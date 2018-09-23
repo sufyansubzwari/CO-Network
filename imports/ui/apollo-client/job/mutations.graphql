@@ -17,3 +17,9 @@ mutation DeleteJob($id: String!) {
         _id
     }
 }
+
+mutation UpdateJobsImage($id: String!, $image: String!) {
+    updateJobsImage(_id: $id, image: $image) {
+        _id
+    }
+}

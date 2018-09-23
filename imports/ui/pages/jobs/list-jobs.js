@@ -4,7 +4,7 @@ import { graphql, Mutation } from "react-apollo";
 import { connect } from "react-redux";
 import { PreviewData } from "../../actions/PreviewActions";
 import JobPreviewBody from "../../components/Preview/JobPreviewBody";
-import { CreateJob, DeleteJob } from "../../apollo-client/job";
+import { CreateJob, DeleteJob, UpdateJobsImage } from "../../apollo-client/job";
 import { GetJobs } from "../../apollo-client/job";
 import { withRouter } from "react-router-dom";
 
@@ -81,6 +81,21 @@ class ListJobs extends Component {
     this.setState({ filter: value }, () => this.reFetchQuery());
   }
 
+  handleBackgroundChange(updateJobsImage, src) {
+    updateJobsImage({
+      variables: { id: this.state.selectedItem._id, image: src }
+    }).then(result => {
+      const event = { ...this.state.selectedItem };
+      if (src) event.image = src;
+      this.setState({ selectedItem: event }, () => this.reFetchQuery());
+    });
+  }
+
+  errorOnBackgroundChange(e) {
+    // todo: handle error notification
+    console.log("Error to change the image");
+  }
+
   render() {
     const isLoading =
       this.props.data.loading &&
@@ -98,67 +113,90 @@ class ListJobs extends Component {
         {this.state.selectedItem ? (
           <Mutation key={"rightSide"} mutation={DeleteJob}>
             {(deleteJob, { jobDeleted }) => (
-              <Preview
-                key={"rightSide"}
-                navlinks={[
-                  "Details",
-                  "Requirements",
-                  "Organizational Culture",
-                  "Payment"
-                ]}
-                navClicked={index => console.log(index)}
-                navOptions={[
-                  {
-                    text: "Apply",
-                    checkVisibility: () => {
-                      return (
-                        this.state.selectedItem && this.state.selectedItem._id
-                      );
-                    },
-                    onClick: () => {
-                      console.log("Adding");
-                    }
-                  },
-                  {
-                    text: "Edit",
-                    checkVisibility: () => {
-                      const element = this.state.selectedItem;
-                      return (
-                        element &&
-                        element._id &&
-                        element.owner &&
-                        element.owner._id === this.props.curUser._id
-                      );
-                    },
-                    onClick: () => {
-                      this.editJob();
-                    }
-                  },
-                  {
-                    text: "Remove",
-                    icon: "delete",
-                    checkVisibility: () => {
-                      const element = this.state.selectedItem;
-                      return (
-                        element &&
-                        element._id &&
-                        element.owner &&
-                        element.owner._id === this.props.curUser._id
-                      );
-                    },
-                    onClick: () => {
-                      this.removeJob(deleteJob, this.state.selectedItem);
-                    }
-                  }
-                ]}
-                index={this.state.selectedIndex}
-                data={this.state.selectedItem}
-                backGroundImage={
-                  this.state.selectedItem ? this.state.selectedItem.image : null
-                }
+              <Mutation
+                mutation={UpdateJobsImage}
+                onError={error => this.errorOnBackgroundChange(error)}
               >
-                <JobPreviewBody job={this.state.selectedItem} />
-              </Preview>
+                {(updateJobsImage, { job }) => (
+                  <Preview
+                    key={"rightSide"}
+                    navlinks={[
+                      "Details",
+                      "Requirements",
+                      "Organizational Culture",
+                      "Payment"
+                    ]}
+                    navClicked={index => console.log(index)}
+                    navOptions={[
+                      {
+                        text: "Apply",
+                        checkVisibility: () => {
+                          // todo: check if the user apply before for this job
+                          const element = this.state.selectedItem;
+                          return (
+                            element &&
+                            element._id &&
+                            element.owner &&
+                            element.owner._id !== this.props.curUser._id
+                          );
+                        },
+                        onClick: () => {
+                          console.log("Adding");
+                        }
+                      },
+                      {
+                        text: "Edit",
+                        checkVisibility: () => {
+                          const element = this.state.selectedItem;
+                          return (
+                            element &&
+                            element._id &&
+                            element.owner &&
+                            element.owner._id === this.props.curUser._id
+                          );
+                        },
+                        onClick: () => {
+                          this.editJob();
+                        }
+                      },
+                      {
+                        text: "Remove",
+                        icon: "delete",
+                        checkVisibility: () => {
+                          const element = this.state.selectedItem;
+                          return (
+                            element &&
+                            element._id &&
+                            element.owner &&
+                            element.owner._id === this.props.curUser._id
+                          );
+                        },
+                        onClick: () => {
+                          this.removeJob(deleteJob, this.state.selectedItem);
+                        }
+                      }
+                    ]}
+                    index={this.state.selectedIndex}
+                    data={this.state.selectedItem}
+                    allowChangeImages={
+                      this.state.selectedItem &&
+                      this.state.selectedItem.owner &&
+                      this.state.selectedItem.owner._id ===
+                      this.props.curUser._id
+                    }
+                    backGroundImage={
+                      this.state.selectedItem
+                        ? this.state.selectedItem.image
+                        : null
+                    }
+                    onBackgroundChange={imageSrc =>
+                      this.handleBackgroundChange(updateJobsImage, imageSrc)
+                    }
+                  >
+                    <JobPreviewBody job={this.state.selectedItem} />
+                  </Preview>
+                )}
+              </Mutation>
             )}
           </Mutation>
         ) : null}

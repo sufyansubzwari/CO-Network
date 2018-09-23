@@ -283,15 +283,12 @@ const OrganizationSeed = userId => ({
   modelCount: 2,
   model(dataIndex, faker) {
     return {
-      info: {
-        image: faker.image.business(),
-        cover: image("user"),
-        name: faker.company.companyName(),
-        // employees: {value: "1-10", label: "1-10"},
-        description: Tags.aggregate([{ $sample: { size: 1 } }])._id,
-        website: faker.internet.url(),
-        location: getLocationFake(faker)
-      },
+      image: faker.image.business(),
+      cover: image("user"),
+      name: faker.company.companyName(),
+      description: Tags.aggregate([{ $sample: { size: 1 } }])._id,
+      website: faker.internet.url(),
+      location: getLocationFake(faker),
       social: {
         github: faker.internet.userName(),
         linkedin: faker.internet.userName(),

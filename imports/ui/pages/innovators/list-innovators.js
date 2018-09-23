@@ -6,8 +6,12 @@ import {
   CardItem
 } from "../../../ui/components";
 import { graphql, Mutation } from "react-apollo";
-import { GetOrg, DeleteOrg } from "../../apollo-client/organization";
 import { withRouter } from "react-router-dom";
+import {
+  GetOrg,
+  DeleteOrg,
+  UpdateOrgImages
+} from "../../apollo-client/organization";
 import OrganizationPreviewBody from "../../components/Preview/OrganizationPreviewBody";
 import { connect } from "react-redux";
 import { PreviewData } from "../../actions/PreviewActions";
@@ -103,10 +107,10 @@ class ListInnovators extends Component {
             : false
         }
         loading={isLoading}
-        title={item.info ? item.info.name : ""}
+        title={item.name}
         subTitle={item.reason ? item.reason.bio : ""}
-        image={item.info ? item.info.image : null}
-        tags={item.info ? item.info.description : []}
+        image={item.image || null}
+        tags={item.description || []}
         views={item.views}
         key={key}
       />
@@ -124,6 +128,31 @@ class ListInnovators extends Component {
 
   onSearch(value) {
     this.setState({ filter: value }, () => this.reFetchQuery());
+  }
+
+  handleBackgroundChange(updateOrgImages, src) {
+    updateOrgImages({
+      variables: { id: this.state.selectedItem._id, cover: src, image: null }
+    }).then(() => this.afterChangeImage(src, "cover"));
+  }
+
+  handlePhotoChange(updateOrgImages, src) {
+    updateOrgImages({
+      variables: { id: this.state.selectedItem._id, image: src, cover: null }
+    }).then(() => this.afterChangeImage(src, "image"));
+  }
+
+  afterChangeImage(src, place) {
+    const entity = { ...this.state.selectedItem };
+    if (entity) {
+      if (src && place) entity[place] = src;
+      this.setState({ selectedItem: entity }, () => this.reFetchQuery());
+    }
+  }
+
+  errorOnBackgroundChange(e) {
+    // todo: handle error notification
+    console.log("Error to change the image");
   }
 
   render() {
@@ -149,61 +178,80 @@ class ListInnovators extends Component {
         {this.state.selectedItem ? (
           <Mutation key={"rightSide"} mutation={DeleteOrg}>
             {(deleteOrg, { orgDeleted }) => (
-              <Preview
-                key={"rightSide"}
-                navlinks={["Details", "Vision", "Engagements", "..."]}
-                navClicked={index => console.log(index)}
-                navOptions={[
-                  {
-                    text: "Edit",
-                    checkVisibility: () => {
-                      const element = this.state.selectedItem;
-                      return (
-                        element &&
-                        element._id &&
-                        element.owner &&
-                        element.owner._id === this.props.curUser._id
-                      );
-                    },
-                    onClick: () => {
-                      this.editOrg();
-                    }
-                  },
-                  {
-                    text: "Remove",
-                    icon: "delete",
-                    checkVisibility: () => {
-                      const element = this.state.selectedItem;
-                      return (
-                        element &&
-                        element._id &&
-                        element.owner &&
-                        element.owner._id === this.props.curUser._id
-                      );
-                    },
-                    onClick: () => {
-                      this.removeOrg(deleteOrg, this.state.selectedItem);
-                    }
-                  }
-                ]}
-                showAvatar
-                index={this.state.selectedIndex}
-                data={this.state.selectedItem}
-                image={
-                  this.state.selectedItem.info
-                    ? this.state.selectedItem.info.image
-                    : null
-                }
-                backGroundImage={
-                  this.state.selectedItem.info
-                    ? this.state.selectedItem.info.cover
-                    : null
-                }
+              <Mutation
+                mutation={UpdateOrgImages}
+                onError={error => this.errorOnBackgroundChange(error)}
               >
-                <OrganizationPreviewBody
-                  organization={this.state.selectedItem}
-                />
-              </Preview>
+                {(updateOrgImages, { job }) => (
+                  <Preview
+                    key={"rightSide"}
+                    navlinks={["Details", "Vision", "Engagements", "..."]}
+                    navClicked={index => console.log(index)}
+                    navOptions={[
+                      {
+                        text: "Edit",
+                        checkVisibility: () => {
+                          const element = this.state.selectedItem;
+                          return (
+                            element &&
+                            element._id &&
+                            element.owner &&
+                            element.owner._id === this.props.curUser._id
+                          );
+                        },
+                        onClick: () => {
+                          this.editOrg();
+                        }
+                      },
+                      {
+                        text: "Remove",
+                        icon: "delete",
+                        checkVisibility: () => {
+                          const element = this.state.selectedItem;
+                          return (
+                            element &&
+                            element._id &&
+                            element.owner &&
+                            element.owner._id === this.props.curUser._id
+                          );
+                        },
+                        onClick: () => {
+                          this.removeOrg(deleteOrg, this.state.selectedItem);
+                        }
+                      }
+                    ]}
+                    showAvatar
+                    index={this.state.selectedIndex}
+                    data={this.state.selectedItem}
+                    allowChangeImages={
+                      this.state.selectedItem &&
+                      this.state.selectedItem.owner &&
+                      this.state.selectedItem.owner._id ===
+                        this.props.curUser._id
+                    }
+                    image={
+                      this.state.selectedItem
+                        ? this.state.selectedItem.image
+                        : null
+                    }
+                    backGroundImage={
+                      this.state.selectedItem
+                        ? this.state.selectedItem.cover
+                        : null
+                    }
+                    onBackgroundChange={imageSrc =>
+                      this.handleBackgroundChange(updateOrgImages, imageSrc)
+                    }
+                    onUserPhotoChange={imageSrc =>
+                      this.handlePhotoChange(updateOrgImages, imageSrc)
+                    }
+                  >
+                    <OrganizationPreviewBody
+                      organization={this.state.selectedItem}
+                    />
+                  </Preview>
+                )}
+              </Mutation>
             )}
           </Mutation>
         ) : null}

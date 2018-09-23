@@ -1,5 +1,4 @@
 import Jobs from "../index";
-import PlaceServices from '../../places/server/service';
 import * as _ from "lodash";
 
 /**
@@ -20,7 +19,7 @@ class JobsService {
     } else {
       let id = data._id;
       delete data._id;
-      await Jobs.collection.update(id, {$set: data});
+      await Jobs.collection.update(id, { $set: data });
       return Jobs.collection.findOne(id);
     }
   };
@@ -30,7 +29,7 @@ class JobsService {
    * @param {String} id - Job id
    * @return {Object} Job deleted
    */
-  static deleteJob = async (id) => {
+  static deleteJob = async id => {
     return await Jobs.collection.remove(id);
   };
   /**
@@ -41,9 +40,15 @@ class JobsService {
    * @return {Object} Job updated
    */
   static updateImage = async (id, image) => {
-    await Jobs.collection.update(id, {
-      $addToSet: {image: image}
-    });
+    const job = await Jobs.collection.findOne(id);
+    if (job.image)
+      await Jobs.collection.update(id, {
+        $set: { image: image }
+      });
+    else
+      await Jobs.collection.update(id, {
+        $addToSet: { image: image }
+      });
     return await Jobs.collection.findOne(id);
   };
   /**
@@ -63,7 +68,9 @@ class JobsService {
    * @return {Object}||[{Object }] Return one or all events
    */
   static jobs = (query, limit) => {
-    return Jobs.collection.find(query, {...limit, sort: {createdAt: -1}}).fetch();
+    return Jobs.collection
+      .find(query, { ...limit, sort: { createdAt: -1 } })
+      .fetch();
   };
 }
 

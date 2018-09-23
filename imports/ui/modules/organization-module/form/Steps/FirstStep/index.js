@@ -31,10 +31,10 @@ class FirstStep extends React.Component {
       };
       this.setState({organization: organization});
     }
-    if (this.props.data && this.props.data.info.orgType)
+    if (this.props.data && this.props.data.orgType)
       this.setState({
         orgType: ORGANIZATION_TYPE.map(e => {
-          e["active"] = this.props.data.info.orgType.some(
+          e["active"] = this.props.data.orgType.some(
             element => e.label === element.label
           );
           return e;
@@ -49,7 +49,7 @@ class FirstStep extends React.Component {
     });
     const orgstype = selected.filter(element => element.active);
     const temp = this.state.organization;
-    temp["info"]["orgType"] = orgstype;
+    temp["orgType"] = orgstype;
     this.setState({orgType: selected, organization: temp}, () =>
       this.notifyParent()
     )
@@ -87,8 +87,8 @@ class FirstStep extends React.Component {
 
       <Layout rowGap={'25px'}>
         <Layout templateColumns={2} colGap={'20px'}>
-          <Input name={'name'} model={this.state.organization.info} placeholderText={'Organization Name'}
-                 getValue={this.notifyParent.bind(this, "info")}/>
+          <Input name={'name'} model={this.state.organization} placeholderText={'Organization Name'}
+                 getValue={this.notifyParent.bind(this)}/>
           <GeoInputLocation
             model={this.state.organization.place}
             name={'location'}

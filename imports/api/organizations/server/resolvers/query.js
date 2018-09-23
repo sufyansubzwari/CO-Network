@@ -20,7 +20,7 @@ Query.organizations = (root, { filter, limit, organizations }, context) => {
   }
   if (filter) {
     query['$or'] =[
-      { "info.name": { $regex: filter, $options: "i" } },
+      { "name": { $regex: filter, $options: "i" } },
       { "reason.bio": { $regex: filter, $options: "i" } },
       { "reason.vision": { $regex: filter, $options: "i" } },
     ]

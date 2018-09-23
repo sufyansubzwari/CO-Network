@@ -6,22 +6,20 @@ query GetOrganizations($limit: Int, $filter: String, $organizations: Organizatio
         }
         entity
         views
-        info {
+        name
+        description{
+            _id
+            label
+            value
             name
-            description{
-                _id
-                label
-                value
-                name
-            }
-            image
-            cover
-            orgType{
-                label
-            }
-            actively{
-                label
-            }
+        }
+        image
+        cover
+        orgType{
+            label
+        }
+        actively{
+            label
         }
         place{
             _id

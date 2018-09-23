@@ -15,17 +15,15 @@ class PostOrganization extends Component {
     super(props);
     this.state = {
       organization: {
-        info: {
-          name: "",
-          employees: {
-            value: "",
-            label: ""
-          },
-          orgType: [],
-          description: [],
-          actively: [],
-          website: ""
+        name: "",
+        employees: {
+          value: "",
+          label: ""
         },
+        orgType: [],
+        description: [],
+        actively: [],
+        website: "",
         social: {
           github: "",
           linkedin: "",
@@ -74,10 +72,7 @@ class PostOrganization extends Component {
     this.setState({
       organization: {
         ...this.state.organization,
-        info: {
-          ...this.state.organization.info,
-          cover: src
-        }
+        cover: src
       }
     });
   }
@@ -86,10 +81,7 @@ class PostOrganization extends Component {
     this.setState({
       organization: {
         ...this.state.organization,
-        info: {
-          ...this.state.organization.info,
-          image: src
-        }
+        image: src
       }
     });
   }
@@ -162,11 +154,9 @@ class PostOrganization extends Component {
           index={this.state.selectedIndex}
           data={this.state.selectedItem}
           showAvatar={true}
-          image={
-            this.state.organization.info && this.state.organization.info.image
-          }
+          image={this.state.organization && this.state.organization.image}
           backGroundImage={
-            this.state.organization.info && this.state.organization.info.cover
+            this.state.organization && this.state.organization.cover
           }
           onBackgroundChange={this.handleBackgroundChange}
           onUserPhotoChange={this.handleUserPhotoChange}

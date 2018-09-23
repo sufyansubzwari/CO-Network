@@ -1,6 +1,8 @@
 import Users from "../../../users";
 import Tags from "../../../tags";
 import Places from "../../../places";
+import Service from "../service";
+import Mutation from "../../../jobs/server/resolvers/mutation";
 
 const Organizations = {};
 
@@ -12,18 +14,26 @@ Organizations.place = entity => {
   return Places.service.getPlaceByOwner(entity._id);
 };
 
-Organizations.info = entity => {
-  const info = {description: Tags.service.getTagList(entity.info.description)};
-  return Object.assign(entity.info, info);
-
+Organizations.description = entity => {
+  const tags = Tags.service.getTagList(entity.description);
+  return Object.assign(entity, { description: tags });
 };
+
 Organizations.tech = entity => {
   if (entity && entity.tech) {
-    const tech = entity.tech.stack ? {stack: Tags.service.getTagList(entity.tech.stack)} : {};
-    const techInd = entity.tech.industry ? {industry: Tags.service.getTagList(entity.tech.industry)} : {};
+    const tech = entity.tech.stack
+      ? { stack: Tags.service.getTagList(entity.tech.stack) }
+      : {};
+    const techInd = entity.tech.industry
+      ? { industry: Tags.service.getTagList(entity.tech.industry) }
+      : {};
     return Object.assign(entity.tech, tech, techInd);
   }
-  return {}
+  return {};
+};
+
+Mutation.updateOrgImage = async (root, { _id, image, cover }, context) => {
+  return Service.updateImage(_id, image, cover);
 };
 
 export default Organizations;

@@ -29,19 +29,19 @@ class OrganizationPreviewBody extends React.Component {
         }
 
         //tags
-        let description = this.state.organization.info.description && this.state.organization.info.description.map(item => ({...item, active: true}))
+        let description = this.state.organization.description && this.state.organization.description.map(item => ({...item, active: true}))
         let stacks = this.state.organization.tech.stack && this.state.organization.tech.stack.map(stack => ({...stack, active: true}))
         let industry = this.state.organization.tech.industry && this.state.organization.tech.industry.map(ind => ({...ind, active: true}))
 
         //checkboxes
-        let organizationtype = this.state.organization.info.orgType && this.state.organization.info.orgType.map(organization => <div>{organization.label}</div>)
-        let actively = this.state.organization.info.actively && this.state.organization.info.actively.map(item => <div>{item.label}</div>)
+        let organizationtype = this.state.organization.orgType && this.state.organization.orgType.map(organization => <div>{organization.label}</div>)
+        let actively = this.state.organization.actively && this.state.organization.actively.map(item => <div>{item.label}</div>)
         let jobType = this.state.organization.tech.jobType && this.state.organization.tech.jobType.map(item => <div>{item.label}</div>)
 
         return (
             <Layout rowGap={'15px'}>
-                <Title text={this.state.organization.info.name}/>
-                <Location text={this.state.organization.info.location && this.state.organization.info.location.address.toUpperCase()}/>
+                <Title text={this.state.organization.name}/>
+                <Location text={this.state.organization.location && this.state.organization.location.address.toUpperCase()}/>
                 <Social social={socials} links={[]}/>
                 {organizationtype && organizationtype.length ? <Text header={'Organization Type'}>{organizationtype}</Text> : null}
                 <Layout templateColumns={2}>

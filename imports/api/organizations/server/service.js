@@ -19,7 +19,7 @@ class OrganizationsService {
     } else {
       let id = data._id;
       delete data._id;
-      await Organizations.collection.update(id, {$set: data});
+      await Organizations.collection.update(id, { $set: data });
       return Organizations.collection.findOne(id);
     }
   };
@@ -29,25 +29,37 @@ class OrganizationsService {
    * @param {String} id - Organization id
    * @return {Object} Organization deleted
    */
-  static deleteOrganization = async (id) => {
+  static deleteOrganization = async id => {
     return await Organizations.collection.remove(id);
   };
   /**
    * @name updateImage
    * @summary Allow update image to an event
    * @param {String} id - Event id
-   * @param {String} image - Event image
+   * @param {String} image - image
+   * @param {String} cover - cover
    * @return {Object} Event updated
    */
   static updateImage = async (id, image, cover) => {
+    const organization = await Organizations.collection.findOne(id);
     if (image)
-      await Organizations.collection.update(id, {
-        $addToSet: {image: image}
-      });
+      if (organization.image)
+        await Organizations.collection.update(id, {
+          $set: { image: image }
+        });
+      else
+        await Organizations.collection.update(id, {
+          $addToSet: { image: image }
+        });
     if (cover)
-      await Organizations.collection.update(id, {
-        $addToSet: {cover: cover}
-      });
+      if (organization.cover)
+        await Organizations.collection.update(id, {
+          $set: { cover: cover }
+        });
+      else
+        await Organizations.collection.update(id, {
+          $addToSet: { cover: cover }
+        });
     return await Organizations.collection.findOne(id);
   };
   /**
@@ -63,10 +75,13 @@ class OrganizationsService {
    *@name organizations
    * @summary Get all organizations
    * @param {Object} query - query parameters
+   * @param {Object} limit - query limit parameter
    * @return {Object}||[{Object }] Return one or all organizations
    */
   static organizations = (query, limit) => {
-    return Organizations.collection.find(query, {...limit, sort: {createdAt: -1}}).fetch();
+    return Organizations.collection
+      .find(query, { ...limit, sort: { createdAt: -1 } })
+      .fetch();
   };
 }
 

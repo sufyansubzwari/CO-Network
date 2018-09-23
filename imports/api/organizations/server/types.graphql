@@ -5,7 +5,14 @@ type Organizations {
     owner: User!
     entity: String
     views: Int
-    info: OrgInfo
+    name: String
+    description: [Tags]
+    image: String
+    cover: String
+    employees: ObjectType
+    orgType: [ObjectType]
+    actively: [ObjectType]
+    website: String
     social: Social
     contact: Contact
     services: Services
@@ -19,17 +26,6 @@ type Tech {
     salaryRange: SalaryRange
     industry: [Tags]
     jobType: [ObjectType]
-}
-
-type OrgInfo {
-    name: String
-    description: [Tags]
-    image: String
-    cover: String
-    employees: ObjectType
-    orgType: [ObjectType]
-    actively: [ObjectType]
-    website: String
 }
 
 type Social {
@@ -74,16 +70,6 @@ input OrganizationSearchInput{
 input OrganizationsInput {
     _id: ID
     owner: String!
-    info: OrgInfoInput
-    social: SocialInput
-    contact: ContactInput
-    services: ServicesInput
-    reason: ReasonInput
-    tech: TechInput
-    place: PlacesInput
-}
-
-input OrgInfoInput {
     name: String
     description: [TagsInput]
     image: String
@@ -92,6 +78,12 @@ input OrgInfoInput {
     orgType: [ObjectTypeInput]
     actively: [ObjectTypeInput]
     website: String
+    social: SocialInput
+    contact: ContactInput
+    services: ServicesInput
+    reason: ReasonInput
+    tech: TechInput
+    place: PlacesInput
 }
 
 input SocialInput {
@@ -130,4 +122,5 @@ type Mutation {
     organization(organizations: OrganizationsInput!): Organizations
     updateImage(_id: String!, image: String, cover: String): Organizations
     deleteOrganization(_id: String!): Organizations
+    updateOrgImage(_id: String!, image: String, cover: String): Organizations
 }

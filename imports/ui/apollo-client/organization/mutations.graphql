@@ -10,3 +10,9 @@ mutation DeleteOrg($id: String!) {
     _id
   }
 }
+
+mutation UpdateOrgImages($id: String!, $image: String, $cover: String) {
+  updateOrgImage(_id: $id, image: $image, cover: $cover) {
+    _id
+  }
+}
