@@ -68,7 +68,13 @@ query($id: String){
       }
       speaker{
         join
-        topic{
+        lookingFor{
+          name
+          label
+          value
+          active
+        }
+          topic{
           name
           label
           value

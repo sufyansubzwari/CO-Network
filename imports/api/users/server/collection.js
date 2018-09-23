@@ -183,15 +183,15 @@ const schema = new SimpleSchema({
     type: Object,
     optional: true
   },
-  "profile.knowledge.lookingFor.label": {
+  "profile.knowledge.lookingFor.$.label": {
     type: String,
     optional: true
   },
-  "profile.knowledge.lookingFor.value": {
+  "profile.knowledge.lookingFor.$.value": {
     type: String,
     optional: true
   },
-  "profile.knowledge.lookingFor.active": {
+  "profile.knowledge.lookingFor.$.active": {
     type: Boolean,
     optional: true
   },
@@ -223,15 +223,15 @@ const schema = new SimpleSchema({
     type: Object,
     optional: true
   },
-  "profile.professional.jobType.label": {
+  "profile.professional.jobType.$.label": {
     type: String,
     optional: true
   },
-  "profile.professional.jobType.value": {
+  "profile.professional.jobType.$.value": {
     type: String,
     optional: true
   },
-  "profile.professional.jobType.active": {
+  "profile.professional.jobType.$.active": {
     type: Boolean,
     optional: true
   },
