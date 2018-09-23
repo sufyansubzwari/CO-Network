@@ -62,6 +62,7 @@ type Speaker {
     stage: [ObjectType]
     otherlooking: [Tags]
     otherpreferred: [Tags]
+    lookingFor: [ObjectType]
 }
 
 type Subscription {

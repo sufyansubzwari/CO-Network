@@ -13,12 +13,14 @@ class UserService {
    * @return {Object} Users
    */
   static user = async data => {
+    console.log("before ======> ", data);
     if (_.isUndefined(data._id)) {
       const UsersId = Users.collection.insert(data);
       return Users.collection.findOne(UsersId);
     } else {
       let id = data._id;
       delete data._id;
+      console.log("insert ======> ", JSON.stringify(data.profile));
       await Users.collection.update(id, { $set: {'profile': data.profile} });
       return Users.collection.findOne(id);
     }

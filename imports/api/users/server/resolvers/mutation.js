@@ -143,10 +143,13 @@ Mutation.user = async (root, {user}, context) => {
   if (profile.speaker && profile.speaker.topic)
     profile.speaker.topic = await Tags.service.normalizeTags(profile.speaker.topic);
 
+  console.log("mutation => ", user.profile);
+  console.log(Object.assign(user.profile, profile));
   user.profile = Object.assign(user.profile, profile);
   const achievementsList = Object.assign([], profile.achievements);
   const placesList = Object.assign({}, profile.place);
 
+  console.log("proke no inserta", JSON.stringify(user));
   const inserted = await Service.user(user);
 //inserting location
   if (placesList && placesList.location && placesList.location.address) {
