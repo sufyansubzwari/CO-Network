@@ -31,7 +31,7 @@ const SAddMaterialIcon = styled.span`
  * @category Component
  * @description This component is a wrapper for the react-table
  */
-const Group = (props) => {
+const Group = props => {
   // some logic
   return (
     <Container>
@@ -51,7 +51,7 @@ const Group = (props) => {
 
 const GroupContainer = posed.div({
   showUserOptions: {
-    staggerChildren: 100,
+    staggerChildren: 100
   },
   hideUserOptions: {
     staggerChildren: 100
@@ -59,8 +59,8 @@ const GroupContainer = posed.div({
 });
 
 const RenderCondition = posed.div({
-  showUserOptions: { opacity: 1, y: "0" , scale : 1},
-  hideUserOptions: { opacity: 0, y: "50px", scale : 0}
+  showUserOptions: { opacity: 1, y: "0", scale: 1 },
+  hideUserOptions: { opacity: 0, y: "50px", scale: 0 }
 });
 
 // const RenderCondition = props => {
@@ -98,52 +98,51 @@ class UserNavbarSection extends React.Component {
             >
               <Group authenticated={isAuthenticated}>
                 <RenderCondition>
-              <HButtom
-                primary
-                size={this.size}
-                onClick={() => this.onAddToggle()}
-              >
-                <SAddMaterialIcon>
-                  <MaterialIcon type={"plus"} size={2} />
-                </SAddMaterialIcon>
-              </HButtom>
-              </RenderCondition>
+                  <HButtom
+                    primary
+                    size={this.size}
+                    onClick={() => this.onAddToggle()}
+                  >
+                    <SAddMaterialIcon>
+                      <MaterialIcon type={"plus"} size={2} />
+                    </SAddMaterialIcon>
+                  </HButtom>
+                </RenderCondition>
                 <RenderCondition>
                   <HNavItem
-                mt={{ xs: "5px", md: "0" }}
-                size={this.notSize}
-                icon={{ size: 20, src: "/images/logo/home.gif" }}
-                number={{
-                  top: "-5px",
-                  right: "-5px",
-                  value: Math.floor(Math.random() * 120),
-                  primary: true,
-                  size: { width: 22, height: 24 }
-                }}
-                activeEval={this.activeEval}
-              />
-              </RenderCondition>
+                    mt={{ xs: "5px", md: "0" }}
+                    size={this.notSize}
+                    icon={{ size: 20, src: "/images/logo/home.gif" }}
+                    number={{
+                      top: "-5px",
+                      right: "-5px",
+                      value: Math.floor(Math.random() * 120),
+                      primary: true,
+                      size: { width: 22, height: 24 }
+                    }}
+                    activeEval={this.activeEval}
+                  />
+                </RenderCondition>
                 <RenderCondition>
                   <HNavItem
-                mt={{ xs: "5px", md: "0" }}
-                size={this.notSize}
-                icon={{ size: 20, src: "/images/logo/home.gif" }}
-                number={{
-                  top: "-5px",
-                  right: "-5px",
-                  value: Math.floor(Math.random() * 120),
-                  primary: true,
-                  size: { width: 22, height: 24 }
-                }}
-                activeEval={this.activeEval}
-              />
-
-</RenderCondition>              <Link to={avatarLink}>
-                <NavbarUserButton
-                  size={this.size}
-                />
-              </Link>
-            </Group></GroupContainer>
+                    mt={{ xs: "5px", md: "0" }}
+                    size={this.notSize}
+                    icon={{ size: 20, src: "/images/logo/home.gif" }}
+                    number={{
+                      top: "-5px",
+                      right: "-5px",
+                      value: Math.floor(Math.random() * 120),
+                      primary: true,
+                      size: { width: 22, height: 24 }
+                    }}
+                    activeEval={this.activeEval}
+                  />
+                </RenderCondition>{" "}
+                <Link to={avatarLink}>
+                  <NavbarUserButton size={this.size} />
+                </Link>
+              </Group>
+            </GroupContainer>
             <Layout
               rowGap="5px"
               padding="0 20px 20px;"

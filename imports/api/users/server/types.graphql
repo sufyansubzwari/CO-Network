@@ -112,8 +112,8 @@ input UserInput {
 }
 
 input ProfileInput {
-  isSignUp: Boolean
-  name: String
+    isSignUp: Boolean
+    name: String
     lastName: String
     nickName: String
     image: String
@@ -122,12 +122,14 @@ input ProfileInput {
     gender: String
     website: String
     phone: String
-  user_id: Stringprofessional: ProfessionalInput
-  social: SocialInput
-  aboutMe: AboutMeInput
-  knowledge: KnowledgeInput
-  speaker: SpeakerInput
-  achievements: [AchievementsInput]place: PlacesInput
+    user_id: String
+    professional: ProfessionalInput
+    social: SocialInput
+    aboutMe: AboutMeInput
+    knowledge: KnowledgeInput
+    speaker: SpeakerInput
+    achievements: [AchievementsInput]
+    place: PlacesInput
 }
 
 input EmailInput {
