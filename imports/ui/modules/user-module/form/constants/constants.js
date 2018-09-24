@@ -29,6 +29,27 @@ export const LOOKING_FOR_DEFAULT = [
   { label: "Study Group Companions" }
 ];
 
+export const TAG_LEVEL = [
+  {
+    value: "expert",
+    label: "Expert",
+    levelColor: "#FF1493",
+    icon: "star"
+  },
+  {
+    value: "experienced",
+    label: "Experienced",
+      levelColor: "#464646",
+    icon: "star"
+  },
+  {
+    value: "entrylevel",
+    label: "Entry Level",
+      levelColor: "#d8d8d8",
+    icon: "star"
+  }
+];
+
 export const LOOKING_FOR_DEFAULT_SPEAKER = [
   { label: "Co-Founders for Startup" },
   { label: "Competition Teammates" },
@@ -81,7 +102,7 @@ export const SIGNUP_TEXT_3 =
   "By registering for the “CO Network”, you are entering a binding agreement to exercise your passion and creativity on the world’s biggest challenges.";
 
 export const SIGNUP_OPTIONS = [
-  { label: "Innovation emerges from unrestrained collaboration"},
+  { label: "Innovation emerges from unrestrained collaboration" },
   { label: "The most valuable currency is rigorous curiosity" },
   { label: "Every interaction moves towards something created" }
   // {label: 'I agree to uphold the values, culture and ethics outlined in the CO Network’s Terms and Conditions, GDPR Compliant Privacy Policy, Anti-Spam Policy agreement.'},

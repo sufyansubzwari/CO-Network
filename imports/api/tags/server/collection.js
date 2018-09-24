@@ -1,63 +1,75 @@
 /* eslint-disable consistent-return */
 
-import {Mongo} from 'meteor/mongo';
-import SimpleSchema from 'simpl-schema';
-import BaseCollection from '../../base/collection';
+import { Mongo } from "meteor/mongo";
+import SimpleSchema from "simpl-schema";
+import BaseCollection from "../../base/collection";
 
-const Tags = new BaseCollection('Tags');
+const Tags = new BaseCollection("Tags");
 
 Tags.allow({
   insert: () => false,
   update: () => false,
-  remove: () => false,
+  remove: () => false
 });
 
 Tags.deny({
   insert: () => true,
   update: () => true,
-  remove: () => true,
+  remove: () => true
 });
 
 Tags.schema = new SimpleSchema({
   createdAt: {
     type: Date,
-    label: 'The date this document was created.',
+    label: "The date this document was created.",
     autoValue() {
       if (this.isInsert) return new Date();
-    },
+    }
   },
   updatedAt: {
     type: Date,
-    label: 'The date this document was last updated.',
+    label: "The date this document was last updated.",
     autoValue() {
       if (this.isInsert || this.isUpdate) return new Date();
-    },
+    }
   },
   name: {
     type: String,
-    optional: true,
+    optional: true
   },
   label: {
-    type: String,
+    type: String
   },
   value: {
     type: String
   },
   used: {
     type: Number,
-    optional: true,
+    optional: true
+  },
+  level: {
+    type: String,
+    optional: true
+  },
+  icon: {
+    type: String,
+    optional: true
+  },
+    levelColor: {
+    type: String,
+    optional: true
   },
   categories: {
     type: Array,
-    optional: true,
+    optional: true
   },
-  'categories.$': {
+  "categories.$": {
     type: String,
-    optional: true,
+    optional: true
   },
   type: {
     type: String,
-    optional: true,
+    optional: true
   }
 });
 

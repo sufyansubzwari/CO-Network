@@ -9,7 +9,8 @@ import { Container, Layout } from "btech-layout";
 import {
   USER_TAGS,
   LOOKING_FOR,
-  LOOKING_FOR_DEFAULT
+  LOOKING_FOR_DEFAULT,
+  TAG_LEVEL
 } from "../../constants/constants";
 import { GetTags } from "../../../../../apollo-client/tag";
 import { Query } from "react-apollo";
@@ -85,6 +86,24 @@ class ThirdStep extends React.Component {
     this.setState({ user: this.state.user }, () => this.notifyParent());
   }
 
+    handleCategoryChange(index, value, color, icon, name) {
+        if (
+            value &&
+            this.state.user.knowledge &&
+            this.state.user.knowledge[name] &&
+            this.state.user.knowledge[name][index]
+        ) {
+            let newTag = {
+                ...this.state.user.knowledge[name][index],
+                levelColor: color,
+                icon: icon,
+                level: value
+            };
+            this.state.user.knowledge[name][index] = newTag;
+            this.setState({ user: this.state.user }, () => this.notifyParent());
+        }
+    }
+
   render() {
     return (
       <Layout rowGap={"25px"}>
@@ -120,6 +139,7 @@ class ThirdStep extends React.Component {
                 this.state.user.knowledge.languages.length > 0
                   ? this.state.user.knowledge.languages.map(item => ({
                       active: true,
+                      useIcon: true,
                       ...item
                     }))
                   : []
@@ -128,6 +148,8 @@ class ThirdStep extends React.Component {
               onClose={(e, tag, index) =>
                 this.onCloseTags(e, tag, index, "languages")
               }
+              levelOptions={TAG_LEVEL}
+              onCategoryChange={(index,value,color,icon) => this.handleCategoryChange(index,value,color,icon,'languages')}
             />
           </Container>
         </Container>
@@ -163,6 +185,7 @@ class ThirdStep extends React.Component {
                 this.state.user.knowledge.curiosity.length > 0
                   ? this.state.user.knowledge.curiosity.map(item => ({
                       active: true,
+                      useIcon: true,
                       ...item
                     }))
                   : []
@@ -171,6 +194,8 @@ class ThirdStep extends React.Component {
               onClose={(e, tag, index) =>
                 this.onCloseTags(e, tag, index, "curiosity")
               }
+              levelOptions={TAG_LEVEL}
+              onCategoryChange={(index,value,color,icon) => this.handleCategoryChange(index,value,color,icon,'curiosity')}
             />
           </Container>
         </Container>

@@ -8,6 +8,9 @@ type Tags {
     used: Int
     categories: [String]
     type: String
+    icon: String
+    level: String
+    levelColor: String
 }
 
 type Query {
@@ -24,6 +27,9 @@ input TagsInput {
     categories: [String]
     active: String
     type: String
+    level: String
+    icon: String
+    levelColor: String
 }
 
 type Mutation {

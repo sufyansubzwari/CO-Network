@@ -53,12 +53,18 @@ query userQuery($id: String){
           label
           value
           type
+          levelColor
+          level
+          icon
         }
         curiosity{
           name
           label
           value
           type
+          levelColor
+          level
+          icon
         }
         lookingFor{
           label
