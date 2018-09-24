@@ -663,164 +663,298 @@ export const LOCATIONS = [
       "Albertsons-Bakersfield #6377_13045 Rosedale Hwy_Bakersfield, California 93312"
   },
   {
-    "location": {
-      "lat": 42.79750285,
-      "lng": -86.13275107
+    location: {
+      lat: 42.79750285,
+      lng: -86.13275107
     },
-    "address": "D & W Foods - Holland #249_50 Douglas Ave_Holland, Michigan 49464"
+    address: "D & W Foods - Holland #249_50 Douglas Ave_Holland, Michigan 49464"
   },
   {
-    "location": {
-      "lat": 42.78323459,
-      "lng": -86.07600381
+    location: {
+      lat: 42.78323459,
+      lng: -86.07600381
     },
-    "address": "Meijer-Holland #47_746 E 16th St_Holland, Michigan 49423"
+    address: "Meijer-Holland #47_746 E 16th St_Holland, Michigan 49423"
   },
   {
-    "location": {
-      "lat": 42.828321,
-      "lng": -86.092646
+    location: {
+      lat: 42.828321,
+      lng: -86.092646
     },
-    "address": "Meijer-Holland Twp #217_3320 West Shore Dr_Holland, Michigan 49424"
+    address:
+      "Meijer-Holland Twp #217_3320 West Shore Dr_Holland, Michigan 49424"
   },
   {
-    "location": {
-      "lat": 42.82743,
-      "lng": -86.091708
+    location: {
+      lat: 42.82743,
+      lng: -86.091708
     },
-    "address": "Holland_3259 West Shore Drive_Holland, Michigan 49424"
+    address: "Holland_3259 West Shore Drive_Holland, Michigan 49424"
   },
   {
-    "location": {
-      "lat": 42.587721,
-      "lng": -83.876697
+    location: {
+      lat: 42.587721,
+      lng: -83.876697
     },
-    "address": "Meijer-Howell #172_3883 E Grand River_Howell, Michigan 48843"
+    address: "Meijer-Howell #172_3883 E Grand River_Howell, Michigan 48843"
   },
   {
-    "location": {
-      "lat": 42.633025,
-      "lng": -83.754669
+    location: {
+      lat: 42.633025,
+      lng: -83.754669
     },
-    "address": "Target Hartland T-1971_10025 E Highland Rd_Howell, Michigan 48843"
+    address: "Target Hartland T-1971_10025 E Highland Rd_Howell, Michigan 48843"
   },
   {
-    "location": {
-      "lat": 42.25684019,
-      "lng": -84.3597484
+    location: {
+      lat: 42.25684019,
+      lng: -84.3597484
     },
-    "address": "Meijer-Jackson #056_3333 E Michigan Ave_Jackson, Michigan 49202"
+    address: "Meijer-Jackson #056_3333 E Michigan Ave_Jackson, Michigan 49202"
   },
   {
-    "location": {
-      "lat": 42.268927,
-      "lng": -84.424813
+    location: {
+      lat: 42.268927,
+      lng: -84.424813
     },
-    "address": "Jackson, I-94 and M50_1801 North West Ave._Jackson, Michigan 49202"
+    address:
+      "Jackson, I-94 and M50_1801 North West Ave._Jackson, Michigan 49202"
   },
   {
-    "location": {
-      "lat": 42.29574836,
-      "lng": -85.68147197
+    location: {
+      lat: 42.29574836,
+      lng: -85.68147197
     },
-    "address": "Meijers-Kalamazoo #119_6660 W Main St_Kalamazoo, Michigan 490098925"
+    address:
+      "Meijers-Kalamazoo #119_6660 W Main St_Kalamazoo, Michigan 490098925"
   },
   {
-    "location": {
-      "lat": 42.25941639,
-      "lng": -85.61479013
+    location: {
+      lat: 42.25941639,
+      lng: -85.61479013
     },
-    "address": "D & W Foods-Kalamazoo #430_2130 Parkview_Kalamazoo, Michigan 49008"
+    address:
+      "D & W Foods-Kalamazoo #430_2130 Parkview_Kalamazoo, Michigan 49008"
   },
   {
-    "location": {
-      "lat": 42.296156,
-      "lng": -85.65501
+    location: {
+      lat: 42.296156,
+      lng: -85.65501
     },
-    "address": "Target  Kalamazoo T-901_5350 W Main St_Kalamazoo, Michigan 49009"
+    address: "Target  Kalamazoo T-901_5350 W Main St_Kalamazoo, Michigan 49009"
   },
   {
-    "location": {
-      "lat": 42.2961411,
-      "lng": -85.65537381
+    location: {
+      lat: 42.2961411,
+      lng: -85.65537381
     },
-    "address": "Kalamazoo - West Main_5370 West Main Street_Kalamazoo, Michigan 49009"
+    address:
+      "Kalamazoo - West Main_5370 West Main Street_Kalamazoo, Michigan 49009"
   },
   {
-    "location": {
-      "lat": 42.78893033,
-      "lng": -83.24554959
+    location: {
+      lat: 42.78893033,
+      lng: -83.24554959
     },
-    "address": "Kroger-Lake Orion #637_460 N Laper Rd_Lake Orion, Michigan 48362"
+    address: "Kroger-Lake Orion #637_460 N Laper Rd_Lake Orion, Michigan 48362"
   },
   {
-    "location": {
-      "lat": 42.773185,
-      "lng": -83.239069
+    location: {
+      lat: 42.773185,
+      lng: -83.239069
     },
-    "address": "Lake Orion_590 Lapeer Rd_Lake Orion, Michigan 48362"
+    address: "Lake Orion_590 Lapeer Rd_Lake Orion, Michigan 48362"
   },
   {
-    "location": {
-      "lat": 42.74102205,
-      "lng": -84.63645985
+    location: {
+      lat: 42.74102205,
+      lng: -84.63645985
     },
-    "address": "Kroger-Lansing #888_6430 W Saginaw Hwy_Lansing, Michigan 489171106"
+    address:
+      "Kroger-Lansing #888_6430 W Saginaw Hwy_Lansing, Michigan 489171106"
   },
   {
-    "location": {
-      "lat": 42.7578,
-      "lng": -84.5243
+    location: {
+      lat: 42.7578,
+      lng: -84.5243
     },
-    "address": "Eastwood Towne Center_2941 Preyde Blvd_Lansing, Michigan 489125624"
+    address:
+      "Eastwood Towne Center_2941 Preyde Blvd_Lansing, Michigan 489125624"
   },
   {
-    "location": {
-      "lat": 42.39782554,
-      "lng": -83.34945414
+    location: {
+      lat: 42.39782554,
+      lng: -83.34945414
     },
-    "address": "Kroger-Livonia #618_30935 5 Mile Rd_Livonia, Michigan 48154"
+    address: "Kroger-Livonia #618_30935 5 Mile Rd_Livonia, Michigan 48154"
   },
   {
-    "location": {
-      "lat": 42.5046,
-      "lng": -83.112566
+    location: {
+      lat: 42.5046,
+      lng: -83.112566
     },
-    "address": "Madison Hgts, 12 Mile & Dartmouth_660 W. 12 Mile Rd_Madison Heights, Michigan 48071"
+    address:
+      "Madison Hgts, 12 Mile & Dartmouth_660 W. 12 Mile Rd_Madison Heights, Michigan 48071"
   },
   {
-    "location": {
-      "lat": 46.556614,
-      "lng": -87.396396
+    location: {
+      lat: 46.556614,
+      lng: -87.396396
     },
-    "address": "Northern Michigan U/Marquette_1401 Presque Isle Ave_Marquette, Michigan 49855"
+    address:
+      "Northern Michigan U/Marquette_1401 Presque Isle Ave_Marquette, Michigan 49855"
   },
   {
-    "location": {
-      "lat": 46.5493,
-      "lng": -87.455822
+    location: {
+      lat: 46.5493,
+      lng: -87.455822
     },
-    "address": "Marquette, MI-Hwy 41 & 41 & Hwy 492_3105 US 41 West_Marquette, Michigan 49855"
+    address:
+      "Marquette, MI-Hwy 41 & 41 & Hwy 492_3105 US 41 West_Marquette, Michigan 49855"
   },
   {
-    "location": {
-      "lat": 42.91386,
-      "lng": -82.50029
+    location: {
+      lat: 42.91386,
+      lng: -82.50029
     },
-    "address": "Meijer-Marysville #229_205 S Range Rd_Marysville, Michigan 48040"
+    address: "Meijer-Marysville #229_205 S Range Rd_Marysville, Michigan 48040"
   },
   {
-    "location": {
-      "lat": 43.7557,
-      "lng": -84.2468
+    location: {
+      lat: 43.7557,
+      lng: -84.2468
     },
-    "address": "Midland, M-10 & Eastman_7201 Eastman Avenue_Midland, Michigan 48642"
+    address:
+      "Midland, M-10 & Eastman_7201 Eastman Avenue_Midland, Michigan 48642"
   },
   {
-    "location": {
-      "lat": 42.59206587,
-      "lng": -83.60034748
+    location: {
+      lat: 42.59206587,
+      lng: -83.60034748
     },
-    "address": "Milford_525 N. Main_Milford, Michigan 48381"
+    address: "Milford_525 N. Main_Milford, Michigan 48381"
+  }
+];
+
+export const JOB_TYPE_DEFAULT = [
+  { label: "Full Time" },
+  { label: "Part Time" },
+  { label: "Consulting" },
+  { label: "Intership" },
+  { label: "Volunteer" }
+];
+
+export const LOOKING_FOR_DEFAULT_SPEAKER = [
+  { label: "Co-Founders for Startup" },
+  { label: "Competition Teammates" },
+  { label: "Individuals to Mentor" },
+  { label: "Mentorship" },
+  { label: "Teach Project Partners" },
+  { label: "Data Trading" },
+  { label: "Scientific Collaborations" },
+  { label: "Study Group Companions" }
+];
+
+export const ORGANIZATION_TYPE = [
+  { label: "Academia" },
+  { label: "Corporation" },
+  { label: "Comunity" },
+  { label: "Government" },
+  { label: "Academia1" },
+  { label: "Corporation1" },
+  { label: "Comunity1" },
+  { label: "Government1" }
+];
+
+export const ACTIVELY = [
+  { label: "Recruit Technical Talent" },
+  { label: "Host Conferences | Events" },
+  { label: "Sponsors Events" }
+];
+
+export const ORG_TYPE_NUMBER = [
+  { label: "Corporation", active: false, number: 0 },
+  { label: "Community", active: false, number: 0 },
+  { label: "Venture Capital", active: false, number: 0 }
+];
+
+export const ORGANIZATION_TAGS = [
+  { name: "Bioinformatics", active: false, userAdd: false },
+  { name: "Python", userAdd: false, active: false },
+  { name: "Oil&Gas", active: false, userAdd: false },
+  { name: "MachineLearning", userAdd: false, active: false },
+  { name: "MachineLearning", userAdd: false, active: false },
+  { name: "userAdd 1", active: false, userAdd: true }
+];
+
+export const INDUSTRY_SECTOR = [
+  { name: "Bioinformatics", active: true, userAdd: false },
+  { name: "Python", userAdd: false, active: false },
+  { name: "Oil&Gas", active: false, userAdd: false },
+  { name: "MachineLearning", userAdd: false, active: false },
+  { name: "MachineLearning", userAdd: false, active: false },
+  { name: "userAdd 1", active: true, userAdd: true, closable: true }
+];
+
+export const INDUSTRY_SECTOR_OPTIONS = [
+  { value: "Chemical", label: "Chemical" },
+  { value: "Construction", label: "Construction" },
+  { value: "Aeroespace & Defense", label: "Aeroespace & Defense" },
+  { value: "Energy & Utilities", label: "Energy & Utilities" }
+];
+
+export const PREFERRED_STAGE = [
+  { label: "Technical Workshop" },
+  { label: "Conference Presenter" },
+  { label: "Lecture Hall" },
+  { label: "Digital Media (Podcast, Youtube)" },
+  { label: "Panel Discussions | Interviews" }
+];
+
+export const LOOKING_FOR_DEFAULT = [
+  { label: "Co-Founders for Startup" },
+  { label: "Competition Teammates" },
+  { label: "Individuals to Mentor" },
+  { label: "Mentorship" },
+  { label: "Teach Project Partners" },
+  { label: "Data Trading" },
+  { label: "Scientific Collaborations" },
+  { label: "Study Group Companions" }
+];
+
+export const POSITION_TAGS = [
+  { name: "DataScience", active: true, userAdd: false, closable: true },
+  { name: "Bio", active: true, userAdd: false, closable: true },
+  { name: "Loremipsumdolorem", active: true, userAdd: false, closable: true },
+  { name: "Ipsumdolorem", active: true, userAdd: false, closable: true },
+  { name: "Dolorem", active: true, userAdd: false, closable: true },
+  { name: "Dumdolorem", active: true, userAdd: false, closable: true }
+];
+
+export const JOB_TYPE_NUMBER = [
+  { label: "Full Time", active: false, number: 0 },
+  { label: "Part Time", active: false, number: 0 },
+  { label: "Volunteer | Intern", active: false, number: 0 }
+];
+
+export const EXPERIENCE_REQUIERED = [
+  {
+    label: "Entry Level",
+    value: "Entry Level",
+    name: "Entry Level",
+    active: false
   },
+  {
+    label: "Intermediate",
+    value: "Intermediate",
+    name: "Intermediate",
+    active: false
+  },
+  { label: "Expert", value: "Expert", name: "Expert", active: false }
+];
+
+export const EXPERIENCE_REQUIERED_NUMBER = [
+  { label: "Entry Level", active: false, number: 0 },
+  { label: "Intermediate", active: false, number: 0 },
+  { label: "Expert", active: false, number: 0 }
 ];

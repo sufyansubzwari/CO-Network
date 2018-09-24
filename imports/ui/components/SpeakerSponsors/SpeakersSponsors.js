@@ -39,30 +39,18 @@ class SpeakersSponsor extends React.Component {
   }
 
   handleChange(spo) {
-    this.setState(
-      {
-        sponsors: spo
-      },
-      () => this.notifyParent()
-    );
+    this.setState({ sponsors: spo }, () => this.notifyParent());
   }
 
   onSelectToAdd(achievement, key) {
-    // this.setState({ tickets: list, editIndex: list.length - 1 });
-
     const list = this.state.sponsors;
-    list.push({
-      type: achievement.type,
-      edit: true
-    });
+    list.push({ type: achievement.type, edit: true });
     this.setState({ sponsors: list });
   }
 
   componentWillReceiveProps(nextProps) {
     if (nextProps.users) {
-      this.setState({
-        users: nextProps.users
-      });
+      this.setState({ users: nextProps.users });
     }
   }
 

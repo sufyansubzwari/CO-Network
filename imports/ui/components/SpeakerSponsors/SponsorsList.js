@@ -4,8 +4,8 @@ import { Layout, Container } from "btech-layout";
 import styled from "styled-components";
 import { Button, Input, Select, TextArea } from "btech-base-forms-component";
 import MaterialIcon from "react-material-iconic-font";
-import Speaker from './Speaker';
-import Sponsor from './Sponsor';
+import Speaker from "./Speaker";
+import Sponsor from "./Sponsor";
 import LineSeparator from "./LineSeparator";
 
 const SLabel = styled.div`
@@ -21,18 +21,18 @@ const SContainer = styled(Container)`
 
 const SItemContainer = styled(Container)`
   border-radius: 3px;
+  margin-top: 5px;
 `;
 
 class SponsorsList extends React.Component {
   constructor(props) {
     super(props);
-
     this.state = {
       sponsors:
         this.props.data && this.props.data.length ? this.props.data : [],
-      isEditable: false
+      isEditable: false,
+      editingChild: false
     };
-
     this.handleSave = this.handleSave.bind(this);
     this.handleAdd = this.handleAdd.bind(this);
     this.handleRemove = this.handleRemove.bind(this);
@@ -43,48 +43,33 @@ class SponsorsList extends React.Component {
   componentWillReceiveProps(nextProps) {
     if (nextProps.data) {
       this.setState({
-          sponsors:
-          nextProps.data && nextProps.data.length ? nextProps.data : []
+        sponsors: nextProps.data && nextProps.data.length ? nextProps.data : []
       });
     }
   }
 
   handleRemove(index) {
-    let sta = this.state.sponsors;
-    let aux = sta.splice(index, 1);
+    let sta = this.state.sponsors.splice(index, 1);
+    this.setState({ sponsors: sta }, () => this.notifyParent());
+  }
 
-    this.setState(
-      {
-        sponsors: sta
-      },
-      () => this.notifyParent()
-    );
-  }
   handleDelete() {
-    let arr = this.state.sponsors.filter(
-      item => item.type !== this.props.type
-    );
-    this.setState(
-      {
-          sponsors: arr
-      },
-      () => this.notifyParent()
-    );
+    let arr = this.state.sponsors.filter(item => item.type !== this.props.type);
+    this.setState({ sponsors: arr }, () => this.notifyParent());
   }
+
   handleSave(index) {
     let spo = this.state.sponsors;
     spo[index] = { ...spo[index], edit: false };
-    this.setState(
-      {
-          sponsors: spo
-      },
-      () => this.notifyParent()
+    this.setState({ sponsors: spo, editingChild: false }, () =>
+      this.notifyParent()
     );
   }
 
   handleChange(index) {
     let spo = this.state.sponsors;
     spo[index] = { ...spo[index], edit: true };
+    this.setState({ editingChild: true });
     this.props.onChange && this.props.onChange(spo);
   }
 
@@ -94,23 +79,18 @@ class SponsorsList extends React.Component {
       type: this.props.type,
       edit: true
     });
-    this.setState(
-      {
-          sponsors: list
-      },
-      () => this.notifyParent()
+    this.setState({ sponsors: list, editingChild: true }, () =>
+      this.notifyParent()
     );
   }
 
-  onAdd(index, label,name){
-    if(label){
-        let spo = this.state.sponsors;
-        spo[index][name] = label;
-
-      this.setState({
-          sponsors: spo
-      },
-          () => this.notifyParent())
+  onAdd(index, label, name) {
+    if (label) {
+      let spo = this.state.sponsors;
+      spo[index][name] = label;
+      this.setState({ sponsors: spo, editingChild: false }, () =>
+        this.notifyParent()
+      );
     }
   }
 
@@ -124,71 +104,86 @@ class SponsorsList extends React.Component {
     );
 
     return (
-      <Container style={{display: elements.length ? 'block' : 'none'}} >
+      <Container style={{ display: elements.length ? "block" : "none" }}>
         {elements.length ? (
           <Layout
             customTemplateColumns={"1fr auto"}
             style={{ paddingRight: "10px" }}
           >
             <SLabel>{this.props.type}</SLabel>
-            <Layout customTemplateColumns={"auto auto auto"} colGap={"5px"}>
-              <Button
-                type={"button"}
-                secondary
-                height={"auto"}
-                color={"black"}
-                opacity={"0.5"}
-                border={"none"}
-                hoverBackground={"transparent"}
-                hoverColor={"initial"}
-                onClick={this.handleAdd}
-              >
-                <MaterialIcon type={"plus-circle"} />
-              </Button>
-              <Button
-                type={"button"}
-                secondary
-                height={"auto"}
-                color={"black"}
-                opacity={"0.5"}
-                border={"none"}
-                hoverBackground={"transparent"}
-                hoverColor={"initial"}
-                onClick={() =>
-                  this.setState({ isEditable: !this.state.isEditable })
-                }
-              >
-                <MaterialIcon type={"edit"} />
-              </Button>
-              <Button
-                type={"button"}
-                secondary
-                height={"auto"}
-                color={"black"}
-                opacity={"0.5"}
-                border={"none"}
-                hoverBackground={"transparent"}
-                hoverColor={"initial"}
-                onClick={this.handleDelete}
-              >
-                <MaterialIcon type={"delete"} />
-              </Button>
-            </Layout>
+            {!this.state.editingChild ? (
+              <Layout customTemplateColumns={"auto auto auto"} colGap={"5px"}>
+                <Button
+                  type={"button"}
+                  secondary
+                  height={"auto"}
+                  color={"black"}
+                  opacity={"0.5"}
+                  border={"none"}
+                  hoverBackground={"transparent"}
+                  hoverColor={"initial"}
+                  onClick={this.handleAdd}
+                >
+                  <MaterialIcon type={"plus-circle"} />
+                </Button>
+                <Button
+                  type={"button"}
+                  secondary
+                  height={"auto"}
+                  color={"black"}
+                  opacity={"0.5"}
+                  border={"none"}
+                  hoverBackground={"transparent"}
+                  hoverColor={"initial"}
+                  onClick={() =>
+                    this.setState({
+                      isEditable: !this.state.isEditable,
+                      editingChild: false
+                    })
+                  }
+                >
+                  <MaterialIcon type={"edit"} />
+                </Button>
+                <Button
+                  type={"button"}
+                  secondary
+                  height={"auto"}
+                  color={"black"}
+                  opacity={"0.5"}
+                  border={"none"}
+                  hoverBackground={"transparent"}
+                  hoverColor={"initial"}
+                  onClick={this.handleDelete}
+                >
+                  <MaterialIcon type={"delete"} />
+                </Button>
+              </Layout>
+            ) : null}
           </Layout>
         ) : null}
-        <SItemContainer padding={"10px"} background={this.props.background}>
+        <SItemContainer background={this.props.background}>
           <Container>
             {this.state.sponsors.map(
               (item, index) =>
                 item.type === this.props.type ? (
                   item.edit ? (
-                    item.type === 'Speakers' ? <Speaker users={this.props.users} model={this.state.sponsors[index]} handleSave={() => this.handleSave(index)} onInvite={this.props.onInviteSpeaker} onAdd={(label,name) => this.onAdd(index,label,name)} /> :
-                    item.type === 'Sponsors' ? <Sponsor users={this.props.users} model={this.state.sponsors[index]} handleSave={() => this.handleSave(index)} onInvite={this.props.onInviteSponsor} onAdd={(label,name) => this.onAdd(index,label,name)} /> : null
-                ): (
-                    <Layout
-                      paddingY={"10px"}
-                      customTemplateColumns={"1fr auto"}
-                    >
+                    item.type === "Speakers" ? (
+                      <Speaker
+                        users={this.props.users}
+                        model={this.state.sponsors[index]}
+                        handleSave={() => this.handleSave(index)}
+                        onAdd={(label, name) => this.onAdd(index, label, name)}
+                      />
+                    ) : item.type === "Sponsors" ? (
+                      <Sponsor
+                        users={this.props.users}
+                        model={this.state.sponsors[index]}
+                        handleSave={() => this.handleSave(index)}
+                        onAdd={(label, name) => this.onAdd(index, label, name)}
+                      />
+                    ) : null
+                  ) : (
+                    <Layout padding={"10px"} customTemplateColumns={"1fr auto"}>
                       <Container>{item.name}</Container>
                       {this.state.isEditable ? (
                         <Layout
@@ -239,15 +234,15 @@ SponsorsList.defaultProps = {
   background: "#E9EFF0",
   countField: "available",
   minField: "min",
-  maxField: "max",
+  maxField: "max"
 };
 
 SponsorsList.propTypes = {
   data: PropTypes.array,
   background: PropTypes.string,
   isEditable: PropTypes.bool,
-  onInviteSpeaker: PropTypes.func,
-  onInviteSponsor: PropTypes.func,
+  onInviteSpeaker: PropTypes.func, // todo: support invite a user not in the system
+  onInviteSponsor: PropTypes.func, // todo: support invite a user not in the system
   users: PropTypes.func
 };
 

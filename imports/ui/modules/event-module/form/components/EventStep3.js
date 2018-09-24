@@ -3,7 +3,7 @@ import { Container, Layout } from "btech-layout";
 import PropTypes from "prop-types";
 import { Input, SalaryRange } from "btech-base-forms-component";
 import { GeoInputLocation } from "btech-location";
-import { EMAIL_REGEX } from "../../../user-module/form/constants/constants";
+import { EMAIL_REGEX } from "../../../../constants";
 
 /**
  * @module Event
