@@ -44,8 +44,7 @@ class ListJobs extends Component {
         JSON.stringify(nextProps.filterStatus.filters)
     ) {
       const filters = Object.assign({}, nextProps.filterStatus.filters);
-      this.setState({ filterStatus: filters });
-      this.reFetchQuery();
+      this.setState({ filterStatus: filters }, () => this.reFetchQuery());
     }
   }
 

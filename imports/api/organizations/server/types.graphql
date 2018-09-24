@@ -60,8 +60,8 @@ type Query {
 
 input OrganizationSearchInput{
     title: TableStringFilterInput
-    info_DOT_description: TableStringFilterInput
-    info_DOT_orgType: JobTypeElemMatch
+    description: TableStringFilterInput
+    orgType: JobTypeElemMatch
     startDate: TableDateFilterInput
     endDate: TableDateFilterInput
     location: [LocationInput]
