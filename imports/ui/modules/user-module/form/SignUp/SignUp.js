@@ -30,16 +30,22 @@ const Description = styled.p`
 
 class SignUp extends React.Component {
   constructor(props) {
+
+    let act = SIGNUP_OPTIONS.map(item => false)
+    let opt = SIGNUP_OPTIONS.map(item => ({label: item.label, active: false}))
+
     super(props);
     this.links = links;
     this.state = {
       agreeTerms: false,
-      actives: [],
+      actives:  act && act.length ? act : [],
+      options: opt,
       disabled: false
     };
 
     this.handleCheckBoxes = this.handleCheckBoxes.bind(this);
     this.handleCheckBox = this.handleCheckBox.bind(this);
+    this.onChange = this.onChange.bind(this);
   }
 
   componentWillMount() {
@@ -51,8 +57,8 @@ class SignUp extends React.Component {
   }
 
   handleContinue(updateStatus) {
-    let checkboxesActives = this.state.actives.some(function(element) {
-      return element === false;
+    let checkboxesActives = this.state.options.some(function(element) {
+      return element.active === false;
     });
     const active = this.state.agreeTerms && !checkboxesActives;
     if (active) {
@@ -67,13 +73,23 @@ class SignUp extends React.Component {
 
   handleCheckBoxes(actives) {
     let checkboxesActives = actives.some(function(element) {
-      return element === false;
+      return element === false || element === undefined;
     });
-    const active = this.state.agreeTerms && checkboxesActives;
+    const active = this.state.agreeTerms && !checkboxesActives;
     this.setState({
       actives: actives,
       disabled: active
     });
+  }
+
+  onChange(actives){
+    if(actives.length){
+      let newOptions =  actives.map( (value,index) => ({label: this.state.options[index].label, active: value}) );
+      this.setState({
+          options: newOptions
+      })
+    }
+
   }
 
   handleCheckBox() {
@@ -118,8 +134,8 @@ class SignUp extends React.Component {
           </Container>
           <Container>
             <CheckBoxList
-              options={SIGNUP_OPTIONS}
-              getValue={actives => this.setState({ actives: actives })}
+              options={this.state.options}
+              getValue={this.onChange}
               checkboxVerticalSeparation={"15px"}
             />
             <CheckBox
