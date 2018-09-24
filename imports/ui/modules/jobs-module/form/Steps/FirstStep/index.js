@@ -112,10 +112,11 @@ class FirstStep extends React.Component {
 
   render() {
     return (
-      <Layout rowGap={"40px"}>
+      <Layout rowGap={"25px"}>
         <Layout templateColumns={2} colGap={"20px"}>
           <Input
             name={"title"}
+            required
             model={this.state.job}
             placeholderText={"Position Title"}
             getValue={this.notifyParent.bind(this)}

@@ -25,7 +25,6 @@ class JobForm extends React.Component {
         jobResponsibility: ""
       }
     };
-
     this.handleChange = this.handleChange.bind(this);
   }
 
@@ -89,9 +88,9 @@ class JobForm extends React.Component {
             onChange={job => this.handleChange(job)}
           />
         </WizardStepForm>
-        <WizardStepForm title={"Submit"}>
-          <div>HERE GOES THE PAY SECTION</div>
-        </WizardStepForm>
+        {/*<WizardStepForm title={"Submit"}>*/}
+          {/*<div>HERE GOES THE PAY SECTION</div>*/}
+        {/*</WizardStepForm>*/}
       </MlWizardForm>
     );
   }

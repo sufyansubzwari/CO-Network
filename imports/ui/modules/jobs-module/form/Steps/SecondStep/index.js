@@ -81,7 +81,7 @@ class SecondStep extends React.Component {
 
   render() {
     return (
-      <Layout rowGap={"40px"}>
+      <Layout rowGap={"25px"}>
         <TextArea
           placeholderText={"Job Responsibilities"}
           model={this.state.job}
