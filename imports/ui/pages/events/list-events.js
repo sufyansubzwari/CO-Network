@@ -121,7 +121,6 @@ class ListEvents extends Component {
           onFetchData={() => this.fetchMoreSelection(isLoading)}
           onSelectCard={(item, key) => this.onChangeSelection(item, key)}
         />
-        {this.state.selectedItem ? (
           <Mutation key={"rightSide"} mutation={DeleteEvent}>
             {(deleteEvent, { eventDeleted }) => (
               <Mutation
@@ -131,6 +130,7 @@ class ListEvents extends Component {
                 {(updateEventImage, { event }) => (
                   <Preview
                     key={"rightSide"}
+                    isOpen={this.state.selectedItem}
                     navlinks={["Details"]}
                     navClicked={index => console.log(index)}
                     navOptions={[
@@ -211,7 +211,6 @@ class ListEvents extends Component {
               </Mutation>
             )}
           </Mutation>
-        ) : null}
       </ListLayout>
     );
   }

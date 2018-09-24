@@ -37,7 +37,6 @@ class InternalLayout extends Component {
         customTemplateColumns={"0 1fr"}
         mdCustomTemplateColumns={"1fr 1fr"}
         style={{overflow:"hidden"}}
-
       >
         <Container background={"white"} width="100vw" mdWidth={"initial"}>
           {this.getComponent("leftSide")}
