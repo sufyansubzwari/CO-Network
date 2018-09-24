@@ -30,7 +30,7 @@ class TagsAdd extends React.Component {
                     </STitle>
                     <Container flex style={{flexDirection: 'row'}}>
                         <TagList tags={this.props.tags} style={{display: "inline-block"}}  />
-                        <Tag style={{ marginBottom: '2px'}} active={true} color={"#000000"} data={{name: '+'}} onSelect={this.props.onAdd} />
+                        {/*<Tag style={{ marginBottom: '2px'}} active={true} color={"#000000"} data={{name: '+'}} onSelect={this.props.onAdd} />*/}
                     </Container>
                 </Container>
             </ThemeProvider>
