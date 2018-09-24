@@ -13,6 +13,13 @@ const Label = styled.label`
   font-size: 12px;
   font-family: Roboto Mono;
   color: #010101;
+  margin-bottom: 0;
+`;
+const Description = styled.label`
+  font-size: 11px;
+  font-family: Roboto Mono;
+  color: rgba(0,0,0,0.5);
+  margin-bottom: 0;
 `;
 
 class FirstStep extends React.Component {
@@ -165,9 +172,9 @@ class FirstStep extends React.Component {
         >
           {(updateIdentities, { profile }) => (
             <Container>
-              <Label>Connect Networks</Label>
+              <Layout ml={'10px'} mb={'18px'} customTemplateRows={'auto auto'}><Label>Connect Networks</Label><Description>Connect from your social networks</Description></Layout>
               <Layout
-                templateColumns={this.services.length}
+                customTemplateColumns={`repeat(${this.services.length}, 80px) 1fr`}
                 colGap={"10px"}
                 minH={"90px"}
               >
