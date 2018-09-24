@@ -18,6 +18,8 @@ import {
 } from "../../../../constants";
 import { theme } from "./../../../../theme";
 import links from "./links.constant";
+import { connect } from "react-redux";
+import UserRedux from "../../../../redux/user";
 
 const Description = styled.p`
   font-size: ${props =>
@@ -29,15 +31,17 @@ const Description = styled.p`
 
 class SignUp extends React.Component {
   constructor(props) {
-
-    let act = SIGNUP_OPTIONS.map(item => false)
-    let opt = SIGNUP_OPTIONS.map(item => ({label: item.label, active: false}))
+    let act = SIGNUP_OPTIONS.map(item => false);
+    let opt = SIGNUP_OPTIONS.map(item => ({
+      label: item.label,
+      active: false
+    }));
 
     super(props);
     this.links = links;
     this.state = {
       agreeTerms: false,
-      actives:  act && act.length ? act : [],
+      actives: act && act.length ? act : [],
       options: opt,
       disabled: false
     };
@@ -81,14 +85,16 @@ class SignUp extends React.Component {
     });
   }
 
-  onChange(actives){
-    if(actives.length){
-      let newOptions =  actives.map( (value,index) => ({label: this.state.options[index].label, active: value}) );
+  onChange(actives) {
+    if (actives.length) {
+      let newOptions = actives.map((value, index) => ({
+        label: this.state.options[index].label,
+        active: value
+      }));
       this.setState({
-          options: newOptions
-      })
+        options: newOptions
+      });
     }
-
   }
 
   handleCheckBox() {
@@ -100,6 +106,13 @@ class SignUp extends React.Component {
       agreeTerms: !this.state.agreeTerms,
       disabled: active
     });
+  }
+
+  handleFinishSuccess(result) {
+    const user = this.props.curUser;
+    user.profile.isSignUp = true;
+    this.props.setUser(user);
+    this.props.history.push(`/profile`);
   }
 
   render() {
@@ -175,8 +188,7 @@ class SignUp extends React.Component {
             <div />
             <Mutation
               mutation={UpdateSignUpStatus}
-              onError={() => alert(`error`)}
-              onCompleted={() => this.props.history.push(`/profile`)}
+              onCompleted={result => this.handleFinishSuccess(result)}
             >
               {(updateStatus, { userCreated }) => {
                 return (
@@ -196,4 +208,15 @@ class SignUp extends React.Component {
   }
 }
 
-export default withRouter(SignUp);
+const mapStateToProps = state => {
+  return {};
+};
+
+const mapDispatchToProps = dispatch => ({
+  setUser: status => dispatch(UserRedux.Actions.setUser(status))
+});
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(withRouter(SignUp));

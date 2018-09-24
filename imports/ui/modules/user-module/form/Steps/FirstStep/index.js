@@ -65,15 +65,25 @@ class FirstStep extends React.Component {
     return this.state.user && this.state.user.identities
       ? this.state.user.identities.filter(element => {
           return (
-            `${provider}|${element.user_id}` !== this.state.user.user_id &&
+            // todo: check if is necesary show the default account
+            // `${provider}|${element.user_id}` !== this.state.user.user_id &&
             provider === element.provider
           );
         })
       : [];
   }
 
+  isTheMainAccount(provider, id) {
+    return this.state.user
+      ? `${provider}|${id}` === this.state.user.user_id
+      : false;
+  }
+
   handleDataToShow(element) {
-    const data = element ? element.profileData : {};
+    let data = {};
+    if (element && !element.profileData)
+      data = this.state.user ? this.state.user : {};
+    else data = element.profileData || {};
     if (data.email) {
       const gettingNick = data.email.split("@");
       data.nickName = gettingNick[0];
@@ -176,6 +186,10 @@ class FirstStep extends React.Component {
                           connected={!!element}
                           data={data}
                           fields={["nickName"]}
+                          hideCloseButton={this.isTheMainAccount(
+                            authService.service,
+                            element.user_id
+                          )}
                           onPlus={() =>
                             this.handleLinkAccount(
                               authService.service,
