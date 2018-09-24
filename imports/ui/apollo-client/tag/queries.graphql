@@ -4,8 +4,5 @@ query GetTags($tags: TagsInput) {
         name
         label
         value
-        level
-        levelColor
-        icon
     }
 }
