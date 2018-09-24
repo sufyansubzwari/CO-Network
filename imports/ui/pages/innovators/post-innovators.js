@@ -139,6 +139,7 @@ class PostOrganization extends Component {
         <Preview
           key={"rightSide"}
           navClicked={index => console.log(index)}
+          navlinks={["Details"]}
           navOptions={[
             {
               text: "Remove",

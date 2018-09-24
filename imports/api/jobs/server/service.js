@@ -40,15 +40,9 @@ class JobsService {
    * @return {Object} Job updated
    */
   static updateImage = async (id, image) => {
-    const job = await Jobs.collection.findOne(id);
-    if (job.image)
-      await Jobs.collection.update(id, {
-        $set: { image: image }
-      });
-    else
-      await Jobs.collection.update(id, {
-        $addToSet: { image: image }
-      });
+    await Jobs.collection.update(id, {
+      $set: { image: image }
+    });
     return await Jobs.collection.findOne(id);
   };
   /**

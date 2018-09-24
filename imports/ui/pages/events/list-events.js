@@ -132,7 +132,7 @@ class ListEvents extends Component {
                 {(updateEventImage, { event }) => (
                   <Preview
                     key={"rightSide"}
-                    navlinks={["Details", "Vision", "Products", "Media"]}
+                    navlinks={["Details"]}
                     navClicked={index => console.log(index)}
                     navOptions={[
                       {

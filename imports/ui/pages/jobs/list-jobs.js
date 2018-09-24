@@ -128,12 +128,7 @@ class ListJobs extends Component {
                 {(updateJobsImage, { job }) => (
                   <Preview
                     key={"rightSide"}
-                    navlinks={[
-                      "Details",
-                      "Requirements",
-                      "Organizational Culture",
-                      "Payment"
-                    ]}
+                    navlinks={["Details"]}
                     navClicked={index => console.log(index)}
                     navOptions={[
                       {

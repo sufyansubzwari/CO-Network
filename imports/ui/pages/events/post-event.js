@@ -112,6 +112,7 @@ class PostEvent extends Component {
               }
             }
           ]}
+          navlinks={["Details"]}
           index={this.state.selectedIndex}
           data={this.state.selectedItem}
           allowChangeImages
