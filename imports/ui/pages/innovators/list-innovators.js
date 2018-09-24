@@ -196,6 +196,7 @@ class ListInnovators extends Component {
                             element &&
                             element._id &&
                             element.owner &&
+                            this.props.curUser &&
                             element.owner._id === this.props.curUser._id
                           );
                         },
@@ -212,6 +213,7 @@ class ListInnovators extends Component {
                             element &&
                             element._id &&
                             element.owner &&
+                            this.props.curUser &&
                             element.owner._id === this.props.curUser._id
                           );
                         },
@@ -226,6 +228,7 @@ class ListInnovators extends Component {
                     allowChangeImages={
                       this.state.selectedItem &&
                       this.state.selectedItem.owner &&
+                      this.props.curUser &&
                       this.state.selectedItem.owner._id ===
                         this.props.curUser._id
                     }

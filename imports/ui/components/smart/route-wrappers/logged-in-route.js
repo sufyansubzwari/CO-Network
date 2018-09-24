@@ -18,7 +18,6 @@ const LoggedInRoute = ({
   component,
   redirectTo,
   overlay,
-  emailNotVerifiedOverlay,
   ...rest
 }) => (
   <Route
@@ -45,8 +44,7 @@ LoggedInRoute.propTypes = {
   curUser: propType(userFragment),
   component: PropTypes.func.isRequired,
   redirectTo: PropTypes.string,
-  overlay: PropTypes.func,
-  emailNotVerifiedOverlay: PropTypes.func.isRequired
+  overlay: PropTypes.func
 };
 
 LoggedInRoute.defaultProps = {
