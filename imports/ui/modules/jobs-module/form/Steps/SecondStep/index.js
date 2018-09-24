@@ -52,13 +52,15 @@ class SecondStep extends React.Component {
   }
 
   onAddTags(tag) {
-    let newTag = Object.assign({}, tag);
-    let tags = this.state.job.languages || [];
-    !newTag.name ? (newTag.name = newTag.label) : null;
-    newTag.type = "Languages";
-    tags.push(newTag);
-    this.state.job.languages = tags;
-    this.setState({ job: this.state.job }, () => this.notifyParent());
+    if (tag.label && tag.label.length > 0) {
+      let newTag = Object.assign({}, tag);
+      let tags = this.state.job.languages || [];
+      !newTag.name ? (newTag.name = newTag.label) : null;
+      newTag.type = "Languages";
+      tags.push(newTag);
+      this.state.job.languages = tags;
+      this.setState({ job: this.state.job }, () => this.notifyParent());
+    }
   }
 
   onCloseTags(e, tag, index) {
@@ -71,7 +73,7 @@ class SecondStep extends React.Component {
       let job = this.state.job;
       job[name] = value;
       this.setState(
-        {job: job},
+        { job: job },
         () => this.props.onChange && this.props.onChange(this.state.job)
       );
     } else this.props.onChange && this.props.onChange(this.state.job);
@@ -89,7 +91,10 @@ class SecondStep extends React.Component {
         <Container>
           <Layout rowGap={"10px"}>
             <Container>
-              <Query query={GetTags} variables={{tags:{type:"Languages"}}}>
+              <Query
+                query={GetTags}
+                variables={{ tags: { type: "Languages" } }}
+              >
                 {({ loading, error, data }) => {
                   if (loading) return <div>Fetching</div>;
                   if (error) return <div>Error</div>;
@@ -98,8 +103,8 @@ class SecondStep extends React.Component {
                       placeholderText={
                         "Technical Requirement | Languages & Libraries"
                       }
-                      model={{languages: []}}
-                      name={'languages'}
+                      model={{ languages: [] }}
+                      name={"languages"}
                       getAddedOptions={this.onAddTags.bind(this)}
                       getNewAddedOptions={this.onAddTags.bind(this)}
                       options={data.tags}

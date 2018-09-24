@@ -4,11 +4,11 @@ import { Layout, Container } from "btech-layout";
 import styled from "styled-components";
 import { Button, Input, Select, TextArea } from "btech-base-forms-component";
 import MaterialIcon from "react-material-iconic-font";
-import ProfessionalExperience from './ProfessionalExperience';
-import AcademicBackground from './AcademicBackground';
-import AuditedCourse from './AuditedCourse'
-import Publications from './Publications';
-import Patents from './Patents';
+import ProfessionalExperience from "./ProfessionalExperience";
+import AcademicBackground from "./AcademicBackground";
+import AuditedCourse from "./AuditedCourse";
+import Publications from "./Publications";
+import Patents from "./Patents";
 import LineSeparator from "./LineSeparator";
 
 const SLabel = styled.div`
@@ -105,19 +105,29 @@ class AchievementsList extends React.Component {
     );
   }
 
-    onAddTags(index,tag) {
-        let tags = this.state.achievements[index] && this.state.achievements[index].category ? this.state.achievements[index].category : [];
-        !tag.name ? tag.name = tag.label : null;
-        let newTag = {...tag, type: this.props.type}
-        tags.push(newTag);
-        this.state.achievements[index].category = tags;
-        this.setState({achievements: this.state.achievements}, () => this.notifyParent());
+  onAddTags(index, tag) {
+    if (tag.label && tag.label.length > 0) {
+      let tags =
+        this.state.achievements[index] &&
+        this.state.achievements[index].category
+          ? this.state.achievements[index].category
+          : [];
+      !tag.name ? (tag.name = tag.label) : null;
+      let newTag = { ...tag, type: this.props.type };
+      tags.push(newTag);
+      this.state.achievements[index].category = tags;
+      this.setState({ achievements: this.state.achievements }, () =>
+        this.notifyParent()
+      );
     }
+  }
 
-    onCloseTags(e, tag, i,index) {
-        this.state.achievements[index].category.splice(i, 1);
-        this.setState({achievements: this.state.achievements}, () => this.notifyParent());
-    }
+  onCloseTags(e, tag, i, index) {
+    this.state.achievements[index].category.splice(i, 1);
+    this.setState({ achievements: this.state.achievements }, () =>
+      this.notifyParent()
+    );
+  }
 
   notifyParent() {
     this.props.onChange && this.props.onChange(this.state.achievements);
@@ -129,7 +139,7 @@ class AchievementsList extends React.Component {
     );
 
     return (
-      <Container style={{display: elements.length ? 'block' : 'none'}} >
+      <Container style={{ display: elements.length ? "block" : "none" }}>
         {elements.length ? (
           <Layout
             customTemplateColumns={"1fr auto"}
@@ -184,12 +194,48 @@ class AchievementsList extends React.Component {
               (item, index) =>
                 item.type === this.props.type ? (
                   item.edit ? (
-                    item.type === 'Academic Background' ? <AcademicBackground model={this.state.achievements[index]} handleSave={() => this.handleSave(index)} /> :
-                    item.type === 'Professional Experience' ? <ProfessionalExperience model={this.state.achievements[index]} handleSave={() => this.handleSave(index)} /> :
-                    item.type === 'Audited Courses' ? <AuditedCourse model={this.state.achievements[index]} handleSave={() => this.handleSave(index)} onAddTags={this.onAddTags.bind(this, index)} onCloseTags={(e, tag, i) => this.onCloseTags(e, tag, i, index)} options={[]} /> :
-                    item.type === 'Publications' ?  <Publications model={this.state.achievements[index]} handleSave={() => this.handleSave(index)} onAddTags={this.onAddTags.bind(this, index)} onCloseTags={(e, tag, i) => this.onCloseTags(e, tag, i, index)} options={[]}  /> :
-                    item.type === 'Patents' ? <Patents model={this.state.achievements[index]} handleSave={() => this.handleSave(index)} onAddTags={this.onAddTags.bind(this, index)} onCloseTags={(e, tag, i) => this.onCloseTags(e, tag, i, index)} options={[]}  /> : null
-                ): (
+                    item.type === "Academic Background" ? (
+                      <AcademicBackground
+                        model={this.state.achievements[index]}
+                        handleSave={() => this.handleSave(index)}
+                      />
+                    ) : item.type === "Professional Experience" ? (
+                      <ProfessionalExperience
+                        model={this.state.achievements[index]}
+                        handleSave={() => this.handleSave(index)}
+                      />
+                    ) : item.type === "Audited Courses" ? (
+                      <AuditedCourse
+                        model={this.state.achievements[index]}
+                        handleSave={() => this.handleSave(index)}
+                        onAddTags={this.onAddTags.bind(this, index)}
+                        onCloseTags={(e, tag, i) =>
+                          this.onCloseTags(e, tag, i, index)
+                        }
+                        options={[]}
+                      />
+                    ) : item.type === "Publications" ? (
+                      <Publications
+                        model={this.state.achievements[index]}
+                        handleSave={() => this.handleSave(index)}
+                        onAddTags={this.onAddTags.bind(this, index)}
+                        onCloseTags={(e, tag, i) =>
+                          this.onCloseTags(e, tag, i, index)
+                        }
+                        options={[]}
+                      />
+                    ) : item.type === "Patents" ? (
+                      <Patents
+                        model={this.state.achievements[index]}
+                        handleSave={() => this.handleSave(index)}
+                        onAddTags={this.onAddTags.bind(this, index)}
+                        onCloseTags={(e, tag, i) =>
+                          this.onCloseTags(e, tag, i, index)
+                        }
+                        options={[]}
+                      />
+                    ) : null
+                  ) : (
                     <Layout
                       paddingY={"10px"}
                       customTemplateColumns={"1fr auto"}
