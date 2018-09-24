@@ -12,21 +12,24 @@ import { theme } from "../../theme";
 
 const SDropdownItem = styled(DropdownItem)`
   cursor: pointer;
+  font-size: 12px;
+  
   :hover {
     background-color: ${props =>
       props.optionBackColor
         ? props.optionBackColor
-        : theme.color.primary} !important;
+        : theme.color.dropDownHover} !important;
     outline: none;
     color: ${props =>
       props.optionTextColor
         ? props.optionTextColor
-        : theme.color.default} !important;
+        : 'initial'} !important;
   }
 `;
 
 const STitle = styled.span`
-  margin-left: 5px;
+  margin: 0 5px;
+  font-size: 12px;
 `;
 
 /**

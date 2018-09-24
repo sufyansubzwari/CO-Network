@@ -17,13 +17,15 @@ const STitle = styled.label`
 `;
 
 const Dates = function(props) {
-  return (
-    <STitle {...props}>
-      {moment(props.startDate).format(props.dateFormat)}
-      <span style={{ margin: "0 5px" }}>{props.endDate ? "/" : null}</span>
-      {moment(props.endDate).format(props.dateFormat)}
-    </STitle>
-  );
+  if (props.startDate && props.endDate)
+    return (
+      <STitle {...props}>
+        {moment(props.startDate).format(props.dateFormat)}
+        <span style={{ margin: "0 5px" }}>{props.endDate ? "/" : null}</span>
+        {moment(props.endDate).format(props.dateFormat)}
+      </STitle>
+    );
+  else return <div />;
 };
 
 Dates.defaultProps = {

@@ -1,21 +1,12 @@
 import React from "react";
 import {
   CheckBoxList,
-  InputAutoComplete,
-  TagList,
   SalaryRange,
   CheckBox
 } from "btech-base-forms-component";
 import { Container, Layout } from "btech-layout";
 import SelectTag from "./../../../../../components/SelectTag/SelectTag";
-
-import {
-  USER_TAGS,
-  LOOKING_FOR,
-  INDUSTRY_SECTOR_OPTIONS,
-  JOB_TYPE,
-  JOB_TYPE_DEFAULT
-} from "../../constants/constants";
+import { JOB_TYPE_DEFAULT } from "../../../../../constants";
 import { GetTags } from "../../../../../apollo-client/tag";
 import { Query } from "react-apollo";
 

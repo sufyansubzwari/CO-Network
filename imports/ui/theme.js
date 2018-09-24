@@ -8,6 +8,7 @@ const color = {
   borderActiveColor: "#F92672",
   backgroundLight: "#f5f7fb",
   background: "#dadada",
+  dropDownHover: "#f6f6f6",
   default: "#FFFFFF",
   grey: "#dbdbdb",
   innerBackground: "#F9F9FB"

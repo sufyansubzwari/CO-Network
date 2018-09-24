@@ -5,12 +5,7 @@ import {
   TagList
 } from "btech-base-forms-component";
 import { Container, Layout } from "btech-layout";
-
-import {
-  USER_TAGS,
-  LOOKING_FOR,
-  LOOKING_FOR_DEFAULT
-} from "../../constants/constants";
+import { LOOKING_FOR_DEFAULT } from "../../../../../constants";
 import { GetTags } from "../../../../../apollo-client/tag";
 import { Query } from "react-apollo";
 

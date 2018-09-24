@@ -20,6 +20,7 @@ import { GetTags as tags } from "../../../../apollo-client/tag";
 class EventStep1 extends Component {
   constructor(props) {
     super(props);
+    this.dateFormat = "MM/DD/YYYY HH:mm";
     this.state = {
       event: this.props.data,
       category: COMMUNITYEVENTCATEGORIES
@@ -95,7 +96,10 @@ class EventStep1 extends Component {
     let event = this.state.event;
     event.startDate = startDate;
     event.endDate = endDate;
-    this.setState({ event: event });
+    this.setState(
+      { event: event },
+      () => this.props.onChange && this.props.onChange(this.state.event)
+    );
   }
 
   render() {
@@ -104,6 +108,7 @@ class EventStep1 extends Component {
       <Layout rowGap={"25px"}>
         <Container>
           <Input
+            required
             placeholderText={"Title"}
             name={"title"}
             model={this.state.event}
@@ -126,7 +131,7 @@ class EventStep1 extends Component {
             placeholderEndDate={"End Date"}
             startDate={this.state.event && this.state.event.startDate}
             endDate={this.state.event && this.state.event.endDate}
-            format={"MM/DD/YYYY HH:mm"}
+            format={this.dateFormat}
             showTimeSelect
             getValue={(startDate, endDate) =>
               this.onDatesChange(startDate, endDate)
