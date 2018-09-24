@@ -108,7 +108,7 @@ class JobsFilters extends React.Component {
           />
           <Layout
             mt={"10px"}
-            customTemplateColumns={"80px 80px 80px"}
+            customTemplateColumns={"70px 70px 70px"}
             colGap={"10px"}
           >
             {this.state.locationTags.length > 0 ? this.state.locationTags.map((item, key) =>
@@ -168,16 +168,16 @@ class JobsFilters extends React.Component {
           />
           <Layout
             mt={"10px"}
-            customTemplateColumns={"80px 80px 80px"}
+            customTemplateColumns={"70px 70px 70px"}
             colGap={"10px"}
           >
-            <BigTag text={"Biotechnology"} icon={"label"} connected={false}/>
-            <BigTag text={"Oil & Gas"} icon={"label"} connected={true}/>
-            <BigTag
-              text={"Application & BioInformatics"}
-              icon={"label"}
-              connected={true}
-            />
+            {/*<BigTag text={"Biotechnology"} icon={"label"} connected={false}/>*/}
+            {/*<BigTag text={"Oil & Gas"} icon={"label"} connected={true}/>*/}
+            {/*<BigTag*/}
+              {/*text={"Application & BioInformatics"}*/}
+              {/*icon={"label"}*/}
+              {/*connected={true}*/}
+            {/*/>*/}
           </Layout>
         </Filter>
         <Separator/>

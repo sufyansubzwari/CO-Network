@@ -103,92 +103,92 @@ class EventsFilters extends React.Component {
       <FilterContainer
         onClose={() => this.props.onClose && this.props.onClose()}
       >
-        <Filter>
-          <GeoInputLocation
-            name={"location"}
-            model={this.state}
-            placeholder={"Location"}
-            isGeoLocationAvailable={true}
-            onChange={this.notifyParentLocation.bind(this)}
-          />
-          <Layout
-            mt={"10px"}
-            customTemplateColumns={"70px 70px 70px"}
-            colGap={"10px"}
-          >
-            {this.state.locationTags.length > 0
-              ? this.state.locationTags.map((item, key) => (
-                  <BigTag
-                    key={key}
-                    text={item.address}
-                    icon={"pin"}
-                    connected={item.active}
-                    onClick={() => this.tagSelection(key)}
-                  />
-                ))
-              : null}
-          </Layout>
-        </Filter>
-        <Separator />
-        <Filter>
-          <DatePickerRange
-            format={"DD-MM"}
-            labelText={"Dates"}
-            placeholder={"dd/mm"}
-            getValue={(startDate, endDate) => {
-              let filters = this.state.filters;
-              startDate
-                ? (filters.startDate = { gte: startDate.toISOString() })
-                : delete filters.startDate;
-              endDate
-                ? (filters.endDate = { lte: endDate.toISOString() })
-                : delete filters.endDate;
+          <Filter>
+            <GeoInputLocation
+              name={"location"}
+              model={this.state}
+              placeholder={"Location"}
+              isGeoLocationAvailable={true}
+              onChange={this.notifyParentLocation.bind(this)}
+            />
+            <Layout
+              mt={"10px"}
+              customTemplateColumns={"70px 70px 70px"}
+              colGap={"10px"}
+            >
+              {this.state.locationTags.length > 0
+                ? this.state.locationTags.map((item, key) => (
+                    <BigTag
+                      key={key}
+                      text={item.address}
+                      icon={"pin"}
+                      connected={item.active}
+                      onClick={() => this.tagSelection(key)}
+                    />
+                  ))
+                : null}
+            </Layout>
+          </Filter>
+          <Separator />
+          <Filter>
+            <DatePickerRange
+              format={"DD-MM"}
+              labelText={"Dates"}
+              placeholder={"dd/mm"}
+              getValue={(startDate, endDate) => {
+                let filters = this.state.filters;
+                startDate
+                  ? (filters.startDate = { gte: startDate.toISOString() })
+                  : delete filters.startDate;
+                endDate
+                  ? (filters.endDate = { lte: endDate.toISOString() })
+                  : delete filters.endDate;
 
-              this.setState(
-                {
-                  filters: filters
-                },
-                () => this.props.setFilters("events", this.state.filters)
-              );
-            }}
-          />
-        </Filter>
-        <Separator />
-        <Filter>
-          <SalaryRange
-            labelText={"Prices"}
-            placeholder={"000"}
-            min={this.state.price && this.state.price.min}
-            max={this.state.price && this.state.price.max}
-            getValue={data => {
-              let filters = this.state.filters;
-              let options = {};
-              data.min ? (options.min = { gte: data.min }) : null;
-              data.max ? (options.max = { lte: data.max }) : null;
-              filters.tickets = {
-                elemMatch: {
-                  ...options
-                }
-              };
-              this.setState(
-                {
-                  filters: filters,
-                  price: data
-                },
-                () => this.props.setFilters("events", this.state.filters)
-              );
-            }}
-          />
-        </Filter>
-        <Separator />
-        <Filter>
-          <CheckBoxList
-            placeholderText={"Event Category"}
-            options={this.state.category}
-            getValue={selected => this.addFilters("category", selected)}
-          />
-        </Filter>
-        <Separator />
+                this.setState(
+                  {
+                    filters: filters
+                  },
+                  () => this.props.setFilters("events", this.state.filters)
+                );
+              }}
+            />
+          </Filter>
+          <Separator />
+          <Filter>
+            <SalaryRange
+              labelText={"Prices"}
+              placeholder={"000"}
+              min={this.state.price && this.state.price.min}
+              max={this.state.price && this.state.price.max}
+              getValue={data => {
+                let filters = this.state.filters;
+                let options = {};
+                data.min ? (options.min = { gte: data.min }) : null;
+                data.max ? (options.max = { lte: data.max }) : null;
+                filters.tickets = {
+                  elemMatch: {
+                    ...options
+                  }
+                };
+                this.setState(
+                  {
+                    filters: filters,
+                    price: data
+                  },
+                  () => this.props.setFilters("events", this.state.filters)
+                );
+              }}
+            />
+          </Filter>
+          <Separator />
+          <Filter>
+            <CheckBoxList
+              placeholderText={"Event Category"}
+              options={this.state.category}
+              getValue={selected => this.addFilters("category", selected)}
+            />
+          </Filter>
+          <Separator />
       </FilterContainer>
     );
   }
