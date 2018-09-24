@@ -66,12 +66,18 @@ class UserProfile extends Component {
     );
     let userObject = Object.assign(user, currentUser);
     this.state = {
+      openPreview:false,
       user: userObject
     };
     this.handleBackgroundChange = this.handleBackgroundChange.bind(this);
     this.handleUserPhotoChange = this.handleUserPhotoChange.bind(this);
   }
 
+  componentDidMount(){
+    setTimeout(()=>{
+      this.setState({openPreview:true})
+    },200)
+  }
   onCancel() {
     this.props.history.push(`/`);
   }
@@ -144,6 +150,7 @@ class UserProfile extends Component {
           </Mutation>
         </Container>
         <Preview
+          isOpen={this.state.openPreview}
           showAvatar
           key={"rightSide"}
           navlinks={["Details"]}
