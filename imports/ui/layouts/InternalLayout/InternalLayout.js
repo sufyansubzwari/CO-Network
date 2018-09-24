@@ -5,6 +5,7 @@ import styled from "styled-components";
 
 const ResponsiveContainer= styled(Container)`
     transform: translateX(100%);
+    z-index: 11;
     ${mixins.media.desktop`transform:none;`}
 `
 

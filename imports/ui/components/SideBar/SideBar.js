@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Container } from "btech-layout";
+import { Container, mixins, StyleUtil } from "btech-layout";
 import styled from "styled-components";
 import { connect } from "react-redux";
 import { toggleSideBar } from "../../actions/SideBarActions";
@@ -9,6 +9,8 @@ import EventsFilters from "../../modules/event-module/filters";
 import JobsFilters from "../../modules/jobs-module/filters";
 import OrganizationFilters from "../../modules/organization-module/filters";
 import posed from "react-pose";
+
+
 
 const SSideBarContainerStyed = styled(Container)`
   border-right: ${props => "1px solid " + props.theme.borderColor};
@@ -101,7 +103,7 @@ class SideBar extends Component {
       <SSideBarContainer
         padding={"0 30px"}
         mdPadding={"0"}
-        pose={isOpen ? "openSidebar" : (right?"closedSidebarRight":"closedSidebar")}
+        pose={isOpen ? "openSidebar" : "closedSidebar"}
         background={"white"}
         fullY
         gridArea="SideBar"

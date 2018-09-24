@@ -51,6 +51,13 @@ class Navbar extends Component {
     this.state = { isOpen: false };
   }
 
+  openNavbar=()=>{
+    const isOpen=!this.state.isOpen;
+    this.setState({ isOpen});
+    this.props.onOpenNavbar&&this.props.onOpenNavbar(isOpen)
+
+  }
+
   render() {
     let activeLink = -1;
     navs.some((item, index) => {
@@ -77,7 +84,7 @@ class Navbar extends Component {
         >
           <Layout key={"header"} mdMarginY={"30px"} lgMarginY={"30px"}>
             <HomeButton
-              onOpenNavbar={() => this.setState({ isOpen: !this.state.isOpen })}
+              onOpenNavbar={this.openNavbar}
             />
           </Layout>
           <UserNavbarSection key={"footer"} curUser={this.props.curUser} />
