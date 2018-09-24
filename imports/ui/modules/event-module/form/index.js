@@ -82,7 +82,6 @@ class EventForm extends Component {
           this.props.onFinish && this.props.onFinish(this.state.event)
         }
         showProgress
-        radioColor={"#000000"}
         onCancel={() => this.props.onCancel && this.props.onCancel()}
       >
         <WizardStepForm title={"Event Details"} isValid>
@@ -109,12 +108,12 @@ class EventForm extends Component {
             onChange={event => this.handleChange(event)}
           />
         </WizardStepForm>
-        <WizardStepForm title={"Receive Payments"} isValid>
-          <EventStep5
-            data={this.state.event}
-            onChange={event => this.handleChange(event)}
-          />
-        </WizardStepForm>
+        {/*<WizardStepForm title={"Receive Payments"} isValid>*/}
+        {/*<EventStep5*/}
+        {/*data={this.state.event}*/}
+        {/*onChange={event => this.handleChange(event)}*/}
+        {/*/>*/}
+        {/*</WizardStepForm>*/}
       </MlWizardForm>
     );
   }

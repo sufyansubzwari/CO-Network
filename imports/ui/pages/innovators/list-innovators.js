@@ -185,7 +185,7 @@ class ListInnovators extends Component {
                 {(updateOrgImages, { job }) => (
                   <Preview
                     key={"rightSide"}
-                    navlinks={["Details", "Vision", "Engagements", "..."]}
+                    navlinks={["Details"]}
                     navClicked={index => console.log(index)}
                     navOptions={[
                       {

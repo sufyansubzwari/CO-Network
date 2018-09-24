@@ -55,7 +55,6 @@ class UserForm extends Component {
         }
         onCancel={() => this.props.onCancel && this.props.onCancel()}
         showProgress
-        radioColor={"#000000"}
       >
         <WizardStepForm title={"User Details"} isValid>
           <FirstStep

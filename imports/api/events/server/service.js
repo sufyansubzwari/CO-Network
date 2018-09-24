@@ -40,15 +40,9 @@ class EventsService {
    * @return {Object} Event updated
    */
   static updateImage = async (id, image) => {
-    const event = await Events.collection.findOne(id);
-    if (event.image)
-      await Events.collection.update(id, {
-        $set: { image: image }
-      });
-    else
-      await Events.collection.update(id, {
-        $addToSet: { image: image }
-      });
+    await Events.collection.update(id, {
+      $set: { image: image }
+    });
     return await Events.collection.findOne(id);
   };
   /**

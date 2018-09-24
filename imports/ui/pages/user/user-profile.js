@@ -146,6 +146,7 @@ class UserProfile extends Component {
         <Preview
           showAvatar
           key={"rightSide"}
+          navlinks={["Details"]}
           index={this.state.selectedIndex}
           data={this.state.selectedItem}
           image={this.state.user && this.state.user.image}

@@ -107,7 +107,7 @@ const preview = {
   locations: {
     family: "Roboto Mono",
     size: "14px",
-    lineheight: "24px",
+    lineheight: "initial",
     color: "#2b2b2b"
   },
   social: {

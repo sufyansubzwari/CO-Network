@@ -43,23 +43,13 @@ class OrganizationsService {
   static updateImage = async (id, image, cover) => {
     const organization = await Organizations.collection.findOne(id);
     if (image)
-      if (organization.image)
-        await Organizations.collection.update(id, {
-          $set: { image: image }
-        });
-      else
-        await Organizations.collection.update(id, {
-          $addToSet: { image: image }
-        });
+      await Organizations.collection.update(id, {
+        $set: { image: image }
+      });
     if (cover)
-      if (organization.cover)
-        await Organizations.collection.update(id, {
-          $set: { cover: cover }
-        });
-      else
-        await Organizations.collection.update(id, {
-          $addToSet: { cover: cover }
-        });
+      await Organizations.collection.update(id, {
+        $set: { cover: cover }
+      });
     return await Organizations.collection.findOne(id);
   };
   /**

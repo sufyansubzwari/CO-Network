@@ -1,11 +1,17 @@
 import React from "react";
 import { Layout, Container } from "btech-layout";
-import { Title, Location, Social, Text, TagsAdd } from "./components/index";
+import {
+  Title,
+  Location,
+  Social,
+  Text,
+  TagsAdd,
+  Dates
+} from "./components/index";
 
 class EventPreviewBody extends React.Component {
   constructor(props) {
     super(props);
-
     this.state = {
       event: props.event ? props.event : {}
     };
@@ -62,8 +68,12 @@ class EventPreviewBody extends React.Component {
       : [];
 
     return (
-      <Layout rowGap={"15px"}>
+      <Layout rowGap={"10px"}>
         <Title text={this.state.event.title} />
+        <Dates
+          startDate={this.state.event.startDate}
+          endDate={this.state.event.endDate}
+        />
         <Location
           text={
             this.state.event.place &&
