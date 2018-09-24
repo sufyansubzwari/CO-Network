@@ -10,13 +10,12 @@ import { withRouter } from "react-router-dom";
 import styled from "styled-components";
 import { Mutation } from "react-apollo";
 import { UpdateSignUpStatus } from "../../../../apollo-client/user";
-
 import {
   SIGNUP_TEXT,
   SIGNUP_TEXT_2,
   SIGNUP_TEXT_3,
   SIGNUP_OPTIONS
-} from "../constants/constants";
+} from "../../../../constants";
 import { theme } from "./../../../../theme";
 import links from "./links.constant";
 

@@ -4,7 +4,7 @@ import { Container, Layout } from "btech-layout";
 import { GeoInputLocation } from "btech-location";
 import styled from "styled-components";
 import services from "../../../../../components/LoginModal/service.constant";
-import { EMAIL_REGEX } from "../../constants/constants";
+import { EMAIL_REGEX } from "../../../../../constants";
 import Authorization from "../../../../../services/authorization";
 import { UpdateIdentities } from "../../../../../apollo-client/user";
 import { Mutation } from "react-apollo";

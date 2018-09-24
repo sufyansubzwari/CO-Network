@@ -1,19 +1,12 @@
 import React from "react";
-import { Container, Layout } from "btech-layout";
+import { Layout } from "btech-layout";
 import Achievements from "../../../../../components/Achievements/Achievements";
-
-import { USER_TAGS, LOOKING_FOR } from "../../constants/constants";
 
 class FifthStep extends React.Component {
   constructor(props) {
     super(props);
-
     let data = props.data ? props.data : {};
-
-    this.state = {
-      user: data
-    };
-
+    this.state = { user: data };
     this.handleChange = this.handleChange.bind(this);
   }
 
@@ -45,7 +38,6 @@ class FifthStep extends React.Component {
           onChange={this.handleChange}
           achievements={this.state.user.achievements}
         />
-
       </Layout>
     );
   }

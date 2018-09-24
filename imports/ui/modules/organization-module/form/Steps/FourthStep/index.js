@@ -7,12 +7,7 @@ import {
 } from "btech-base-forms-component";
 import { Container, Layout } from "btech-layout";
 import SelectTag from "../../../../../components/SelectTag/SelectTag";
-import {
-  ORGANIZATION_TAGS,
-  INDUSTRY_SECTOR_OPTIONS,
-  JOB_TYPE,
-  ORGANIZATION_TYPE
-} from "../../constants/constants";
+import { JOB_TYPE } from "../../../../../constants";
 import { GetTags } from "../../../../../apollo-client/tag";
 import { Query } from "react-apollo";
 
@@ -25,14 +20,14 @@ class FourthStep extends React.Component {
     this.state = {
       organization: data,
       industry: [],
-      jobtype: JOB_TYPE
+      jobType: JOB_TYPE
     };
   }
 
   componentWillMount() {
     if (this.props.data && this.props.data.tech.jobType)
       this.setState({
-        jobtype: JOB_TYPE.map(e => {
+        jobType: JOB_TYPE.map(e => {
           e["active"] = this.props.data.tech.jobType.some(
             element => e.label === element.label
           );
@@ -42,14 +37,14 @@ class FourthStep extends React.Component {
   }
 
   changeJobTypes(actives) {
-    const selected = this.state.jobtype.map((job, index) => {
+    const selected = this.state.jobType.map((job, index) => {
       job["active"] = actives[index];
       return job;
     });
     const jobtypes = selected.filter(element => element.active);
     const temp = this.state.organization;
     temp["tech"]["jobType"] = jobtypes;
-    this.setState({ jobtype: selected, organization: temp }, () =>
+    this.setState({ jobType: selected, organization: temp }, () =>
       this.notifyParent()
     );
   }
@@ -201,7 +196,7 @@ class FourthStep extends React.Component {
         </Query>
         <CheckBoxList
           placeholderText={"Job Type"}
-          options={this.state.jobtype}
+          options={this.state.jobType}
           columns={2}
           checkboxVerticalSeparation={"10px"}
           checkboxSize={"15px"}

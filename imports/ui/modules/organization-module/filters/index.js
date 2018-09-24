@@ -5,12 +5,11 @@ import {GeoInputLocation} from "btech-location";
 import {
   CheckBoxList,
   InputAutoComplete,
-  TagList,
-  Button
+  TagList
 } from "btech-base-forms-component";
 import {
   ORG_TYPE_NUMBER
-} from "../form/constants/constants";
+} from "../../../constants";
 import PropsTypes from "prop-types";
 import FilterContainer from "../../../components/FiltersContainer/FiltersContainer";
 import {cleanFilters, setFilters} from "../../../actions/SideBarActions";

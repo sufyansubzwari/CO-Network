@@ -10,7 +10,7 @@ import {
 } from "btech-base-forms-component";
 import { GeoInputLocation } from "btech-location";
 import { Container, Layout } from "btech-layout";
-import { JOB_TYPE, POSITION_TAGS } from "../../constants/constants";
+import { JOB_TYPE, POSITION_TAGS } from "../../../../../constants";
 import PropTypes from "prop-types";
 import { Query } from "react-apollo";
 import { GetTags as tags } from "../../../../../apollo-client/tag";

@@ -6,13 +6,10 @@ import {
   SwitchButton
 } from "btech-base-forms-component";
 import { Container, Layout } from "btech-layout";
-
 import {
-  USER_TAGS,
-  LOOKING_FOR,
   PREFERRED_STAGE,
   LOOKING_FOR_DEFAULT_SPEAKER
-} from "../../constants/constants";
+} from "../../../../../constants";
 import { GetTags } from "../../../../../apollo-client/tag";
 import { Query } from "react-apollo";
 

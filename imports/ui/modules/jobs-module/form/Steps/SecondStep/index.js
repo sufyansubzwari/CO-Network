@@ -7,7 +7,7 @@ import {
   InputAutoComplete
 } from "btech-base-forms-component";
 import { Container, Layout } from "btech-layout";
-import { EXPERIENCE_REQUIERED } from "../../constants/constants";
+import { EXPERIENCE_REQUIERED } from "../../../../../constants";
 import { GetTags } from "../../../../../apollo-client/tag";
 import { Query } from "react-apollo";
 import PropTypes from "prop-types";
