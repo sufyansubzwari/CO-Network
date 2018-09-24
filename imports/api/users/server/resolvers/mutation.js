@@ -130,9 +130,9 @@ Mutation.user = async (root, {user}, context) => {
   let profile = Object.assign({}, user.profile);
   /****** Updating tags in database ******/
   if (profile.knowledge && profile.knowledge.languages)
-    profile.knowledge.languages = await Tags.service.normalizeTags(profile.knowledge.languages);
+    profile.knowledge.languages = await Tags.service.normalizeTagsWithLevels(profile.knowledge.languages);
   if (profile.knowledge && profile.knowledge.curiosity)
-    profile.knowledge.curiosity = await Tags.service.normalizeTags(profile.knowledge.curiosity);
+    profile.knowledge.curiosity = await Tags.service.normalizeTagsWithLevels(profile.knowledge.curiosity);
   if (profile.professional && profile.professional.industry)
     profile.professional.industry = await Tags.service.normalizeTags(profile.professional.industry);
   if (profile.speaker && profile.speaker.otherpreferred)
