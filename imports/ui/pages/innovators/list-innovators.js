@@ -47,7 +47,8 @@ class ListInnovators extends Component {
       },
       loading: false,
       limit: 10,
-      filter: ""
+      filter: "",
+      filterStatus: {}
     };
     this.customRenderItem = this.customRenderItem.bind(this);
   }
@@ -64,7 +65,14 @@ class ListInnovators extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    if (nextProps.filterStatus && nextProps.filterStatus.filters) {
+    if (
+      nextProps.filterStatus &&
+      nextProps.filterStatus.filters &&
+      JSON.stringify(this.state.filterStatus) !==
+        JSON.stringify(nextProps.filterStatus.filters)
+    ) {
+      const filters = Object.assign({}, nextProps.filterStatus.filters);
+      this.setState({ filterStatus: filters });
       this.reFetchQuery();
     }
   }
@@ -73,7 +81,7 @@ class ListInnovators extends Component {
     this.props.data.refetch({
       limit: this.state.limit,
       filter: this.state.filter || "",
-      organizations: this.props.filterStatus.filters || {}
+      organizations: this.state.filterStatus || {}
     });
   }
 

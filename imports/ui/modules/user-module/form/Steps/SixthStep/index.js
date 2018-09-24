@@ -94,13 +94,16 @@ class SixthStep extends React.Component {
   }
 
   onAddTags(name, type, tag) {
-    let newTag = Object.assign({}, tag);
-    let tags = (this.state.user.speaker && this.state.user.speaker[name]) || [];
-    !newTag.name ? (newTag.name = newTag.label) : null;
-    newTag.type = type;
-    tags.push(newTag);
-    this.state.user.speaker[name] = tags;
-    this.setState({ speaker: this.state.user }, () => this.notifyParent());
+    if (tag.label && tag.label.length > 0) {
+      let newTag = Object.assign({}, tag);
+      let tags =
+        (this.state.user.speaker && this.state.user.speaker[name]) || [];
+      !newTag.name ? (newTag.name = newTag.label) : null;
+      newTag.type = type;
+      tags.push(newTag);
+      this.state.user.speaker[name] = tags;
+      this.setState({ speaker: this.state.user }, () => this.notifyParent());
+    }
   }
 
   onCloseTags(e, tag, index, name) {
@@ -233,7 +236,10 @@ class SixthStep extends React.Component {
           />
           <Layout customTemplateColumns={"1fr 1fr"}>
             <Container>
-              <Query query={GetTags} variables={{ tags: { type: "Preferred" } }}>
+              <Query
+                query={GetTags}
+                variables={{ tags: { type: "Preferred" } }}
+              >
                 {({ loading, error, data }) => {
                   if (loading) return <div>Fetching</div>;
                   if (error) return <div>Error</div>;
@@ -242,11 +248,13 @@ class SixthStep extends React.Component {
                       placeholderText={"Other"}
                       getAddedOptions={this.onAddTags.bind(
                         this,
-                        "otherpreferred", "Preferred"
+                        "otherpreferred",
+                        "Preferred"
                       )}
                       getNewAddedOptions={this.onAddTags.bind(
                         this,
-                        "otherpreferred", "Preferred"
+                        "otherpreferred",
+                        "Preferred"
                       )}
                       options={data.tags}
                       model={{ others: [] }}

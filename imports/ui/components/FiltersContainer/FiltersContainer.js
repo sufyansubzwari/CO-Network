@@ -54,7 +54,7 @@ const FiltersContainer = function(props) {
       autoHideDuration={props.autoHideDuration}
       style={{ height: "100%", overflow: "display" }}
     >
-      <SContainer fullY>
+      <SContainer fullY customTemplateRows={'auto 1fr'}>
         <Layout customTemplateColumns={"1fr auto"}>
           <h6>Filters</h6>
           <SButton
@@ -67,7 +67,7 @@ const FiltersContainer = function(props) {
             </Icon>
           </SButton>
         </Layout>
-        {props.children}
+        <Container>{props.children}</Container>
       </SContainer>
     </Scrollbars>
   );
