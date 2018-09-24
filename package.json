@@ -26,7 +26,7 @@
     "bcrypt": "^3.0.0",
     "bcrypt-nodejs": "0.0.3",
     "body-parser": "^1.18.2",
-    "btech-base-forms-component": "^1.9.7",
+    "btech-base-forms-component": "^1.9.9",
     "btech-card-list-component": "^1.3.9",
     "btech-horizantal-navbar": "^1.2.0",
     "btech-layout": "^1.1.7",

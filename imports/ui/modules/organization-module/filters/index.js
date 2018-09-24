@@ -1,7 +1,7 @@
 import React from "react";
-import {Layout, Container } from "btech-layout";
+import {Layout, Container} from "btech-layout";
 import styled from "styled-components";
-import { GeoInputLocation } from "btech-location";
+import {GeoInputLocation} from "btech-location";
 import {
   CheckBoxList,
   InputAutoComplete,
@@ -9,7 +9,6 @@ import {
   Button
 } from "btech-base-forms-component";
 import {
-  ORGANIZATION_TAGS,
   ORG_TYPE_NUMBER
 } from "../form/constants/constants";
 import PropsTypes from "prop-types";
@@ -17,7 +16,7 @@ import FilterContainer from "../../../components/FiltersContainer/FiltersContain
 import {cleanFilters, setFilters} from "../../../actions/SideBarActions";
 import {connect} from "react-redux";
 import BigTag from "./../../../components/BigTag/BigTag";
-import {graphql} from "react-apollo";
+import {Query} from "react-apollo";
 import {GetTags} from "../../../apollo-client/tag";
 
 const Filter = styled(Container)`
@@ -29,7 +28,7 @@ const Separator = styled.div`
   width: 100%;
   opacity: 0.5;
   background-color: ${props =>
-    props.theme ? props.theme.filter.separatorColor : "black"};
+  props.theme ? props.theme.filter.separatorColor : "black"};
 `;
 
 class OrganizationFilters extends React.Component {
@@ -38,26 +37,23 @@ class OrganizationFilters extends React.Component {
     this.state = {
       location: {
         address: "",
-        location: { lat: "", lng: "" },
+        location: {lat: "", lng: ""},
         fullLocation: {}
       },
       locationTags: [],
-      info_DOT_orgType: ORG_TYPE_NUMBER.map(item => ({label: item.label, active: item.active, number: item.number})),
-      industry: "",
-      filters:{},
-      industryOptions: []
+      orgType: ORG_TYPE_NUMBER.map(item => ({
+        label: item.label,
+        active: item.active,
+        number: item.number
+      })),
+      filters: {},
+      tech_DOT_industry: [],
+      description: [],
     };
   }
 
   componentWillMount() {
     this.props.cleanFilters();
-  }
-
-  componentWillReceiveProps(nextProps) {
-    if (nextProps.data && !nextProps.data.loading && nextProps.data.tags) {
-      let industryOptions = JSON.parse(JSON.stringify(nextProps.data.tags));
-      this.setState({industryOptions: industryOptions})
-    }
   }
 
   addFilters(type, actives) {
@@ -88,15 +84,50 @@ class OrganizationFilters extends React.Component {
   tagSelection(key) {
     let tags = this.state.locationTags;
     tags[key].active = !tags[key].active;
-    this.setState({locationTags: tags}, () => this.checkFilters())
-
+    this.setState({locationTags: tags}, () => this.checkFilters());
   }
 
-  checkFilters(){
+  onAddTags(type, tag) {
+    if (tag.label && tag.label.length > 0) {
+      let newTag = Object.assign({}, tag);
+      let tags = this.state[type];
+      tags.push(newTag);
+      this.state.filters[type] = {'in': this.state[type].map(item => item._id)};
+      this.setState(
+        {
+          [type]: tags,
+          filters: this.state.filters
+        },
+        () => this.props.setFilters("organizations", this.state.filters)
+      );
+    }
+  }
+
+  onCloseTags(e, tag, index, type) {
+    this.state[type].splice(index, 1);
+    if (this.state[type].length > 0)
+      this.state.filters[type] = {
+        'in': this.state[type].map(item => item._id)
+      };
+    else {
+      delete this.state.filters[type];
+    }
+    this.setState(
+      {
+        [type]: this.state[type],
+        filters: this.state.filters
+      },
+      () => this.props.setFilters("organizations", this.state.filters)
+    );
+  }
+
+  checkFilters() {
     let actives = this.state.locationTags.filter(item => item.active);
     let filters = this.state.filters;
-    actives.length > 0 ? filters.location = actives : delete filters.location;
-    this.setState({filters: filters}, () => this.props.setFilters("events", filters));
+    actives.length > 0 ? (filters.location = actives) : delete filters.location;
+    this.setState({filters: filters}, () =>
+      this.props.setFilters("organizations", filters)
+    );
   }
 
   render() {
@@ -104,7 +135,7 @@ class OrganizationFilters extends React.Component {
       <FilterContainer
         onClose={() => this.props.onClose && this.props.onClose()}
       >
-        <Separator />
+        <Separator/>
         <Filter>
           <GeoInputLocation
             name={"location"}
@@ -118,53 +149,92 @@ class OrganizationFilters extends React.Component {
             customTemplateColumns={"70px 70px 70px"}
             colGap={"10px"}
           >
-            {this.state.locationTags.length > 0 ? this.state.locationTags.map((item, key) =>
-              <BigTag key={key} text={item.address} icon={"pin"} connected={item.active}
-                      onClick={this.tagSelection.bind(this, key)}/>
-            ) : null}
+            {this.state.locationTags.length > 0
+              ? this.state.locationTags.map((item, key) => (
+                <BigTag
+                  key={key}
+                  text={item.address}
+                  icon={"pin"}
+                  connected={item.active}
+                  onClick={this.tagSelection.bind(this, key)}
+                />
+              ))
+              : null}
           </Layout>
         </Filter>
-        <Separator />
+        <Separator/>
         <Filter>
-          <InputAutoComplete
-            placeholderText={"Tags"}
-            name={"tags"}
-            model={this.state}
-            options={[
-              { label: "option1", value: "option1" },
-              { label: "option2", value: "option2" },
-              { label: "option3", value: "option3" }
-            ]}
-          />
+          <Query
+            query={GetTags}
+            variables={{tags: {type: "OrgDesc"}}}
+          >
+            {({loading, error, data}) => {
+              if (loading) return <div>Fetching</div>;
+              if (error) return <div>Error</div>;
+              return (
+                <InputAutoComplete
+                  placeholderText={"Tags"}
+                  name={"other"}
+                  model={{other: []}}
+                  options={data.tags}
+                  getAddedOptions={this.onAddTags.bind(this, "description")}
+                  getNewAddedOptions={this.onAddTags.bind(this, "description")}
+                />
+              );
+            }}
+          </Query>
           <Container mt={"10px"}>
             <TagList
-              tags={ORGANIZATION_TAGS}
+              tags={this.state.description || []}
               closeable={true}
-              checkCloseableItem={(tag, index) => {
-                return tag.userAdd === true;
-              }}
-              onClose={(tag, index) => console.log("close Item", tag)}
+              // checkCloseableItem={(tag, index) => {
+              //   return tag.userAdd === true;
+              // }}
+              onClose={(e, tag, index) => this.onCloseTags(e, tag, index, "description")}
             />
           </Container>
         </Filter>
-        <Separator />
+        <Separator/>
         <Filter>
           <CheckBoxList
             placeholderText={"Org Type"}
-            options={this.state.info_DOT_orgType}
-            getValue={(selected) => this.addFilters("info_DOT_orgType", selected)}
+            options={this.state.orgType}
+            getValue={selected => this.addFilters("orgType", selected)}
           />
         </Filter>
-        <Separator />
+        <Separator/>
         <Filter>
-          <InputAutoComplete
-            placeholderText={"Industry | Sector"}
-            name={"industry"}
-            model={this.state}
-            options={this.state.industryOptions}
-          />
+          <Query
+            query={GetTags}
+            variables={{tags: {type: "INDUSTRY"}}}
+          >
+            {({loading, error, data}) => {
+              if (loading) return <div>Fetching</div>;
+              if (error) return <div>Error</div>;
+              return (
+                <InputAutoComplete
+                  placeholderText={"Industry | Sector"}
+                  name={"other"}
+                  model={{other: []}}
+                  options={data.tags}
+                  getAddedOptions={this.onAddTags.bind(this, "tech_DOT_industry")}
+                  getNewAddedOptions={this.onAddTags.bind(this, "tech_DOT_industry")}
+                />
+              );
+            }}
+          </Query>
+          <Container mt={"10px"}>
+            <TagList
+              tags={this.state.tech_DOT_industry || []}
+              closeable={true}
+              // checkCloseableItem={(tag, index) => {
+              //   return tag.userAdd === true;
+              // }}
+              onClose={(e, tag, index) => this.onCloseTags(e, tag, index, "tech_DOT_industry")}
+            />
+          </Container>
         </Filter>
-        <Separator />
+        <Separator/>
         <Filter>
           <CheckBoxList
             placeholderText={"My Jobs"}
@@ -173,11 +243,11 @@ class OrganizationFilters extends React.Component {
                 label: "My Looking for Talent",
                 active: true
               },
-              { label: "Hosting Events", active: false }
+              {label: "Hosting Events", active: false}
             ]}
           />
         </Filter>
-        <Separator />
+        <Separator/>
       </FilterContainer>
     );
   }
@@ -202,10 +272,4 @@ const mapDispatchToProps = dispatch => {
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(graphql(GetTags, {
-  options: () => ({
-    variables: {
-      tags: {type: "INDUSTRY"}
-    },
-  }),
-})(OrganizationFilters));
+)(OrganizationFilters);
