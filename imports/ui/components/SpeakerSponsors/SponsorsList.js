@@ -133,6 +133,7 @@ class SponsorsList extends React.Component {
             <SLabel>{this.props.type}</SLabel>
             <Layout customTemplateColumns={"auto auto auto"} colGap={"5px"}>
               <Button
+                type={"button"}
                 secondary
                 height={"auto"}
                 color={"black"}
@@ -145,6 +146,7 @@ class SponsorsList extends React.Component {
                 <MaterialIcon type={"plus-circle"} />
               </Button>
               <Button
+                type={"button"}
                 secondary
                 height={"auto"}
                 color={"black"}
@@ -159,6 +161,7 @@ class SponsorsList extends React.Component {
                 <MaterialIcon type={"edit"} />
               </Button>
               <Button
+                type={"button"}
                 secondary
                 height={"auto"}
                 color={"black"}
@@ -193,6 +196,7 @@ class SponsorsList extends React.Component {
                           colGap={"5px"}
                         >
                           <Button
+                            type={"button"}
                             secondary
                             height={"auto"}
                             color={"black"}
@@ -205,6 +209,7 @@ class SponsorsList extends React.Component {
                             <MaterialIcon type={"edit"} />
                           </Button>
                           <Button
+                            type={"button"}
                             secondary
                             height={"auto"}
                             color={"black"}

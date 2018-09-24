@@ -102,6 +102,7 @@ class TicketItem extends Component {
               <LineSeparator />
               <Button
                 secondary
+                type={"button"}
                 color={"black"}
                 opacity={"0.5"}
                 border={"none"}

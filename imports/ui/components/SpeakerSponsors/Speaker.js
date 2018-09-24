@@ -47,6 +47,7 @@ export default (Speaker = function(props) {
           <Layout customTemplateColumns={"1fr auto"}>
             <LineSeparator />
             <Button
+              type={"button"}
               secondary
               height={"auto"}
               color={"black"}
