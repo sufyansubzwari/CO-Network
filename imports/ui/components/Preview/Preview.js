@@ -6,6 +6,25 @@ import MaterialIcon from "react-material-iconic-font";
 import { Scrollbars } from "react-custom-scrollbars";
 import { Button } from "btech-base-forms-component";
 import TopPreview from "./TopPreview";
+import posed from "react-pose";
+
+const PreviewContainer = posed(Layout)({
+  openPreview: {
+    x: "0%",
+    staggerChildren: 50,
+    transition: {
+      duration:200,
+      ease: "circOut" //circOut
+    }
+  },
+  closedPreview: {
+    x: "100%",
+    transition: {
+      duration:200,
+      ease: "circOut" //circOut
+    }
+  }
+});
 
 const SLayout = styled(Layout)`
   border: ${props =>
@@ -69,6 +88,7 @@ export default class Preview extends React.Component {
   }
 
   render() {
+    const isOpen = this.props.isOpen;
     let navlinks =
       this.props.navlinks &&
       this.props.navlinks.map((element, index) => (
@@ -102,7 +122,7 @@ export default class Preview extends React.Component {
           ))
       : [];
     return (
-      <Layout fullY customTemplateRows={"190px 70px 1fr"} background={"white"}>
+      <PreviewContainer fullY customTemplateRows={"190px 70px 1fr"} background={"white"} pose={isOpen ? "openPreview" : "closedPreview"}>
         <TopPreview
           handleUpload={this.handleUploadChange}
           image={this.state.image}
@@ -145,7 +165,7 @@ export default class Preview extends React.Component {
             {this.props.children}
           </Scrollbars>
         </Container>
-      </Layout>
+      </PreviewContainer>
     );
   }
 }
@@ -159,6 +179,7 @@ Preview.propTypes = {
   backGroundImage: PropsTypes.string,
   navlinks: PropsTypes.array,
   showAvatar: PropsTypes.bool,
+  isOpen: PropsTypes.bool,
   navClicked: PropsTypes.func,
   navOptions: PropsTypes.array,
   allowChangeImages: PropsTypes.bool,
