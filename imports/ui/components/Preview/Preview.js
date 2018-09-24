@@ -1,5 +1,5 @@
 import React from "react";
-import { Layout, Container } from "btech-layout";
+import { Layout, Container, mixins } from "btech-layout";
 import styled from "styled-components";
 import PropsTypes from "prop-types";
 import MaterialIcon from "react-material-iconic-font";
@@ -8,7 +8,15 @@ import { Button } from "btech-base-forms-component";
 import TopPreview from "./TopPreview";
 import posed from "react-pose";
 
-const PreviewContainer = posed(Layout)({
+const ResponsiveContainer= styled(Layout)`
+    margin-left: -100%;
+    margin-right: 100%;
+    ${mixins.media.desktop`
+    margin-left:0;
+    margin-right:0;`}
+`
+
+const PreviewContainer = posed(ResponsiveContainer)({
   openPreview: {
     x: "0%",
     staggerChildren: 50,
@@ -122,6 +130,7 @@ export default class Preview extends React.Component {
           ))
       : [];
     return (
+
       <PreviewContainer fullY customTemplateRows={"190px 70px 1fr"} background={"white"} pose={isOpen ? "openPreview" : "closedPreview"}>
         <TopPreview
           handleUpload={this.handleUploadChange}
