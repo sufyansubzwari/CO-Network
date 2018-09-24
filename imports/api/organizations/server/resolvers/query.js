@@ -25,7 +25,6 @@ Query.organizations = (root, { filter, limit, organizations }, context) => {
     ]
   }
   let limitQuery = limit ? { limit: limit } : {};
-  console.log("Organization query => ",query);
   return Service.organizations(query, limitQuery);
 }
 

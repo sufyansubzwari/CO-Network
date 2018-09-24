@@ -61,6 +61,7 @@ type Query {
 input OrganizationSearchInput{
     title: TableStringFilterInput
     description: TableStringFilterInput
+    tech_DOT_industry: TableStringFilterInput
     orgType: JobTypeElemMatch
     startDate: TableDateFilterInput
     endDate: TableDateFilterInput
