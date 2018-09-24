@@ -46,6 +46,7 @@ class TagsService {
   static tags = (query, limit) => {
     return Tags.collection.find(query, limit).fetch();
   };
+
   static normalizeTags = async (tag) => {
     let insertTags = tag.filter(item => !item._id);
     let tags = tag.filter(item => item._id);
@@ -56,7 +57,20 @@ class TagsService {
       tags = tags.concat(completed);
       return tags.map(item => item._id);
     });
+  };
+
+  static normalizeTagsWithLevels = async (tagList) => {
+    let insertTags = tagList.filter(item => !item.tag._id);
+    let tags = tagList.filter(item => item.tag._id);
+    let tagsInserted = insertTags.map(async item => {
+      return {tag: await Tags.service.tag(item.tag), level: item.level || "", icon: item.icon || "", levelColor: item.levelColor || ""};
+    });
+    return Promise.all(tagsInserted).then((completed) => {
+      tags = tags.concat(completed);
+      return tags.map(item => ({tag: item.tag._id, level: item.level || "", icon: item.icon || "", levelColor: item.levelColor || ""}));
+    });
   }
+
 }
 
 export default TagsService;
