@@ -138,57 +138,68 @@ class AchievementsList extends React.Component {
       item => item.type === this.props.type
     );
 
+    let edit = elements.filter(item => item.edit === true);
+
     return (
       <Container style={{ display: elements.length ? "block" : "none" }}>
         {elements.length ? (
           <Layout
             customTemplateColumns={"1fr auto"}
             style={{ paddingRight: "10px" }}
+            mb={'5px'}
           >
             <SLabel>{this.props.type}</SLabel>
-            <Layout customTemplateColumns={"auto auto auto"} colGap={"5px"}>
-              <Button
-                secondary
-                height={"auto"}
-                color={"black"}
-                opacity={"0.5"}
-                border={"none"}
-                hoverBackground={"transparent"}
-                hoverColor={"initial"}
-                onClick={this.handleAdd}
-              >
-                <MaterialIcon type={"plus-circle"} />
-              </Button>
-              <Button
-                secondary
-                height={"auto"}
-                color={"black"}
-                opacity={"0.5"}
-                border={"none"}
-                hoverBackground={"transparent"}
-                hoverColor={"initial"}
-                onClick={() =>
-                  this.setState({ isEditable: !this.state.isEditable })
-                }
-              >
-                <MaterialIcon type={"edit"} />
-              </Button>
-              <Button
-                secondary
-                height={"auto"}
-                color={"black"}
-                opacity={"0.5"}
-                border={"none"}
-                hoverBackground={"transparent"}
-                hoverColor={"initial"}
-                onClick={this.handleDelete}
-              >
-                <MaterialIcon type={"delete"} />
-              </Button>
-            </Layout>
+            {edit.length === 0 ? (
+              <Layout customTemplateColumns={"auto auto auto"}>
+                <Button
+                  type={"button"}
+                  secondary
+                  height={"auto"}
+                  color={"black"}
+                  opacity={"0.5"}
+                  border={"none"}
+                  hoverBackground={"transparent"}
+                  hoverColor={"initial"}
+                  onClick={this.handleAdd}
+                  style={{ fontSize: "14px" }}
+                >
+                  <MaterialIcon type={"plus-circle"} />
+                </Button>
+                <Button
+                  type={"button"}
+                  secondary
+                  height={"auto"}
+                  color={"black"}
+                  opacity={"0.5"}
+                  border={"none"}
+                  hoverBackground={"transparent"}
+                  hoverColor={"initial"}
+                  onClick={() =>
+                    this.setState({ isEditable: !this.state.isEditable })
+                  }
+                  style={{ fontSize: "14px" }}
+                >
+                  <MaterialIcon type={"edit"} />
+                </Button>
+                <Button
+                  type={"button"}
+                  secondary
+                  height={"auto"}
+                  color={"black"}
+                  opacity={"0.5"}
+                  border={"none"}
+                  hoverBackground={"transparent"}
+                  hoverColor={"initial"}
+                  onClick={this.handleDelete}
+                  style={{ fontSize: "14px" }}
+                >
+                  <MaterialIcon type={"delete"} />
+                </Button>
+              </Layout>
+            ) : null}
           </Layout>
         ) : null}
-        <SItemContainer padding={"10px"} background={this.props.background}>
+        <SItemContainer paddingX={"10px"} background={this.props.background}>
           <Container>
             {this.state.achievements.map(
               (item, index) =>
@@ -247,6 +258,7 @@ class AchievementsList extends React.Component {
                           colGap={"5px"}
                         >
                           <Button
+                            type={"button"}
                             secondary
                             height={"auto"}
                             color={"black"}
@@ -254,11 +266,16 @@ class AchievementsList extends React.Component {
                             border={"none"}
                             hoverBackground={"transparent"}
                             hoverColor={"initial"}
-                            onClick={() => this.handleChange(index)}
+                            onClick={event => {
+                              event.preventDefault();
+                              this.handleChange(index);
+                            }}
+                            style={{ fontSize: "14px" }}
                           >
                             <MaterialIcon type={"edit"} />
                           </Button>
                           <Button
+                            type={"button"}
                             secondary
                             height={"auto"}
                             color={"black"}
@@ -267,6 +284,7 @@ class AchievementsList extends React.Component {
                             hoverBackground={"transparent"}
                             hoverColor={"initial"}
                             onClick={() => this.handleRemove(index)}
+                            style={{ fontSize: "14px" }}
                           >
                             <MaterialIcon type={"delete"} />
                           </Button>

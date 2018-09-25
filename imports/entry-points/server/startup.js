@@ -13,6 +13,7 @@ Meteor.startup(() => {
 
   // Setup default users if any
   import './fixtures';
+  import './databaseConstants';
 
   // Run schema migrations if any.
 

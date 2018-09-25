@@ -1,8 +1,9 @@
-import React, {Component} from "react";
-import {Container, Layout} from "btech-layout";
+import React, { Component } from "react";
+import { Container, Layout } from "btech-layout";
 import PropTypes from "prop-types";
-import {Input, SalaryRange} from "btech-base-forms-component";
-import {GeoInputLocation} from "btech-location";
+import { Input, SalaryRange } from "btech-base-forms-component";
+import { GeoInputLocation } from "btech-location";
+import { EMAIL_REGEX } from "../../../../constants";
 
 /**
  * @module Event
@@ -22,36 +23,38 @@ class EventStep3 extends Component {
       event.place = {
         location: {
           address: "",
-          location: {lng: "", lat: ""}
+          location: { lng: "", lat: "" }
         }
       };
-      this.setState({event: event});
+      this.setState({ event: event });
     }
   }
 
   componentWillReceiveProps(nextProps) {
     if (nextProps.data && nextProps.data !== this.state.event)
-      this.setState({event: nextProps.data});
+      this.setState({ event: nextProps.data });
   }
 
   notifyParent(model, name, value) {
     if (model && name && value) {
       let event = this.state.event;
       event[name] = value;
-      this.setState({event: event}, () => this.props.onChange && this.props.onChange(this.state.event));
-    }
-    else
-      this.props.onChange && this.props.onChange(this.state.event);
+      this.setState(
+        { event: event },
+        () => this.props.onChange && this.props.onChange(this.state.event)
+      );
+    } else this.props.onChange && this.props.onChange(this.state.event);
   }
 
   notifyParentLocation(model, name, value) {
     if (model && name && value) {
       let event = this.state.event;
       event.place[name] = value;
-      this.setState({event: event}, () => this.props.onChange && this.props.onChange(this.state.event));
-    }
-    else
-      this.props.onChange && this.props.onChange(this.state.event);
+      this.setState(
+        { event: event },
+        () => this.props.onChange && this.props.onChange(this.state.event)
+      );
+    } else this.props.onChange && this.props.onChange(this.state.event);
   }
 
   render() {
@@ -61,7 +64,7 @@ class EventStep3 extends Component {
           <Layout templateColumns={2} colGap={"25px"}>
             <Container>
               <Input
-                placeholderText={"Venue Name"}
+                placeholderText={"Name"}
                 name={"venueName"}
                 getValue={this.notifyParent.bind(this)}
                 model={this.state.event}
@@ -69,8 +72,9 @@ class EventStep3 extends Component {
             </Container>
             <Container>
               <Input
-                placeholderText={"Venue Contac Email"}
+                placeholderText={"Contact Email"}
                 name={"venueEmail"}
+                validate={EMAIL_REGEX}
                 getValue={this.notifyParent.bind(this)}
                 model={this.state.event}
               />
@@ -83,7 +87,9 @@ class EventStep3 extends Component {
             model={this.state.event.place}
             placeholder={"Location"}
             isGeoLocationAvailable={true}
-            onChange={(model, name, value) => this.notifyParentLocation(model, name, value)}
+            onChange={(model, name, value) =>
+              this.notifyParentLocation(model, name, value)
+            }
           />
         </Container>
         <Container>
@@ -97,12 +103,20 @@ class EventStep3 extends Component {
               <SalaryRange
                 placeholder={"000"}
                 labelText={"Expected Attendees"}
-                min={this.state.event && this.state.event.attenders && this.state.event.attenders.min}
-                max={this.state.event && this.state.event.attenders && this.state.event.attenders.max}
+                min={
+                  this.state.event &&
+                  this.state.event.attenders &&
+                  this.state.event.attenders.min
+                }
+                max={
+                  this.state.event &&
+                  this.state.event.attenders &&
+                  this.state.event.attenders.max
+                }
                 getValue={data => {
-                  const {min, max} = data;
+                  const { min, max } = data;
                   const event = this.state.event;
-                  event.attenders = {min: min, max: max};
+                  event.attenders = { min: min, max: max };
                   this.setState(
                     {
                       event: event

@@ -4,7 +4,7 @@ import { Container, Layout } from "btech-layout";
 import { GeoInputLocation } from "btech-location";
 import styled from "styled-components";
 import services from "../../../../../components/LoginModal/service.constant";
-import { EMAIL_REGEX } from "../../constants/constants";
+import { EMAIL_REGEX } from "../../../../../constants";
 import Authorization from "../../../../../services/authorization";
 import { UpdateIdentities } from "../../../../../apollo-client/user";
 import { Mutation } from "react-apollo";
@@ -13,6 +13,13 @@ const Label = styled.label`
   font-size: 12px;
   font-family: Roboto Mono;
   color: #010101;
+  margin-bottom: 0;
+`;
+const Description = styled.label`
+  font-size: 11px;
+  font-family: Roboto Mono;
+  color: rgba(0,0,0,0.5);
+  margin-bottom: 0;
 `;
 
 class FirstStep extends React.Component {
@@ -65,15 +72,25 @@ class FirstStep extends React.Component {
     return this.state.user && this.state.user.identities
       ? this.state.user.identities.filter(element => {
           return (
-            `${provider}|${element.user_id}` !== this.state.user.user_id &&
+            // todo: check if is necesary show the default account
+            // `${provider}|${element.user_id}` !== this.state.user.user_id &&
             provider === element.provider
           );
         })
       : [];
   }
 
+  isTheMainAccount(provider, id) {
+    return this.state.user
+      ? `${provider}|${id}` === this.state.user.user_id
+      : false;
+  }
+
   handleDataToShow(element) {
-    const data = element ? element.profileData : {};
+    let data = {};
+    if (element && !element.profileData)
+      data = this.state.user ? this.state.user : {};
+    else data = element.profileData || {};
     if (data.email) {
       const gettingNick = data.email.split("@");
       data.nickName = gettingNick[0];
@@ -155,9 +172,9 @@ class FirstStep extends React.Component {
         >
           {(updateIdentities, { profile }) => (
             <Container>
-              <Label>Connect Networks</Label>
+              <Layout ml={'10px'} mb={'18px'} customTemplateRows={'auto auto'}><Label>Connect Networks</Label><Description>Connect from your social networks</Description></Layout>
               <Layout
-                templateColumns={this.services.length}
+                customTemplateColumns={`repeat(${this.services.length}, 80px) 1fr`}
                 colGap={"10px"}
                 minH={"90px"}
               >
@@ -176,6 +193,10 @@ class FirstStep extends React.Component {
                           connected={!!element}
                           data={data}
                           fields={["nickName"]}
+                          hideCloseButton={this.isTheMainAccount(
+                            authService.service,
+                            element.user_id
+                          )}
                           onPlus={() =>
                             this.handleLinkAccount(
                               authService.service,

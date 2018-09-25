@@ -184,7 +184,7 @@ class EventsFilters extends React.Component {
           <Filter>
             <CheckBoxList
               placeholderText={"Event Category"}
-              options={this.state.category}
+              options={this.state.category.slice(0, 9)}
               getValue={selected => this.addFilters("category", selected)}
             />
           </Filter>
@@ -219,7 +219,8 @@ export default connect(
     options: () => ({
       variables: {
         tags: { type: "EVENT" }
-      }
+      },
+      fetchPolicy: "cache-and-network"
     })
   })(EventsFilters)
 );

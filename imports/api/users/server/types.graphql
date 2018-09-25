@@ -50,9 +50,16 @@ type AboutMe {
 }
 
 type Knowledge {
-    languages: [Tags]
-    curiosity: [Tags]
+    languages: [LevelTagsType]
+    curiosity: [LevelTagsType]
     lookingFor: [ObjectType]
+}
+
+type LevelTagsType{
+    tag: Tags
+    level: String
+    icon: String
+    levelColor: String
 }
 
 type Professional {
@@ -167,9 +174,16 @@ input AboutMeInput {
 }
 
 input KnowledgeInput {
-    languages: [TagsInput]
-    curiosity: [TagsInput]
+    languages: [LevelTagsInput]
+    curiosity: [LevelTagsInput]
     lookingFor: [ObjectTypeInput]
+}
+
+input LevelTagsInput{
+    tag: TagsInput
+    level: String
+    icon: String
+    levelColor: String
 }
 
 input ProfessionalInput {

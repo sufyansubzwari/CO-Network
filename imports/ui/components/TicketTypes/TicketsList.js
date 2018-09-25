@@ -33,6 +33,7 @@ const TicketsList = function(props) {
           <Container>
             <Layout customTemplateColumns={"auto auto"} colGap={"5px"}>
               <Button
+                type={"button"}
                 secondary
                 height={"auto"}
                 color={"black"}
@@ -47,6 +48,7 @@ const TicketsList = function(props) {
                 <MaterialIcon type={"edit"} />
               </Button>
               <Button
+                type={"button"}
                 secondary
                 height={"auto"}
                 color={"black"}

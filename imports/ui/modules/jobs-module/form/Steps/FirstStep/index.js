@@ -10,7 +10,7 @@ import {
 } from "btech-base-forms-component";
 import { GeoInputLocation } from "btech-location";
 import { Container, Layout } from "btech-layout";
-import { JOB_TYPE, POSITION_TAGS } from "../../constants/constants";
+import { JOB_TYPE, POSITION_TAGS } from "../../../../../constants";
 import PropTypes from "prop-types";
 import { Query } from "react-apollo";
 import { GetTags as tags } from "../../../../../apollo-client/tag";
@@ -112,10 +112,11 @@ class FirstStep extends React.Component {
 
   render() {
     return (
-      <Layout rowGap={"40px"}>
+      <Layout rowGap={"25px"}>
         <Layout templateColumns={2} colGap={"20px"}>
           <Input
             name={"title"}
+            required
             model={this.state.job}
             placeholderText={"Position Title"}
             getValue={this.notifyParent.bind(this)}

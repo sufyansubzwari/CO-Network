@@ -1,24 +1,24 @@
-import React from 'react';
-import {CheckBoxList, InputAutoComplete, TagList} from 'btech-base-forms-component';
-import {Container, Layout} from 'btech-layout';
-
-import {ACTIVELY, ORGANIZATION_TYPE} from "../../constants/constants";
-import {GetTags} from "../../../../../apollo-client/tag";
-import {Query} from "react-apollo";
-
+import React from "react";
+import {
+  CheckBoxList,
+  InputAutoComplete,
+  TagList
+} from "btech-base-forms-component";
+import { Container, Layout } from "btech-layout";
+import { ACTIVELY } from "../../../../../constants";
+import { GetTags } from "../../../../../apollo-client/tag";
+import { Query } from "react-apollo";
 
 class ThirdStep extends React.Component {
-
   constructor(props) {
-    super(props)
+    super(props);
 
-    let data = props.data ? props.data : {}
+    let data = props.data ? props.data : {};
 
     this.state = {
       organization: data,
       actively: ACTIVELY
-    }
-
+    };
   }
 
   componentWillMount() {
@@ -41,14 +41,14 @@ class ThirdStep extends React.Component {
     const activelys = selected.filter(element => element.active);
     const temp = this.state.organization;
     temp["actively"] = activelys;
-    this.setState({actively: selected, organization: temp}, () =>
+    this.setState({ actively: selected, organization: temp }, () =>
       this.notifyParent()
-    )
+    );
   }
 
   componentWillReceiveProps(nextProps) {
     if (nextProps.data && nextProps.data !== this.state.organization)
-      this.setState({organization: nextProps.data});
+      this.setState({ organization: nextProps.data });
   }
 
   notifyParent(model, name, value) {
@@ -56,8 +56,9 @@ class ThirdStep extends React.Component {
       let organization = this.state.organization;
       organization[name] = value;
       this.setState(
-        {organization: organization},
-        () => this.props.onChange && this.props.onChange(this.state.organization)
+        { organization: organization },
+        () =>
+          this.props.onChange && this.props.onChange(this.state.organization)
       );
     } else this.props.onChange && this.props.onChange(this.state.organization);
   }
@@ -66,58 +67,71 @@ class ThirdStep extends React.Component {
     if (tag.label && tag.label.length > 0) {
       let newTag = Object.assign({}, tag);
       let tags = this.state.organization[name];
-      !newTag.name ? newTag.name = newTag.label : null;
+      !newTag.name ? (newTag.name = newTag.label) : null;
       newTag.type = "OrgDesc";
       tags.push(newTag);
       this.state.organization[name] = tags;
-      this.setState({organization: this.state.organization}, () => this.notifyParent());
+      this.setState({ organization: this.state.organization }, () =>
+        this.notifyParent()
+      );
     }
   }
 
   onCloseTags(e, tag, index, name) {
     this.state.organization[name].splice(index, 1);
-    this.setState({organization: this.state.organization}, () => this.notifyParent());
+    this.setState({ organization: this.state.organization }, () =>
+      this.notifyParent()
+    );
   }
 
   render() {
     return (
-      <Layout rowGap={'25px'}>
+      <Layout rowGap={"25px"}>
         <CheckBoxList
-          placeholderText={'Does your organization actively...'}
+          placeholderText={"Does your organization actively..."}
           options={this.state.actively}
-          checkboxVerticalSeparation={'10px'}
-          checkboxSize={'15px'}
+          checkboxVerticalSeparation={"10px"}
+          checkboxSize={"15px"}
           getValue={actives => this.changeActively(actives)}
         />
         <Container>
-          <Query query={GetTags} variables={{tags: {type: "OrgDesc"}}}>
-            {({loading, error, data}) => {
+          <Query query={GetTags} variables={{ tags: { type: "OrgDesc" } }}>
+            {({ loading, error, data }) => {
               if (loading) return <div>Fetching</div>;
               if (error) return <div>Error</div>;
               return (
                 <InputAutoComplete
                   placeholderText={"Tags that best describe your organization"}
-                  getAddedOptions={this.onAddTags.bind(this, 'description')}
-                  getNewAddedOptions={this.onAddTags.bind(this, 'description')}
+                  getAddedOptions={this.onAddTags.bind(this, "description")}
+                  getNewAddedOptions={this.onAddTags.bind(this, "description")}
                   options={data.tags}
-                  model={{others: []}}
-                  name={'others'}
+                  model={{ others: [] }}
+                  name={"others"}
                 />
               );
             }}
           </Query>
-          <Container mt={'10px'}>
+          <Container mt={"10px"}>
             <TagList
-              tags={this.state.organization.description && this.state.organization.description.length > 0 ? this.state.organization.description.map(item => ({active: true, ...item})) : []}
+              tags={
+                this.state.organization.description &&
+                this.state.organization.description.length > 0
+                  ? this.state.organization.description.map(item => ({
+                      active: true,
+                      ...item
+                    }))
+                  : []
+              }
               closeable={true}
-              onClose={(e, tag, index) => this.onCloseTags(e, tag, index, 'description')}
+              onClose={(e, tag, index) =>
+                this.onCloseTags(e, tag, index, "description")
+              }
             />
           </Container>
         </Container>
-
       </Layout>
     );
   }
 }
 
-export default ThirdStep
+export default ThirdStep;

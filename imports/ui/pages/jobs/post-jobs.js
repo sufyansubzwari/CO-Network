@@ -34,8 +34,8 @@ class PostJob extends Component {
         jobType: [],
         jobExperience: [],
         salaryRange: {
-          min: "",
-          max: ""
+          min: 100,
+          max: 1000
         }
       }
     };
