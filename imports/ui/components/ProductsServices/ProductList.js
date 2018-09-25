@@ -5,6 +5,7 @@ import styled from "styled-components";
 import { Button, Input, Select, TextArea } from "btech-base-forms-component";
 import MaterialIcon from "react-material-iconic-font";
 import Product from "./Product";
+import Service from "./Service"
 
 const SLabel = styled.div`
   font-size: 12px;
@@ -36,6 +37,8 @@ class ProductList extends React.Component {
     this.handleRemove = this.handleRemove.bind(this);
     this.handleDelete = this.handleDelete.bind(this);
     this.handleChange = this.handleChange.bind(this);
+    this.handleUpload = this.handleUpload.bind(this);
+    this.handleClose = this.handleClose.bind(this);
   }
 
   componentWillReceiveProps(nextProps) {
@@ -58,7 +61,35 @@ class ProductList extends React.Component {
       () => this.notifyParent()
     );
   }
-  handleDelete() {
+
+  handleClose(index,pos){
+      let sta = this.state.products;
+      let aux = sta[index]['files'].splice(pos,1);
+
+      this.setState({
+              products: sta
+          },
+          () => this.notifyParent())
+  }
+
+  handleUpload(file, index) {
+      let products = this.state.products;
+      let files = this.state.products[index].files
+          ? this.state.products[index].files
+          : [];
+      if (file && file.length) {
+          file.map(f => files.push(f.name));
+      } else files.push(file.name);
+      products[index]["files"] = files;
+      this.setState(
+          {
+              products: products
+          },
+          () => this.notifyParent()
+      );
+  }
+
+    handleDelete() {
     let arr = this.state.products.filter(
       item => item.type !== this.props.type
     );
@@ -177,44 +208,18 @@ class ProductList extends React.Component {
                 item.type === this.props.type ? (
                   item.edit ? (
                     item.type === "Product" ? (
-                      <AcademicBackground
+                      <Product
                         model={this.state.products[index]}
                         handleSave={() => this.handleSave(index)}
+                        handleUpload={file => this.handleUpload(file, index)}
+                        onClose ={ (pos) => this.handleClose(index,pos) }
                       />
-                    ) : item.type === "Professional Experience" ? (
-                      <ProfessionalExperience
-                        model={this.state.products[index]}
-                        handleSave={() => this.handleSave(index)}
-                      />
-                    ) : item.type === "Audited Courses" ? (
-                      <AuditedCourse
-                        model={this.state.products[index]}
-                        handleSave={() => this.handleSave(index)}
-                        onAddTags={this.onAddTags.bind(this, index)}
-                        onCloseTags={(e, tag, i) =>
-                          this.onCloseTags(e, tag, i, index)
-                        }
-                        options={[]}
-                      />
-                    ) : item.type === "Publications" ? (
-                      <Publications
-                        model={this.state.products[index]}
-                        handleSave={() => this.handleSave(index)}
-                        onAddTags={this.onAddTags.bind(this, index)}
-                        onCloseTags={(e, tag, i) =>
-                          this.onCloseTags(e, tag, i, index)
-                        }
-                        options={[]}
-                      />
-                    ) : item.type === "Patents" ? (
-                      <Patents
-                        model={this.state.products[index]}
-                        handleSave={() => this.handleSave(index)}
-                        onAddTags={this.onAddTags.bind(this, index)}
-                        onCloseTags={(e, tag, i) =>
-                          this.onCloseTags(e, tag, i, index)
-                        }
-                        options={[]}
+                    ) : item.type === "Service" ? (
+                      <Service
+                          model={this.state.products[index]}
+                          handleSave={() => this.handleSave(index)}
+                          handleUpload={file => this.handleUpload(file, index)}
+                          onClose ={ (pos) => this.handleClose(index,pos) }
                       />
                     ) : null
                   ) : (

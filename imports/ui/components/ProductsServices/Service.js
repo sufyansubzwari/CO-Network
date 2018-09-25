@@ -5,7 +5,7 @@ import { Button, Input, Select, TextArea, UploadFileButton, AttachedFile } from 
 import MaterialIcon from "react-material-iconic-font";
 import LineSeparator from "./LineSeparator";
 
-export default Product = function (props) {
+export default Service = function (props) {
 
     return (
 
@@ -16,7 +16,7 @@ export default Product = function (props) {
             <Layout rowGap={'10px'} style={{ background: "rgb(209,209,209,0.2)" }}>
                 <Layout templateColumns={2} colGap={"20px"}>
                     <Input
-                        placeholderText={"Product Name"}
+                        placeholderText={"Service Name"}
                         name={"name"}
                         model={props.model}
                     />
