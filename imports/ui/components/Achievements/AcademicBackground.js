@@ -14,7 +14,7 @@ export default AcademicBackground = function (props) {
             marginX={"-10px"}
             style={{ background: "white" }}
         >
-            <Container style={{ background: "rgb(209,209,209,0.2)" }}>
+            <Layout rowGap={'10px'} style={{ background: "rgb(209,209,209,0.2)" }}>
                 <Layout templateColumns={2} colGap={"20px"}>
                     <Input
                         placeholderText={"Institution Name"}
@@ -51,13 +51,14 @@ export default AcademicBackground = function (props) {
                             hoverBackground={"transparent"}
                             hoverColor={"initial"}
                             onClick={props.handleSave}
+                            style={{fontSize: '14px'}}
                         >
                             <MaterialIcon type={"save"} />
                             <span style={{ paddingLeft: "5px" }}>Save</span>
                         </Button>
                     </Layout>
                 </Container>
-            </Container>
+            </Layout>
         </Container>
 
     );
