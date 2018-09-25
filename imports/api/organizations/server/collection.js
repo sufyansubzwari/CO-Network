@@ -121,6 +121,34 @@ Organizations.schema = new SimpleSchema({
         type: String,
         optional: true
     },
+    media: {
+        type: Array,
+        optional: true
+    },
+    'media.$': {
+        type: Object,
+        optional: true
+    },
+    'media.$.title': {
+        type: String,
+        optional: true
+    },
+    'media.$.link': {
+        type: String,
+        optional: true
+    },
+    'media.$.edit': {
+        type: Boolean,
+        optional: true
+    },
+    'media.$.explain': {
+        type: String,
+        optional: true
+    },
+    'media.$.files':{
+        type: String,
+        optional: true
+    },
   views: {
     type: Number,
     label: "Viewed Count",
