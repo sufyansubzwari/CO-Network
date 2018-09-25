@@ -150,7 +150,8 @@ export default class Preview extends React.Component {
         />
         <SLayout
           gridArea="options"
-          paddingX={"100px"}
+          paddingX={"10px"}
+          mdPaddingX={"100px"}
           customTemplateColumns={
             this.props.showAvatar ? "140px 1fr auto" : "1fr auto"
           }
