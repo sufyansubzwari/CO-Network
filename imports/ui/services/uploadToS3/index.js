@@ -9,7 +9,7 @@ class UploadImageToS3 {
     this.bucketPath = "https://s3.amazonaws.com/mlsociety-public";
   }
 
-  uploadFile(image, callback, statusCallback) {
+  upload(image, callback, statusCallback) {
     if (image.size / 1024 / 1024 > 4) {
       callback({
         error: true,

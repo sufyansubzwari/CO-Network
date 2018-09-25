@@ -14,9 +14,7 @@ import { Query } from "react-apollo";
 class FourthStep extends React.Component {
   constructor(props) {
     super(props);
-
     let data = props.data ? props.data : {};
-
     this.state = {
       organization: data,
       industry: [],
@@ -41,16 +39,16 @@ class FourthStep extends React.Component {
       job["active"] = actives[index];
       return job;
     });
-    const jobtypes = selected.filter(element => element.active);
+    const jobTypes = selected.filter(element => element.active);
     const temp = this.state.organization;
-    temp["tech"]["jobType"] = jobtypes;
+    temp["tech"]["jobType"] = jobTypes;
     this.setState({ jobType: selected, organization: temp }, () =>
       this.notifyParent()
     );
   }
 
   handleIndustry(obj) {
-    let newtags = obj.map(element => ({
+    let newTags = obj.map(element => ({
       name: element.name,
       value: element.name,
       label: element.name,
@@ -58,7 +56,7 @@ class FourthStep extends React.Component {
     }));
 
     let organization = this.state.organization;
-    organization["tech"]["industry"] = newtags;
+    organization["tech"]["industry"] = newTags;
     this.setState(
       {
         organization: organization
@@ -167,8 +165,6 @@ class FourthStep extends React.Component {
         </Layout>
         <Query query={GetTags} variables={{ tags: { type: "INDUSTRY" } }}>
           {({ loading, error, data }) => {
-            if (loading) return <div>Fetching</div>;
-            if (error) return <div>Error</div>;
             return (
               <SelectTag
                 placeholderText={"Industry | Sector"}
@@ -179,17 +175,14 @@ class FourthStep extends React.Component {
                     name: element.name,
                     active: true,
                     userAdd: true,
-                    closable: true,
-                    useIcon: true
+                    closable: true
                   }))
                 }
                 selectOptions={data.tags}
                 getTags={obj => this.handleIndustry(obj)}
                 model={{ obj: [] }}
                 name={"obj"}
-                tagsCloseable={true}
-                tagsIcon={"star"}
-                tagsUseIcon={true}
+                tagsCloseable
               />
             );
           }}

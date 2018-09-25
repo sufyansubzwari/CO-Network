@@ -13,13 +13,15 @@ const Label = styled.label`
   font-size: 12px;
   font-family: Roboto Mono;
   color: #010101;
-  margin-bottom: 0;
 `;
-const Description = styled.label`
-  font-size: 11px;
-  font-family: Roboto Mono;
-  color: rgba(0,0,0,0.5);
+
+const NetworkLabel = styled(Label)`
   margin-bottom: 0;
+  font-weight: bold;
+`;
+
+const NetworkSubLabel = styled(Label)`
+  color: rgba(0, 0, 0, 0.5);
 `;
 
 class FirstStep extends React.Component {
@@ -172,11 +174,19 @@ class FirstStep extends React.Component {
         >
           {(updateIdentities, { profile }) => (
             <Container>
-              <Layout ml={'10px'} mb={'18px'} customTemplateRows={'auto auto'}><Label>Connect Networks</Label><Description>Connect from your social networks</Description></Layout>
+              <Container>
+                <NetworkLabel>Connect Networks</NetworkLabel>
+                <Container>
+                  <NetworkSubLabel>
+                    Connect from your social networks
+                  </NetworkSubLabel>
+                </Container>
+              </Container>
               <Layout
-                customTemplateColumns={`repeat(${this.services.length}, 80px) 1fr`}
+                rowGap={"10px"}
                 colGap={"10px"}
-                minH={"90px"}
+                minH={"115px"}
+                customTemplateColumns={"repeat(auto-fit, minmax(100px, 1fr))"}
               >
                 {this.services.map((authService, position) => {
                   const service = authService.label || authService.service;
@@ -188,6 +198,7 @@ class FirstStep extends React.Component {
                       const data = this.handleDataToShow(element);
                       return (
                         <SocialButton
+                          height={"110px"}
                           key={index}
                           social={service}
                           connected={!!element}
@@ -216,6 +227,7 @@ class FirstStep extends React.Component {
                   } else
                     return (
                       <SocialButton
+                        height={"110px"}
                         key={position}
                         social={service}
                         onClick={() =>

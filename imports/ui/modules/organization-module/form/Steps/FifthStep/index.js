@@ -1,5 +1,6 @@
 import React from "react";
 import { Layout } from "btech-layout";
+import ProductsServices from "../../../../../components/ProductsServices/ProductsServices"
 
 class Fifth extends React.Component {
   constructor(props) {
@@ -10,7 +11,21 @@ class Fifth extends React.Component {
     this.state = {
       organization: data
     };
+
+    this.handleChange = this.handleChange.bind(this)
   }
+
+    handleChange(prod) {
+        this.setState(
+            {
+                organization: {
+                    ...this.state.organization,
+                    products: prod
+                }
+            },
+            () => this.notifyParent()
+        );
+    }
 
   componentWillReceiveProps(nextProps) {
     if (nextProps.data && nextProps.data !== this.state.organization)
@@ -30,7 +45,12 @@ class Fifth extends React.Component {
   }
 
   render() {
-    return <Layout rowGap={"25px"}>missing components</Layout>;
+    return  <Layout rowGap={"25px"}>
+        <ProductsServices
+        onChange={this.handleChange}
+        products={this.state.organization.products}
+        />
+    </Layout>;
   }
 }
 

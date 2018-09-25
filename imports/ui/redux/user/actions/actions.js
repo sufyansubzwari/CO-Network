@@ -1,6 +1,4 @@
-
-import { EVENT_UPDATE_USER } from '../types';
-
+import { EVENT_UPDATE_USER } from "../types";
 
 /**
  * @namespace Actions
@@ -9,12 +7,10 @@ import { EVENT_UPDATE_USER } from '../types';
 const Actions = {};
 
 //------------------------------------------------------------------------------
-Actions.setUser = status => (
-    {
-        type: EVENT_UPDATE_USER,
-        status,
-    }
-);
+Actions.setUser = status => ({
+  type: EVENT_UPDATE_USER,
+  status
+});
 
 //------------------------------------------------------------------------------
 

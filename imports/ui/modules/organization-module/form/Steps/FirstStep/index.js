@@ -84,6 +84,7 @@ class FirstStep extends React.Component {
       <Layout rowGap={"25px"}>
         <Layout templateColumns={2} colGap={"20px"}>
           <Input
+            required
             name={"name"}
             model={this.state.organization}
             placeholderText={"Organization Name"}
@@ -109,6 +110,7 @@ class FirstStep extends React.Component {
         />
         <Layout templateColumns={2} colGap={"20px"}>
           <Input
+            required
             name={"email"}
             model={this.state.organization.contact}
             placeholderText={"Verification Email"}

@@ -75,7 +75,7 @@ class TopPreview extends Component {
   onUploadRequest(files, element) {
     const file = files[0];
     if (file) {
-      UploadImageToS3.uploadFile(
+      UploadImageToS3.upload(
         file,
         response => {
           if (!response.error) {

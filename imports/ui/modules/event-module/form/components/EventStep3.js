@@ -64,6 +64,7 @@ class EventStep3 extends Component {
           <Layout templateColumns={2} colGap={"25px"}>
             <Container>
               <Input
+                required
                 placeholderText={"Name"}
                 name={"venueName"}
                 getValue={this.notifyParent.bind(this)}
@@ -72,6 +73,7 @@ class EventStep3 extends Component {
             </Container>
             <Container>
               <Input
+                required
                 placeholderText={"Contact Email"}
                 name={"venueEmail"}
                 validate={EMAIL_REGEX}
@@ -101,6 +103,7 @@ class EventStep3 extends Component {
           >
             <Container>
               <SalaryRange
+                required
                 placeholder={"000"}
                 labelText={"Expected Attendees"}
                 min={

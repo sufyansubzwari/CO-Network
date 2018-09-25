@@ -4,9 +4,8 @@ import { Layout, Container } from "btech-layout";
 import styled from "styled-components";
 import { Button, Input, Select, TextArea } from "btech-base-forms-component";
 import MaterialIcon from "react-material-iconic-font";
-import Speaker from "./Speaker";
-import Sponsor from "./Sponsor";
-import LineSeparator from "./LineSeparator";
+import Product from "./Product";
+import Service from "./Service";
 
 const SLabel = styled.div`
   font-size: 12px;
@@ -21,99 +20,104 @@ const SContainer = styled(Container)`
 
 const SItemContainer = styled(Container)`
   border-radius: 3px;
-  margin-top: 5px;
 `;
 
-class SponsorsList extends React.Component {
+class ProductList extends React.Component {
   constructor(props) {
     super(props);
+
     this.state = {
-      sponsors:
+      products:
         this.props.data && this.props.data.length ? this.props.data : [],
-      isEditable: false,
-      editingChild: false
+      isEditable: false
     };
+
     this.handleSave = this.handleSave.bind(this);
     this.handleAdd = this.handleAdd.bind(this);
     this.handleRemove = this.handleRemove.bind(this);
     this.handleDelete = this.handleDelete.bind(this);
     this.handleChange = this.handleChange.bind(this);
+    this.handleUpload = this.handleUpload.bind(this);
+    this.handleClose = this.handleClose.bind(this);
   }
 
   componentWillReceiveProps(nextProps) {
     if (nextProps.data) {
       this.setState({
-        sponsors: nextProps.data && nextProps.data.length ? nextProps.data : []
+        products: nextProps.data && nextProps.data.length ? nextProps.data : []
       });
     }
   }
 
   handleRemove(index) {
-    let sta = this.state.sponsors;
+    let sta = this.state.products;
     let aux = sta.splice(index, 1);
-    this.setState({ sponsors: sta }, () => this.notifyParent());
+    this.setState({ product: aux }, () => this.notifyParent());
   }
 
-  handleDelete() {
-    let arr = this.state.sponsors.filter(item => item.type !== this.props.type);
-    this.setState({ sponsors: arr }, () => this.notifyParent());
+  handleClose(index, pos) {
+    let sta = this.state.products;
+    let aux = sta[index]["files"].splice(pos, 1);
+    this.setState({ products: sta }, () => this.notifyParent());
   }
 
-  handleSave(index) {
-    let spo = this.state.sponsors;
-    spo[index] = { ...spo[index], edit: false };
-    this.setState({ sponsors: spo, editingChild: false }, () =>
-      this.notifyParent()
-    );
-  }
-
-  handleChange(index) {
-    let spo = this.state.sponsors;
-    spo[index] = { ...spo[index], edit: true };
-    this.setState({ editingChild: true });
-    this.props.onChange && this.props.onChange(spo);
-  }
-
-  handleAdd() {
-    let list = this.state.sponsors;
-    list.push({
-      type: this.props.type,
-      edit: true
-    });
-    this.setState({ sponsors: list, editingChild: true }, () =>
-      this.notifyParent()
-    );
-  }
-
-  onAdd(index, label, name) {
-    if (label) {
-      let spo = this.state.sponsors;
-      spo[index][name] = label;
-      this.setState({ sponsors: spo, editingChild: false }, () =>
-        this.notifyParent()
-      );
+  handleUpload(file, index) {
+    if (file) {
+      let products = this.state.products;
+      let files = this.state.products[index].files
+        ? this.state.products[index].files
+        : [];
+      if (file && file.length) {
+        file.map(f => files.push(f.name));
+      } else files.push(file.name);
+      products[index]["files"] = files;
+      this.setState({ products: products }, () => this.notifyParent());
     }
   }
 
+  handleDelete() {
+    let arr = this.state.products.filter(item => item.type !== this.props.type);
+    this.setState({ products: arr }, () => this.notifyParent());
+  }
+
+  handleSave(index) {
+    let prod = this.state.products;
+    prod[index] = { ...prod[index], edit: false };
+    this.setState({ products: prod }, () => this.notifyParent());
+  }
+
+  handleChange(index) {
+    let prod = this.state.products;
+    prod[index] = { ...prod[index], edit: true };
+    this.props.onChange && this.props.onChange(prod);
+  }
+
+  handleAdd() {
+    let list = this.state.products;
+    list.push({ type: this.props.type, edit: true });
+    this.setState({ products: list }, () => this.notifyParent());
+  }
+
   notifyParent() {
-    this.props.onChange && this.props.onChange(this.state.sponsors);
+    this.props.onChange && this.props.onChange(this.state.products);
   }
 
   render() {
-    let elements = this.state.sponsors.filter(
+    let elements = this.state.products.filter(
       item => item.type === this.props.type
     );
-
+    let edit = elements.filter(item => item.edit === true);
     return (
       <Container style={{ display: elements.length ? "block" : "none" }}>
         {elements.length ? (
           <Layout
             customTemplateColumns={"1fr auto"}
             style={{ paddingRight: "10px" }}
+            mb={"5px"}
           >
             <SLabel>{this.props.type}</SLabel>
-            {!this.state.editingChild ? (
-              <Layout customTemplateColumns={"auto auto auto"} colGap={"5px"}>
+            {edit.length === 0 ? (
+              <Layout customTemplateColumns={"auto auto auto"}>
                 <Button
                   type={"button"}
                   secondary
@@ -124,6 +128,7 @@ class SponsorsList extends React.Component {
                   hoverBackground={"transparent"}
                   hoverColor={"initial"}
                   onClick={this.handleAdd}
+                  style={{ fontSize: "14px" }}
                 >
                   <MaterialIcon type={"plus-circle"} />
                 </Button>
@@ -137,11 +142,9 @@ class SponsorsList extends React.Component {
                   hoverBackground={"transparent"}
                   hoverColor={"initial"}
                   onClick={() =>
-                    this.setState({
-                      isEditable: !this.state.isEditable,
-                      editingChild: false
-                    })
+                    this.setState({ isEditable: !this.state.isEditable })
                   }
+                  style={{ fontSize: "14px" }}
                 >
                   <MaterialIcon type={"edit"} />
                 </Button>
@@ -155,6 +158,7 @@ class SponsorsList extends React.Component {
                   hoverBackground={"transparent"}
                   hoverColor={"initial"}
                   onClick={this.handleDelete}
+                  style={{ fontSize: "14px" }}
                 >
                   <MaterialIcon type={"delete"} />
                 </Button>
@@ -162,29 +166,35 @@ class SponsorsList extends React.Component {
             ) : null}
           </Layout>
         ) : null}
-        <SItemContainer background={this.props.background}>
+        <SItemContainer paddingX={"10px"} background={this.props.background}>
           <Container>
-            {this.state.sponsors.map(
+            {this.state.products.map(
               (item, index) =>
                 item.type === this.props.type ? (
                   item.edit ? (
-                    item.type === "Speakers" ? (
-                      <Speaker
-                        users={this.props.users}
-                        model={this.state.sponsors[index]}
+                    item.type === "Product" ? (
+                      <Product
+                        key={index}
+                        model={this.state.products[index]}
                         handleSave={() => this.handleSave(index)}
-                        onAdd={(label, name) => this.onAdd(index, label, name)}
+                        handleUpload={file => this.handleUpload(file, index)}
+                        onClose={pos => this.handleClose(index, pos)}
                       />
-                    ) : item.type === "Sponsors" ? (
-                      <Sponsor
-                        users={this.props.users}
-                        model={this.state.sponsors[index]}
+                    ) : item.type === "Service" ? (
+                      <Service
+                        key={index}
+                        model={this.state.products[index]}
                         handleSave={() => this.handleSave(index)}
-                        onAdd={(label, name) => this.onAdd(index, label, name)}
+                        handleUpload={file => this.handleUpload(file, index)}
+                        onClose={pos => this.handleClose(index, pos)}
                       />
                     ) : null
                   ) : (
-                    <Layout padding={"10px"} customTemplateColumns={"1fr auto"}>
+                    <Layout
+                      key={index}
+                      paddingY={"10px"}
+                      customTemplateColumns={"1fr auto"}
+                    >
                       <Container>{item.name}</Container>
                       {this.state.isEditable ? (
                         <Layout
@@ -200,7 +210,11 @@ class SponsorsList extends React.Component {
                             border={"none"}
                             hoverBackground={"transparent"}
                             hoverColor={"initial"}
-                            onClick={() => this.handleChange(index)}
+                            onClick={event => {
+                              event.preventDefault();
+                              this.handleChange(index);
+                            }}
+                            style={{ fontSize: "14px" }}
                           >
                             <MaterialIcon type={"edit"} />
                           </Button>
@@ -214,6 +228,7 @@ class SponsorsList extends React.Component {
                             hoverBackground={"transparent"}
                             hoverColor={"initial"}
                             onClick={() => this.handleRemove(index)}
+                            style={{ fontSize: "14px" }}
                           >
                             <MaterialIcon type={"delete"} />
                           </Button>
@@ -230,21 +245,32 @@ class SponsorsList extends React.Component {
   }
 }
 
-SponsorsList.defaultProps = {
+ProductList.defaultProps = {
   data: [],
   background: "#E9EFF0",
   countField: "available",
+  titleField: "name",
   minField: "min",
-  maxField: "max"
+  showFields: true,
+  maxField: "max",
+  descriptionField: "description"
 };
 
-SponsorsList.propTypes = {
+ProductList.propTypes = {
   data: PropTypes.array,
+  isPaid: PropTypes.bool,
+  countField: PropTypes.string,
+  titleField: PropTypes.string,
+  showFields: PropTypes.bool,
+  minField: PropTypes.string,
+  maxField: PropTypes.string,
+  moneySymbol: PropTypes.string,
+  descriptionField: PropTypes.string,
   background: PropTypes.string,
-  isEditable: PropTypes.bool,
-  onInviteSpeaker: PropTypes.func, // todo: support invite a user not in the system
-  onInviteSponsor: PropTypes.func, // todo: support invite a user not in the system
-  users: PropTypes.func
+  onEdit: PropTypes.func,
+  onDelete: PropTypes.func,
+  onAdd: PropTypes.func,
+  isEditable: PropTypes.bool
 };
 
-export default SponsorsList;
+export default ProductList;

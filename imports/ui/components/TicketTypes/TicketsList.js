@@ -16,6 +16,11 @@ const SContainer = styled(Container)`
 const SItemContainer = styled(Container)`
   border-radius: 3px;
 `;
+
+const SListTitleContainer = styled(Container)`
+  margin-left: 10px;
+  font-weight: bold;
+`;
 /**
  * @module Data
  * @category TicketsList
@@ -29,7 +34,7 @@ const TicketsList = function(props) {
     <Layout rowGap={"5px"}>
       <Container>
         <Layout customTemplateColumns={"1fr auto"} colGap={"5px"}>
-          <Container />
+          <SListTitleContainer>{props.title}</SListTitleContainer>
           <Container>
             <Layout customTemplateColumns={"auto auto"} colGap={"5px"}>
               <Button
@@ -90,6 +95,7 @@ TicketsList.defaultProps = {
   isPaid: false,
   background: "#E9EFF0",
   countField: "available",
+  title: "Tickets",
   titleField: "name",
   minField: "min",
   moneySymbol: "$",
@@ -100,6 +106,7 @@ TicketsList.defaultProps = {
 
 TicketsList.propTypes = {
   data: PropTypes.object,
+  title: PropTypes.string,
   isPaid: PropTypes.bool,
   countField: PropTypes.string,
   titleField: PropTypes.string,
