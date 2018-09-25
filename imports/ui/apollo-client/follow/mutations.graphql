@@ -1,0 +1,5 @@
+mutation FollowAction($follower: FollowersInput, $id: String, $follow: Boolean) {
+    followAction(follower: $follower, id: $id, follow: $follow) {
+        _id
+    }
+}
