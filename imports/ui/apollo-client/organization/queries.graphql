@@ -68,5 +68,12 @@ query GetOrganizations($limit: Int, $filter: String, $organizations: Organizatio
                 label
             }
         }
+        products{
+            type
+            name
+            link
+            explain
+            files
+        }
     }
 }
