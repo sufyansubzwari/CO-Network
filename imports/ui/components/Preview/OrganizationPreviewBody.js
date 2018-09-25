@@ -38,10 +38,37 @@ class OrganizationPreviewBody extends React.Component {
         let actively = this.state.organization.actively && this.state.organization.actively.map(item => <div>{item.label}</div>)
         let jobType = this.state.organization.tech.jobType && this.state.organization.tech.jobType.map(item => <div>{item.label}</div>)
 
+        let products = this.state.organization.products
+            ? this.state.organization.products.map((prod, index) => {
+                let files =
+                    prod.files && prod.files.length && prod.files.map(file => <Container>{file}</Container>);
+                return prod.type === "Product" ? (
+                    <Container key={index}>
+                        <Text header={"Product"} />
+                        <Layout templateColumns={3}>
+                            <Text header={"Product Name"} text={prod.name} />
+                            <Text header={"Link to Video"} text={prod.link} />
+                            <Text header={"Files"} >{files}</Text>
+                        </Layout>
+                        <Text header={"Explain Product"} text={prod.explain} />
+                    </Container>
+                ) : prod.type === "Service" ? (
+                    <Container key={index}>
+                        <Text header={"Service"} />
+                        <Layout templateColumns={3}>
+                            <Text header={"Service Name"} text={prod.name} />
+                            <Text header={"Link to Video"} text={prod.link} />
+                            <Text header={"Files"} >{files}</Text>
+                        </Layout>
+                        <Text header={"Explain Service"} text={prod.explain} />
+                    </Container>
+                ) :  null;
+            })
+            : null;
         return (
             <Layout rowGap={'15px'}>
                 <Title text={this.state.organization.name}/>
-                <Location text={this.state.organization.location && this.state.organization.location.address.toUpperCase()}/>
+                <Location text={this.state.organization.place && this.state.organization.place.location && this.state.organization.place.location.address.toUpperCase()}/>
                 <Social social={socials} links={[]}/>
                 {organizationtype && organizationtype.length ? <Text header={'Organization Type'}>{organizationtype}</Text> : null}
                 <Layout templateColumns={2}>
@@ -74,6 +101,8 @@ class OrganizationPreviewBody extends React.Component {
                     {stacks && stacks.length ? <TagsAdd header={'Languages, Libraries, Skills Tags'} tags={stacks}/> : null}
                     {industry && industry.length ? <TagsAdd header={'Industry | Sector'} tags={industry}/> : null}
                 </Layout>
+
+                {products && products.length ? products : null}
             </Layout>
         );
     }
