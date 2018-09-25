@@ -156,6 +156,7 @@ class ListEvents extends Component {
                       const follow =
                         this.props.curUser &&
                         this.props.curUser._id &&
+                        this.state.selectedItem &&
                         this.state.selectedItem.followerList &&
                         this.state.selectedItem.followerList.indexOf(
                           this.props.curUser._id
