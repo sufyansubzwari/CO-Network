@@ -4,12 +4,8 @@ import { Layout, Container } from "btech-layout";
 import styled from "styled-components";
 import { Button, Input, Select, TextArea } from "btech-base-forms-component";
 import MaterialIcon from "react-material-iconic-font";
-import ProfessionalExperience from "./ProfessionalExperience";
-import AcademicBackground from "./AcademicBackground";
-import AuditedCourse from "./AuditedCourse";
-import Publications from "./Publications";
-import Patents from "./Patents";
-import LineSeparator from "./LineSeparator";
+import Product from "./Product";
+import Service from "./Service"
 
 const SLabel = styled.div`
   font-size: 12px;
@@ -26,12 +22,12 @@ const SItemContainer = styled(Container)`
   border-radius: 3px;
 `;
 
-class AchievementsList extends React.Component {
+class ProductList extends React.Component {
   constructor(props) {
     super(props);
 
     this.state = {
-      achievements:
+      products:
         this.props.data && this.props.data.length ? this.props.data : [],
       isEditable: false
     };
@@ -41,100 +37,106 @@ class AchievementsList extends React.Component {
     this.handleRemove = this.handleRemove.bind(this);
     this.handleDelete = this.handleDelete.bind(this);
     this.handleChange = this.handleChange.bind(this);
+    this.handleUpload = this.handleUpload.bind(this);
+    this.handleClose = this.handleClose.bind(this);
   }
 
   componentWillReceiveProps(nextProps) {
     if (nextProps.data) {
       this.setState({
-        achievements:
+        products:
           nextProps.data && nextProps.data.length ? nextProps.data : []
       });
     }
   }
 
   handleRemove(index) {
-    let sta = this.state.achievements;
+    let sta = this.state.products;
     let aux = sta.splice(index, 1);
 
     this.setState(
       {
-        achievement: aux
+        product: aux
       },
       () => this.notifyParent()
     );
   }
-  handleDelete() {
-    let arr = this.state.achievements.filter(
+
+  handleClose(index,pos){
+      let sta = this.state.products;
+      let aux = sta[index]['files'].splice(pos,1);
+
+      this.setState({
+              products: sta
+          },
+          () => this.notifyParent())
+  }
+
+  handleUpload(file, index) {
+      let products = this.state.products;
+      let files = this.state.products[index].files
+          ? this.state.products[index].files
+          : [];
+      if (file && file.length) {
+          file.map(f => files.push(f.name));
+      } else files.push(file.name);
+      products[index]["files"] = files;
+      this.setState(
+          {
+              products: products
+          },
+          () => this.notifyParent()
+      );
+  }
+
+    handleDelete() {
+    let arr = this.state.products.filter(
       item => item.type !== this.props.type
     );
     this.setState(
       {
-        achievements: arr
+        products: arr
       },
       () => this.notifyParent()
     );
   }
   handleSave(index) {
-    let ach = this.state.achievements;
-    ach[index] = { ...ach[index], edit: false };
+    let prod = this.state.products;
+      prod[index] = { ...prod[index], edit: false };
     this.setState(
       {
-        achievements: ach
+        products: prod
       },
       () => this.notifyParent()
     );
   }
 
   handleChange(index) {
-    let ach = this.state.achievements;
-    ach[index] = { ...ach[index], edit: true };
-    this.props.onChange && this.props.onChange(ach);
+    let prod = this.state.products;
+      prod[index] = { ...prod[index], edit: true };
+    this.props.onChange && this.props.onChange(prod);
   }
 
   handleAdd() {
-    let list = this.state.achievements;
+    let list = this.state.products;
     list.push({
       type: this.props.type,
       edit: true
     });
     this.setState(
       {
-        achievements: list
+        products: list
       },
       () => this.notifyParent()
     );
   }
 
-  onAddTags(index, tag) {
-    if (tag.label && tag.label.length > 0) {
-      let tags =
-        this.state.achievements[index] &&
-        this.state.achievements[index].category
-          ? this.state.achievements[index].category
-          : [];
-      !tag.name ? (tag.name = tag.label) : null;
-      let newTag = { ...tag, type: this.props.type };
-      tags.push(newTag);
-      this.state.achievements[index].category = tags;
-      this.setState({ achievements: this.state.achievements }, () =>
-        this.notifyParent()
-      );
-    }
-  }
-
-  onCloseTags(e, tag, i, index) {
-    this.state.achievements[index].category.splice(i, 1);
-    this.setState({ achievements: this.state.achievements }, () =>
-      this.notifyParent()
-    );
-  }
-
   notifyParent() {
-    this.props.onChange && this.props.onChange(this.state.achievements);
+    this.props.onChange && this.props.onChange(this.state.products);
   }
 
   render() {
-    let elements = this.state.achievements.filter(
+    let elements = this.state.products.filter(
       item => item.type === this.props.type
     );
 
@@ -201,49 +203,23 @@ class AchievementsList extends React.Component {
         ) : null}
         <SItemContainer paddingX={"10px"} background={this.props.background}>
           <Container>
-            {this.state.achievements.map(
+            {this.state.products.map(
               (item, index) =>
                 item.type === this.props.type ? (
                   item.edit ? (
-                    item.type === "Academic Background" ? (
-                      <AcademicBackground
-                        model={this.state.achievements[index]}
+                    item.type === "Product" ? (
+                      <Product
+                        model={this.state.products[index]}
                         handleSave={() => this.handleSave(index)}
+                        handleUpload={file => this.handleUpload(file, index)}
+                        onClose ={ (pos) => this.handleClose(index,pos) }
                       />
-                    ) : item.type === "Professional Experience" ? (
-                      <ProfessionalExperience
-                        model={this.state.achievements[index]}
-                        handleSave={() => this.handleSave(index)}
-                      />
-                    ) : item.type === "Audited Courses" ? (
-                      <AuditedCourse
-                        model={this.state.achievements[index]}
-                        handleSave={() => this.handleSave(index)}
-                        onAddTags={this.onAddTags.bind(this, index)}
-                        onCloseTags={(e, tag, i) =>
-                          this.onCloseTags(e, tag, i, index)
-                        }
-                        options={[]}
-                      />
-                    ) : item.type === "Publications" ? (
-                      <Publications
-                        model={this.state.achievements[index]}
-                        handleSave={() => this.handleSave(index)}
-                        onAddTags={this.onAddTags.bind(this, index)}
-                        onCloseTags={(e, tag, i) =>
-                          this.onCloseTags(e, tag, i, index)
-                        }
-                        options={[]}
-                      />
-                    ) : item.type === "Patents" ? (
-                      <Patents
-                        model={this.state.achievements[index]}
-                        handleSave={() => this.handleSave(index)}
-                        onAddTags={this.onAddTags.bind(this, index)}
-                        onCloseTags={(e, tag, i) =>
-                          this.onCloseTags(e, tag, i, index)
-                        }
-                        options={[]}
+                    ) : item.type === "Service" ? (
+                      <Service
+                          model={this.state.products[index]}
+                          handleSave={() => this.handleSave(index)}
+                          handleUpload={file => this.handleUpload(file, index)}
+                          onClose ={ (pos) => this.handleClose(index,pos) }
                       />
                     ) : null
                   ) : (
@@ -301,7 +277,7 @@ class AchievementsList extends React.Component {
   }
 }
 
-AchievementsList.defaultProps = {
+ProductList.defaultProps = {
   data: [],
   background: "#E9EFF0",
   countField: "available",
@@ -312,7 +288,7 @@ AchievementsList.defaultProps = {
   descriptionField: "description"
 };
 
-AchievementsList.propTypes = {
+ProductList.propTypes = {
   data: PropTypes.array,
   isPaid: PropTypes.bool,
   countField: PropTypes.string,
@@ -329,4 +305,4 @@ AchievementsList.propTypes = {
   isEditable: PropTypes.bool
 };
 
-export default AchievementsList;
+export default ProductList;

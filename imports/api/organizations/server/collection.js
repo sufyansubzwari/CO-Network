@@ -85,7 +85,42 @@ Organizations.schema = new SimpleSchema({
   "tech.jobType": { type: Array, optional: true },
   "tech.jobType.$": { type: Object, optional: true },
   "tech.jobType.$.label": { type: String, optional: true },
-
+    products: {
+        type: Array,
+        optional: true
+    },
+    'products.$': {
+        type: Object,
+        optional: true
+    },
+    'products.$.name': {
+        type: String,
+        optional: true
+    },
+    'products.$.link': {
+        type: String,
+        optional: true
+    },
+    'products.$.edit': {
+        type: Boolean,
+        optional: true
+    },
+    'products.$.type': {
+        type: String,
+        optional: true
+    },
+    'products.$.explain': {
+        type: String,
+        optional: true
+    },
+    'products.$.files':{
+      type: Array,
+      optional: true
+    },
+    'products.$.files.$':{
+        type: String,
+        optional: true
+    },
   views: {
     type: Number,
     label: "Viewed Count",

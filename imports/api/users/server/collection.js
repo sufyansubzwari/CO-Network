@@ -173,14 +173,50 @@ const schema = new SimpleSchema({
     optional: true
   },
   "profile.knowledge.languages.$": {
-    type: String,
+    type: Object,
     optional: true
+  },
+  "profile.knowledge.languages.$.tag": {
+    type: String,
+    optional: true,
+    label: "ID of tag entity"
+  },
+  "profile.knowledge.languages.$.level": {
+    type: String,
+    optional: true,
+    label: "level of the tag"
+  },
+  "profile.knowledge.languages.$.icon": {
+    type: String,
+    optional: true,
+    label: "icon of the tag"
+  },
+  "profile.knowledge.languages.$.levelColor": {
+    type: String,
+    optional: true,
+    label: "color of the tag"
   },
   "profile.knowledge.curiosity": {
     type: Array,
     optional: true
   },
   "profile.knowledge.curiosity.$": {
+    type: Object,
+    optional: true
+  },
+  "profile.knowledge.curiosity.$.tag": {
+    type: String,
+    optional: true
+  },
+  "profile.knowledge.curiosity.$.level": {
+    type: String,
+    optional: true
+  },
+  "profile.knowledge.curiosity.$.icon": {
+    type: String,
+    optional: true
+  },
+  "profile.knowledge.curiosity.$.levelColor": {
     type: String,
     optional: true
   },

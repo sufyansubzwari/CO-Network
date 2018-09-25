@@ -19,6 +19,7 @@ type Organizations {
     reason: Reason
     tech: Tech
     place: Places
+    products: [Products]
 }
 
 type Tech {
@@ -26,6 +27,15 @@ type Tech {
     salaryRange: SalaryRange
     industry: [Tags]
     jobType: [ObjectType]
+}
+
+type Products {
+    type: String!
+    name: String
+    link: String
+    explain: String
+    files: [String]
+    edit: Boolean
 }
 
 type Social {
@@ -85,6 +95,16 @@ input OrganizationsInput {
     reason: ReasonInput
     tech: TechInput
     place: PlacesInput
+    products: [ProductsInput]
+}
+
+input ProductsInput {
+    type: String!
+    name: String
+    link: String
+    explain: String
+    edit: Boolean
+    files: [String]
 }
 
 input SocialInput {

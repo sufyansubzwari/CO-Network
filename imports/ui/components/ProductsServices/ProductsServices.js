@@ -4,10 +4,10 @@ import { Layout, Container } from "btech-layout";
 import {Button} from 'btech-base-forms-component';
 import ButtonMenu from "../../components/ButtonMenu/ButtonMenu";
 import LineSeparator from "./LineSeparator";
-import AchievementList from './AchievementList';
+import ProductList from './ProductList';
 import MaterialIcon from "react-material-iconic-font";
 import styled from "styled-components";
-import {ACHIEVEMENTS_TYPES} from './constants';
+import {PRODUCTS_TYPES} from './constants';
 
 
 const SLabel = styled.div`
@@ -18,15 +18,14 @@ const SLabel = styled.div`
 `;
 
 
-class Achievements extends  React.Component {
+class ProductsServices extends  React.Component {
 
     constructor(props){
         super(props)
 
         this.state = {
-            achievements : this.props.achievements && this.props.achievements.length ? this.props.achievements : [],
-            editIndex: -1,
-            menuOptions: ACHIEVEMENTS_TYPES
+            products : this.props.products && this.props.products.length ? this.props.products : [],
+            menuOptions: PRODUCTS_TYPES
         }
 
         this.onSelectToAdd = this.onSelectToAdd.bind(this)
@@ -34,24 +33,24 @@ class Achievements extends  React.Component {
     }
 
     notifyParent() {
-        this.props.onChange && this.props.onChange(this.state.achievements);
+        this.props.onChange && this.props.onChange(this.state.products);
     }
 
-    handleChange(ach){
+    handleChange(prod){
         this.setState({
-            achievements: ach
+            products: prod
         }, () => this.notifyParent())
     }
 
-    onSelectToAdd(achievement,key) {
+    onSelectToAdd(product,key) {
         // this.setState({ tickets: list, editIndex: list.length - 1 });
 
-        const list = this.state.achievements;
+        const list = this.state.products;
         list.push({
-            type: achievement.type,
+            type: product.type,
             edit: true
         });
-        this.setState({ achievements: list });
+        this.setState({ products: list });
 
     }
 
@@ -63,7 +62,7 @@ class Achievements extends  React.Component {
                     <Container mt={"10px"}>
                         <Layout customTemplateColumns={"auto 1fr"}>
                             <ButtonMenu
-                                title={"Add Achievement"}
+                                title={"Products and Services"}
                                 options={this.state.menuOptions}
                                 onSelect={(item, key) => this.onSelectToAdd(item, key)}
                             />
@@ -71,9 +70,9 @@ class Achievements extends  React.Component {
                         </Layout>
                     </Container>
                     {
-                        ACHIEVEMENTS_TYPES.map( item =>
+                        PRODUCTS_TYPES.map( item =>
                             <Container>
-                            <AchievementList data={this.state.achievements} onChange={ this.handleChange } type={item.type} />
+                            <ProductList data={this.state.products} onChange={ this.handleChange } type={item.type} />
                         </Container>  )
                     }
                 </Layout>
@@ -82,16 +81,16 @@ class Achievements extends  React.Component {
     }
 }
 
-Achievements.defaultProps = {
+ProductsServices.defaultProps = {
 
 };
 
-Achievements.propTypes = {
-    achievements: PropTypes.array,
+ProductsServices.propTypes = {
+    products: PropTypes.array,
     onChange: PropTypes.func,
     type: PropTypes.func
 };
 
-export default Achievements
+export default ProductsServices
 
 
