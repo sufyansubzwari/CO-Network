@@ -2,10 +2,7 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { Layout, Container } from "btech-layout";
 import {Button} from 'btech-base-forms-component';
-// import TicketItem from "./TicketItem";
-// import TicketsList from "./TicketsList";
 import ButtonMenu from "../../components/ButtonMenu/ButtonMenu";
-// import { ticketsTypes } from "./options.constant";
 import LineSeparator from "./LineSeparator";
 import AchievementList from './AchievementList';
 import MaterialIcon from "react-material-iconic-font";
@@ -73,21 +70,12 @@ class Achievements extends  React.Component {
                             <LineSeparator />
                         </Layout>
                     </Container>
-                    <Container>
-                        <AchievementList data={this.state.achievements} onChange={ this.handleChange } type={'Academic Background'} />
-                    </Container>
-                    <Container>
-                        <AchievementList data={this.state.achievements} onChange={ this.handleChange } type={'Audited Courses'} />
-                    </Container>
-                    <Container>
-                        <AchievementList data={this.state.achievements} onChange={ this.handleChange } type={'Professional Experience'} />
-                    </Container>
-                    <Container>
-                        <AchievementList data={this.state.achievements} onChange={ this.handleChange } type={'Patents'} />
-                    </Container>
-                    <Container>
-                        <AchievementList data={this.state.achievements} onChange={ this.handleChange } type={'Publications'} />
-                    </Container>
+                    {
+                        ACHIEVEMENTS_TYPES.map( item =>
+                            <Container>
+                            <AchievementList data={this.state.achievements} onChange={ this.handleChange } type={item.type} />
+                        </Container>  )
+                    }
                 </Layout>
             </Container>
         );

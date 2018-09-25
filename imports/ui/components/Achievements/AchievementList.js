@@ -148,6 +148,7 @@ class AchievementsList extends React.Component {
             <SLabel>{this.props.type}</SLabel>
             <Layout customTemplateColumns={"auto auto auto"} colGap={"5px"}>
               <Button
+                type={"button"}
                 secondary
                 height={"auto"}
                 color={"black"}
@@ -160,6 +161,7 @@ class AchievementsList extends React.Component {
                 <MaterialIcon type={"plus-circle"} />
               </Button>
               <Button
+                type={"button"}
                 secondary
                 height={"auto"}
                 color={"black"}
@@ -174,6 +176,7 @@ class AchievementsList extends React.Component {
                 <MaterialIcon type={"edit"} />
               </Button>
               <Button
+                type={"button"}
                 secondary
                 height={"auto"}
                 color={"black"}
@@ -188,7 +191,7 @@ class AchievementsList extends React.Component {
             </Layout>
           </Layout>
         ) : null}
-        <SItemContainer padding={"10px"} background={this.props.background}>
+        <SItemContainer paddingX={"10px"} background={this.props.background}>
           <Container>
             {this.state.achievements.map(
               (item, index) =>
@@ -247,6 +250,7 @@ class AchievementsList extends React.Component {
                           colGap={"5px"}
                         >
                           <Button
+                            type={"button"}
                             secondary
                             height={"auto"}
                             color={"black"}
@@ -254,11 +258,12 @@ class AchievementsList extends React.Component {
                             border={"none"}
                             hoverBackground={"transparent"}
                             hoverColor={"initial"}
-                            onClick={() => this.handleChange(index)}
+                            onClick={(event) => { event.preventDefault(); this.handleChange(index);}}
                           >
                             <MaterialIcon type={"edit"} />
                           </Button>
                           <Button
+                            type={"button"}
                             secondary
                             height={"auto"}
                             color={"black"}
