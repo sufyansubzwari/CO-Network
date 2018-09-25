@@ -8,6 +8,8 @@ import HomeButton from "./HomeButton";
 import UserNavbarSection from "./UserNavbarSection";
 import navs from "./nav.constant";
 import posed from "react-pose/lib/index";
+import { connect } from "react-redux";
+import { toggleSideBar } from "../../actions/SideBarActions";
 
 const SNavBarContainerStyled = Styled(Container)`
     z-index: 15;
@@ -64,6 +66,9 @@ class Navbar extends Component {
   componentDidMount(){
     this.routeListen = this.props.history.listen((location, action) => {
       this.openNavbar(false)
+      if(this.props.isAddAction)
+        this.props.closeSideBar();
+
     });
   }
   componentWillUnmount(){
@@ -106,4 +111,21 @@ class Navbar extends Component {
   }
 }
 
-export default withRouter(Navbar);
+const mapStateToProps = state => {
+  const { sideBarStatus, sideBarEntity } = state;
+  return {
+    isAddAction: sideBarStatus ? sideBarStatus.isAdd : false,
+    filterEntityType: sideBarEntity ? sideBarEntity.entityType : null
+  };
+};
+
+const mapDispatchToProps = dispatch => {
+  return {
+    closeSideBar: () => dispatch(toggleSideBar(false, false))
+  };
+};
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)( withRouter(Navbar));
