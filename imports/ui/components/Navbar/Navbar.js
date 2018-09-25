@@ -51,11 +51,23 @@ class Navbar extends Component {
     this.state = { isOpen: false };
   }
 
-  openNavbar=()=>{
-    const isOpen=!this.state.isOpen;
+  openNavbar(isOpen){
     this.setState({ isOpen});
     this.props.onOpenNavbar&&this.props.onOpenNavbar(isOpen)
+  }
 
+  toggleNavbar=()=>{
+    const isOpen=!this.state.isOpen;
+    this.openNavbar(isOpen)
+  }
+
+  componentDidMount(){
+    this.routeListen = this.props.history.listen((location, action) => {
+      this.openNavbar(false)
+    });
+  }
+  componentWillUnmount(){
+    this.routeListen && this.routeListen();
   }
 
   render() {
@@ -84,10 +96,10 @@ class Navbar extends Component {
         >
           <Layout key={"header"} mdMarginY={"30px"} lgMarginY={"30px"}>
             <HomeButton
-              onOpenNavbar={this.openNavbar}
+              onOpenNavbar={this.toggleNavbar}
             />
           </Layout>
-          <UserNavbarSection key={"footer"} curUser={this.props.curUser} />
+          <UserNavbarSection key={"footer"} curUser={this.props.curUser} callback={(value)=>this.openNavbar(value)}/>
         </HNavbar>
       </SNavBarContainer>
     );

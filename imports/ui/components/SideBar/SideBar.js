@@ -10,8 +10,6 @@ import JobsFilters from "../../modules/jobs-module/filters";
 import OrganizationFilters from "../../modules/organization-module/filters";
 import posed from "react-pose";
 
-
-
 const SSideBarContainerStyed = styled(Container)`
   border-right: ${props => "1px solid " + props.theme.borderColor};
   overflow: hidden;
@@ -97,18 +95,15 @@ class SideBar extends Component {
   }
 
   render() {
-    const isOpen= this.props.isOpen;
-    const right= this.props.right;
+    const isOpen = this.props.isOpen;
     return (
       <SSideBarContainer
-        padding={"0 30px"}
         mdPadding={"0"}
         pose={isOpen ? "openSidebar" : "closedSidebar"}
         background={"white"}
         fullY
         gridArea="SideBar"
-        width={"200%"}
-        mdWidth={"100%"}
+        mr={{ xs: "-100%", md: "0px" }}
       >
         {this.renderSidebar()}
       </SSideBarContainer>

@@ -78,6 +78,7 @@ class UserNavbarSection extends React.Component {
 
   onAddToggle() {
     this.props.toggleSideBar(!this.props.addSidebarIsOpen);
+    this.props.callback && this.props.callback(false)
   }
 
   render() {
