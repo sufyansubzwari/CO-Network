@@ -146,6 +146,7 @@ class AchievementsList extends React.Component {
           <Layout
             customTemplateColumns={"1fr auto"}
             style={{ paddingRight: "10px" }}
+            mb={'5px'}
           >
             <SLabel>{this.props.type}</SLabel>
             {edit.length === 0 ? (
