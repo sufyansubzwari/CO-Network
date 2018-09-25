@@ -75,8 +75,6 @@ class MlSelectTag extends React.Component {
   }
 
   render() {
-    // let tags = (
-    // );
     return (
       <div>
         <Select

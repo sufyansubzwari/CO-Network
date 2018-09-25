@@ -49,7 +49,8 @@ class SponsorsList extends React.Component {
   }
 
   handleRemove(index) {
-    let sta = this.state.sponsors.splice(index, 1);
+    let sta = this.state.sponsors;
+    let aux = sta.splice(index, 1);
     this.setState({ sponsors: sta }, () => this.notifyParent());
   }
 

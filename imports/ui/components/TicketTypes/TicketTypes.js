@@ -60,21 +60,21 @@ class TicketTypes extends Component {
             </Layout>
           </Container>
           {this.state.tickets.map((ticket, index) => {
+            const isPaid = ticket.type === "paid";
             return (
               <Container key={index}>
                 {this.state.editIndex === index ? (
                   <TicketItem
-                    title={
-                      ticket.type === "paid" ? "Paid Ticket" : "Free Ticket"
-                    }
-                    isPaid={ticket.type === "paid"}
+                    title={isPaid ? "Paid Ticket" : "Free Ticket"}
+                    isPaid={isPaid}
                     data={this.state.editIndex === index ? { ...ticket } : {}}
                     onSave={event => this.processSaveAction(event, index)}
                   />
                 ) : (
                   <TicketsList
                     data={ticket}
-                    showPriceFields={ticket.type === "paid"}
+                    title={isPaid ? "Paid Tickets" : "Free Tickets"}
+                    showPriceFields={isPaid}
                     onEdit={() => this.setState({ editIndex: index })}
                     onDelete={() => this.onDeleteAction(ticket, index)}
                   />

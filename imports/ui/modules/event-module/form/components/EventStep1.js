@@ -118,6 +118,7 @@ class EventStep1 extends Component {
         <Container>
           <TextArea
             placeholderText={"Summary"}
+            required
             name={"description"}
             model={this.state.event}
             getValue={this.notifyParent.bind(this)}
@@ -125,7 +126,7 @@ class EventStep1 extends Component {
         </Container>
         <Container>
           <DatePickerRange
-            required={true}
+            required
             reverse={true}
             placeholderStartDate={"Start Date"}
             placeholderEndDate={"End Date"}
@@ -177,7 +178,6 @@ class EventStep1 extends Component {
                       }))
                     : []
                 }
-                // onSelect={tag => alert(`you select the tag '${tag.name}'`)}
                 closeable={true}
                 onClose={(e, tag, index) => this.onCloseTags(e, tag, index)}
               />

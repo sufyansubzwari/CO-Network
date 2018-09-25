@@ -103,6 +103,7 @@ class TicketItem extends Component {
               <Button
                 secondary
                 type={"button"}
+                role={"button"}
                 color={"black"}
                 opacity={"0.5"}
                 border={"none"}

@@ -15,6 +15,15 @@ const Label = styled.label`
   color: #010101;
 `;
 
+const NetworkLabel = styled(Label)`
+  margin-bottom: 0;
+  font-weight: bold;
+`;
+
+const NetworkSubLabel = styled(Label)`
+  color: rgba(0, 0, 0, 0.5);
+`;
+
 class FirstStep extends React.Component {
   constructor(props) {
     super(props);
@@ -165,11 +174,19 @@ class FirstStep extends React.Component {
         >
           {(updateIdentities, { profile }) => (
             <Container>
-              <Label>Connect Networks</Label>
+              <Container>
+                <NetworkLabel>Connect Networks</NetworkLabel>
+                <Container>
+                  <NetworkSubLabel>
+                    Connect from your social networks
+                  </NetworkSubLabel>
+                </Container>
+              </Container>
               <Layout
-                templateColumns={this.services.length}
+                rowGap={"10px"}
                 colGap={"10px"}
-                minH={"90px"}
+                minH={"115px"}
+                customTemplateColumns={"repeat(auto-fit, minmax(100px, 1fr))"}
               >
                 {this.services.map((authService, position) => {
                   const service = authService.label || authService.service;
@@ -181,6 +198,7 @@ class FirstStep extends React.Component {
                       const data = this.handleDataToShow(element);
                       return (
                         <SocialButton
+                          height={"110px"}
                           key={index}
                           social={service}
                           connected={!!element}
@@ -209,6 +227,7 @@ class FirstStep extends React.Component {
                   } else
                     return (
                       <SocialButton
+                        height={"110px"}
                         key={position}
                         social={service}
                         onClick={() =>

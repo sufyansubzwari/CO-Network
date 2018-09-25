@@ -74,43 +74,47 @@ class EventForm extends Component {
     );
   }
 
+  isValidStep1() {
+    const event = this.state.event;
+    return event && !!(event.category.length || event.others.length);
+  }
+
   render() {
+    const event = this.state.event;
     return (
       <MlWizardForm
         title={"Post a Event"}
-        onFinish={() =>
-          this.props.onFinish && this.props.onFinish(this.state.event)
-        }
+        onFinish={() => this.props.onFinish && this.props.onFinish(event)}
         showProgress
         onCancel={() => this.props.onCancel && this.props.onCancel()}
       >
         <WizardStepForm title={"Event Details"} isValid>
           <EventStep1
-            data={this.state.event}
+            data={event}
             onChange={event => this.handleChange(event)}
           />
         </WizardStepForm>
         <WizardStepForm title={"Speaker & Sponsors"} isValid>
           <EventStep2
-            data={this.state.event}
+            data={event}
             onChange={event => this.handleChange(event)}
           />
         </WizardStepForm>
         <WizardStepForm title={"Venue"} isValid>
           <EventStep3
-            data={this.state.event}
+            data={event}
             onChange={event => this.handleChange(event)}
           />
         </WizardStepForm>
         <WizardStepForm title={"Ticket Type"} isValid>
           <EventStep4
-            data={this.state.event}
+            data={event}
             onChange={event => this.handleChange(event)}
           />
         </WizardStepForm>
         {/*<WizardStepForm title={"Receive Payments"} isValid>*/}
         {/*<EventStep5*/}
-        {/*data={this.state.event}*/}
+        {/*data={event}*/}
         {/*onChange={event => this.handleChange(event)}*/}
         {/*/>*/}
         {/*</WizardStepForm>*/}

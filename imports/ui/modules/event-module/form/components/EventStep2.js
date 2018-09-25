@@ -29,10 +29,7 @@ class EventStep2 extends Component {
   handleChange(spons) {
     this.setState(
       {
-        event: {
-          ...this.state.event,
-          sponsors: spons
-        }
+        event: { ...this.state.event, sponsors: spons }
       },
       () => this.notifyParent()
     );
@@ -54,8 +51,7 @@ class EventStep2 extends Component {
       <Layout rowGap={"25px"}>
         <Query query={users}>
           {({ loading, error, data }) => {
-            if (loading) return <div>Fetching</div>;
-            if (error) return <div>Error</div>;
+            if (error) return <div>Error loading the information</div>;
             return (
               <SpeakersSponsors
                 onChange={this.handleChange}
