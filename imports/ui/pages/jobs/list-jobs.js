@@ -125,7 +125,8 @@ class ListJobs extends Component {
               >
                 {(updateJobsImage, { job }) => (
                   <Preview
-                    isOpen={this.state.selectedItem}
+                    isOpen={!!this.state.selectedItem}
+                    onClose={()=>this.onChangeSelection(null,null)}
                     key={"rightSide"}
                     navlinks={["Details"]}
                     navClicked={index => console.log(index)}

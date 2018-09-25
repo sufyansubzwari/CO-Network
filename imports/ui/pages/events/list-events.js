@@ -129,8 +129,9 @@ class ListEvents extends Component {
               >
                 {(updateEventImage, { event }) => (
                   <Preview
+                    onClose={()=>this.onChangeSelection(null,null)}
                     key={"rightSide"}
-                    isOpen={this.state.selectedItem}
+                    isOpen={!!this.state.selectedItem}
                     navlinks={["Details"]}
                     navClicked={index => console.log(index)}
                     navOptions={[

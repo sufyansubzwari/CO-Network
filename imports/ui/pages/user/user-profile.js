@@ -152,6 +152,7 @@ class UserProfile extends Component {
         </Container>
         <Preview
           isOpen={this.state.openPreview}
+          onClose={()=>this.setState({openPreview:false})}
           showAvatar
           key={"rightSide"}
           navlinks={["Details"]}

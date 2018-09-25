@@ -145,6 +145,7 @@ class PostOrganization extends Component {
         </Mutation>
         <Preview
           isOpen={this.state.openPreview}
+          onClose={()=>this.setState({openPreview:false})}
           key={"rightSide"}
           navClicked={index => console.log(index)}
           navlinks={["Details"]}

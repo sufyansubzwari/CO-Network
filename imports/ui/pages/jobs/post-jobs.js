@@ -103,6 +103,7 @@ class PostJob extends Component {
         </Mutation>
         <Preview
           isOpen={this.state.openPreview}
+          onClose={()=>this.setState({openPreview:false})}
           key={"rightSide"}
           navClicked={index => console.log(index)}
           navOptions={[

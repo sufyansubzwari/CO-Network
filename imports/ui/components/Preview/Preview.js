@@ -7,6 +7,7 @@ import { Scrollbars } from "react-custom-scrollbars";
 import { Button } from "btech-base-forms-component";
 import TopPreview from "./TopPreview";
 import posed from "react-pose";
+import BackButton from "../BackButton/BackButton";
 
 const ResponsiveContainer= styled(Layout)`
     margin-left: -100%;
@@ -108,6 +109,7 @@ export default class Preview extends React.Component {
           {element}
         </SNavLinkItem>
       ));
+
     let options = this.props.navOptions
       ? this.props.navOptions
           .filter((element, index) => {
@@ -157,14 +159,20 @@ export default class Preview extends React.Component {
           }
         >
           {this.props.showAvatar ? <Container /> : null}
-          <NavLinks
-            style={{
-              display: "flex",
-              flexDirection: "row"
-            }}
-          >
-            {navlinks}
-          </NavLinks>
+          <Container height="100%" hide mdShow>
+            <NavLinks
+              style={{
+                height:"100%",
+                display: "flex",
+                flexDirection: "row"
+              }}
+            >
+                {navlinks}
+            </NavLinks>
+          </Container>
+          <Container  mdHide>
+              <BackButton onClick={() => this.props.onClose && this.props.onClose()}/>
+          </Container>
           <NavLinks
             style={{
               display: "flex",
