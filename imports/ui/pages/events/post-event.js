@@ -44,7 +44,8 @@ class PostEvent extends Component {
 
   componentDidMount(){
     setTimeout(()=>{
-      this.setState({openPreview:true})
+      if(document.body.offsetWidth>992)
+        this.setState({openPreview:true})
     },200)
   }
 

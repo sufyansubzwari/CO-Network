@@ -63,7 +63,7 @@ const ContentContainerPose = posed(ContentStyled)({
 class MainLayout extends Component {
   constructor(props) {
     super(props);
-    this.state = { isShow: false ,showNavbar:false};
+    this.state = { isShow: true ,showNavbar:false};
   }
   componentDidMount() {
     setTimeout(() => {
