@@ -8,6 +8,8 @@ import HomeButton from "./HomeButton";
 import UserNavbarSection from "./UserNavbarSection";
 import navs from "./nav.constant";
 import posed from "react-pose/lib/index";
+import { connect } from "react-redux";
+import { toggleSideBar } from "../../actions/SideBarActions";
 
 const SNavBarContainerStyled = Styled(Container)`
     z-index: 15;
@@ -51,6 +53,28 @@ class Navbar extends Component {
     this.state = { isOpen: false };
   }
 
+  openNavbar(isOpen){
+    this.setState({ isOpen});
+    this.props.onOpenNavbar&&this.props.onOpenNavbar(isOpen)
+  }
+
+  toggleNavbar=()=>{
+    const isOpen=!this.state.isOpen;
+    this.openNavbar(isOpen)
+  }
+
+  componentDidMount(){
+    this.routeListen = this.props.history.listen((location, action) => {
+      this.openNavbar(false)
+      if(document.body.offsetWidth<993)
+        this.props.closeSideBar();
+
+    });
+  }
+  componentWillUnmount(){
+    this.routeListen && this.routeListen();
+  }
+
   render() {
     let activeLink = -1;
     navs.some((item, index) => {
@@ -77,14 +101,31 @@ class Navbar extends Component {
         >
           <Layout key={"header"} mdMarginY={"30px"} lgMarginY={"30px"}>
             <HomeButton
-              onOpenNavbar={() => this.setState({ isOpen: !this.state.isOpen })}
+              onOpenNavbar={this.toggleNavbar}
             />
           </Layout>
-          <UserNavbarSection key={"footer"} curUser={this.props.curUser} />
+          <UserNavbarSection key={"footer"} curUser={this.props.curUser} callback={(value)=>this.openNavbar(value)}/>
         </HNavbar>
       </SNavBarContainer>
     );
   }
 }
 
-export default withRouter(Navbar);
+const mapStateToProps = state => {
+  const { sideBarStatus, sideBarEntity } = state;
+  return {
+    isAddAction: sideBarStatus ? sideBarStatus.isAdd : false,
+    filterEntityType: sideBarEntity ? sideBarEntity.entityType : null
+  };
+};
+
+const mapDispatchToProps = dispatch => {
+  return {
+    closeSideBar: () => dispatch(toggleSideBar(false, false))
+  };
+};
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)( withRouter(Navbar));

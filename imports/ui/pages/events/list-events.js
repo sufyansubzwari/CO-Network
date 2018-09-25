@@ -141,7 +141,6 @@ class ListEvents extends Component {
           onFetchData={() => this.fetchMoreSelection(isLoading)}
           onSelectCard={(item, key) => this.onChangeSelection(item, key)}
         />
-        {this.state.selectedItem ? (
           <Mutation key={"rightSide"} mutation={DeleteEvent}>
             {(deleteEvent, { eventDeleted }) => (
               <Mutation
@@ -163,93 +162,88 @@ class ListEvents extends Component {
                         ) > -1;
                       return (
                         <Preview
-                          key={"rightSide"}
-                          navlinks={["Details"]}
-                          navClicked={index => console.log(index)}
-                          navOptions={[
-                            {
-                              text: !follow ? "Follow" : "Unfollow",
-                              checkVisibility: () => {
-                                const element = this.state.selectedItem;
-                                return (
-                                  element &&
-                                  element._id &&
-                                  element.owner &&
-                                  this.props.curUser &&
-                                  element.owner._id !== this.props.curUser._id
-                                );
-                              },
-                              onClick: () =>
-                                this.handleFollow(followAction, follow)
-                            },
-                            {
-                              text: "Edit",
-                              checkVisibility: () => {
-                                const element = this.state.selectedItem;
-                                return (
-                                  element &&
-                                  element._id &&
-                                  element.owner &&
-                                  this.props.curUser &&
-                                  element.owner._id === this.props.curUser._id
-                                );
-                              },
-                              onClick: () => {
-                                this.editEvent();
-                              }
-                            },
-                            {
-                              text: "Remove",
-                              icon: "delete",
-                              checkVisibility: () => {
-                                const element = this.state.selectedItem;
-                                return (
-                                  element &&
-                                  element._id &&
-                                  element.owner &&
-                                  this.props.curUser &&
-                                  element.owner._id === this.props.curUser._id
-                                );
-                              },
-                              onClick: () => {
-                                this.removeEvent(
-                                  deleteEvent,
-                                  this.state.selectedItem
-                                );
-                              }
-                            }
-                          ]}
-                          index={this.state.selectedIndex}
-                          data={this.state.selectedItem}
-                          allowChangeImages={
-                            this.state.selectedItem &&
-                            this.state.selectedItem.owner &&
+                    onClose={()=>this.onChangeSelection(null,null)}key={"rightSide"}isOpen={!!this.state.selectedItem}
+                    navlinks={["Details"]}
+                    navClicked={index => console.log(index)}
+                    navOptions={[
+                      {
+                        text: !follow ?"Follow": "Unfollow",
+                        checkVisibility: () => {
+                          const element = this.state.selectedItem;
+                          return (
+                            element &&
+                            element._id &&
+                            element.owner &&
                             this.props.curUser &&
-                            this.state.selectedItem.owner._id ===
-                              this.props.curUser._id
-                          }
-                          backGroundImage={
+                            element.owner._id !== this.props.curUser._id
+                          );
+                        },
+                        onClick: () =>
+                          this.handleFollow(followAction, follow)
+                      },
+                      {
+                        text: "Edit",
+                        checkVisibility: () => {
+                          const element = this.state.selectedItem;
+                          return (
+                            element &&
+                            element._id &&
+                            element.owner &&
+                            this.props.curUser &&
+                            element.owner._id === this.props.curUser._id
+                          );
+                        },
+                        onClick: () => {
+                          this.editEvent();
+                        }
+                      },
+                      {
+                        text: "Remove",
+                        icon: "delete",
+                        checkVisibility: () => {
+                          const element = this.state.selectedItem;
+                          return (
+                            element &&
+                            element._id &&
+                            element.owner &&
+                            this.props.curUser &&
+                            element.owner._id === this.props.curUser._id
+                          );
+                        },
+                        onClick: () => {
+                          this.removeEvent(
+                            deleteEvent,
                             this.state.selectedItem
-                              ? this.state.selectedItem.image
-                              : null
-                          }
-                          onBackgroundChange={imageSrc =>
-                            this.handleBackgroundChange(
-                              updateEventImage,
-                              imageSrc
-                            )
-                          }
-                        >
-                          <EventPreviewBody event={this.state.selectedItem} />
-                        </Preview>
-                      );
+                          );
+                        }
+                      }
+                    ]}
+                    index={this.state.selectedIndex}
+                    data={this.state.selectedItem}
+                    allowChangeImages={
+                      this.state.selectedItem &&
+                      this.state.selectedItem.owner &&
+                      this.props.curUser &&
+                      this.state.selectedItem.owner._id ===
+                        this.props.curUser._id
+                    }
+                    backGroundImage={
+                      this.state.selectedItem
+                        ? this.state.selectedItem.image
+                        : null
+                    }
+                    onBackgroundChange={imageSrc =>
+                      this.handleBackgroundChange(updateEventImage, imageSrc
+                    )
+                  }
+                    ><EventPreviewBody event={this.state.selectedItem} />
+                  </Preview>);
                     }}
                   </Mutation>
                 )}
               </Mutation>
             )}
           </Mutation>
-        ) : null}
       </ListLayout>
     );
   }

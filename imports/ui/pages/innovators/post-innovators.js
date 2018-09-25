@@ -14,6 +14,7 @@ class PostOrganization extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      openPreview:false,
       organization: {
         name: "",
         employees: {
@@ -66,6 +67,12 @@ class PostOrganization extends Component {
     };
     this.handleBackgroundChange = this.handleBackgroundChange.bind(this);
     this.handleUserPhotoChange = this.handleUserPhotoChange.bind(this);
+  }
+  componentDidMount(){
+    setTimeout(()=>{
+      if(document.body.offsetWidth>992)
+          this.setState({openPreview:true})
+    },200)
   }
 
   handleBackgroundChange(src) {
@@ -137,6 +144,8 @@ class PostOrganization extends Component {
           )}
         </Mutation>
         <Preview
+          isOpen={this.state.openPreview}
+          onClose={()=>this.setState({openPreview:false})}
           key={"rightSide"}
           navClicked={index => console.log(index)}
           navlinks={["Details"]}

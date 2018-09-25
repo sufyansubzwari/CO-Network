@@ -2,8 +2,8 @@ import { Meteor } from 'meteor/meteor';
 import React from 'react';
 import PropTypes from 'prop-types';
 import { withApollo } from 'react-apollo';
+import MaterialIcon from "react-material-iconic-font";
 import Button from '../../Navbar/SideBarLink';
-
 //------------------------------------------------------------------------------
 // COMPONENT:
 //------------------------------------------------------------------------------
@@ -20,7 +20,9 @@ const LogoutBtn = ({ client, btnType, disabled, onLogoutHook }) => (
       });
     }}
   >
-    Log out
+   <span style={{ fontSize: 16 }}>
+            <MaterialIcon type={"square-right"} rotate={180}/>
+    </span> Log out
   </Button>
 );
 

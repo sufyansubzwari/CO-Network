@@ -94,7 +94,7 @@ class TopPreview extends Component {
 
   render() {
     return (
-      <Photo relative paddingX={"100px"} image={this.state.backGroundImage}>
+      <Photo relative paddingX={"100px"} image={this.state.backGroundImage} gridArea={this.props.gridArea}>
         <SBackground />
         <Layout
           fullY
@@ -147,6 +147,7 @@ class TopPreview extends Component {
 
 TopPreview.propTypes = {
   backGroundImage: PropsTypes.string,
+  gridArea: PropsTypes.string,
   showAvatar: PropsTypes.bool,
   allowChangeImages: PropsTypes.bool,
   image: PropsTypes.string,

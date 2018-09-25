@@ -14,6 +14,7 @@ class PostJob extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      openPreview:false,
       job: {
         title: "",
         description: "",
@@ -38,6 +39,13 @@ class PostJob extends Component {
         }
       }
     };
+  }
+
+  componentDidMount(){
+    setTimeout(()=>{
+      if(document.body.offsetWidth>992)
+           this.setState({openPreview:true})
+    },200)
   }
 
   onCancel() {
@@ -94,6 +102,8 @@ class PostJob extends Component {
           )}
         </Mutation>
         <Preview
+          isOpen={this.state.openPreview}
+          onClose={()=>this.setState({openPreview:false})}
           key={"rightSide"}
           navClicked={index => console.log(index)}
           navOptions={[

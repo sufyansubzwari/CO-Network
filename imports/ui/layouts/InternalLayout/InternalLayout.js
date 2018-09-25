@@ -1,6 +1,13 @@
 import React, { Component } from "react";
-import { Layout, Container } from "btech-layout";
+import { Layout, Container ,mixins} from "btech-layout";
 import PropTypes from "prop-types";
+import styled from "styled-components";
+
+const ResponsiveContainer= styled(Container)`
+    transform: translateX(100%);
+    z-index: 9;
+    ${mixins.media.desktop`transform:none;`}
+`
 
 /**
  * @module Common
@@ -24,25 +31,20 @@ class InternalLayout extends Component {
   }
 
   render() {
-    const structure = `${this.props.leftWidth} ${this.props.rightWidth}`;
+    // const structure = `${this.props.leftWidth} ${this.props.rightWidth}`;
     return (
       <Layout
         fullY
-        customTemplateColumns={"1fr"}
-        mdCustomTemplateColumns={structure}
-        lgCustomTemplateColumns={structure}
-        layoutAreas={{
-          xs: `'leftSide'`,
-          md: `'leftSide rightSide'`,
-          lg: `'leftSide rightSide'`
-        }}
+        customTemplateColumns={"0 1fr"}
+        mdCustomTemplateColumns={"1fr 1fr"}
+        style={{overflow:"hidden"}}
       >
-        <Container gridArea="leftSide" background={"white"}>
+        <Container background={"white"} width="100vw" mdWidth={"initial"}>
           {this.getComponent("leftSide")}
         </Container>
-        <Container hide mdShow gridArea="rightSide">
+        <ResponsiveContainer >
           {this.getComponent("rightSide")}
-        </Container>
+        </ResponsiveContainer>
       </Layout>
     );
   }

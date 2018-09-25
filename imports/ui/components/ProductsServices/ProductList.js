@@ -5,7 +5,7 @@ import styled from "styled-components";
 import { Button, Input, Select, TextArea } from "btech-base-forms-component";
 import MaterialIcon from "react-material-iconic-font";
 import Product from "./Product";
-import Service from "./Service"
+import Service from "./Service";
 
 const SLabel = styled.div`
   font-size: 12px;
@@ -44,8 +44,7 @@ class ProductList extends React.Component {
   componentWillReceiveProps(nextProps) {
     if (nextProps.data) {
       this.setState({
-        products:
-          nextProps.data && nextProps.data.length ? nextProps.data : []
+        products: nextProps.data && nextProps.data.length ? nextProps.data : []
       });
     }
   }
@@ -53,82 +52,50 @@ class ProductList extends React.Component {
   handleRemove(index) {
     let sta = this.state.products;
     let aux = sta.splice(index, 1);
-
-    this.setState(
-      {
-        product: aux
-      },
-      () => this.notifyParent()
-    );
+    this.setState({ product: aux }, () => this.notifyParent());
   }
 
-  handleClose(index,pos){
-      let sta = this.state.products;
-      let aux = sta[index]['files'].splice(pos,1);
-
-      this.setState({
-              products: sta
-          },
-          () => this.notifyParent())
+  handleClose(index, pos) {
+    let sta = this.state.products;
+    let aux = sta[index]["files"].splice(pos, 1);
+    this.setState({ products: sta }, () => this.notifyParent());
   }
 
   handleUpload(file, index) {
+    if (file) {
       let products = this.state.products;
       let files = this.state.products[index].files
-          ? this.state.products[index].files
-          : [];
+        ? this.state.products[index].files
+        : [];
       if (file && file.length) {
-          file.map(f => files.push(f.name));
+        file.map(f => files.push(f.name));
       } else files.push(file.name);
       products[index]["files"] = files;
-      this.setState(
-          {
-              products: products
-          },
-          () => this.notifyParent()
-      );
+      this.setState({ products: products }, () => this.notifyParent());
+    }
   }
 
-    handleDelete() {
-    let arr = this.state.products.filter(
-      item => item.type !== this.props.type
-    );
-    this.setState(
-      {
-        products: arr
-      },
-      () => this.notifyParent()
-    );
+  handleDelete() {
+    let arr = this.state.products.filter(item => item.type !== this.props.type);
+    this.setState({ products: arr }, () => this.notifyParent());
   }
+
   handleSave(index) {
     let prod = this.state.products;
-      prod[index] = { ...prod[index], edit: false };
-    this.setState(
-      {
-        products: prod
-      },
-      () => this.notifyParent()
-    );
+    prod[index] = { ...prod[index], edit: false };
+    this.setState({ products: prod }, () => this.notifyParent());
   }
 
   handleChange(index) {
     let prod = this.state.products;
-      prod[index] = { ...prod[index], edit: true };
+    prod[index] = { ...prod[index], edit: true };
     this.props.onChange && this.props.onChange(prod);
   }
 
   handleAdd() {
     let list = this.state.products;
-    list.push({
-      type: this.props.type,
-      edit: true
-    });
-    this.setState(
-      {
-        products: list
-      },
-      () => this.notifyParent()
-    );
+    list.push({ type: this.props.type, edit: true });
+    this.setState({ products: list }, () => this.notifyParent());
   }
 
   notifyParent() {
@@ -139,16 +106,14 @@ class ProductList extends React.Component {
     let elements = this.state.products.filter(
       item => item.type === this.props.type
     );
-
     let edit = elements.filter(item => item.edit === true);
-
     return (
       <Container style={{ display: elements.length ? "block" : "none" }}>
         {elements.length ? (
           <Layout
             customTemplateColumns={"1fr auto"}
             style={{ paddingRight: "10px" }}
-            mb={'5px'}
+            mb={"5px"}
           >
             <SLabel>{this.props.type}</SLabel>
             {edit.length === 0 ? (
@@ -209,21 +174,24 @@ class ProductList extends React.Component {
                   item.edit ? (
                     item.type === "Product" ? (
                       <Product
+                        key={index}
                         model={this.state.products[index]}
                         handleSave={() => this.handleSave(index)}
                         handleUpload={file => this.handleUpload(file, index)}
-                        onClose ={ (pos) => this.handleClose(index,pos) }
+                        onClose={pos => this.handleClose(index, pos)}
                       />
                     ) : item.type === "Service" ? (
                       <Service
-                          model={this.state.products[index]}
-                          handleSave={() => this.handleSave(index)}
-                          handleUpload={file => this.handleUpload(file, index)}
-                          onClose ={ (pos) => this.handleClose(index,pos) }
+                        key={index}
+                        model={this.state.products[index]}
+                        handleSave={() => this.handleSave(index)}
+                        handleUpload={file => this.handleUpload(file, index)}
+                        onClose={pos => this.handleClose(index, pos)}
                       />
                     ) : null
                   ) : (
                     <Layout
+                      key={index}
                       paddingY={"10px"}
                       customTemplateColumns={"1fr auto"}
                     >

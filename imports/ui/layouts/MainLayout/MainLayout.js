@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { withRouter } from "react-router-dom";
-import { Layout, Container , mixins} from "btech-layout";
+import { Layout, Container , mixins, StyleUtil} from "btech-layout";
 import Routes from "../../routes";
 import { connect } from "react-redux";
 import Navbar from "../../components/Navbar/Navbar";
@@ -18,6 +18,33 @@ const ContentStyled = Styled(Layout)`
      margin-left:-100%!important;
   }
 `;
+let TopNavbar = Styled.div`
+  height:80px;
+  background:${(props)=>StyleUtil.getThemeValue(props, `theme.color.primaryHover`)};
+  ${mixins.media.desktop`display: none;`}
+  position: fixed;
+  top: -100%;
+  left: 0;
+  right: 0;
+  z-index: 11;
+`;
+TopNavbar = posed(TopNavbar)({
+  showNavbar: {
+    top: "0%",
+    opacity:1,
+    transition: {
+      ease: "circOut" //circOut
+    }
+  },
+  closeNavbar: {
+    top: "-50%",
+    opacity:0,
+    transition: {
+      ease: "circOut" //circOut
+    }
+  }
+})
+
 const ContentContainerPose = posed(ContentStyled)({
   leftOpen: {
     marginLeft: "0px",
@@ -36,7 +63,7 @@ const ContentContainerPose = posed(ContentStyled)({
 class MainLayout extends Component {
   constructor(props) {
     super(props);
-    this.state = { isShow: false };
+    this.state = { isShow: true ,showNavbar:false};
   }
   componentDidMount() {
     setTimeout(() => {
@@ -63,7 +90,8 @@ class MainLayout extends Component {
         minH="100vh"
       >
         <SignUpListener {...propsProvider} />
-        <Navbar {...propsProvider} isShow={this.state.isShow} />
+        <TopNavbar pose={this.state.showNavbar?"showNavbar":"closeNavbar"}></TopNavbar>
+        <Navbar {...propsProvider} isShow={this.state.isShow} onOpenNavbar={(showNavbar)=>this.setState({showNavbar})}/>
         <LoginModal />
         <SideBar {...propsProvider} isOpen={props.showSidebar} />
         <ContentContainerPose pose={contentPose} fullY gridArea="content">

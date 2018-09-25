@@ -1,5 +1,6 @@
 const color = {
   primary: "#F92672",
+  primaryHover: "linear-gradient(353deg, #f92672, #e826f9)",
   warning: "#ffbf00",
   danger: "#ff2e00",
   success: "#85cc00",

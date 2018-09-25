@@ -78,6 +78,7 @@ class UserNavbarSection extends React.Component {
 
   onAddToggle() {
     this.props.toggleSideBar(!this.props.addSidebarIsOpen);
+    this.props.callback && this.props.callback(false)
   }
 
   render() {
@@ -137,7 +138,7 @@ class UserNavbarSection extends React.Component {
                     }}
                     activeEval={this.activeEval}
                   />
-                </RenderCondition>{" "}
+                </RenderCondition>
                 <Link to={avatarLink}>
                   <NavbarUserButton size={this.size} />
                 </Link>

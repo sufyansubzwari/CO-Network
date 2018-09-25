@@ -117,7 +117,6 @@ class ListJobs extends Component {
           onFetchData={() => this.fetchMoreSelection(isLoading)}
           onSelectCard={(item, key) => this.onChangeSelection(item, key)}
         />
-        {this.state.selectedItem ? (
           <Mutation key={"rightSide"} mutation={DeleteJob}>
             {(deleteJob, { jobDeleted }) => (
               <Mutation
@@ -126,6 +125,8 @@ class ListJobs extends Component {
               >
                 {(updateJobsImage, { job }) => (
                   <Preview
+                    isOpen={!!this.state.selectedItem}
+                    onClose={()=>this.onChangeSelection(null,null)}
                     key={"rightSide"}
                     navlinks={["Details"]}
                     navClicked={index => console.log(index)}
@@ -205,7 +206,6 @@ class ListJobs extends Component {
               </Mutation>
             )}
           </Mutation>
-        ) : null}
       </ListLayout>
     );
   }

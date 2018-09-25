@@ -3,7 +3,7 @@ import { Layout, Container } from "btech-layout";
 import styled from "styled-components";
 import { Scrollbars } from "react-custom-scrollbars";
 import PropTypes from "prop-types";
-import { Button } from "btech-base-forms-component";
+import BackButton from '../BackButton/BackButton'
 import MaterialIcon from "react-material-iconic-font";
 
 const SContainer = styled(Layout)`
@@ -21,17 +21,7 @@ const SContainer = styled(Layout)`
   }
 `;
 
-const Icon = styled.span`
-  font-size: 18px;
-  width: 34px;
-  height: 34px;
-`;
 
-const SButton = styled(Button)`
-  margin-top: 20px;
-  margin-right: 12px;
-  width: 34px;
-`;
 
 const Separator = styled.div`
   height: 1px;
@@ -57,15 +47,9 @@ const FiltersContainer = function(props) {
       <SContainer fullY customTemplateRows={'auto 1fr'}>
         <Layout customTemplateColumns={"1fr auto"}>
           <h6>Filters</h6>
-          <SButton
-            secondary={true}
+          <BackButton
             onClick={() => props.onClose && props.onClose()}
-            color={"black"}
-          >
-            <Icon>
-              <MaterialIcon type={"chevron-left"} />
-            </Icon>
-          </SButton>
+          />
         </Layout>
         <Container>{props.children}</Container>
       </SContainer>

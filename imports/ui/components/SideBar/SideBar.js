@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Container } from "btech-layout";
+import { Container, mixins, StyleUtil } from "btech-layout";
 import styled from "styled-components";
 import { connect } from "react-redux";
 import { toggleSideBar } from "../../actions/SideBarActions";
@@ -54,6 +54,9 @@ class SideBar extends Component {
           options={CREATE_LINKS}
           onChangeRoute={() => this.props.toggleSideBar(false, null, true)}
           onBlur={() => console.log("adsdasdasdasd")}
+          onClose={() =>
+            this.props.toggleSideBar && this.props.toggleSideBar(false)
+          }
         />
       );
     } else {
@@ -95,18 +98,15 @@ class SideBar extends Component {
   }
 
   render() {
-    const isOpen= this.props.isOpen;
-    const right= this.props.right;
+    const isOpen = this.props.isOpen;
     return (
       <SSideBarContainer
-        padding={"0 30px"}
         mdPadding={"0"}
-        pose={isOpen ? "openSidebar" : (right?"closedSidebarRight":"closedSidebar")}
+        pose={isOpen ? "openSidebar" : "closedSidebar"}
         background={"white"}
         fullY
         gridArea="SideBar"
-        width={"200%"}
-        mdWidth={"100%"}
+        mr={{ xs: "-100%", md: "0px" }}
       >
         {this.renderSidebar()}
       </SSideBarContainer>

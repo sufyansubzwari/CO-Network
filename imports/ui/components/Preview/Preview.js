@@ -1,11 +1,39 @@
 import React from "react";
-import { Layout, Container } from "btech-layout";
+import { Layout, Container, mixins } from "btech-layout";
 import styled from "styled-components";
 import PropsTypes from "prop-types";
 import MaterialIcon from "react-material-iconic-font";
 import { Scrollbars } from "react-custom-scrollbars";
 import { Button } from "btech-base-forms-component";
 import TopPreview from "./TopPreview";
+import posed from "react-pose";
+import BackButton from "../BackButton/BackButton";
+
+const ResponsiveContainer= styled(Layout)`
+    margin-left: -100%;
+    margin-right: 100%;
+    ${mixins.media.desktop`
+    margin-left:0;
+    margin-right:0;`}
+`
+
+const PreviewContainer = posed(ResponsiveContainer)({
+  openPreview: {
+    x: "0%",
+    staggerChildren: 50,
+    transition: {
+      duration:200,
+      ease: "circOut" //circOut
+    }
+  },
+  closedPreview: {
+    x: "100%",
+    transition: {
+      duration:200,
+      ease: "circOut" //circOut
+    }
+  }
+});
 
 const SLayout = styled(Layout)`
   border: ${props =>
@@ -69,6 +97,7 @@ export default class Preview extends React.Component {
   }
 
   render() {
+    const isOpen = this.props.isOpen;
     let navlinks =
       this.props.navlinks &&
       this.props.navlinks.map((element, index) => (
@@ -80,6 +109,7 @@ export default class Preview extends React.Component {
           {element}
         </SNavLinkItem>
       ));
+
     let options = this.props.navOptions
       ? this.props.navOptions
           .filter((element, index) => {
@@ -102,29 +132,47 @@ export default class Preview extends React.Component {
           ))
       : [];
     return (
-      <Layout fullY customTemplateRows={"190px 70px 1fr"} background={"white"}>
+
+      <PreviewContainer
+        customTemplateRows={"70px 190px 1fr"}
+        mdCustomTemplateRows={"190px 70px 1fr"}
+        layoutAreas={{
+          xs: `'options' 'picture' 'content'`,
+          md: `'picture' 'options' 'content'`,
+        }}
+        fullY background={"white"}
+        pose={isOpen ? "openPreview" : "closedPreview"}>
         <TopPreview
           handleUpload={this.handleUploadChange}
           image={this.state.image}
           backGroundImage={this.state.backGroundImage}
           showAvatar={this.props.showAvatar}
           allowChangeImages={this.props.allowChangeImages}
+          gridArea="picture"
         />
         <SLayout
-          paddingX={"100px"}
+          gridArea="options"
+          paddingX={"10px"}
+          mdPaddingX={"100px"}
           customTemplateColumns={
             this.props.showAvatar ? "140px 1fr auto" : "1fr auto"
           }
         >
           {this.props.showAvatar ? <Container /> : null}
-          <NavLinks
-            style={{
-              display: "flex",
-              flexDirection: "row"
-            }}
-          >
-            {navlinks}
-          </NavLinks>
+          <Container height="100%" hide mdShow>
+            <NavLinks
+              style={{
+                height:"100%",
+                display: "flex",
+                flexDirection: "row"
+              }}
+            >
+                {navlinks}
+            </NavLinks>
+          </Container>
+          <Container  mdHide>
+              <BackButton onClick={() => this.props.onClose && this.props.onClose()}/>
+          </Container>
           <NavLinks
             style={{
               display: "flex",
@@ -135,7 +183,7 @@ export default class Preview extends React.Component {
             {options}
           </NavLinks>
         </SLayout>
-        <Container fullY paddingX={"100px"} paddingY={"25px"}>
+        <Container gridArea="content" fullY paddingX={"100px"} paddingY={"25px"}>
           <Scrollbars
             universal
             autoHide
@@ -145,7 +193,7 @@ export default class Preview extends React.Component {
             {this.props.children}
           </Scrollbars>
         </Container>
-      </Layout>
+      </PreviewContainer>
     );
   }
 }
@@ -159,6 +207,7 @@ Preview.propTypes = {
   backGroundImage: PropsTypes.string,
   navlinks: PropsTypes.array,
   showAvatar: PropsTypes.bool,
+  isOpen: PropsTypes.bool,
   navClicked: PropsTypes.func,
   navOptions: PropsTypes.array,
   allowChangeImages: PropsTypes.bool,

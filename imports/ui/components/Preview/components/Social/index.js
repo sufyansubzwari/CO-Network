@@ -33,6 +33,10 @@ const SocialItem = styled.span`
       : props.theme.preview.social.horizontalSeparation};
 `;
 
+const SocialLink = styled.a`
+  color: initial;
+`;
+
 class Social extends React.Component {
   constructor(props) {
     super(props);
@@ -40,11 +44,13 @@ class Social extends React.Component {
 
   render() {
     let socials =
-      this.props.social &&
-      this.props.social.length &&
-      this.props.social.map((element, index) => (
+      this.props.socials &&
+      this.props.socials.length &&
+      this.props.socials.map((social, index) => (
         <SocialItem key={index}>
-          <MaterialIcon type={element} />
+          <SocialLink href={social.link} target="_blank">
+            <MaterialIcon type={social.element} />
+          </SocialLink>
         </SocialItem>
       ));
     let links =
@@ -69,7 +75,7 @@ class Social extends React.Component {
 export default Social;
 
 Social.propTypes = {
-  social: PropsTypes.array,
+  socials: PropsTypes.array,
   links: PropsTypes.array,
   marginRight: PropsTypes.string
 };
