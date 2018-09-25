@@ -137,7 +137,7 @@ class UserNavbarSection extends React.Component {
                     }}
                     activeEval={this.activeEval}
                   />
-                </RenderCondition>{" "}
+                </RenderCondition>
                 <Link to={avatarLink}>
                   <NavbarUserButton size={this.size} />
                 </Link>
