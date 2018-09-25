@@ -131,15 +131,25 @@ export default class Preview extends React.Component {
       : [];
     return (
 
-      <PreviewContainer fullY customTemplateRows={"190px 70px 1fr"} background={"white"} pose={isOpen ? "openPreview" : "closedPreview"}>
+      <PreviewContainer
+        customTemplateRows={"70px 190px 1fr"}
+        mdCustomTemplateRows={"190px 70px 1fr"}
+        layoutAreas={{
+          xs: `'options' 'picture' 'content'`,
+          md: `'picture' 'options' 'content'`,
+        }}
+        fullY background={"white"}
+        pose={isOpen ? "openPreview" : "closedPreview"}>
         <TopPreview
           handleUpload={this.handleUploadChange}
           image={this.state.image}
           backGroundImage={this.state.backGroundImage}
           showAvatar={this.props.showAvatar}
           allowChangeImages={this.props.allowChangeImages}
+          gridArea="picture"
         />
         <SLayout
+          gridArea="options"
           paddingX={"100px"}
           customTemplateColumns={
             this.props.showAvatar ? "140px 1fr auto" : "1fr auto"
@@ -164,7 +174,7 @@ export default class Preview extends React.Component {
             {options}
           </NavLinks>
         </SLayout>
-        <Container fullY paddingX={"100px"} paddingY={"25px"}>
+        <Container gridArea="content" fullY paddingX={"100px"} paddingY={"25px"}>
           <Scrollbars
             universal
             autoHide
