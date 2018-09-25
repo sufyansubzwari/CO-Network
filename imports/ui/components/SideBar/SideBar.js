@@ -54,6 +54,9 @@ class SideBar extends Component {
           options={CREATE_LINKS}
           onChangeRoute={() => this.props.toggleSideBar(false, null, true)}
           onBlur={() => console.log("adsdasdasdasd")}
+          onClose={() =>
+            this.props.toggleSideBar && this.props.toggleSideBar(false)
+          }
         />
       );
     } else {

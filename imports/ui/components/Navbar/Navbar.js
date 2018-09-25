@@ -66,7 +66,7 @@ class Navbar extends Component {
   componentDidMount(){
     this.routeListen = this.props.history.listen((location, action) => {
       this.openNavbar(false)
-      if(this.props.isAddAction)
+      if(document.body.offsetWidth<993)
         this.props.closeSideBar();
 
     });

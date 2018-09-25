@@ -26,7 +26,7 @@ let TopNavbar = Styled.div`
   top: -100%;
   left: 0;
   right: 0;
-  z-index: 10;
+  z-index: 11;
 `;
 TopNavbar = posed(TopNavbar)({
   showNavbar: {

@@ -3,6 +3,8 @@ import { Layout, Container } from "btech-layout";
 import styled from "styled-components";
 import PropsTypes from "prop-types";
 import { Link } from "react-router-dom";
+import { Button } from "btech-base-forms-component";
+import MaterialIcon from "react-material-iconic-font";
 
 const Header = styled.div`
     background-image: url("/images/create-head.png");
@@ -38,6 +40,25 @@ const Header = styled.div`
           props.theme ? props.theme.create.subheading.align : "center"}:       
     } 
 `;
+
+const CButton=styled(Button)`
+    width: 34px;
+    height: 34px;
+    border-radius: 3px;
+    background-color: #fb60cc;
+    position: absolute;
+    top: 40px;
+    left: 20px;
+    font-size: 18px;
+    font-weight: normal;
+    font-style: normal;
+    font-stretch: normal;
+    color: #fffefe;
+    border: none;
+    & :hover{
+        background: linear-gradient(353deg,#f92672,#e826f9);
+    }
+`
 
 const SHeading = styled.label`
   font-family: Helvetica Neue LT Std;
@@ -114,9 +135,19 @@ class Create extends React.Component {
       <Layout
         fullY
         customTemplateRows={"auto 1fr"}
-        onBlur={() => this.prop.onBlur && this.prop.onBlur()}
+        onBlur={() => this.props.onBlur && this.props.onBlur()}
       >
         <Header>
+          <CButton
+            primary
+            secondary={true}
+            onClick={() =>  this.props.onClose &&  this.props.onClose()}
+            color={"black"}
+          >
+            {/*<Icon>*/}
+              <MaterialIcon type={"chevron-left"} />
+            {/*</Icon>*/}
+          </CButton>
           <SHeading>CREATE</SHeading>
           <SSubHeading>Nice & easy!</SSubHeading>
         </Header>
@@ -157,5 +188,6 @@ Create.propTypes = {
   hideNote: PropsTypes.bool,
   noteLabel: PropsTypes.string,
   onChangeRoute: PropsTypes.func,
-  onBlur: PropsTypes.func
+  onBlur: PropsTypes.func,
+  onClose: PropsTypes.func
 };
