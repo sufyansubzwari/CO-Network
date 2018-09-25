@@ -4,7 +4,7 @@ type Followers {
     _id: ID
     entityId: String!
     entity: String!
-    followers: [String]!
+    followers: [String]
 }
 
 type Query {
@@ -16,10 +16,9 @@ input FollowersInput {
     _id: ID
     entityId: String!
     entity: String!
-    followers: [String]!
+    followers: [String]
 }
 
 type Mutation {
-    follower(followers: FollowersInput!): Followers
-    deleteFollower(_id: String!): Followers
+    followAction(follower: FollowersInput, id: String, follow: Boolean): Followers
 }

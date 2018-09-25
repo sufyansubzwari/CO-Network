@@ -2,6 +2,7 @@ import Service from "../service";
 import Users from "../../../users";
 import Tags from "../../../tags";
 import Places from "../../../places";
+import Followers from "../../../followers";
 
 const Events = {};
 
@@ -15,5 +16,10 @@ Events.category = entity => {
 
 Events.place = entity => {
   return Places.service.getPlaceByOwner(entity._id);
+};
+
+Events.followerList = entity => {
+  const followers = Followers.service.getFollower({ entityId: entity._id, entity: entity.entity });
+  return (followers && followers.followers) || [];
 };
 export default Events;

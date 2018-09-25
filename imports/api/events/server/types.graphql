@@ -21,6 +21,7 @@ type Events {
     eventType: ObjectType
     sponsors: [Sponsors]
     place: Places
+    followerList: [String]
 }
 
 type Attenders {
