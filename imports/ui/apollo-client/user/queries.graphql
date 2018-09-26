@@ -168,6 +168,43 @@ query userQuery($id: String){
   }
 }
 
+query achievementsQuery($id: String){
+  user(id: $id) {
+    profile {
+      achievements{
+        study
+        type
+        institution
+        story
+        degree{
+          label
+          type
+        }
+        organization
+        position
+        help
+        experience
+        name
+        link
+        level{
+          label
+          type
+        }
+        category{
+          name
+          label
+          value
+          type
+        }
+        id
+        year
+        explain
+        _id
+      }
+    }
+}
+}
+
 query userList{
   users{
     ...userFragment

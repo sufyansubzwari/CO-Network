@@ -82,10 +82,10 @@ export default TagsService;
 
 const UpdateCounters = (tagList, entityTagList) => {
   const incrementCounts = tagList.filter(
-    item => entityTagList.indexOf(item._id) === -1
+    item => entityTagList && entityTagList.indexOf(item._id) === -1
   );
   const decrementCounts = entityTagList.filter(
-    item => tagList.map(item => item._id).indexOf(item) === -1
+    item => tagList && tagList.length && tagList.map(item => item._id).indexOf(item) === -1
   );
   incrementCounts.forEach(tag => {
     Tags.collection.update({ _id: tag._id }, { $inc: { used: 1 } });

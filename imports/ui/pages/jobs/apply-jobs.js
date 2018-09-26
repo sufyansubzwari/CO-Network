@@ -14,21 +14,16 @@ class ApplyJob extends Component {
     constructor(props) {
 
         let user = props.curUser && props.curUser.profile;
+        let userId = props.curUser && props.curUser._id;
 
         super(props);
         this.state = {
             openPreview:false,
             apply: {
                 ...user,
+                userId: userId,
                 phone: "",
                 remote: "",
-                place: {
-                    location: {
-                        address: "",
-                        location: { lat: "", lng: "" },
-                        fullLocation: {}
-                    }
-                },
                 jobSpecific: {
                     candidate: "",
                     questions: "",

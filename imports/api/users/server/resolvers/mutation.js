@@ -130,18 +130,19 @@ Mutation.user = async (root, {user}, context) => {
   let profile = Object.assign({}, user.profile);
   let oldUser = user._id ? Service.getUser(user._id) : null;
   /****** Updating tags in database ******/
+  console.log(profile.knowledge.languages)
   if (profile.knowledge && profile.knowledge.languages)
-    profile.knowledge.languages = await Tags.service.normalizeTagsWithLevels(profile.knowledge.languages, oldUser ? oldUser.profile.knowledge.languages : []);
+    profile.knowledge.languages = await Tags.service.normalizeTagsWithLevels(profile.knowledge.languages, oldUser && oldUser.profile && oldUser.profile.knowledge && oldUser.profile.knowledge.languages  ? oldUser.profile.knowledge.languages : []);
   if (profile.knowledge && profile.knowledge.curiosity)
-    profile.knowledge.curiosity = await Tags.service.normalizeTagsWithLevels(profile.knowledge.curiosity, oldUser ? oldUser.profile.knowledge.curiosity : []);
+    profile.knowledge.curiosity = await Tags.service.normalizeTagsWithLevels(profile.knowledge.curiosity, oldUser.profile && oldUser.profile.knowledge && oldUser.profile.knowledge.curiosity ? oldUser.profile.knowledge.curiosity : []);
   if (profile.professional && profile.professional.industry)
-    profile.professional.industry = await Tags.service.normalizeTags(profile.professional.industry, oldUser ? oldUser.profile.professional.industry : []);
+    profile.professional.industry = await Tags.service.normalizeTags(profile.professional.industry, oldUser.profile && oldUser.profile.professional && oldUser.profile.professional.industry ? oldUser.profile.professional.industry : []);
   if (profile.speaker && profile.speaker.otherpreferred)
-    profile.speaker.otherpreferred = await Tags.service.normalizeTags(profile.speaker.otherpreferred, oldUser ? oldUser.profile.speaker.otherpreferred : []);
+    profile.speaker.otherpreferred = await Tags.service.normalizeTags(profile.speaker.otherpreferred, oldUser.profile && oldUser.profile.speaker && oldUser.profile.speaker.otherpreferred ? oldUser.profile.speaker.otherpreferred : []);
   if (profile.speaker && profile.speaker.otherlooking)
-    profile.speaker.otherlooking = await Tags.service.normalizeTags(profile.speaker.otherlooking, oldUser ? oldUser.profile.speaker.otherlooking : []);
+    profile.speaker.otherlooking = await Tags.service.normalizeTags(profile.speaker.otherlooking, oldUser.profile && oldUser.profile.speaker && oldUser.profile.speaker.otherlooking ? oldUser.profile.speaker.otherlooking : []);
   if (profile.speaker && profile.speaker.topic)
-    profile.speaker.topic = await Tags.service.normalizeTags(profile.speaker.topic, oldUser ? oldUser.profile.speaker.topic : []);
+    profile.speaker.topic = await Tags.service.normalizeTags(profile.speaker.topic, oldUser.profile && oldUser.profile.speaker && oldUser.profile.speaker.topic ? oldUser.profile.speaker.topic : []);
 
   user.profile = Object.assign(user.profile, profile);
   const achievementsList = Object.assign([], profile.achievements);

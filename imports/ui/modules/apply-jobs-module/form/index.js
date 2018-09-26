@@ -1,6 +1,6 @@
 import React from "react";
 import { MlWizardForm, WizardStepForm } from "btech-base-forms-component";
-import { FirstStep, SecondStep, ThirdStep, FourthStep } from "./Steps";
+import { FirstStep, SecondStep, ThirdStep, FourthStep, FifthStep } from "./Steps";
 import PropTypes from "prop-types";
 
 class ApplyJobForm extends React.Component {
@@ -11,13 +11,6 @@ class ApplyJobForm extends React.Component {
                 phone: "",
                 remote: "",
                 description: "",
-                place: {
-                    location: {
-                        address: "",
-                        location: { lat: "", lng: "" },
-                        fullLocation: {}
-                    }
-                },
                 jobSpecific: {
                     candidate: "",
                     questions: "",
@@ -74,6 +67,12 @@ class ApplyJobForm extends React.Component {
                 </WizardStepForm>
                 <WizardStepForm title={"Work Experience"} isValid>
                     <FourthStep
+                        data={this.state.apply}
+                        onChange={apply => this.handleChange(apply)}
+                    />
+                </WizardStepForm>
+                <WizardStepForm title={"Achievements"} isValid>
+                    <FifthStep
                         data={this.state.apply}
                         onChange={apply => this.handleChange(apply)}
                     />
