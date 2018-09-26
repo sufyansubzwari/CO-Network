@@ -46,25 +46,37 @@ class OrganizationPreviewBody extends React.Component {
                     <Container key={index}>
                         <Text header={"Product"} />
                         <Layout templateColumns={3}>
-                            <Text header={"Product Name"} text={prod.name} />
-                            <Text header={"Link to Video"} text={prod.link} />
-                            <Text header={"Files"} >{files}</Text>
+                            {prod.name ? <Text header={"Product Name"} text={prod.name} /> : null}
+                            {prod.link ? <Text header={"Link to Video"} text={prod.link} />: null}
+                            {files.length ? <Text header={"Files"} >{files}</Text>: null}
                         </Layout>
-                        <Text header={"Explain Product"} text={prod.explain} />
+                        {prod.explain ? <Text header={"Explain Product"} text={prod.explain} />: null}
                     </Container>
                 ) : prod.type === "Service" ? (
                     <Container key={index}>
                         <Text header={"Service"} />
                         <Layout templateColumns={3}>
-                            <Text header={"Service Name"} text={prod.name} />
-                            <Text header={"Link to Video"} text={prod.link} />
-                            <Text header={"Files"} >{files}</Text>
+                            {prod.name ? <Text header={"Service Name"} text={prod.name} /> : null}
+                            {prod.link ? <Text header={"Link to Video"} text={prod.link} />: null}
+                            {files.length ? <Text header={"Files"} >{files}</Text>: null}
                         </Layout>
-                        <Text header={"Explain Service"} text={prod.explain} />
+                        {prod.explain ? <Text header={"Explain Service"} text={prod.explain} />: null}
                     </Container>
                 ) :  null;
             })
             : null;
+        let media = this.state.organization.media
+            ? this.state.organization.media.map((med, index) =>
+                <Container key={index}>
+                        <Text header={"Media"} />
+                        <Layout templateColumns={3}>
+                            {med.title ? <Text header={"Media title"} text={med.title} /> : null}
+                            {med.link ? <Text header={"Link to Video"} text={med.link} /> : null}
+                            {med.files ? <Text header={"Files"} >{med.files}</Text> : null}
+                        </Layout>
+                    {med.explain ? <Text header={"Explain Product"} text={med.explain} /> : null}
+                    </Container>
+            ): null;
         return (
             <Layout rowGap={'15px'}>
                 <Title text={this.state.organization.name}/>
@@ -103,6 +115,7 @@ class OrganizationPreviewBody extends React.Component {
                 </Layout>
 
                 {products && products.length ? products : null}
+                {media && media.length ? media : null}
             </Layout>
         );
     }

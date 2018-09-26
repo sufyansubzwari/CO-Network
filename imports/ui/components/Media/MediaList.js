@@ -67,8 +67,7 @@ class MediaList extends React.Component {
       sta[pos]['files'] = '';
       this.setState({
               media: sta
-          },
-          () => this.notifyParent())
+          })
   }
 
   handleUpload(file, index) {
@@ -84,8 +83,7 @@ class MediaList extends React.Component {
       this.setState(
           {
               media: media
-          },
-          () => this.notifyParent()
+          }
       );
     }
   }
