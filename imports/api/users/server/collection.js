@@ -442,7 +442,13 @@ const schema = new SimpleSchema({
   heartbeat: {
     type: Date,
     optional: true
-  }
+  },
+  views: {
+    type: Number,
+    label: 'Viewed Count',
+    optional: true,
+    defaultValue: 0,
+  },
 });
 
 collection.attachSchema(schema);

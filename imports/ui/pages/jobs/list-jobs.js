@@ -7,6 +7,8 @@ import JobPreviewBody from "../../components/Preview/JobPreviewBody";
 import { CreateJob, DeleteJob, UpdateJobsImage } from "../../apollo-client/job";
 import { GetJobs } from "../../apollo-client/job";
 import { withRouter } from "react-router-dom";
+import {ViewsCountUpdate} from "../../apollo-client/viewCount";
+import {Meteor} from "meteor/meteor";
 
 /**
  * @module Jobs
@@ -56,8 +58,16 @@ class ListJobs extends Component {
     });
   }
 
-  onChangeSelection(item, key) {
-    this.setState({ selectedItem: item, selectedIndex: key });
+  onChangeSelection(item, key,viewsUpdate) {
+    const view = {
+      user: Meteor.userId(),
+      entityViewed: item._id,
+      entityType: item.entity,
+      actualDate: new Date()
+    };
+    viewsUpdate({variables: {view: view}}).then(()=>{
+      this.setState({selectedItem: item, selectedIndex: key}, () => this.reFetchQuery());
+    })
   }
 
   fetchMoreSelection(isLoading) {
@@ -109,14 +119,18 @@ class ListJobs extends Component {
       (!this.props.data.jobs || !this.props.data.jobs.length);
     return (
       <ListLayout entityType={"jobs"} onSearchText={this.onSearch.bind(this)}>
-        <ItemsList
-          key={"listComponent"}
-          title={"Jobs"}
-          data={this.props.data.jobs}
-          loading={isLoading}
-          onFetchData={() => this.fetchMoreSelection(isLoading)}
-          onSelectCard={(item, key) => this.onChangeSelection(item, key)}
-        />
+        <Mutation key={"listComponent"} mutation={ViewsCountUpdate}>
+          {(viewsUpdate, {}) => (
+            <ItemsList
+              key={"listComponent"}
+              title={"Jobs"}
+              data={this.props.data.jobs}
+              loading={isLoading}
+              onFetchData={() => this.fetchMoreSelection(isLoading)}
+              onSelectCard={(item, key) => this.onChangeSelection(item, key, viewsUpdate)}
+            />
+          )}
+        </Mutation>
           <Mutation key={"rightSide"} mutation={DeleteJob}>
             {(deleteJob, { jobDeleted }) => (
               <Mutation

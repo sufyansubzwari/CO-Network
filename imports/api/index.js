@@ -9,6 +9,7 @@ export { default as Jobs } from './jobs';
 export { default as Organizations } from './organizations';
 export { default as Tags } from './tags';
 export { default as Places } from './places';
+export { default as ViewsCount } from './viewsCount';
 export { default as Archivements } from './archivements';
 export { default as FeedBacks } from './feedBack';
 export { default as Followers } from './followers';
