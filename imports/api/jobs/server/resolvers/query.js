@@ -30,4 +30,8 @@ Query.jobs = (root, {filter, limit, jobs}, context) => {
   return Service.jobs(query, limitQuery)
 };
 
+Query.jobCounts = async (root, {field}, context) => {
+  return await Service.jobCounts(field);
+};
+
 export default Query;

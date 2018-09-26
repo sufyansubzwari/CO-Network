@@ -16,6 +16,8 @@ import {
 import PropsTypes from "prop-types";
 import { cleanFilters, setFilters } from "../../../actions/SideBarActions";
 import { connect } from "react-redux";
+import { JobCounts } from "../../../apollo-client/job";
+import { Query } from "react-apollo";
 
 const Filter = styled(Container)`
   padding: 20px 10px;
@@ -160,19 +162,47 @@ class JobsFilters extends React.Component {
         </Filter>
         <Separator />
         <Filter>
-          <CheckBoxList
-            placeholderText={"Job Type"}
-            options={this.state.jobType}
-            getValue={selected => this.addFilters("jobType", selected)}
-          />
+          <Query query={JobCounts} variables={{ field: "jobType" }}>
+            {({ loading, error, data }) => {
+              if (loading) return <div>Fetching</div>;
+              if (error) return <div>Error</div>;
+              return (
+                <CheckBoxList
+                  placeholderText={"Job Type"}
+                  options={data.jobCounts.map(item => ({
+                    ...item,
+                    label: item._id,
+                    value: item._id,
+                    name: item._id
+                  }))}
+                  getValue={selected => this.addFilters("jobType", selected)}
+                />
+              );
+            }}
+          </Query>
         </Filter>
         <Separator />
         <Filter>
-          <CheckBoxList
-            placeholderText={"Experience Requiered"}
-            options={this.state.jobExperience}
-            getValue={selected => this.addFilters("jobExperience", selected)}
-          />
+          <Query query={JobCounts} variables={{ field: "jobExperience" }}>
+            {({ loading, error, data }) => {
+              if (loading) return <div>Fetching</div>;
+              if (error) return <div>Error</div>;
+              return (
+                <CheckBoxList
+                  placeholderText={"Experience Required"}
+                  options={data.jobCounts.map(item => ({
+                    ...item,
+                    label: item._id,
+                    value: item._id,
+                    name: item._id
+                  }))}
+                  getValue={selected =>
+                    this.addFilters("jobExperience", selected)
+                  }
+                />
+              );
+            }}
+          </Query>
         </Filter>
         <Separator />
         <Filter>

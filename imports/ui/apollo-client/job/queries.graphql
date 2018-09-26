@@ -54,3 +54,10 @@ query GetJobs($limit: Int, $filter: String, $jobs: JobsInputSearch) {
       views
     }
 }
+
+query JobCounts($field: String){
+    jobCounts(field: $field){
+        _id
+        number
+    }
+}

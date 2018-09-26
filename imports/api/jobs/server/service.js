@@ -66,6 +66,19 @@ class JobsService {
       .find(query, { ...limit, sort: { createdAt: -1 } })
       .fetch();
   };
+  static jobCounts = async field => {
+    const counts = await Jobs.collection
+      .aggregate([
+        { $unwind: `$${field}` },
+        { $group: { _id: `$${field}.label`, number: { $sum: 1 } } }
+      ])
+      .toArray();
+    return Promise.all(counts)
+      .then(completed => {
+        return completed;
+      })
+      .catch(error => console.log(error));
+  };
 }
 
 export default JobsService;
