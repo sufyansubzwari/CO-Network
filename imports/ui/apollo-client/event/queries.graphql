@@ -12,6 +12,7 @@ query GetEvents($limit: Int, $filter: String, $events: EventsInputSearch) {
       _id
     }
     category {
+      _id
       label
       value
       name

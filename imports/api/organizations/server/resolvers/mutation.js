@@ -6,17 +6,21 @@ const Mutation = {};
 
 Mutation.organization = async (root, { organizations }, context) => {
   let entity = Object.assign({}, organizations);
+  const oldOrg = organizations._id ? Service.getOrganization(organizations._id) : null;
   if (organizations.description)
     entity.description = await Tags.service.normalizeTags(
-      organizations.description
+      organizations.description,
+      oldOrg ? oldOrg.description : []
     );
   if (organizations.tech && organizations.tech.stack)
     entity.tech.stack = await Tags.service.normalizeTags(
-      organizations.tech.stack
+      organizations.tech.stack,
+      oldOrg ? oldOrg.tech.stack : []
     );
   if (organizations.tech.industry && organizations.tech.industry)
     entity.tech.industry = await Tags.service.normalizeTags(
-      organizations.tech.industry
+      organizations.tech.industry,
+      oldOrg ? oldOrg.tech.industry : []
     );
   const inserted = await Service.organization(entity);
   //inserting location

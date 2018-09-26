@@ -6,8 +6,9 @@ const Mutation = {};
 
 Mutation.event = async (root, {events}, context) => {
   let entity = Object.assign({}, events);
+  const oldEvent = events._id ? Service.getEvent(events._id) : null
   if (events.category)
-    entity.category = await Tags.service.normalizeTags(events.category);
+    entity.category = await Tags.service.normalizeTags(events.category, oldEvent ? oldEvent.category : []);
   const eventInserted = await Service.event(entity);
   //inserting location
   if (events.place && events.place.location && events.place.location.address) {

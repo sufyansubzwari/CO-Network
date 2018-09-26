@@ -21,15 +21,14 @@ class OrganizationPreviewBody extends React.Component {
 
   render() {
     let socials = [];
-    if(this.state.organization && this.state.organization.social){
-    Object.keys(this.state.organization.social).forEach((social, index) => {
-      if (this.state.organization.social[social])
-        socials.push({
-          element: social,
-          link: this.state.organization.social[social]
-        });
-    });
-    }
+    this.state.organization.social &&
+      Object.keys(this.state.organization.social).forEach((social, index) => {
+        if (this.state.organization.social[social])
+          socials.push({
+            element: social,
+            link: this.state.organization.social[social]
+          });
+      });
     //tags
     let description =
       this.state.organization.description &&
