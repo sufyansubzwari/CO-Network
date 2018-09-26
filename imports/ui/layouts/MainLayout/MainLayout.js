@@ -11,6 +11,20 @@ import posed from "react-pose";
 import { Scrollbars } from "react-custom-scrollbars";
 import Styled from "styled-components";
 
+const MainLayoutStyled = Styled(Layout)`
+ position:fixed;
+ top :0;
+ left :0;
+ right :0;
+ bottom :0;
+ bottom :0;
+ min-height: initial;
+ ${mixins.media.desktop`
+     min-height: 100vh;
+     position:initial;
+ `}
+`;
+
 const leftWidth = 274;
 const ContentStyled = Styled(Layout)`
   //hack for pose animation in movile view
@@ -78,7 +92,7 @@ class MainLayout extends Component {
     const contentPose = props.showSidebar ? "leftOpen" : "leftClose";
 
     return (
-      <Layout
+      <MainLayoutStyled
         customTemplateColumns={`1fr 1fr`}
         customTemplateRows={"1fr 56px"}
         mdCustomTemplateColumns={`0.05498fr ${leftWidth}px 1fr`}
@@ -99,7 +113,7 @@ class MainLayout extends Component {
             <Routes {...propsProvider} />
           </Scrollbars>
         </ContentContainerPose>
-      </Layout>
+      </MainLayoutStyled>
     );
   }
 }
