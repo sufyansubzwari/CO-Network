@@ -32,6 +32,12 @@ type SalaryRange {
 type Query {
     jobs(filter: String, limit: Int, jobs: JobsInputSearch): [Jobs]
     job(_id: String): Jobs
+    jobCounts(field: String): [Counts]
+}
+
+type Counts{
+    _id: String
+    number: Int
 }
 
 input JobsInputSearch {

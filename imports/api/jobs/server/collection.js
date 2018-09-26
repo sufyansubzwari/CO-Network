@@ -2,8 +2,9 @@
 
 import {Mongo} from 'meteor/mongo';
 import SimpleSchema from 'simpl-schema';
+import BaseCollection from '../../base/collection';
 
-const Jobs = new Mongo.Collection('Jobs');
+const Jobs = new BaseCollection('Jobs');
 
 Jobs.allow({
   insert: () => false,
