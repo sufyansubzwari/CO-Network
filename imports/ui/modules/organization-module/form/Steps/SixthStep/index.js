@@ -1,5 +1,7 @@
 import React from "react";
 import { Layout } from "btech-layout";
+import Media from "../../../../../components/Media/Media"
+
 
 class SixthStep extends React.Component {
   constructor(props) {
@@ -10,12 +12,26 @@ class SixthStep extends React.Component {
     this.state = {
       organization: data
     };
+
+    this.handleChange = this.handleChange.bind(this)
   }
 
   componentWillReceiveProps(nextProps) {
     if (nextProps.data && nextProps.data !== this.state.organization)
       this.setState({ organization: nextProps.data });
   }
+
+    handleChange(media) {
+        this.setState(
+            {
+                organization: {
+                    ...this.state.organization,
+                    media: media
+                }
+            },
+            () => this.notifyParent()
+        );
+    }
 
   notifyParent(model, name, value) {
     if (model && name && value) {
@@ -30,7 +46,10 @@ class SixthStep extends React.Component {
   }
 
   render() {
-    return <Layout rowGap={"25px"}>missing components</Layout>;
+    return <Layout rowGap={"25px"}><Media
+        onChange={this.handleChange}
+        media={this.state.organization.media}
+    /></Layout>;
   }
 }
 

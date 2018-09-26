@@ -68,124 +68,93 @@ class OrganizationPreviewBody extends React.Component {
         ))
       : [];
 
-    let products = this.state.organization.products
-      ? this.state.organization.products.map((prod, index) => {
-          let files =
-            prod.files &&
-            prod.files.length &&
-            prod.files.map(file => <Container>{file}</Container>);
-          return prod.type === "Product" ? (
-            <Container key={index}>
-              <Text header={"Product"} />
-              <Layout templateColumns={3}>
-                <Text header={"Product Name"} text={prod.name} />
-                <Text header={"Link to Video"} text={prod.link} />
-                <Text header={"Files"}>{files}</Text>
-              </Layout>
-              <Text header={"Explain Product"} text={prod.explain} />
-            </Container>
-          ) : prod.type === "Service" ? (
-            <Container key={index}>
-              <Text header={"Service"} />
-              <Layout templateColumns={3}>
-                <Text header={"Service Name"} text={prod.name} />
-                <Text header={"Link to Video"} text={prod.link} />
-                <Text header={"Files"}>{files}</Text>
-              </Layout>
-              <Text header={"Explain Service"} text={prod.explain} />
-            </Container>
-          ) : null;
-        })
-      : null;
-    return (
-      <Layout rowGap={"15px"}>
-        <Title text={this.state.organization.name} />
-        <Location
-          text={
-            this.state.organization.place &&
-            this.state.organization.place.location &&
-            this.state.organization.place.location.address &&
-            this.state.organization.place.location.address.toUpperCase()
-          }
-        />
-        <Social socials={socials} />
-        {organizationtype && organizationtype.length ? (
-          <Text header={"Organization Type"}>{organizationtype}</Text>
+        let products = this.state.organization.products
+            ? this.state.organization.products.map((prod, index) => {
+                let files =
+                    prod.files && prod.files.length && prod.files.map(file => <Container>{file}</Container>);
+                return prod.type === "Product" ? (
+                    <Container key={index}>
+                        <Text header={"Product"} />
+                        <Layout templateColumns={3}>
+                            {prod.name ?<Text header={"Product Name"} text={prod.name} />: null}
+                            {prod.link ?<Text header={"Link to Video"} text={prod.link} />: null}
+                            {files.length ?<Text header={"Files"} >{files}</Text>: null}
+                        </Layout>
+                        {prod.explain ?<Text header={"Explain Product"} text={prod.explain} />: null}
+                    </Container>
+                ) : prod.type === "Service" ? (
+                    <Container key={index}>
+                        <Text header={"Service"} />
+                        <Layout templateColumns={3}>
+                            {prod.name ?<Text header={"Service Name"} text={prod.name} />: null}
+                            {prod.link ?<Text header={"Link to Video"} text={prod.link} />: null}
+                            {files.length ?<Text header={"Files"} >{files}</Text>: null}
+                        </Layout>
+                        {prod.explain ?<Text header={"Explain Service"} text={prod.explain} />: null}
+                    </Container>
+                ) :  null;
+            })
+            : null;
+        let media = this.state.organization.media
+            ? this.state.organization.media.map((med, index) =>
+                <Container key={index}>
+                        <Text header={"Media"} />
+                        <Layout templateColumns={3}>
+                            {med.title ? <Text header={"Media title"} text={med.title} /> : null}
+                            {med.link ? <Text header={"Link to Video"} text={med.link} /> : null}
+                            {med.files ? <Text header={"Files"} >{med.files}</Text> : null}
+                        </Layout>
+                    {med.explain ? <Text header={"Explain Product"} text={med.explain} /> : null}
+                    </Container>
+            ): null;return (
+            <Layout rowGap={"15px"}>
+                <Title text={this.state.organization.name}/>
+                <Location text={this.state.organization.place &&this.state.organization.place .location && this.state.organization.place.location .address && this.state.organization.place.location.address.toUpperCase()}/>
+                <Social socials={socials} />
+                {organizationtype && organizationtype.length ? (<Text header={"Organization Type"}>{organizationtype}</Text>) : null}
+                <Layout templateColumns={2}>
+                    {this.state.organization.contact.email !== "" ?(
+                        <Text header={"Verification Email"}
+                              text={this.state.organization.contact.email}/>
+          ) : null}
+                    {this.state.organization.contact.phone !== "" ?(
+                        <Text header={"Contact Number"}
+                              text={this.state.organization.contact.phone}/>
+          ) : null}
+                </Layout>
+                {this.state.organization.reason.bio !== "" ?(
+                    <Text header={"Org Bio"}
+                          text={this.state.organization.reason.bio}/>) : null}
+                {this.state.organization.reason.vision !== "" ?(
+                    <Text header={"Vision | Mission"}
+                          text={this.state.organization.reason.vision}/>
         ) : null}
-        <Layout templateColumns={2}>
-          {this.state.organization.contact.email !== "" ? (
-            <Text
-              header={"Verification Email"}
-              text={this.state.organization.contact.email}
+                 {this.state.organization.reason.orgDefine !== "" ?(
+                    <Text header={"How does the organization define / measure success?"}
+                         text={this.state.organization.reason.orgDefine}/>
+        ) : null}
+                {actively && actively.length ? (<Text header={"Does your organization actively"}>{actively}</Text>) : null}
+                {description && description.length ? (<TagsAdd header={"Tags that best describe your organization"} tags={description}/>
+) : null}
+                <Layout templateColumns={2}>
+                    {this.state.organization.tech.salaryRange && (this.state.organization.tech.salaryRange.min !== "" || this.state.organization.tech.salaryRange.max !== "") ?(
+                        <Text header={"Salary Range"}
+                              text={`${this.state.organization.tech.salaryRange.min !== "" ? this.state.organization.tech.salaryRange.min : null} - ${this.state.organization.tech.salaryRange.max !== "" ? this.state.organization.tech.salaryRange.max : null}`}
             />
           ) : null}
-          {this.state.organization.contact.phone !== "" ? (
-            <Text
-              header={"Contact Number"}
-              text={this.state.organization.contact.phone}
-            />
+                    {jobType && jobType.length ? (<Text header={"Job Type"}>{jobType}</Text>) : null}
+                </Layout>
+                <Layout templateColumns={2}>
+                    {stacks && stacks.length ? (<TagsAdd header={"Languages, Libraries, Skills Tags"} tags={stacks}/>
           ) : null}
-        </Layout>
-        {this.state.organization.reason.bio !== "" ? (
-          <Text header={"Org Bio"} text={this.state.organization.reason.bio} />
-        ) : null}
-        {this.state.organization.reason.vision !== "" ? (
-          <Text
-            header={"Vision | Mission"}
-            text={this.state.organization.reason.vision}
-          />
-        ) : null}
-        {this.state.organization.reason.orgDefine !== "" ? (
-          <Text
-            header={"How does the organization define / measure success?"}
-            text={this.state.organization.reason.orgDefine}
-          />
-        ) : null}
-        {actively && actively.length ? (
-          <Text header={"Does your organization actively"}>{actively}</Text>
-        ) : null}
-        {description && description.length ? (
-          <TagsAdd
-            header={"Tags that best describe your organization"}
-            tags={description}
-          />
-        ) : null}
-        <Layout templateColumns={2}>
-          {this.state.organization.tech.salaryRange &&
-          (this.state.organization.tech.salaryRange.min !== "" ||
-            this.state.organization.tech.salaryRange.max !== "") ? (
-            <Text
-              header={"Salary Range"}
-              text={`${
-                this.state.organization.tech.salaryRange.min !== ""
-                  ? this.state.organization.tech.salaryRange.min
-                  : null
-              } - ${
-                this.state.organization.tech.salaryRange.max !== ""
-                  ? this.state.organization.tech.salaryRange.max
-                  : null
-              }`}
-            />
-          ) : null}
-          {jobType && jobType.length ? (
-            <Text header={"Job Type"}>{jobType}</Text>
-          ) : null}
-        </Layout>
-        <Layout templateColumns={2}>
-          {stacks && stacks.length ? (
-            <TagsAdd
-              header={"Languages, Libraries, Skills Tags"}
-              tags={stacks}
-            />
-          ) : null}
-          {industry && industry.length ? (
-            <TagsAdd header={"Industry | Sector"} tags={industry} />
-          ) : null}
-        </Layout>
-        {products && products.length ? products : null}
-      </Layout>
-    );
-  }
+                    {industry && industry.length ? (<TagsAdd header={"Industry | Sector"} tags={industry}/>) : null}
+                </Layout>
+
+                {products && products.length ? products : null}
+                {media && media.length ? media :null}
+            </Layout>
+        );
+    }
 }
 
 export default OrganizationPreviewBody;

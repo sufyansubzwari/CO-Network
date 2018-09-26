@@ -75,5 +75,11 @@ query GetOrganizations($limit: Int, $filter: String, $organizations: Organizatio
             explain
             files
         }
+        media{
+            title
+            link
+            explain
+            files
+        }
     }
 }
