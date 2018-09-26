@@ -2,6 +2,7 @@ import React from "react";
 import { Layout, Container } from "btech-layout";
 import PropTypes from "prop-types";
 import Text from "../Text";
+import File from "../File";
 
 /**
  * @module Data
@@ -24,7 +25,14 @@ const ProductService = function(props) {
         marginBottom={"5px"}
       />
       <Text header={"Files"} marginBottom={"5px"}>
-        {props.files}
+        {props.files &&
+          props.files.map((element, index) => {
+            let file = {};
+            if (typeof element === "string")
+              file = { name: element, link: element };
+            else file = element;
+            return <File key={index} name={file.name} link={file.link} />;
+          })}
       </Text>
       <Text header={`Explain`} text={props.data.explain} marginBottom={"5px"} />
     </Container>
