@@ -4,15 +4,16 @@ import {
   InputAutoComplete,
   TagList
 } from "btech-base-forms-component";
-import { Container, Layout } from "btech-layout";
+import {Container, Layout} from "btech-layout";
 
 import {
 
   LOOKING_FOR_DEFAULT
-,
-  TAG_LEVEL} from "../../../../../constants";
-import { GetTags } from "../../../../../apollo-client/tag";
-import { Query } from "react-apollo";
+  ,
+  TAG_LEVEL
+} from "../../../../../constants";
+import {GetTags} from "../../../../../apollo-client/tag";
+import {Query} from "react-apollo";
 
 class ThirdStep extends React.Component {
   constructor(props) {
@@ -103,6 +104,14 @@ class ThirdStep extends React.Component {
     }
   }
 
+  tagsSuggested(tags) {
+    let sug = JSON.parse(JSON.stringify(tags));
+    return sug.sort((a, b) => b.used - a.used).map(tag => ({
+      ...tag,
+      active: this.state.user && this.state.user.knowledge && this.state.user.knowledge.languages.findIndex(item => item.tag._id === tag._id) > -1
+    })).slice(0, 5);
+  }
+
   render() {
     return (
       <Layout rowGap={"25px"}>
@@ -112,22 +121,39 @@ class ThirdStep extends React.Component {
               if (loading) return <div>Fetching</div>;
               if (error) return <div>Error</div>;
               return (
-                <InputAutoComplete
-                  placeholderText={"Languages & Libraries"}
-                  getAddedOptions={this.onAddTags.bind(
-                    this,
-                    "languages",
-                    "Languages"
-                  )}
-                  getNewAddedOptions={this.onAddTags.bind(
-                    this,
-                    "languages",
-                    "Languages"
-                  )}
-                  options={data.tags}
-                  model={{others: []}}
-                  name={"others"}
-                />
+                <div>
+                  <InputAutoComplete
+                    placeholderText={"Languages & Libraries"}
+                    getAddedOptions={this.onAddTags.bind(
+                      this,
+                      "languages",
+                      "Languages"
+                    )}
+                    getNewAddedOptions={this.onAddTags.bind(
+                      this,
+                      "languages",
+                      "Languages"
+                    )}
+                    options={data.tags}
+                    model={{others: []}}
+                    name={"others"}
+                  />
+                  <Container mt={"10px"}>
+                    <TagList
+                      tags={this.tagsSuggested(data.tags)}
+                      onSelect={(event, tag, index) => {
+                        if (!tag.active) {
+                          delete tag.active;
+                          this.onAddTags("languages", "Languages", tag)
+                        }
+                        else {
+                          const pos = this.state.user.knowledge.languages.findIndex(item => item.tag._id === tag._id);
+                          this.onCloseTags(event, tag, pos, "languages")
+                        }
+                      }}
+                    />
+                  </Container>
+                </div>
               );
             }}
           </Query>
@@ -140,8 +166,8 @@ class ThirdStep extends React.Component {
                     active: true,
                     useIcon: true,
                     levelColor: item.levelColor || "",
-                    icon: item.icon  || "",
-                    level: item.level  || "",
+                    icon: item.icon || "",
+                    level: item.level || "",
                     ...item.tag,
                     showOptions: !item.levelColor
                   }))
@@ -190,8 +216,8 @@ class ThirdStep extends React.Component {
                     active: true,
                     useIcon: true,
                     levelColor: item.levelColor || "",
-                    icon: item.icon  || "",
-                    level: item.level  || "",
+                    icon: item.icon || "",
+                    level: item.level || "",
                     ...item.tag,
                     showOptions: !item.levelColor,
                   }))

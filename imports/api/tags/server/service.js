@@ -81,8 +81,6 @@ class TagsService {
 export default TagsService;
 
 const UpdateCounters = (tagList, entityTagList) => {
-  console.log("tagList ------",tagList)
-  console.log("entityTagList ------",entityTagList)
   const incrementCounts = tagList.filter(
     item => entityTagList.indexOf(item._id) === -1
   );
