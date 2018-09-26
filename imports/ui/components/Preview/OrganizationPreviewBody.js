@@ -21,6 +21,7 @@ class OrganizationPreviewBody extends React.Component {
 
   render() {
     let socials = [];
+    if(this.state.organization && this.state.organization.social){
     Object.keys(this.state.organization.social).forEach((social, index) => {
       if (this.state.organization.social[social])
         socials.push({
@@ -28,6 +29,7 @@ class OrganizationPreviewBody extends React.Component {
           link: this.state.organization.social[social]
         });
     });
+    }
     //tags
     let description =
       this.state.organization.description &&
@@ -109,27 +111,27 @@ class OrganizationPreviewBody extends React.Component {
             ): null;return (
             <Layout rowGap={"15px"}>
                 <Title text={this.state.organization.name}/>
-                <Location text={this.state.organization.place &&this.state.organization.place .location && this.state.organization.place.location .address && this.state.organization.place.location.address.toUpperCase()}/>
+                <Location text={this.state.organization.place && this.state.organization.place .location && this.state.organization.place.location .address && this.state.organization.place.location.address.toUpperCase()}/>
                 <Social socials={socials} />
                 {organizationtype && organizationtype.length ? (<Text header={"Organization Type"}>{organizationtype}</Text>) : null}
                 <Layout templateColumns={2}>
-                    {this.state.organization.contact.email !== "" ?(
+                    {this.state.organization && this.state.organization.contact && this.state.organization.contact.email !== "" ?(
                         <Text header={"Verification Email"}
                               text={this.state.organization.contact.email}/>
           ) : null}
-                    {this.state.organization.contact.phone !== "" ?(
+                    {this.state.organization && this.state.organization.contact && this.state.organization.contact.phone !== "" ?(
                         <Text header={"Contact Number"}
                               text={this.state.organization.contact.phone}/>
           ) : null}
                 </Layout>
-                {this.state.organization.reason.bio !== "" ?(
+                {this.state.organization && this.state.organization.reason && this.state.organization.reason.bio !== "" ?(
                     <Text header={"Org Bio"}
                           text={this.state.organization.reason.bio}/>) : null}
-                {this.state.organization.reason.vision !== "" ?(
+                {this.state.organization && this.state.organization.reason && this.state.organization.reason.vision !== "" ?(
                     <Text header={"Vision | Mission"}
                           text={this.state.organization.reason.vision}/>
         ) : null}
-                 {this.state.organization.reason.orgDefine !== "" ?(
+                 {this.state.organization && this.state.organization.reason && this.state.organization.reason.orgDefine !== "" ?(
                     <Text header={"How does the organization define / measure success?"}
                          text={this.state.organization.reason.orgDefine}/>
         ) : null}
@@ -137,7 +139,7 @@ class OrganizationPreviewBody extends React.Component {
                 {description && description.length ? (<TagsAdd header={"Tags that best describe your organization"} tags={description}/>
 ) : null}
                 <Layout templateColumns={2}>
-                    {this.state.organization.tech.salaryRange && (this.state.organization.tech.salaryRange.min !== "" || this.state.organization.tech.salaryRange.max !== "") ?(
+                    {this.state.organization && this.state.organization.tech && this.state.organization.tech.salaryRange && (this.state.organization.tech.salaryRange.min !== "" || this.state.organization.tech.salaryRange.max !== "") ?(
                         <Text header={"Salary Range"}
                               text={`${this.state.organization.tech.salaryRange.min !== "" ? this.state.organization.tech.salaryRange.min : null} - ${this.state.organization.tech.salaryRange.max !== "" ? this.state.organization.tech.salaryRange.max : null}`}
             />
