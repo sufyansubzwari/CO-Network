@@ -77,7 +77,7 @@ class FourthStep extends React.Component {
   onAddTags(name, tag) {
     if (tag.label && tag.label.length > 0) {
       let newTag = Object.assign({}, tag);
-      let tags = this.state.organization.tech[name];
+      let tags = this.state.organization.tech[name] || [];
       !newTag.name ? (newTag.name = newTag.label) : null;
       newTag.type = "Languages";
       tags.push(newTag);

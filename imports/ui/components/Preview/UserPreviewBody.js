@@ -150,13 +150,7 @@ class UserPreviewBody extends React.Component {
     return (
       <Layout rowGap={"15px"}>
         <Title text={this.state.user.name + " " + this.state.user.lastName} />
-        <Location
-          text={
-            this.state.user.place &&
-            this.state.user.place.location &&
-            this.state.user.place.location.address.toUpperCase()
-          }
-        />
+        <Location location={this.state.user.place} />
         {this.state.user && this.state.user.email !== "" ? (
           <Text header={"Email"} text={this.state.user.email} />
         ) : null}

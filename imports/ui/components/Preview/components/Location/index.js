@@ -11,9 +11,9 @@ const STitle = styled.label`
   font-size: ${props =>
     props.size ? props.size : props.theme.preview.locations.size};
   line-height: ${props =>
-    props.lineheight
-      ? props.lineheight
-      : props.theme.preview.locations.lineheight};
+    props.lineHeight
+      ? props.lineHeight
+      : props.theme.preview.locations.lineHeight};
 `;
 
 class Location extends React.Component {
@@ -21,11 +21,24 @@ class Location extends React.Component {
     super(props);
   }
 
+  getTextToRender(place) {
+    let locationString = "";
+    if (typeof place === "string") locationString = place;
+    else {
+      const location = place.location;
+      if (location && location.address)
+        locationString = location.address.toUpperCase();
+    }
+    return locationString;
+  }
+
   render() {
     return (
       <ThemeProvider theme={theme}>
         <STitle {...this.props}>
-          {this.props.text ? this.props.text : this.props.children}
+          {this.props.location
+            ? this.getTextToRender(this.props.location)
+            : this.props.children}
         </STitle>
       </ThemeProvider>
     );
@@ -35,9 +48,9 @@ class Location extends React.Component {
 export default Location;
 
 Location.propTypes = {
-  text: PropsTypes.string,
+  location: PropsTypes.object,
   color: PropsTypes.string,
   family: PropsTypes.string,
   size: PropsTypes.string,
-  lineheight: PropsTypes.string
+  lineHeight: PropsTypes.string
 };
