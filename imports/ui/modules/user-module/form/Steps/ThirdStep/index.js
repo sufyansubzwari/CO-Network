@@ -18,14 +18,14 @@ class ThirdStep extends React.Component {
 
     this.state = {
       user: data,
-      lookingfor: LOOKING_FOR_DEFAULT
+      lookingFor: LOOKING_FOR_DEFAULT
     };
   }
 
   componentWillMount() {
     if (this.props.data && this.props.data.knowledge.lookingFor)
       this.setState({
-        lookingfor: LOOKING_FOR_DEFAULT.map(e => {
+        lookingFor: LOOKING_FOR_DEFAULT.map(e => {
           e["active"] = this.props.data.knowledge.lookingFor.some(
             element => e.label === element.label
           );
@@ -35,14 +35,14 @@ class ThirdStep extends React.Component {
   }
 
   changeCategoryEvents(actives) {
-    const selected = this.state.lookingfor.map((looking, index) => {
+    const selected = this.state.lookingFor.map((looking, index) => {
       looking["active"] = actives[index];
       return looking;
     });
     const lookings = selected.filter(element => element.active);
     const temp = this.state.user;
     temp["knowledge"]["lookingFor"] = lookings;
-    this.setState({ lookingfor: selected, user: temp }, () =>
+    this.setState({ lookingFor: selected, user: temp }, () =>
       this.notifyParent()
     );
   }
@@ -164,8 +164,7 @@ class ThirdStep extends React.Component {
           <Container mt={"10px"}>
             <TagList
               tags={
-                this.state.user.knowledge.languages &&
-                this.state.user.knowledge.languages.length > 0
+                this.state.user.knowledge && this.state.user.knowledge.languages
                   ? this.state.user.knowledge.languages.map(item => ({
                       active: true,
                       useIcon: true,
@@ -272,7 +271,7 @@ class ThirdStep extends React.Component {
         </Container>
         <CheckBoxList
           placeholderText={"Looking for"}
-          options={this.state.lookingfor}
+          options={this.state.lookingFor}
           checkboxVerticalSeparation={"10px"}
           checkboxSize={"15px"}
           getValue={actives => this.changeCategoryEvents(actives)}

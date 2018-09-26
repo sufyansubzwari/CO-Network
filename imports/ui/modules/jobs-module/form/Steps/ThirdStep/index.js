@@ -31,7 +31,7 @@ class ThirdStep extends React.Component {
 
   render() {
     return (
-      <Layout rowGap={'40px'}>
+      <Layout rowGap={'25px'}>
         <TextArea
           height={'100px'}
           placeholderText={'What make your culture unique?'}

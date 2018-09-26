@@ -103,7 +103,6 @@ class EventStep3 extends Component {
           >
             <Container>
               <SalaryRange
-                required
                 placeholder={"000"}
                 labelText={"Expected Attendees"}
                 min={

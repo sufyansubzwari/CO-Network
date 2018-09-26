@@ -856,14 +856,70 @@ export const LOOKING_FOR_DEFAULT_SPEAKER = [
 ];
 
 export const ORGANIZATION_TYPE = [
-  { label: "Academia" },
-  { label: "Corporation" },
-  { label: "Comunity" },
-  { label: "Government" },
-  { label: "Academia1" },
-  { label: "Corporation1" },
-  { label: "Comunity1" },
-  { label: "Government1" }
+  {
+    label: "Academia",
+    value: "Academia"
+  },
+  {
+    label: "Corporation",
+    value: "Corporation"
+  },
+  {
+    label: "Conference Organizer",
+    value: "Conference Organizer"
+  },
+  {
+    label: "Event Organizer",
+    value: "Event Organizer"
+  },
+  {
+    label: "Incubator",
+    value: "Incubator"
+  },
+  {
+    label: "Accelerator",
+    value: "Accelerator"
+  },
+  {
+    label: "Journal",
+    value: "Journal"
+  },
+  {
+    label: "Publisher",
+    value: "Publisher"
+  },
+  {
+    label: "Media",
+    value: "Media"
+  },
+  {
+    label: "Nonprofit",
+    value: "Nonprofit"
+  },
+  {
+    label: "Startup",
+    value: "Startup"
+  },
+  {
+    label: "Think Tank",
+    value: "Think Tank"
+  },
+  {
+    label: "Venture Capital",
+    value: "Venture Capital"
+  },
+  {
+    label: "Fund",
+    value: "Fund"
+  },
+  {
+    label: "Venue for Events",
+    value: "Venue for Events"
+  },
+  {
+    label: "Coworking Space",
+    value: "Coworking Space"
+  }
 ];
 
 export const ACTIVELY = [
@@ -920,6 +976,12 @@ export const LOOKING_FOR_DEFAULT = [
   { label: "Data Trading" },
   { label: "Scientific Collaborations" },
   { label: "Study Group Companions" }
+];
+
+export const TAG_LEVEL = [
+  { value: "expert", label: "Expert", color: "#FF1493" },
+  { value: "experienced", label: "Experienced", color: "#464646" },
+  { value: "entryLevel", label: "Entry Level", color: "#8e8a8a" }
 ];
 
 export const POSITION_TAGS = [
