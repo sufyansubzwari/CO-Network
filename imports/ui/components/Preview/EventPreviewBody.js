@@ -74,13 +74,7 @@ class EventPreviewBody extends React.Component {
           startDate={this.state.event.startDate}
           endDate={this.state.event.endDate}
         />
-        <Location
-          text={
-            this.state.event.place &&
-            this.state.event.place.location &&
-            this.state.event.place.location.address.toUpperCase()
-          }
-        />
+        <Location location={this.state.event.place} />
         {this.state.event.description !== "" ? (
           <Text header={"Summary"} text={this.state.event.description} />
         ) : null}

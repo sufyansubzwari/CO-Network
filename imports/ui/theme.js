@@ -130,7 +130,9 @@ const preview = {
     textFamily: "Roboto Mono",
     textSize: "12px",
     textLineHeight: "24px",
-    textWeight: "300"
+    textWeight: "300",
+    marginBottom: "1rem",
+    marginRight: "5px"
   },
   background: "#F9F9FB",
   borderColor: "#DBDBDB"

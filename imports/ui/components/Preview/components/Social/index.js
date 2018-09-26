@@ -42,31 +42,41 @@ class Social extends React.Component {
     super(props);
   }
 
-  render() {
-    let socials =
-      this.props.socials &&
-      this.props.socials.length &&
-      this.props.socials.map((social, index) => (
+  handleSocials() {
+    let socials = [];
+    if (this.props.socials)
+      socials = this.props.socials.map((social, index) => (
         <SocialItem key={index}>
           <SocialLink href={social.link} target="_blank">
             <MaterialIcon type={social.element} />
           </SocialLink>
         </SocialItem>
       ));
-    let links =
-      this.props.links &&
-      this.props.links.length &&
-      this.props.links.map((element, index) => (
+    return socials;
+  }
+
+  handleLinks() {
+    let links = [];
+    if (this.props.links)
+      links = this.props.links.map((element, index) => (
         <SLink key={index}>
           <a href={element.link}>{element.website}</a>
         </SLink>
       ));
+    return links;
+  }
+
+  render() {
+    let socials = this.handleSocials();
+    let links = this.handleLinks();
     return (
       <ThemeProvider theme={theme}>
-        <Container>
-          {socials && socials.length ? socials : null}
-          {links && links.length ? links : null}
-        </Container>
+        {socials.length || links.length ? (
+          <Container mb={"1rem"}>
+            {socials}
+            {links}
+          </Container>
+        ) : null}
       </ThemeProvider>
     );
   }

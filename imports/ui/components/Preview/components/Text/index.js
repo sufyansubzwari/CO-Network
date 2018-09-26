@@ -1,6 +1,6 @@
 import React from "react";
-import styled, { ThemeProvider } from "styled-components";
-import theme from "../../../../theme";
+import styled from "styled-components";
+import { Container } from "btech-layout";
 import PropsTypes from "prop-types";
 
 const STitle = styled.label`
@@ -21,6 +21,8 @@ const STitle = styled.label`
       ? props.titleWeight
       : props.theme.preview.text.titleWeight};
   margin-bottom: 0;
+  margin-right: ${props =>
+    props.inLineView ? props.theme.preview.text.marginRight : "0"};
 `;
 
 const SText = styled.div`
@@ -36,6 +38,30 @@ const SText = styled.div`
       : props.theme.preview.text.textLineHeight};
   font-weight: ${props =>
     props.textWeight ? props.textWeight : props.theme.preview.text.textWeight};
+  display: ${props => (props.inLineView ? "inline-block" : "0")};
+  margin-bottom: ${props =>
+    props.marginBottom
+      ? props.marginBottom
+      : props.theme.preview.text.marginBottom};
+`;
+
+const SContainer = styled(Container)`
+  color: ${props =>
+    props.textColor ? props.textColor : props.theme.preview.text.textColor};
+  font-family: ${props =>
+    props.textFamily ? props.textFamily : props.theme.preview.text.textFamily};
+  font-size: ${props =>
+    props.textSize ? props.textSize : props.theme.preview.text.textSize};
+  line-height: ${props =>
+    props.textLineHeight
+      ? props.textLineHeight
+      : props.theme.preview.text.textLineHeight};
+  font-weight: ${props =>
+    props.textWeight ? props.textWeight : props.theme.preview.text.textWeight};
+  margin-bottom: ${props =>
+    props.marginBottom
+      ? props.marginBottom
+      : props.theme.preview.text.marginBottom};
 `;
 
 class Text extends React.Component {
@@ -45,19 +71,21 @@ class Text extends React.Component {
 
   render() {
     return (
-      <ThemeProvider theme={theme}>
-        <div>
-          <STitle {...this.props}>{this.props.header}</STitle>
-          <SText>
-            {this.props.text ? this.props.text : this.props.children}
-          </SText>
-        </div>
-      </ThemeProvider>
+      <Container>
+        <STitle {...this.props}>{this.props.header}</STitle>
+        {this.props.text ? (
+          <SText {...this.props}>{this.props.text}</SText>
+        ) : this.props.children ? (
+          <SContainer {...this.props}>{this.props.children}</SContainer>
+        ) : null}
+      </Container>
     );
   }
 }
 
-export default Text;
+Text.defaultProps = {
+  inLineView: false
+};
 
 Text.propTypes = {
   header: PropsTypes.string,
@@ -70,6 +98,10 @@ Text.propTypes = {
   textColor: PropsTypes.string,
   textFamily: PropsTypes.string,
   textSize: PropsTypes.string,
+  marginBottom: PropsTypes.string,
+  inLineView: PropsTypes.bool,
   textLineHeight: PropsTypes.string,
   textWeight: PropsTypes.string
 };
+
+export default Text;
