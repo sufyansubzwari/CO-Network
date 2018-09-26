@@ -101,18 +101,19 @@ class ThirdStep extends React.Component {
 
   tagsSuggested(tags, name) {
     let sug = JSON.parse(JSON.stringify(tags));
-    return sug
-      .sort((a, b) => b.used - a.used)
-      .map(tag => ({
-        ...tag,
-        active:
-          this.state.user &&
-          this.state.user.knowledge &&
-          this.state.user.knowledge[name].findIndex(
-            item => item.tag._id === tag._id
-          ) > -1
-      }))
-      .slice(0, 5);
+    if (name && this.state.user.knowledge && this.state.user.knowledge[name]) {
+      const data = this.state.user.knowledge;
+      return sug
+        .sort((a, b) => b.used - a.used)
+        .map(tag => ({
+          ...tag,
+          active:
+            this.state.user &&
+            data &&
+            data[name].some(itemId => itemId === tag._id)
+        }))
+        .slice(0, 5);
+    } else return [];
   }
 
   render() {
