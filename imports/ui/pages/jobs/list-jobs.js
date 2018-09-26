@@ -84,6 +84,15 @@ class ListJobs extends Component {
     });
   }
 
+    applyJob() {
+        let job = JSON.parse(JSON.stringify(this.state.selectedItem));
+        delete job.entity;
+        delete job.views;
+        this.props.history.push("/apply-job", {
+            job: job
+        });
+    }
+
   onSearch(value) {
     this.setState({ filter: value }, () => this.reFetchQuery());
   }
@@ -164,6 +173,18 @@ class ListJobs extends Component {
                           this.editJob();
                         }
                       },
+                        {
+                            text: "Apply",
+                            checkVisibility: () => {
+                                const element = this.state.selectedItem;
+                                return (
+                                      true
+                                );
+                            },
+                            onClick: () => {
+                                this.applyJob();
+                            }
+                        },
                       {
                         text: "Remove",
                         icon: "delete",
