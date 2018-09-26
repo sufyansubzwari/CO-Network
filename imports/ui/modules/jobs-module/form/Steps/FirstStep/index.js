@@ -14,6 +14,7 @@ import { JOB_TYPE, POSITION_TAGS } from "../../../../../constants";
 import PropTypes from "prop-types";
 import { Query } from "react-apollo";
 import { GetTags as tags } from "../../../../../apollo-client/tag";
+import MLTagsInput from '../../../../../components/TagsInputAutoComplete/TagsInputAutoComplete'
 
 class FirstStep extends React.Component {
   constructor(props) {
@@ -178,7 +179,7 @@ class FirstStep extends React.Component {
                   if (loading) return <div>Fetching</div>;
                   if (error) return <div>Error</div>;
                   return (
-                    <InputAutoComplete
+                    <MLTagsInput
                       placeholderText={"Position Tags"}
                       getAddedOptions={this.onAddTags.bind(this)}
                       getNewAddedOptions={this.onAddTags.bind(this)}
