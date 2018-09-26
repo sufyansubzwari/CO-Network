@@ -6,10 +6,11 @@ const Mutation = {};
 
 Mutation.job = async (root, {job}, context) => {
   let entity = Object.assign({}, job);
+  let oldJob = job._id ? Service.getJob(job._id) : null;
   if (job.languages)
-    entity.languages = await Tags.service.normalizeTags(job.languages);
+    entity.languages = await Tags.service.normalizeTags(job.languages, oldJob ? oldJob.languages : []);
   if (job.positionTags)
-    entity.positionTags = await Tags.service.normalizeTags(job.positionTags);
+    entity.positionTags = await Tags.service.normalizeTags(job.positionTags, oldJob ? oldJob.positionTags : []);
   const inserted = await Service.job(entity);
 //inserting location
   if (job.place && job.place.location && job.place.location.address) {

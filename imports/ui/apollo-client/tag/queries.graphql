@@ -4,5 +4,6 @@ query GetTags($tags: TagsInput) {
         name
         label
         value
+        used
     }
 }

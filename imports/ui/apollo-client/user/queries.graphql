@@ -18,6 +18,7 @@ query userQuery($id: String){
       isSignUp
       professional{
         industry{
+          _id
           name
           label
           value
@@ -50,10 +51,12 @@ query userQuery($id: String){
       knowledge{
         languages{
           tag{
+            _id
             name
             label
             value
             type
+            used
           }
           level
           levelColor
@@ -61,10 +64,12 @@ query userQuery($id: String){
         }
         curiosity{
           tag{
+            _id
             name
             label
             value
             type
+            used
           }
           level
           levelColor
