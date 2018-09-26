@@ -574,15 +574,15 @@ export const TIKET_TYPE = [
 ];
 
 export const EVENT_TYPE = [
-  { value: "Technical Workshop", label: "Technical Workshop" },
-  { value: "Panel Discussion", label: "Panel Discussion" },
-  { value: "Academic", label: "Academic" },
-  { value: "Recruiting | Career", label: "Recruiting | Career" },
-  {
-    value: "Science Interactive (Hikes, Games, Theater, Comedy)",
-    label: "Science Interactive"
-  },
-  { value: "Networking", label: "Networking" }
+  { value: "Career Fair", label: "Career Fair" },
+  { value: "Casual | Social", label: "Casual | Social" },
+  { value: "Conference", label: "Conference" },
+  { value: "Hackathon", label: "Hackathon" },
+  { value: "Networking", label: "Networking" },
+  { value: "Talks & Panel Discussions", label: "Talks & Panel Discussions" },
+  { value: "Tradeshow", label: "Tradeshow" },
+  { value: "University Event", label: "University Event" },
+  { value: "Workshop | Training", label: "Workshop | Training" }
 ];
 
 export const defaultFilter = [

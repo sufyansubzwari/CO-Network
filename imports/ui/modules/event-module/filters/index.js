@@ -7,13 +7,11 @@ import BigTag from "./../../../components/BigTag/BigTag";
 import {
   SalaryRange,
   CheckBoxList,
-  Button,
   DatePickerRange
 } from "btech-base-forms-component";
 import PropsTypes from "prop-types";
 import { connect } from "react-redux";
 import { setFilters, cleanFilters } from "../../../actions/SideBarActions";
-import * as type from "../../../actions/SideBarActions/types";
 import { GetTags } from "../../../apollo-client/tag";
 import { Query, graphql } from "react-apollo";
 

@@ -9,7 +9,7 @@ import {
   TagList,
   DatePickerRange
 } from "btech-base-forms-component";
-import { COMMUNITYEVENTCATEGORIES } from "../constants/community-event-categories";
+import { EVENT_TYPE } from "../../../../constants";
 import { Query } from "react-apollo";
 import { GetTags as tags } from "../../../../apollo-client/tag";
 
@@ -23,7 +23,7 @@ class EventStep1 extends Component {
     this.dateFormat = "MM/DD/YYYY HH:mm";
     this.state = {
       event: this.props.data,
-      category: COMMUNITYEVENTCATEGORIES
+      category: EVENT_TYPE
     };
   }
 
@@ -32,10 +32,10 @@ class EventStep1 extends Component {
       let event = this.props.data;
       event.others = this.props.data.category.filter(
         item =>
-          COMMUNITYEVENTCATEGORIES.findIndex(c => c.label === item.label) === -1
+          EVENT_TYPE.findIndex(c => c.label === item.label) === -1
       );
       this.setState({
-        category: COMMUNITYEVENTCATEGORIES.map(e => {
+        category: EVENT_TYPE.map(e => {
           e["active"] = this.props.data.category.some(
             element => e.label === element.label
           );
