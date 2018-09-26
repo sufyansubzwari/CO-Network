@@ -4,7 +4,7 @@ import { Layout, Container } from "btech-layout";
 import UserPhoto from "./../UserPhoto/UserPhoto";
 import { UploadFile } from "./components";
 import PropsTypes from "prop-types";
-import { UploadImageToS3 } from "../../services";
+import { UploadToS3 } from "../../services";
 
 const Photo = styled(Container)`
   background: ${props =>
@@ -75,7 +75,7 @@ class TopPreview extends Component {
   onUploadRequest(files, element) {
     const file = files[0];
     if (file) {
-      UploadImageToS3.upload(
+      UploadToS3.uploadImage(
         file,
         response => {
           if (!response.error) {

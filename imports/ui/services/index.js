@@ -1,4 +1,4 @@
 import Authorization from "./authorization";
-import UploadImageToS3 from "./uploadToS3";
+import UploadToS3 from "./uploadToS3";
 
-export { Authorization, UploadImageToS3 };
+export { Authorization, UploadToS3 };

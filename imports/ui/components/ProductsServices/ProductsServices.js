@@ -46,8 +46,6 @@ class ProductsServices extends React.Component {
   }
 
   onSelectToAdd(product, key) {
-    // this.setState({ tickets: list, editIndex: list.length - 1 });
-
     const list = this.state.products;
     list.push({
       type: product.type,

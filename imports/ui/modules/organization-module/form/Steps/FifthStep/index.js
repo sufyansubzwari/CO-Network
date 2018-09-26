@@ -1,31 +1,24 @@
 import React from "react";
 import { Layout } from "btech-layout";
-import ProductsServices from "../../../../../components/ProductsServices/ProductsServices"
+import { ProductsServices } from "../../../../../components";
 
 class Fifth extends React.Component {
   constructor(props) {
     super(props);
-
     let data = props.data ? props.data : {};
-
     this.state = {
       organization: data
     };
 
-    this.handleChange = this.handleChange.bind(this)
+    this.handleChange = this.handleChange.bind(this);
   }
 
-    handleChange(prod) {
-        this.setState(
-            {
-                organization: {
-                    ...this.state.organization,
-                    products: prod
-                }
-            },
-            () => this.notifyParent()
-        );
-    }
+  handleChange(prod) {
+    this.setState(
+      { organization: { ...this.state.organization, products: prod } },
+      () => this.notifyParent()
+    );
+  }
 
   componentWillReceiveProps(nextProps) {
     if (nextProps.data && nextProps.data !== this.state.organization)
@@ -45,12 +38,14 @@ class Fifth extends React.Component {
   }
 
   render() {
-    return  <Layout rowGap={"25px"}>
+    return (
+      <Layout rowGap={"25px"}>
         <ProductsServices
-        onChange={this.handleChange}
-        products={this.state.organization.products}
+          onChange={this.handleChange}
+          products={this.state.organization.products}
         />
-    </Layout>;
+      </Layout>
+    );
   }
 }
 

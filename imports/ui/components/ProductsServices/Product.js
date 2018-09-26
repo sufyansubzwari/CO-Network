@@ -36,17 +36,17 @@ export default (Product = function(props) {
           customTemplateColumns={"repeat(auto-fit, 120px)"}
         >
           <UploadFileButton
+            allowMultiSelection
             marginRight={"10px"}
             placeholderText={"Upload File"}
             getValue={props.handleUpload}
           />
           {props.model &&
             props.model.files &&
-            props.model.files.length &&
             props.model.files.map((file, index) => (
               <Container key={index}>
                 <AttachedFile
-                  file={{ name: file }}
+                  file={{ name: file.name }}
                   onClose={() => props.onClose(index)}
                 />
               </Container>
