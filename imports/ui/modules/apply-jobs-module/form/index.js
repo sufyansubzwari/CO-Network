@@ -1,6 +1,6 @@
 import React from "react";
 import { MlWizardForm, WizardStepForm } from "btech-base-forms-component";
-import { FirstStep, SecondStep, ThirdStep } from "./Steps";
+import { FirstStep, SecondStep, ThirdStep, FourthStep } from "./Steps";
 import PropTypes from "prop-types";
 
 class ApplyJobForm extends React.Component {
@@ -68,6 +68,12 @@ class ApplyJobForm extends React.Component {
                 </WizardStepForm>
                 <WizardStepForm title={"Job Specific"} isValid>
                     <SecondStep
+                        data={this.state.apply}
+                        onChange={apply => this.handleChange(apply)}
+                    />
+                </WizardStepForm>
+                <WizardStepForm title={"Work Experience"} isValid>
+                    <FourthStep
                         data={this.state.apply}
                         onChange={apply => this.handleChange(apply)}
                     />
