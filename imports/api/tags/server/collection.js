@@ -46,6 +46,7 @@ Tags.schema = new SimpleSchema({
   used: {
     type: Number,
     optional: true,
+    defaultValue: 1
   },
   categories: {
     type: Array,
