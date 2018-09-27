@@ -22,7 +22,11 @@ class JobForm extends React.Component {
         culture: "",
         aboutUsTeam: "",
         candidateQuestions: "",
-        jobResponsibility: ""
+        jobResponsibility: "",
+        salaryRange: {
+          min: 100,
+          max: 1000
+        }
       }
     };
     this.handleChange = this.handleChange.bind(this);
@@ -89,7 +93,7 @@ class JobForm extends React.Component {
           />
         </WizardStepForm>
         {/*<WizardStepForm title={"Submit"}>*/}
-          {/*<div>HERE GOES THE PAY SECTION</div>*/}
+        {/*<div>HERE GOES THE PAY SECTION</div>*/}
         {/*</WizardStepForm>*/}
       </MlWizardForm>
     );

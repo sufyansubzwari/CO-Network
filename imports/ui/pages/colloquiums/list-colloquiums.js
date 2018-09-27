@@ -182,7 +182,6 @@ class ListColloquiums extends Component {
                         onClose={() => this.onChangeSelection(null, null)}
                         key={"rightSide"}
                         isOpen={!!this.state.selectedItem}
-                        navlinks={["Details"]}
                         navClicked={index => console.log(index)}
                         navOptions={[
                           {
@@ -202,6 +201,7 @@ class ListColloquiums extends Component {
                           },
                           {
                             text: "Edit",
+                            icon: "edit",
                             checkVisibility: () => {
                               const element = this.state.selectedItem;
                               return (

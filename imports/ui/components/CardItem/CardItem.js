@@ -73,7 +73,7 @@ class CardItem extends Component {
     }
   }
 
-  componentWillMount() {
+  componentDidMount() {
     this.setState({
       topOptions: this.state.topOptions.concat(this.props.topOptions)
     });
@@ -234,7 +234,7 @@ CardItem.defaultProps = {
 
 CardItem.propTypes = {
   ...Card.propTypes,
-  data: PropTypes.object,
+  data: PropTypes.any,
   title: PropTypes.string,
   image: PropTypes.string,
   subTitle: PropTypes.string,

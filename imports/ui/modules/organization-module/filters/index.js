@@ -1,34 +1,23 @@
 import React from "react";
-import {Layout, Container} from "btech-layout";
-import styled from "styled-components";
-import {GeoInputLocation} from "btech-location";
+import { Layout, Container } from "btech-layout";
+import { GeoInputLocation } from "btech-location";
 import {
   CheckBoxList,
   InputAutoComplete,
   TagList
 } from "btech-base-forms-component";
-import {
-  ORG_TYPE_NUMBER
-} from "../../../constants";
+import { ORG_TYPE_NUMBER } from "../../../constants";
 import PropsTypes from "prop-types";
-import FilterContainer from "../../../components/FiltersContainer/FiltersContainer";
-import {cleanFilters, setFilters} from "../../../actions/SideBarActions";
-import {connect} from "react-redux";
-import BigTag from "./../../../components/BigTag/BigTag";
-import {Query} from "react-apollo";
-import {GetTags} from "../../../apollo-client/tag";
-
-const Filter = styled(Container)`
-  padding: 20px 10px;
-`;
-
-const Separator = styled.div`
-  height: 1px;
-  width: 100%;
-  opacity: 0.5;
-  background-color: ${props =>
-  props.theme ? props.theme.filter.separatorColor : "black"};
-`;
+import {
+  FiltersContainer,
+  BigTag,
+  Separator,
+  FilterItem
+} from "../../../components";
+import { cleanFilters, setFilters } from "../../../actions/SideBarActions";
+import { connect } from "react-redux";
+import { Query } from "react-apollo";
+import { GetTags } from "../../../apollo-client/tag";
 
 class OrganizationFilters extends React.Component {
   constructor(props) {
@@ -36,7 +25,7 @@ class OrganizationFilters extends React.Component {
     this.state = {
       location: {
         address: "",
-        location: {lat: "", lng: ""},
+        location: { lat: "", lng: "" },
         fullLocation: {}
       },
       locationTags: [],
@@ -47,7 +36,7 @@ class OrganizationFilters extends React.Component {
       })),
       filters: {},
       tech_DOT_industry: [],
-      description: [],
+      description: []
     };
   }
 
@@ -62,10 +51,10 @@ class OrganizationFilters extends React.Component {
     });
     const activeSelected = selected.filter(element => element.active);
     const temp = this.state.filters;
-    const checked = activeSelected.map(item => ({label: item.label}));
-    temp[type] = {elemMatch: {or: checked}};
+    const checked = activeSelected.map(item => ({ label: item.label }));
+    temp[type] = { elemMatch: { or: checked } };
     checked.length === 0 ? delete temp[type] : null;
-    this.setState({[type]: selected, filters: temp}, () =>
+    this.setState({ [type]: selected, filters: temp }, () =>
       this.props.setFilters("organizations", this.state.filters)
     );
   }
@@ -76,14 +65,14 @@ class OrganizationFilters extends React.Component {
       let locationNew = Object.assign({}, value);
       let locationArray = this.state.locationTags;
       locationArray.push(locationNew);
-      this.setState({locationTags: locationArray});
+      this.setState({ locationTags: locationArray });
     }
   }
 
   tagSelection(key) {
     let tags = this.state.locationTags;
     tags[key].active = !tags[key].active;
-    this.setState({locationTags: tags}, () => this.checkFilters());
+    this.setState({ locationTags: tags }, () => this.checkFilters());
   }
 
   onAddTags(type, tag) {
@@ -91,7 +80,7 @@ class OrganizationFilters extends React.Component {
       let newTag = Object.assign({}, tag);
       let tags = this.state[type];
       tags.push(newTag);
-      this.state.filters[type] = {'in': this.state[type].map(item => item._id)};
+      this.state.filters[type] = { in: this.state[type].map(item => item._id) };
       this.setState(
         {
           [type]: tags,
@@ -106,7 +95,7 @@ class OrganizationFilters extends React.Component {
     this.state[type].splice(index, 1);
     if (this.state[type].length > 0)
       this.state.filters[type] = {
-        'in': this.state[type].map(item => item._id)
+        in: this.state[type].map(item => item._id)
       };
     else {
       delete this.state.filters[type];
@@ -124,18 +113,18 @@ class OrganizationFilters extends React.Component {
     let actives = this.state.locationTags.filter(item => item.active);
     let filters = this.state.filters;
     actives.length > 0 ? (filters.location = actives) : delete filters.location;
-    this.setState({filters: filters}, () =>
+    this.setState({ filters: filters }, () =>
       this.props.setFilters("organizations", filters)
     );
   }
 
   render() {
     return (
-      <FilterContainer
+      <FiltersContainer
         onClose={() => this.props.onClose && this.props.onClose()}
       >
-        <Separator/>
-        <Filter>
+        <Separator />
+        <FilterItem>
           <GeoInputLocation
             name={"location"}
             model={this.state}
@@ -150,31 +139,28 @@ class OrganizationFilters extends React.Component {
           >
             {this.state.locationTags.length > 0
               ? this.state.locationTags.map((item, key) => (
-                <BigTag
-                  key={key}
-                  text={item.address}
-                  icon={"pin"}
-                  connected={item.active}
-                  onClick={this.tagSelection.bind(this, key)}
-                />
-              ))
+                  <BigTag
+                    key={key}
+                    text={item.address}
+                    icon={"pin"}
+                    connected={item.active}
+                    onClick={this.tagSelection.bind(this, key)}
+                  />
+                ))
               : null}
           </Layout>
-        </Filter>
-        <Separator/>
-        <Filter>
-          <Query
-            query={GetTags}
-            variables={{tags: {type: "OrgDesc"}}}
-          >
-            {({loading, error, data}) => {
+        </FilterItem>
+        <Separator />
+        <FilterItem>
+          <Query query={GetTags} variables={{ tags: { type: "OrgDesc" } }}>
+            {({ loading, error, data }) => {
               if (loading) return <div>Fetching</div>;
               if (error) return <div>Error</div>;
               return (
                 <InputAutoComplete
                   placeholderText={"Tags"}
                   name={"other"}
-                  model={{other: []}}
+                  model={{ other: [] }}
                   options={data.tags}
                   getAddedOptions={this.onAddTags.bind(this, "description")}
                   getNewAddedOptions={this.onAddTags.bind(this, "description")}
@@ -189,35 +175,40 @@ class OrganizationFilters extends React.Component {
               // checkCloseableItem={(tag, index) => {
               //   return tag.userAdd === true;
               // }}
-              onClose={(e, tag, index) => this.onCloseTags(e, tag, index, "description")}
+              onClose={(e, tag, index) =>
+                this.onCloseTags(e, tag, index, "description")
+              }
             />
           </Container>
-        </Filter>
-        <Separator/>
-        <Filter>
+        </FilterItem>
+        <Separator />
+        <FilterItem>
           <CheckBoxList
             placeholderText={"Org Type"}
             options={this.state.orgType}
             getValue={selected => this.addFilters("orgType", selected)}
           />
-        </Filter>
-        <Separator/>
-        <Filter>
-          <Query
-            query={GetTags}
-            variables={{tags: {type: "INDUSTRY"}}}
-          >
-            {({loading, error, data}) => {
+        </FilterItem>
+        <Separator />
+        <FilterItem>
+          <Query query={GetTags} variables={{ tags: { type: "INDUSTRY" } }}>
+            {({ loading, error, data }) => {
               if (loading) return <div>Fetching</div>;
               if (error) return <div>Error</div>;
               return (
                 <InputAutoComplete
                   placeholderText={"Industry | Sector"}
                   name={"other"}
-                  model={{other: []}}
+                  model={{ other: [] }}
                   options={data.tags}
-                  getAddedOptions={this.onAddTags.bind(this, "tech_DOT_industry")}
-                  getNewAddedOptions={this.onAddTags.bind(this, "tech_DOT_industry")}
+                  getAddedOptions={this.onAddTags.bind(
+                    this,
+                    "tech_DOT_industry"
+                  )}
+                  getNewAddedOptions={this.onAddTags.bind(
+                    this,
+                    "tech_DOT_industry"
+                  )}
                 />
               );
             }}
@@ -229,12 +220,14 @@ class OrganizationFilters extends React.Component {
               // checkCloseableItem={(tag, index) => {
               //   return tag.userAdd === true;
               // }}
-              onClose={(e, tag, index) => this.onCloseTags(e, tag, index, "tech_DOT_industry")}
+              onClose={(e, tag, index) =>
+                this.onCloseTags(e, tag, index, "tech_DOT_industry")
+              }
             />
           </Container>
-        </Filter>
-        <Separator/>
-        <Filter>
+        </FilterItem>
+        <Separator />
+        <FilterItem>
           <CheckBoxList
             placeholderText={"My Jobs"}
             options={[
@@ -242,12 +235,12 @@ class OrganizationFilters extends React.Component {
                 label: "My Looking for Talent",
                 active: true
               },
-              {label: "Hosting Events", active: false}
+              { label: "Hosting Events", active: false }
             ]}
           />
-        </Filter>
-        <Separator/>
-      </FilterContainer>
+        </FilterItem>
+        <Separator />
+      </FiltersContainer>
     );
   }
 }

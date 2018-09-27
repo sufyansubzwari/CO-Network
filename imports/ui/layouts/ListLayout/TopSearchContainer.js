@@ -13,16 +13,13 @@ import styled from "styled-components";
 const TopSearchContainer = styled(Container)`
   padding: ${props => (!props.isOpenFilters ? "20px 66px" : "20px 48px")};
   box-shadow: ${props => "0 1px 0 0 " + props.theme.color.grey};
+  padding: 15px;
 
-  @media screen and (max-width: 376px) {
-    padding: 15px;
+  @media (min-width: 62em) {
+    padding: ${props => (!props.isOpenFilters ? "20px 35px" : "20px 48px")};
   }
 
-  @media screen and (max-width: 768px) {
-    padding: 15px;
-  }
-
-  @media screen and (max-width: 1368px) {
+  @media (min-width: 86em) {
     padding: ${props => (!props.isOpenFilters ? "20px 35px" : "20px 48px")};
   }
 `;

@@ -9,27 +9,27 @@ import TopPreview from "./TopPreview";
 import posed from "react-pose";
 import BackButton from "../BackButton/BackButton";
 
-const ResponsiveContainer= styled(Layout)`
-    margin-left: -100%;
-    margin-right: 100%;
-    ${mixins.media.desktop`
+const ResponsiveContainer = styled(Layout)`
+  margin-left: -100%;
+  margin-right: 100%;
+  ${mixins.media.desktop`
     margin-left:0;
-    margin-right:0;`}
-`
+    margin-right:0;`};
+`;
 
 const PreviewContainer = posed(ResponsiveContainer)({
   openPreview: {
     x: "0%",
     staggerChildren: 50,
     transition: {
-      duration:200,
+      duration: 200,
       ease: "circOut" //circOut
     }
   },
   closedPreview: {
     x: "100%",
     transition: {
-      duration:200,
+      duration: 200,
       ease: "circOut" //circOut
     }
   }
@@ -42,6 +42,15 @@ const SLayout = styled(Layout)`
       : "1px solid transparent"};
   border-left: none;
   border-right: none;
+  padding: 0 10px;
+  
+  @media (min-width: 62em) {
+    padding: 0 60px;
+  }
+
+  @media (min-width: 86em) {
+    padding: 0 75px;
+  }
 `;
 
 const NavLinks = styled(Layout)`
@@ -53,19 +62,43 @@ const NavLinks = styled(Layout)`
   color: ${props => (props.theme ? props.theme.preview.nav.color : "black")};
   font-family: ${props =>
     props.theme ? props.theme.preview.nav.family : "Roboto Mono"};
+  zoom: 100%;
 
   button {
     margin-right: 10px;
   }
+
+  @media (min-width: 62em) {
+    zoom: 80%;
+  }
+
+  @media (min-width: 86em) {
+    zoom: 100%;
+  }
 `;
 
-SButtonIcon = styled.span`
+const SPreviewContainer = styled(Container)`
+  zoom: 100%;
+  padding: 25px 10px;
+ 
+  @media (min-width: 62em) {
+    zoom: 80%;
+    padding: 25px 75px;
+  }
+
+  @media (min-width: 86em) {
+    zoom: 100%;
+    padding: 25px 75px;
+  }
+`;
+
+const SButtonIcon = styled.span`
   i {
     padding-right: 5px;
   }
 `;
 
-SNavLinkItem = styled.a`
+const SNavLinkItem = styled.a`
   cursor: pointer;
 `;
 
@@ -132,16 +165,17 @@ export default class Preview extends React.Component {
           ))
       : [];
     return (
-
       <PreviewContainer
         customTemplateRows={"70px 190px 1fr"}
         mdCustomTemplateRows={"190px 70px 1fr"}
         layoutAreas={{
           xs: `'options' 'picture' 'content'`,
-          md: `'picture' 'options' 'content'`,
+          md: `'picture' 'options' 'content'`
         }}
-        fullY background={"white"}
-        pose={isOpen ? "openPreview" : "closedPreview"}>
+        fullY
+        background={"white"}
+        pose={isOpen ? "openPreview" : "closedPreview"}
+      >
         <TopPreview
           handleUpload={this.handleUploadChange}
           image={this.state.image}
@@ -152,8 +186,6 @@ export default class Preview extends React.Component {
         />
         <SLayout
           gridArea="options"
-          paddingX={"10px"}
-          mdPaddingX={"100px"}
           customTemplateColumns={
             this.props.showAvatar ? "140px 1fr auto" : "1fr auto"
           }
@@ -162,16 +194,18 @@ export default class Preview extends React.Component {
           <Container height="100%" hide mdShow>
             <NavLinks
               style={{
-                height:"100%",
+                height: "100%",
                 display: "flex",
                 flexDirection: "row"
               }}
             >
-                {navlinks}
+              {navlinks}
             </NavLinks>
           </Container>
-          <Container  mdHide>
-              <BackButton onClick={() => this.props.onClose && this.props.onClose()}/>
+          <Container mdHide>
+            <BackButton
+              onClick={() => this.props.onClose && this.props.onClose()}
+            />
           </Container>
           <NavLinks
             style={{
@@ -183,7 +217,10 @@ export default class Preview extends React.Component {
             {options}
           </NavLinks>
         </SLayout>
-        <Container gridArea="content" fullY paddingX={"100px"} paddingY={"25px"}>
+        <SPreviewContainer
+          gridArea="content"
+          fullY
+        >
           <Scrollbars
             universal
             autoHide
@@ -192,7 +229,7 @@ export default class Preview extends React.Component {
           >
             {this.props.children}
           </Scrollbars>
-        </Container>
+        </SPreviewContainer>
       </PreviewContainer>
     );
   }

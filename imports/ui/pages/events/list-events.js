@@ -180,7 +180,6 @@ class ListEvents extends Component {
                       <Preview
                         onClose={() => this.onChangeSelection(null, null)} key={"rightSide"}
                         isOpen={!!this.state.selectedItem}
-                        navlinks={["Details"]}
                         navClicked={index => console.log(index)}
                         navOptions={[
                           {
@@ -200,6 +199,7 @@ class ListEvents extends Component {
                           },
                           {
                             text: "Edit",
+                            icon: "edit",
                             checkVisibility: () => {
                               const element = this.state.selectedItem;
                               return (

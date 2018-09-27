@@ -1,9 +1,12 @@
 import React from "react";
-import { Layout, Container } from "btech-layout";
-import styled from "styled-components";
+import { Layout } from "btech-layout";
 import { GeoInputLocation } from "btech-location";
-import FilterContainer from "../../../components/FiltersContainer/FiltersContainer";
-import BigTag from "./../../../components/BigTag/BigTag";
+import {
+  FiltersContainer,
+  BigTag,
+  Separator,
+  FilterItem
+} from "../../../components";
 import {
   SalaryRange,
   CheckBoxList,
@@ -18,18 +21,6 @@ import { cleanFilters, setFilters } from "../../../actions/SideBarActions";
 import { connect } from "react-redux";
 import { JobCounts } from "../../../apollo-client/job";
 import { Query } from "react-apollo";
-
-const Filter = styled(Container)`
-  padding: 20px 10px;
-`;
-
-const Separator = styled.div`
-  height: 1px;
-  width: 100%;
-  opacity: 0.5;
-  background-color: ${props =>
-    props.theme ? props.theme.filter.separatorColor : "black"};
-`;
 
 class JobsFilters extends React.Component {
   constructor(props) {
@@ -105,10 +96,10 @@ class JobsFilters extends React.Component {
 
   render() {
     return (
-      <FilterContainer
+      <FiltersContainer
         onClose={() => this.props.onClose && this.props.onClose()}
       >
-        <Filter>
+        <FilterItem>
           <GeoInputLocation
             name={"location"}
             model={this.state}
@@ -133,9 +124,9 @@ class JobsFilters extends React.Component {
                 ))
               : null}
           </Layout>
-        </Filter>
+        </FilterItem>
         <Separator />
-        <Filter>
+        <FilterItem>
           <SalaryRange
             labelText={"Salary Range"}
             placeholder={"000"}
@@ -159,9 +150,9 @@ class JobsFilters extends React.Component {
               );
             }}
           />
-        </Filter>
+        </FilterItem>
         <Separator />
-        <Filter>
+        <FilterItem>
           <Query query={JobCounts} variables={{ field: "jobType" }}>
             {({ loading, error, data }) => {
               if (loading) return <div>Fetching</div>;
@@ -180,9 +171,9 @@ class JobsFilters extends React.Component {
               );
             }}
           </Query>
-        </Filter>
+        </FilterItem>
         <Separator />
-        <Filter>
+        <FilterItem>
           <Query query={JobCounts} variables={{ field: "jobExperience" }}>
             {({ loading, error, data }) => {
               if (loading) return <div>Fetching</div>;
@@ -203,9 +194,9 @@ class JobsFilters extends React.Component {
               );
             }}
           </Query>
-        </Filter>
+        </FilterItem>
         <Separator />
-        <Filter>
+        <FilterItem>
           <InputAutoComplete
             placeholderText={"Industry | Sector"}
             name={"industry"}
@@ -229,9 +220,9 @@ class JobsFilters extends React.Component {
             {/*connected={true}*/}
             {/*/>*/}
           </Layout>
-        </Filter>
+        </FilterItem>
         <Separator />
-        <Filter>
+        <FilterItem>
           <CheckBoxList
             placeholderText={"My Jobs"}
             options={[
@@ -243,9 +234,9 @@ class JobsFilters extends React.Component {
               { label: "Interested Employers", active: false, number: 3 }
             ]}
           />
-        </Filter>
+        </FilterItem>
         <Separator />
-      </FilterContainer>
+      </FiltersContainer>
     );
   }
 }

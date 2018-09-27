@@ -208,11 +208,11 @@ class ListInnovators extends Component {
                   isOpen={!!this.state.selectedItem}
                   onClose={() => this.onChangeSelection(null, null)}
                   key={"rightSide"}
-                  navlinks={["Details"]}
                   navClicked={index => console.log(index)}
                   navOptions={[
                     {
                       text: "Edit",
+                      icon: "edit",
                       checkVisibility: () => {
                         const element = this.state.selectedItem;
                         return (

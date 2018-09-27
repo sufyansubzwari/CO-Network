@@ -38,6 +38,18 @@ const SLessZoomContainer = styled(Container)`
   position: absolute;
 `;
 
+const SZoomContainer = styled(Container)`
+  zoom: 100%;
+
+  @media (min-width: 62em) {
+    zoom: 80%;
+  }
+
+  @media (min-width: 86em) {
+    zoom: 100%;
+  }
+`;
+
 /**
  * @module Data
  * @category Component
@@ -46,7 +58,7 @@ const SLessZoomContainer = styled(Container)`
 const ZoomButtons = function(props) {
   const size = { width: 33, height: 39 };
   return (
-    <Container>
+    <SZoomContainer>
       <Layout colGap={"15px"} customTemplateColumns={"auto 1fr"}>
         <Container relative minW={"35px"}>
           <SPlusZoomContainer>
@@ -68,7 +80,7 @@ const ZoomButtons = function(props) {
           Click on bubbles to see the action
         </STextContainer>
       </Layout>
-    </Container>
+    </SZoomContainer>
   );
 };
 

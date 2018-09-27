@@ -18,6 +18,15 @@ const CLusterIconContainer = styled.div`
   padding: 3px;
   background-origin: content-box;
   background-repeat: no-repeat;
+  zoom: 100%;
+
+  @media (min-width: 62em) {
+    zoom: 80%;
+  }
+
+  @media (min-width: 86em) {
+    zoom: 100%;
+  }
 `;
 /**
  * @module Data
