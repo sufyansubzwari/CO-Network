@@ -111,8 +111,10 @@ class SignUp extends React.Component {
   handleFinishSuccess(result) {
     const user = this.props.curUser;
     user.profile.isSignUp = true;
-    this.props.setUser(user);
-    this.props.history.push(`/profile`);
+    if (user) {
+      this.props.setUser(user);
+      this.props.history.push(`/profile`);
+    }
   }
 
   render() {
