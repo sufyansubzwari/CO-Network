@@ -56,12 +56,6 @@ const ActiveLinkLink = styled.div`
   background: ${props =>
     `${StyleUtil.getThemeValue(props, "theme.color.primary")};`}
   height:65px;
-  //@media (min-width: 62em){
-  //   height:56px;
-  //}
-  //@media (min-width: 85.375em){
-  //  height:65px;
-  //}
 `;
 const ActiveLink = posed(ActiveLinkLink)(poseOptions);
 
@@ -80,8 +74,6 @@ const XsTextDescription = styled.div`
 const NavItem = posed.div({
   show: { opacity: 1, y: "0%" },
   hide: { opacity: 0, y: "30%" }
-  // open: { opacity: 1, y: "0%"},
-  // close: { opacity: 0, y: "50%" }
 });
 
 const HNavbar = function(props) {

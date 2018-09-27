@@ -1,5 +1,5 @@
-mutation CreateColloquium($entity: EventsInput!) {
-  event(events: $entity) {
+mutation CreateColloquium($entity: ColloquiumsInput!) {
+  colloquium(colloquium: $entity) {
     _id
     title
     description
@@ -19,13 +19,13 @@ mutation CreateColloquium($entity: EventsInput!) {
 }
 
 mutation DeleteColloquium($id: String!) {
-  deleteEvent(_id: $id) {
+  deleteColloquium(_id: $id) {
     _id
   }
 }
 
-mutation UpdateImageColloquium($id: String!, $image: String!) {
-  updateEventImage(_id: $id, image: $image) {
+mutation UpdateColloquiumImage($id: String!, $image: String!) {
+  updateColloquiumImage(_id: $id, image: $image) {
     _id
   }
 }

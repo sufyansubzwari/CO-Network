@@ -1,7 +1,7 @@
-query GetColloquium($limit: Int, $filter: String, $events: EventsInputSearch) {
-  events(limit: $limit, filter: $filter, events: $events) {
+query GetColloquiums($limit: Int, $filter: String, $events: ColloquiumSearchInput) {
+  colloquiums(limit: $limit, filter: $filter, colloquiums: $events) {
     _id
-    title
+    name
     description
     image
     owner {

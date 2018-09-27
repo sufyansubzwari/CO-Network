@@ -19,7 +19,6 @@ event.number = {
   primary: true,
   size: { width: 22, height: 24 }
 };
-
 let jobs = Object.assign({}, base, {
   link: "/jobs",
   label: "Jobs",
@@ -40,19 +39,16 @@ innovators.number = {
   primary: true,
   size: { width: 22, height: 24 }
 };
-
-let data = Object.assign({}, base, {
+let dataStory = Object.assign({}, base, {
   link: "/data-story",
   label: "Data Story",
   icon: { size: 30, src: "/images/nav/Colloquium.svg" }
 });
-
 let colloquium = Object.assign({}, base, {
-  link: "/colloquium",
+  link: "/colloquiums",
   label: "Colloquium",
   icon: { size: 34, src: "/images/nav/Colloquium.svg" }
 });
-
 colloquium.number = {
   value: 0,
   primary: true,

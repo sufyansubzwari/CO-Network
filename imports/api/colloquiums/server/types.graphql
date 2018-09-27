@@ -1,0 +1,43 @@
+# types for Colloquiums namespace
+
+type Colloquiums {
+    _id: ID
+    owner: User!
+    name: String
+    entity: String
+    views: Int
+    description: String
+    tags: [Tags]!
+    image: String
+    place: Places
+    competence: [ObjectType]
+}
+
+type Query {
+    colloquiums(filter: String, limit: Int, colloquiums: ColloquiumSearchInput): [Colloquiums]
+    colloquium(_id: String): Colloquiums
+}
+
+input ColloquiumSearchInput{
+    name: TableStringFilterInput
+    description: TableStringFilterInput
+    tags: TableStringFilterInput
+    location: [LocationInput]
+}
+
+input ColloquiumsInput {
+    _id: ID
+    name: String
+    owner: String!
+    description: String
+    competence: [TagsInput]
+    image: String
+    tags: [TagsInput]
+    place: PlacesInput
+}
+
+type Mutation {
+    colloquium(colloquium: ColloquiumsInput!): Colloquiums
+    updateColloquiumImage(_id: String!, image: String): Colloquiums
+    deleteColloquium(_id: String!): Colloquiums
+}

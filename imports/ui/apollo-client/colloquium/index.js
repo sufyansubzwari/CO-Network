@@ -1,2 +1,6 @@
-export { default as GetColloquium } from "./queries.graphql";
-export { CreateColloquium, DeleteColloquium, UpdateImageColloquium } from "./mutations.graphql";
+export { default as GetColloquiums } from "./queries.graphql";
+export {
+  CreateColloquium,
+  DeleteColloquium,
+  UpdateColloquiumImage
+} from "./mutations.graphql";
