@@ -31,8 +31,8 @@ class PostEvent extends Component {
           }
         },
         attenders: {
-          min: "",
-          max: ""
+          min: null,
+          max: null
         },
         sponsors: [],
         tickets: []
@@ -61,6 +61,7 @@ class PostEvent extends Component {
       }
     });
   }
+
 
   onPostAction(createEvent, query) {
     let queryEvent = Object.assign({}, query);
