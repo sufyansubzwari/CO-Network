@@ -85,6 +85,7 @@ class EventStep3 extends Component {
         </Container>
         <Container>
           <GeoInputLocation
+            required={true}
             name={"location"}
             model={this.state.event.place}
             placeholder={"Location"}
@@ -93,6 +94,7 @@ class EventStep3 extends Component {
               this.notifyParentLocation(model, name, value)
             }
           />
+
         </Container>
         <Container>
           <Layout

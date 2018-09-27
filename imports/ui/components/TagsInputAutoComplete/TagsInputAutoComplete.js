@@ -234,6 +234,7 @@ export default class TagsInputAutoComplete extends Component {
               ref={this.InputRef}
               type={"text"}
               onFocus={this.onFocus}
+              placeholder={this.props.inputPlaceholder}
               autoFocus={this.props.autoFocus}
               onChange={this.handleChange}
               disabled={this.props.disabled}
@@ -265,6 +266,7 @@ TagsInputAutoComplete.defaultProps = {
   fixLabel: false
 };
 
+
 TagsInputAutoComplete.propTypes = {
   options: PropsTypes.array,
   fixLabel: PropsTypes.bool,
@@ -278,5 +280,6 @@ TagsInputAutoComplete.propTypes = {
   keepText: PropsTypes.bool,
   fontSize: PropsTypes.string,
   fontFamily: PropsTypes.string,
-  fontWeight: PropsTypes.string
+  fontWeight: PropsTypes.string,
+  inputPlaceholder: PropsTypes.string,
 };

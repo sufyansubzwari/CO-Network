@@ -12,6 +12,7 @@ import {
 import { EVENT_TYPE } from "../../../../constants";
 import { Query } from "react-apollo";
 import { GetTags as tags } from "../../../../apollo-client/tag";
+import MLTagsInput from '../../../../components/TagsInputAutoComplete/TagsInputAutoComplete';
 
 /**
  * @module Event
@@ -102,6 +103,29 @@ class EventStep1 extends Component {
     );
   }
 
+  tagsSuggested(tags) {
+    let sug = JSON.parse(JSON.stringify(tags));
+    return sug
+      .filter(tag =>
+        !this.state.event ||
+        !this.state.event.others ||
+        this.state.event.others.length === 0 ||
+        this.state.event.others.findIndex(
+          item => item._id === tag._id
+        ) === -1)
+      .sort((a, b) => b.used - a.used)
+      .map(tag => ({
+        ...tag,
+        active:
+        this.state.event &&
+        this.state.event.others &&
+        this.state.event.others.findIndex(
+          item => item._id === tag._id
+        ) > -1
+      }))
+      .slice(0, 5);
+  }
+
   render() {
     const { category } = this.state;
     return (
@@ -151,36 +175,48 @@ class EventStep1 extends Component {
         <Container>
           <Layout rowGap={"10px"}>
             <Container>
-              <Query query={tags} variables={{ tags: { type: "EVENT" } }}>
-                {({ loading, error, data }) => {
+              <Query query={tags} variables={{tags: {type: "EVENT"}}}>
+                {({loading, error, data}) => {
                   if (loading) return <div>Fetching</div>;
                   if (error) return <div>Error</div>;
                   return (
-                    <InputAutoComplete
-                      placeholderText={"Other"}
-                      getAddedOptions={this.onAddTags.bind(this)}
-                      getNewAddedOptions={this.onAddTags.bind(this)}
-                      options={data.tags}
-                      model={{ others: [] }}
-                      name={"others"}
-                    />
+                    <div>
+
+                      <MLTagsInput
+                        inputPlaceholder={"Discover..."}
+                        placeholderText={"Other"}
+                        getAddedOptions={this.onAddTags.bind(this)}
+                        getNewAddedOptions={this.onAddTags.bind(this)}
+                        onCloseTags={(e, tag, index) => this.onCloseTags(e, tag, index)}
+                        options={data.tags}
+                        tags={this.state.event && this.state.event.others &&
+                        this.state.event.others.length > 0
+                          ? this.state.event.others.map(item => ({
+                            active: true,
+                            ...item
+                          }))
+                          : []}
+                      />
+                      <Container mt={"10px"}>
+                        <TagList
+                          tags={this.tagsSuggested(data.tags)}
+                          onSelect={(event, tag, index) => {
+                            if (!tag.active) {
+                              delete tag.active;
+                              this.onAddTags(tag);
+                            } else {
+                              const pos = this.state.event.others.findIndex(
+                                item => item._id === tag._id
+                              );
+                              this.onCloseTags(event, tag, pos);
+                            }
+                          }}
+                        />
+                      </Container>
+                    </div>
                   );
                 }}
               </Query>
-            </Container>
-            <Container>
-              <TagList
-                tags={
-                  this.state.event.others && this.state.event.others.length > 0
-                    ? this.state.event.others.map(item => ({
-                        active: true,
-                        ...item
-                      }))
-                    : []
-                }
-                closeable={true}
-                onClose={(e, tag, index) => this.onCloseTags(e, tag, index)}
-              />
             </Container>
           </Layout>
         </Container>
