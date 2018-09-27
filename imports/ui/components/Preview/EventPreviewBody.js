@@ -97,20 +97,18 @@ class EventPreviewBody extends React.Component {
             />
           ) : null}
           {(this.state.event.attenders &&
-            this.state.event.attenders.attenders &&
-            this.state.event.attenders.attenders.min !== null) ||
+            this.state.event.attenders.min !== null) ||
           (this.state.event.attenders &&
-            this.state.event.attenders.attenders &&
-            this.state.event.attenders.attenders.max !== null) ? (
+            this.state.event.attenders.max !== null) ? (
             <Text
               header={"Expected Attenders"}
               text={`${
-                this.state.event.attenders.attenders.min !== null
-                  ? this.state.event.attenders.attenders.min
+                this.state.event.attenders.min !== null
+                  ? this.state.event.attenders.min
                   : null
                 } - ${
-                this.state.event.attenders.attenders.max !== null
-                  ? this.state.event.attenders.attenders.max
+                this.state.event.attenders.max !== null
+                  ? this.state.event.attenders.max
                   : null
                 }`}
             />
