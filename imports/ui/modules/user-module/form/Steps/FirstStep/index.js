@@ -138,6 +138,7 @@ class FirstStep extends React.Component {
             model={this.state.user}
             placeholderText={"First Name"}
             getValue={this.notifyParent.bind(this)}
+            required
           />
           <Input
             name={"lastName"}
