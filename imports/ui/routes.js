@@ -22,6 +22,10 @@ import ApplyJobs from './pages/jobs/apply-jobs';
 // innovators
 import ListInnovators from "./pages/innovators/list-innovators";
 import PostOrganization from "./pages/innovators/post-innovators";
+// colloquiums
+// import ListInnovators from "./pages/innovators/list-innovators";
+import ListColloquiums from "./pages/colloquiums/list-colloquiums";
+import PostColloquiums from "./pages/colloquiums/post-colloquiums";
 
 //------------------------------------------------------------------------------
 // COMPONENT:
@@ -99,6 +103,20 @@ const Routes = props => (
         name="Post a Organization"
         path="/post-organization"
         component={PostOrganization}
+        {...props}
+      />
+      <RouteWithProps
+        exact
+        name="Colloquiums"
+        path="/colloquiums"
+        component={ListColloquiums}
+        {...props}
+      />
+      <RouteWithProps
+        exact
+        name="Colloquiums"
+        path="/post-colloquium"
+        component={PostColloquiums}
         {...props}
       />
       <RouteWithProps name="notFound" component={NotFoundPage} {...props} />

@@ -1,0 +1,21 @@
+mutation CreateColloquium($entity: ColloquiumsInput!) {
+  colloquium(colloquium: $entity) {
+    _id
+    owner {
+      _id
+    }
+    views
+  }
+}
+
+mutation DeleteColloquium($id: String!) {
+  deleteColloquium(_id: $id) {
+    _id
+  }
+}
+
+mutation UpdateColloquiumImage($id: String!, $image: String!) {
+  updateColloquiumImage(_id: $id, image: $image) {
+    _id
+  }
+}

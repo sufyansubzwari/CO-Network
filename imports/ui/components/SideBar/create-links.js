@@ -18,10 +18,10 @@ export const CREATE_LINKS = [
     name: "Organization",
     description: "Consec dipinsing",
     link: "/post-organization"
+  },
+  {
+    name: "Colloquium",
+    // description: "Consec tetur",
+    link: "/post-colloquium"
   }
-  // {
-  //   name: "Colloquium",
-  //   // description: "Consec tetur",
-  //   link: "/post-colloquium"
-  // }
 ];

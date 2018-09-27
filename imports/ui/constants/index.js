@@ -41,6 +41,7 @@ import {
   JOB_TYPE_NUMBER,
   TAG_LEVEL,
   YEARS_EXPERIENCE
+  COLLOQUIUM_LEVEL
 } from "./others.constant";
 
 import {
@@ -97,4 +98,5 @@ export {
   SIGNUP_TEXT_3,
   TAG_LEVEL,
   YEARS_EXPERIENCE
+  COLLOQUIUM_LEVEL
 };

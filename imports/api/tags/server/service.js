@@ -20,6 +20,7 @@ class TagsService {
     } else {
       let id = data._id || tags._id;
       data._id ? delete data._id : null;
+      data.used = !tags.used ? 1 : tags.used;
       await Tags.collection.update(id, { $set: data });
       return Tags.collection.findOne(id);
     }
@@ -67,7 +68,10 @@ class TagsService {
       };
     });
     return Promise.all(tagsInserted).then(completed => {
-      UpdateCounters(completed.map(item => item.tag), entityTagList.map(item => item.tag));
+      UpdateCounters(
+        completed.map(item => item.tag),
+        entityTagList.map(item => item.tag)
+      );
       return completed.map(item => ({
         tag: item.tag._id,
         level: item.level || "",
@@ -91,6 +95,9 @@ const UpdateCounters = (tagList, entityTagList) => {
     Tags.collection.update({ _id: tag._id }, { $inc: { used: 1 } });
   });
   decrementCounts.forEach(id => {
-    Tags.collection.update({ _id: id, used : {$gt : 0} }, { $inc: { used: -1 } });
+    Tags.collection.update(
+      { _id: id, used: { $gt: 0 } },
+      { $inc: { used: -1 } }
+    );
   });
 };
