@@ -25,14 +25,14 @@ class UserPreviewBody extends React.Component {
       this.state.user.knowledge &&
       this.state.user.knowledge.languages &&
       this.state.user.knowledge.languages.map(lang => ({
-        ...lang,
+        ...lang.tag,
         active: true
       }));
     let curious =
       this.state.user.knowledge &&
       this.state.user.knowledge.curiosity &&
       this.state.user.knowledge.curiosity.map(cur => ({
-        ...cur,
+        ...cur.tag,
         active: true
       }));
     let industry =
@@ -168,7 +168,7 @@ class UserPreviewBody extends React.Component {
               ) : null}
             </Layout>
             {curious && curious.length ? (
-              <TagsAdd header={"Seeking"} tags={curious} />
+              <TagsAdd header={"Curiosity"} tags={curious} />
             ) : null}
           </Container>
         ) : null}
@@ -213,18 +213,18 @@ class UserPreviewBody extends React.Component {
           ) : null}
           {(this.state.user.professional &&
             this.state.user.professional.salaryRange &&
-            this.state.user.professional.salaryRange.min !== "") ||
+            this.state.user.professional.salaryRange.min !== null) ||
           (this.state.user.professional &&
             this.state.user.professional.salaryRange &&
-            this.state.user.professional.salaryRange.max !== "") ? (
+            this.state.user.professional.salaryRange.max !== null) ? (
             <Text
               header={"Salary Range"}
               text={`${
-                this.state.user.professional.salaryRange.min !== ""
+                this.state.user.professional.salaryRange.min !== null
                   ? this.state.user.professional.salaryRange.min
                   : null
               } - ${
-                this.state.user.professional.salaryRange.max !== ""
+                this.state.user.professional.salaryRange.max !== null
                   ? this.state.user.professional.salaryRange.max
                   : null
               }`}

@@ -39,8 +39,8 @@ class UserProfile extends Component {
       },
       professional: {
         salaryRange: {
-          min: "",
-          max: ""
+          min: null,
+          max: null
         },
         jobType: [],
         industry: []

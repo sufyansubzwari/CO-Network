@@ -126,7 +126,7 @@ class ThirdStep extends React.Component {
               if (loading) return <div>Fetching</div>;
               if (error) return <div>Error</div>;
               return (
-                <div>
+                <Container mt={'25px'}>
                   <MLTagsInput
                     placeholderText={"Languages & Libraries"}
                     getAddedOptions={this.onAddTags.bind(
@@ -159,7 +159,7 @@ class ThirdStep extends React.Component {
                       }}
                     />
                   </Container>
-                </div>
+                </Container>
               );
             }}
           </Query>
