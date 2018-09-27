@@ -182,7 +182,7 @@ export default class TagsInputAutoComplete extends Component {
         </SLabel>
         <InputGroup style={{height: 'auto', padding: '4px 8px'}}>
           <InputGroupAddon addonType="prepend">
-            <TagList style={{marginTop: '5px'}} closeable={true} tags={this.state.tags} onClose={(e,tag,index) => this.props.onCloseTags && this.props.onCloseTags(e,tag,index)}/>
+            <TagList useIcon={this.props.useIcon} onCategoryChange={this.props.onCategoryChange} style={{marginTop: '5px'}} levelOptions={this.props.levelOptions} closeable={true} tags={this.state.tags} onClose={(e,tag,index) => this.props.onCloseTags && this.props.onCloseTags(e,tag,index)}/>
           </InputGroupAddon>
           <InputGroupButtonDropdown
             addonType="append"
@@ -282,4 +282,6 @@ TagsInputAutoComplete.propTypes = {
   fontFamily: PropsTypes.string,
   fontWeight: PropsTypes.string,
   inputPlaceholder: PropsTypes.string,
+  onCategoryChange: PropsTypes.func,
+  levelOptions: PropsTypes.array
 };

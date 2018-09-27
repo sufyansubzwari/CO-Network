@@ -39,8 +39,8 @@ class UserProfile extends Component {
       },
       professional: {
         salaryRange: {
-          min: "",
-          max: ""
+          min: null,
+          max: null
         },
         jobType: [],
         industry: []
@@ -132,7 +132,7 @@ class UserProfile extends Component {
           <Mutation
             mutation={CreateUser}
             onCompleted={() =>
-              this.props.history.push("/profile", { userCreate: true })
+              this.props.history.push("/", { userCreate: true })
             }
             onError={error => console.log("Error: ", error)}
           >

@@ -18,6 +18,7 @@ class AchievementsService {
     if (_.isUndefined(data._id)) {
       if (data.category)
         data.category = await Tags.service.normalizeTags(data.category);
+      console.log(data);
       const id = Achievements.collection.insert(data);
       return Achievements.collection.findOne(id);
     } else {

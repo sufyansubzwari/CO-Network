@@ -266,6 +266,14 @@ export const JOB_TYPE = [
   { value: "Volunteer", label: "Volunteer" }
 ];
 
+export const YEARS_EXPERIENCE = [
+    {value: '1', 'label': '1'},
+    {value: '2', 'label': '2'},
+    {value: '3', 'label': '3'},
+    {value: '5+', 'label': '5+'},
+    {value: '10+', 'label': '10+'},
+]
+
 export const EVENT_CATEGORIES = [
   {
     label: "Autonomous Systems",
@@ -979,9 +987,9 @@ export const LOOKING_FOR_DEFAULT = [
 ];
 
 export const TAG_LEVEL = [
-  { value: "expert", label: "Expert", color: "#FF1493" },
-  { value: "experienced", label: "Experienced", color: "#464646" },
-  { value: "entryLevel", label: "Entry Level", color: "#8e8a8a" }
+  { value: "expert", label: "Expert", levelColor: "#FF1493", icon: 'star' },
+  { value: "experienced", label: "Experienced", levelColor: "#464646", icon: 'star' },
+  { value: "entryLevel", label: "Entry Level", levelColor: "#8e8a8a", icon: 'star' }
 ];
 
 export const POSITION_TAGS = [

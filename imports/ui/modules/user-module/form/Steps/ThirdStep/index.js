@@ -126,7 +126,7 @@ class ThirdStep extends React.Component {
               if (loading) return <div>Fetching</div>;
               if (error) return <div>Error</div>;
               return (
-                <div>
+                <Container mt={'25px'}>
                   <MLTagsInput
                     placeholderText={"Languages & Libraries"}
                     getAddedOptions={this.onAddTags.bind(
@@ -142,6 +142,33 @@ class ThirdStep extends React.Component {
                     options={data.tags}
                     model={{ others: [] }}
                     name={"others"}
+                    useIcon={true}
+                    tags={
+                        this.state.user.knowledge && this.state.user.knowledge.languages
+                            ? this.state.user.knowledge.languages.map(item => ({
+                                active: true,
+                                useIcon: true,
+                                levelColor: item.levelColor || "",
+                                icon: item.icon || "",
+                                level: item.level || "",
+                                ...item.tag,
+                                showOptions: !item.levelColor
+                            }))
+                            : []
+                    }
+                    levelOptions={TAG_LEVEL}
+                    onCategoryChange={(index, value, color, icon) =>
+                        this.handleCategoryChange(
+                            index,
+                            value,
+                            color,
+                            icon,
+                            "languages"
+                        )
+                    }
+                    onCloseTags={(e, tag, index) =>
+                        this.onCloseTags(e, tag, index, "languages")
+                    }
                   />
                   <Container mt={"10px"}>
                     <TagList
@@ -159,41 +186,10 @@ class ThirdStep extends React.Component {
                       }}
                     />
                   </Container>
-                </div>
+                </Container>
               );
             }}
           </Query>
-          <Container mt={"10px"}>
-            <TagList
-              tags={
-                this.state.user.knowledge && this.state.user.knowledge.languages
-                  ? this.state.user.knowledge.languages.map(item => ({
-                      active: true,
-                      useIcon: true,
-                      levelColor: item.levelColor || "",
-                      icon: item.icon || "",
-                      level: item.level || "",
-                      ...item.tag,
-                      showOptions: !item.levelColor
-                    }))
-                  : []
-              }
-              closeable={true}
-              onClose={(e, tag, index) =>
-                this.onCloseTags(e, tag, index, "languages")
-              }
-              levelOptions={TAG_LEVEL}
-              onCategoryChange={(index, value, color, icon) =>
-                this.handleCategoryChange(
-                  index,
-                  value,
-                  color,
-                  icon,
-                  "languages"
-                )
-              }
-            />
-          </Container>
         </Container>
         <Container>
           <Query query={GetTags} variables={{ tags: { type: "Curiosity" } }}>
@@ -201,75 +197,68 @@ class ThirdStep extends React.Component {
               if (loading) return <div>Fetching</div>;
               if (error) return <div>Error</div>;
               return (
-                <div>
-                  <InputAutoComplete
-                    placeholderText={"Curiosity & Experience"}
-                    getAddedOptions={this.onAddTags.bind(
-                      this,
-                      "curiosity",
-                      "Curiosity"
-                    )}
-                    getNewAddedOptions={this.onAddTags.bind(
-                      this,
-                      "curiosity",
-                      "Curiosity"
-                    )}
-                    options={data.tags}
-                    model={{ others: [] }}
-                    name={"others"}
-                  />
-                  <Container mt={"10px"}>
-                    <TagList
-                      tags={this.tagsSuggested(data.tags, "curiosity")}
-                      onSelect={(event, tag, index) => {
-                        if (!tag.active) {
-                          delete tag.active;
-                          this.onAddTags("curiosity", "Curiosity", tag);
-                        } else {
-                          const pos = this.state.user.knowledge.curiosity.findIndex(
-                            item => item.tag._id === tag._id
-                          );
-                          this.onCloseTags(event, tag, pos, "curiosity");
-                        }
-                      }}
-                    />
+                  <Container mt={'25px'}>
+                      <MLTagsInput
+                          placeholderText={"Curiosity & Experience"}
+                          getAddedOptions={this.onAddTags.bind(
+                              this,
+                              "curiosity",
+                              "Curiosity"
+                          )}
+                          getNewAddedOptions={this.onAddTags.bind(
+                              this,
+                              "curiosity",
+                              "Curiosity"
+                          )}
+                          options={data.tags}
+                          model={{ others: [] }}
+                          name={"others"}
+                          tags={
+                              this.state.user.knowledge && this.state.user.knowledge.curiosity
+                                  ? this.state.user.knowledge.curiosity.map(item => ({
+                                      active: true,
+                                      useIcon: true,
+                                      levelColor: item.levelColor || "",
+                                      icon: item.icon || "",
+                                      level: item.level || "",
+                                      ...item.tag,
+                                      showOptions: !item.levelColor
+                                  }))
+                                  : []
+                          }
+                          onCategoryChange={(index, value, color, icon) =>
+                              this.handleCategoryChange(
+                                  index,
+                                  value,
+                                  color,
+                                  icon,
+                                  "curiosity"
+                              )
+                          }
+                          onCloseTags={(e, tag, index) =>
+                              this.onCloseTags(e, tag, index, "curiosity")
+                          }
+                      />
+                      <Container mt={"10px"}>
+                          <TagList
+                              tags={this.tagsSuggested(data.tags, "curiosity")}
+                              onSelect={(event, tag, index) => {
+                                  if (!tag.active) {
+                                      delete tag.active;
+                                      this.onAddTags("curiosity", "Curiosity", tag);
+                                  } else {
+                                      const pos = this.state.user.knowledge.curiosity.findIndex(
+                                          item => item.tag._id === tag._id
+                                      );
+                                      this.onCloseTags(event, tag, pos, "curiosity");
+                                  }
+                              }}
+                          />
+                      </Container>
                   </Container>
-                </div>
               );
             }}
           </Query>
-          <Container mt={"10px"}>
-            <TagList
-              tags={
-                this.state.user.knowledge.curiosity &&
-                this.state.user.knowledge.curiosity.length > 0
-                  ? this.state.user.knowledge.curiosity.map(item => ({
-                      active: true,
-                      useIcon: true,
-                      levelColor: item.levelColor || "",
-                      icon: item.icon || "",
-                      level: item.level || "",
-                      ...item.tag,
-                      showOptions: !item.levelColor
-                    }))
-                  : []
-              }
-              closeable={true}
-              onClose={(e, tag, index) =>
-                this.onCloseTags(e, tag, index, "curiosity")
-              }
-              levelOptions={TAG_LEVEL}
-              onCategoryChange={(index, value, color, icon) =>
-                this.handleCategoryChange(
-                  index,
-                  value,
-                  color,
-                  icon,
-                  "curiosity"
-                )
-              }
-            />
-          </Container>
         </Container>
         <CheckBoxList
           placeholderText={"Looking for"}
