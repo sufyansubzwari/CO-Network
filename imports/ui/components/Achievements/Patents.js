@@ -4,6 +4,8 @@ import { Button, Input, Select, InputAutoComplete, TagList } from "btech-base-fo
 import MaterialIcon from "react-material-iconic-font";
 import LineSeparator from "./LineSeparator";
 import {EXPERIENCE_LEVEL} from './constants';
+import MLTagsInput from "../../components/TagsInputAutoComplete/TagsInputAutoComplete"
+
 
 export default Patents = function (props) {
 
@@ -30,22 +32,20 @@ export default Patents = function (props) {
                     <Input placeholderText={"Patent Name"} model={props.model} name={'name'}  />
                     <div />
                 </Layout>
-                <Container>
-                    <InputAutoComplete
+                <Container mt={'25px'}>
+                    <MLTagsInput
                         placeholderText={"Category"}
                         getAddedOptions={props.onAddTags}
                         getNewAddedOptions={props.onAddTags}
                         options={props.options}
-                        model={{others: []}}
-                        name={'others'}
+                        model={{ others: [] }}
+                        name={"others"}
+                        tags={props.model.category && props.model.category.length > 0 ? props.model.category.map(item => ({active: true, ...item})) : []
+                        }
+                        onCloseTags={(e, tag, index) =>
+                            props.onCloseTags(e, tag, index)
+                        }
                     />
-                    <Container mt={'10px'}>
-                        <TagList
-                            tags={props.model.category && props.model.category.length > 0 ? props.model.category.map(item => ({active: true, ...item})) : []}
-                            closeable={true}
-                            onClose={(e, tag, index) => props.onCloseTags(e, tag, index)}
-                        />
-                    </Container>
                 </Container>
                 <Container mt={"10px"}>
                     <Layout customTemplateColumns={"1fr auto"}>
