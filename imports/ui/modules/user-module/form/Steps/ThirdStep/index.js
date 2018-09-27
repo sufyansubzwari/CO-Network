@@ -9,6 +9,7 @@ import { Container, Layout } from "btech-layout";
 import { LOOKING_FOR_DEFAULT, TAG_LEVEL } from "../../../../../constants";
 import { GetTags } from "../../../../../apollo-client/tag";
 import { Query } from "react-apollo";
+import MLTagsInput from '../../../../../components/TagsInputAutoComplete/TagsInputAutoComplete'
 
 class ThirdStep extends React.Component {
   constructor(props) {
@@ -126,7 +127,7 @@ class ThirdStep extends React.Component {
               if (error) return <div>Error</div>;
               return (
                 <div>
-                  <InputAutoComplete
+                  <MLTagsInput
                     placeholderText={"Languages & Libraries"}
                     getAddedOptions={this.onAddTags.bind(
                       this,

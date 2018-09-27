@@ -1,0 +1,3 @@
+mutation ViewsCountUpdate($view: ViewsInput) {
+    viewUpdate(view: $view)
+}
