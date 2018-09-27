@@ -1,22 +1,9 @@
 mutation CreateColloquium($entity: ColloquiumsInput!) {
   colloquium(colloquium: $entity) {
     _id
-    title
-    description
-    image
     owner {
       _id
     }
-    tags {
-      label
-      value
-      name
-    }
-    competences {
-      label
-      value
-    }
-    entity
     views
   }
 }

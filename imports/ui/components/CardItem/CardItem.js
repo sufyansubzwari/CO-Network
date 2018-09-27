@@ -14,13 +14,16 @@ const TitleCardContainer = Styled.div`
     font-weight: bold;
 `;
 
-const SViewsContainer = Styled.div`
-    font-size: 12px;
+const SKeyContainer = Styled.span`
+    font-size: 14px;
     line-height: 18px;
 `;
 
-const SViewIconContainer = Styled.div`
+const SIconContainer = Styled.span`
     line-height: 18px;
+    line-height: 18px;
+    font-size: 14px;
+    margin-right: 5px;
 `;
 
 const SubTitleCardContainer = Styled.div`
@@ -57,11 +60,23 @@ class CardItem extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      loadingImage: true
+      loadingImage: true,
+      topOptions: [
+        {
+          key: "views",
+          icon: "eye"
+        }
+      ]
     };
     if (props.image) {
       this.loadImage(props.image);
     }
+  }
+
+  componentWillMount() {
+    this.setState({
+      topOptions: this.state.topOptions.concat(this.props.topOptions)
+    });
   }
 
   componentWillReceiveProps(newProps) {
@@ -83,6 +98,23 @@ class CardItem extends Component {
     }
   }
 
+  renderTopOptionItem(element, index) {
+    const valueToShow = element.transformText
+      ? element.transformText(this.props.data[element.key])
+      : this.props.data[element.key] || this.props[element.key];
+    const iconToShow = element.transformIcon
+      ? element.transformIcon(this.props.data[element.key])
+      : element.icon;
+    return (
+      <Container key={index} inLine mr={"15px"}>
+        <SIconContainer>
+          <MaterialIcon type={iconToShow} />
+        </SIconContainer>
+        <SKeyContainer>{valueToShow}</SKeyContainer>
+      </Container>
+    );
+  }
+
   renderLeftSide() {
     const tags = this.props.tags.map(tag => ({ active: true, ...tag }));
     return (
@@ -91,25 +123,19 @@ class CardItem extends Component {
         minH={"initial"}
         mdMinH={"100px"}
         customTemplateRows={"1fr"}
+        rowGap={"5px"}
         mdCustomTemplateRows={"1fr auto"}
       >
-        <Layout fullY customTemplateRows={"auto auto 1fr"}>
+        <Layout fullY customTemplateRows={"auto auto 1fr"} rowGap={"5px"}>
           <Container mdMinH={"25px"}>
             <Layout
               customTemplateColumns={"1fr"}
               mdCustomTemplateColumns={this.props.showMenu ? "1fr auto" : "1f"}
             >
               <Container>
-                <Layout customTemplateColumns={"20px auto"}>
-                  <Container>
-                    <SViewIconContainer>
-                      <MaterialIcon type={this.props.iconClass} />
-                    </SViewIconContainer>
-                  </Container>
-                  <Container>
-                    <SViewsContainer>{this.props.views}</SViewsContainer>
-                  </Container>
-                </Layout>
+                {this.state.topOptions.map((element, index) =>
+                  this.renderTopOptionItem(element, index)
+                )}
               </Container>
               {this.props.showMenu ? (
                 <Container hide mdShow>
@@ -199,6 +225,7 @@ class CardItem extends Component {
 CardItem.defaultProps = {
   ...Card.defaultProps,
   tags: [],
+  topOptions: [],
   views: 0,
   showMenu: false,
   image: null,
@@ -213,6 +240,7 @@ CardItem.propTypes = {
   subTitle: PropTypes.string,
   showMenu: PropTypes.bool,
   iconClass: PropTypes.string,
+  topOptions: PropTypes.array,
   onSelectTag: PropTypes.func,
   tags: PropTypes.array,
   views: PropTypes.number

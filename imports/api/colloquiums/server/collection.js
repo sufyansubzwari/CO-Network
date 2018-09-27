@@ -40,6 +40,7 @@ Colloquiums.schema = new SimpleSchema({
     defaultValue: "COLLOQUIUM"
   },
   image: { type: String, optional: true },
+  isPublic: { type: Boolean, defaultValue: false },
   title: { type: String, optional: true },
   description: { type: String, optional: true },
   competences: { type: Array, optional: true },

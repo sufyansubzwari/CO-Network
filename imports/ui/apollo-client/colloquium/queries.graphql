@@ -4,6 +4,7 @@ query GetColloquiums($limit: Int, $filter: String, $events: ColloquiumSearchInpu
     title
     description
     image
+    isPublic
     owner {
       _id
     }

@@ -52,6 +52,7 @@ class ItemsList extends Component {
             ? this.state.activeIndex === key
             : false
         }
+        topOptions={this.props.topOptions}
         loading={this.props.loading}
         title={item.title || ""}
         subTitle={item.description || ""}
@@ -59,6 +60,7 @@ class ItemsList extends Component {
         tags={item.tags || item.category || item.positionTags || []}
         views={item.views}
         key={key}
+        data={item}
       />
     );
   }
@@ -88,6 +90,7 @@ class ItemsList extends Component {
 ItemsList.propTypes = {
   title: PropTypes.string,
   data: PropTypes.array,
+  topOptions: PropTypes.array,
   loading: PropTypes.bool,
   onFetchData: PropTypes.func,
   renderItem: PropTypes.func,

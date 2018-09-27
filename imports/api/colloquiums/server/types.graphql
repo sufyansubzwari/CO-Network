@@ -5,6 +5,7 @@ type Colloquiums {
     owner: User!
     title: String
     entity: String
+    isPublic: Boolean
     views: Int
     description: String
     tags: [Tags]!
@@ -22,6 +23,7 @@ input ColloquiumSearchInput{
     title: TableStringFilterInput
     description: TableStringFilterInput
     tags: TableStringFilterInput
+    isPublic: TableStringFilterInput
     location: [LocationInput]
 }
 
@@ -32,6 +34,7 @@ input ColloquiumsInput {
     description: String
     image: String
     place: PlacesInput
+    isPublic: Boolean
     tags: [TagsInput]
     competences: [ObjectTypeInput]
 }

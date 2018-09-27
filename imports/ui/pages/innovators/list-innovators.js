@@ -123,6 +123,7 @@ class ListInnovators extends Component {
             ? this.state.selectedIndex === key
             : false
         }
+        data={item}
         loading={isLoading}
         title={item.name}
         subTitle={item.reason ? item.reason.bio : ""}

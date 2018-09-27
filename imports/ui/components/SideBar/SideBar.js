@@ -7,6 +7,7 @@ import { Create } from "../../components";
 import { CREATE_LINKS } from "./create-links";
 import EventsFilters from "../../modules/event-module/filters";
 import JobsFilters from "../../modules/jobs-module/filters";
+import ColloquiumFilters from "../../modules/colloquium-module/filters";
 import OrganizationFilters from "../../modules/organization-module/filters";
 import posed from "react-pose";
 
@@ -86,10 +87,18 @@ class SideBar extends Component {
               }
             />
           );
+        case "colloquiums":
+          return (
+            <ColloquiumFilters
+              onClose={() =>
+                this.props.toggleSideBar && this.props.toggleSideBar(false)
+              }
+            />
+          );
         default:
           return (
             <div>
-              You must implement the filters for {this.props.filterEntityType}
+              You must implement the filters for {this.props.filterEntityType}{" "}
               entity type
             </div>
           );

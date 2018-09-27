@@ -139,7 +139,19 @@ class ListColloquiums extends Component {
       >
         <ItemsList
           key={"listComponent"}
-          title={"Colloquiums"}
+          title={"Colloquium"}
+          topOptions={[
+            {
+              key: "isPublic",
+              icon: "globe",
+              transformText: value => {
+                return value ? "Public" : "Private";
+              },
+              transformIcon: value => {
+                return value ? "globe" : "lock";
+              }
+            }
+          ]}
           data={this.props.data.colloquiums}
           loading={isLoading}
           onFetchData={() => this.fetchMoreSelection(isLoading)}
