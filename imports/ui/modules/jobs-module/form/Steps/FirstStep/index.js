@@ -147,6 +147,7 @@ class FirstStep extends React.Component {
             getValue={this.notifyParent.bind(this)}
           />
           <GeoInputLocation
+            required
             name={"location"}
             model={this.state.job.place}
             placeholder={"Location"}

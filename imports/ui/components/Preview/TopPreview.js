@@ -18,6 +18,15 @@ const Photo = styled(Container)`
           ")"
         : " linear-gradient(180deg,#32363D, #202225)"};
   background-size: cover;
+  zoom: 100%;
+
+  @media (min-width: 62em) {
+    zoom: 80%;
+  }
+
+  @media (min-width: 86em) {
+    zoom: 100%;
+  }
 `;
 
 const SBackground = styled(Container)`
@@ -94,7 +103,13 @@ class TopPreview extends Component {
 
   render() {
     return (
-      <Photo relative paddingX={"100px"} image={this.state.backGroundImage} gridArea={this.props.gridArea}>
+      <Photo
+        relative
+        paddingX={"15px"}
+        mdPaddingX={"75px"}
+        image={this.state.backGroundImage}
+        gridArea={this.props.gridArea}
+      >
         <SBackground />
         <Layout
           fullY

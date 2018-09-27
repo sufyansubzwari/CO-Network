@@ -213,6 +213,7 @@ class ListInnovators extends Component {
                   navOptions={[
                     {
                       text: "Edit",
+                      icon: "edit",
                       checkVisibility: () => {
                         const element = this.state.selectedItem;
                         return (

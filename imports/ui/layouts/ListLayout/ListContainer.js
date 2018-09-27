@@ -1,5 +1,6 @@
 import { Container } from "btech-layout";
 import styled from "styled-components";
+import { mixins } from "btech-layout";
 
 /**
  * @module Data
@@ -12,18 +13,17 @@ import styled from "styled-components";
 
 const ListContainer = styled(Container)`
   border-top: ${props => "1px solid " + props.theme.color.grey};
-  padding: 20px 66px 30px 66px;
   background-color: ${props => props.theme.color.innerBackground};
+  zoom: 100%;
+  padding: 15px 10px;
 
-  @media screen and (max-width: 376px) {
-    padding: 15px 10px;
+  @media (min-width: 62em) {
+    zoom: 80%;
+    padding: 20px 35px;
   }
 
-  @media screen and (max-width: 768px) {
-    padding: 20px 15px;
-  }
-
-  @media screen and (max-width: 1368px) {
+  @media (min-width: 86em) {
+    zoom: 100%;
     padding: 20px 35px 30px 35px;
   }
 `;

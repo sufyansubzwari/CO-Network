@@ -7,7 +7,12 @@ import Preview from "./Preview/Preview";
 import UserPhoto from "./UserPhoto/UserPhoto";
 import CardItem from "./CardItem/CardItem";
 import ClusterIcon from "./ClusterIcon/ClusterIcon";
+import BigTag from "./BigTag/BigTag";
+import FiltersContainer from "./FiltersContainer/FiltersContainer";
+import Separator from "./FiltersContainer/Separator";
+import FilterItem from "./FiltersContainer/FilterItem";
 import TagsInputAutoComplete from "./TagsInputAutoComplete/TagsInputAutoComplete";
+import Label from "./Label/Label";
 
 // layouts
 import InternalLayout from "../layouts/InternalLayout/InternalLayout";
@@ -29,5 +34,10 @@ export {
   Preview,
   UserPhoto,
   ClusterIcon,
+  FilterItem,
+  FiltersContainer,
+  Separator,
+  BigTag,
+  Label,
   TagsInputAutoComplete
 };

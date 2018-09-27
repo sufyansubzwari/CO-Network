@@ -200,6 +200,7 @@ class ListEvents extends Component {
                           },
                           {
                             text: "Edit",
+                            icon: "edit",
                             checkVisibility: () => {
                               const element = this.state.selectedItem;
                               return (

@@ -1,26 +1,17 @@
 import React from "react";
-import { Layout, Container } from "btech-layout";
-import styled from "styled-components";
+import { Layout } from "btech-layout";
 import { GeoInputLocation } from "btech-location";
-import FilterContainer from "../../../components/FiltersContainer/FiltersContainer";
-import BigTag from "./../../../components/BigTag/BigTag";
+import {
+  FiltersContainer,
+  Separator,
+  BigTag,
+  FilterItem
+} from "../../../components";
 import { CheckBoxList, SwitchButton } from "btech-base-forms-component";
 import PropsTypes from "prop-types";
 import { cleanFilters, setFilters } from "../../../actions/SideBarActions";
 import { connect } from "react-redux";
 import { COLLOQUIUM_LEVEL } from "../../../constants";
-
-const Filter = styled(Container)`
-  padding: 20px 10px;
-`;
-
-const Separator = styled.div`
-  height: 1px;
-  width: 100%;
-  opacity: 0.5;
-  background-color: ${props =>
-    props.theme ? props.theme.filter.separatorColor : "black"};
-`;
 
 class ColloquiumFilters extends React.Component {
   constructor(props) {
@@ -93,10 +84,10 @@ class ColloquiumFilters extends React.Component {
 
   render() {
     return (
-      <FilterContainer
+      <FiltersContainer
         onClose={() => this.props.onClose && this.props.onClose()}
       >
-        <Filter>
+        <FilterItem>
           <GeoInputLocation
             name={"location"}
             model={this.state}
@@ -121,9 +112,9 @@ class ColloquiumFilters extends React.Component {
                 ))
               : null}
           </Layout>
-        </Filter>
+        </FilterItem>
         <Separator />
-        <Filter>
+        <FilterItem>
           <SwitchButton
             checked={this.state.privacy}
             text={`Show ${
@@ -131,9 +122,9 @@ class ColloquiumFilters extends React.Component {
             } Colloquiums`}
             onChange={status => this.handleChangePrivacy(status)}
           />
-        </Filter>
+        </FilterItem>
         <Separator />
-        <Filter>
+        <FilterItem>
           <CheckBoxList
             placeholderText={"Competences"}
             options={COLLOQUIUM_LEVEL}
@@ -141,9 +132,9 @@ class ColloquiumFilters extends React.Component {
             checkboxSize={"15px"}
             getValue={actives => this.changeLevel(actives)}
           />
-        </Filter>
+        </FilterItem>
         <Separator />
-      </FilterContainer>
+      </FiltersContainer>
     );
   }
 }

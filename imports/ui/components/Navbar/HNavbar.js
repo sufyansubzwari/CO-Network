@@ -15,19 +15,21 @@ const HNavLayout = styled(Layout)`
    }}
   zoom: 100%;
   @media (min-width: 62em){
-     zoom: 85%;
+     zoom: 80%;
   }
-  @media (min-width: 85.375em){
+  @media (min-width: 86em){
     zoom: 100%;
   }
   
   box-shadow: 0px -13px 30px 0 rgba(34, 66, 76, 0.15);
-  border: solid 1px ${(props)=>StyleUtil.getThemeValue(props, "theme.borderColor")};
+  border: solid 1px ${props =>
+    StyleUtil.getThemeValue(props, "theme.borderColor")};
   border-width: 1px 0px 0px 0px;
   
   ${mixins.media.desktop`
       box-shadow: none;
-      border: solid 1px ${(props)=>StyleUtil.getThemeValue(props, "theme.borderColor")};
+      border: solid 1px ${props =>
+        StyleUtil.getThemeValue(props, "theme.borderColor")};
       border-width: 0px 1px 0px 0px;
   `}
     
@@ -64,6 +66,10 @@ const NavItemStyled = styled.div`
     const isSecondLine = index % 6 > 2;
     return isSecondLine ? "transform: translateX(64%);" : "";
   }};
+  
+  ${mixins.media.desktop`
+       transform: none;
+  `}
 `;
 
 const XsTextDescription = styled.div`
