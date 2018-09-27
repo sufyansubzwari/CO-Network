@@ -155,7 +155,6 @@ class ListJobs extends Component {
                   isOpen={!!this.state.selectedItem}
                   onClose={() => this.onChangeSelection(null, null)}
                   key={"rightSide"}
-                  navlinks={["Details"]}
                   navClicked={index => console.log(index)}
                   navOptions={[
                     {

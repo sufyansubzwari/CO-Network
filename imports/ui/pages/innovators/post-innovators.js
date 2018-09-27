@@ -148,7 +148,6 @@ class PostOrganization extends Component {
           onClose={()=>this.setState({openPreview:false})}
           key={"rightSide"}
           navClicked={index => console.log(index)}
-          navlinks={["Details"]}
           navOptions={[
             {
               text: "Remove",
