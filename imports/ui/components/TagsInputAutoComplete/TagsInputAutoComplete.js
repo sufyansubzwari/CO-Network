@@ -85,12 +85,18 @@ export default class TagsInputAutoComplete extends Component {
       dropDownOpen: false,
       options: this.props.options,
       activeOption: -1,
-      tags: []
+      tags: this.props.tags
     };
     this.onKeyDown = this.onKeyDown.bind(this);
     this.onAddOption = this.onAddOption.bind(this);
     this.onAddNewOption = this.onAddNewOption.bind(this);
     this.handleChange = this.handleChange.bind(this);
+  }
+
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.tags && nextProps.tags !== this.state.tags) {
+      this.setState({tags: nextProps.tags});
+    }
   }
 
   handleChange(e) {
@@ -104,7 +110,7 @@ export default class TagsInputAutoComplete extends Component {
   }
 
   onFocus() {
-    // this.InputRef && this.InputRef.current && this.InputRef.current.focus();
+    this.InputRef && this.InputRef.current && this.InputRef.current.focus();
     // this.setState({
     //   active: true
     // });
@@ -119,8 +125,7 @@ export default class TagsInputAutoComplete extends Component {
 
   onAddOption(item) {
     this.props.getAddedOptions && this.props.getAddedOptions(item);
-    this.state.tags.push(item);
-    !this.props.keepText ? this.setState({value: "", tags: this.state.tags}) : null;
+    !this.props.keepText ? this.setState({value: ""}) : null;
   }
 
   onAddNewOption() {
@@ -128,11 +133,9 @@ export default class TagsInputAutoComplete extends Component {
       label: this.state.value,
       value: this.state.value,
       name: this.state.value
-    }
-    this.state.tags.push(tag)
-    this.props.getNewAddedOptions &&
-    this.props.getNewAddedOptions(tag);
-    !this.props.keepText ? this.setState({value: "", tags: this.state.tags}) : null;
+    };
+    this.props.getNewAddedOptions && this.props.getNewAddedOptions(tag);
+    !this.props.keepText ? this.setState({value: ""}) : null;
   }
 
   onKeyDown(event) {
@@ -167,8 +170,8 @@ export default class TagsInputAutoComplete extends Component {
 
   render() {
     return (
-      <SContainer>
-        <SLabel inactive={!this.state.active} onClick={this.onFocus}>
+      <SContainer onClick={() => this.onFocus()}>
+        <SLabel inactive={!this.state.active} onClick={() => this.onFocus()}>
           {this.props.placeholderText}
           {
             this.props.required ? (
@@ -178,11 +181,15 @@ export default class TagsInputAutoComplete extends Component {
           }
         </SLabel>
         <InputGroup style={{height: 'auto', padding: '4px 8px'}}>
+          <InputGroupAddon addonType="prepend">
+            <TagList style={{marginTop: '5px'}} closeable={true} tags={this.state.tags} onClose={(e,tag,index) => this.props.onCloseTags && this.props.onCloseTags(e,tag,index)}/>
+          </InputGroupAddon>
           <InputGroupButtonDropdown
             addonType="append"
             isOpen={this.state.dropDownOpen}
             toggle={() => this.toggleDropDown()}
           >
+
             <DropdownToggle
               style={{padding: "0", border: "0"}}
               className={"btn-transparent text-robo text-normal"}
@@ -223,33 +230,30 @@ export default class TagsInputAutoComplete extends Component {
                   );
                 })}
             </SDropDownMenu>
+            <SInput
+              ref={this.InputRef}
+              type={"text"}
+              onFocus={this.onFocus}
+              autoFocus={this.props.autoFocus}
+              onChange={this.handleChange}
+              disabled={this.props.disabled}
+              placeholderModel={this.props.placeholder}
+              inactive={!this.state.active}
+              fixLabel={this.props.fixLabel}
+              value={this.state.value}
+              valid={this.state.valid}
+              width={this.props.width}
+              onKeyDown={e => {
+                if (this.state.dropDownOpen) {
+                  this.onKeyDown && this.onKeyDown(e);
+                } else if (e.key === "Enter") {
+                  e.preventDefault();
+                  this.onAddNewOption();
+                }
+              }}
+            />
           </InputGroupButtonDropdown>
-          <InputGroupAddon addonType="prepend">
-            <TagList closeable={true} tags={this.state.tags}/>
-          </InputGroupAddon>
 
-          <SInput
-            // innerRef={this.InputRef}
-            type={"text"}
-            onFocus={this.onFocus}
-            autoFocus={this.props.autoFocus}
-            onChange={this.handleChange}
-            disabled={this.props.disabled}
-            placeholderModel={this.props.placeholder}
-            inactive={!this.state.active}
-            fixLabel={this.props.fixLabel}
-            value={this.state.value}
-            valid={this.state.valid}
-            width={this.props.width}
-            onKeyDown={e => {
-              if (this.state.dropDownOpen) {
-                this.onKeyDown && this.onKeyDown(e);
-              } else if (e.key === "Enter") {
-                e.preventDefault();
-                this.onAddNewOption();
-              }
-            }}
-          />
         </InputGroup>
       </SContainer>
     );
@@ -262,12 +266,13 @@ TagsInputAutoComplete.defaultProps = {
 };
 
 TagsInputAutoComplete.propTypes = {
-  ...Input.propTypes,
   options: PropsTypes.array,
   fixLabel: PropsTypes.bool,
   iconClass: PropsTypes.string,
   getAddedOptions: PropsTypes.func,
   getNewAddedOptions: PropsTypes.func,
+  onCloseTags: PropsTypes.func,
+  tags: PropsTypes.array,
   dropBackground: PropsTypes.string,
   optionsLimit: PropsTypes.number,
   keepText: PropsTypes.bool,
