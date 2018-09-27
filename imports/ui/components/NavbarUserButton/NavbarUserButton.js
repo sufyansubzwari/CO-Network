@@ -41,7 +41,7 @@ class NavbarUserButton extends Component {
           `${user.profile.name} ${user.profile.lastName}` || user.profile.email
         )
       : null;
-    this.props.setUser(user);
+    this.props.setUser(user || null);
     return (
       <HButtom
         image={!!user ? user.profile.image : ""}
