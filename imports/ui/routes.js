@@ -21,6 +21,9 @@ import PostJob from "./pages/jobs/post-jobs";
 // innovators
 import ListInnovators from "./pages/innovators/list-innovators";
 import PostOrganization from "./pages/innovators/post-innovators";
+// colloquiums
+// import ListInnovators from "./pages/innovators/list-innovators";
+import PostColloquiums from "./pages/colloquiums/post-colloquiums";
 
 //------------------------------------------------------------------------------
 // COMPONENT:
@@ -84,6 +87,13 @@ const Routes = props => (
         name="Innovators"
         path="/innovators"
         component={ListInnovators}
+        {...props}
+      />
+      <RouteWithProps
+        exact
+        name="Colloquiums"
+        path="/post-colloquium"
+        component={PostColloquiums}
         {...props}
       />
       <RouteWithProps

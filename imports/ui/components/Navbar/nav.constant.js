@@ -47,16 +47,16 @@ let data = Object.assign({}, base, {
   icon: { size: 30, src: "/images/nav/Colloquium.svg" }
 });
 
-let Colloquium = Object.assign({}, base, {
+let colloquium = Object.assign({}, base, {
   link: "/colloquium",
   label: "Colloquium",
-  icon: { size: 30, src: "/images/nav/Colloquium.svg" }
+  icon: { size: 34, src: "/images/nav/Colloquium.svg" }
 });
 
-Colloquium.number = {
+colloquium.number = {
   value: 0,
   primary: true,
   size: { width: 22, height: 24 }
 };
 
-export default [event, jobs, innovators];
+export default [event, jobs, innovators, colloquium];

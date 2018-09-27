@@ -1,0 +1,31 @@
+mutation CreateColloquium($entity: EventsInput!) {
+  event(events: $entity) {
+    _id
+    title
+    description
+    venueName
+    image
+    owner {
+      _id
+    }
+    category {
+      label
+      value
+      name
+    }
+    entity
+    views
+  }
+}
+
+mutation DeleteColloquium($id: String!) {
+  deleteEvent(_id: $id) {
+    _id
+  }
+}
+
+mutation UpdateImageColloquium($id: String!, $image: String!) {
+  updateEventImage(_id: $id, image: $image) {
+    _id
+  }
+}

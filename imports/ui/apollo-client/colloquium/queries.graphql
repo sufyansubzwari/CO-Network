@@ -1,0 +1,23 @@
+query GetColloquium($limit: Int, $filter: String, $events: EventsInputSearch) {
+  events(limit: $limit, filter: $filter, events: $events) {
+    _id
+    title
+    description
+    image
+    owner {
+      _id
+    }
+    place{
+      _id
+      owner
+      entity
+      location{
+        address
+        location{
+          lat
+          lng
+        }
+      }
+    }
+  }
+}

@@ -1020,3 +1020,19 @@ export const EXPERIENCE_REQUIERED_NUMBER = [
   { label: "Intermediate", active: false, number: 0 },
   { label: "Expert", active: false, number: 0 }
 ];
+
+export const COLLOQUIUM_LEVEL = [
+  {
+    label: "Advanced",
+    type: "Advanced"
+  },
+  {
+    label: "Intermediate",
+    type: "Intermediate"
+  },
+  {
+    label: "Beginner",
+    type: "Beginner"
+  }
+];
+
