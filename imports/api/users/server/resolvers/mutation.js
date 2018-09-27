@@ -158,13 +158,15 @@ Mutation.user = async (root, {user}, context) => {
     delete place.location.fullLocation;
     await Places.service.place(place);
   }
-
-  if (achievementsList && achievementsList.length > 0) {
+  const f = await Achievement.deleteAchievement({owner: inserted._id});
+    console.log("deleted ------", f);
+    if (achievementsList && achievementsList.length > 0) {
     achievementsList.forEach(async ach => {
-      if (!ach._id) {
-        ach.owner = inserted._id;
+        if (ach._id) {
+          delete ach._id
       }
-      await Achievement.achievement(ach);
+        ach.owner = inserted._id;
+        await Achievement.achievement(ach);
     });
   }
 
