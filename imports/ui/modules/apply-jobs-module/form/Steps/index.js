@@ -1,8 +1,8 @@
 import FirstStep from './FirstStep/FirstStep';
 import SecondStep from './SecondStep/SecondStep';
-// import ThirdStep from './ThirdStep';
+import ThirdStep from './ThirdStep/ThirdStep';
 import FourthStep from './FourthStep/FourthStep';
 import FifthStep from './FifthStep/FifthStep';
 // import SixthStep from './SixthStep';
 
-export { FirstStep, SecondStep, FourthStep, FifthStep};
+export { FirstStep, SecondStep, ThirdStep, FourthStep, FifthStep};

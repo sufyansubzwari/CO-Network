@@ -15,6 +15,7 @@ class ApplyJob extends Component {
 
         let user = props.curUser && props.curUser.profile;
         let userId = props.curUser && props.curUser._id;
+        let lang = props.curUser && props.curUser.profile && props.curUser.profile.knowledge && props.curUser.profile.knowledge.languages
 
         super(props);
         this.state = {
@@ -30,9 +31,25 @@ class ApplyJob extends Component {
                     passion: "",
                     problem: "",
                     steps: ""
+                },
+                professional:{
+                    expertise: [],
+                    salaryRange: {
+                        min: "",
+                        max: ""
+                    },
+                    degree: {},
+                    languages: lang && lang.length ? lang : [],
+                    industry: []
                 }
             }
         };
+    }
+
+    componentWillReceiveProps(nextProps) {
+        if (nextProps.data ) {
+            console.log(nextProps.data)
+        }
     }
 
     componentDidMount(){

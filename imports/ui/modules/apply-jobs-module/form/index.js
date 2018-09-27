@@ -17,6 +17,16 @@ class ApplyJobForm extends React.Component {
                     passion: "",
                     existingProblem: "",
                     steps: ""
+                },
+                professional:{
+                    expertise: [],
+                    salaryRange: {
+                        min: "",
+                        max: ""
+                    },
+                    degree: {},
+                    languages: [],
+                    industry: []
                 }
             }
         };
@@ -61,6 +71,12 @@ class ApplyJobForm extends React.Component {
                 </WizardStepForm>
                 <WizardStepForm title={"Job Specific"} isValid>
                     <SecondStep
+                        data={this.state.apply}
+                        onChange={apply => this.handleChange(apply)}
+                    />
+                </WizardStepForm>
+                <WizardStepForm title={"Professional Experience"} isValid>
+                    <ThirdStep
                         data={this.state.apply}
                         onChange={apply => this.handleChange(apply)}
                     />
