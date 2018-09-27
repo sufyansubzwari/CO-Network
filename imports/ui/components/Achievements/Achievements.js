@@ -43,6 +43,14 @@ class Achievements extends  React.Component {
         }, () => this.notifyParent())
     }
 
+    componentWillReceiveProps(nextProps){
+        if(nextProps.achievements){
+            this.setState({
+                achievements: nextProps.achievements
+            })
+        }
+    }
+
     onSelectToAdd(achievement,key) {
         // this.setState({ tickets: list, editIndex: list.length - 1 });
 

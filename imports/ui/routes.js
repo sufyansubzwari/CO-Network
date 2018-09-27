@@ -18,6 +18,7 @@ import PostEvent from "./pages/events/post-event";
 // jobs
 import ListJobs from "./pages/jobs/list-jobs";
 import PostJob from "./pages/jobs/post-jobs";
+import ApplyJobs from './pages/jobs/apply-jobs';
 // innovators
 import ListInnovators from "./pages/innovators/list-innovators";
 import PostOrganization from "./pages/innovators/post-innovators";
@@ -79,6 +80,13 @@ const Routes = props => (
         component={PostJob}
         {...props}
       />
+        <RouteWithProps
+            exact
+            name="Apply for Job"
+            path="/apply-job"
+            component={ApplyJobs}
+            {...props}
+        />
       <RouteWithProps
         exact
         name="Innovators"
