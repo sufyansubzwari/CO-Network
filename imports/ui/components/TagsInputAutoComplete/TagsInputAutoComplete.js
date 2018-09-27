@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 import styled from "styled-components";
 import PropsTypes from "prop-types";
-import MaterialIcon from "react-material-iconic-font";
 import {
   InputGroup,
   InputGroupButtonDropdown,
@@ -10,7 +9,7 @@ import {
   DropdownItem,
   InputGroupAddon
 } from "reactstrap";
-import { Input, TagList } from "btech-base-forms-component";
+import { TagList } from "btech-base-forms-component";
 
 const SDropDownMenu = styled(DropdownMenu)`
   font-size: ${props => props.fontSize || "12px"} !important;
@@ -176,7 +175,17 @@ export default class TagsInputAutoComplete extends Component {
         </SLabel>
         <InputGroup style={{ height: "auto", padding: "4px 8px" }}>
           <InputGroupAddon addonType="prepend">
-            <TagListuseIcon={this.props.useIcon} onCategoryChange={this.props.onCategoryChange} style={{marginTop: "5px"}}levelOptions={this.props.levelOptions} closeable={true} tags={this.state.tags} onClose={(e,tag,index) => this.props.onCloseTags && this.props.onCloseTags(e,tag,index)}/>
+            <TagList
+              useIcon={this.props.useIcon}
+              onCategoryChange={this.props.onCategoryChange}
+              style={{ marginTop: "5px" }}
+              levelOptions={this.props.levelOptions}
+              closeable={true}
+              tags={this.state.tags}
+              onClose={(e, tag, index) =>
+                this.props.onCloseTags && this.props.onCloseTags(e, tag, index)
+              }
+            />
           </InputGroupAddon>
           <InputGroupButtonDropdown
             addonType="append"
@@ -258,7 +267,6 @@ TagsInputAutoComplete.defaultProps = {
   iconClass: "plus",
   fixLabel: false
 };
-
 
 TagsInputAutoComplete.propTypes = {
   options: PropsTypes.array,
