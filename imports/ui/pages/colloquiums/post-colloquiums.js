@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { Preview, PostLayout } from "../../../ui/components";
 import { withRouter } from "react-router-dom";
 import ColloquiumForm from "../../modules/colloquium-module/form";
-import { CreateColloquium } from "../../apollo-client/event";
+import { CreateColloquium } from "../../apollo-client/colloquium";
 import { Mutation } from "react-apollo";
 
 /**
@@ -37,7 +37,7 @@ class PostColloquiums extends Component {
   }
 
   onCancel() {
-    this.props.history.push(`/`);
+    this.props.history.push('/colloquiums');
   }
 
   handleBackgroundChange(src) {
@@ -59,7 +59,7 @@ class PostColloquiums extends Component {
       colloquium.owner = this.props.curUser._id;
       createColloquium({ variables: { entity: colloquium } });
     } else {
-      // todo login the user and then create the event or notify the user must login
+      // todo login the user and then create the colloquium or notify the user must login
       alert("You must be logged");
     }
   }
@@ -67,30 +67,31 @@ class PostColloquiums extends Component {
   render() {
     return (
       <PostLayout>
-        {/*<Mutation*/}
-        {/*key={"leftSide"}*/}
-        {/*mutation={CreateColloquium}*/}
-        {/*onCompleted={() =>*/}
-        {/*this.props.history.push("/", { postColloquium: true })*/}
-        {/*}*/}
-        {/*onError={error => console.log("Error: ", error)}*/}
-        {/*>*/}
-        {/*{(createColloquium, { colloquiumCreated }) => (*/}
-        <ColloquiumForm key={"leftSide"}
-          onFinish={data => {
-            this.onPostAction(data);
-          }}
-          onCancel={() => this.onCancel()}
-          {...this.props}
-          handleChange={colloquium =>
-            this.setState({
-              colloquium: { ...this.state.colloquium, ...colloquium }
-            })
+        <Mutation
+          key={"leftSide"}
+          mutation={CreateColloquium}
+          onCompleted={() =>
+            this.props.history.push("/colloquiums", { postColloquium: true })
           }
-          colloquium={this.state.colloquium}
-        />
-        {/*)}*/}
-        {/*</Mutation>*/}
+          onError={error => console.log("Error: ", error)}
+        >
+          {(createColloquium, { colloquiumCreated }) => (
+            <ColloquiumForm
+              key={"leftSide"}
+              onFinish={data => {
+                this.onPostAction(createColloquium, data);
+              }}
+              onCancel={() => this.onCancel()}
+              {...this.props}
+              handleChange={colloquium =>
+                this.setState({
+                  colloquium: { ...this.state.colloquium, ...colloquium }
+                })
+              }
+              colloquium={this.state.colloquium}
+            />
+          )}
+        </Mutation>
         <Preview
           isOpen={this.state.openPreview}
           onClose={() => this.setState({ openPreview: false })}
@@ -114,7 +115,9 @@ class PostColloquiums extends Component {
           allowChangeImages
           backGroundImage={this.state.colloquium && this.state.colloquium.image}
           onBackgroundChange={imageSrc => this.handleBackgroundChange(imageSrc)}
-        />
+        >
+          dasdasdasd
+        </Preview>
       </PostLayout>
     );
   }

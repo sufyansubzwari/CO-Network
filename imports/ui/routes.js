@@ -23,8 +23,8 @@ import ListInnovators from "./pages/innovators/list-innovators";
 import PostOrganization from "./pages/innovators/post-innovators";
 // colloquiums
 // import ListInnovators from "./pages/innovators/list-innovators";
-import ListColloquiums from "./pages/colloquiums/post-colloquiums";
-import PostColloquiums from "./pages/colloquiums/list-colloquiums";
+import ListColloquiums from "./pages/colloquiums/list-colloquiums";
+import PostColloquiums from "./pages/colloquiums/post-colloquiums";
 
 //------------------------------------------------------------------------------
 // COMPONENT:
@@ -100,14 +100,14 @@ const Routes = props => (
       <RouteWithProps
         exact
         name="Colloquiums"
-        path="/post-colloquium"
-        component={PostColloquiums}
+        path="/colloquiums"
+        component={ListColloquiums}
         {...props}
       />
       <RouteWithProps
         exact
         name="Colloquiums"
-        path="/colloquiums"
+        path="/post-colloquium"
         component={PostColloquiums}
         {...props}
       />

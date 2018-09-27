@@ -3,7 +3,8 @@ import {
   Input,
   TextArea,
   CheckBoxList,
-  InputAutoComplete
+  InputAutoComplete,
+  TagList
 } from "btech-base-forms-component";
 import { Container, Layout } from "btech-layout";
 import { GeoInputLocation } from "btech-location";
@@ -154,9 +155,7 @@ class FirstStep extends React.Component {
                 }))
               }
               closeable={true}
-              onClose={(e, tag, index) =>
-                this.onCloseTags(e, tag, index)
-              }
+              onClose={(e, tag, index) => this.onCloseTags(e, tag, index)}
             />
           </Container>
         </Container>
