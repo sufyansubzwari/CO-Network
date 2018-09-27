@@ -96,14 +96,21 @@ class EventPreviewBody extends React.Component {
               text={this.state.event.venueEmail}
             />
           ) : null}
-          {this.state.event.attenders &&
-          (this.state.event.attenders.min !== "" ||
-            this.state.event.attenders.max !== "") ? (
+          {(this.state.event.attenders &&
+            this.state.event.attenders.min !== null) ||
+          (this.state.event.attenders &&
+            this.state.event.attenders.max !== null) ? (
             <Text
-              header={"Salary Range"}
-              text={`${this.state.event.attenders.min} - ${
-                this.state.event.attenders.max
-              }`}
+              header={"Expected Attenders"}
+              text={`${
+                this.state.event.attenders.min !== null
+                  ? this.state.event.attenders.min
+                  : null
+                } - ${
+                this.state.event.attenders.max !== null
+                  ? this.state.event.attenders.max
+                  : null
+                }`}
             />
           ) : null}
         </Layout>

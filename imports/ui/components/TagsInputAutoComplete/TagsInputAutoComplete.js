@@ -70,7 +70,7 @@ const SLabel = styled.label`
 `;
 
 export default class TagsInputAutoComplete extends Component {
-  InputRef = React.createRef();
+
 
   constructor(props) {
     super(props);
@@ -84,6 +84,7 @@ export default class TagsInputAutoComplete extends Component {
       activeOption: -1,
       tags: this.props.tags
     };
+    this.InputRef = React.createRef();
     this.onKeyDown = this.onKeyDown.bind(this);
     this.onFocus = this.onFocus.bind(this);
     this.onAddOption = this.onAddOption.bind(this);
@@ -175,17 +176,7 @@ export default class TagsInputAutoComplete extends Component {
         </SLabel>
         <InputGroup style={{ height: "auto", padding: "4px 8px" }}>
           <InputGroupAddon addonType="prepend">
-            <TagList
-              useIcon={this.props.useIcon}
-              onCategoryChange={this.props.onCategoryChange}
-              style={{ marginTop: "5px" }}
-              levelOptions={this.props.levelOptions}
-              closeable={true}
-              tags={this.state.tags}
-              onClose={(e, tag, index) =>
-                this.props.onCloseTags && this.props.onCloseTags(e, tag, index)
-              }
-            />
+            <TagListuseIcon={this.props.useIcon} onCategoryChange={this.props.onCategoryChange} style={{marginTop: "5px"}}levelOptions={this.props.levelOptions} closeable={true} tags={this.state.tags} onClose={(e,tag,index) => this.props.onCloseTags && this.props.onCloseTags(e,tag,index)}/>
           </InputGroupAddon>
           <InputGroupButtonDropdown
             addonType="append"
@@ -234,11 +225,11 @@ export default class TagsInputAutoComplete extends Component {
                 : null}
             </SDropDownMenu>
             <SInput
-              ref={this.InputRef}
+              innerRef={this.InputRef}
               type={"text"}
-              onFocus={this.onFocus}
+              // onFocus={this.onFocus}
               placeholder={this.props.inputPlaceholder}
-              autoFocus={this.props.autoFocus}
+              // autoFocus={this.props.autoFocus}
               onChange={this.handleChange}
               disabled={this.props.disabled}
               placeholderModel={this.props.placeholder}

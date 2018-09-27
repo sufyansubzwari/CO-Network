@@ -4,6 +4,8 @@ import { Button, Input, TextArea, InputAutoComplete, TagList } from "btech-base-
 import MaterialIcon from "react-material-iconic-font";
 import LineSeparator from "./LineSeparator";
 import {EXPERIENCE_LEVEL} from './constants';
+import MLTagsInput from "../../components/TagsInputAutoComplete/TagsInputAutoComplete"
+
 
 export default Publications = function (props) {
 
@@ -37,22 +39,20 @@ export default Publications = function (props) {
                     name={"explain"}
                     model={props.model}
                 />
-                <Container>
-                    <InputAutoComplete
+                <Container mt={'25px'}>
+                    <MLTagsInput
                         placeholderText={"Category"}
                         getAddedOptions={props.onAddTags}
                         getNewAddedOptions={props.onAddTags}
                         options={props.options}
-                        model={{others: []}}
-                        name={'others'}
+                        model={{ others: [] }}
+                        name={"others"}
+                        tags={props.model.category && props.model.category.length > 0 ? props.model.category.map(item => ({active: true, ...item})) : []
+                        }
+                        onCloseTags={(e, tag, index) =>
+                            props.onCloseTags(e, tag, index)
+                        }
                     />
-                    <Container mt={'10px'}>
-                        <TagList
-                            tags={props.model.category && props.model.category.length > 0 ? props.model.category.map(item => ({active: true, ...item})) : []}
-                            closeable={true}
-                            onClose={(e, tag, index) => props.onCloseTags(e, tag, index)}
-                        />
-                    </Container>
                 </Container>
                 <Container mt={"10px"}>
                     <Layout customTemplateColumns={"1fr auto"}>

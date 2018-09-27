@@ -131,7 +131,7 @@ class UserPreviewBody extends React.Component {
                 <TagsAdd header={"Category"} tags={tags} />
               ) : null}
             </Container>
-          ) : ach.type === "Publication" ? (
+          ) : ach.type === "Publications" ? (
             <Container key={index}>
               <Text header={"Publications"} />
               <Layout templateColumns={3}>
