@@ -1024,15 +1024,14 @@ export const EXPERIENCE_REQUIERED_NUMBER = [
 export const COLLOQUIUM_LEVEL = [
   {
     label: "Advanced",
-    type: "Advanced"
+    value: "Advanced"
   },
   {
     label: "Intermediate",
-    type: "Intermediate"
+    value: "Intermediate"
   },
   {
     label: "Beginner",
-    type: "Beginner"
+    value: "Beginner"
   }
 ];
-

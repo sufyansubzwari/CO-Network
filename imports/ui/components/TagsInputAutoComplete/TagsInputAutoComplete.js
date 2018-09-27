@@ -1,4 +1,4 @@
-import React, {Component} from "react";
+import React, { Component } from "react";
 import styled from "styled-components";
 import PropsTypes from "prop-types";
 import MaterialIcon from "react-material-iconic-font";
@@ -8,25 +8,23 @@ import {
   DropdownToggle,
   DropdownMenu,
   DropdownItem,
-  InputGroupAddon,
+  InputGroupAddon
 } from "reactstrap";
-import {Input, TagList} from "btech-base-forms-component";
+import { Input, TagList } from "btech-base-forms-component";
 
 const SDropDownMenu = styled(DropdownMenu)`
-  font-size: ${props =>
-  props.fontSize || "12px"} !important;
-  font-family: ${props =>
-  props.fontFamily || "Roboto Mono"};
-  font-weight: ${props =>
-  props.fontWeight || "normal"};
+  font-size: ${props => props.fontSize || "12px"} !important;
+  font-family: ${props => props.fontFamily || "Roboto Mono"};
+  font-weight: ${props => props.fontWeight || "normal"};
 `;
 
 const SContainer = styled.div`
+  margin-top: 25px;
   position: relative;
   background: #ffffff;
   height: auto;
   width: 100%;
-  border: 1px solid #D1D1D1;
+  border: 1px solid #d1d1d1;
   border-radius: 3px;
 `;
 
@@ -34,22 +32,22 @@ const SInput = styled.input`
   flex-grow: 1;
   transition-duration: 334ms;
   transition-delay: 0.2s;
-  transition-property: border-color,box-shadow;
+  transition-property: border-color, box-shadow;
   box-sizing: border-box;
   border: 0px;
-  width: ${props => props.width || 'auto'};
-  height: ${props => props.height || '34px'};
-  color: ${props => props.inactive ? '#D1D1D1' : '#2B2B2B'};
-  background: ${props => props.valid ? props.inactive ? '#EDEDED' : '#ffffff' : '#FEEBEB'};
+  width: ${props => props.width || "auto"};
+  height: ${props => props.height || "34px"};
+  color: ${props => (props.inactive ? "#D1D1D1" : "#2B2B2B")};
+  background: ${props =>
+    props.valid ? (props.inactive ? "#EDEDED" : "#ffffff") : "#FEEBEB"};
   padding: 0 10px;
   border-radius: 3px;
   box-shadow: none;
 
-  font-size: ${props => (props.fontSize ? props.fontSize : '12px')};
+  font-size: ${props => (props.fontSize ? props.fontSize : "12px")};
   font-family: ${props =>
-  props.fontFamily ? props.fontFamily : 'Roboto Mono'};
-  font-weight: ${props =>
-  props.fontWeight ? props.fontWeight : 'normal'};
+    props.fontFamily ? props.fontFamily : "Roboto Mono"};
+  font-weight: ${props => (props.fontWeight ? props.fontWeight : "normal")};
 
   outline: none;
 
@@ -63,12 +61,12 @@ const SInput = styled.input`
 
 const SLabel = styled.label`
   position: absolute;
-  top: ${props => (props.inactive ? '8px' : '-22px')};
-  left: ${props => (props.inactive ? '10px' : '10px')};
+  top: ${props => (props.inactive ? "8px" : "-22px")};
+  left: ${props => (props.inactive ? "10px" : "10px")};
   font-size: ${props => (props.fontSize ? props.fontSize : null)};
-  font-family: ${props => props.fontFamily ? props.fontFamily : null};
-  font-weight: ${props => props.fontWeight ? props.fontWeight : null};
-  color: ${props => props.inactive ? '#D1D1D1' : '#2B2B2B'};
+  font-family: ${props => (props.fontFamily ? props.fontFamily : null)};
+  font-weight: ${props => (props.fontWeight ? props.fontWeight : null)};
+  color: ${props => (props.inactive ? "#D1D1D1" : "#2B2B2B")};
   transition: all 0.2s ease-out;
 `;
 
@@ -88,6 +86,7 @@ export default class TagsInputAutoComplete extends Component {
       tags: this.props.tags
     };
     this.onKeyDown = this.onKeyDown.bind(this);
+    this.onFocus = this.onFocus.bind(this);
     this.onAddOption = this.onAddOption.bind(this);
     this.onAddNewOption = this.onAddNewOption.bind(this);
     this.handleChange = this.handleChange.bind(this);
@@ -95,18 +94,18 @@ export default class TagsInputAutoComplete extends Component {
 
   componentWillReceiveProps(nextProps) {
     if (nextProps.tags && nextProps.tags !== this.state.tags) {
-      this.setState({tags: nextProps.tags});
+      this.setState({ tags: nextProps.tags });
     }
   }
 
   handleChange(e) {
-    this.setState({value: e.target.value});
+    this.setState({ value: e.target.value });
     let filters = this.props.options.filter(item => {
       return (
         item.label.toLowerCase().indexOf(e.target.value.toLowerCase()) > -1
       );
     });
-    this.setState({dropDownOpen: filters.length > 0, options: filters});
+    this.setState({ dropDownOpen: filters.length > 0, options: filters });
   }
 
   onFocus() {
@@ -125,7 +124,7 @@ export default class TagsInputAutoComplete extends Component {
 
   onAddOption(item) {
     this.props.getAddedOptions && this.props.getAddedOptions(item);
-    !this.props.keepText ? this.setState({value: ""}) : null;
+    !this.props.keepText ? this.setState({ value: "" }) : null;
   }
 
   onAddNewOption() {
@@ -135,7 +134,7 @@ export default class TagsInputAutoComplete extends Component {
       name: this.state.value
     };
     this.props.getNewAddedOptions && this.props.getNewAddedOptions(tag);
-    !this.props.keepText ? this.setState({value: ""}) : null;
+    !this.props.keepText ? this.setState({ value: "" }) : null;
   }
 
   onKeyDown(event) {
@@ -146,7 +145,7 @@ export default class TagsInputAutoComplete extends Component {
         this.state.activeOption < this.state.options.length - 1
       ) {
         event.preventDefault();
-        this.setState({activeOption: this.state.activeOption + 1});
+        this.setState({ activeOption: this.state.activeOption + 1 });
       }
       if (
         event.key === "ArrowUp" &&
@@ -154,7 +153,7 @@ export default class TagsInputAutoComplete extends Component {
         this.state.activeOption > 0
       ) {
         event.preventDefault();
-        this.setState({activeOption: this.state.activeOption - 1});
+        this.setState({ activeOption: this.state.activeOption - 1 });
       }
       if (
         event.key === "Enter" &&
@@ -173,25 +172,26 @@ export default class TagsInputAutoComplete extends Component {
       <SContainer onClick={() => this.onFocus()}>
         <SLabel inactive={!this.state.active} onClick={() => this.onFocus()}>
           {this.props.placeholderText}
-          {
-            this.props.required ? (
-              <SRequiredLabel>
-                *
-              </SRequiredLabel>) : null
-          }
+          {this.props.required ? <SRequiredLabel>*</SRequiredLabel> : null}
         </SLabel>
-        <InputGroup style={{height: 'auto', padding: '4px 8px'}}>
+        <InputGroup style={{ height: "auto", padding: "4px 8px" }}>
           <InputGroupAddon addonType="prepend">
-            <TagList style={{marginTop: '5px'}} closeable={true} tags={this.state.tags} onClose={(e,tag,index) => this.props.onCloseTags && this.props.onCloseTags(e,tag,index)}/>
+            <TagList
+              style={{ marginTop: "5px" }}
+              closeable={true}
+              tags={this.state.tags}
+              onClose={(e, tag, index) =>
+                this.props.onCloseTags && this.props.onCloseTags(e, tag, index)
+              }
+            />
           </InputGroupAddon>
           <InputGroupButtonDropdown
             addonType="append"
             isOpen={this.state.dropDownOpen}
             toggle={() => this.toggleDropDown()}
           >
-
             <DropdownToggle
-              style={{padding: "0", border: "0"}}
+              style={{ padding: "0", border: "0" }}
               className={"btn-transparent text-robo text-normal"}
             >
               {""}
@@ -202,33 +202,34 @@ export default class TagsInputAutoComplete extends Component {
               fontSize={this.props.fontSize}
             >
               {this.state.options
-                .slice(0, this.props.optionsLimit || 9)
-                .map((item, key) => {
-                  return (
-                    <DropdownItem
-                      key={key}
-                      active={this.state.activeOption === key}
-                      onMouseOver={() => {
-                        this.setState({activeOption: key});
-                      }}
-                      style={
-                        this.state.activeOption === key
-                          ? {
-                            backgroundColor:
-                            this.props.dropBackground ||
-                            '#f92672'
+                ? this.state.options
+                    .slice(0, this.props.optionsLimit || 9)
+                    .map((item, key) => {
+                      return (
+                        <DropdownItem
+                          key={key}
+                          active={this.state.activeOption === key}
+                          onMouseOver={() => {
+                            this.setState({ activeOption: key });
+                          }}
+                          style={
+                            this.state.activeOption === key
+                              ? {
+                                  backgroundColor:
+                                    this.props.dropBackground || "#f92672"
+                                }
+                              : null
                           }
-                          : null
-                      }
-                      className={`text-robo text-normal ${
-                        this.state.option === item ? "text-primary" : ""
-                        }`}
-                      onClick={() => this.onAddOption(item)}
-                    >
-                      {item.label}
-                    </DropdownItem>
-                  );
-                })}
+                          className={`text-robo text-normal ${
+                            this.state.option === item ? "text-primary" : ""
+                          }`}
+                          onClick={() => this.onAddOption(item)}
+                        >
+                          {item.label}
+                        </DropdownItem>
+                      );
+                    })
+                : null}
             </SDropDownMenu>
             <SInput
               ref={this.InputRef}
@@ -253,7 +254,6 @@ export default class TagsInputAutoComplete extends Component {
               }}
             />
           </InputGroupButtonDropdown>
-
         </InputGroup>
       </SContainer>
     );

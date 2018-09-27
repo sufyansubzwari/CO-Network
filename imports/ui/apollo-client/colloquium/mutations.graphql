@@ -3,15 +3,18 @@ mutation CreateColloquium($entity: ColloquiumsInput!) {
     _id
     title
     description
-    venueName
     image
     owner {
       _id
     }
-    category {
+    tags {
       label
       value
       name
+    }
+    competences {
+      label
+      value
     }
     entity
     views

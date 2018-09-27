@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import FirstStep from "./Steps/FirstStep";
 import { MlWizardForm, WizardStepForm } from "btech-base-forms-component";
 import PropTypes from "prop-types";
+import moment from "moment/moment";
 
 /**
  * @module Colloquium
@@ -29,17 +30,26 @@ class ColloquiumForm extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    if (
-      nextProps.colloquium &&
-      nextProps.colloquium !== this.state.colloquium
-    ) {
+    if (nextProps.colloquium) {
       this.setState({
         colloquium: nextProps.colloquium
       });
     }
   }
 
-  componentWillMount() {}
+  componentWillMount() {
+    if (
+      this.props.location &&
+      this.props.location.state &&
+      this.props.location.state.colloquium
+    ) {
+      let colloquium = this.props.location.state.colloquium;
+      this.setState(
+        { colloquium: colloquium },
+        () => this.props.handleChange && this.props.handleChange(colloquium)
+      );
+    }
+  }
 
   render() {
     return (
@@ -64,7 +74,7 @@ class ColloquiumForm extends Component {
 }
 
 ColloquiumForm.defaultProps = {
-  data: {}
+  colloquium: {}
 };
 
 ColloquiumForm.propTypes = {

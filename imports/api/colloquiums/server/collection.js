@@ -40,11 +40,11 @@ Colloquiums.schema = new SimpleSchema({
     defaultValue: "COLLOQUIUM"
   },
   image: { type: String, optional: true },
-  name: { type: String, optional: true },
+  title: { type: String, optional: true },
   description: { type: String, optional: true },
-  competence: { type: Array, optional: true },
-  "competence.$": { type: Object, optional: true },
-  "competence.$.label": { type: String, optional: true },
+  competences: { type: Array, optional: true },
+  "competences.$": { type: Object, optional: true },
+  "competences.$.label": { type: String, optional: true },
   tags: {
     type: Array,
     optional: true

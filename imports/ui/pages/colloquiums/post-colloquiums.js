@@ -25,7 +25,7 @@ class PostColloquiums extends Component {
           }
         },
         competences: [],
-        categories: []
+        tags: []
       }
     };
   }
@@ -37,7 +37,7 @@ class PostColloquiums extends Component {
   }
 
   onCancel() {
-    this.props.history.push('/colloquiums');
+    this.props.history.push("/colloquiums");
   }
 
   handleBackgroundChange(src) {

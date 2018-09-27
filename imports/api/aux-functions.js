@@ -59,7 +59,6 @@ export const wrapOperators = json => {
         shadowCopy[key.replace(nestedDocs, ".")] = ownValue;
       }
     }
-    console.log("wrapOperators", JSON.stringify(shadowCopy));
     return shadowCopy;
   } else return json;
 };
@@ -68,7 +67,7 @@ export const normalizeTagsWithLevels = tags => {
   return tags.map(item => {
     const tag = Tags.service.getTag(item.tag);
     return {
-      tag: {...tag},
+      tag: { ...tag },
       level: item.level || "",
       levelColor: item.levelColor || "",
       icon: item.icon || ""

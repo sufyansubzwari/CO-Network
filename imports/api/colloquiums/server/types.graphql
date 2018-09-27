@@ -3,14 +3,14 @@
 type Colloquiums {
     _id: ID
     owner: User!
-    name: String
+    title: String
     entity: String
     views: Int
     description: String
     tags: [Tags]!
     image: String
     place: Places
-    competence: [ObjectType]
+    competences: [ObjectType]
 }
 
 type Query {
@@ -19,7 +19,7 @@ type Query {
 }
 
 input ColloquiumSearchInput{
-    name: TableStringFilterInput
+    title: TableStringFilterInput
     description: TableStringFilterInput
     tags: TableStringFilterInput
     location: [LocationInput]
@@ -27,13 +27,13 @@ input ColloquiumSearchInput{
 
 input ColloquiumsInput {
     _id: ID
-    name: String
+    title: String
     owner: String!
     description: String
-    competence: [TagsInput]
     image: String
-    tags: [TagsInput]
     place: PlacesInput
+    tags: [TagsInput]
+    competences: [ObjectTypeInput]
 }
 
 type Mutation {

@@ -56,7 +56,7 @@ class ItemsList extends Component {
         title={item.title || ""}
         subTitle={item.description || ""}
         image={item.image || null}
-        tags={item.category || item.positionTags || []}
+        tags={item.tags || item.category || item.positionTags || []}
         views={item.views}
         key={key}
       />

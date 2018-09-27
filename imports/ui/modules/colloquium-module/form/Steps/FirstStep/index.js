@@ -3,14 +3,13 @@ import {
   Input,
   TextArea,
   CheckBoxList,
-  InputAutoComplete,
   TagList
 } from "btech-base-forms-component";
+import MLTagsInput from "../../../../../components/TagsInputAutoComplete/TagsInputAutoComplete";
 import { Container, Layout } from "btech-layout";
 import { GeoInputLocation } from "btech-location";
 import { COLLOQUIUM_LEVEL } from "../../../../../constants";
-import styled from "styled-components";
-import { Mutation, Query } from "react-apollo";
+import { Query } from "react-apollo";
 import { GetTags } from "../../../../../apollo-client/tag";
 
 class FirstStep extends React.Component {
@@ -36,7 +35,6 @@ class FirstStep extends React.Component {
   changeLevel(actives) {
     const selected = this.state.competences.map((level, index) => {
       level["active"] = actives[index];
-      level["type"] = "COLLOQUIUM";
       return level;
     });
     const levels = selected.filter(element => element.active);
@@ -77,22 +75,44 @@ class FirstStep extends React.Component {
   onAddTags(tag) {
     if (tag) {
       let newTag = Object.assign({}, tag);
-      let categories = this.state.colloquium.categories || [];
+      let tags = this.state.colloquium.tags || [];
       !newTag.name ? (newTag.name = newTag.label) : null;
       newTag.type = "Colloquiums";
-      categories.push(newTag);
-      this.state.colloquium.categories = categories;
+      tags.push(newTag);
+      this.state.colloquium.tags = tags;
       this.setState({ colloquium: this.state.colloquium }, () =>
         this.notifyParent()
       );
     }
   }
 
-  onCloseTags(e, tag, index, name) {
-    this.state.colloquium.categories.splice(index, 1);
+  onCloseTags(e, tag, index) {
+    this.state.colloquium.tags.splice(index, 1);
     this.setState({ colloquium: this.state.colloquium }, () =>
       this.notifyParent()
     );
+  }
+
+  tagsSuggested(tags) {
+    if (tags) {
+      let sug = tags.map(element => {
+        return { ...element };
+      });
+      const entityTags = this.state.colloquium.tags || [];
+      return sug
+        .filter(
+          tag =>
+            !this.state.colloquium ||
+            !entityTags.length ||
+            entityTags.findIndex(item => item._id === tag._id) === -1
+        )
+        .sort((a, b) => b.used - a.used)
+        .map(tag => ({
+          ...tag,
+          active: entityTags && entityTags.some(item => item._id === tag._id)
+        }))
+        .slice(0, 5);
+    } else return [];
   }
 
   render() {
@@ -100,7 +120,7 @@ class FirstStep extends React.Component {
       <Layout rowGap={"25px"}>
         <Layout templateColumns={2} colGap={"20px"}>
           <Input
-            name={"name"}
+            name={"title"}
             model={this.state.colloquium}
             placeholderText={"Title"}
             getValue={this.notifyParent.bind(this)}
@@ -122,7 +142,7 @@ class FirstStep extends React.Component {
         </Container>
         <Container>
           <CheckBoxList
-            placeholderText={"Competence"}
+            placeholderText={"Competences"}
             options={this.state.competences}
             checkboxVerticalSeparation={"10px"}
             checkboxSize={"15px"}
@@ -134,30 +154,43 @@ class FirstStep extends React.Component {
             {({ loading, error, data }) => {
               if (error) return <div>Error</div>;
               return (
-                <InputAutoComplete
-                  placeholderText={"Category Tags"}
-                  getAddedOptions={this.onAddTags.bind(this)}
-                  getNewAddedOptions={this.onAddTags.bind(this)}
-                  options={data.tags}
-                  model={this.state.colloquium}
-                  name={"categories"}
-                />
+                <Container>
+                  <MLTagsInput
+                    placeholderText={"Category Tags"}
+                    getAddedOptions={this.onAddTags.bind(this)}
+                    getNewAddedOptions={this.onAddTags.bind(this)}
+                    onCloseTags={(e, tag, index) =>
+                      this.onCloseTags(e, tag, index)
+                    }
+                    options={data.tags || []}
+                    tags={
+                      this.state.colloquium.tags &&
+                      this.state.colloquium.tags.map(item => ({
+                        active: true,
+                        ...item
+                      }))
+                    }
+                  />
+                  <Container mt={"10px"}>
+                    <TagList
+                      tags={this.tagsSuggested(data.tags)}
+                      onSelect={(event, tag, index) => {
+                        if (!tag.active) {
+                          delete tag.active;
+                          this.onAddTags(tag);
+                        } else {
+                          const pos = this.state.colloquium.tags.findIndex(
+                            item => item._id === tag._id
+                          );
+                          this.onCloseTags(event, tag, pos);
+                        }
+                      }}
+                    />
+                  </Container>
+                </Container>
               );
             }}
           </Query>
-          <Container mt={"10px"}>
-            <TagList
-              tags={
-                this.state.colloquium.cateories &&
-                this.state.organization.tech.stack.map(item => ({
-                  active: true,
-                  ...item
-                }))
-              }
-              closeable={true}
-              onClose={(e, tag, index) => this.onCloseTags(e, tag, index)}
-            />
-          </Container>
         </Container>
       </Layout>
     );
