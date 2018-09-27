@@ -1,0 +1,12 @@
+# types for Tags namespace
+
+input ViewsInput {
+    user: String
+    entityViewed: String
+    entityType: String
+    actualDate: Date
+}
+
+type Mutation {
+    viewUpdate(view: ViewsInput): Boolean
+}

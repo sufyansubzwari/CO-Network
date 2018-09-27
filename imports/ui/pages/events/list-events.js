@@ -1,16 +1,18 @@
-import React, { Component } from "react";
-import { ItemsList, ListLayout, Preview } from "../../../ui/components";
-import { Mutation, graphql } from "react-apollo";
-import { connect } from "react-redux";
-import { PreviewData } from "../../actions/PreviewActions";
+import React, {Component} from "react";
+import {ItemsList, ListLayout, Preview} from "../../../ui/components";
+import {Mutation, graphql} from "react-apollo";
+import {connect} from "react-redux";
+import {PreviewData} from "../../actions/PreviewActions";
 import EventPreviewBody from "../../components/Preview/EventPreviewBody";
 import {
   DeleteEvent,
   GetEvents,
   UpdateImageEvent
 } from "../../apollo-client/event";
-import { FollowAction } from "../../apollo-client/follow";
-import { withRouter } from "react-router-dom";
+import {FollowAction} from "../../apollo-client/follow";
+import {ViewsCountUpdate} from "../../apollo-client/viewCount";
+import {withRouter} from "react-router-dom";
+import {Meteor} from 'meteor/meteor';
 
 /**
  * @module Events
@@ -37,7 +39,7 @@ class ListEvents extends Component {
       this.props.location.state.postEvent
     ) {
       this.reFetchQuery();
-      this.props.history.replace({ state: {} });
+      this.props.history.replace({state: {}});
     }
   }
 
@@ -54,15 +56,24 @@ class ListEvents extends Component {
       nextProps.filterStatus &&
       nextProps.filterStatus.filters &&
       JSON.stringify(this.state.filterStatus) !==
-        JSON.stringify(nextProps.filterStatus.filters)
+      JSON.stringify(nextProps.filterStatus.filters)
     ) {
       const filters = Object.assign({}, nextProps.filterStatus.filters);
-      this.setState({ filterStatus: filters }, () => this.reFetchQuery());
+      this.setState({filterStatus: filters}, () => this.reFetchQuery());
     }
   }
 
-  onChangeSelection(item, key) {
-    this.setState({ selectedItem: item, selectedIndex: key });
+  onChangeSelection(item, key, viewsUpdate) {
+    const view = {
+      user: Meteor.userId(),
+      entityViewed: item._id,
+      entityType: item.entity,
+      actualDate: new Date()
+    };
+    viewsUpdate({variables: {view: view}}).then(()=>{
+      this.setState({selectedItem: item, selectedIndex: key}, () => this.reFetchQuery());
+    })
+
   }
 
   fetchMoreSelection(isLoading) {
@@ -76,8 +87,8 @@ class ListEvents extends Component {
   }
 
   removeEvent(deleteEvent, event) {
-    deleteEvent({ variables: { id: event._id } });
-    this.setState({ selectedItem: null }, () => this.reFetchQuery());
+    deleteEvent({variables: {id: event._id}});
+    this.setState({selectedItem: null}, () => this.reFetchQuery());
   }
 
   editEvent() {
@@ -91,11 +102,11 @@ class ListEvents extends Component {
 
   handleBackgroundChange(updateEventImage, src) {
     updateEventImage({
-      variables: { id: this.state.selectedItem._id, image: src }
+      variables: {id: this.state.selectedItem._id, image: src}
     }).then(result => {
-      const event = { ...this.state.selectedItem };
+      const event = {...this.state.selectedItem};
       if (src) event.image = src;
-      this.setState({ selectedItem: event }, () => this.reFetchQuery());
+      this.setState({selectedItem: event}, () => this.reFetchQuery());
     });
   }
 
@@ -105,7 +116,7 @@ class ListEvents extends Component {
   }
 
   onSearch(value) {
-    this.setState({ filter: value }, () => this.reFetchQuery());
+    this.setState({filter: value}, () => this.reFetchQuery());
   }
 
   handleFollow(followAction, follow) {
@@ -133,125 +144,130 @@ class ListEvents extends Component {
       (!this.props.data.events || !this.props.data.events.length);
     return (
       <ListLayout entityType={"events"} onSearchText={this.onSearch.bind(this)}>
-        <ItemsList
-          key={"listComponent"}
-          title={"Events"}
-          data={this.props.data.events}
-          loading={isLoading}
-          onFetchData={() => this.fetchMoreSelection(isLoading)}
-          onSelectCard={(item, key) => this.onChangeSelection(item, key)}
-        />
-          <Mutation key={"rightSide"} mutation={DeleteEvent}>
-            {(deleteEvent, { eventDeleted }) => (
-              <Mutation
-                mutation={UpdateImageEvent}
-                onError={error => this.errorOnBackgroundChange(error)}
-              >
-                {(updateEventImage, { event }) => (
-                  <Mutation
-                    mutation={FollowAction}
-                    onError={error => this.errorOnBackgroundChange(error)}
-                  >
-                    {(followAction, { followResult }) => {
-                      const follow =
-                        this.props.curUser &&
-                        this.props.curUser._id &&
-                        this.state.selectedItem &&
-                        this.state.selectedItem.followerList &&
-                        this.state.selectedItem.followerList.indexOf(
-                          this.props.curUser._id
-                        ) > -1;
-                      return (
-                        <Preview
-                    onClose={()=>this.onChangeSelection(null,null)}key={"rightSide"}isOpen={!!this.state.selectedItem}
-                    navlinks={["Details"]}
-                    navClicked={index => console.log(index)}
-                    navOptions={[
-                      {
-                        text: !follow ?"Follow": "Unfollow",
-                        checkVisibility: () => {
-                          const element = this.state.selectedItem;
-                          return (
-                            element &&
-                            element._id &&
-                            element.owner &&
-                            this.props.curUser &&
-                            element.owner._id !== this.props.curUser._id
-                          );
-                        },
-                        onClick: () =>
-                          this.handleFollow(followAction, follow)
-                      },
-                      {
-                        text: "Edit",
-                        checkVisibility: () => {
-                          const element = this.state.selectedItem;
-                          return (
-                            element &&
-                            element._id &&
-                            element.owner &&
-                            this.props.curUser &&
-                            element.owner._id === this.props.curUser._id
-                          );
-                        },
-                        onClick: () => {
-                          this.editEvent();
-                        }
-                      },
-                      {
-                        text: "Remove",
-                        icon: "delete",
-                        checkVisibility: () => {
-                          const element = this.state.selectedItem;
-                          return (
-                            element &&
-                            element._id &&
-                            element.owner &&
-                            this.props.curUser &&
-                            element.owner._id === this.props.curUser._id
-                          );
-                        },
-                        onClick: () => {
-                          this.removeEvent(
-                            deleteEvent,
-                            this.state.selectedItem
-                          );
-                        }
-                      }
-                    ]}
-                    index={this.state.selectedIndex}
-                    data={this.state.selectedItem}
-                    allowChangeImages={
-                      this.state.selectedItem &&
-                      this.state.selectedItem.owner &&
+        <Mutation key={"listComponent"} mutation={ViewsCountUpdate}>
+          {(viewsUpdate, {}) => (
+            <ItemsList
+              key={"listComponent"}
+              title={"Events"}
+              data={this.props.data.events}
+              loading={isLoading}
+              onFetchData={() => this.fetchMoreSelection(isLoading)}
+              onSelectCard={(item, key) => this.onChangeSelection(item, key, viewsUpdate)}
+            />
+          )}
+        </Mutation>
+        <Mutation key={"rightSide"} mutation={DeleteEvent}>
+          {(deleteEvent, {eventDeleted}) => (
+            <Mutation
+              mutation={UpdateImageEvent}
+              onError={error => this.errorOnBackgroundChange(error)}
+            >
+              {(updateEventImage, {event}) => (
+                <Mutation
+                  mutation={FollowAction}
+                  onError={error => this.errorOnBackgroundChange(error)}
+                >
+                  {(followAction, {followResult}) => {
+                    const follow =
                       this.props.curUser &&
-                      this.state.selectedItem.owner._id ===
+                      this.props.curUser._id &&
+                      this.state.selectedItem &&
+                      this.state.selectedItem.followerList &&
+                      this.state.selectedItem.followerList.indexOf(
                         this.props.curUser._id
-                    }
-                    backGroundImage={
-                      this.state.selectedItem
-                        ? this.state.selectedItem.image
-                        : null
-                    }
-                    onBackgroundChange={imageSrc =>
-                      this.handleBackgroundChange(updateEventImage, imageSrc
-                    )
-                  }
-                    ><EventPreviewBody event={this.state.selectedItem} />
-                  </Preview>);
-                    }}
-                  </Mutation>
-                )}
-              </Mutation>
-            )}
-          </Mutation>
+                      ) > -1;
+                    return (
+                      <Preview
+                        onClose={() => this.onChangeSelection(null, null)} key={"rightSide"}
+                        isOpen={!!this.state.selectedItem}
+                        navlinks={["Details"]}
+                        navClicked={index => console.log(index)}
+                        navOptions={[
+                          {
+                            text: !follow ? "Follow" : "Unfollow",
+                            checkVisibility: () => {
+                              const element = this.state.selectedItem;
+                              return (
+                                element &&
+                                element._id &&
+                                element.owner &&
+                                this.props.curUser &&
+                                element.owner._id !== this.props.curUser._id
+                              );
+                            },
+                            onClick: () =>
+                              this.handleFollow(followAction, follow)
+                          },
+                          {
+                            text: "Edit",
+                            checkVisibility: () => {
+                              const element = this.state.selectedItem;
+                              return (
+                                element &&
+                                element._id &&
+                                element.owner &&
+                                this.props.curUser &&
+                                element.owner._id === this.props.curUser._id
+                              );
+                            },
+                            onClick: () => {
+                              this.editEvent();
+                            }
+                          },
+                          {
+                            text: "Remove",
+                            icon: "delete",
+                            checkVisibility: () => {
+                              const element = this.state.selectedItem;
+                              return (
+                                element &&
+                                element._id &&
+                                element.owner &&
+                                this.props.curUser &&
+                                element.owner._id === this.props.curUser._id
+                              );
+                            },
+                            onClick: () => {
+                              this.removeEvent(
+                                deleteEvent,
+                                this.state.selectedItem
+                              );
+                            }
+                          }
+                        ]}
+                        index={this.state.selectedIndex}
+                        data={this.state.selectedItem}
+                        allowChangeImages={
+                          this.state.selectedItem &&
+                          this.state.selectedItem.owner &&
+                          this.props.curUser &&
+                          this.state.selectedItem.owner._id ===
+                          this.props.curUser._id
+                        }
+                        backGroundImage={
+                          this.state.selectedItem
+                            ? this.state.selectedItem.image
+                            : null
+                        }
+                        onBackgroundChange={imageSrc =>
+                          this.handleBackgroundChange(updateEventImage, imageSrc
+                          )
+                        }
+                      ><EventPreviewBody event={this.state.selectedItem}/>
+                      </Preview>);
+                  }}
+                </Mutation>
+              )}
+            </Mutation>
+          )}
+        </Mutation>
       </ListLayout>
     );
   }
 }
 
 const mapStateToProps = state => {
-  const { previewData, filterStatus } = state;
+  const {previewData, filterStatus} = state;
   return {
     previewData: previewData,
     filterStatus: filterStatus
