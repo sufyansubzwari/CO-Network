@@ -73,7 +73,7 @@ const SLabel = styled.label`
 `;
 
 export default class TagsInputAutoComplete extends Component {
-  InputRef = React.createRef();
+
 
   constructor(props) {
     super(props);
@@ -87,6 +87,7 @@ export default class TagsInputAutoComplete extends Component {
       activeOption: -1,
       tags: this.props.tags
     };
+    this.InputRef = React.createRef();
     this.onKeyDown = this.onKeyDown.bind(this);
     this.onAddOption = this.onAddOption.bind(this);
     this.onAddNewOption = this.onAddNewOption.bind(this);
@@ -231,11 +232,11 @@ export default class TagsInputAutoComplete extends Component {
                 })}
             </SDropDownMenu>
             <SInput
-              ref={this.InputRef}
+              innerRef={this.InputRef}
               type={"text"}
-              onFocus={this.onFocus}
+              // onFocus={this.onFocus}
               placeholder={this.props.inputPlaceholder}
-              autoFocus={this.props.autoFocus}
+              // autoFocus={this.props.autoFocus}
               onChange={this.handleChange}
               disabled={this.props.disabled}
               placeholderModel={this.props.placeholder}
