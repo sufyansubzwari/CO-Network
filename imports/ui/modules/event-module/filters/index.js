@@ -102,13 +102,13 @@ class EventsFilters extends React.Component {
         onClose={() => this.props.onClose && this.props.onClose()}
       >
         <FilterItem>
-          {/*<GeoInputLocation*/}
-            {/*name={"location"}*/}
-            {/*model={this.state}*/}
-            {/*placeholder={"Location"}*/}
-            {/*isGeoLocationAvailable={true}*/}
-            {/*onChange={this.notifyParentLocation.bind(this)}*/}
-          {/*/>*/}
+          <GeoInputLocation
+            name={"location"}
+            model={this.state}
+            placeholder={"Location"}
+            isGeoLocationAvailable={true}
+            onChange={this.notifyParentLocation.bind(this)}
+          />
           <Layout
             mt={"10px"}
             customTemplateColumns={"70px 70px 70px"}

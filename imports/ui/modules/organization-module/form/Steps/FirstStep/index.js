@@ -90,15 +90,15 @@ class FirstStep extends React.Component {
             placeholderText={"Organization Name"}
             getValue={this.notifyParent.bind(this)}
           />
-          {/*<GeoInputLocation*/}
-            {/*model={this.state.organization.place}*/}
-            {/*name={"location"}*/}
-            {/*placeholder={"Location"}*/}
-            {/*isGeoLocationAvailable={true}*/}
-            {/*onChange={(model, name, value) =>*/}
-              {/*this.notifyParentLocation(model, name, value)*/}
-            {/*}*/}
-          {/*/>*/}
+          <GeoInputLocation
+            model={this.state.organization.place}
+            name={"location"}
+            placeholder={"Location"}
+            isGeoLocationAvailable={true}
+            onChange={(model, name, value) =>
+              this.notifyParentLocation(model, name, value)
+            }
+          />
         </Layout>
         <CheckBoxList
           placeholderText={"Organization Type"}

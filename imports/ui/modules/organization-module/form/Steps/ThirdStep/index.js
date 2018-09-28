@@ -104,23 +104,21 @@ class ThirdStep extends React.Component {
               return (
                   <Container mt={'25px'}>
                       <MLTagsInput
-                          placeholderText={"Other"}
+                          placeholderText={"Tags that best describe your organization"}
                           getAddedOptions={this.onAddTags.bind(
                               this,
-                              "otherlooking",
-                              "LookingFor"
+                              "description"
                           )}
                           getNewAddedOptions={this.onAddTags.bind(
                               this,
-                              "otherlooking",
-                              "LookingFor"
+                              "description"
                           )}
                           options={data.tags}
                           model={{ others: [] }}
                           name={"others"}
                           tags={
-                              this.state.user.speaker && this.state.user.speaker.otherlooking
-                                  ? this.state.user.speaker.otherlooking.map(item => ({
+                              this.state.organization.description && this.state.organization.description.length
+                                  ? this.state.organization.description.map(item => ({
                                       active: true,
                                       useIcon: true,
                                       levelColor: item.levelColor || "",
@@ -132,38 +130,13 @@ class ThirdStep extends React.Component {
                                   : []
                           }
                           onCloseTags={(e, tag, index) =>
-                              this.onCloseTags(e, tag, index, "otherlooking")
+                              this.onCloseTags(e, tag, index, "description")
                           }
                       />
                   </Container>
-                // <InputAutoComplete
-                //   placeholderText={"Tags that best describe your organization"}
-                //   getAddedOptions={this.onAddTags.bind(this, "description")}
-                //   getNewAddedOptions={this.onAddTags.bind(this, "description")}
-                //   options={data.tags}
-                //   model={{ others: [] }}
-                //   name={"others"}
-                // />
               );
             }}
           </Query>
-          <Container mt={"10px"}>
-            <TagList
-              tags={
-                this.state.organization.description &&
-                this.state.organization.description.length > 0
-                  ? this.state.organization.description.map(item => ({
-                      active: true,
-                      ...item
-                    }))
-                  : []
-              }
-              closeable={true}
-              onClose={(e, tag, index) =>
-                this.onCloseTags(e, tag, index, "description")
-              }
-            />
-          </Container>
         </Container>
       </Layout>
     );
