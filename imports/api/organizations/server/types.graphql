@@ -24,7 +24,7 @@ type Organizations {
 }
 
 type Tech {
-    stack: [Tags]
+    stack: [LevelTagsType]
     salaryRange: SalaryRange
     industry: [Tags]
     jobType: [ObjectType]
@@ -151,7 +151,7 @@ input ReasonInput {
 }
 
 input TechInput {
-    stack: [TagsInput]
+    stack: [LevelTagsInput]
     salaryRange: SalaryRangeInput
     industry: [TagsInput]
     jobType: [ObjectTypeInput]

@@ -6,7 +6,8 @@ import {
   ProductService,
   Location,
   Title,
-  Social
+  Social,
+  Media
 } from "./components/index";
 
 class OrganizationPreviewBody extends React.Component {
@@ -38,6 +39,18 @@ class OrganizationPreviewBody extends React.Component {
     return products;
   }
 
+    handleMedia() {
+        let media = [];
+        if (this.state.organization && this.state.organization.media)
+            media = this.state.organization.media.map((med, index) => (
+                <Container>
+                    <Text header={`Media`} marginBottom={"0px"} />
+                    <Media data={med} file={med.files}/>
+                </Container>
+            ));
+        return media;
+    }
+
   handleSocialInfo() {
     let socials = [];
     if (this.state.organization && this.state.organization.social)
@@ -68,10 +81,16 @@ class OrganizationPreviewBody extends React.Component {
       this.state.organization.tech &&
       this.state.organization.tech[elementName]
     )
-      elements = this.state.organization.tech[elementName].map(element => ({
-        ...element,
-        active: true
-      }));
+      if(elementName === 'stack')
+        elements = this.state.organization.tech[elementName].map(element => ({
+           ...element.tag,
+          active: true
+        }));
+      else
+          elements = this.state.organization.tech[elementName].map(element => ({
+              ...element,
+              active: true
+          }));
     return elements;
   }
 
@@ -96,6 +115,9 @@ class OrganizationPreviewBody extends React.Component {
     let products = this.handleProducts();
     // checkboxes
     let organizationTypes = this.handleOrgType();
+    //media
+    let media = this.handleMedia();
+
     let actively =
       this.state.organization &&
       this.state.organization.actively &&
@@ -107,8 +129,8 @@ class OrganizationPreviewBody extends React.Component {
       <Layout rowGap={"15px"}>
         {this.state.organization ? (
           <Container>
-            <Title text={this.state.organization.name} />
-            <Location location={this.state.organization.place} />
+            <Container><Title text={this.state.organization.name} /></Container>
+              <Container><Location location={this.state.organization.place} /></Container>
             <Social socials={socials} />
             {organizationTypes && organizationTypes.length ? (
               <Text header={"Organization Type"}>
@@ -165,11 +187,11 @@ class OrganizationPreviewBody extends React.Component {
                 <Text
                   header={"Salary Range"}
                   text={`${
-                    this.state.organization.tech.salaryRange.min !== ""
+                    this.state.organization.tech.salaryRange.min !== null
                       ? this.state.organization.tech.salaryRange.min
                       : null
                   } - ${
-                    this.state.organization.tech.salaryRange.max !== ""
+                    this.state.organization.tech.salaryRange.max !== null
                       ? this.state.organization.tech.salaryRange.max
                       : null
                   }`}
@@ -195,6 +217,7 @@ class OrganizationPreviewBody extends React.Component {
               ) : null}
             </Layout>
             {products}
+            {media}
           </Container>
         ) : null}
       </Layout>

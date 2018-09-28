@@ -8,6 +8,8 @@ import { Container, Layout } from "btech-layout";
 import { ACTIVELY } from "../../../../../constants";
 import { GetTags } from "../../../../../apollo-client/tag";
 import { Query } from "react-apollo";
+import MLTagsInput from "../../../../../components/TagsInputAutoComplete/TagsInputAutoComplete";
+
 
 class ThirdStep extends React.Component {
   constructor(props) {
@@ -100,34 +102,41 @@ class ThirdStep extends React.Component {
               if (loading) return <div>Fetching</div>;
               if (error) return <div>Error</div>;
               return (
-                <InputAutoComplete
-                  placeholderText={"Tags that best describe your organization"}
-                  getAddedOptions={this.onAddTags.bind(this, "description")}
-                  getNewAddedOptions={this.onAddTags.bind(this, "description")}
-                  options={data.tags}
-                  model={{ others: [] }}
-                  name={"others"}
-                />
+                  <Container mt={'25px'}>
+                      <MLTagsInput
+                          placeholderText={"Tags that best describe your organization"}
+                          getAddedOptions={this.onAddTags.bind(
+                              this,
+                              "description"
+                          )}
+                          getNewAddedOptions={this.onAddTags.bind(
+                              this,
+                              "description"
+                          )}
+                          options={data.tags}
+                          model={{ others: [] }}
+                          name={"others"}
+                          tags={
+                              this.state.organization.description && this.state.organization.description.length
+                                  ? this.state.organization.description.map(item => ({
+                                      active: true,
+                                      useIcon: true,
+                                      levelColor: item.levelColor || "",
+                                      icon: item.icon || "",
+                                      level: item.level || "",
+                                      ...item,
+                                      showOptions: !item.levelColor
+                                  }))
+                                  : []
+                          }
+                          onCloseTags={(e, tag, index) =>
+                              this.onCloseTags(e, tag, index, "description")
+                          }
+                      />
+                  </Container>
               );
             }}
           </Query>
-          <Container mt={"10px"}>
-            <TagList
-              tags={
-                this.state.organization.description &&
-                this.state.organization.description.length > 0
-                  ? this.state.organization.description.map(item => ({
-                      active: true,
-                      ...item
-                    }))
-                  : []
-              }
-              closeable={true}
-              onClose={(e, tag, index) =>
-                this.onCloseTags(e, tag, index, "description")
-              }
-            />
-          </Container>
         </Container>
       </Layout>
     );
