@@ -155,23 +155,6 @@ class ListJobs extends Component {
                     navClicked={index => console.log(index)}
                     navOptions={[
                       {
-                        text: "Apply",
-                        checkVisibility: () => {
-                          // todo: check if the user apply before for this job
-                          const element = this.state.selectedItem;
-                          return (
-                            element &&
-                            element._id &&
-                            element.owner &&
-                            this.props.curUser &&
-                            element.owner._id !== this.props.curUser._id
-                          );
-                        },
-                        onClick: () => {
-                          console.log("Adding");
-                        }
-                      },
-                      {
                         text: "Edit",
                         checkVisibility: () => {
                           const element = this.state.selectedItem;

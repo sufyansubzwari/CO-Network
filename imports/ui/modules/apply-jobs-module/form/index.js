@@ -7,28 +7,7 @@ class ApplyJobForm extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            apply: {
-                phone: "",
-                remote: "",
-                description: "",
-                jobSpecific: {
-                    candidate: "",
-                    questions: "",
-                    passion: "",
-                    existingProblem: "",
-                    steps: ""
-                },
-                professional:{
-                    expertise: [],
-                    salaryRange: {
-                        min: "",
-                        max: ""
-                    },
-                    degree: {},
-                    languages: [],
-                    industry: []
-                }
-            }
+            apply: props.apply
         };
         this.handleChange = this.handleChange.bind(this);
     }

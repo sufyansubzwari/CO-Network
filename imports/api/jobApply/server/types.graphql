@@ -2,7 +2,8 @@
 
 type JobApply {
     _id: ID
-    firstName: String
+    name: String
+    owner: User
     lastName: String
     country: String
     cities: String
@@ -40,6 +41,7 @@ type JobExperience {
     employer: String
     position: String
     description: String
+    edit: Boolean
 }
 
 type Query {
@@ -50,7 +52,8 @@ type Query {
 
 input JobApplyInput {
     _id: String
-    firstName: String
+    owner: String
+    name: String
     lastName: String
     country: String
     cities: String
@@ -63,7 +66,7 @@ input JobApplyInput {
     jobSpecific: JobSpecificInput
     professional: JobProfessionalInput
     experience: [JobExperienceInput]
-    achievements: [String]
+    achievements: [AchievementsInput]
     job: String
 }
 
@@ -88,6 +91,7 @@ input JobExperienceInput {
     employer: String
     position: String
     description: String
+    edit: String
 }
 
 type Mutation {

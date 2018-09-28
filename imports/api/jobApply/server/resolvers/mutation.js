@@ -37,7 +37,7 @@ Mutation.jobApply = async (root, { jobApply }, context) => {
   const inserted =  await Service.jobApply(entity);
 
   const f = await Achievement.deleteAchievement({owner: inserted._id});
-  console.log("deleted ------", f);
+
   if (achievementsList && achievementsList.length > 0) {
     achievementsList.forEach(async ach => {
       if (ach._id) {

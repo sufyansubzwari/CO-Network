@@ -133,12 +133,14 @@ class FirstStep extends React.Component {
             <Layout rowGap={"25px"}>
                 <Layout templateColumns={2} colGap={"20px"}>
                     <Input
+                      required={true}
                         name={"name"}
                         model={this.state.apply}
                         placeholderText={"First Name"}
                         getValue={this.notifyParent.bind(this)}
                     />
                     <Input
+                      required={true}
                         name={"lastName"}
                         model={this.state.apply}
                         placeholderText={"Last Name"}
@@ -147,12 +149,14 @@ class FirstStep extends React.Component {
                 </Layout>
                 <Layout templateColumns={2} colGap={"20px"}>
                     <Input
+                      required={true}
                         name={"country"}
                         model={this.state.apply}
                         placeholderText={"Country"}
                         getValue={this.notifyParent.bind(this)}
                     />
                     <Input
+                      required={true}
                         name={"cities"}
                         model={this.state.apply}
                         placeholderText={"Preferred work cities"}
@@ -182,6 +186,7 @@ class FirstStep extends React.Component {
                 </Layout>
                 <Layout templateColumns={2} colGap={"20px"}>
                 <Input
+                  required={true}
                     name={"email"}
                     model={this.state.apply}
                     placeholderText={"Email Address"}

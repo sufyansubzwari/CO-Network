@@ -21,7 +21,7 @@ class SecondStep extends React.Component {
     notifyParent(model, name, value) {
         if (model && name && value) {
             let apply = this.state.apply;
-            apply.aboutMe[name] = value;
+            apply.jobSpecific[name] = value;
             this.setState(
                 { apply: apply },
                 () => this.props.onChange && this.props.onChange(this.state.apply)

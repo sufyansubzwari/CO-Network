@@ -1,0 +1,17 @@
+mutation CreateJobApply($entity: JobApplyInput!) {
+    jobApply(jobApply: $entity) {
+        _id
+    }
+}
+
+mutation DeleteJobApply($id: String!) {
+    deleteJobApply(_id: $id) {
+        _id
+    }
+}
+
+mutation UpdateJobApplyImage($id: String!, $image: String!) {
+    updateJobApplyImage(_id: $id, image: $image) {
+        _id
+    }
+}

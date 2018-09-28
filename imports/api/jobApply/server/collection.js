@@ -36,7 +36,7 @@ JobApply.schema = new SimpleSchema({
       if (this.isInsert || this.isUpdate) return new Date();
     },
   },
-  firstName: {
+  name: {
       type: String,
   },
   lastName: {
