@@ -201,7 +201,6 @@ class FirstStep extends React.Component {
                         model={this.state.apply}
                         placeholderText={"Website"}
                         getValue={this.notifyParent.bind(this)}
-                        validate={EMAIL_REGEX}
                     />
                     <Container/>
                 </Layout>

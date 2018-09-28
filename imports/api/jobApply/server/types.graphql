@@ -1,0 +1,97 @@
+# types for Jobs namespace
+
+type JobApply {
+    _id: ID
+    firstName: String
+    lastName: String
+    country: String
+    cities: String
+    email: String
+    phone: String
+    website: String
+    cover: String
+    image: String
+    remote: Boolean
+    jobSpecific: JobSpecific
+    professional: JobProfessional
+    experience: [JobExperience]
+    achievements: [Achievements]
+    job: String
+}
+
+type JobSpecific {
+    candidate: String
+    existingProblem: String
+    passion: String
+    questions: String
+    steps: String
+}
+
+type JobProfessional {
+    salaryRange: SalaryRange
+    degree: ObjectType
+    expertise: [LevelTagsType]
+    industry: [Tags]
+    languages: [LevelTagsType]
+}
+
+type JobExperience {
+    years: ObjectType
+    employer: String
+    position: String
+    description: String
+}
+
+type Query {
+    jobsApply(filter: String, limit: Int, jobsApply: JobsInputSearch): [JobApply]
+    jobApply(_id: String): JobApply
+    jobApplyCounts(field: String): [Counts]
+}
+
+input JobApplyInput {
+    _id: String
+    firstName: String
+    lastName: String
+    country: String
+    cities: String
+    email: String
+    phone: String
+    website: String
+    cover: String
+    image: String
+    remote: Boolean
+    jobSpecific: JobSpecificInput
+    professional: JobProfessionalInput
+    experience: [JobExperienceInput]
+    achievements: [String]
+    job: String
+}
+
+input JobSpecificInput {
+    candidate: String
+    existingProblem: String
+    passion: String
+    questions: String
+    steps: String
+}
+
+input JobProfessionalInput {
+    salaryRange: SalaryRangeInput
+    degree: ObjectTypeInput
+    expertise: [LevelTagsInput]
+    industry: [TagsInput]
+    languages: [LevelTagsInput]
+}
+
+input JobExperienceInput {
+    years: ObjectTypeInput
+    employer: String
+    position: String
+    description: String
+}
+
+type Mutation {
+    jobApply(jobApply: JobApplyInput!): JobApply
+    updateJobApplyImage(_id: String!, image: String!): JobApply
+    deleteJobApply(_id: String!): JobApply
+}
