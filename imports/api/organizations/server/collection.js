@@ -77,8 +77,34 @@ Organizations.schema = new SimpleSchema({
   tech: { type: Object, optional: true },
   "tech.industry": { type: Array, optional: true },
   "tech.industry.$": { type: String, optional: true },
-  "tech.stack": { type: Array, optional: true },
-  "tech.stack.$": { type: String, optional: true },
+    "tech.stack": {
+        type: Array,
+        optional: true
+    },
+    "tech.stack.$": {
+        type: Object,
+        optional: true
+    },
+    "tech.stack.$.tag": {
+        type: String,
+        optional: true,
+        label: "ID of tag entity"
+    },
+    "tech.stack.$.level": {
+        type: String,
+        optional: true,
+        label: "level of the tag"
+    },
+    "tech.stack.$.icon": {
+        type: String,
+        optional: true,
+        label: "icon of the tag"
+    },
+    "tech.stack.$.levelColor": {
+        type: String,
+        optional: true,
+        label: "color of the tag"
+    },
   "tech.salaryRange": { type: Object, optional: true },
   "tech.salaryRange.min": { type: Number, optional: true },
   "tech.salaryRange.max": { type: Number, optional: true },

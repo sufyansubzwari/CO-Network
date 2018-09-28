@@ -59,11 +59,18 @@ query GetOrganizations($limit: Int, $filter: String, $organizations: Organizatio
                 max
             }
             stack{
-                _id
-                label
-                value
-                name
-            }
+                      tag{
+                        _id
+                        name
+                        label
+                        value
+                        type
+                        used
+                      }
+                      level
+                      levelColor
+                      icon
+                    }
             jobType{
                 label
             }
