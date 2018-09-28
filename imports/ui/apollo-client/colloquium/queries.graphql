@@ -31,5 +31,8 @@ query GetColloquiums($limit: Int, $filter: String, $events: ColloquiumSearchInpu
         }
       }
     }
+    entity
+    views
+    createdAt
   }
 }

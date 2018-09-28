@@ -7,8 +7,8 @@ import JobPreviewBody from "../../components/Preview/JobPreviewBody";
 import { CreateJob, DeleteJob, UpdateJobsImage } from "../../apollo-client/job";
 import { GetJobs } from "../../apollo-client/job";
 import { withRouter } from "react-router-dom";
-import {ViewsCountUpdate} from "../../apollo-client/viewCount";
-import {Meteor} from "meteor/meteor";
+import { ViewsCountUpdate } from "../../apollo-client/viewCount";
+import { Meteor } from "meteor/meteor";
 
 /**
  * @module Jobs
@@ -58,16 +58,22 @@ class ListJobs extends Component {
     });
   }
 
-  onChangeSelection(item, key,viewsUpdate) {
-    const view = {
-      user: Meteor.userId(),
-      entityViewed: item._id,
-      entityType: item.entity,
-      actualDate: new Date()
-    };
-    viewsUpdate({variables: {view: view}}).then(()=>{
-      this.setState({selectedItem: item, selectedIndex: key}, () => this.reFetchQuery());
-    })
+  onChangeSelection(item, key, viewsUpdate) {
+    if (item) {
+      const view = {
+        user: this.props.curUser._id,
+        entityViewed: item._id,
+        entityType: item.entity,
+        actualDate: new Date()
+      };
+      if (view.user && view.user !== item.owner._id)
+        viewsUpdate({ variables: { view: view } }).then(() => {
+          this.setState({ selectedItem: item, selectedIndex: key }, () =>
+            this.reFetchQuery()
+          );
+        });
+      else this.setState({ selectedItem: item, selectedIndex: key });
+    } else this.setState({ selectedItem: item, selectedIndex: key });
   }
 
   fetchMoreSelection(isLoading) {
@@ -94,14 +100,14 @@ class ListJobs extends Component {
     });
   }
 
-    applyJob() {
-        let job = JSON.parse(JSON.stringify(this.state.selectedItem));
-        delete job.entity;
-        delete job.views;
-        this.props.history.push("/apply-job", {
-            job: job
-        });
-    }
+  applyJob() {
+    let job = JSON.parse(JSON.stringify(this.state.selectedItem));
+    delete job.entity;
+    delete job.views;
+    this.props.history.push("/apply-job", {
+      job: job
+    });
+  }
 
   onSearch(value) {
     this.setState({ filter: value }, () => this.reFetchQuery());
@@ -136,99 +142,100 @@ class ListJobs extends Component {
               data={this.props.data.jobs}
               loading={isLoading}
               onFetchData={() => this.fetchMoreSelection(isLoading)}
-              onSelectCard={(item, key) => this.onChangeSelection(item, key, viewsUpdate)}
+              onSelectCard={(item, key) =>
+                this.onChangeSelection(item, key, viewsUpdate)
+              }
             />
           )}
         </Mutation>
-          <Mutation key={"rightSide"} mutation={DeleteJob}>
-            {(deleteJob, { jobDeleted }) => (
-              <Mutation
-                mutation={UpdateJobsImage}
-                onError={error => this.errorOnBackgroundChange(error)}
-              >
-                {(updateJobsImage, { job }) => (
-                  <Preview
-                    isOpen={!!this.state.selectedItem}
-                    onClose={()=>this.onChangeSelection(null,null)}
-                    key={"rightSide"}
-                    navlinks={["Details"]}
-                    navClicked={index => console.log(index)}
-                    navOptions={[
-                      {
-                        text: "Apply",
-                        checkVisibility: () => {
-                          // todo: check if the user apply before for this job
-                          const element = this.state.selectedItem;
-                          return (
-                            element &&
-                            element._id &&
-                            element.owner &&
-                            this.props.curUser &&
-                            element.owner._id !== this.props.curUser._id
-                          );
-                        },
-                        onClick: () => {
-                          this.applyJob()
-                        }
+        <Mutation key={"rightSide"} mutation={DeleteJob}>
+          {(deleteJob, { jobDeleted }) => (
+            <Mutation
+              mutation={UpdateJobsImage}
+              onError={error => this.errorOnBackgroundChange(error)}
+            >
+              {(updateJobsImage, { job }) => (
+                <Preview
+                  isOpen={!!this.state.selectedItem}
+                  onClose={() => this.onChangeSelection(null, null)}
+                  key={"rightSide"}
+                  navlinks={["Details"]}
+                  navClicked={index => console.log(index)}
+                  navOptions={[
+                    {
+                      text: "Apply",
+                      checkVisibility: () => {
+                        // todo: check if the user apply before for this job
+                        const element = this.state.selectedItem;
+                        return (
+                          element &&
+                          element._id &&
+                          element.owner &&
+                          this.props.curUser &&
+                          element.owner._id !== this.props.curUser._id
+                        );
                       },
-                      {
-                        text: "Edit",
-                        checkVisibility: () => {
-                          const element = this.state.selectedItem;
-                          return (
-                            element &&
-                            element._id &&
-                            element.owner &&
-                            this.props.curUser &&
-                            element.owner._id === this.props.curUser._id
-                          );
-                        },
-                        onClick: () => {
-                          this.editJob();
-                        }
-                      },
-                      {
-                        text: "Remove",
-                        icon: "delete",
-                        checkVisibility: () => {
-                          const element = this.state.selectedItem;
-                          return (
-                            element &&
-                            element._id &&
-                            element.owner &&
-                            this.props.curUser &&
-                            element.owner._id === this.props.curUser._id
-                          );
-                        },
-                        onClick: () => {
-                          this.removeJob(deleteJob, this.state.selectedItem);
-                        }
+                      onClick: () => {
+                        this.applyJob();
                       }
-                    ]}
-                    index={this.state.selectedIndex}
-                    data={this.state.selectedItem}
-                    allowChangeImages={
-                      this.state.selectedItem &&
-                      this.state.selectedItem.owner &&
-                      this.props.curUser &&
-                      this.state.selectedItem.owner._id ===
-                        this.props.curUser._id
+                    },
+                    {
+                      text: "Edit",
+                      checkVisibility: () => {
+                        const element = this.state.selectedItem;
+                        return (
+                          element &&
+                          element._id &&
+                          element.owner &&
+                          this.props.curUser &&
+                          element.owner._id === this.props.curUser._id
+                        );
+                      },
+                      onClick: () => {
+                        this.editJob();
+                      }
+                    },
+                    {
+                      text: "Remove",
+                      icon: "delete",
+                      checkVisibility: () => {
+                        const element = this.state.selectedItem;
+                        return (
+                          element &&
+                          element._id &&
+                          element.owner &&
+                          this.props.curUser &&
+                          element.owner._id === this.props.curUser._id
+                        );
+                      },
+                      onClick: () => {
+                        this.removeJob(deleteJob, this.state.selectedItem);
+                      }
                     }
-                    backGroundImage={
-                      this.state.selectedItem
-                        ? this.state.selectedItem.image
-                        : null
-                    }
-                    onBackgroundChange={imageSrc =>
-                      this.handleBackgroundChange(updateJobsImage, imageSrc)
-                    }
-                  >
-                    <JobPreviewBody job={this.state.selectedItem} />
-                  </Preview>
-                )}
-              </Mutation>
-            )}
-          </Mutation>
+                  ]}
+                  index={this.state.selectedIndex}
+                  data={this.state.selectedItem}
+                  allowChangeImages={
+                    this.state.selectedItem &&
+                    this.state.selectedItem.owner &&
+                    this.props.curUser &&
+                    this.state.selectedItem.owner._id === this.props.curUser._id
+                  }
+                  backGroundImage={
+                    this.state.selectedItem
+                      ? this.state.selectedItem.image
+                      : null
+                  }
+                  onBackgroundChange={imageSrc =>
+                    this.handleBackgroundChange(updateJobsImage, imageSrc)
+                  }
+                >
+                  <JobPreviewBody job={this.state.selectedItem} />
+                </Preview>
+              )}
+            </Mutation>
+          )}
+        </Mutation>
       </ListLayout>
     );
   }

@@ -173,7 +173,7 @@ Jobs.schema = new SimpleSchema({
     type: Number,
     label: 'Viewed Count',
     optional: true,
-    defaultValue: 0,
+    defaultValue: 1,
   },
 });
 

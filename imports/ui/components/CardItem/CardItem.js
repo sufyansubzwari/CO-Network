@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import Styled from "styled-components";
 import MaterialIcon from "react-material-iconic-font";
 import PropTypes from "prop-types";
-import { Container, Layout } from "btech-layout";
+import { Container, Layout, mixins } from "btech-layout";
 import { Card } from "btech-card-list-component";
 import { TagList } from "btech-base-forms-component";
 import ReportToggle from "./ReportToggle";
@@ -44,11 +44,17 @@ const EmptyTagsContainer = Styled.div`
 const NullImageContainer = Styled.div`
     font-family: Helvetica Neue LT Std;
     position: absolute;
-    bottom: 10px;
-    font-size: 15px;
     font-weight: 700;
     color: white;
-    left: 10px;
+    bottom: 0;
+    font-size: 14px;
+    left: 0;
+    
+    ${mixins.media.desktop`
+      bottom: 10px;
+      font-size: 15px;
+      left: 10px;
+    `};
 `;
 
 /**

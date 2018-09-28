@@ -60,10 +60,7 @@ class SignUp extends React.Component {
   }
 
   handleContinue(updateStatus) {
-    let checkboxesActives = this.state.options.some(function(element) {
-      return element.active === false;
-    });
-    const active = this.state.agreeTerms && !checkboxesActives;
+    const active = this.isAllowToContinue();
     if (active) {
       updateStatus({
         variables: {
@@ -72,6 +69,13 @@ class SignUp extends React.Component {
         }
       });
     }
+  }
+
+  isAllowToContinue() {
+    let checkboxesActives = this.state.options.some(function(element) {
+      return element.active === false;
+    });
+    return this.state.agreeTerms && !checkboxesActives;
   }
 
   handleCheckBoxes(actives) {
@@ -118,6 +122,7 @@ class SignUp extends React.Component {
   }
 
   render() {
+    const isDisableButton = !this.isAllowToContinue();
     return (
       <Layout
         fullY
@@ -195,7 +200,7 @@ class SignUp extends React.Component {
               {(updateStatus, { userCreated }) => {
                 return (
                   <Button
-                    disabled={this.state.disabled}
+                    disabled={isDisableButton || this.state.disabled}
                     onClick={() => this.handleContinue(updateStatus)}
                   >
                     Continue

@@ -10,6 +10,7 @@ import {
 } from "../../apollo-client/colloquium";
 import { FollowAction } from "../../apollo-client/follow";
 import { withRouter } from "react-router-dom";
+import { ViewsCountUpdate } from "../../apollo-client/viewCount";
 
 /**
  * @module Colloquiums
@@ -60,8 +61,22 @@ class ListColloquiums extends Component {
     }
   }
 
-  onChangeSelection(item, key) {
-    this.setState({ selectedItem: item, selectedIndex: key });
+  onChangeSelection(item, key, viewsUpdate) {
+    if (item) {
+      const view = {
+        user: this.props.curUser._id,
+        entityViewed: item._id,
+        entityType: item.entity,
+        actualDate: new Date()
+      };
+      if (view.user && view.user !== item.owner._id)
+        viewsUpdate({ variables: { view: view } }).then(() => {
+          this.setState({ selectedItem: item, selectedIndex: key }, () =>
+            this.reFetchQuery()
+          );
+        });
+      else this.setState({ selectedItem: item, selectedIndex: key });
+    } else this.setState({ selectedItem: item, selectedIndex: key });
   }
 
   fetchMoreSelection(isLoading) {
@@ -137,26 +152,31 @@ class ListColloquiums extends Component {
         entityType={"colloquiums"}
         onSearchText={this.onSearch.bind(this)}
       >
-        <ItemsList
-          key={"listComponent"}
-          title={"Colloquium"}
-          topOptions={[
-            {
-              key: "isPublic",
-              icon: "globe",
-              transformText: value => {
-                return value ? "Public" : "Private";
-              },
-              transformIcon: value => {
-                return value ? "globe" : "lock";
+        <Mutation key={"listComponent"} mutation={ViewsCountUpdate}>
+          {(viewsUpdate, {}) => (
+            <ItemsList
+              title={"Colloquium"}
+              topOptions={[
+                {
+                  key: "isPublic",
+                  icon: "globe",
+                  transformText: value => {
+                    return value ? "Public" : "Private";
+                  },
+                  transformIcon: value => {
+                    return value ? "globe" : "lock";
+                  }
+                }
+              ]}
+              data={this.props.data.colloquiums}
+              loading={isLoading}
+              onFetchData={() => this.fetchMoreSelection(isLoading)}
+              onSelectCard={(item, key) =>
+                this.onChangeSelection(item, key, viewsUpdate)
               }
-            }
-          ]}
-          data={this.props.data.colloquiums}
-          loading={isLoading}
-          onFetchData={() => this.fetchMoreSelection(isLoading)}
-          onSelectCard={(item, key) => this.onChangeSelection(item, key)}
-        />
+            />
+          )}
+        </Mutation>
         <Mutation key={"rightSide"} mutation={DeleteColloquium}>
           {(deleteColloquium, { colloquiumDeleted }) => (
             <Mutation

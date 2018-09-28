@@ -11,6 +11,7 @@ type Colloquiums {
     tags: [Tags]!
     image: String
     place: Places
+    createdAt:Date!
     competences: [ObjectType]
 }
 

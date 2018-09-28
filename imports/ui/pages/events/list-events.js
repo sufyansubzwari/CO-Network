@@ -1,18 +1,18 @@
-import React, {Component} from "react";
-import {ItemsList, ListLayout, Preview} from "../../../ui/components";
-import {Mutation, graphql} from "react-apollo";
-import {connect} from "react-redux";
-import {PreviewData} from "../../actions/PreviewActions";
+import React, { Component } from "react";
+import { ItemsList, ListLayout, Preview } from "../../../ui/components";
+import { Mutation, graphql } from "react-apollo";
+import { connect } from "react-redux";
+import { PreviewData } from "../../actions/PreviewActions";
 import EventPreviewBody from "../../components/Preview/EventPreviewBody";
 import {
   DeleteEvent,
   GetEvents,
   UpdateImageEvent
 } from "../../apollo-client/event";
-import {FollowAction} from "../../apollo-client/follow";
-import {ViewsCountUpdate} from "../../apollo-client/viewCount";
-import {withRouter} from "react-router-dom";
-import {Meteor} from 'meteor/meteor';
+import { FollowAction } from "../../apollo-client/follow";
+import { ViewsCountUpdate } from "../../apollo-client/viewCount";
+import { withRouter } from "react-router-dom";
+import { Meteor } from "meteor/meteor";
 
 /**
  * @module Events
@@ -39,7 +39,7 @@ class ListEvents extends Component {
       this.props.location.state.postEvent
     ) {
       this.reFetchQuery();
-      this.props.history.replace({state: {}});
+      this.props.history.replace({ state: {} });
     }
   }
 
@@ -56,24 +56,29 @@ class ListEvents extends Component {
       nextProps.filterStatus &&
       nextProps.filterStatus.filters &&
       JSON.stringify(this.state.filterStatus) !==
-      JSON.stringify(nextProps.filterStatus.filters)
+        JSON.stringify(nextProps.filterStatus.filters)
     ) {
       const filters = Object.assign({}, nextProps.filterStatus.filters);
-      this.setState({filterStatus: filters}, () => this.reFetchQuery());
+      this.setState({ filterStatus: filters }, () => this.reFetchQuery());
     }
   }
 
   onChangeSelection(item, key, viewsUpdate) {
-    const view = {
-      user: Meteor.userId(),
-      entityViewed: item._id,
-      entityType: item.entity,
-      actualDate: new Date()
-    };
-    viewsUpdate({variables: {view: view}}).then(()=>{
-      this.setState({selectedItem: item, selectedIndex: key}, () => this.reFetchQuery());
-    })
-
+    if (item) {
+      const view = {
+        user: this.props.curUser._id,
+        entityViewed: item._id,
+        entityType: item.entity,
+        actualDate: new Date()
+      };
+      if (view.user && view.user !== item.owner._id)
+        viewsUpdate({ variables: { view: view } }).then(() => {
+          this.setState({ selectedItem: item, selectedIndex: key }, () =>
+            this.reFetchQuery()
+          );
+        });
+      else this.setState({ selectedItem: item, selectedIndex: key });
+    } else this.setState({ selectedItem: item, selectedIndex: key });
   }
 
   fetchMoreSelection(isLoading) {
@@ -87,8 +92,8 @@ class ListEvents extends Component {
   }
 
   removeEvent(deleteEvent, event) {
-    deleteEvent({variables: {id: event._id}});
-    this.setState({selectedItem: null}, () => this.reFetchQuery());
+    deleteEvent({ variables: { id: event._id } });
+    this.setState({ selectedItem: null }, () => this.reFetchQuery());
   }
 
   editEvent() {
@@ -102,11 +107,11 @@ class ListEvents extends Component {
 
   handleBackgroundChange(updateEventImage, src) {
     updateEventImage({
-      variables: {id: this.state.selectedItem._id, image: src}
+      variables: { id: this.state.selectedItem._id, image: src }
     }).then(result => {
-      const event = {...this.state.selectedItem};
+      const event = { ...this.state.selectedItem };
       if (src) event.image = src;
-      this.setState({selectedItem: event}, () => this.reFetchQuery());
+      this.setState({ selectedItem: event }, () => this.reFetchQuery());
     });
   }
 
@@ -116,7 +121,7 @@ class ListEvents extends Component {
   }
 
   onSearch(value) {
-    this.setState({filter: value}, () => this.reFetchQuery());
+    this.setState({ filter: value }, () => this.reFetchQuery());
   }
 
   handleFollow(followAction, follow) {
@@ -132,8 +137,10 @@ class ListEvents extends Component {
       }
     }).then(() => {
       this.reFetchQuery().then(() => {
-        let selected = this.props.data.events.find(item => item._id === this.state.selectedItem._id);
-        this.setState({selectedItem: selected})
+        let selected = this.props.data.events.find(
+          item => item._id === this.state.selectedItem._id
+        );
+        this.setState({ selectedItem: selected });
       });
     });
   }
@@ -152,22 +159,24 @@ class ListEvents extends Component {
               data={this.props.data.events}
               loading={isLoading}
               onFetchData={() => this.fetchMoreSelection(isLoading)}
-              onSelectCard={(item, key) => this.onChangeSelection(item, key, viewsUpdate)}
+              onSelectCard={(item, key) =>
+                this.onChangeSelection(item, key, viewsUpdate)
+              }
             />
           )}
         </Mutation>
         <Mutation key={"rightSide"} mutation={DeleteEvent}>
-          {(deleteEvent, {eventDeleted}) => (
+          {(deleteEvent, { eventDeleted }) => (
             <Mutation
               mutation={UpdateImageEvent}
               onError={error => this.errorOnBackgroundChange(error)}
             >
-              {(updateEventImage, {event}) => (
+              {(updateEventImage, { event }) => (
                 <Mutation
                   mutation={FollowAction}
                   onError={error => this.errorOnBackgroundChange(error)}
                 >
-                  {(followAction, {followResult}) => {
+                  {(followAction, { followResult }) => {
                     const follow =
                       this.props.curUser &&
                       this.props.curUser._id &&
@@ -178,7 +187,8 @@ class ListEvents extends Component {
                       ) > -1;
                     return (
                       <Preview
-                        onClose={() => this.onChangeSelection(null, null)} key={"rightSide"}
+                        key={"rightSide"}
+                        onClose={() => this.onChangeSelection(null, null)}
                         isOpen={!!this.state.selectedItem}
                         navClicked={index => console.log(index)}
                         navOptions={[
@@ -242,7 +252,7 @@ class ListEvents extends Component {
                           this.state.selectedItem.owner &&
                           this.props.curUser &&
                           this.state.selectedItem.owner._id ===
-                          this.props.curUser._id
+                            this.props.curUser._id
                         }
                         backGroundImage={
                           this.state.selectedItem
@@ -250,11 +260,15 @@ class ListEvents extends Component {
                             : null
                         }
                         onBackgroundChange={imageSrc =>
-                          this.handleBackgroundChange(updateEventImage, imageSrc
+                          this.handleBackgroundChange(
+                            updateEventImage,
+                            imageSrc
                           )
                         }
-                      ><EventPreviewBody event={this.state.selectedItem}/>
-                      </Preview>);
+                      >
+                        <EventPreviewBody event={this.state.selectedItem} />
+                      </Preview>
+                    );
                   }}
                 </Mutation>
               )}
@@ -267,7 +281,7 @@ class ListEvents extends Component {
 }
 
 const mapStateToProps = state => {
-  const {previewData, filterStatus} = state;
+  const { previewData, filterStatus } = state;
   return {
     previewData: previewData,
     filterStatus: filterStatus

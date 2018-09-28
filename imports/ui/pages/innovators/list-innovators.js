@@ -1,22 +1,22 @@
-import React, {Component} from "react";
+import React, { Component } from "react";
 import {
   ItemsList,
   ListLayout,
   Preview,
   CardItem
 } from "../../../ui/components";
-import {graphql, Mutation} from "react-apollo";
-import {withRouter} from "react-router-dom";
+import { graphql, Mutation } from "react-apollo";
+import { withRouter } from "react-router-dom";
 import {
   GetOrg,
   DeleteOrg,
   UpdateOrgImages
 } from "../../apollo-client/organization";
 import OrganizationPreviewBody from "../../components/Preview/OrganizationPreviewBody";
-import {connect} from "react-redux";
-import {PreviewData} from "../../actions/PreviewActions";
-import {Meteor} from "meteor/meteor";
-import {ViewsCountUpdate} from "../../apollo-client/viewCount";
+import { connect } from "react-redux";
+import { PreviewData } from "../../actions/PreviewActions";
+import { Meteor } from "meteor/meteor";
+import { ViewsCountUpdate } from "../../apollo-client/viewCount";
 
 /**
  * @module Events
@@ -62,7 +62,7 @@ class ListInnovators extends Component {
       this.props.location.state.postInnovator
     ) {
       this.reFetchQuery();
-      this.props.history.replace({state: {}});
+      this.props.history.replace({ state: {} });
     }
   }
 
@@ -71,10 +71,10 @@ class ListInnovators extends Component {
       nextProps.filterStatus &&
       nextProps.filterStatus.filters &&
       JSON.stringify(this.state.filterStatus) !==
-      JSON.stringify(nextProps.filterStatus.filters)
+        JSON.stringify(nextProps.filterStatus.filters)
     ) {
       const filters = Object.assign({}, nextProps.filterStatus.filters);
-      this.setState({filterStatus: filters}, () => this.reFetchQuery());
+      this.setState({ filterStatus: filters }, () => this.reFetchQuery());
     }
   }
 
@@ -87,15 +87,21 @@ class ListInnovators extends Component {
   }
 
   onChangeSelection(item, key, viewsUpdate) {
-    const view = {
-      user: Meteor.userId(),
-      entityViewed: item._id,
-      entityType: item.entity,
-      actualDate: new Date()
-    };
-    viewsUpdate({variables: {view: view}}).then(() => {
-      this.setState({selectedItem: item, selectedIndex: key}, () => this.reFetchQuery());
-    })
+    if (item) {
+      const view = {
+        user: this.props.curUser._id,
+        entityViewed: item._id,
+        entityType: item.entity,
+        actualDate: new Date()
+      };
+      if (view.user && view.user !== item.owner._id)
+        viewsUpdate({ variables: { view: view } }).then(() => {
+          this.setState({ selectedItem: item, selectedIndex: key }, () =>
+            this.reFetchQuery()
+          );
+        });
+      else this.setState({ selectedItem: item, selectedIndex: key });
+    } else this.setState({ selectedItem: item, selectedIndex: key });
   }
 
   fetchMoreSelection(isLoading) {
@@ -109,8 +115,8 @@ class ListInnovators extends Component {
   }
 
   removeOrg(deleteOrg, org) {
-    deleteOrg({variables: {id: org._id}});
-    this.setState({selectedItem: null}, () => this.reFetchQuery());
+    deleteOrg({ variables: { id: org._id } });
+    this.setState({ selectedItem: null }, () => this.reFetchQuery());
   }
 
   customRenderItem(item, key, isLoading, viewsUpdate) {
@@ -145,26 +151,26 @@ class ListInnovators extends Component {
   }
 
   onSearch(value) {
-    this.setState({filter: value}, () => this.reFetchQuery());
+    this.setState({ filter: value }, () => this.reFetchQuery());
   }
 
   handleBackgroundChange(updateOrgImages, src) {
     updateOrgImages({
-      variables: {id: this.state.selectedItem._id, cover: src, image: null}
+      variables: { id: this.state.selectedItem._id, cover: src, image: null }
     }).then(() => this.afterChangeImage(src, "cover"));
   }
 
   handlePhotoChange(updateOrgImages, src) {
     updateOrgImages({
-      variables: {id: this.state.selectedItem._id, image: src, cover: null}
+      variables: { id: this.state.selectedItem._id, image: src, cover: null }
     }).then(() => this.afterChangeImage(src, "image"));
   }
 
   afterChangeImage(src, place) {
-    const entity = {...this.state.selectedItem};
+    const entity = { ...this.state.selectedItem };
     if (entity) {
       if (src && place) entity[place] = src;
-      this.setState({selectedItem: entity}, () => this.reFetchQuery());
+      this.setState({ selectedItem: entity }, () => this.reFetchQuery());
     }
   }
 
@@ -198,12 +204,12 @@ class ListInnovators extends Component {
           )}
         </Mutation>
         <Mutation key={"rightSide"} mutation={DeleteOrg}>
-          {(deleteOrg, {orgDeleted}) => (
+          {(deleteOrg, { orgDeleted }) => (
             <Mutation
               mutation={UpdateOrgImages}
               onError={error => this.errorOnBackgroundChange(error)}
             >
-              {(updateOrgImages, {job}) => (
+              {(updateOrgImages, { job }) => (
                 <Preview
                   isOpen={!!this.state.selectedItem}
                   onClose={() => this.onChangeSelection(null, null)}
@@ -252,8 +258,7 @@ class ListInnovators extends Component {
                     this.state.selectedItem &&
                     this.state.selectedItem.owner &&
                     this.props.curUser &&
-                    this.state.selectedItem.owner._id ===
-                    this.props.curUser._id
+                    this.state.selectedItem.owner._id === this.props.curUser._id
                   }
                   image={
                     this.state.selectedItem
@@ -286,7 +291,7 @@ class ListInnovators extends Component {
 }
 
 const mapStateToProps = state => {
-  const {previewData, filterStatus} = state;
+  const { previewData, filterStatus } = state;
   return {
     previewData: previewData,
     filterStatus: filterStatus
