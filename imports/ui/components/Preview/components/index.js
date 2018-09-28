@@ -6,6 +6,7 @@ import TagsAdd from "./TagsAdd";
 import UploadFile from "./UploadFile";
 import Dates from "./Dates";
 import ProductService from "./Product-Service";
+import Media from "./Media"
 
 export {
   Title,
@@ -15,5 +16,6 @@ export {
   TagsAdd,
   UploadFile,
   Dates,
-  ProductService
+  ProductService,
+  Media
 };
