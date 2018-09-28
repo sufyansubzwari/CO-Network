@@ -2,10 +2,11 @@ import React from "react";
 import PropTypes from "prop-types";
 import { Layout, Container } from "btech-layout";
 import styled from "styled-components";
-import { Button, Input, Select, TextArea } from "btech-base-forms-component";
+import { Button } from "btech-base-forms-component";
 import MaterialIcon from "react-material-iconic-font";
 import Product from "./Product";
 import Service from "./Service";
+import { UploadToS3 } from "../../services";
 
 const SLabel = styled.div`
   font-size: 12px;
@@ -61,16 +62,25 @@ class ProductList extends React.Component {
     this.setState({ products: sta }, () => this.notifyParent());
   }
 
-  handleUpload(file, index) {
-    if (file) {
+  async handleUpload(files, index) {
+    if (files) {
       let products = this.state.products;
-      let files = this.state.products[index].files
+      let filesProd = this.state.products[index].files
         ? this.state.products[index].files
         : [];
-      if (file && file.length) {
-        file.map(f => files.push(f.name));
-      } else files.push(file.name);
-      products[index]["files"] = files;
+      for (let i = 0; i < files.length; i++) {
+        const file = files.item(i);
+        const result = await UploadToS3.uploadFileSync(file);
+        filesProd.push({ name: file.name, link: result.path });
+      }
+      const cache = {};
+      products[index]["files"] = filesProd.filter(file => {
+        if (!cache[file.name]) {
+          cache[file.name] = true;
+          return true;
+        }
+        return false;
+      });
       this.setState({ products: products }, () => this.notifyParent());
     }
   }

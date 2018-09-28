@@ -4,12 +4,12 @@ import v1 from "uuid/v1";
 let CanvasCompress = null;
 if (Meteor.isClient) CanvasCompress = require("canvas-compress");
 
-class UploadImageToS3 {
+class UploadToS3 {
   constructor() {
     this.bucketPath = "https://s3.amazonaws.com/mlsociety-public";
   }
 
-  upload(image, callback, statusCallback) {
+  uploadImage(image, callback, statusCallback) {
     if (image.size / 1024 / 1024 > 4) {
       callback({
         error: true,
@@ -63,7 +63,7 @@ class UploadImageToS3 {
                     callback({
                       error: error,
                       message: error.description,
-                      type: "success"
+                      type: "danger"
                     });
                   }
                 });
@@ -92,7 +92,7 @@ class UploadImageToS3 {
                       callback({
                         error: error,
                         message: error.description,
-                        type: "success"
+                        type: "danger"
                       });
                     }
                   }
@@ -117,6 +117,80 @@ class UploadImageToS3 {
     }
   }
 
+  async uploadFileSync(file) {
+    return await this.uploadFile(file);
+  }
+
+  uploadFile(file) {
+    return new Promise(resolve => {
+      try {
+        let reader = new FileReader();
+        let extension = file.name.split(".").pop();
+        let fileName = `${v1()}.${extension}`;
+        let path = `resources/${fileName}`;
+        reader.addEventListener(
+          "load",
+          () => {
+            let src = reader.result;
+            saveResource(src, file.type, path, (error, result) => {
+              if (!error) {
+                resolve({
+                  error: error,
+                  result: result,
+                  path: `${this.bucketPath}/${path}`,
+                  type: "success"
+                });
+              } else {
+                resolve({
+                  error: error,
+                  message: error.message,
+                  type: "danger"
+                });
+              }
+            });
+          },
+          false
+        );
+        reader.readAsBinaryString(file);
+      } catch (e) {
+        resolve({
+          error: e,
+          message: e.message,
+          type: "danger"
+        });
+      }
+    });
+  }
+
+  async readFileSync(file) {
+    return await this.readFile(file);
+  }
+
+  readFile(file) {
+    return new Promise(resolve => {
+      try {
+        let reader = new FileReader();
+        reader.addEventListener(
+          "load",
+          () => {
+            let content = reader.result;
+            resolve({
+              error: null,
+              file: content
+            });
+          },
+          false
+        );
+        reader.readAsBinaryString(file);
+      } catch (e) {
+        resolve({
+          error: e,
+          file: null
+        });
+      }
+    });
+  }
+
   handleOnDevelopmentMode(image, callback, statusCallback) {
     let readerData = new FileReader();
     readerData.addEventListener(
@@ -137,4 +211,4 @@ class UploadImageToS3 {
   }
 }
 
-export default new UploadImageToS3();
+export default new UploadToS3();
