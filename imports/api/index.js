@@ -10,6 +10,7 @@ export { default as Organizations } from './organizations';
 export { default as Colloquiums } from './colloquiums';
 export { default as Tags } from './tags';
 export { default as Places } from './places';
+export { default as JobApply } from './jobApply';
 export { default as ViewsCount } from './viewsCount';
 export { default as Archivements } from './archivements';
 export { default as FeedBacks } from './feedBack';

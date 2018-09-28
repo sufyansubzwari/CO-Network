@@ -1,0 +1,13 @@
+
+query GetJobsApply($limit: Int, $filter: String, $jobApply: JobsInputSearch) {
+  jobsApply(limit: $limit, filter: $filter, jobApply: $jobApply) {
+      _id
+    }
+}
+
+query JobApplyCounts($field: String){
+    jobApplyCounts(field: $field){
+        _id
+        number
+    }
+}

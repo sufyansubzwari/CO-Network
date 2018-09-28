@@ -27,6 +27,17 @@ const SContainer = styled.div`
   border-radius: 3px;
 `;
 
+const SAddButton = styled.span`
+  margin-left: auto;
+  margin-top: auto;
+  margin-bottom: auto;
+  margin-right: 5px;
+  font-size: 18px;
+  cursor: pointer;
+  color: ${props =>
+  props.inactive ? 'rgba(0,0,0,0.5)' : '#2B2B2B'};
+`
+
 const SInput = styled.input`
   flex-grow: 1;
   transition-duration: 334ms;
@@ -36,7 +47,7 @@ const SInput = styled.input`
   border: 0px;
   width: ${props => props.width || "auto"};
   height: ${props => props.height || "34px"};
-  color: ${props => (props.inactive ? "#D1D1D1" : "#2B2B2B")};
+  color: ${props => (props.inactive ? "rgba(0,0,0,0.5)" : "#2B2B2B")};
   background: ${props =>
     props.valid ? (props.inactive ? "#EDEDED" : "#ffffff") : "#FEEBEB"};
   padding: 0 10px;
@@ -65,7 +76,7 @@ const SLabel = styled.label`
   font-size: ${props => (props.fontSize ? props.fontSize : null)};
   font-family: ${props => (props.fontFamily ? props.fontFamily : null)};
   font-weight: ${props => (props.fontWeight ? props.fontWeight : null)};
-  color: ${props => (props.inactive ? "#D1D1D1" : "#2B2B2B")};
+  color: ${props => (props.inactive ? "rgba(0,0,0,0.5)" : "#2B2B2B")};
   transition: all 0.2s ease-out;
 `;
 
@@ -236,7 +247,7 @@ export default class TagsInputAutoComplete extends Component {
               innerRef={this.InputRef}
               type={"text"}
               // onFocus={this.onFocus}
-              placeholder={this.props.inputPlaceholder}
+              placeholder={this.props.inputPlaceholder || "Discover..."}
               // autoFocus={this.props.autoFocus}
               onChange={this.handleChange}
               disabled={this.props.disabled}
@@ -256,6 +267,9 @@ export default class TagsInputAutoComplete extends Component {
               }}
             />
           </InputGroupButtonDropdown>
+          <SAddButton inactive={!this.state.active} onClick={() => this.onAddNewOption()}>
+            <MaterialIcon type={this.props.iconClass} />
+          </SAddButton>
         </InputGroup>
       </SContainer>
     );

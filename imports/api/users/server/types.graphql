@@ -34,7 +34,8 @@ type Profile {
   aboutMe: AboutMe
   knowledge: Knowledge
   speaker: Speaker
-  achievements: [Achievements]place: Places
+  achievements: [Achievements]
+  place: Places
 }
 
 type SocialIdentity {

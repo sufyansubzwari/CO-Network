@@ -37,7 +37,7 @@ class FifthStep extends React.Component {
     render() {
         return (
             <Layout rowGap={"25px"}>
-                <Query query={achievementsQuery} variables={{ id: this.state.apply.userId  }}>
+                <Query query={achievementsQuery} variables={{ id: this.state.apply.owner  }}>
                     {({ loading, error, data }) => {
                         if (loading) return <div></div>;
                         if (error) return <div></div>;

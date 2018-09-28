@@ -116,7 +116,7 @@ class WorkList extends React.Component {
             style={{ paddingRight: "10px" }}
             mb={'5px'}
           >
-            <SLabel>Work Experience</SLabel>
+            <div/>
             {edit.length === 0 ? (
               <Layout customTemplateColumns={"auto auto auto"}>
                 <Button
