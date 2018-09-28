@@ -8,6 +8,8 @@ import { Container, Layout } from "btech-layout";
 import { ACTIVELY } from "../../../../../constants";
 import { GetTags } from "../../../../../apollo-client/tag";
 import { Query } from "react-apollo";
+import MLTagsInput from "../../../../../components/TagsInputAutoComplete/TagsInputAutoComplete";
+
 
 class ThirdStep extends React.Component {
   constructor(props) {
@@ -100,14 +102,48 @@ class ThirdStep extends React.Component {
               if (loading) return <div>Fetching</div>;
               if (error) return <div>Error</div>;
               return (
-                <InputAutoComplete
-                  placeholderText={"Tags that best describe your organization"}
-                  getAddedOptions={this.onAddTags.bind(this, "description")}
-                  getNewAddedOptions={this.onAddTags.bind(this, "description")}
-                  options={data.tags}
-                  model={{ others: [] }}
-                  name={"others"}
-                />
+                  <Container mt={'25px'}>
+                      <MLTagsInput
+                          placeholderText={"Other"}
+                          getAddedOptions={this.onAddTags.bind(
+                              this,
+                              "otherlooking",
+                              "LookingFor"
+                          )}
+                          getNewAddedOptions={this.onAddTags.bind(
+                              this,
+                              "otherlooking",
+                              "LookingFor"
+                          )}
+                          options={data.tags}
+                          model={{ others: [] }}
+                          name={"others"}
+                          tags={
+                              this.state.user.speaker && this.state.user.speaker.otherlooking
+                                  ? this.state.user.speaker.otherlooking.map(item => ({
+                                      active: true,
+                                      useIcon: true,
+                                      levelColor: item.levelColor || "",
+                                      icon: item.icon || "",
+                                      level: item.level || "",
+                                      ...item,
+                                      showOptions: !item.levelColor
+                                  }))
+                                  : []
+                          }
+                          onCloseTags={(e, tag, index) =>
+                              this.onCloseTags(e, tag, index, "otherlooking")
+                          }
+                      />
+                  </Container>
+                // <InputAutoComplete
+                //   placeholderText={"Tags that best describe your organization"}
+                //   getAddedOptions={this.onAddTags.bind(this, "description")}
+                //   getNewAddedOptions={this.onAddTags.bind(this, "description")}
+                //   options={data.tags}
+                //   model={{ others: [] }}
+                //   name={"others"}
+                // />
               );
             }}
           </Query>
