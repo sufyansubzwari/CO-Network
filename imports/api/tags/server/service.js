@@ -13,8 +13,11 @@ class TagsService {
    * @return {Object} tag
    */
   static tag = async data => {
+    console.log("tags insert ---------- ",data);
     let tags = Tags.collection.findOne({ label: data.label, type: data.type });
     if (_.isUndefined(data._id) && !tags) {
+      data._id ? delete data._id : null;
+      data.used ? delete data.used : null;
       const id = Tags.collection.insert(data);
       return Tags.collection.findOne(id);
     } else {

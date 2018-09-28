@@ -27,11 +27,6 @@ Mutation.jobApply = async (root, { jobApply }, context) => {
       jobApply.professional.industry,
       oldJobApply && oldJobApply.professional && oldJobApply.professional.industry ? oldJobApply.professional.industry : []
     );
-  if (jobApply.professional.industry)
-    entity.professional.industry = await Tags.service.normalizeTags(
-      jobApply.professional.industry,
-      oldJobApply && oldJobApply.professional && oldJobApply.professional.industry ? oldJobApply.professional.industry : []
-    );
 
   const achievementsList = Object.assign([], jobApply.achievements);
   const inserted =  await Service.jobApply(entity);
