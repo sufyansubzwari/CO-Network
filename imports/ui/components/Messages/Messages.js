@@ -65,15 +65,9 @@ class Messages extends React.Component {
     const usersArray = [this.props.curUser].concat(users);
     if (!this.props.isColloquium) usersArray.unshift(receptor);
     return (
-      <Layout fullY customTemplateRows={"1fr auto"}>
+      <Layout fullY customTemplateRows={"1fr auto"} rowGap={"10px"}>
         <SChat>
-          <Scrollbars
-            style={{ height: "100%" }}
-            ref={scroll => {
-              this.scroll = scroll;
-            }}
-            onScroll={this.handleScroll}
-          >
+          <Scrollbars style={{ height: "100%" }} onScroll={this.handleScroll}>
             {messages.length ? (
               <LoadMessages
                 on={this.onMessage}
@@ -84,15 +78,18 @@ class Messages extends React.Component {
           </Scrollbars>
         </SChat>
         <SReplyBox>
-          <Layout customTemplateRows={"1fr auto"}>
+          <Layout
+            customTemplateRows={"1fr auto"}
+            rowGap={"10px"}
+            padding={"10px"}
+          >
             <TextArea
               placeholderText={"Type Something"}
               name={"textMessage"}
               model={this.state}
-              height={"64px"}
               onKeyPress={this.onKeyPress}
             />
-            <Layout customTemplateColumns={"1fr auto"} mt={"10px"}>
+            <Layout customTemplateColumns={"1fr auto"} mb={"10px"}>
               <Container />
               <Button width={"62px"} height={"30px"}>
                 Send

@@ -3,14 +3,13 @@ import styled from "styled-components";
 
 export const SChat = styled.div`
   background-color: ${props => props.backgroundColor || "#FFFFFF"};
-  height: ${props => props.height || "515px"};
+  height: ${props => props.height || "100%"};
   width: 100%;
   border-bottom: 1px solid #dbdbdb;
 `;
 
 export const SReplyBox = styled.div`
   background-color: ${props => props.backgroundColor || "#F9F9FB"};
-  height: ${props => props.height || "140px"};
   width: 100%;
 `;
 
