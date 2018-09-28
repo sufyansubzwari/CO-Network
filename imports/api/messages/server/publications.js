@@ -11,7 +11,7 @@ Meteor.publish("messages.view", (receptor, type, limit) => {
       { receptor: receptor },
       {
         limit: limit || 10,
-        sort: { date: -1 }
+        sort: { date: 1 }
       }
     );
   }
@@ -25,7 +25,7 @@ Meteor.publish("messages.view", (receptor, type, limit) => {
       },
       {
         limit: limit || 10,
-        sort: { date: -1 }
+        sort: { date: 1 }
       }
     );
   }

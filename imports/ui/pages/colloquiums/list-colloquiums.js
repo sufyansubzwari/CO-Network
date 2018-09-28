@@ -8,9 +8,9 @@ import {
   GetColloquiums,
   UpdateColloquiumImage
 } from "../../apollo-client/colloquium";
-import { FollowAction } from "../../apollo-client/follow";
 import { withRouter } from "react-router-dom";
 import { ViewsCountUpdate } from "../../apollo-client/viewCount";
+import ColloquiumPreviewBody from "../../components/Preview/ColloquiumPreviewBody";
 
 /**
  * @module Colloquiums
@@ -122,27 +122,6 @@ class ListColloquiums extends Component {
     this.setState({ filter: value }, () => this.reFetchQuery());
   }
 
-  handleFollow(followAction, follow) {
-    let follower = {
-      entityId: this.state.selectedItem._id,
-      entity: this.state.selectedItem.entity
-    };
-    followAction({
-      variables: {
-        follower: follower,
-        id: this.state.selectedItem._id,
-        follow: follow
-      }
-    }).then(() => {
-      this.reFetchQuery().then(() => {
-        let selected = this.props.data.colloquiums.find(
-          item => item._id === this.state.selectedItem._id
-        );
-        this.setState({ selectedItem: selected });
-      });
-    });
-  }
-
   render() {
     const isLoading =
       this.props.data.loading &&
@@ -184,102 +163,72 @@ class ListColloquiums extends Component {
               onError={error => this.errorOnBackgroundChange(error)}
             >
               {(updateImage, { colloquium }) => (
-                <Mutation
-                  mutation={FollowAction}
-                  onError={error => this.errorOnBackgroundChange(error)}
-                >
-                  {(followAction, { followResult }) => {
-                    const follow =
-                      this.props.curUser &&
-                      this.props.curUser._id &&
-                      this.state.selectedItem &&
-                      this.state.selectedItem.followerList &&
-                      this.state.selectedItem.followerList.indexOf(
-                        this.props.curUser._id
-                      ) > -1;
-                    return (
-                      <Preview
-                        onClose={() => this.onChangeSelection(null, null)}
-                        key={"rightSide"}
-                        isOpen={!!this.state.selectedItem}
-                        navClicked={index => console.log(index)}
-                        navOptions={[
-                          {
-                            text: !follow ? "Follow" : "Unfollow",
-                            checkVisibility: () => {
-                              const element = this.state.selectedItem;
-                              return (
-                                element &&
-                                element._id &&
-                                element.owner &&
-                                this.props.curUser &&
-                                element.owner._id !== this.props.curUser._id
-                              );
-                            },
-                            onClick: () =>
-                              this.handleFollow(followAction, follow)
-                          },
-                          {
-                            text: "Edit",
-                            icon: "edit",
-                            checkVisibility: () => {
-                              const element = this.state.selectedItem;
-                              return (
-                                element &&
-                                element._id &&
-                                element.owner &&
-                                this.props.curUser &&
-                                element.owner._id === this.props.curUser._id
-                              );
-                            },
-                            onClick: () => {
-                              this.editColloquium();
-                            }
-                          },
-                          {
-                            text: "Remove",
-                            icon: "delete",
-                            checkVisibility: () => {
-                              const element = this.state.selectedItem;
-                              return (
-                                element &&
-                                element._id &&
-                                element.owner &&
-                                this.props.curUser &&
-                                element.owner._id === this.props.curUser._id
-                              );
-                            },
-                            onClick: () => {
-                              this.removeColloquium(
-                                deleteColloquium,
-                                this.state.selectedItem
-                              );
-                            }
-                          }
-                        ]}
-                        index={this.state.selectedIndex}
-                        data={this.state.selectedItem}
-                        allowChangeImages={
-                          this.state.selectedItem &&
-                          this.state.selectedItem.owner &&
+                <Preview
+                  onClose={() => this.onChangeSelection(null, null)}
+                  key={"rightSide"}
+                  isOpen={!!this.state.selectedItem}
+                  navClicked={index => console.log(index)}
+                  navOptions={[
+                    {
+                      text: "Edit",
+                      icon: "edit",
+                      checkVisibility: () => {
+                        const element = this.state.selectedItem;
+                        return (
+                          element &&
+                          element._id &&
+                          element.owner &&
                           this.props.curUser &&
-                          this.state.selectedItem.owner._id ===
-                            this.props.curUser._id
-                        }
-                        backGroundImage={
+                          element.owner._id === this.props.curUser._id
+                        );
+                      },
+                      onClick: () => {
+                        this.editColloquium();
+                      }
+                    },
+                    {
+                      text: "Remove",
+                      icon: "delete",
+                      checkVisibility: () => {
+                        const element = this.state.selectedItem;
+                        return (
+                          element &&
+                          element._id &&
+                          element.owner &&
+                          this.props.curUser &&
+                          element.owner._id === this.props.curUser._id
+                        );
+                      },
+                      onClick: () => {
+                        this.removeColloquium(
+                          deleteColloquium,
                           this.state.selectedItem
-                            ? this.state.selectedItem.image
-                            : null
-                        }
-                        onBackgroundChange={imageSrc =>
-                          this.handleBackgroundChange(updateImage, imageSrc)
-                        }
-                      >
-                        asdasdasd
-                      </Preview>
-                    );
-                  }}
-                </Mutation>
+                        );
+                      }
+                    }
+                  ]}
+                  index={this.state.selectedIndex}
+                  data={this.state.selectedItem}
+                  allowChangeImages={
+                    this.state.selectedItem &&
+                    this.state.selectedItem.owner &&
+                    this.props.curUser &&
+                    this.state.selectedItem.owner._id === this.props.curUser._id
+                  }
+                  backGroundImage={
+                    this.state.selectedItem
+                      ? this.state.selectedItem.image
+                      : null
+                  }
+                  onBackgroundChange={imageSrc =>
+                    this.handleBackgroundChange(updateImage, imageSrc)
+                  }
+                >
+                  <ColloquiumPreviewBody
+                    colloquium={this.state.selectedItem}
+                    {...this.props}
+                  />
+                </Preview>
               )}
             </Mutation>
           )}

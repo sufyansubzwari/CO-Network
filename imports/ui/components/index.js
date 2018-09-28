@@ -13,6 +13,7 @@ import Separator from "./FiltersContainer/Separator";
 import FilterItem from "./FiltersContainer/FilterItem";
 import TagsInputAutoComplete from "./TagsInputAutoComplete/TagsInputAutoComplete";
 import Label from "./Label/Label";
+import Messages from "./Messages/Messages";
 
 // layouts
 import InternalLayout from "../layouts/InternalLayout/InternalLayout";
@@ -39,5 +40,6 @@ export {
   Separator,
   BigTag,
   Label,
-  TagsInputAutoComplete
+  TagsInputAutoComplete,
+  Messages
 };

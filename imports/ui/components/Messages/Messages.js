@@ -7,13 +7,12 @@ import MessagesCollection from "../../../api/messages/collection";
 import { insertMessage } from "./Service/service";
 import LoadMessages from "./components/loadMessage";
 import { SChat, SReplyBox } from "./components/styledComponents";
-import { Layout } from "btech-layout";
+import { Layout, Container } from "btech-layout";
 import { TextArea, Button } from "btech-base-forms-component";
 
 class Messages extends React.Component {
   constructor(props) {
     super(props);
-
     this.state = {
       messages: [],
       receptor: this.props.receptor,
@@ -28,128 +27,25 @@ class Messages extends React.Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    // if (nextProps.receptor._id !== this.state.receptor._id) {
-    //   this.setState({ receptor: nextProps.receptor }, () => {
-    //     this.setScroll();
-    //     limit = 10;
-    //   });
-    // }
-    // if (nextProps.messages.length > 0 && !nextProps.loading) {
-    //   this.setState(
-    //     {
-    //       messages: nextProps.messages
-    //     },
-    //     () => {
-    //       this.props.messages.length > 0 &&
-    //       nextProps.messages[0]._id !== this.props.messages[0]._id
-    //         ? this.setScroll()
-    //         : null;
-    //     }
-    //   );
-    // } else {
-      this.setState({
-        messages: nextProps.messages
-      });
-    // }
-  }
-
-  /*componentWillMount() {
+    if (nextProps.receptor._id !== this.state.receptor._id)
+      this.setState({ receptor: nextProps.receptor });
     this.setState({
-      messages: [],
-      firstLoading: false,
-      receptor: this.props.receptor,
-      type: this.props.type
+      messages: nextProps.messages,
+      users: nextProps.users
     });
-    // limit = 10;
   }
-
-  componentWillReceiveProps(nextProps) {
-    if (nextProps.receptor._id !== this.state.receptor._id) {
-      this.setState({ receptor: nextProps.receptor }, () => {
-        this.setScroll();
-        limit = 10;
-      });
-    }
-    if (nextProps.messages.length > 0 && !nextProps.loading) {
-      this.setState(
-        {
-          messages: nextProps.messages
-        },
-        () => {
-          this.props.messages.length > 0 &&
-          nextProps.messages[0]._id !== this.props.messages[0]._id
-            ? this.setScroll()
-            : null;
-        }
-      );
-    } else {
-      this.setState({
-        messages: nextProps.messages
-      });
-    }
-  }
-
-  componentDidUpdate() {
-    if (!this.state.firstLoading) {
-      this.setState({ firstLoading: true });
-      this.setScroll();
-    }
-  }
-
-  setScroll() {
-    let _this = this.scroll;
-    setTimeout(
-      function() {
-        _this.scrollToBottom();
-      }.bind(this),
-      100
-    );
-  }
-
-  updateScroll() {
-    let _this = this.scroll;
-    setTimeout(
-      function() {
-        _this.scrollTop(640);
-      }.bind(this),
-      0
-    );
-  }
-
-  handleScroll(event) {
-    let target = event.target;
-    if (target.scrollTop === 0 && limit <= this.state.messages.length) {
-      limit += 10;
-      // Session.set("limitMessage", limit);
-      // this.updateScroll();
-    }
-  }
-
-  onMessage(event) {
-    if (event.name === "newMessage") {
-      this.setScroll();
-    }
-  }*/
 
   handleMessage(text) {
     let message = {
-      from: Meteor.userId(),
-      receptor: "a",//this.state.receptor._id,
+      from: this.props.curUser._id,
+      receptor: this.state.receptor._id,
       text: text,
-      type: "private",
-      attachment: "",
+      type: this.state.type,
+      attachment: ""
     };
-    // this.state.messages.push(message);
-    // this.setState({messages: this.state.messages});
-    let _this = this;
-    // if (this.state.messages.length >= limit - 3) {
-    //   limit += 10;
-    //   // Session.set("limitMessage", limit);
-    // }
-    insertMessage(message, function(res) {
+    insertMessage(message, res => {
       if (res === "success") {
-        _this.setState({textMessage:""});
-        // _this.setScroll();
+        this.setState({ textMessage: "" });
       } else {
         console.log(res.reason, "danger");
       }
@@ -165,21 +61,24 @@ class Messages extends React.Component {
   }
 
   render() {
-    const { messages, receptor } = this.state;
+    const { messages, receptor, users } = this.state;
+    const usersArray = [this.props.curUser].concat(users);
+    if (!this.props.isColloquium) usersArray.unshift(receptor);
     return (
-      <Layout customTemplateRows={"1fr auto"}>
+      <Layout fullY customTemplateRows={"1fr auto"}>
         <SChat>
           <Scrollbars
+            style={{ height: "100%" }}
             ref={scroll => {
               this.scroll = scroll;
             }}
             onScroll={this.handleScroll}
           >
-            {messages.length > 0 ? (
+            {messages.length ? (
               <LoadMessages
                 on={this.onMessage}
                 messages={messages}
-                users={[receptor, Meteor.user()]}
+                users={usersArray}
               />
             ) : null}
           </Scrollbars>
@@ -194,7 +93,7 @@ class Messages extends React.Component {
               onKeyPress={this.onKeyPress}
             />
             <Layout customTemplateColumns={"1fr auto"} mt={"10px"}>
-              <div />
+              <Container />
               <Button width={"62px"} height={"30px"}>
                 Send
               </Button>
@@ -206,21 +105,31 @@ class Messages extends React.Component {
   }
 }
 
-Messages.defaultProps = {};
+Messages.defaultProps = {
+  type: "public",
+  isColloquium: false
+};
 
 Messages.propTypes = {
-  // receptor: propTypes.object.isRequired,
-  // type: propTypes.string.isRequired
+  receptor: propTypes.object.isRequired,
+  type: propTypes.string.isRequired,
+  isColloquium: propTypes.bool
 };
 
 export default withTracker(({ receptor, type }) => {
-    const subscription = Meteor.subscribe("messages.getMessages", "a", "private", 10);
-    let messages = MessagesCollection.find({}, {sort: {date: -1}, limit: 10}).fetch();
-    return {
-      loading: !subscription.ready(),
-      messages: messages
-      // users: Meteor.users.find().fetch(),
-    };
+  const subscription = Meteor.subscribe(
+    "messages.getMessages",
+    receptor._id,
+    type,
+    10
+  );
+  let messages = MessagesCollection.find(
+    {},
+    { sort: { date: 1 }, limit: 10 }
+  ).fetch();
+  return {
+    loading: !subscription.ready(),
+    messages: messages,
+    users: Meteor.users.find().fetch()
+  };
 })(Messages);
-
-// export default Messages;
