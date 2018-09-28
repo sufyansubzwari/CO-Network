@@ -8,7 +8,7 @@ Mutation.job = async (root, {job}, context) => {
   let entity = Object.assign({}, job);
   let oldJob = job._id ? Service.getJob(job._id) : null;
   if (job.languages)
-    entity.languages = await Tags.service.normalizeTags(job.languages, oldJob ? oldJob.languages : []);
+    entity.languages = await Tags.service .normalizeTagsWithLevels(job.languages, oldJob && oldJob.languages ? oldJob.languages : []);
   if (job.positionTags)
     entity.positionTags = await Tags.service.normalizeTags(job.positionTags, oldJob ? oldJob.positionTags : []);
   const inserted = await Service.job(entity);

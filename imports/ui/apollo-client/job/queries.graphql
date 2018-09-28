@@ -19,11 +19,18 @@ query GetJobs($limit: Int, $filter: String, $jobs: JobsInputSearch) {
           name
       }
       languages{
-          _id
-          label
-          value
-          name
-      }
+                tag{
+                  _id
+                  name
+                  label
+                  value
+                  type
+                  used
+                }
+                level
+                levelColor
+                icon
+              }
       positionTags{
           _id
           label

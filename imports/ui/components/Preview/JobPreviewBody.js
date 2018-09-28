@@ -29,7 +29,7 @@ class JobPreviewBody extends React.Component {
       : [];
     let languages = this.state.job.languages
       ? this.state.job.languages.map(lang => ({
-          ...lang,
+          ...lang.tag,
           active: true
         }))
       : [];

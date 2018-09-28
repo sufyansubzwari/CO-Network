@@ -10,7 +10,7 @@ type Jobs {
     jobType: [ObjectType]!
     salaryRange: SalaryRange!
     remote: Boolean
-    languages: [Tags]
+    languages: [LevelTagsType]
     industry: [Tags]!
     jobResponsibility: String
     culture: String
@@ -81,7 +81,7 @@ input JobsInput {
     jobType: [ObjectTypeInput]
     salaryRange: SalaryRangeInput
     remote: Boolean
-    languages: [TagsInput]
+    languages: [LevelTagsInput]
     industry: [TagsInput]
     jobResponsibility: String
     culture: String
