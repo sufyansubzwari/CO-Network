@@ -76,14 +76,34 @@ Jobs.schema = new SimpleSchema({
     optional: true,
     type: String
   },
-  languages: {
-    optional: true,
-    type: Array
-  },
-  'languages.$': {
-    optional: true,
-    type: String
-  },
+    languages: {
+        type: Array,
+        optional: true
+    },
+    "languages.$": {
+        type: Object,
+        optional: true
+    },
+    "languages.$.tag": {
+        type: String,
+        optional: true,
+        label: "ID of tag entity"
+    },
+    "languages.$.level": {
+        type: String,
+        optional: true,
+        label: "level of the tag"
+    },
+    "languages.$.icon": {
+        type: String,
+        optional: true,
+        label: "icon of the tag"
+    },
+    "languages.$.levelColor": {
+        type: String,
+        optional: true,
+        label: "color of the tag"
+    },
   jobType: {
     optional: true,
     type: Array,

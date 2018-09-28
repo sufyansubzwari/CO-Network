@@ -168,7 +168,7 @@ class ListJobs extends Component {
                           );
                         },
                         onClick: () => {
-                          console.log("Adding");
+                          this.applyJob()
                         }
                       },
                       {
@@ -187,18 +187,6 @@ class ListJobs extends Component {
                           this.editJob();
                         }
                       },
-                        {
-                            text: "Apply",
-                            checkVisibility: () => {
-                                const element = this.state.selectedItem;
-                                return (
-                                      true
-                                );
-                            },
-                            onClick: () => {
-                                this.applyJob();
-                            }
-                        },
                       {
                         text: "Remove",
                         icon: "delete",

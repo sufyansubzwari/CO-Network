@@ -7,10 +7,12 @@ import {
   InputAutoComplete
 } from "btech-base-forms-component";
 import { Container, Layout } from "btech-layout";
-import { EXPERIENCE_REQUIERED } from "../../../../../constants";
+import {EXPERIENCE_REQUIERED, TAG_LEVEL} from "../../../../../constants";
 import { GetTags } from "../../../../../apollo-client/tag";
 import { Query } from "react-apollo";
 import PropTypes from "prop-types";
+import MLTagsInput from '../../../../../components/TagsInputAutoComplete/TagsInputAutoComplete'
+
 
 class SecondStep extends React.Component {
   constructor(props) {
@@ -53,10 +55,10 @@ class SecondStep extends React.Component {
 
   onAddTags(tag) {
     if (tag.label && tag.label.length > 0) {
-      let newTag = Object.assign({}, tag);
+      let newTag = Object.assign({}, {tag: {...tag}});
       let tags = this.state.job.languages || [];
       !newTag.name ? (newTag.name = newTag.label) : null;
-      newTag.type = "Languages";
+      newTag.tag.type = "Languages";
       tags.push(newTag);
       this.state.job.languages = tags;
       this.setState({ job: this.state.job }, () => this.notifyParent());
@@ -67,6 +69,47 @@ class SecondStep extends React.Component {
     this.state.job.languages.splice(index, 1);
     this.setState({ job: this.state.job }, () => this.notifyParent());
   }
+
+    tagsSuggested(tags) {
+        let sug = JSON.parse(JSON.stringify(tags));
+        return sug
+            .filter(tag =>
+                !this.state.job ||
+                !this.state.job.languages ||
+                this.state.job.languages.length === 0 ||
+                this.state.job.languages.findIndex(
+                    item => item.tag._id === tag._id
+                ) === -1)
+            .sort((a, b) => b.used - a.used)
+            .map(tag => ({
+                ...tag,
+                active:
+                this.state.job &&
+                this.state.job.languages &&
+                this.state.job.languages.findIndex(
+                    item => item.tag._id === tag._id
+                ) > -1
+            }))
+            .slice(0, 5);
+    }
+
+    handleCategoryChange(index, value, color, icon) {
+        if (
+            value &&
+            this.state.job &&
+            this.state.job.languages &&
+            this.state.job.languages[index]
+        ) {
+            let newTag = {
+                ...this.state.job.languages[index],
+                levelColor: color,
+                icon: icon,
+                level: value
+            };
+            this.state.job.languages[index] = newTag;
+            this.setState({ job: this.state.job }, () => this.notifyParent());
+        }
+    }
 
   notifyParent(model, name, value) {
     if (model && name && value) {
@@ -96,40 +139,62 @@ class SecondStep extends React.Component {
                 variables={{ tags: { type: "Languages" } }}
               >
                 {({ loading, error, data }) => {
-                  if (loading) return <div>Fetching</div>;
-                  if (error) return <div>Error</div>;
+                  if (loading) return <div></div>;
+                  if (error) return <div></div>;
                   return (
-                    <InputAutoComplete
-                      placeholderText={
-                        "Technical Requirement | Languages & Libraries"
-                      }
-                      model={{ languages: [] }}
-                      name={"languages"}
-                      getAddedOptions={this.onAddTags.bind(this)}
-                      getNewAddedOptions={this.onAddTags.bind(this)}
-                      options={data.tags}
-                    />
+                    <div>
+                        <MLTagsInput
+                            placeholderText={"Technical Requirement | Languages & Libraries"}
+                            getAddedOptions={this.onAddTags.bind(this)}
+                            getNewAddedOptions={this.onAddTags.bind(this)}
+                            onCloseTags={(e, tag, index) => this.onCloseTags(e, tag, index)}
+                            options={data.tags}
+                            tags={this.state.job && this.state.job.languages &&
+                            this.state.job.languages.length > 0
+                                ? this.state.job.languages.map(item => ({
+                                    active: true,
+                                    useIcon: true,
+                                    levelColor: item.levelColor || "",
+                                    icon: item.icon || "",
+                                    level: item.level || "",
+                                    ...item.tag,
+                                    showOptions: !item.levelColor
+                                }))
+                                : []
+                            }
+                            levelOptions={TAG_LEVEL}
+                            onCategoryChange={(index, value, color, icon) =>
+                                this.handleCategoryChange(
+                                    index,
+                                    value,
+                                    color,
+                                    icon,
+                                )
+                            }
+                            useIcon={true}
+                        />
+                        <Container mt={"10px"}>
+                            <TagList
+                                tags={this.tagsSuggested(data.tags)}
+                                onSelect={(event, tag, index) => {
+                                    if (!tag.active) {
+                                        delete tag.active;
+                                        this.onAddTags(tag);
+                                    } else {
+                                        const pos = this.state.job.languages.findIndex(
+                                            item => item.tag._id === tag._id
+                                        );
+                                        this.onCloseTags(event, tag, pos);
+                                    }
+                                }}
+                            />
+                        </Container>
+                    </div>
                   );
                 }}
               </Query>
             </Container>
-            <Container>
-              <TagList
-                tags={
-                  this.state.job.languages &&
-                  this.state.job.languages.length > 0
-                    ? this.state.job.languages.map(item => ({
-                        active: true,
-                        ...item
-                      }))
-                    : []
-                }
-                // onSelect={tag => alert(`you select the tag '${tag.name}'`)}
-                closeable={true}
-                onClose={(e, tag, index) => this.onCloseTags(e, tag, index)}
-              />
-            </Container>
-          </Layout>
+            </Layout>
         </Container>
         <CheckBoxList
           columns={2}
