@@ -82,6 +82,8 @@ class MediaList extends React.Component {
                   media[index]["files"] = { name: files.name, link: result };
               this.setState({ media: media }, () => this.notifyParent());
             }
+            else
+                alert("File shouldn't be bigger than 10Mb");
         }
     }
 
