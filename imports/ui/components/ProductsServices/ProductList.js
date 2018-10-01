@@ -7,6 +7,7 @@ import MaterialIcon from "react-material-iconic-font";
 import Product from "./Product";
 import Service from "./Service";
 import { UploadToS3 } from "../../services";
+import {UploadToS3FromClient} from "../../services";
 
 const SLabel = styled.div`
   font-size: 12px;
@@ -63,26 +64,35 @@ class ProductList extends React.Component {
   }
 
   async handleUpload(files, index) {
-    if (files) {
-      let products = this.state.products;
-      let filesProd = this.state.products[index].files
-        ? this.state.products[index].files
-        : [];
-      for (let i = 0; i < files.length; i++) {
-        const file = files.item(i);
-        const result = await UploadToS3.uploadFileSync(file);
-        filesProd.push({ name: file.name, link: result.path });
+    if (files && files[0]) {
+
+      if (files[0].size <= 10 * 1024 * 1024) {
+
+            let products = this.state.products;
+            let filesProd = this.state.products[index].files
+              ? this.state.products[index].files
+              : [];
+            for (let i = 0; i < files.length; i++) {
+              const file = files.item(i);
+              let result = await UploadToS3FromClient.uploadFromClient(file);
+
+              if(result !== -1 )
+                filesProd.push({ name: file.name, link: result });
+            }
+            const cache = {};
+            products[index]["files"] = filesProd.filter(file => {
+              if (!cache[file.name]) {
+                cache[file.name] = true;
+                return true;
+              }
+              return false;
+            });
+            this.setState({ products: products }, () => this.notifyParent());
+
+        };
+      } else {
+        alert("File shouldn't be bigger than 10Mb");
       }
-      const cache = {};
-      products[index]["files"] = filesProd.filter(file => {
-        if (!cache[file.name]) {
-          cache[file.name] = true;
-          return true;
-        }
-        return false;
-      });
-      this.setState({ products: products }, () => this.notifyParent());
-    }
   }
 
   handleDelete() {
