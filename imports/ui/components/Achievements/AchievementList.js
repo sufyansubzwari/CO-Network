@@ -146,7 +146,7 @@ class AchievementsList extends React.Component {
           <Layout
             customTemplateColumns={"1fr auto"}
             style={{ paddingRight: "10px" }}
-            mb={'5px'}
+            mb={"5px"}
           >
             <SLabel>{this.props.type}</SLabel>
             {edit.length === 0 ? (
@@ -207,16 +207,19 @@ class AchievementsList extends React.Component {
                   item.edit ? (
                     item.type === "Academic Background" ? (
                       <AcademicBackground
+                        key={index}
                         model={this.state.achievements[index]}
                         handleSave={() => this.handleSave(index)}
                       />
                     ) : item.type === "Professional Experience" ? (
                       <ProfessionalExperience
+                        key={index}
                         model={this.state.achievements[index]}
                         handleSave={() => this.handleSave(index)}
                       />
                     ) : item.type === "Audited Courses" ? (
                       <AuditedCourse
+                        key={index}
                         model={this.state.achievements[index]}
                         handleSave={() => this.handleSave(index)}
                         onAddTags={this.onAddTags.bind(this, index)}
@@ -227,6 +230,7 @@ class AchievementsList extends React.Component {
                       />
                     ) : item.type === "Publications" ? (
                       <Publications
+                        key={index}
                         model={this.state.achievements[index]}
                         handleSave={() => this.handleSave(index)}
                         onAddTags={this.onAddTags.bind(this, index)}
@@ -237,6 +241,7 @@ class AchievementsList extends React.Component {
                       />
                     ) : item.type === "Patents" ? (
                       <Patents
+                        key={index}
                         model={this.state.achievements[index]}
                         handleSave={() => this.handleSave(index)}
                         onAddTags={this.onAddTags.bind(this, index)}

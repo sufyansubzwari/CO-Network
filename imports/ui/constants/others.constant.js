@@ -937,9 +937,10 @@ export const ACTIVELY = [
 ];
 
 export const ORG_TYPE_NUMBER = ORGANIZATION_TYPE.map((element, index) => {
-  element.active = false;
-  element.number = 0;
-  return Object.assign({}, element);
+  const item = Object.assign({}, element);
+  item.active = false;
+  item.number = 0;
+  return item;
 });
 
 export const ORGANIZATION_TAGS = [

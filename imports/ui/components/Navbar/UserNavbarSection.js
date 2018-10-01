@@ -113,7 +113,7 @@ class UserNavbarSection extends React.Component {
                   <HNavItem
                     mt={{ xs: "5px", md: "0" }}
                     size={this.notSize}
-                    icon={{ size: 20, src: "/images/logo/home.gif" }}
+                    icon={{ size: 35, src: "/images/nav/messages.svg" }}
                     number={{
                       top: "-5px",
                       right: "-5px",
@@ -128,7 +128,7 @@ class UserNavbarSection extends React.Component {
                   <HNavItem
                     mt={{ xs: "5px", md: "0" }}
                     size={this.notSize}
-                    icon={{ size: 20, src: "/images/logo/home.gif" }}
+                    icon={{ size: 35, src: "/images/nav/notifications.svg" }}
                     number={{
                       top: "-5px",
                       right: "-5px",

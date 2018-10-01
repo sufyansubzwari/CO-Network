@@ -15,7 +15,7 @@ class PostEvent extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      openPreview:false,
+      openPreview: false,
       event: {
         category: [],
         others: [],
@@ -31,8 +31,8 @@ class PostEvent extends Component {
           }
         },
         attenders: {
-          min: null,
-          max: null
+          min: 1,
+          max: 50
         },
         sponsors: [],
         tickets: []
@@ -42,11 +42,10 @@ class PostEvent extends Component {
     // this.handleUserPhotoChange = this.handleUserPhotoChange.bind(this);
   }
 
-  componentDidMount(){
-    setTimeout(()=>{
-      if(document.body.offsetWidth>992)
-        this.setState({openPreview:true})
-    },200)
+  componentDidMount() {
+    setTimeout(() => {
+      if (document.body.offsetWidth > 992) this.setState({ openPreview: true });
+    }, 200);
   }
 
   onCancel() {
@@ -62,7 +61,6 @@ class PostEvent extends Component {
     });
   }
 
-
   onPostAction(createEvent, query) {
     let queryEvent = Object.assign({}, query);
     queryEvent.category = _.uniq(queryEvent.others.concat(queryEvent.category));
@@ -73,6 +71,7 @@ class PostEvent extends Component {
     queryEvent.place.location.fullLocation
       ? delete queryEvent.place.location.fullLocation
       : null;
+    if (queryEvent.followerList) delete queryEvent.followerList;
     let event = { ...queryEvent };
     if (this.props.curUser) {
       event.owner = this.props.curUser._id;

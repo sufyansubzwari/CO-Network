@@ -42,12 +42,12 @@ innovators.number = {
 let dataStory = Object.assign({}, base, {
   link: "/data-story",
   label: "Data Story",
-  icon: { size: 30, src: "/images/nav/Colloquium.svg" }
+  icon: { size: 30, src: "/images/nav/colloquium.svg" }
 });
 let colloquium = Object.assign({}, base, {
   link: "/colloquiums",
   label: "Colloquium",
-  icon: { size: 34, src: "/images/nav/Colloquium.svg" }
+  icon: { size: 34, src: "/images/nav/colloquium.svg" }
 });
 colloquium.number = {
   value: 0,

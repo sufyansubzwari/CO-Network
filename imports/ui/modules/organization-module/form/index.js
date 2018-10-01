@@ -100,12 +100,12 @@ class OrganizationForm extends React.Component {
             onChange={organization => this.handleChange(organization)}
           />
         </WizardStepForm>
-        <WizardStepForm title={"CO Network Services"}>
-          <SeventhStep
-            data={this.state.organization}
-            onChange={organization => this.handleChange(organization)}
-          />
-        </WizardStepForm>
+        {/*<WizardStepForm title={"CO Network Services"}>*/}
+          {/*<SeventhStep*/}
+            {/*data={this.state.organization}*/}
+            {/*onChange={organization => this.handleChange(organization)}*/}
+          {/*/>*/}
+        {/*</WizardStepForm>*/}
       </MlWizardForm>
     );
   }
