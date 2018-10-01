@@ -11,8 +11,7 @@ import MaterialIcon from "react-material-iconic-font";
  * Using "theme" to define our style
  */
 const BackButtonStyled = styled(Button)`
-  margin-top: 20px;
-  margin-right: 12px;
+  margin-top: 17px;
   width: 34px;
 `;
 

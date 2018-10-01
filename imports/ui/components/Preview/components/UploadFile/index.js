@@ -1,5 +1,6 @@
 import React from "react";
 import PropTypes from "prop-types";
+import { mixins } from "btech-layout";
 import MaterialIcon from "react-material-iconic-font";
 import styled from "styled-components";
 
@@ -20,6 +21,12 @@ const SImageAction = styled.span`
     text-decoration: underline;
   }
 `;
+
+const STextDescription = styled.span`
+  display: none;
+
+  ${mixins.media.desktop`display: initial`};
+`;
 /**
  * @module Data
  * @category Component
@@ -30,7 +37,8 @@ const UploadFile = function(props) {
   return (
     <SImageAction onClick={() => inputRef.click()}>
       <MaterialIcon type={props.iconClass} />
-      {props.text}
+      <span>Change </span>
+      <STextDescription>{props.text}</STextDescription>
       <input
         style={{ display: "none" }}
         type={"file"}
