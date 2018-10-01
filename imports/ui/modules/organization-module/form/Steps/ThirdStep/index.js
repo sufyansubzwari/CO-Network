@@ -104,6 +104,7 @@ class ThirdStep extends React.Component {
               return (
                   <Container mt={'25px'}>
                       <MLTagsInput
+                          requiered={true}
                           placeholderText={"Tags that best describe your organization"}
                           getAddedOptions={this.onAddTags.bind(
                               this,

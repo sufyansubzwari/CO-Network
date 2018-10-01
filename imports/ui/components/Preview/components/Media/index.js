@@ -31,7 +31,7 @@ const Media = function(props) {
                 marginBottom={"5px"}
             />
             <Text header={"Files"} marginBottom={"5px"}>
-                <File  name={file.name} link={file.link} />;
+                <File name={file && file.name} link={file && file.link} />
             </Text>
             <Text header={`Explain`} text={props.data.explain} marginBottom={"5px"} />
         </Container>

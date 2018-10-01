@@ -35,15 +35,20 @@ type Products {
     name: String
     link: String
     explain: String
-    files: [String]
+    files: [UploadedFile]
     edit: Boolean
+}
+
+type UploadedFile {
+    name: String
+    link: String
 }
 
 type Media {
     title: String
     link: String
     explain: String
-    files: String
+    files: UploadedFile
     edit: Boolean
 }
 
@@ -114,7 +119,12 @@ input ProductsInput {
     link: String
     explain: String
     edit: Boolean
-    files: [String]
+    files: [UploadedFileInput]
+}
+
+input UploadedFileInput {
+    name: String
+    link: String
 }
 
 input MediaInput {
@@ -122,7 +132,7 @@ input MediaInput {
     link: String
     explain: String
     edit: Boolean
-    files: String
+    files: UploadedFileInput
 }
 
 input SocialInput {
