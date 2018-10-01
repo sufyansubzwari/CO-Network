@@ -6,6 +6,7 @@ import { Button, Input, Select, TextArea } from "btech-base-forms-component";
 import MaterialIcon from "react-material-iconic-font";
 import MediaItem from "./MediaItem"
 import {UploadToS3} from "../../services";
+import {UploadToS3FromClient} from "../../services";
 
 const SLabel = styled.div`
   font-size: 12px;
@@ -73,29 +74,16 @@ class MediaList extends React.Component {
 
     async handleUpload(files, index) {
         if (files) {
-            let media = this.state.media;
-            const result = await UploadToS3.uploadFileSync(files);
-            media[index]["files"] = { name: files.name, link: result.path };
-            this.setState({ media: media }, () => this.notifyParent());
+            if(files.size <= 10 * 1024 * 1024){
+              let media = this.state.media;
+                let result = await UploadToS3FromClient.uploadFromClient(files);
+              // const result = await UploadToS3.uploadFileSync(files);
+                if(result !== -1)
+                  media[index]["files"] = { name: files.name, link: result };
+              this.setState({ media: media }, () => this.notifyParent());
             }
+        }
     }
-  // handleUpload(file, index) {
-  //   if(file){
-  //     let media = this.state.media;
-  //     let files = this.state.media.files
-  //         ? this.state.media.files
-  //         : {};
-  //     if (file.length) {
-  //         files = file[0].name
-  //     } else files =  file.name;
-  //     media[index]["files"] = files;
-  //     this.setState(
-  //         {
-  //             media: media
-  //         }
-  //     );
-  //   }
-  // }
 
     handleDelete() {
     let arr = this.state.media.filter(

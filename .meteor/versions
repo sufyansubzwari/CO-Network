@@ -73,8 +73,6 @@ oauth@1.2.3
 oauth2@1.2.0
 orcprogramming:collection2-core-server@0.0.5
 ordered-dict@1.1.0
-ostrio:cookies@2.3.0
-ostrio:files@1.10.2
 practicalmeteor:chai@2.1.0_1
 practicalmeteor:sinon@1.14.1_2
 promise@0.11.1
