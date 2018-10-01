@@ -12,6 +12,18 @@ export const insertMessage = (message, callBack) => {
   }
 };
 
+export const updateMessage = (message, callBack) => {
+  if (checkLoggedUser()) {
+    Meteor.call("messages.update", message, error => {
+      if (error) {
+        return callBack(error);
+      } else {
+        return callBack("success");
+      }
+    });
+  }
+};
+
 function checkLoggedUser() {
   // if(!Meteor.userId()){
   //   // Bert.alert("Please Log in", 'danger')

@@ -43,7 +43,7 @@ Meteor.publishComposite('messages.getMessages', (receptor, type, limit) => {
         { receptor: receptor },
         {
           limit: limit || 10,
-          sort: { date: -1 }
+          sort: { createdAt: -1 }
         }
       );
     },

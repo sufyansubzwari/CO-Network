@@ -9,9 +9,15 @@ import {
   SUser,
   SText,
   SReplyMessage,
-  SReplyButton
+  SReplyButton,
+  ReplyBox,
+  VSeparator
 } from "./styledComponents";
 import MaterialIcon from "react-material-iconic-font";
+import { updateMessage } from "../Service/service";
+import { Meteor } from "meteor/meteor";
+import { userQuery } from "../../../apollo-client/user";
+import { Query } from "react-apollo";
 
 class LoadMessages extends Component {
   constructor(props) {
@@ -22,6 +28,8 @@ class LoadMessages extends Component {
       messages: this.props.messages || [],
       groups: [],
       blocks: [],
+      replyMessage: "",
+      textReply: "",
       flag: true
     };
   }
@@ -40,15 +48,48 @@ class LoadMessages extends Component {
     }
   }
 
-  handleClick(item) {
+  handleShowReplies(item) {
     item.showReply = !item.showReply;
     this.setState({ flag: !this.state.flag });
   }
 
-  getUserById(id, members) {
-    return members.find(function(member) {
-      return member._id === id;
+  handleMessage(text, msg) {
+    let message = Object.assign({}, msg);
+    let reply = {
+      owner: Meteor.userId(),
+      text: text,
+      attachment: "",
+      _id: new Date().toISOString(),
+      createdAt: new Date()
+    };
+
+    delete message.showReply;
+    delete message.canReply;
+
+    message.replies ? message.replies.push(reply) : (message.replies = [reply]);
+
+    updateMessage(message, res => {
+      if (res === "success") {
+        this.setState({ replyMessage: "", textReply: "" });
+      } else {
+        console.log(res.reason, "danger");
+      }
     });
+  }
+
+  onKeyPress(event, message) {
+    console.log(message);
+    if (event.key === "Enter" && event.shiftKey === false) {
+      event.preventDefault();
+      if (event.target.value.trim() !== "")
+        this.handleMessage(event.target.value, message);
+    }
+  }
+
+  handleReply(item) {
+    if (item._id === this.state.replyMessage)
+      this.setState({ replyMessage: "" });
+    else this.setState({ replyMessage: item._id });
   }
 
   handleMessageBlocks = messages => {
@@ -80,9 +121,10 @@ class LoadMessages extends Component {
       let messageDate = new Date(message.createdAt);
       let [key] = keys.find(([key, date]) => messageDate >= date) || [];
       // add the user data to the message
-      message.owner = this.props.users.filter(user => !!user).find(user => {
-        return user._id === message.owner;
-      });
+      // message.owner = this.props.users.filter(user => !!user).find(user => {
+      //   return user._id === message.owner;
+      // });
+      message.canReply = true;
       if (key) {
         blocks[key].unshift(message);
       }
@@ -97,35 +139,89 @@ class LoadMessages extends Component {
   renderMessages(blocks) {
     return blocks.length > 0
       ? blocks.map((message, k) => {
-          const owner = message.owner;
-          console.info(owner);
+          console.info(message.owner);
           return (
-            <Container fullY key={k}>
-              <Layout customTemplateColumns={"auto auto 1fr"} mb={"20px"}>
-                <HButtom
-                  image={!!owner ? owner.profile.image : ""}
-                  size={this.props.size}
-                />
-                <div style={{ margin: "0 10px" }}>
-                  <SUser>
-                    <span id={"user-name"}>{owner && owner.profile.name}</span>
-                    <span id={"time"}>
-                      {moment(message.createdAt).format("h:mm a")}
-                    </span>
-                  </SUser>
-                  <SText>{message.text}</SText>
-                </div>
-                {/*<SReplyButton>Reply</SReplyButton>*/}
-              </Layout>
-              {message.replies && message.replies.length > 0 ? (
-                <div style={{ marginLeft: "20px" }}>
-                  <SReplyMessage onClick={() => this.handleClick(item)}>
-                    Show Replies <MaterialIcon type={"chevron-down"} />
-                  </SReplyMessage>
-                  {message.showReply && this.renderMessages(message.replies)}
-                </div>
-              ) : null}
-            </Container>
+            <Query
+              query={userQuery}
+              variables={{ id: message.owner }}
+              fetchPolicy={"cache-and-network"}
+            >
+              {({ loading, error, data }) => {
+                if (loading) return <div />;
+                if (error) return <div />;
+                const owner = data.user;
+                return (
+                  <Container fullY key={k} style={{ height: "auto" }}>
+                    <Layout customTemplateColumns={"auto 1fr"} mb={"20px"}>
+                      <HButtom
+                        image={!!owner ? owner.profile.image : ""}
+                        size={this.props.size}
+                      />
+                      <div style={{ margin: "0 10px" }}>
+                        <SUser>
+                          <span id={"user-name"}>
+                            {owner && owner.profile.name}
+                          </span>
+                          <span id={"time"}>
+                            {moment(message.createdAt).format("h:mm a")}
+                          </span>
+                          {message.canReply ? (
+                            <SReplyButton
+                              onClick={() => this.handleReply(message)}
+                            >
+                              <MaterialIcon type={"mail-reply"} />
+                            </SReplyButton>
+                          ) : null}
+                        </SUser>
+                        <SText>{message.text}</SText>
+                      </div>
+                    </Layout>
+                    {message._id === this.state.replyMessage ? (
+                      <div
+                        style={{
+                          marginLeft: "20px"
+                        }}
+                      >
+                        <ReplyBox
+                          placeholder={"Type to Reply"}
+                          name={"textReply"}
+                          model={this.state}
+                          buttonText={"Reply"}
+                          onKeyPress={event => this.onKeyPress(event, message)}
+                          onClick={() =>
+                            this.handleMessage(this.state.textReply, message)
+                          }
+                        />
+                      </div>
+                    ) : null}
+                    {message.replies && message.replies.length > 0 ? (
+                      <div style={{ width: "100%", marginBottom: "10px" }}>
+                        {/*<SReplyMessage onClick={() => this.handleShowReplies(message)}>*/}
+                        {/*Show Replies <MaterialIcon type={"chevron-down"}/>*/}
+                        {/*</SReplyMessage>*/}
+                        <div
+                          style={{
+                            marginLeft: "20px",
+                            display: "flex",
+                            flexDirection: "row"
+                          }}
+                        >
+                          <VSeparator />
+                          <div style={{ height: "auto", width: "100%" }}>
+                            {//message.showReply &&
+                            this.renderMessages(
+                              message.replies.sort(
+                                (a, b) => b.createdAt - a.createdAt
+                              )
+                            )}
+                          </div>
+                        </div>
+                      </div>
+                    ) : null}
+                  </Container>
+                );
+              }}
+            </Query>
           );
         })
       : null;

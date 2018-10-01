@@ -57,8 +57,9 @@ Messages.schema = new SimpleSchema({
     optional: true,
   },
   'replies.$':{
-    type: this,
+    type: Object,
     optional: true,
+    blackbox: true
   },
   attachment: {
     type: String,

@@ -6,7 +6,7 @@ import Scrollbars from "react-custom-scrollbars";
 import MessagesCollection from "../../../api/messages/collection";
 import { insertMessage } from "./Service/service";
 import LoadMessages from "./components/loadMessage";
-import { SChat, SReplyBox } from "./components/styledComponents";
+import { SChat, ReplyBox } from "./components/styledComponents";
 import { Layout, Container } from "btech-layout";
 import { TextArea, Button } from "btech-base-forms-component";
 
@@ -27,17 +27,32 @@ class Messages extends React.Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    if (nextProps.receptor._id !== this.state.receptor._id)
+    if (nextProps.receptor._id !== this.state.receptor._id) {
       this.setState({ receptor: nextProps.receptor });
-    this.setState({
-      messages: nextProps.messages,
-      users: nextProps.users
-    });
+    }
+    if (nextProps.messages !== this.state.messages) {
+      this.setState(
+        {
+          messages: nextProps.messages
+        },
+        () => this.setScroll()
+      );
+    }
+  }
+
+  setScroll() {
+    let _this = this.scroll;
+    setTimeout(
+      function() {
+        _this.scrollToBottom();
+      }.bind(this),
+      100
+    );
   }
 
   handleMessage(text) {
     let message = {
-      from: this.props.curUser._id,
+      owner: this.props.curUser._id,
       receptor: this.state.receptor._id,
       text: text,
       type: this.state.type,
@@ -67,7 +82,11 @@ class Messages extends React.Component {
     return (
       <Layout fullY customTemplateRows={"1fr auto"} rowGap={"10px"}>
         <SChat>
-          <Scrollbars style={{ height: "100%" }} onScroll={this.handleScroll}>
+          <Scrollbars
+            style={{ height: "100%" }}
+            onScroll={this.handleScroll}
+            ref={scroll => (this.scroll = scroll)}
+          >
             {messages.length ? (
               <LoadMessages
                 on={this.onMessage}
@@ -77,26 +96,12 @@ class Messages extends React.Component {
             ) : null}
           </Scrollbars>
         </SChat>
-        <SReplyBox>
-          <Layout
-            customTemplateRows={"1fr auto"}
-            rowGap={"10px"}
-            padding={"10px"}
-          >
-            <TextArea
-              placeholderText={"Type Something"}
-              name={"textMessage"}
-              model={this.state}
-              onKeyPress={this.onKeyPress}
-            />
-            <Layout customTemplateColumns={"1fr auto"} mb={"10px"}>
-              <Container />
-              <Button width={"62px"} height={"30px"}>
-                Send
-              </Button>
-            </Layout>
-          </Layout>
-        </SReplyBox>
+        <ReplyBox
+          placeholder={"Type Something"}
+          name={"textMessage"}
+          model={this.state}
+          onKeyPress={this.onKeyPress}
+        />
       </Layout>
     );
   }
@@ -122,7 +127,7 @@ export default withTracker(({ receptor, type }) => {
   );
   let messages = MessagesCollection.find(
     {},
-    { sort: { date: 1 }, limit: 10 }
+    { sort: { createdAt: -1 }, limit: 10 }
   ).fetch();
   return {
     loading: !subscription.ready(),

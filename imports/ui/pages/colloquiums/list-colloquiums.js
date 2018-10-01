@@ -224,10 +224,12 @@ class ListColloquiums extends Component {
                     this.handleBackgroundChange(updateImage, imageSrc)
                   }
                 >
-                  <ColloquiumPreviewBody
-                    colloquium={this.state.selectedItem}
-                    {...this.props}
-                  />
+                  {this.state.selectedItem ? (
+                    <ColloquiumPreviewBody
+                      colloquium={this.state.selectedItem}
+                      {...this.props}
+                    />
+                  ) : null}
                 </Preview>
               )}
             </Mutation>
