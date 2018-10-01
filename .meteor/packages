@@ -30,3 +30,4 @@ practicalmeteor:sinon
 meteortesting:mocha
 hwillson:stub-collections
 react-meteor-data
+edgee:slingshot
