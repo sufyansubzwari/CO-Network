@@ -144,6 +144,14 @@ Organizations.schema = new SimpleSchema({
       optional: true
     },
     'products.$.files.$':{
+        type: Object,
+        optional: true
+    },
+    'products.$.files.$.name':{
+        type: String,
+        optional: true
+    },
+    'products.$.files.$.link':{
         type: String,
         optional: true
     },
@@ -172,6 +180,14 @@ Organizations.schema = new SimpleSchema({
         optional: true
     },
     'media.$.files':{
+        type: Object,
+        optional: true
+    },
+    'media.$.files.name':{
+        type: String,
+        optional: true
+    },
+    'media.$.files.link':{
         type: String,
         optional: true
     },

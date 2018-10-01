@@ -23,7 +23,6 @@
     "auth0-js": "^9.7.3",
     "aws-sdk": "2.266.1",
     "axios": "^0.18.0",
-    "bcrypt": "^3.0.0",
     "bcrypt-nodejs": "0.0.3",
     "body-parser": "^1.18.2",
     "btech-base-forms-component": "^1.11.2",

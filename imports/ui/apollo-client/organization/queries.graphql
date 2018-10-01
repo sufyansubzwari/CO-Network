@@ -80,13 +80,19 @@ query GetOrganizations($limit: Int, $filter: String, $organizations: Organizatio
             name
             link
             explain
-            files
+            files{
+                name
+                link
+            }
         }
         media{
             title
             link
             explain
-            files
+            files{
+                name
+                link
+            }
         }
     }
 }

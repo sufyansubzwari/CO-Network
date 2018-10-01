@@ -26,15 +26,6 @@ class FirstStep extends React.Component {
       };
       this.setState({ organization: organization });
     }
-    if (this.props.data && this.props.data.orgType)
-      this.setState({
-        orgType: ORGANIZATION_TYPE.map(e => {
-          e["active"] = this.props.data.orgType.some(
-            element => e.label === element.label
-          );
-          return e;
-        })
-      });
   }
 
   changeOrgTypes(actives) {
@@ -53,6 +44,15 @@ class FirstStep extends React.Component {
   componentWillReceiveProps(nextProps) {
     if (nextProps.data && nextProps.data !== this.state.organization)
       this.setState({ organization: nextProps.data });
+      if (nextProps.data && nextProps.data.orgType)
+          this.setState({
+              orgType: ORGANIZATION_TYPE.map(e => {
+                  e["active"] = nextProps.data.orgType.some(
+                      element => e.label === element.label
+                  );
+                  return e;
+              })
+          });
   }
 
   notifyParent(section, model, name, value) {

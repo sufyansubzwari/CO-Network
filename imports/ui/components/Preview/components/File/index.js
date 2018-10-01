@@ -18,11 +18,13 @@ const SNameContainer = styled(Container)`
 const File = function(props) {
   return (
     <Link href={props.link} target="_blank">
-      <Layout customTemplateColumns={"auto 1fr"}>
+      <Layout customTemplateColumns={props.link ? "auto 1fr" : "auto"}>
         <SNameContainer>{props.name}</SNameContainer>
-        <Container ml={"5px"}>
-          <MaterialIcon type={"cloud-download"} />
-        </Container>
+        {props.link ? (
+          <Container ml={"5px"}>
+            <MaterialIcon type={"cloud-download"} />
+          </Container>
+        ) : null}
       </Layout>
     </Link>
   );

@@ -7,6 +7,7 @@ import Preview from "./Preview/Preview";
 import UserPhoto from "./UserPhoto/UserPhoto";
 import CardItem from "./CardItem/CardItem";
 import ClusterIcon from "./ClusterIcon/ClusterIcon";
+import ProductsServices from "./ProductsServices/ProductsServices";
 import BigTag from "./BigTag/BigTag";
 import FiltersContainer from "./FiltersContainer/FiltersContainer";
 import Separator from "./FiltersContainer/Separator";
@@ -39,5 +40,6 @@ export {
   Separator,
   BigTag,
   Label,
-  TagsInputAutoComplete
+  TagsInputAutoComplete,
+  ProductsServices
 };

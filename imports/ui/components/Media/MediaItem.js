@@ -43,8 +43,9 @@ export default MediaItem = function (props) {
                     />
 
                     <Container>
-                        {props.model && props.model.files && props.model.files !== '' ? <AttachedFile
-                            file={({name: props.model.files})}
+                        {props.model && props.model.files && props.model.files && props.model.files.name ?
+                            <AttachedFile
+                            file={({name: props.model.files.name})}
                             onClose={() => props.onClose()}
                         /> : null}
                     </Container>
