@@ -253,6 +253,7 @@ class AchievementsList extends React.Component {
                     ) : null
                   ) : (
                     <Layout
+                      key={index}
                       paddingY={"10px"}
                       customTemplateColumns={"1fr auto"}
                     >
