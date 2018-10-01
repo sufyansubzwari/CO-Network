@@ -103,7 +103,7 @@ class FirstStep extends React.Component {
         <CheckBoxList
           placeholderText={"Organization Type"}
           options={this.state.orgType}
-          columns={2}
+          columns={3}
           checkboxVerticalSeparation={"10px"}
           checkboxSize={"15px"}
           getValue={actives => this.changeOrgTypes(actives)}

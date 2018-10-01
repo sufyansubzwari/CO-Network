@@ -13,6 +13,15 @@ const SPageTitle = styled(Container)`
   letter-spacing: 1px;
   color: ${props => props.theme.color.default};
   text-transform: uppercase;
+  zoom: 100%;
+
+  @media (min-width: 62em) {
+    zoom: 80%;
+  }
+
+  @media (min-width: 86em) {
+    zoom: 100%;
+  }
 `;
 
 const SHomeActions = styled(Container)`

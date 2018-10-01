@@ -14,6 +14,15 @@ const TopSearchContainer = styled(Container)`
   padding: ${props => (!props.isOpenFilters ? "20px 66px" : "20px 48px")};
   box-shadow: ${props => "0 1px 0 0 " + props.theme.color.grey};
   padding: 15px;
+  zoom: 100%;
+
+  @media (min-width: 62em) {
+    zoom: 80%;
+  }
+
+  @media (min-width: 86em) {
+    zoom: 100%;
+  }
 
   @media (min-width: 62em) {
     padding: ${props => (!props.isOpenFilters ? "20px 35px" : "20px 48px")};

@@ -12,7 +12,8 @@ import {
   FiltersContainer,
   BigTag,
   Separator,
-  FilterItem
+  FilterItem,
+  MLCheckBoxList
 } from "../../../components";
 import { cleanFilters, setFilters } from "../../../actions/SideBarActions";
 import { connect } from "react-redux";
@@ -36,7 +37,8 @@ class OrganizationFilters extends React.Component {
       })),
       filters: {},
       tech_DOT_industry: [],
-      description: []
+      description: [],
+      limit: 4
     };
   }
 
@@ -118,6 +120,13 @@ class OrganizationFilters extends React.Component {
     );
   }
 
+  handleShowMore() {
+    if (this.state.limit < this.state.orgType.length) {
+      const newLimit = this.state.limit + 5;
+      this.setState({ limit: newLimit });
+    } else this.setState({ limit: 5 });
+  }
+
   render() {
     return (
       <FiltersContainer
@@ -154,7 +163,7 @@ class OrganizationFilters extends React.Component {
         <FilterItem>
           <Query query={GetTags} variables={{ tags: { type: "OrgDesc" } }}>
             {({ loading, error, data }) => {
-              if (loading) return <div>Fetching</div>;
+              if (loading) return <div />;
               if (error) return <div>Error</div>;
               return (
                 <InputAutoComplete
@@ -172,9 +181,6 @@ class OrganizationFilters extends React.Component {
             <TagList
               tags={this.state.description || []}
               closeable={true}
-              // checkCloseableItem={(tag, index) => {
-              //   return tag.userAdd === true;
-              // }}
               onClose={(e, tag, index) =>
                 this.onCloseTags(e, tag, index, "description")
               }
@@ -183,17 +189,26 @@ class OrganizationFilters extends React.Component {
         </FilterItem>
         <Separator />
         <FilterItem>
-          <CheckBoxList
-            placeholderText={"Org Type"}
-            options={this.state.orgType}
-            getValue={selected => this.addFilters("orgType", selected)}
+          <MLCheckBoxList
+            showMore
+            limit={this.state.limit}
+            title={"Org Type"}
+            sizeList={this.state.orgType.length}
+            options={this.state.orgType
+              .slice(0, this.state.limit)
+              .map(item => ({
+                ...item,
+                number: item.used || 0
+              }))}
+            onSelect={selected => this.addFilters("orgType", selected)}
+            onMoreAction={this.handleShowMore.bind(this)}
           />
         </FilterItem>
         <Separator />
         <FilterItem>
           <Query query={GetTags} variables={{ tags: { type: "INDUSTRY" } }}>
             {({ loading, error, data }) => {
-              if (loading) return <div>Fetching</div>;
+              if (loading) return <div />;
               if (error) return <div>Error</div>;
               return (
                 <InputAutoComplete

@@ -155,7 +155,7 @@ class JobsFilters extends React.Component {
         <FilterItem>
           <Query query={JobCounts} variables={{ field: "jobType" }}>
             {({ loading, error, data }) => {
-              if (loading) return <div>Fetching</div>;
+              if (loading) return <div></div>;
               if (error) return <div>Error</div>;
               return (
                 <CheckBoxList
@@ -176,7 +176,7 @@ class JobsFilters extends React.Component {
         <FilterItem>
           <Query query={JobCounts} variables={{ field: "jobExperience" }}>
             {({ loading, error, data }) => {
-              if (loading) return <div>Fetching</div>;
+              if (loading) return <div></div>;
               if (error) return <div>Error</div>;
               return (
                 <CheckBoxList
@@ -194,32 +194,6 @@ class JobsFilters extends React.Component {
               );
             }}
           </Query>
-        </FilterItem>
-        <Separator />
-        <FilterItem>
-          <InputAutoComplete
-            placeholderText={"Industry | Sector"}
-            name={"industry"}
-            model={this.state}
-            options={[
-              { label: "option1", value: "option1" },
-              { label: "option2", value: "option2" },
-              { label: "option3", value: "option3" }
-            ]}
-          />
-          <Layout
-            mt={"10px"}
-            customTemplateColumns={"70px 70px 70px"}
-            colGap={"10px"}
-          >
-            {/*<BigTag text={"Biotechnology"} icon={"label"} connected={false}/>*/}
-            {/*<BigTag text={"Oil & Gas"} icon={"label"} connected={true}/>*/}
-            {/*<BigTag*/}
-            {/*text={"Application & BioInformatics"}*/}
-            {/*icon={"label"}*/}
-            {/*connected={true}*/}
-            {/*/>*/}
-          </Layout>
         </FilterItem>
         <Separator />
         <FilterItem>

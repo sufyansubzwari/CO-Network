@@ -64,7 +64,7 @@ class ListColloquiums extends Component {
   onChangeSelection(item, key, viewsUpdate) {
     if (item) {
       const view = {
-        user: this.props.curUser._id,
+        user: this.props.curUser ? this.props.curUser._id : null,
         entityViewed: item._id,
         entityType: item.entity,
         actualDate: new Date()

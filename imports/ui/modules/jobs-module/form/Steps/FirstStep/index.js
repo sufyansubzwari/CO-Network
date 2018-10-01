@@ -201,7 +201,7 @@ class FirstStep extends React.Component {
             <Container>
               <Query query={tags} variables={{ tags: { type: "JobPosition" } }}>
                 {({ loading, error, data }) => {
-                  if (loading) return <div>Fetching</div>;
+                  if (loading) return <div></div>;
                   if (error) return <div>Error</div>;
                   return (
                     <div>

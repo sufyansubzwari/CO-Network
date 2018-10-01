@@ -140,7 +140,7 @@ class ThirdStep extends React.Component {
         </Layout>
         <Query query={GetTags} variables={{ tags: { type: "INDUSTRY" } }}>
           {({ loading, error, data }) => {
-            if (loading) return <div>Fetching</div>;
+            if (loading) return <div></div>;
             if (error) return <div>Error</div>;
             return (
               <SelectTag
