@@ -135,6 +135,7 @@ class OrganizationFilters extends React.Component {
         <Separator />
         <FilterItem>
           <GeoInputLocation
+            required={false}
             name={"location"}
             model={this.state}
             placeholder={"Location"}
@@ -244,7 +245,7 @@ class OrganizationFilters extends React.Component {
         <Separator />
         <FilterItem>
           <CheckBoxList
-            placeholderText={"My Jobs"}
+            placeholderText={"My Organizations"}
             options={[
               {
                 label: "My Looking for Talent",

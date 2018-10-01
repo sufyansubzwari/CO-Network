@@ -101,6 +101,7 @@ class JobsFilters extends React.Component {
       >
         <FilterItem>
           <GeoInputLocation
+            required={false}
             name={"location"}
             model={this.state}
             placeholder={"Location"}
