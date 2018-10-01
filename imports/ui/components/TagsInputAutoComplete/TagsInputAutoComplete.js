@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import styled from "styled-components";
+import MaterialIcon from "react-material-iconic-font";
 import PropsTypes from "prop-types";
 import {
   InputGroup,
