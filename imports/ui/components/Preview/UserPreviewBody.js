@@ -20,11 +20,20 @@ class UserPreviewBody extends React.Component {
   }
 
   render() {
-      let socials = []
-      if(this.state.user && this.state.user.identities){
-          socials = this.state.user.identities && this.state.user.identities.length && this.state.user.identities.map( (iden) => ({element: iden.provider, link: ''}) )
-      }
-      let website = this.state.user && this.state.user.website && [{website: this.state.user.website, link: this.state.user.website}]
+    let socials = [];
+    if (this.state.user && this.state.user.identities) {
+      socials =
+        this.state.user.identities &&
+        this.state.user.identities.length &&
+        this.state.user.identities.map(iden => ({
+          element: iden.provider === "google-oauth2" ? "google" : iden.provider,
+          link: ""
+        }));
+    }
+    let website = this.state.user &&
+      this.state.user.website && [
+        { website: this.state.user.website, link: this.state.user.website }
+      ];
 
     //tags
     let languages =
@@ -157,11 +166,7 @@ class UserPreviewBody extends React.Component {
       <Layout rowGap={"15px"}>
         <Title text={this.state.user.name + " " + this.state.user.lastName} />
         <Location location={this.state.user.place} />
-        {/*{this.state.user && this.state.user.email !== "" ? (*/}
-          {/*<Text header={"Email"} text={this.state.user.email} />*/}
-        {/*) : null}*/}
-        {/*todo: show the linked accounts*/}
-          {<Social socials={socials} links={website}/>}
+        {<Social socials={socials} links={website} />}
         {(languages && languages.length) ||
         (industry && industry.length) ||
         (curious && curious.length) ? (

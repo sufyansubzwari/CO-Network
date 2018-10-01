@@ -72,7 +72,7 @@ class Social extends React.Component {
     return (
       <ThemeProvider theme={theme}>
         {socials.length || links.length ? (
-          <Container mb={"1rem"}>
+          <Container>
             {socials}
             {links}
           </Container>
