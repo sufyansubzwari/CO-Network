@@ -1,12 +1,12 @@
 export const CREATE_LINKS = [
   {
     name: "Event",
-    description: "Consec dipinsing",
+    // description: "Consec dipinsing",
     link: "/post-event"
   },
   {
     name: "Job",
-    description: "Consec tetur adip",
+    // description: "Consec tetur adip",
     link: "/post-job"
   },
   // {
@@ -16,7 +16,7 @@ export const CREATE_LINKS = [
   // },
   {
     name: "Organization",
-    description: "Consec dipinsing",
+    // description: "Consec dipinsing",
     link: "/post-organization"
   },
   {

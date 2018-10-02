@@ -10,6 +10,9 @@ import SignUpListener from "../../components/SignUpListener/SignUpListener";
 import posed from "react-pose";
 import { Scrollbars } from "react-custom-scrollbars";
 import Styled from "styled-components";
+import { Meteor } from "meteor/meteor";
+import { withTracker } from "meteor/react-meteor-data";
+import UserRedux from "../../redux/user";
 
 const MainLayoutStyled = Styled(Layout)`
  position:fixed;
@@ -80,6 +83,7 @@ class MainLayout extends Component {
     super(props);
     this.state = { isShow: true, showNavbar: false };
   }
+
   componentDidMount() {
     setTimeout(() => {
       this.setState({ isShow: true });
@@ -88,10 +92,10 @@ class MainLayout extends Component {
 
   render() {
     let props = this.props;
-    const isSignUp = props.userState ? props.userState.profile.isSignUp : true;
-    let propsProvider = { curUser: props.userState, isSignUp };
+    const isSignUp = props.user ? props.user.profile.isSignUp : true;
+    let propsProvider = { curUser: props.user, isSignUp };
     const contentPose = props.showSidebar ? "leftOpen" : "leftClose";
-
+    this.props.setUser(this.props.user || null);
     return (
       <MainLayoutStyled
         customTemplateColumns={`1fr 1fr`}
@@ -132,11 +136,25 @@ MainLayout.defaultProps = {
 MainLayout.propTypes = {};
 
 const mapStateToProps = state => {
-  const { sideBarStatus, userState } = state;
+  const { sideBarStatus } = state;
   return {
-    showSidebar: sideBarStatus ? sideBarStatus.status : false,
-    userState
+    showSidebar: sideBarStatus ? sideBarStatus.status : false
   };
 };
 
-export default withRouter(connect(mapStateToProps)(MainLayout));
+const mapDispatchToProps = dispatch => ({
+  setUser: status => dispatch(UserRedux.Actions.setUser(status))
+});
+
+export default withRouter(
+  connect(
+    mapStateToProps,
+    mapDispatchToProps
+  )(
+    withTracker(() => {
+      return {
+        user: Meteor.user()
+      };
+    })(MainLayout)
+  )
+);

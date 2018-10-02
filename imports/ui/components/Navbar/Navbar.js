@@ -1,10 +1,9 @@
 import React, { Component } from "react";
-import { Layout, Container, mixins } from "btech-layout";
+import { Container, Layout, mixins } from "btech-layout";
 import { withRouter } from "react-router-dom";
 import Styled from "styled-components";
-
 import HNavbar from "./HNavbar";
-import HomeButton from "./HomeButton";
+import HNavBarButtons from "./HNavBarButtons";
 import UserNavbarSection from "./UserNavbarSection";
 import navs from "./nav.constant";
 import posed from "react-pose/lib/index";
@@ -53,25 +52,29 @@ class Navbar extends Component {
     this.state = { isOpen: false };
   }
 
-  openNavbar(isOpen){
-    this.setState({ isOpen});
-    this.props.onOpenNavbar&&this.props.onOpenNavbar(isOpen)
+  openNavbar(isOpen) {
+    this.setState({ isOpen });
+    this.props.onOpenNavbar && this.props.onOpenNavbar(isOpen);
   }
 
-  toggleNavbar=()=>{
-    const isOpen=!this.state.isOpen;
-    this.openNavbar(isOpen)
+  toggleNavbar = () => {
+    const isOpen = !this.state.isOpen;
+    this.openNavbar(isOpen);
+  };
+
+  onAddToggle() {
+    this.props.toggleSideBar(!this.props.addSidebarIsOpen);
+    this.props.callback && this.props.callback(false);
   }
 
-  componentDidMount(){
+  componentDidMount() {
     this.routeListen = this.props.history.listen((location, action) => {
-      this.openNavbar(false)
-      if(document.body.offsetWidth<993)
-        this.props.closeSideBar();
-
+      this.openNavbar(false);
+      if (document.body.offsetWidth < 993) this.props.closeSideBar();
     });
   }
-  componentWillUnmount(){
+
+  componentWillUnmount() {
     this.routeListen && this.routeListen();
   }
 
@@ -100,11 +103,18 @@ class Navbar extends Component {
           itemOptions={{ title: { hide: true, mdShow: true } }}
         >
           <Layout key={"header"} mdMarginY={"30px"} lgMarginY={"30px"}>
-            <HomeButton
-              onOpenNavbar={this.toggleNavbar}
+            <HNavBarButtons
+              isOpen={this.state.isOpen}
+              onToggleNavBar={this.toggleNavbar}
+              onAddToggle={() => this.onAddToggle()}
+              curUser={this.props.curUser}
             />
           </Layout>
-          <UserNavbarSection key={"footer"} curUser={this.props.curUser} callback={(value)=>this.openNavbar(value)}/>
+          <UserNavbarSection
+            key={"footer"}
+            curUser={this.props.curUser}
+            callback={value => this.openNavbar(value)}
+          />
         </HNavbar>
       </SNavBarContainer>
     );
@@ -114,18 +124,19 @@ class Navbar extends Component {
 const mapStateToProps = state => {
   const { sideBarStatus, sideBarEntity } = state;
   return {
-    isAddAction: sideBarStatus ? sideBarStatus.isAdd : false,
+    addSidebarIsOpen: sideBarStatus.status && sideBarStatus.isAdd,
     filterEntityType: sideBarEntity ? sideBarEntity.entityType : null
   };
 };
 
 const mapDispatchToProps = dispatch => {
   return {
-    closeSideBar: () => dispatch(toggleSideBar(false, false))
+    closeSideBar: () => dispatch(toggleSideBar(false, false)),
+    toggleSideBar: status => dispatch(toggleSideBar(status, true))
   };
 };
 
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)( withRouter(Navbar));
+)(withRouter(Navbar));
