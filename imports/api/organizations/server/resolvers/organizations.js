@@ -28,10 +28,6 @@ Organizations.tech = entity => {
     const techInd = entity.tech.industry
       ? { industry: Tags.service.getTagList(entity.tech.industry) }
       : {};
-      console.log("stack is =>");
-      console.log(tech.stack)
-      console.log("industry is =>");
-      console.log(tech.industry)
     return Object.assign(entity.tech, tech, techInd);
   }
   return {};
