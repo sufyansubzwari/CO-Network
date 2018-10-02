@@ -18,6 +18,7 @@ const onAdd = (props, obj) => {
 const Speaker = function(props) {
   return (
     <Container style={{ background: "#f6f6f6" }}>
+        <form onSubmit={e => {e.preventDefault(); e.stopPropagation(); props.handleSave() }}>
       <Layout templateColumns={2} colGap={"20px"}>
         <InputAutoComplete
           placeholderText={"Name"}
@@ -35,6 +36,7 @@ const Speaker = function(props) {
           placeholderText={"Email"}
           name={"email"}
           validate={EMAIL_REGEX}
+          required={true}
           model={props.model}
           getValue={(model, name, value) => props.onAdd(value, name)}
         />
@@ -48,7 +50,7 @@ const Speaker = function(props) {
         <Layout customTemplateColumns={"1fr auto"}>
           <LineSeparator />
           <Button
-            type={"button"}
+            type={"submit"}
             secondary
             height={"auto"}
             color={"black"}
@@ -56,13 +58,14 @@ const Speaker = function(props) {
             border={"none"}
             hoverBackground={"transparent"}
             hoverColor={"initial"}
-            onClick={props.handleSave}
+            // onClick={props.handleSave}
           >
             <MaterialIcon type={"save"} />
             <span style={{ paddingLeft: "5px" }}>Save</span>
           </Button>
         </Layout>
       </Container>
+        </form>
     </Container>
   );
 };
