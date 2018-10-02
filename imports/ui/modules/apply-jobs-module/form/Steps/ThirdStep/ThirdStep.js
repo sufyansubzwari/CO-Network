@@ -202,12 +202,14 @@ class ThirdStep extends React.Component {
                         min={
                             this.state.apply &&
                             this.state.apply.professional &&
-                            this.state.apply.professional.min
+                            this.state.apply.professional.salaryRange &&
+                            this.state.apply.professional.salaryRange.min
                         }
                         max={
                             this.state.apply &&
                             this.state.apply.professional &&
-                            this.state.apply.professional.max
+                            this.state.apply.professional.salaryRange &&
+                            this.state.apply.professional.salaryRange.max
                         }
                         getValue={data => {
                             const { min, max } = data;
