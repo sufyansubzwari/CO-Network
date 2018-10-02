@@ -7,6 +7,7 @@ import MaterialIcon from "react-material-iconic-font";
 import Speaker from "./Speaker";
 import Sponsor from "./Sponsor";
 import LineSeparator from "./LineSeparator";
+import { EMAIL_REGEX } from "../../constants";
 
 const SLabel = styled.div`
   font-size: 12px;
@@ -61,10 +62,13 @@ class SponsorsList extends React.Component {
 
   handleSave(index) {
     let spo = this.state.sponsors;
-    spo[index] = { ...spo[index], edit: false };
-    this.setState({ sponsors: spo, editingChild: false }, () =>
-      this.notifyParent()
-    );
+
+    // if(spo[index] && spo[index].name && spo[index].name !== "" && spo[index].email && spo[index].email && EMAIL_REGEX.test(spo[index].email) ){
+      spo[index] = { ...spo[index], edit: false };
+      this.setState({ sponsors: spo, editingChild: false }, () =>
+        this.notifyParent()
+      );
+    // }
   }
 
   handleChange(index) {

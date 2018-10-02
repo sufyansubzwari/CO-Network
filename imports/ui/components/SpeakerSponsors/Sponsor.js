@@ -18,6 +18,7 @@ const onAdd = (props, obj) => {
 const Sponsor = function(props) {
   return (
     <Container style={{ background: "#f6f6f6" }}>
+        <form onSubmit={e => {e.preventDefault(); e.stopPropagation(); props.handleSave() }}>
       <Layout templateColumns={2} colGap={"20px"}>
         <InputAutoComplete
           placeholderText={"Name"}
@@ -30,11 +31,13 @@ const Sponsor = function(props) {
           }))}
           getAddedOptions={obj => onAdd(props, obj)}
           getNewAddedOptions={obj => onAdd(props, obj)}
+          required={true}
         />
         <Input
           placeholderText={"Email"}
           name={"email"}
           validate={EMAIL_REGEX}
+          required={true}
           model={props.model}
           getValue={(model, name, value) => props.onAdd(value, name)}
         />
@@ -47,7 +50,7 @@ const Sponsor = function(props) {
       <Layout customTemplateColumns={"1fr auto"}>
         <LineSeparator />
         <Button
-          type={"button"}
+          type={"submit"}
           secondary
           height={"auto"}
           color={"black"}
@@ -55,12 +58,13 @@ const Sponsor = function(props) {
           border={"none"}
           hoverBackground={"transparent"}
           hoverColor={"initial"}
-          onClick={props.handleSave}
+          // onClick={props.handleSave}
         >
           <MaterialIcon type={"save"} />
           <span style={{ paddingLeft: "5px" }}>Save</span>
         </Button>
       </Layout>
+        </form>
     </Container>
   );
 };
