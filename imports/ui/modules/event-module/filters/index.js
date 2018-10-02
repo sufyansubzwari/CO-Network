@@ -40,7 +40,11 @@ class EventsFilters extends React.Component {
   componentWillReceiveProps(nextProps) {
     if (nextProps.data && !nextProps.data.loading && nextProps.data.tags) {
       let category = JSON.parse(JSON.stringify(nextProps.data.tags));
-      this.setState({ category: category.filter(item => !!item.used) });
+      this.setState({
+        category: category
+          .filter(item => !!item.used)
+          .sort((a, b) => b.used - a.used)
+      });
     }
   }
 
@@ -184,7 +188,6 @@ class EventsFilters extends React.Component {
             title={"Event Category"}
             sizeList={this.state.category.length}
             options={this.state.category
-              .sort((a, b) => b.used - a.used)
               .slice(0, this.state.limit)
               .map(item => ({
                 ...item,

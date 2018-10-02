@@ -37,6 +37,14 @@ const Icon = styled.span`
   font-size: 18px;
 `;
 
+const SText = styled.span`
+    overflow: hidden;
+    white-space: normal;
+    text-overflow: ellipsis;
+    height: 35px;
+    display: inline-block;
+`;
+
 class BigTag extends React.Component {
   constructor(props) {
     super(props);
@@ -66,7 +74,7 @@ class BigTag extends React.Component {
         <Icon>
           <MaterialIcon type={this.props.icon} />
         </Icon>
-        <span>{this.props.text}</span>
+        <SText>{this.props.text}</SText>
       </SBigTag>
     );
   }

@@ -35,9 +35,8 @@ const SAddButton = styled.span`
   margin-right: 5px;
   font-size: 18px;
   cursor: pointer;
-  color: ${props =>
-  props.inactive ? 'rgba(0,0,0,0.5)' : '#2B2B2B'};
-`
+  color: ${props => (props.inactive ? "rgba(0,0,0,0.5)" : "#2B2B2B")};
+`;
 
 const SInput = styled.input`
   flex-grow: 1;
@@ -180,7 +179,13 @@ export default class TagsInputAutoComplete extends Component {
   render() {
     return (
       <SContainer onClick={() => this.onFocus()}>
-        <SLabel inactive={!this.state.active} onClick={() => this.onFocus()}>
+        <SLabel
+          inactive={!this.state.active}
+          onClick={() => this.onFocus()}
+          fontSize={this.props.fontSize}
+          fontFamily={this.props.fontFamily}
+          fontWeight={this.props.fontWeight}
+        >
           {this.props.placeholderText}
           {this.props.required ? <SRequiredLabel>*</SRequiredLabel> : null}
         </SLabel>
@@ -268,7 +273,10 @@ export default class TagsInputAutoComplete extends Component {
               }}
             />
           </InputGroupButtonDropdown>
-          <SAddButton inactive={!this.state.active} onClick={() => this.onAddNewOption()}>
+          <SAddButton
+            inactive={!this.state.active}
+            onClick={() => this.onAddNewOption()}
+          >
             <MaterialIcon type={this.props.iconClass} />
           </SAddButton>
         </InputGroup>
