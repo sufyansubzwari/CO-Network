@@ -35,7 +35,7 @@ export const SLineTime = styled.div`
   > hr {
     width: 100%;
     border-top: solid 1px #454545;
-    margin-top: 12px;
+    margin-top: 10px;
   }
 `;
 
