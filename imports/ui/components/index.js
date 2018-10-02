@@ -15,6 +15,7 @@ import FilterItem from "./FiltersContainer/FilterItem";
 import TagsInputAutoComplete from "./TagsInputAutoComplete/TagsInputAutoComplete";
 import Label from "./Label/Label";
 import MLCheckBoxList from "./CheckBoxList/CheckBoxList";
+import Messages from "./Messages/Messages";
 
 // layouts
 import InternalLayout from "../layouts/InternalLayout/InternalLayout";
@@ -43,5 +44,6 @@ export {
   Label,
   TagsInputAutoComplete,
   ProductsServices,
-  MLCheckBoxList
+  MLCheckBoxList,
+  Messages
 };
