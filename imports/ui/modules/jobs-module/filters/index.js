@@ -19,7 +19,7 @@ import {
 import PropsTypes from "prop-types";
 import { cleanFilters, setFilters } from "../../../actions/SideBarActions";
 import { connect } from "react-redux";
-import { JobCounts } from "../../../apollo-client/job";
+import { JobCounts, GetMyJobs } from "../../../apollo-client/job";
 import { Query } from "react-apollo";
 
 class JobsFilters extends React.Component {
@@ -156,7 +156,7 @@ class JobsFilters extends React.Component {
         <FilterItem>
           <Query query={JobCounts} variables={{ field: "jobType" }}>
             {({ loading, error, data }) => {
-              if (loading) return <div></div>;
+              if (loading) return <div />;
               if (error) return <div>Error</div>;
               return (
                 <CheckBoxList
@@ -177,7 +177,7 @@ class JobsFilters extends React.Component {
         <FilterItem>
           <Query query={JobCounts} variables={{ field: "jobExperience" }}>
             {({ loading, error, data }) => {
-              if (loading) return <div></div>;
+              if (loading) return <div />;
               if (error) return <div>Error</div>;
               return (
                 <CheckBoxList
@@ -198,17 +198,25 @@ class JobsFilters extends React.Component {
         </FilterItem>
         <Separator />
         <FilterItem>
-          <CheckBoxList
-            placeholderText={"My Jobs"}
-            options={[
-              {
-                label: "My Applications",
-                active: true,
-                number: 12
-              },
-              { label: "Interested Employers", active: false, number: 3 }
-            ]}
-          />
+          <Query query={GetMyJobs} variables={{ owner: Meteor.userId()} }>
+            {({ loading, error, data }) => {
+              if (loading) return <div />;
+              if (error) return <div>Error</div>;
+              return (
+                <CheckBoxList
+                  placeholderText={"My Jobs"}
+                  options={[
+                    {
+                      label: "My Applications",
+                      active: true,
+                      number: data.myJobs.myJobs
+                    },
+                    { label: "Interested Employers", active: false, number: data.myJobs.myApplies }
+                  ]}
+                />
+              );
+            }}
+          </Query>
         </FilterItem>
         <Separator />
       </FiltersContainer>

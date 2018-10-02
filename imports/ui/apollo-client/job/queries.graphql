@@ -68,3 +68,10 @@ query JobCounts($field: String){
         number
     }
 }
+
+query GetMyJobs($owner: String) {
+  myJobs(owner: $owner) {
+      myJobs
+      myApplies
+    }
+}

@@ -33,6 +33,12 @@ type Query {
     jobs(filter: String, limit: Int, jobs: JobsInputSearch): [Jobs]
     job(_id: String): Jobs
     jobCounts(field: String): [Counts]
+    myJobs(owner: String): MyJobs
+}
+
+type MyJobs {
+    myJobs: Int
+    myApplies: Int
 }
 
 type Counts{
