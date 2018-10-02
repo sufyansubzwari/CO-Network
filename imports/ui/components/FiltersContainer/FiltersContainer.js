@@ -20,6 +20,18 @@ const SContainer = styled(Layout)`
   }
 `;
 
+const STitleLayout = styled(Layout)` 
+  zoom: 100%;
+
+  @media (min-width: 62em) {
+    zoom: 80%;
+  }
+
+  @media (min-width: 86em) {
+    zoom: 100%;
+  }
+`;
+
 /**
  * @module Data
  * @category Component
@@ -28,10 +40,10 @@ const SContainer = styled(Layout)`
 const FiltersContainer = function(props) {
   return (
     <SContainer fullY customTemplateRows={"auto 1fr"}>
-      <Layout customTemplateColumns={"1fr auto"}>
+      <STitleLayout customTemplateColumns={"1fr auto"}>
         <h6>Filters</h6>
         <BackButton onClick={() => props.onClose && props.onClose()} />
-      </Layout>
+      </STitleLayout>
       <Container>
         <Scrollbars
           universal

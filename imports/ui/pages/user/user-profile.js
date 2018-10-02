@@ -66,19 +66,19 @@ class UserProfile extends Component {
     );
     let userObject = Object.assign(user, currentUser);
     this.state = {
-      openPreview:false,
+      openPreview: false,
       user: userObject
     };
     this.handleBackgroundChange = this.handleBackgroundChange.bind(this);
     this.handleUserPhotoChange = this.handleUserPhotoChange.bind(this);
   }
 
-  componentDidMount(){
-    setTimeout(()=>{
-      if(document.body.offsetWidth>992)
-         this.setState({openPreview:true})
-    },200)
+  componentDidMount() {
+    setTimeout(() => {
+      if (document.body.offsetWidth > 992) this.setState({ openPreview: true });
+    }, 200);
   }
+
   onCancel() {
     this.props.history.push(`/`);
   }
@@ -152,7 +152,7 @@ class UserProfile extends Component {
         </Container>
         <Preview
           isOpen={this.state.openPreview}
-          onClose={()=>this.setState({openPreview:false})}
+          onClose={() => this.setState({ openPreview: false })}
           showAvatar
           key={"rightSide"}
           index={this.state.selectedIndex}

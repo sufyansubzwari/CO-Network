@@ -2,9 +2,22 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import InternalLayout from "../InternalLayout/InternalLayout";
-import { Container } from "btech-layout";
+import { Container, Layout } from "btech-layout";
 import { toggleSideBar } from "../../actions/SideBarActions";
+import styled from "styled-components";
 
+
+const SFormContainer = styled(Container)` 
+  zoom: 100%;
+
+  @media (min-width: 62em) {
+    zoom: 80%;
+  }
+
+  @media (min-width: 86em) {
+    zoom: 100%;
+  }
+`;
 /**
  * @module Data
  * @category PostLayout
@@ -34,9 +47,9 @@ class PostLayout extends Component {
   render() {
     return (
       <InternalLayout leftWidth={"52%"}>
-        <Container fullY key={"leftSide"}>
+        <SFormContainer fullY key={"leftSide"}>
           {this.getComponent("leftSide")}
-        </Container>
+        </SFormContainer>
         <Container fullY key={"rightSide"}>
           {this.getComponent("rightSide")}
         </Container>

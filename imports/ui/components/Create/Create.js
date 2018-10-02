@@ -6,15 +6,28 @@ import { Link } from "react-router-dom";
 import { Button } from "btech-base-forms-component";
 import MaterialIcon from "react-material-iconic-font";
 
-const Header = styled.div`
-    background-image: url("/images/create-head.png");
-    background-size: cover;
-    width: 100%;
-    height: 175px;
+const Header = styled(Container)`
+  background-image: url("/images/create-head.png");
+  background-size: cover;
+  width: 100%;
+  height: 175px;
+`;
+
+const SHeaderContent = styled(Container)`
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: middle;
+    zoom: 100%;
+    height: 175px;
+
+    @media (min-width: 62em) {
+      zoom: 80%;
+    }
+  
+    @media (min-width: 86em) {
+      zoom: 100%;
+    }
     
     label {
         font-family: ${props =>
@@ -41,24 +54,36 @@ const Header = styled.div`
     } 
 `;
 
-const CButton=styled(Button)`
-    width: 34px;
-    height: 34px;
-    border-radius: 3px;
-    background-color: #fb60cc;
-    position: absolute;
-    top: 40px;
-    left: 20px;
-    font-size: 18px;
-    font-weight: normal;
-    font-style: normal;
-    font-stretch: normal;
-    color: #fffefe;
-    border: none;
-    & :hover{
-        background: linear-gradient(353deg,#f92672,#e826f9);
-    }
-`
+const CButton = styled(Button)`
+  width: 34px;
+  height: 34px;
+  border-radius: 3px;
+  background-color: #fb60cc;
+  position: absolute;
+  top: 40px;
+  left: 20px;
+  font-size: 18px;
+  font-weight: normal;
+  font-style: normal;
+  font-stretch: normal;
+  color: #fffefe;
+  border: none;
+  & :hover {
+    background: linear-gradient(353deg, #f92672, #e826f9);
+  }
+`;
+
+const SBodyContainer = styled(Container)`
+  zoom: 100%;
+
+  @media (min-width: 62em) {
+    zoom: 80%;
+  }
+
+  @media (min-width: 86em) {
+    zoom: 100%;
+  }
+`;
 
 const SHeading = styled.label`
   font-family: Helvetica Neue LT Std;
@@ -138,20 +163,22 @@ class Create extends React.Component {
         onBlur={() => this.props.onBlur && this.props.onBlur()}
       >
         <Header>
-          <CButton
-            primary
-            secondary={true}
-            onClick={() =>  this.props.onClose &&  this.props.onClose()}
-            color={"black"}
-          >
-            {/*<Icon>*/}
+          <SHeaderContent>
+            <CButton
+              primary
+              secondary={true}
+              onClick={() => this.props.onClose && this.props.onClose()}
+              color={"black"}
+            >
+              {/*<Icon>*/}
               <MaterialIcon type={"chevron-left"} />
-            {/*</Icon>*/}
-          </CButton>
-          <SHeading>CREATE</SHeading>
-          <SSubHeading>Nice & easy!</SSubHeading>
+              {/*</Icon>*/}
+            </CButton>
+            <SHeading>CREATE</SHeading>
+            <SSubHeading>Nice & easy!</SSubHeading>
+          </SHeaderContent>
         </Header>
-        <Container paddingX={"45px"} paddingY={"35px"} paddingT={"25px"}>
+        <SBodyContainer paddingX={"45px"} paddingY={"35px"} paddingT={"25px"}>
           <Container fullY>
             <Layout fullY customTemplateRows={"1fr auto"}>
               <Container>
@@ -169,7 +196,7 @@ class Create extends React.Component {
               </Container>
             </Layout>
           </Container>
-        </Container>
+        </SBodyContainer>
       </Layout>
     );
   }

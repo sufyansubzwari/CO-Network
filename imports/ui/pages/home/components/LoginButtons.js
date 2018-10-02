@@ -31,6 +31,17 @@ const SAddMaterialIcon = styled.span`
     }
   }
 `;
+const SMainContainer = styled(Container)`
+  zoom: 100%;
+
+  @media (min-width: 62em) {
+    zoom: 80%;
+  }
+
+  @media (min-width: 86em) {
+    zoom: 100%;
+  }
+`;
 
 /**
  * @module Data
@@ -40,7 +51,7 @@ const SAddMaterialIcon = styled.span`
 const LoginButtons = function(props) {
   const size = { width: 43, height: 50 };
   return (
-    <Container hidden={!props.show}>
+    <SMainContainer hidden={!props.show}>
       <Layout rowGap={"15px"}>
         <Container>
           <SLoginTitle>Login</SLoginTitle>
@@ -68,7 +79,7 @@ const LoginButtons = function(props) {
           </HButtonGroup>
         </Container>
       </Layout>
-    </Container>
+    </SMainContainer>
   );
 };
 

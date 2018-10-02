@@ -6,13 +6,10 @@ import {
   FiltersContainer,
   FilterItem,
   Label,
-  Separator
+  Separator,
+  MLCheckBoxList
 } from "./../../../components";
-import {
-  SalaryRange,
-  CheckBoxList,
-  DatePickerRange
-} from "btech-base-forms-component";
+import { SalaryRange, DatePickerRange } from "btech-base-forms-component";
 import PropsTypes from "prop-types";
 import { connect } from "react-redux";
 import { setFilters, cleanFilters } from "../../../actions/SideBarActions";
@@ -103,6 +100,7 @@ class EventsFilters extends React.Component {
       >
         <FilterItem>
           <GeoInputLocation
+            required={false}
             name={"location"}
             model={this.state}
             placeholder={"Location"}
@@ -180,8 +178,11 @@ class EventsFilters extends React.Component {
         </FilterItem>
         <Separator />
         <FilterItem>
-          <CheckBoxList
-            placeholderText={"Event Category"}
+          <MLCheckBoxList
+            showMore
+            limit={this.state.limit}
+            title={"Event Category"}
+            sizeList={this.state.category.length}
             options={this.state.category
               .sort((a, b) => b.used - a.used)
               .slice(0, this.state.limit)
@@ -189,18 +190,9 @@ class EventsFilters extends React.Component {
                 ...item,
                 number: item.used || 0
               }))}
-            getValue={selected => this.addFilters("category", selected)}
+            onSelect={selected => this.addFilters("category", selected)}
+            onMoreAction={this.handleShowMore.bind(this)}
           />
-          {this.state.category.length > 5 ? (
-            <Label
-              text={
-                this.state.limit < this.state.category.length
-                  ? "Show More"
-                  : "Show Less"
-              }
-              onClick={this.handleShowMore.bind(this)}
-            />
-          ) : null}
         </FilterItem>
         <Separator />
       </FiltersContainer>

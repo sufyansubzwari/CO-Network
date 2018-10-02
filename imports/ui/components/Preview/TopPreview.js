@@ -52,6 +52,7 @@ const SPhotoLabelContainer = styled(Container)`
 const SBackLabelContainer = styled(Container)`
   position: absolute;
   bottom: 15px;
+  right: 10px
 `;
 
 /**
@@ -115,7 +116,7 @@ class TopPreview extends Component {
           fullY
           relative
           customTemplateColumns={
-            this.props.showAvatar ? `auto 1fr 170px` : `1fr 170px`
+            this.props.showAvatar ? `auto 1fr 175px` : `1fr 175px`
           }
         >
           {this.props.showAvatar ? (
@@ -130,7 +131,7 @@ class TopPreview extends Component {
                       <SPhotoLabelContainer>
                         <UploadFile
                           iconClass={"landscape"}
-                          text={"Change profile"}
+                          text={"profile"}
                           onSelect={files =>
                             this.onUploadRequest(files, "userphoto")
                           }
@@ -148,7 +149,7 @@ class TopPreview extends Component {
               <SBackLabelContainer>
                 <UploadFile
                   iconClass={"landscape"}
-                  text={"Change background"}
+                  text={"background"}
                   onSelect={files => this.onUploadRequest(files, "background")}
                 />
               </SBackLabelContainer>

@@ -11,7 +11,7 @@ class FirstStep extends React.Component {
     let data = props.data ? props.data : {};
     this.state = {
       organization: data,
-      orgType: ORGANIZATION_TYPE
+      orgType: ORGANIZATION_TYPE.map(item => item)
     };
   }
 
@@ -44,15 +44,15 @@ class FirstStep extends React.Component {
   componentWillReceiveProps(nextProps) {
     if (nextProps.data && nextProps.data !== this.state.organization)
       this.setState({ organization: nextProps.data });
-      if (nextProps.data && nextProps.data.orgType)
-          this.setState({
-              orgType: ORGANIZATION_TYPE.map(e => {
-                  e["active"] = nextProps.data.orgType.some(
-                      element => e.label === element.label
-                  );
-                  return e;
-              })
-          });
+    if (nextProps.data && nextProps.data.orgType)
+      this.setState({
+        orgType: ORGANIZATION_TYPE.map(e => {
+          e["active"] = nextProps.data.orgType.some(
+            element => e.label === element.label
+          );
+          return e;
+        })
+      });
   }
 
   notifyParent(section, model, name, value) {

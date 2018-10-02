@@ -99,7 +99,7 @@ class ThirdStep extends React.Component {
         <Container>
           <Query query={GetTags} variables={{ tags: { type: "OrgDesc" } }}>
             {({ loading, error, data }) => {
-              if (loading) return <div>Fetching</div>;
+              if (loading) return <div></div>;
               if (error) return <div>Error</div>;
               return (
                   <Container mt={'25px'}>

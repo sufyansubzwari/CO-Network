@@ -2,7 +2,7 @@ export default [
   {
     label: "google",
     service: "google-oauth2",
-    link: "",
+    link: "https://plus.google.com",
     visible: true
   },
   {

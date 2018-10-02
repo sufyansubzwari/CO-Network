@@ -177,7 +177,7 @@ class EventStep1 extends Component {
             <Container>
               <Query query={tags} variables={{tags: {type: "EVENT"}}}>
                 {({loading, error, data}) => {
-                  if (loading) return <div>Fetching</div>;
+                  if (loading) return <div></div>;
                   if (error) return <div>Error</div>;
                   return (
                     <div>

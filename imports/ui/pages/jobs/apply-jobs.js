@@ -36,8 +36,8 @@ class ApplyJob extends Component {
         professional: {
           expertise: [],
           salaryRange: {
-            min: "",
-            max: ""
+            min: 100,
+            max: 1000
           },
           degree: {},
           languages: [],

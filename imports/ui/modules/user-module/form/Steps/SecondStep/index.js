@@ -44,7 +44,7 @@ class SecondStep extends React.Component {
           model={this.state.user.aboutMe}
           name={"existingProblem"}
           placeholderText={
-            "What is the most exciting real world problem you want to solve?"
+            "What is the most exciting problem you want to solve?"
           }
           getValue={this.notifyParent.bind(this)}
         />

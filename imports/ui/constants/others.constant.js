@@ -936,11 +936,12 @@ export const ACTIVELY = [
   { label: "Sponsors Events" }
 ];
 
-export const ORG_TYPE_NUMBER = [
-  { label: "Corporation", active: false, number: 0 },
-  { label: "Community", active: false, number: 0 },
-  { label: "Venture Capital", active: false, number: 0 }
-];
+export const ORG_TYPE_NUMBER = ORGANIZATION_TYPE.map((element, index) => {
+  const item = Object.assign({}, element);
+  item.active = false;
+  item.number = 0;
+  return item;
+});
 
 export const ORGANIZATION_TAGS = [
   { name: "Bioinformatics", active: false, userAdd: false },

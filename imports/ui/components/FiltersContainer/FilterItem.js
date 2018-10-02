@@ -13,6 +13,16 @@ import { Container } from "btech-layout";
 
 const FilterItem = styled(Container)`
   padding: 20px 10px;
+  margin-right: 10px;
+  zoom: 100%;
+
+  @media (min-width: 62em) {
+    zoom: 80%;
+  }
+
+  @media (min-width: 86em) {
+    zoom: 100%;
+  }
 `;
 
 export default FilterItem;
