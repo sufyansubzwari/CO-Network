@@ -18,7 +18,8 @@ import {
 import { cleanFilters, setFilters } from "../../../actions/SideBarActions";
 import { connect } from "react-redux";
 import { Query } from "react-apollo";
-import { GetTags } from "../../../apollo-client/tag";
+import { GetTags as tags } from "../../../apollo-client/tag";
+import { TagsInputAutoComplete as MLTagsInput } from "../../../components/";
 
 class OrganizationFilters extends React.Component {
   constructor(props) {
@@ -127,6 +128,25 @@ class OrganizationFilters extends React.Component {
     } else this.setState({ limit: 5 });
   }
 
+  tagsSuggested(tags, type) {
+    let sug = JSON.parse(JSON.stringify(tags));
+    return sug
+      .filter(
+        tag =>
+          !this.state[type] ||
+          this.state[type].length === 0 ||
+          this.state[type].findIndex(item => item._id === tag._id) === -1
+      )
+      .sort((a, b) => b.used - a.used)
+      .map(tag => ({
+        ...tag,
+        active:
+          this.state[type] &&
+          this.state[type].findIndex(item => item._id === tag._id) > -1
+      }))
+      .slice(0, 5);
+  }
+
   render() {
     return (
       <FiltersContainer
@@ -162,31 +182,58 @@ class OrganizationFilters extends React.Component {
         </FilterItem>
         <Separator />
         <FilterItem>
-          <Query query={GetTags} variables={{ tags: { type: "OrgDesc" } }}>
+          <Query
+            query={tags}
+            variables={{ tags: { type: "OrgDesc" } }}
+            fetchPolicy={"cache-and-network"}
+          >
             {({ loading, error, data }) => {
               if (loading) return <div />;
               if (error) return <div>Error</div>;
               return (
-                <InputAutoComplete
-                  placeholderText={"Tags"}
-                  name={"other"}
-                  model={{ other: [] }}
-                  options={data.tags}
-                  getAddedOptions={this.onAddTags.bind(this, "description")}
-                  getNewAddedOptions={this.onAddTags.bind(this, "description")}
-                />
+                <div>
+                  <MLTagsInput
+                    fontSize={"12px"}
+                    fontFamily={"Roboto Mono"}
+                    fontWeight={"normal"}
+                    placeholderText={"Tags"}
+                    getAddedOptions={tag => this.onAddTags("description", tag)}
+                    getNewAddedOptions={tag =>
+                      this.onAddTags("description", tag)
+                    }
+                    onCloseTags={(e, tag, index) =>
+                      this.onCloseTags(e, tag, index, "description")
+                    }
+                    options={data.tags}
+                    tags={
+                      this.state.description && this.state.description.length
+                        ? this.state.description.map(item => ({
+                            active: true,
+                            ...item
+                          }))
+                        : []
+                    }
+                  />
+                  <Container mt={"10px"}>
+                    <TagList
+                      tags={this.tagsSuggested(data.tags, "description")}
+                      onSelect={(event, tag, index) => {
+                        if (!tag.active) {
+                          delete tag.active;
+                          this.onAddTags("description", tag);
+                        } else {
+                          const pos = this.state.description.findIndex(
+                            item => item._id === tag._id
+                          );
+                          this.onCloseTags(event, tag, pos, "description");
+                        }
+                      }}
+                    />
+                  </Container>
+                </div>
               );
             }}
           </Query>
-          <Container mt={"10px"}>
-            <TagList
-              tags={this.state.description || []}
-              closeable={true}
-              onClose={(e, tag, index) =>
-                this.onCloseTags(e, tag, index, "description")
-              }
-            />
-          </Container>
         </FilterItem>
         <Separator />
         <FilterItem>
@@ -207,40 +254,66 @@ class OrganizationFilters extends React.Component {
         </FilterItem>
         <Separator />
         <FilterItem>
-          <Query query={GetTags} variables={{ tags: { type: "INDUSTRY" } }}>
+          <Query
+            query={tags}
+            variables={{ tags: { type: "INDUSTRY" } }}
+            fetchPolicy={"cache-and-network"}
+          >
             {({ loading, error, data }) => {
               if (loading) return <div />;
               if (error) return <div>Error</div>;
               return (
-                <InputAutoComplete
-                  placeholderText={"Industry | Sector"}
-                  name={"other"}
-                  model={{ other: [] }}
-                  options={data.tags}
-                  getAddedOptions={this.onAddTags.bind(
-                    this,
-                    "tech_DOT_industry"
-                  )}
-                  getNewAddedOptions={this.onAddTags.bind(
-                    this,
-                    "tech_DOT_industry"
-                  )}
-                />
+                <div>
+                  <MLTagsInput
+                    fontSize={"12px"}
+                    fontFamily={"Roboto Mono"}
+                    fontWeight={"normal"}
+                    placeholderText={"Industry | Sector"}
+                    getAddedOptions={tag =>
+                      this.onAddTags("tech_DOT_industry", tag)
+                    }
+                    getNewAddedOptions={tag =>
+                      this.onAddTags("tech_DOT_industry", tag)
+                    }
+                    onCloseTags={(e, tag, index) =>
+                      this.onCloseTags(e, tag, index, "tech_DOT_industry")
+                    }
+                    options={data.tags}
+                    tags={
+                      this.state.tech_DOT_industry &&
+                      this.state.tech_DOT_industry.length
+                        ? this.state.tech_DOT_industry.map(item => ({
+                            active: true,
+                            ...item
+                          }))
+                        : []
+                    }
+                  />
+                  <Container mt={"10px"}>
+                    <TagList
+                      tags={this.tagsSuggested(data.tags, "tech_DOT_industry")}
+                      onSelect={(event, tag, index) => {
+                        if (!tag.active) {
+                          delete tag.active;
+                          this.onAddTags("tech_DOT_industry", tag);
+                        } else {
+                          const pos = this.state.tech_DOT_industry.findIndex(
+                            item => item._id === tag._id
+                          );
+                          this.onCloseTags(
+                            event,
+                            tag,
+                            pos,
+                            "tech_DOT_industry"
+                          );
+                        }
+                      }}
+                    />
+                  </Container>
+                </div>
               );
             }}
           </Query>
-          <Container mt={"10px"}>
-            <TagList
-              tags={this.state.tech_DOT_industry || []}
-              closeable={true}
-              // checkCloseableItem={(tag, index) => {
-              //   return tag.userAdd === true;
-              // }}
-              onClose={(e, tag, index) =>
-                this.onCloseTags(e, tag, index, "tech_DOT_industry")
-              }
-            />
-          </Container>
         </FilterItem>
         <Separator />
         <FilterItem>
