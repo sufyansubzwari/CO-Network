@@ -1,5 +1,5 @@
-query GetColloquiums($limit: Int, $filter: String, $events: ColloquiumSearchInput) {
-  colloquiums(limit: $limit, filter: $filter, colloquiums: $events) {
+query GetColloquiums($limit: Int, $filter: String, $colloquiums: ColloquiumSearchInput) {
+  colloquiums(limit: $limit, filter: $filter, colloquiums: $colloquiums) {
     _id
     title
     description

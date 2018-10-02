@@ -51,22 +51,12 @@ class ColloquiumFilters extends React.Component {
     const levels = selected.filter(element => element.active);
     const temp = this.state.filters;
     const checked = levels.map(item => ({
-      label: item.label,
-      value: item.label
+      label: item.label
     }));
     temp.competences = { elemMatch: { or: checked } };
-    checked.length === 0 ? delete temp[type] : null;
+    checked.length === 0 ? delete temp.competences : null;
     this.setState({ competences: levels, filters: temp }, () =>
       this.props.setFilters("colloquiums", this.state.filters)
-    );
-  }
-
-  checkFilters() {
-    let actives = this.state.locationTags.filter(item => item.active);
-    let filters = this.state.filters;
-    actives.length > 0 ? (filters.location = actives) : delete filters.location;
-    this.setState({ filters: filters }, () =>
-      this.props.setFilters("colloquiums", filters)
     );
   }
 

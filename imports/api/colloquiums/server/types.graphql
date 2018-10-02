@@ -23,8 +23,9 @@ type Query {
 input ColloquiumSearchInput{
     title: TableStringFilterInput
     description: TableStringFilterInput
-    tags: TableStringFilterInput
-    isPublic: TableStringFilterInput
+    tags: JobTypeElemMatch
+    competences: JobTypeElemMatch
+    isPublic: Boolean
     location: [LocationInput]
 }
 
