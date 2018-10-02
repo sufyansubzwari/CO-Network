@@ -217,7 +217,7 @@ class UserPreviewBody extends React.Component {
         this.state.user.aboutMe.existingProblem !== "" ? (
           <Text
             header={
-              "What is the most exciting real world problem you want to solve?"
+              "What is the most exciting problem you want to solve?"
             }
             text={
               this.state.user.aboutMe && this.state.user.aboutMe.existingProblem
