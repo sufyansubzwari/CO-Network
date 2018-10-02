@@ -142,6 +142,7 @@ class LoadMessages extends Component {
           console.info(message.owner);
           return (
             <Query
+              key={k}
               query={userQuery}
               variables={{ id: message.owner }}
               fetchPolicy={"cache-and-network"}

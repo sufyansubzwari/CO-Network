@@ -1,5 +1,6 @@
 import React from "react";
 import { Meteor } from "meteor/meteor";
+import { Session } from "meteor/session";
 import { withTracker } from "meteor/react-meteor-data";
 import propTypes from "prop-types";
 import Scrollbars from "react-custom-scrollbars";
@@ -21,22 +22,38 @@ class Messages extends React.Component {
       textMessage: ""
     };
     this.onKeyPress = this.onKeyPress.bind(this);
-    // this.handleScroll = this.handleScroll.bind(this);
+    this.handleScroll = this.handleScroll.bind(this);
     // this.handleMessage = this.handleMessage.bind(this);
     // this.onMessage = this.onMessage.bind(this);
   }
 
+  componentWillMount() {
+    this.setScroll();
+    Session.set("limitMessage", 10);
+  }
+
   componentWillReceiveProps(nextProps) {
     if (nextProps.receptor._id !== this.state.receptor._id) {
-      this.setState({ receptor: nextProps.receptor });
+      this.setState({ receptor: nextProps.receptor }, () => {
+        this.setScroll();
+        Session.set("limitMessage", 10);
+      });
     }
     if (nextProps.messages !== this.state.messages) {
-      this.setState(
-        {
-          messages: nextProps.messages
-        },
-        () => this.setScroll()
-      );
+      this.setState({ messages: nextProps.messages });
+    }
+  }
+
+  handleScroll(event) {
+    let target = event.target;
+    if (
+      target.scrollTop === 0 &&
+      this.state.limit <= this.state.messages.length
+    ) {
+      this.setState({ limit: this.state.limit + 10 }, () => {
+        Session.set("limitMessage", this.state.limit);
+      });
+      // this.updateScroll();
     }
   }
 
@@ -60,7 +77,7 @@ class Messages extends React.Component {
     };
     insertMessage(message, res => {
       if (res === "success") {
-        this.setState({ textMessage: "" });
+        this.setState({ textMessage: "" }, () => this.setScroll());
       } else {
         console.log(res.reason, "danger");
       }
@@ -85,7 +102,9 @@ class Messages extends React.Component {
           <Scrollbars
             style={{ height: "100%" }}
             onScroll={this.handleScroll}
-            ref={scroll => (this.scroll = scroll)}
+            ref={scroll => {
+              this.scroll = scroll;
+            }}
           >
             {messages.length ? (
               <LoadMessages
@@ -119,15 +138,16 @@ Messages.propTypes = {
 };
 
 export default withTracker(({ receptor, type }) => {
+  const limit = Session.get("limitMessage");
   const subscription = Meteor.subscribe(
     "messages.getMessages",
     receptor._id,
     type,
-    10
+    limit || 10
   );
   let messages = MessagesCollection.find(
     {},
-    { sort: { createdAt: -1 }, limit: 10 }
+    { sort: { createdAt: -1 }, limit: limit || 10 }
   ).fetch();
   return {
     loading: !subscription.ready(),
