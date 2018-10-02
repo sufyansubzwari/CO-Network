@@ -1,10 +1,13 @@
 import v1 from "uuid/v1";
+
+// if(Meteor.settings.AWSAccessKeyId && Meteor.settings.AWSSecretAccessKeyId)
 Slingshot.fileRestrictions("myFileUploads", {
     allowedFileTypes: /.*/i,
     maxSize: 10 * 1024 * 1024 // 10 MB (use null for unlimited).
 });
 
-Slingshot.createDirective("myFileUploads", Slingshot.S3Storage, {
+if(Meteor.settings.AWSAccessKeyId && Meteor.settings.AWSSecretAccessKey)
+Slingshot.createDirective("myFileUploads",  Slingshot.S3Storage, {
     bucket: "mlsociety-public",
 
     acl: "public-read",
