@@ -1,9 +1,6 @@
 import React, { Component } from "react";
 import { HButtom } from "btech-horizantal-navbar";
-import { Meteor } from "meteor/meteor";
-import { withTracker } from "meteor/react-meteor-data";
 import { connect } from "react-redux";
-import UserRedux from "../../redux/user";
 import styled from "styled-components";
 import MaterialIcon from "react-material-iconic-font";
 
@@ -41,7 +38,6 @@ class NavbarUserButton extends Component {
           `${user.profile.name} ${user.profile.lastName}` || user.profile.email
         )
       : null;
-    this.props.setUser(user || null);
     return (
       <HButtom
         image={!!user ? user.profile.image : ""}
@@ -61,20 +57,8 @@ class NavbarUserButton extends Component {
 }
 
 const mapStateToProps = state => {
-  return {};
+  const { userState } = state;
+  return { user: userState };
 };
 
-const mapDispatchToProps = dispatch => ({
-  setUser: status => dispatch(UserRedux.Actions.setUser(status))
-});
-
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(
-  withTracker(() => {
-    return {
-      user: Meteor.user()
-    };
-  })(NavbarUserButton)
-);
+export default connect(mapStateToProps)(NavbarUserButton);

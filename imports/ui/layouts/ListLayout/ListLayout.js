@@ -55,7 +55,7 @@ class ListLayout extends Component {
           <SListContainer>
             <Layout
               fullY
-              customTemplateRows={"65px 1fr"}
+              customTemplateRows={"68px 1fr"}
               mdCustomTemplateRows={"75px 1fr"}
             >
               <TopSearchContainer {...this.state} background={"white"}>

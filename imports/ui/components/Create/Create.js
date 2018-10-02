@@ -1,5 +1,5 @@
 import React from "react";
-import { Layout, Container } from "btech-layout";
+import { Layout, Container, mixins } from "btech-layout";
 import styled from "styled-components";
 import PropsTypes from "prop-types";
 import { Link } from "react-router-dom";
@@ -10,7 +10,11 @@ const Header = styled(Container)`
   background-image: url("/images/create-head.png");
   background-size: cover;
   width: 100%;
-  height: 175px;
+  height: 230px;
+  
+  ${mixins.media.desktop`
+    height: 175px;
+  `}
 `;
 
 const SHeaderContent = styled(Container)`

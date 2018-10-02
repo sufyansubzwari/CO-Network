@@ -1,17 +1,19 @@
-import { Meteor } from 'meteor/meteor';
-import React from 'react';
-import PropTypes from 'prop-types';
-import { withApollo } from 'react-apollo';
+import { Meteor } from "meteor/meteor";
+import React from "react";
+import PropTypes from "prop-types";
+import { withApollo } from "react-apollo";
 import MaterialIcon from "react-material-iconic-font";
-import Button from '../../Navbar/SideBarLink';
+import Button from "../../Navbar/SideBarLink";
 //------------------------------------------------------------------------------
 // COMPONENT:
 //------------------------------------------------------------------------------
 const LogoutBtn = ({ client, btnType, disabled, onLogoutHook }) => (
   <Button
     pointer
-    onClick={(evt) => {
-      if (evt) { evt.preventDefault(); }
+    onClick={evt => {
+      if (evt) {
+        evt.preventDefault();
+      }
       Meteor.logout(() => {
         // Clear apollo store.
         client.resetStore();
@@ -20,25 +22,26 @@ const LogoutBtn = ({ client, btnType, disabled, onLogoutHook }) => (
       });
     }}
   >
-   <span style={{ fontSize: 16 }}>
-            <MaterialIcon type={"square-right"} rotate={180}/>
-    </span> Log out
+    <span style={{ fontSize: 16 }}>
+      <MaterialIcon type={"square-right"} rotate={180} />
+    </span>{" "}
+    Log out
   </Button>
 );
 
 LogoutBtn.propTypes = {
   client: PropTypes.shape({
-    resetStore: PropTypes.func.isRequired,
+    resetStore: PropTypes.func.isRequired
   }).isRequired,
-  btnType: PropTypes.oneOf(['button', 'link', 'submit']),
+  btnType: PropTypes.oneOf(["button", "link", "submit"]),
   disabled: PropTypes.bool,
-  onLogoutHook: PropTypes.func,
+  onLogoutHook: PropTypes.func
 };
 
 LogoutBtn.defaultProps = {
-  btnType: 'button',
+  btnType: "button",
   disabled: false,
-  onLogoutHook: () => {},
+  onLogoutHook: () => {}
 };
 
 export default withApollo(LogoutBtn);

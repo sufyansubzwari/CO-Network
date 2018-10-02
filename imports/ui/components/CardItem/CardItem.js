@@ -80,9 +80,10 @@ class CardItem extends Component {
   }
 
   componentDidMount() {
-    this.setState({
-      topOptions: this.state.topOptions.concat(this.props.topOptions)
-    });
+    if (this.props.topOptions && this.props.topOptions.length)
+      this.setState({
+        topOptions: this.state.topOptions.concat(this.props.topOptions)
+      });
   }
 
   componentWillReceiveProps(newProps) {

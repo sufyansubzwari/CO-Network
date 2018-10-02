@@ -1,23 +1,29 @@
 import React from "react";
 import { Meteor } from "meteor/meteor";
-import { Layout, Container } from "btech-layout";
-import { HButtonGroup, HButtom, HNavItem } from "btech-horizantal-navbar";
+import { Container, Layout } from "btech-layout";
+import { HButtom, HButtonGroup, HNavItem } from "btech-horizantal-navbar";
 import MaterialIcon from "react-material-iconic-font";
 import { theme } from "../../theme";
 import SideBarLink from "./SideBarLink";
-import { ThemeProvider } from "styled-components";
+import styled, { ThemeProvider } from "styled-components";
 import { Link } from "react-router-dom";
 import { connect } from "react-redux";
 import { toggleSideBar } from "../../actions/SideBarActions";
-import styled from "styled-components";
 import LogoutBtn from "../smart/auth/logout-btn";
 import NavbarUserButton from "../NavbarUserButton/NavbarUserButton";
+import services from "../LoginModal/service.constant";
 import posed from "react-pose";
+import Authorization from "../../services/authorization";
 
 const SAddMaterialIcon = styled.span`
   > i {
     line-height: 55px;
   }
+`;
+
+const SLoginTitle = styled.div`
+  font-family: ${props => props.theme.texts.title.fontFamily};
+  font-size: 13px;
 `;
 
 /**
@@ -41,10 +47,30 @@ const Group = props => {
         </HButtonGroup>
       </Container>
       <Container mdHide inLine>
+        {props.title ? (
+          <Container>
+            <SLoginTitle>{props.title}</SLoginTitle>
+          </Container>
+        ) : null}
         <Layout mdHide colGap={"24px"} templateColumns={props.children.length}>
           {props.children}
         </Layout>
       </Container>
+    </Container>
+  );
+};
+
+const GroupSocial = props => {
+  return (
+    <Container mdHide inLine>
+      {props.title ? (
+        <Container>
+          <SLoginTitle>{props.title}</SLoginTitle>
+        </Container>
+      ) : null}
+      <Layout mdHide colGap={"24px"} templateColumns={props.children.length}>
+        {props.children}
+      </Layout>
     </Container>
   );
 };
@@ -63,9 +89,10 @@ const RenderCondition = posed.div({
   hideUserOptions: { opacity: 0, y: "50px", scale: 0 }
 });
 
-// const RenderCondition = props => {
-//   return props.condition ? props.children : "";
-// };
+const RenderSocialCondition = posed.div({
+  hideUserOptions: { opacity: 1, y: "0", scale: 1 },
+  showUserOptions: { opacity: 0, y: "50px", scale: 0 }
+});
 
 class UserNavbarSection extends React.Component {
   constructor(props) {
@@ -73,12 +100,18 @@ class UserNavbarSection extends React.Component {
     this.policy = Meteor.settings.public.policyUrl;
     this.size = { width: 46, height: 53 };
     this.notSize = { width: 33, height: 39 };
+    this.loginSize = { width: 28, height: 33 };
+    this.loginServices = services.filter(element => element.visible);
     this.isOpenCreateSidebar = false;
   }
 
   onAddToggle() {
     this.props.toggleSideBar(!this.props.addSidebarIsOpen);
-    this.props.callback && this.props.callback(false)
+    this.props.callback && this.props.callback(false);
+  }
+
+  processAuthRequest(service) {
+    Authorization.login(service);
   }
 
   render() {
@@ -97,6 +130,23 @@ class UserNavbarSection extends React.Component {
             <GroupContainer
               pose={isAuthenticated ? "showUserOptions" : "hideUserOptions"}
             >
+              <GroupSocial
+                authenticated={isAuthenticated}
+                title={!isAuthenticated ? "Login" : null}
+              >
+                {this.loginServices.map((service, index) => {
+                  return (
+                    <RenderSocialCondition key={index}>
+                      <HButtom
+                        size={this.loginSize}
+                        onClick={() => this.processAuthRequest(service.service)}
+                      >
+                        <MaterialIcon type={service.label || service.service} />
+                      </HButtom>
+                    </RenderSocialCondition>
+                  );
+                })}
+              </GroupSocial>
               <Group authenticated={isAuthenticated}>
                 <RenderCondition>
                   <HButtom
@@ -139,9 +189,11 @@ class UserNavbarSection extends React.Component {
                     activeEval={this.activeEval}
                   />
                 </RenderCondition>
-                <Link to={avatarLink}>
-                  <NavbarUserButton size={this.size} />
-                </Link>
+                <RenderCondition>
+                  <Link to={avatarLink}>
+                    <NavbarUserButton size={this.size} />
+                  </Link>
+                </RenderCondition>
               </Group>
             </GroupContainer>
             <Layout
