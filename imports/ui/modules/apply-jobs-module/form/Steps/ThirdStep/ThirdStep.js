@@ -89,13 +89,12 @@ class ThirdStep extends React.Component {
       this.state.apply.professional[name] &&
       this.state.apply.professional[name][index]
     ) {
-      let newTag = {
+      this.state.apply.professional[name][index] = {
         ...this.state.apply.professional[name][index],
         levelColor: color,
         icon: icon,
         level: value
       };
-      this.state.apply.professional[name][index] = newTag;
       this.setState({ apply: this.state.apply }, () => this.notifyParent());
     }
   }
@@ -185,7 +184,7 @@ class ThirdStep extends React.Component {
                   <Container mt={"10px"}>
                     <TagList
                       tags={this.tagsSuggested(data.tags, "expertise")}
-                      onSelect={(event, tag, index) => {
+                      onSelect={(event, tag) => {
                         if (!tag.active) {
                           delete tag.active;
                           this.onAddTags("expertise", "Expertise", tag);
@@ -212,13 +211,13 @@ class ThirdStep extends React.Component {
               this.state.apply &&
               this.state.apply.professional &&
               this.state.apply.professional.salaryRange &&
-                            this.state.apply.professional.salaryRange.min
+              this.state.apply.professional.salaryRange.min
             }
             max={
               this.state.apply &&
               this.state.apply.professional &&
               this.state.apply.professional.salaryRange &&
-                            this.state.apply.professional.salaryRange.max
+              this.state.apply.professional.salaryRange.max
             }
             getValue={data => {
               const { min, max } = data;

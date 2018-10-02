@@ -20,7 +20,8 @@ const SContainer = styled(Layout)`
   }
 `;
 
-const STitleLayout = styled(Layout)` 
+const STitleLayout = styled(Layout)`
+  margin-right: 10px;
   zoom: 100%;
 
   @media (min-width: 62em) {
