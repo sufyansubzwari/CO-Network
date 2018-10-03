@@ -20,13 +20,27 @@ import { theme } from "./../../../../theme";
 import links from "./links.constant";
 import { connect } from "react-redux";
 import UserRedux from "../../../../redux/user";
+import { Scrollbars } from "react-custom-scrollbars";
+
 
 const Description = styled.p`
-  font-size: ${props =>
+  font-size: ${props => props.vheight < 700 ? "11px" :
     props.theme ? props.theme.signup.descriptionSize : "12px"};
   font-family: ${props =>
     props.theme ? props.theme.signup.family : "Roboto Mono"};
   color: ${props => (props.theme ? props.theme.signup.fontcolor : "black")};
+`;
+
+const ZContainer = styled(Container)`  
+
+  zoom: 100%;
+
+  @media (min-width: 62em){
+    zoom: 80%;
+  }  
+  @media (min-width: 86em){
+    zoom: 100%;
+  }  
 `;
 
 class SignUp extends React.Component {
@@ -122,94 +136,106 @@ class SignUp extends React.Component {
   }
 
   render() {
+    // var w = Math.max(document.documentElement.clientWidth, window.innerWidth || 0);
+    // var h = Math.max(document.documentElement.clientHeight, window.innerHeight || 0);
     const isDisableButton = !this.isAllowToContinue();
     return (
       <Layout
         fullY
-        customTemplateRows={"187px 1fr"}
+        customTemplateRows={"20% 1fr"}
         style={{ background: theme.signup.headerBackground }}
       >
         <Container style={{ margin: "auto" }}>
           <img style={{ width: 130 }} src={"/favicon.png"} />
         </Container>
-        <Layout
-          paddingY={"70px"}
-          paddingX={"20%"}
-          rowGap={"25px"}
-          style={{
-            background: theme.signup.descriptionBackground,
-            borderTop: `1px solid ${theme.signup.borderColor}`
-          }}
+        <Container
+            paddingY={"8%"}
+            mdPaddingX={"20%"}
+            paddingX={'10%'}
+            rowGap={"25px"}
+            style={{
+                background: theme.signup.descriptionBackground,
+                borderTop: `1px solid ${theme.signup.borderColor}`,
+            }}
         >
-          <Container>
-            <Description>
-              {SIGNUP_TEXT}
-              <p style={{ display: "inline", fontWeight: "bold" }}>
-                Science, Technology, Culture.
-              </p>
-            </Description>
-            <Description>{SIGNUP_TEXT_2}</Description>
-            <Description>{SIGNUP_TEXT_3}</Description>
-          </Container>
-          <Container>
-            <CheckBoxList
-              options={this.state.options}
-              getValue={this.onChange}
-              checkboxVerticalSeparation={"15px"}
-            />
-            <CheckBox
-              active={this.state.agreeTerms}
-              onSelected={this.handleCheckBox}
+            <Scrollbars
+                universal
+                autoHide
+                autoHideDuration={200}
+                style={{ height: "100%"}}
             >
-              <p>
-                I agree to uphold the values, culture and ethics outlined in the
-                CO Network’s{" "}
-                <a
-                  href={this.links.termsConditions.link}
-                  target={this.links.termsConditions.target}
-                  style={{ color: this.links.termsConditions.target }}
+              <ZContainer id={'inscroll'}>
+              <Container mr={'10px'}>
+                <Description>
+                  {SIGNUP_TEXT}
+                  <p style={{ display: "inline", fontWeight: "bold" }}>
+                    Science, Technology, Culture.
+                  </p>
+                </Description>
+                <Description>{SIGNUP_TEXT_2}</Description>
+                <Description>{SIGNUP_TEXT_3}</Description>
+              </Container>
+              <Container mr={'10px'}>
+                <CheckBoxList
+                  options={this.state.options}
+                  getValue={this.onChange}
+                  checkboxVerticalSeparation={"15px"}
+                />
+                <CheckBox
+                  active={this.state.agreeTerms}
+                  onSelected={this.handleCheckBox}
                 >
-                  Terms and Conditions
-                </a>
-                , GDPR Compliant{" "}
-                <a
-                  href={this.links.privacyPolicy.link}
-                  target={this.links.privacyPolicy.target}
-                  style={{ color: this.links.privacyPolicy.target }}
+                  <p>
+                    I agree to uphold the values, culture and ethics outlined in the
+                    CO Network’s{" "}
+                    <a
+                      href={this.links.termsConditions.link}
+                      target={this.links.termsConditions.target}
+                      style={{ color: this.links.termsConditions.target }}
+                    >
+                      Terms and Conditions
+                    </a>
+                    , GDPR Compliant{" "}
+                    <a
+                      href={this.links.privacyPolicy.link}
+                      target={this.links.privacyPolicy.target}
+                      style={{ color: this.links.privacyPolicy.target }}
+                    >
+                      Privacy Policy
+                    </a>
+                    ,{" "}
+                    <a
+                      href={this.links.spamPolicy.link}
+                      target={this.links.spamPolicy.target}
+                      style={{ color: this.links.spamPolicy.target }}
+                    >
+                      Anti-Spam Policy
+                    </a>{" "}
+                    agreement.
+                  </p>
+                </CheckBox>
+              </Container>
+              <Layout customTemplateColumns={"1fr auto"} mr={'10px'}>
+                <div />
+                <Mutation
+                  mutation={UpdateSignUpStatus}
+                  onCompleted={result => this.handleFinishSuccess(result)}
                 >
-                  Privacy Policy
-                </a>
-                ,{" "}
-                <a
-                  href={this.links.spamPolicy.link}
-                  target={this.links.spamPolicy.target}
-                  style={{ color: this.links.spamPolicy.target }}
-                >
-                  Anti-Spam Policy
-                </a>{" "}
-                agreement.
-              </p>
-            </CheckBox>
-          </Container>
-          <Layout customTemplateColumns={"1fr auto"}>
-            <div />
-            <Mutation
-              mutation={UpdateSignUpStatus}
-              onCompleted={result => this.handleFinishSuccess(result)}
-            >
-              {(updateStatus, { userCreated }) => {
-                return (
-                  <Button
-                    disabled={isDisableButton || this.state.disabled}
-                    onClick={() => this.handleContinue(updateStatus)}
-                  >
-                    Continue
-                  </Button>
-                );
-              }}
-            </Mutation>
-          </Layout>
-        </Layout>
+                  {(updateStatus, { userCreated }) => {
+                    return (
+                      <Button
+                        disabled={isDisableButton || this.state.disabled}
+                        onClick={() => this.handleContinue(updateStatus)}
+                      >
+                        Continue
+                      </Button>
+                    );
+                  }}
+                </Mutation>
+              </Layout>
+              </ZContainer>
+            </Scrollbars>
+        </Container>
       </Layout>
     );
   }

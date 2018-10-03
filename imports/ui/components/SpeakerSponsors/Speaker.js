@@ -31,6 +31,7 @@ const Speaker = function(props) {
           }))}
           getAddedOptions={obj => onAdd(props, obj)}
           getNewAddedOptions={obj => onAdd(props, obj)}
+          required={true}
         />
         <Input
           placeholderText={"Email"}
