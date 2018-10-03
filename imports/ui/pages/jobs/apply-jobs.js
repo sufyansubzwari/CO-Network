@@ -43,13 +43,33 @@ class ApplyJob extends Component {
           languages: [],
           industry: []
         },
-        job: props.job
+        job: (props.job && props.job._id) || ""
       }
     };
   }
 
   componentWillReceiveProps(nextProps) {
-    this.parseUserData(nextProps);
+    if (nextProps.data && nextProps.data.user && nextProps.data.user.profile) {
+      let user = nextProps.data.user;
+      let apply = this.state.apply;
+      apply.name = user.profile.name || "";
+      apply.lastName = user.profile.lastName || "";
+      apply.email = user.profile.email || "";
+      apply.website = user.profile.website || "";
+      apply.image = user.profile.image || "";
+      apply.cover = user.profile.cover || "";
+      apply.owner = user._id || "";
+      apply.jobSpecific.passion = user.profile.aboutMe.yourPassion || "";
+      apply.jobSpecific.existingProblem =
+        user.profile.aboutMe.existingProblem || "";
+      apply.jobSpecific.steps = user.profile.aboutMe.steps || "";
+      apply.professional.languages =
+        user.profile.knowledge.languages &&
+        user.profile.knowledge.languages.length
+          ? JSON.parse(JSON.stringify(user.profile.knowledge.languages))
+          : [];
+      this.setState({ apply: apply });
+    }
   }
 
   componentWillMount() {
@@ -59,38 +79,9 @@ class ApplyJob extends Component {
       this.props.location.state.job
     ) {
       let apply = this.state.apply;
-      apply.job = this.props.location.state.job;
-      this.setState({ apply: apply }, () => this.parseUserData());
+      apply.job = this.props.location.state.job._id;
+      this.setState({ apply: apply });
     }
-  }
-
-  parseUserData() {
-    let user = this.props.curUser;
-    let apply = this.state.apply;
-    if (user) {
-      apply.name = user.profile.name || "";
-      apply.lastName = user.profile.lastName || "";
-      apply.email = user.profile.email || "";
-      apply.website = user.profile.website || "";
-      apply.image = user.profile.image || "";
-      apply.cover = user.profile.cover || "";
-      apply.owner = user._id || "";
-      apply.jobSpecific.passion = user.profile.aboutMe
-        ? user.profile.aboutMe.yourPassion
-        : "";
-      apply.jobSpecific.existingProblem = user.profile.aboutMe
-        ? user.profile.aboutMe.existingProblem
-        : "";
-      apply.jobSpecific.steps = user.profile.aboutMe
-        ? user.profile.aboutMe.steps
-        : "";
-      apply.professional.languages =
-        user.profile.knowledge.languages &&
-        user.profile.knowledge.languages.length
-          ? JSON.parse(JSON.stringify(user.profile.knowledge.languages))
-          : [];
-    }
-    this.setState({ apply: apply });
   }
 
   componentDidMount() {
@@ -111,17 +102,20 @@ class ApplyJob extends Component {
 
   onPostAction(createJobApply, query) {
     let queryJob = Object.assign({}, query);
+    //todo: remove when location improvement
     let job = { ...queryJob };
-    if (this.props.curUser) {
-      job.owner = this.props.curUser._id;
+    if (Meteor.userId()) {
       createJobApply({ variables: { entity: job } });
+    } else {
+      // todo login the user and then create the event or notify the user must login
+      alert("You must be logged");
     }
   }
 
-  render() {
-    return (
-      <PostLayout>
-        <Mutation
+    render() {
+        return (
+            <PostLayout>
+                <Mutation
           key={"leftSide"}
           mutation={CreateJobApply}
           onCompleted={() =>
@@ -131,47 +125,47 @@ class ApplyJob extends Component {
         >
           {(createJobApply, { jobCreated }) => (
             <ApplyJobForm
-              key={"leftSide"}
-              onFinish={data => {
-                this.onPostAction(createJobApply, data);
-              }}
-              onCancel={() => this.onCancel()}
-              {...this.props}
-              handleApplyChange={apply =>
-                this.setState({ apply: { ...this.state.apply, ...apply } })
-              }
-              apply={this.state.apply}
-            />
-          )}
+                    key={"leftSide"}
+                    onFinish={data => {
+                        this.onPostAction(createJobApply, data);
+                    }}
+                    onCancel={() => this.onCancel()}
+                    {...this.props}
+                    handleApplyChange={apply =>
+                        this.setState({ apply: { ...this.state.apply, ...apply } })
+                    }
+                    apply={this.state.apply}
+                />)}
         </Mutation>
-        <Preview
-          isOpen={this.state.openPreview}
-          onClose={() => this.setState({ openPreview: false })}
-          key={"rightSide"}
-          navClicked={index => console.log(index)}
-          navOptions={[
-            {
-              text: "Remove",
-              icon: "delete",
-              checkVisibility: () => {
-                return this.state.selectedItem && this.state.selectedItem.id;
-              },
-              onClick: function() {
-                console.log("Remove");
-              }
-            }
-          ]}
-          index={this.state.selectedIndex}
-          data={this.state.selectedItem}
-          allowChangeImages
-          backGroundImage={this.state.job && this.state.job.image}
-          onBackgroundChange={imageSrc => this.handleBackgroundChange(imageSrc)}
-        >
-          <div>Here goes the preview for apply job</div>
-        </Preview>
-      </PostLayout>
-    );
-  }
+                <Preview
+                    isOpen={this.state.openPreview}
+                    onClose={()=>this.setState({openPreview:false})}
+                    key={"rightSide"}
+                    navClicked={index => console.log(index)}
+                    navOptions={[
+                        {
+                            text: "Remove",
+                            icon: "delete",
+                            checkVisibility: () => {
+                                return this.state.selectedItem && this.state.selectedItem.id;
+                            },
+                            onClick: function() {
+                                console.log("Remove");
+                            }
+                        }
+                    ]}
+
+                    index={this.state.selectedIndex}
+                    data={this.state.selectedItem}
+                    allowChangeImages
+                    backGroundImage={this.state.job && this.state.job.image}
+                    onBackgroundChange={imageSrc => this.handleBackgroundChange(imageSrc)}
+                >
+                    <div>Here goes the preview for apply job</div>
+                </Preview>
+            </PostLayout>
+        );
+    }
 }
 
 export default withRouter(

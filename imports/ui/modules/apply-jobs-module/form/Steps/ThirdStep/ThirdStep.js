@@ -144,12 +144,12 @@ class ThirdStep extends React.Component {
                     getAddedOptions={this.onAddTags.bind(
                       this,
                       "expertise",
-                      "Expertise"
+                      "Languages"
                     )}
                     getNewAddedOptions={this.onAddTags.bind(
                       this,
                       "expertise",
-                      "Expertise"
+                      "Languages"
                     )}
                     options={data.tags}
                     useIcon={true}
@@ -187,7 +187,7 @@ class ThirdStep extends React.Component {
                       onSelect={(event, tag) => {
                         if (!tag.active) {
                           delete tag.active;
-                          this.onAddTags("expertise", "Expertise", tag);
+                          this.onAddTags("expertise", "Languages", tag);
                         } else {
                           const pos = this.state.apply.professional.expertise.findIndex(
                             item => item.tag._id === tag._id

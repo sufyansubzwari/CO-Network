@@ -1,7 +1,5 @@
 import Users from "../../../users";
 import Tags from "../../../tags";
-import Places from "../../../places";
-import Organizations from "../../../organizations/server/resolvers/organizations";
 import {normalizeTagsWithLevels} from "../../../aux-functions";
 import Achievements from "../../../archivements/server/service";
 
