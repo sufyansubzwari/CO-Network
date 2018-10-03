@@ -12,11 +12,11 @@ class MlSelectTag extends React.Component {
   constructor(props) {
     super(props);
 
+    let options = props.selectOptions ? props.selectOptions : []
+    options = props.tags ? options.filter( option => !props.tags.some( tag => tag.label === option.label) ) : options;
+
     this.state = {
-      selectoptions:
-        props.selectOptions && props.selectOptions.length > 0
-          ? props.selectOptions
-          : [],
+      selectoptions: options,
       tags: props.tags && props.tags.length > 0 ? props.tags : []
     };
 
@@ -86,6 +86,7 @@ class MlSelectTag extends React.Component {
           options={this.state.selectoptions}
           model={this.props.model}
           name={this.props.name}
+          hideValue={this.props.hideValue}
         />
         <TagsContainer>
           <TagList
@@ -117,5 +118,6 @@ MlSelectTag.propTypes = {
   tagsCloseable: PropsTypes.bool,
   tagsIcon: PropsTypes.string,
   tagsUseIcon: PropsTypes.bool,
-  getTags: PropsTypes.func
+  getTags: PropsTypes.func,
+  hideValue: PropsTypes.bool
 };

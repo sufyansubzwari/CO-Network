@@ -85,6 +85,8 @@ class ApplyJob extends Component {
         ? user.profile.aboutMe.steps
         : "";
       apply.professional.languages =
+        user.profile
+        user.profile.knowledge &&
         user.profile.knowledge.languages &&
         user.profile.knowledge.languages.length
           ? JSON.parse(JSON.stringify(user.profile.knowledge.languages))

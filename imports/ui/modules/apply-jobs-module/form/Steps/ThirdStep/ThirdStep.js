@@ -110,10 +110,9 @@ class ThirdStep extends React.Component {
           tag =>
             !this.state.apply ||
             !this.state.apply.professional ||
-            this.state.apply.professional[name].length === 0 ||
-            this.state.apply.professional[name].findIndex(
-              item => item.tag._id === tag._id
-            ) === -1
+            !this.state.apply.professional[name] ||
+            !this.state.apply.professional[name].length ||
+            !this.state.apply.professional[name].some(item => item.tag._id === tag._id)
         )
         .sort((a, b) => b.used - a.used)
         .map(tag => ({
@@ -121,6 +120,8 @@ class ThirdStep extends React.Component {
           active:
             this.state.apply &&
             this.state.apply.professional &&
+            this.state.apply.professional[name] &&
+            this.state.apply.professional[name].length &&
             this.state.apply.professional[name].findIndex(
               item => item.tag._id === tag._id
             ) > -1
@@ -261,7 +262,8 @@ class ThirdStep extends React.Component {
                     useIcon={true}
                     tags={
                       this.state.apply.professional &&
-                      this.state.apply.professional.languages
+                      this.state.apply.professional.languages &&
+                      this.state.apply.professional.languages.length
                         ? this.state.apply.professional.languages.map(item => ({
                             active: true,
                             useIcon: true,
@@ -315,6 +317,7 @@ class ThirdStep extends React.Component {
               if (error) return <div />;
               return (
                 <SelectTag
+                  hideValue={true}
                   placeholderText={"Industry | Sector"}
                   tags={
                     this.state.apply.professional &&
