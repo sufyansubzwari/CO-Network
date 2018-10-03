@@ -21,6 +21,7 @@ import { cleanFilters, setFilters } from "../../../actions/SideBarActions";
 import { connect } from "react-redux";
 import { JobCounts, GetMyJobs } from "../../../apollo-client/job";
 import { Query } from "react-apollo";
+import { Meteor } from "meteor/meteor";
 
 class JobsFilters extends React.Component {
   constructor(props) {
@@ -198,7 +199,7 @@ class JobsFilters extends React.Component {
         </FilterItem>
         <Separator />
         <FilterItem>
-          <Query query={GetMyJobs} variables={{ owner: Meteor.userId()} }>
+          <Query query={GetMyJobs} variables={{ owner: Meteor.userId() }}>
             {({ loading, error, data }) => {
               if (loading) return <div />;
               if (error) return <div>Error</div>;
@@ -211,7 +212,11 @@ class JobsFilters extends React.Component {
                       active: true,
                       number: data.myJobs.myJobs
                     },
-                    { label: "Interested Employers", active: false, number: data.myJobs.myApplies }
+                    {
+                      label: "Interested Employers",
+                      active: false,
+                      number: data.myJobs.myApplies
+                    }
                   ]}
                 />
               );
