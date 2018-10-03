@@ -37,8 +37,8 @@ type Query {
 }
 
 type MyJobs {
-    myJobs: Int
-    myApplies: Int
+    myJobs: [String]
+    myApplies: [String]
 }
 
 type Counts{
@@ -47,6 +47,7 @@ type Counts{
 }
 
 input JobsInputSearch {
+    _id: TableStringFilterInput
     title: TableStringFilterInput
     description: TableStringFilterInput
     salaryRange_DOT_min: TableStringFilterInput

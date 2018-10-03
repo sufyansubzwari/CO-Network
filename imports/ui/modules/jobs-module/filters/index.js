@@ -44,7 +44,17 @@ class JobsFilters extends React.Component {
         active: item.active,
         number: item.number
       })),
-      filters: {}
+      filters: {},
+      jobsFilters: [
+        {
+          label: "My Jobs",
+          active: false
+        },
+        {
+          label: "My Jobs Applied",
+          active: false
+        }
+      ]
     };
   }
 
@@ -66,6 +76,26 @@ class JobsFilters extends React.Component {
     temp[type] = { elemMatch: { or: checked } };
     checked.length === 0 ? delete temp[type] : null;
     this.setState({ [type]: selected, filters: temp }, () =>
+      this.props.setFilters("jobs", this.state.filters)
+    );
+  }
+
+  jobOwnerFilters(actives, jobs, applies) {
+    console.log(actives);
+    const selected = this.state.jobsFilters.map((category, index) => {
+      category["active"] = actives[index];
+      return category;
+    });
+    let filter = this.state.filters;
+    filter["_id"] = { in: [] };
+    if (actives[0]) {
+      filter["_id"]["in"] = filter["_id"]["in"].concat(jobs);
+    }
+    if (actives[1]) {
+      filter["_id"]["in"] = filter["_id"]["in"].concat(applies);
+    }
+    !actives[0] && !actives[1] ? delete filter["_id"] : null;
+    this.setState({ jobsFilters: selected, filters: filter }, () =>
       this.props.setFilters("jobs", this.state.filters)
     );
   }
@@ -206,18 +236,18 @@ class JobsFilters extends React.Component {
               return (
                 <CheckBoxList
                   placeholderText={"My Jobs"}
-                  options={[
-                    {
-                      label: "My Applications",
-                      active: true,
-                      number: data.myJobs.myJobs
-                    },
-                    {
-                      label: "Interested Employers",
-                      active: false,
-                      number: data.myJobs.myApplies
-                    }
-                  ]}
+                  options={this.state.jobsFilters.map((item, key) => ({
+                    ...item,
+                    number:
+                      key === 0 ? data.myJobs.myJobs.length : data.myJobs.myApplies.length
+                  }))}
+                  getValue={selected =>
+                    this.jobOwnerFilters(
+                      selected,
+                      data.myJobs.myJobs,
+                      data.myJobs.myApplies
+                    )
+                  }
                 />
               );
             }}

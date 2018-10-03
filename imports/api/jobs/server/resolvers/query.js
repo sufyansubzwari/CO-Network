@@ -1,7 +1,7 @@
 import Service from "../service";
 import { wrapOperators } from "../../../aux-functions";
 import Places from "../../../places";
-import JobApply from "../../../jobApply";
+import JobApply from "../../../jobApply/server/service";
 
 const Query = {};
 
@@ -38,12 +38,13 @@ Query.jobCounts = async (root, { field }, context) => {
 };
 
 Query.myJobs = async (root, { owner }, context) => {
-  const myJobs = await Service.jobs({ owner: owner }, {}).count();
-  const jobs = await JobApply.service.jobsApply(
+  const myJobs = await Service.jobs({ owner: owner }, {fields: {_id: 1 }}).map(item => item._id);
+  const jobs = JobApply.jobsApply(
     { owner: owner },
     { fields: { job: 1 } }
-  );
-  const myApplies = await Service.jobs({ _id: { $in: { jobs } } }, {}).count();
+  ).map(item => item.job);
+  console.log(jobs);
+  const myApplies = await Service.jobs({ _id: { $in: jobs } }, {fields: {_id: 1 }}).map(item => item._id);
   return {
     myJobs,
     myApplies

@@ -15,6 +15,7 @@ class TagsService {
   static tag = async data => {
     console.log("tags insert ---------- ",data);
     let tags = Tags.collection.findOne({ label: data.label, type: data.type });
+    console.log("---===----",tags);
     if (_.isUndefined(data._id) && !tags) {
       data._id ? delete data._id : null;
       data.used ? delete data.used : null;
@@ -23,7 +24,7 @@ class TagsService {
     } else {
       let id = data._id || tags._id;
       data._id ? delete data._id : null;
-      data.used = !tags.used ? 1 : tags.used;
+      data.used = !tags || (tags && !tags.used) ? 1 : tags.used;
       await Tags.collection.update(id, { $set: data });
       return Tags.collection.findOne(id);
     }

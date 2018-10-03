@@ -43,7 +43,7 @@ class ApplyJob extends Component {
           languages: [],
           industry: []
         },
-        job: props.job
+        job: (props.job && props.job._id) || ""
       }
     };
   }
@@ -79,7 +79,7 @@ class ApplyJob extends Component {
       this.props.location.state.job
     ) {
       let apply = this.state.apply;
-      apply.job = this.props.location.state.job;
+      apply.job = this.props.location.state.job._id;
       this.setState({ apply: apply });
     }
   }
