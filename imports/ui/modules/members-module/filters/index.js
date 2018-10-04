@@ -46,8 +46,7 @@ class MembersFilters extends React.Component {
     const activeSelected = selected.filter(element => element.active);
     const temp = this.state.filters;
     const checked = activeSelected.map(item => ({
-      label: item.label,
-      value: item.label
+      label: item.label
     }));
     temp[type] =
       type === "profile_DOT_speaker_DOT_join"
@@ -142,7 +141,10 @@ class MembersFilters extends React.Component {
                     this.addFilters(
                       "profile_DOT_knowledge_DOT_lookingFor",
                       selected,
-                      data.usersFieldCounts
+                      data.usersFieldCounts.map(item => ({
+                        ...item,
+                        label: item._id
+                      }))
                     )
                   }
                 />

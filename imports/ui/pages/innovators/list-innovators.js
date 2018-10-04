@@ -93,7 +93,7 @@ class ListInnovators extends Component {
         filter: this.state.filter || "",
         user: Object.keys(this.state.filterStatus).length
           ? this.state.filterStatus
-          : { _id: { ne: this.props.curUser._id } }
+          : this.props.curUser && this.props.curUser._id ? { _id: { ne: this.props.curUser._id } } : {}
       });
   }
 
@@ -404,7 +404,7 @@ export default withRouter(
         options: props => ({
           variables: {
             limit: 10,
-            user: { _id: { ne: props.curUser._id } }
+            user: props.curUser && props.curUser._id && { _id: { ne: props.curUser._id } }
           },
           fetchPolicy: "cache-and-network"
         })

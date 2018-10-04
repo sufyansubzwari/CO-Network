@@ -65,6 +65,7 @@ class UserService {
    * @return {Object} | [{Object }] Return one or all Users
    */
   static users = (query, limit) => {
+    console.log("query ------- ", query);
     return Users.collection.find(query, limit).fetch();
   };
   /**

@@ -56,7 +56,7 @@ export const wrapOperators = json => {
       if (key.indexOf(nestedDocs) > -1) {
         const ownValue = shadowCopy[key];
         delete shadowCopy[key];
-        shadowCopy[key.replace(nestedDocs, ".")] = ownValue;
+        shadowCopy[key.replace(new RegExp(nestedDocs, 'gi'), ".")] = ownValue;
       }
     }
     return shadowCopy;
