@@ -210,3 +210,77 @@ query userList{
     ...userFragment
   }
 }
+
+query getUsers($limit: Int, $filter: String, $user: UsersInputSearch){
+    users(limit: $limit, filter: $filter, user: $user){
+            _id
+            profile {
+                isSignUp
+                name
+                user_id
+                lastName
+                nickName
+                loginCount
+                identities {
+                    provider
+                    user_id
+                    profileData {
+                        name
+                        email
+                    }
+                }
+                email
+                image
+                cover
+                gender
+                website
+                phone
+                aboutMe{
+                    yourPassion
+                }
+                knowledge{
+                  languages{
+                    tag{
+                      _id
+                      name
+                      label
+                      value
+                      type
+                      used
+                    }
+                    level
+                    levelColor
+                    icon
+                  }
+                  curiosity{
+                    tag{
+                      _id
+                      name
+                      label
+                      value
+                      type
+                      used
+                    }
+                    level
+                    levelColor
+                    icon
+                  }
+                  lookingFor{
+                    label
+                    value
+                    name
+                    active
+                  }
+                }
+            }
+            views
+      entity
+    }
+}
+
+query UsersFieldCounts($field: String){
+  usersFieldCounts(field: $field){
+    _id
+    number
+  }
+}

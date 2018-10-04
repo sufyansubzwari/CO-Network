@@ -25,8 +25,9 @@ Query.users = (root, { user, filter, limit }, context) => {
   if (filter) {
     query = {
       $or: [
-        { title: { $regex: filter, $options: "i" } },
-        { description: { $regex: filter, $options: "i" } }
+        { 'profile.name': { $regex: filter, $options: "i" } },
+        { 'profile.lastName': { $regex: filter, $options: "i" } },
+        { 'profile.aboutMe.yourPassion': { $regex: filter, $options: "i" } }
       ]
     };
   }
@@ -34,4 +35,10 @@ Query.users = (root, { user, filter, limit }, context) => {
   let limitQuery = limit ? {limit:limit} : {};
   return Service.users(query, limitQuery);
 };
+
+Query.usersFieldCounts = async (root, { field }, context) => {
+  const {userId} = context;
+  return await Service.usersFieldCounts(field, userId);
+};
+
 export default Query;

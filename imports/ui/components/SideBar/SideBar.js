@@ -9,6 +9,7 @@ import EventsFilters from "../../modules/event-module/filters";
 import JobsFilters from "../../modules/jobs-module/filters";
 import ColloquiumFilters from "../../modules/colloquium-module/filters";
 import OrganizationFilters from "../../modules/organization-module/filters";
+import MembersFilters from "../../modules/members-module/filters";
 import posed from "react-pose";
 
 const SSideBarContainerStyed = styled(Container)`
@@ -82,6 +83,14 @@ class SideBar extends Component {
         case "corporations":
           return (
             <OrganizationFilters
+              onClose={() =>
+                this.props.toggleSideBar && this.props.toggleSideBar(false)
+              }
+            />
+          );
+        case "members":
+          return (
+            <MembersFilters
               onClose={() =>
                 this.props.toggleSideBar && this.props.toggleSideBar(false)
               }

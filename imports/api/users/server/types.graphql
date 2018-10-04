@@ -8,6 +8,7 @@ type User {
     profile: Profile!
     subscriptions: [Subscription]
     views: Int
+    entity: String
 }
 
 type Email {
@@ -103,11 +104,13 @@ input SubscriptionInput {
 type Query {
     users(user: UsersInputSearch, filter: String, limit: Int): [User]
     user(id: String): User
+    usersFieldCounts(field: String): [Counts]
 }
 
 input UsersInputSearch {
-    title: TableStringFilterInput
-    description: TableStringFilterInput
+    _id: TableStringFilterInput
+    profile_DOT_speaker_DOT_join: Boolean
+    profile_DOT_knowledge_DOT_lookingFor: JobTypeElemMatch
     location: [LocationInput]
 }
 

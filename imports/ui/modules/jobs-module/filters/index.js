@@ -192,11 +192,13 @@ class JobsFilters extends React.Component {
               return (
                 <CheckBoxList
                   placeholderText={"Job Type"}
-                  options={data.jobCounts.map(item => ({
+                  options={data.jobCounts.map((item, key) => ({
                     ...item,
                     label: item._id,
                     value: item._id,
-                    name: item._id
+                    name: item._id,
+                    active:
+                      this.state.jobType[key] && this.state.jobType[key].active
                   }))}
                   getValue={selected => this.addFilters("jobType", selected)}
                 />
@@ -213,11 +215,14 @@ class JobsFilters extends React.Component {
               return (
                 <CheckBoxList
                   placeholderText={"Experience Required"}
-                  options={data.jobCounts.map(item => ({
+                  options={data.jobCounts.map((item, key) => ({
                     ...item,
                     label: item._id,
                     value: item._id,
-                    name: item._id
+                    name: item._id,
+                    active:
+                      this.state.jobExperience[key] &&
+                      this.state.jobExperience[key].active
                   }))}
                   getValue={selected =>
                     this.addFilters("jobExperience", selected)
@@ -239,7 +244,9 @@ class JobsFilters extends React.Component {
                   options={this.state.jobsFilters.map((item, key) => ({
                     ...item,
                     number:
-                      key === 0 ? data.myJobs.myJobs.length : data.myJobs.myApplies.length
+                      key === 0
+                        ? data.myJobs.myJobs.length
+                        : data.myJobs.myApplies.length
                   }))}
                   getValue={selected =>
                     this.jobOwnerFilters(

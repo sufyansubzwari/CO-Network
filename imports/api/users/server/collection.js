@@ -449,6 +449,12 @@ const schema = new SimpleSchema({
     optional: true,
     defaultValue: 1,
   },
+  entity: {
+    type: String,
+    label: 'Entity Type',
+    optional: true,
+    defaultValue: "USER",
+  },
 });
 
 collection.attachSchema(schema);

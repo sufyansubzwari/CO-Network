@@ -7,7 +7,11 @@ import {
   FiltersContainer,
   Separator
 } from "./../../../components";
-import { CheckBoxList, Button } from "btech-base-forms-component";
+import { Query } from 'react-apollo';
+import { CheckBoxList, Button, CheckBox } from "btech-base-forms-component";
+import { UsersFieldCounts } from "../../../apollo-client/user";
+import {cleanFilters, setFilters} from "../../../actions/SideBarActions";
+import {connect} from "react-redux";
 
 class MembersFilters extends React.Component {
   constructor(props) {
@@ -18,7 +22,9 @@ class MembersFilters extends React.Component {
         location: { lat: "", lng: "" },
         fullLocation: {}
       },
-      industry: ""
+      filters: {},
+      profile_DOT_knowledge_DOT_lookingFor: [],
+      profile_DOT_speaker_DOT_join: [{ label: "On Speaker Directory", active: false }]
     };
     this.handleScroll = this.handleScroll(this);
     this.handleClose = this.handleClose(this);
@@ -27,6 +33,25 @@ class MembersFilters extends React.Component {
   handleScroll() {}
 
   handleClose() {}
+
+  addFilters(type, actives, options) {
+    const obj = JSON.parse(JSON.stringify(options));
+    const selected = obj.map((category, index) => {
+      category["active"] = actives[index];
+      return category;
+    });
+    const activeSelected = selected.filter(element => element.active);
+    const temp = this.state.filters;
+    const checked = activeSelected.map(item => ({
+      label: item.label,
+      value: item.label
+    }));
+    temp[type] = type === "profile_DOT_speaker_DOT_join" ? true : { elemMatch: { or: checked } };
+    checked.length === 0 ? delete temp[type] : null;
+    this.setState({[type]: selected, filters: temp }, () =>
+      this.props.setFilters("members", this.state.filters)
+    );
+  }
 
   render() {
     return (
@@ -52,30 +77,51 @@ class MembersFilters extends React.Component {
         </FilterItem>
         <Separator />
         <FilterItem>
-          <CheckBoxList
-            placeholderText={"Seeking"}
-            options={[
-              {
-                label: "Co-Founders",
-                active: true,
-                number: 12
-              },
-              { label: "Competitions Teammate", active: false, number: 3 },
-              { label: "Mentorship", active: false, number: 22 }
-            ]}
-          />
+          <Query query={UsersFieldCounts} variables={{ field: "profile.knowledge.lookingFor" }}>
+            {({ loading, error, data }) => {
+              if (loading) return <div />;
+              if (error) return <div>Error</div>;
+              return (
+                <CheckBoxList
+                  placeholderText={"Seeking"}
+                  options={data.usersFieldCounts.map((item,key) => ({
+                    ...item,
+                    label: item._id,
+                    value: item._id,
+                    name: item._id,
+                    active: this.state.profile_DOT_knowledge_DOT_lookingFor[key] && this.state.profile_DOT_knowledge_DOT_lookingFor[key].active
+                  }))}
+                  getValue={selected => this.addFilters("profile_DOT_knowledge_DOT_lookingFor", selected, data.usersFieldCounts)}
+                />
+              );
+            }}
+          </Query>
         </FilterItem>
         <Separator />
         <FilterItem>
           <CheckBoxList
-            placeholderText={"Seeking"}
-            options={[{ label: "On Speaker Directory", active: false }]}
+            options={this.state.profile_DOT_speaker_DOT_join}
+            getValue={selected => this.addFilters("profile_DOT_speaker_DOT_join", selected, this.state.profile_DOT_speaker_DOT_join)}
           />
         </FilterItem>
-        <Separator />
       </FiltersContainer>
     );
   }
 }
 
-export default MembersFilters;
+const mapStateToProps = state => {
+  const {} = state;
+  return {};
+};
+
+const mapDispatchToProps = dispatch => {
+  return {
+    setFilters: (type, filters) => dispatch(setFilters(type, filters)),
+    cleanFilters: () => dispatch(cleanFilters())
+  };
+};
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(MembersFilters);
