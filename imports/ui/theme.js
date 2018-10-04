@@ -179,6 +179,10 @@ const texts = {
   fontFamily: "Roboto Mono"
 };
 
+const font = {
+  fontSize: "12px"
+}
+
 export const theme = {
   textColor: color.black,
   color,
@@ -193,5 +197,6 @@ export const theme = {
   card,
   create,
   signup,
+  font,
   borderColor: color.grey
 };

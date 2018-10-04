@@ -73,7 +73,6 @@ class EventStep3 extends Component {
             </Container>
             <Container>
               <Input
-                required
                 placeholderText={"Contact Email"}
                 name={"venueEmail"}
                 validate={EMAIL_REGEX}

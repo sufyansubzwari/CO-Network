@@ -988,18 +988,18 @@ export const LOOKING_FOR_DEFAULT = [
 ];
 
 export const TAG_LEVEL = [
-  { value: "expert", label: "Expert", levelColor: "#FF1493", icon: "star" },
+  { value: "expert", label: "Expert", levelColor: "#FF1493", icon: "/images/icons/line3.svg" },
   {
     value: "experienced",
     label: "Experienced",
     levelColor: "#464646",
-    icon: "star"
+    icon: "/images/icons/line2.svg",
   },
   {
     value: "entryLevel",
     label: "Entry Level",
     levelColor: "#8e8a8a",
-    icon: "star"
+    icon: "/images/icons/line1.svg"
   }
 ];
 
