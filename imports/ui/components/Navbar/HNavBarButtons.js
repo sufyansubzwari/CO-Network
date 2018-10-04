@@ -22,7 +22,7 @@ const SContainerIcon = styled(Container)`
 
 const SIconContainer = styled.span`
   i {
-    font-size: 25px;
+    font-size: 18px;
     line-height: 38px;
   }
 `;
@@ -42,9 +42,15 @@ const HNavBarButtons = function(props) {
       <Layout mdHide colGap={"24px"} templateColumns={5} mdTemplateColumns={1}>
         <SContainerIcon>
           <Container hide={hideIcons}>
-            <Link to={avatarLink}>
-              <NavbarUserButton size={size} />
-            </Link>
+            <HButtom
+              primary
+              size={this.size}
+              onClick={() => props.onAddToggle && props.onAddToggle()}
+            >
+              <SIconContainer>
+                <MaterialIcon type={"plus"} />
+              </SIconContainer>
+            </HButtom>
           </Container>
         </SContainerIcon>
         <SContainerIcon>
@@ -84,15 +90,9 @@ const HNavBarButtons = function(props) {
         </SContainerIcon>
         <SContainerIcon>
           <Container hide={hideIcons}>
-            <HButtom
-              primary
-              size={this.size}
-              onClick={() => props.onAddToggle && props.onAddToggle()}
-            >
-              <SIconContainer>
-                <MaterialIcon type={"plus"} />
-              </SIconContainer>
-            </HButtom>
+            <Link to={avatarLink}>
+              <NavbarUserButton size={size} />
+            </Link>
           </Container>
         </SContainerIcon>
       </Layout>
