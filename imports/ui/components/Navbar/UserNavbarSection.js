@@ -1,6 +1,6 @@
 import React from "react";
 import { Meteor } from "meteor/meteor";
-import { Container, Layout } from "btech-layout";
+import { Container, Layout, mixins } from "btech-layout";
 import { HButtom, HButtonGroup, HNavItem } from "btech-horizantal-navbar";
 import MaterialIcon from "react-material-iconic-font";
 import { theme } from "../../theme";
@@ -17,7 +17,12 @@ import Authorization from "../../services/authorization";
 
 const SAddMaterialIcon = styled.span`
   > i {
-    line-height: 55px;
+    line-height: 30px;
+    font-size: 1.2rem;
+
+    ${mixins.media.desktop`     
+      line-height: 55px;
+    `};
   }
 `;
 
@@ -141,7 +146,11 @@ class UserNavbarSection extends React.Component {
                         size={this.loginSize}
                         onClick={() => this.processAuthRequest(service.service)}
                       >
-                        <MaterialIcon type={service.label || service.service} />
+                        <SAddMaterialIcon>
+                          <MaterialIcon
+                            type={service.label || service.service}
+                          />
+                        </SAddMaterialIcon>
                       </HButtom>
                     </RenderSocialCondition>
                   );

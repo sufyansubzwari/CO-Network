@@ -2,7 +2,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 import { Container, mixins } from "btech-layout";
 import Styled from "styled-components";
-
+import ReactSVG from "react-svg";
 import { HIcon } from "btech-horizantal-navbar";
 
 const HomeContainer = Styled.div`
@@ -17,10 +17,16 @@ const HomeContainer = Styled.div`
     }
 `;
 
+const HomeCurveBorder = Styled(ReactSVG)`
+    position: absolute;
+    top: -22px;
+    left: 50%;
+    margin-left: -43px;
+`;
 
 const border = {
-  bottom: {size:1, color:'#d4d3d7'}
-}
+  bottom: { size: 1, color: "#d4d3d7" }
+};
 
 /**
  * @module Data
@@ -28,7 +34,6 @@ const border = {
  * @description This component is a wrapper for the react-table
  */
 const HomeButton = function(props) {
-  // some logic
   return (
     <Container ml={{ xs: 0, sm: 0, md: 4, lg: 4 }} textCenter>
       <Container hide mdShow>
@@ -38,6 +43,7 @@ const HomeButton = function(props) {
       </Container>
       <Container mdHide>
         <Container inLine>
+          <HomeCurveBorder src={"/images/home-border.svg"} />
           <HomeContainer>
             <HIcon
               size={60}
@@ -46,7 +52,7 @@ const HomeButton = function(props) {
               onClick={() => props.onOpenNavbar && props.onOpenNavbar()}
             />
           </HomeContainer>
-          <Container border={border} width={"41px"} margin={"20px auto"}/>
+          <Container border={border} width={"41px"} margin={"20px auto"} />
         </Container>
       </Container>
     </Container>
