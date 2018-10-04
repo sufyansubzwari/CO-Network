@@ -86,15 +86,15 @@ class UserService {
    * @param {String} field - field to count
    * @return {Object} fields counted
    */
-  static usersFieldCounts = async field => {
+  static usersFieldCounts = async (field, userId) => {
     const rawUsers = Users.collection.rawCollection();
     const aggregateQuery = Meteor.wrapAsync(rawUsers.aggregate, rawUsers);
     const pipeline = [
+      { $match: { _id: { $ne: userId } } },
       { $unwind: `$${field}` },
       { $group: { _id: `$${field}.label`, number: { $sum: 1 } } }
     ];
-    const counts = await aggregateQuery(pipeline)
-      .toArray();
+    const counts = await aggregateQuery(pipeline).toArray();
     return Promise.all(counts)
       .then(completed => {
         return completed;

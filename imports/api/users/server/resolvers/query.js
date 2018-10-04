@@ -37,7 +37,8 @@ Query.users = (root, { user, filter, limit }, context) => {
 };
 
 Query.usersFieldCounts = async (root, { field }, context) => {
-  return await Service.usersFieldCounts(field);
+  const {userId} = context;
+  return await Service.usersFieldCounts(field, userId);
 };
 
 export default Query;

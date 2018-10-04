@@ -109,7 +109,8 @@ type Query {
 
 input UsersInputSearch {
     _id: TableStringFilterInput
-    description: TableStringFilterInput
+    profile_DOT_speaker_DOT_join: Boolean
+    profile_DOT_knowledge_DOT_lookingFor: JobTypeElemMatch
     location: [LocationInput]
 }
 
