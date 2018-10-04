@@ -75,23 +75,25 @@ class ListInnovators extends Component {
       JSON.stringify(this.state.filterStatus) !==
         JSON.stringify(nextProps.filterStatus.filters)
     ) {
-      const filters = Object.assign({}, nextProps.filterStatus.filters);
+      let filters = Object.assign({}, nextProps.filterStatus.filters);
       this.setState({ filterStatus: filters }, () => this.reFetchQuery());
     }
   }
 
   reFetchQuery() {
-    if(this.state.currentTab.value === "corporations")
-    this.props.organizations.refetch({
-      limit: this.state.limit,
-      filter: this.state.filter || "",
-      organizations: this.state.filterStatus || {}
-    });
-    else if(this.state.currentTab.value === "members")
+    if (this.state.currentTab.value === "corporations")
+      this.props.organizations.refetch({
+        limit: this.state.limit,
+        filter: this.state.filter || "",
+        organizations: this.state.filterStatus || {}
+      });
+    else if (this.state.currentTab.value === "members")
       this.props.users.refetch({
         limit: this.state.limit,
         filter: this.state.filter || "",
-        user: Object.keys(this.state.filterStatus).length ? this.state.filterStatus : {"_id":{"ne": this.props.curUser._id}}
+        user: Object.keys(this.state.filterStatus).length
+          ? this.state.filterStatus
+          : { _id: { ne: this.props.curUser._id } }
       });
   }
 
@@ -103,7 +105,10 @@ class ListInnovators extends Component {
         entityType: item.entity,
         actualDate: new Date()
       };
-      if (view.user && ((item.owner && view.user !== item.owner._id) ||  view.user !== item._id))
+      if (
+        view.user &&
+        ((item.owner && view.user !== item.owner._id) || view.user !== item._id)
+      )
         viewsUpdate({ variables: { view: view } }).then(() => {
           this.setState({ selectedItem: item, selectedIndex: key }, () =>
             this.reFetchQuery()
@@ -129,8 +134,7 @@ class ListInnovators extends Component {
   }
 
   customRenderItem(item, key, isLoading, viewsUpdate) {
-    return (
-    this.state.currentTab.value === "corporations" ?
+    return this.state.currentTab.value === "corporations" ? (
       <CardItem
         lgCustomTemplateColumns={"155px 1fr"}
         onSelect={() => this.onChangeSelection(item, key, viewsUpdate)}
@@ -148,7 +152,7 @@ class ListInnovators extends Component {
         views={item.views}
         key={key}
       />
-      : this.state.currentTab.value === "members" ?
+    ) : this.state.currentTab.value === "members" ? (
       <CardItem
         lgCustomTemplateColumns={"155px 1fr"}
         onSelect={() => this.onChangeSelection(item, key, viewsUpdate)}
@@ -160,15 +164,24 @@ class ListInnovators extends Component {
         data={item}
         loading={isLoading}
         title={item.profile && item.profile.name + " " + item.profile.lastName}
-        subTitle={(item.profile && item.profile.aboutMe && item.profile.aboutMe.yourPassion) || ""}
+        subTitle={
+          (item.profile &&
+            item.profile.aboutMe &&
+            item.profile.aboutMe.yourPassion) ||
+          ""
+        }
         image={(item.profile && item.profile.image) || null}
-        tags={(item.profile && item.profile.knowledge && item.profile.knowledge.languages && item.profile.knowledge.languages.map(item => item.tag)) || []}
+        tags={
+          (item.profile &&
+            item.profile.knowledge &&
+            item.profile.knowledge.languages &&
+            item.profile.knowledge.languages.map(item => item.tag)) ||
+          []
+        }
         views={item.views}
         key={key}
       />
-      :
-      null
-    );
+    ) : null;
   }
 
   editOrg() {
@@ -178,7 +191,6 @@ class ListInnovators extends Component {
     this.props.history.push("/post-organization", {
       organization: org
     });
-
   }
 
   onSearch(value) {
@@ -211,17 +223,32 @@ class ListInnovators extends Component {
   }
 
   handleNavActive(active) {
-    this.setState({ currentTab: active, selectedItem: null, selectedIndex: null, filter: "", filterStatus:{} }, () => this.reFetchQuery());
+    this.setState(
+      {
+        currentTab: active,
+        selectedItem: null,
+        selectedIndex: null,
+        filter: "",
+        filterStatus: {}
+      },
+      () => this.reFetchQuery()
+    );
   }
 
   render() {
     let data = [];
     let isLoading = false;
     if (this.state.currentTab.value === "corporations") {
-      isLoading = !this.props.organizations && !this.props.organizations.length && this.props.organizations.loading;
+      isLoading =
+        !this.props.organizations &&
+        !this.props.organizations.length &&
+        this.props.organizations.loading;
       data = this.props.organizations && this.props.organizations.organizations;
     } else if (this.state.currentTab.value === "members") {
-      isLoading = !this.props.users && !this.props.users.length && this.props.users.loading;
+      isLoading =
+        !this.props.users &&
+        !this.props.users.length &&
+        this.props.users.loading;
       data = this.props.users && this.props.users.users;
     }
     return (
@@ -304,12 +331,18 @@ class ListInnovators extends Component {
                     this.state.selectedItem.owner._id === this.props.curUser._id
                   }
                   image={
-                    this.state.currentTab.value === "members" ? (this.state.selectedItem && this.state.selectedItem.profile && this.state.selectedItem.profile.image) :
-                      (this.state.selectedItem && this.state.selectedItem.image)
+                    this.state.currentTab.value === "members"
+                      ? this.state.selectedItem &&
+                        this.state.selectedItem.profile &&
+                        this.state.selectedItem.profile.image
+                      : this.state.selectedItem && this.state.selectedItem.image
                   }
                   backGroundImage={
-                    this.state.currentTab.value === "members" ? (this.state.selectedItem && this.state.selectedItem.profile && this.state.selectedItem.profile.cover) :
-                      (this.state.selectedItem && this.state.selectedItem.cover)
+                    this.state.currentTab.value === "members"
+                      ? this.state.selectedItem &&
+                        this.state.selectedItem.profile &&
+                        this.state.selectedItem.profile.cover
+                      : this.state.selectedItem && this.state.selectedItem.cover
                   }
                   onBackgroundChange={imageSrc =>
                     this.handleBackgroundChange(updateOrgImages, imageSrc)
@@ -318,11 +351,13 @@ class ListInnovators extends Component {
                     this.handlePhotoChange(updateOrgImages, imageSrc)
                   }
                 >
-                  {this.state.currentTab.value === "corporations" && this.state.selectedItem ? (
+                  {this.state.currentTab.value === "corporations" &&
+                  this.state.selectedItem ? (
                     <OrganizationPreviewBody
                       organization={this.state.selectedItem}
                     />
-                  ) : this.state.currentTab.value === "members" && this.state.selectedItem ? (
+                  ) : this.state.currentTab.value === "members" &&
+                  this.state.selectedItem ? (
                     <UserPreviewBody user={this.state.selectedItem.profile} />
                   ) : null}
                 </Preview>
@@ -366,10 +401,10 @@ export default withRouter(
       }),
       graphql(getUsers, {
         name: "users",
-        options: (props) => ({
+        options: props => ({
           variables: {
             limit: 10,
-            user: {"_id":{"ne": props.curUser._id}}
+            user: { _id: { ne: props.curUser._id } }
           },
           fetchPolicy: "cache-and-network"
         })

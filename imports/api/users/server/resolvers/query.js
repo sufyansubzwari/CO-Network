@@ -17,7 +17,7 @@ Query.users = (root, { user, filter, limit }, context) => {
       let loc = Places.service.places({
         "location.address": { $in: user.location.map(item => item.address) }
       });
-      user["_id"] = { $in: loc.map(item => item.owner) };
+      user["_id"] = { $in: loc.map(item => item.owner).filter(item => item !== context.userId) };
       delete user.location;
     }
     query = wrapOperators(user);
