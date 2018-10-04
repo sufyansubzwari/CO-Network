@@ -105,16 +105,16 @@ class ColloquiumFilters extends React.Component {
           </Layout>
         </FilterItem>
         <Separator />
-        <FilterItem>
-          <SwitchButton
-            checked={this.state.privacy}
-            text={`Show ${
-              !this.state.privacy ? "Public" : "Private"
-            } Colloquiums`}
-            onChange={status => this.handleChangePrivacy(status)}
-          />
-        </FilterItem>
-        <Separator />
+        {/*<FilterItem>*/}
+          {/*<SwitchButton*/}
+            {/*checked={this.state.privacy}*/}
+            {/*text={`Show ${*/}
+              {/*!this.state.privacy ? "Public" : "Private"*/}
+            {/*} Colloquiums`}*/}
+            {/*onChange={status => this.handleChangePrivacy(status)}*/}
+          {/*/>*/}
+        {/*</FilterItem>*/}
+        {/*<Separator />*/}
         <FilterItem>
           <CheckBoxList
             placeholderText={"Competences"}

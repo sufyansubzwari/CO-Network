@@ -1,10 +1,10 @@
 import React from "react";
 import {
-  Input,
-  TextArea,
   CheckBoxList,
+  Input,
+  SwitchButton,
   TagList,
-  SwitchButton
+  TextArea
 } from "btech-base-forms-component";
 import MLTagsInput from "../../../../../components/TagsInputAutoComplete/TagsInputAutoComplete";
 import { Container, Layout } from "btech-layout";
@@ -12,7 +12,6 @@ import { GeoInputLocation } from "btech-location";
 import { COLLOQUIUM_LEVEL } from "../../../../../constants";
 import { Query } from "react-apollo";
 import { GetTags } from "../../../../../apollo-client/tag";
-import MaterialIcon from "react-material-iconic-font";
 
 class FirstStep extends React.Component {
   constructor(props) {
@@ -195,18 +194,18 @@ class FirstStep extends React.Component {
             }}
           </Query>
         </Container>
-        <Container>
-          <SwitchButton
-            checked={this.state.colloquium.isPublic}
-            text={"Make Public this Colloquium"}
-            onChange={status =>
-              this.notifyParent(this.state.colloquium, "isPublic", status)
-            }
-            description={
-              "Allow access for the exchange of transformation ideas in Science, Technology, Culture and Others."
-            }
-          />
-        </Container>
+        {/*<Container>*/}
+          {/*<SwitchButton*/}
+            {/*checked={this.state.colloquium.isPublic}*/}
+            {/*text={"Make Public this Colloquium"}*/}
+            {/*onChange={status =>*/}
+              {/*this.notifyParent(this.state.colloquium, "isPublic", status)*/}
+            {/*}*/}
+            {/*description={*/}
+              {/*"Allow access for the exchange of transformation ideas in Science, Technology, Culture and Others."*/}
+            {/*}*/}
+          {/*/>*/}
+        {/*</Container>*/}
       </Layout>
     );
   }

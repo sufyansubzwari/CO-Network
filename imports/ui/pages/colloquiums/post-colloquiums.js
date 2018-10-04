@@ -17,6 +17,7 @@ class PostColloquiums extends Component {
       colloquium: {
         title: null,
         description: null,
+        isPublic: true,
         place: {
           location: {
             address: "",
