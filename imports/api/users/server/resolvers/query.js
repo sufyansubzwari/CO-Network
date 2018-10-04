@@ -12,6 +12,7 @@ Query.users = (root, { user, filter, limit }, context) => {
   let query = {};
 
   if (user) {
+    user["_id"] = {"$ne": context.userId};
     if (user.location) {
       console.log(user.location.map(item => item.address));
       let loc = Places.service.places({
