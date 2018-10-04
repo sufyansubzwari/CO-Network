@@ -1,5 +1,6 @@
 import Users from "../index";
 import * as _ from "lodash";
+import { Meteor } from "meteor/meteor";
 
 /**
  * @class User Service
@@ -78,6 +79,27 @@ class UserService {
       $set: { "profile.identities": identities }
     });
     return Users.collection.findOne(id);
+  };
+  /**
+   * @name usersFieldCounts
+   * @summary get field counts
+   * @param {String} field - field to count
+   * @return {Object} fields counted
+   */
+  static usersFieldCounts = async field => {
+    const rawUsers = Users.collection.rawCollection();
+    const aggregateQuery = Meteor.wrapAsync(rawUsers.aggregate, rawUsers);
+    const pipeline = [
+      { $unwind: `$${field}` },
+      { $group: { _id: `$${field}.label`, number: { $sum: 1 } } }
+    ];
+    const counts = await aggregateQuery(pipeline)
+      .toArray();
+    return Promise.all(counts)
+      .then(completed => {
+        return completed;
+      })
+      .catch(error => console.log(error));
   };
 }
 

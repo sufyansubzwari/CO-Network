@@ -277,3 +277,10 @@ query getUsers($limit: Int, $filter: String, $user: UsersInputSearch){
       entity
     }
 }
+
+query UsersFieldCounts($field: String){
+  usersFieldCounts(field: $field){
+    _id
+    number
+  }
+}

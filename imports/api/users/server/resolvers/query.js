@@ -35,4 +35,9 @@ Query.users = (root, { user, filter, limit }, context) => {
   let limitQuery = limit ? {limit:limit} : {};
   return Service.users(query, limitQuery);
 };
+
+Query.usersFieldCounts = async (root, { field }, context) => {
+  return await Service.usersFieldCounts(field);
+};
+
 export default Query;

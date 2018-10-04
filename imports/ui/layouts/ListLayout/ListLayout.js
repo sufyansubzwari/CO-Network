@@ -27,6 +27,10 @@ class ListLayout extends Component {
   componentWillMount() {
     this.props.setFilterEntity(this.props.entityType);
   }
+  componentWillReceiveProps(nextProps) {
+    if(nextProps.entityType)
+      this.props.setFilterEntity(this.props.entityType);
+  }
 
   getComponent(key) {
     const element = this.props.children;

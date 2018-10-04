@@ -7,7 +7,9 @@ import {
   FiltersContainer,
   Separator
 } from "./../../../components";
-import { CheckBoxList, Button } from "btech-base-forms-component";
+import { Query } from 'react-apollo';
+import { CheckBoxList, Button, CheckBox } from "btech-base-forms-component";
+import { UsersFieldCounts } from "../../../apollo-client/user";
 
 class MembersFilters extends React.Component {
   constructor(props) {
@@ -52,27 +54,31 @@ class MembersFilters extends React.Component {
         </FilterItem>
         <Separator />
         <FilterItem>
-          <CheckBoxList
-            placeholderText={"Seeking"}
-            options={[
-              {
-                label: "Co-Founders",
-                active: true,
-                number: 12
-              },
-              { label: "Competitions Teammate", active: false, number: 3 },
-              { label: "Mentorship", active: false, number: 22 }
-            ]}
-          />
+          <Query query={UsersFieldCounts} variables={{ field: "profile.knowledge.lookingFor" }}>
+            {({ loading, error, data }) => {
+              if (loading) return <div />;
+              if (error) return <div>Error</div>;
+              return (
+                <CheckBoxList
+                  placeholderText={"Seeking"}
+                  options={data.usersFieldCounts.map(item => ({
+                    ...item,
+                    label: item._id,
+                    value: item._id,
+                    name: item._id
+                  }))}
+                  // getValue={selected => this.addFilters("jobExperience", selected)}
+                />
+              );
+            }}
+          </Query>
         </FilterItem>
         <Separator />
         <FilterItem>
           <CheckBoxList
-            placeholderText={"Seeking"}
             options={[{ label: "On Speaker Directory", active: false }]}
           />
         </FilterItem>
-        <Separator />
       </FiltersContainer>
     );
   }

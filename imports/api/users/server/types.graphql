@@ -104,6 +104,7 @@ input SubscriptionInput {
 type Query {
     users(user: UsersInputSearch, filter: String, limit: Int): [User]
     user(id: String): User
+    usersFieldCounts(field: String): [Counts]
 }
 
 input UsersInputSearch {
