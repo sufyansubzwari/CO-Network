@@ -1,18 +1,13 @@
 import React, { Component } from "react";
 import { ItemsList, ListLayout, Preview } from "../../../ui/components";
-import { Mutation, graphql } from "react-apollo";
+import { graphql, Mutation } from "react-apollo";
 import { connect } from "react-redux";
 import { PreviewData } from "../../actions/PreviewActions";
 import EventPreviewBody from "../../components/Preview/EventPreviewBody";
-import {
-  DeleteEvent,
-  GetEvents,
-  UpdateImageEvent
-} from "../../apollo-client/event";
+import { DeleteEvent, GetEvents, UpdateImageEvent } from "../../apollo-client/event";
 import { FollowAction } from "../../apollo-client/follow";
 import { ViewsCountUpdate } from "../../apollo-client/viewCount";
 import { withRouter } from "react-router-dom";
-import { Meteor } from "meteor/meteor";
 
 /**
  * @module Events
