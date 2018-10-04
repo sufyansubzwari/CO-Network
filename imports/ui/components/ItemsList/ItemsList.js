@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { List } from "btech-card-list-component";
 import CardItem from "../CardItem/CardItem";
+import EmptyList from "../EmptyList/EmptyList";
 import { theme } from "../../theme";
 import PropTypes from "prop-types";
 import { Layout, Container } from "btech-layout";
@@ -78,15 +79,21 @@ class ItemsList extends Component {
         :
           <SListTitle>{this.props.title}</SListTitle>
         }
-        <List
-          renderItem={
-            this.props.renderItem ? this.props.renderItem : this.renderItem
-          }
-          onFetchData={() => this.fetchMoreItems()}
-          itemSeparation={theme.lists.itemSeparation}
-          scrollSeparation={theme.lists.scrollSeparation}
-          data={this.props.loading ? this.state.mockData : this.props.data}
-        />
+        {this.props.loading || (this.props.data && this.props.data.length) ? (
+          <List
+            renderItem={
+              this.props.renderItem ? this.props.renderItem : this.renderItem
+            }
+            onFetchData={() => this.fetchMoreItems()}
+            itemSeparation={theme.lists.itemSeparation}
+            scrollSeparation={theme.lists.scrollSeparation}
+            data={this.props.loading ? this.state.mockData : this.props.data}
+          />
+        ) : null}
+        {!this.props.loading &&
+        (!this.props.data || !this.props.data.length) ? (
+          <EmptyList entityName={this.props.title} />
+        ) : null}
       </Container>
     );
   }

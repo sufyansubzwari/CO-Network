@@ -16,6 +16,7 @@ import TagsInputAutoComplete from "./TagsInputAutoComplete/TagsInputAutoComplete
 import Label from "./Label/Label";
 import MLCheckBoxList from "./CheckBoxList/CheckBoxList";
 import Messages from "./Messages/Messages";
+import EmptyList from "./EmptyList/EmptyList";
 
 // layouts
 import InternalLayout from "../layouts/InternalLayout/InternalLayout";
@@ -45,5 +46,6 @@ export {
   TagsInputAutoComplete,
   ProductsServices,
   MLCheckBoxList,
-  Messages
+  Messages,
+  EmptyList
 };

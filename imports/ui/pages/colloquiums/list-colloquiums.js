@@ -134,7 +134,7 @@ class ListColloquiums extends Component {
         <Mutation key={"listComponent"} mutation={ViewsCountUpdate}>
           {(viewsUpdate, {}) => (
             <ItemsList
-              title={"Colloquium"}
+              title={"Colloquiums"}
               topOptions={[
                 {
                   key: "isPublic",
