@@ -26,6 +26,25 @@ const SItemContainer = styled(Container)`
   border-radius: 3px;
 `;
 
+const SItem = styled(Layout)`
+  
+  .buttons {
+    opacity: 1;
+    transition: all 200ms ease-out; 
+  }
+  
+  :hover {
+      .buttons { opacity: 1;}
+  }
+    
+  @media (min-width: 62em){
+    .buttons {
+      opacity: 0;
+    }
+  }   
+`;
+
+
 class AchievementsList extends React.Component {
   constructor(props) {
     super(props);
@@ -37,9 +56,7 @@ class AchievementsList extends React.Component {
     };
 
     this.handleSave = this.handleSave.bind(this);
-    this.handleAdd = this.handleAdd.bind(this);
     this.handleRemove = this.handleRemove.bind(this);
-    this.handleDelete = this.handleDelete.bind(this);
     this.handleChange = this.handleChange.bind(this);
   }
 
@@ -63,17 +80,6 @@ class AchievementsList extends React.Component {
       () => this.notifyParent()
     );
   }
-  handleDelete() {
-    let arr = this.state.achievements.filter(
-      item => item.type !== this.props.type
-    );
-    this.setState(
-      {
-        achievements: arr
-      },
-      () => this.notifyParent()
-    );
-  }
   handleSave(index) {
     let ach = this.state.achievements;
     ach[index] = { ...ach[index], edit: false };
@@ -89,20 +95,6 @@ class AchievementsList extends React.Component {
     let ach = this.state.achievements;
     ach[index] = { ...ach[index], edit: true };
     this.props.onChange && this.props.onChange(ach);
-  }
-
-  handleAdd() {
-    let list = this.state.achievements;
-    list.push({
-      type: this.props.type,
-      edit: true
-    });
-    this.setState(
-      {
-        achievements: list
-      },
-      () => this.notifyParent()
-    );
   }
 
   onAddTags(index, tag) {
@@ -144,59 +136,11 @@ class AchievementsList extends React.Component {
       <Container style={{ display: elements.length ? "block" : "none" }}>
         {elements.length ? (
           <Layout
-            customTemplateColumns={"1fr auto"}
+            customTemplateColumns={"1fr"}
             style={{ paddingRight: "10px" }}
             mb={"5px"}
           >
             <SLabel>{this.props.type}</SLabel>
-            {edit.length === 0 ? (
-              <Layout customTemplateColumns={"auto auto auto"}>
-                <Button
-                  type={"button"}
-                  secondary
-                  height={"auto"}
-                  color={"black"}
-                  opacity={"0.5"}
-                  border={"none"}
-                  hoverBackground={"transparent"}
-                  hoverColor={"initial"}
-                  onClick={this.handleAdd}
-                  style={{ fontSize: "14px" }}
-                >
-                  <MaterialIcon type={"plus-circle"} />
-                </Button>
-                <Button
-                  type={"button"}
-                  secondary
-                  height={"auto"}
-                  color={"black"}
-                  opacity={"0.5"}
-                  border={"none"}
-                  hoverBackground={"transparent"}
-                  hoverColor={"initial"}
-                  onClick={() =>
-                    this.setState({ isEditable: !this.state.isEditable })
-                  }
-                  style={{ fontSize: "14px" }}
-                >
-                  <MaterialIcon type={"edit"} />
-                </Button>
-                <Button
-                  type={"button"}
-                  secondary
-                  height={"auto"}
-                  color={"black"}
-                  opacity={"0.5"}
-                  border={"none"}
-                  hoverBackground={"transparent"}
-                  hoverColor={"initial"}
-                  onClick={this.handleDelete}
-                  style={{ fontSize: "14px" }}
-                >
-                  <MaterialIcon type={"delete"} />
-                </Button>
-              </Layout>
-            ) : null}
           </Layout>
         ) : null}
         <SItemContainer paddingX={"10px"} background={this.props.background}>
@@ -252,14 +196,14 @@ class AchievementsList extends React.Component {
                       />
                     ) : null
                   ) : (
-                    <Layout
+                    <SItem
                       key={index}
                       paddingY={"10px"}
                       customTemplateColumns={"1fr auto"}
                     >
                       <Container>{item.name}</Container>
-                      {this.state.isEditable ? (
                         <Layout
+                          className={'buttons'}
                           customTemplateColumns={"auto auto"}
                           colGap={"5px"}
                         >
@@ -295,8 +239,7 @@ class AchievementsList extends React.Component {
                             <MaterialIcon type={"delete"} />
                           </Button>
                         </Layout>
-                      ) : null}
-                    </Layout>
+                    </SItem>
                   )
                 ) : null
             )}
