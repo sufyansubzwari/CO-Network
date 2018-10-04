@@ -14,7 +14,6 @@ const SContainerIcon = styled(Container)`
   padding-top: 5px;
   display: initial;
   text-align: center;
-  opacity: ${props => (props.isOpen || !props.curUser ? "0" : "1")};
 
   ${mixins.media.desktop`
      display: none;
@@ -48,47 +47,53 @@ const HNavBarButtons = function(props) {
             </Link>
           </Container>
         </SContainerIcon>
-        <SContainerIcon {...props}>
-          <HNavItem
-            mt={{ xs: "5px", md: "0" }}
-            size={notSize}
-            icon={{ size: 35, src: "/images/nav/messages.svg" }}
-            number={{
-              top: "-5px",
-              right: "-5px",
-              value: Math.floor(Math.random() * 120),
-              primary: true,
-              size: { width: 22, height: 24 }
-            }}
-          />
+        <SContainerIcon>
+          <Container hide={hideIcons}>
+            <HNavItem
+              mt={{ xs: "5px", md: "0" }}
+              size={notSize}
+              icon={{ size: 35, src: "/images/nav/messages.svg" }}
+              number={{
+                top: "-5px",
+                right: "-5px",
+                value: Math.floor(Math.random() * 120),
+                primary: true,
+                size: { width: 22, height: 24 }
+              }}
+            />
+          </Container>
         </SContainerIcon>
         <HomeButton
           onOpenNavbar={() => props.onToggleNavBar && props.onToggleNavBar()}
         />
-        <SContainerIcon {...props}>
-          <HNavItem
-            mt={{ xs: "5px", md: "0" }}
-            size={notSize}
-            icon={{ size: 35, src: "/images/nav/notifications.svg" }}
-            number={{
-              top: "-5px",
-              right: "-5px",
-              value: Math.floor(Math.random() * 120),
-              primary: true,
-              size: { width: 22, height: 24 }
-            }}
-          />
+        <SContainerIcon>
+          <Container hide={hideIcons}>
+            <HNavItem
+              mt={{ xs: "5px", md: "0" }}
+              size={notSize}
+              icon={{ size: 35, src: "/images/nav/notifications.svg" }}
+              number={{
+                top: "-5px",
+                right: "-5px",
+                value: Math.floor(Math.random() * 120),
+                primary: true,
+                size: { width: 22, height: 24 }
+              }}
+            />
+          </Container>
         </SContainerIcon>
-        <SContainerIcon {...props}>
-          <HButtom
-            primary
-            size={this.size}
-            onClick={() => props.onAddToggle && props.onAddToggle()}
-          >
-            <SIconContainer>
-              <MaterialIcon type={"plus"} />
-            </SIconContainer>
-          </HButtom>
+        <SContainerIcon>
+          <Container hide={hideIcons}>
+            <HButtom
+              primary
+              size={this.size}
+              onClick={() => props.onAddToggle && props.onAddToggle()}
+            >
+              <SIconContainer>
+                <MaterialIcon type={"plus"} />
+              </SIconContainer>
+            </HButtom>
+          </Container>
         </SContainerIcon>
       </Layout>
     </Container>
