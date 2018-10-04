@@ -47,7 +47,7 @@ class ViewsCountService {
   static getCollection = entity => {
     if (entity)
       switch (entity) {
-        case "user":
+        case "USER":
           return User;
         case "JOB":
           return Jobs;

@@ -25,8 +25,9 @@ Query.users = (root, { user, filter, limit }, context) => {
   if (filter) {
     query = {
       $or: [
-        { title: { $regex: filter, $options: "i" } },
-        { description: { $regex: filter, $options: "i" } }
+        { 'profile.name': { $regex: filter, $options: "i" } },
+        { 'profile.lastName': { $regex: filter, $options: "i" } },
+        { 'profile.aboutMe.yourPassion': { $regex: filter, $options: "i" } }
       ]
     };
   }

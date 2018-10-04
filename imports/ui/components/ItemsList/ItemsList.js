@@ -6,6 +6,7 @@ import PropTypes from "prop-types";
 import { Layout, Container } from "btech-layout";
 import styled from "styled-components";
 import { LOADINGDATA } from "./mockData";
+import NavMenu from './components/navMenu';
 
 const SListTitle = styled(Container)`
   font-family: ${props =>
@@ -72,7 +73,11 @@ class ItemsList extends Component {
   render() {
     return (
       <Container fullY>
-        <SListTitle>{this.props.title}</SListTitle>
+        {this.props.navList ?
+          <NavMenu options={this.props.navList} getActive={this.props.getNavActive}/>
+        :
+          <SListTitle>{this.props.title}</SListTitle>
+        }
         <List
           renderItem={
             this.props.renderItem ? this.props.renderItem : this.renderItem
@@ -94,7 +99,9 @@ ItemsList.propTypes = {
   loading: PropTypes.bool,
   onFetchData: PropTypes.func,
   renderItem: PropTypes.func,
-  onSelectCard: PropTypes.func
+  onSelectCard: PropTypes.func,
+  navList: PropTypes.array,
+  getNavActive: PropTypes.func
 };
 
 export default ItemsList;

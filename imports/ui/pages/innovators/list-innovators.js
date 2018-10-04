@@ -5,14 +5,16 @@ import {
   Preview,
   CardItem
 } from "../../../ui/components";
-import { graphql, Mutation } from "react-apollo";
+import { graphql, Mutation, compose } from "react-apollo";
 import { withRouter } from "react-router-dom";
 import {
   GetOrg,
   DeleteOrg,
   UpdateOrgImages
 } from "../../apollo-client/organization";
+import { getUsers, DeleteUser } from "../../apollo-client/user";
 import OrganizationPreviewBody from "../../components/Preview/OrganizationPreviewBody";
+import UserPreviewBody from "../../components/Preview/UserPreviewBody";
 import { connect } from "react-redux";
 import { PreviewData } from "../../actions/PreviewActions";
 import { Meteor } from "meteor/meteor";
@@ -25,32 +27,32 @@ import { ViewsCountUpdate } from "../../apollo-client/viewCount";
 class ListInnovators extends Component {
   constructor(props) {
     super(props);
-    this.navList = [
-      {
-        title: "Members",
-        value: "members"
-      },
-      {
-        title: "Communities",
-        value: "communities"
-      },
-      {
-        title: "Corporations",
-        value: "corporations"
-      }
-    ];
     this.state = {
       openFilters: true,
       selectedItem: null,
       selectedIndex: null,
+      loading: false,
+      limit: 10,
+      filter: "",
+      filterStatus: {},
       currentTab: {
         title: "Corporations",
         value: "corporations"
       },
-      loading: false,
-      limit: 10,
-      filter: "",
-      filterStatus: {}
+      navList: [
+        {
+          title: "Corporations",
+          value: "corporations"
+        },
+        // {
+        //   title: "Communities",
+        //   value: "communities"
+        // },
+        {
+          title: "Members",
+          value: "members"
+        }
+      ]
     };
     this.customRenderItem = this.customRenderItem.bind(this);
   }
@@ -79,11 +81,18 @@ class ListInnovators extends Component {
   }
 
   reFetchQuery() {
-    this.props.data.refetch({
+    if(this.state.currentTab.value === "corporations")
+    this.props.organizations.refetch({
       limit: this.state.limit,
       filter: this.state.filter || "",
       organizations: this.state.filterStatus || {}
     });
+    else if(this.state.currentTab.value === "members")
+      this.props.users.refetch({
+        limit: this.state.limit,
+        filter: this.state.filter || "",
+        users: this.state.filterStatus || {}
+      });
   }
 
   onChangeSelection(item, key, viewsUpdate) {
@@ -94,7 +103,7 @@ class ListInnovators extends Component {
         entityType: item.entity,
         actualDate: new Date()
       };
-      if (view.user && view.user !== item.owner._id)
+      if (view.user && ((item.owner && view.user !== item.owner._id) ||  view.user !== item._id))
         viewsUpdate({ variables: { view: view } }).then(() => {
           this.setState({ selectedItem: item, selectedIndex: key }, () =>
             this.reFetchQuery()
@@ -121,6 +130,7 @@ class ListInnovators extends Component {
 
   customRenderItem(item, key, isLoading, viewsUpdate) {
     return (
+    this.state.currentTab.value === "corporations" ?
       <CardItem
         lgCustomTemplateColumns={"155px 1fr"}
         onSelect={() => this.onChangeSelection(item, key, viewsUpdate)}
@@ -138,6 +148,26 @@ class ListInnovators extends Component {
         views={item.views}
         key={key}
       />
+      : this.state.currentTab.value === "members" ?
+      <CardItem
+        lgCustomTemplateColumns={"155px 1fr"}
+        onSelect={() => this.onChangeSelection(item, key, viewsUpdate)}
+        isActive={
+          this.state.selectedIndex !== null
+            ? this.state.selectedIndex === key
+            : false
+        }
+        data={item}
+        loading={isLoading}
+        title={item.profile && item.profile.name + " " + item.profile.lastName}
+        subTitle={(item.profile && item.profile.aboutMe && item.profile.aboutMe.yourPassion) || ""}
+        image={(item.profile && item.profile.image) || null}
+        tags={(item.profile && item.profile.knowledge && item.profile.knowledge.languages && item.profile.knowledge.languages.map(item => item.tag)) || []}
+        views={item.views}
+        key={key}
+      />
+      :
+      null
     );
   }
 
@@ -148,6 +178,7 @@ class ListInnovators extends Component {
     this.props.history.push("/post-organization", {
       organization: org
     });
+
   }
 
   onSearch(value) {
@@ -179,10 +210,20 @@ class ListInnovators extends Component {
     console.log("Error to change the image");
   }
 
+  handleNavActive(active) {
+    this.setState({ currentTab: active, selectedItem: null, selectedIndex: null, filter: "", filterStatus:{} }, () => this.reFetchQuery());
+  }
+
   render() {
-    const isLoading =
-      this.props.data.loading &&
-      (!this.props.data.organizations || !this.props.data.organizations.length);
+    let data = [];
+    let isLoading = false;
+    if (this.state.currentTab.value === "corporations") {
+      isLoading = !this.props.organizations && !this.props.organizations.length && this.props.organizations.loading;
+      data = this.props.organizations && this.props.organizations.organizations;
+    } else if (this.state.currentTab.value === "members") {
+      isLoading = !this.props.users && !this.props.users.length && this.props.users.loading;
+      data = this.props.users && this.props.users.users;
+    }
     return (
       <ListLayout
         entityType={this.state.currentTab.value}
@@ -193,7 +234,9 @@ class ListInnovators extends Component {
             <ItemsList
               key={"listComponent"}
               title={this.state.currentTab.title}
-              data={this.props.data.organizations}
+              navList={this.state.navList}
+              getNavActive={active => this.handleNavActive(active)}
+              data={data}
               renderItem={(item, key) =>
                 this.customRenderItem(item, key, isLoading, viewsUpdate)
               }
@@ -277,9 +320,13 @@ class ListInnovators extends Component {
                     this.handlePhotoChange(updateOrgImages, imageSrc)
                   }
                 >
-                  <OrganizationPreviewBody
-                    organization={this.state.selectedItem}
-                  />
+                  {this.state.currentTab.value === "corporations" && this.state.selectedItem ? (
+                    <OrganizationPreviewBody
+                      organization={this.state.selectedItem}
+                    />
+                  ) : this.state.currentTab.value === "members" && this.state.selectedItem ? (
+                    <UserPreviewBody user={this.state.selectedItem.profile} />
+                  ) : null}
                 </Preview>
               )}
             </Mutation>
@@ -309,13 +356,25 @@ export default withRouter(
     mapStateToProps,
     mapDispatchToProps
   )(
-    graphql(GetOrg, {
-      options: () => ({
-        variables: {
-          limit: 10
-        },
-        fetchPolicy: "cache-and-network"
+    compose(
+      graphql(GetOrg, {
+        name: "organizations",
+        options: () => ({
+          variables: {
+            limit: 10
+          },
+          fetchPolicy: "cache-and-network"
+        })
+      }),
+      graphql(getUsers, {
+        name: "users",
+        options: () => ({
+          variables: {
+            limit: 10
+          },
+          fetchPolicy: "cache-and-network"
+        })
       })
-    })(ListInnovators)
+    )(ListInnovators)
   )
 );
