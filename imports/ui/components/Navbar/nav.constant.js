@@ -42,8 +42,13 @@ innovators.number = {
 let dataStory = Object.assign({}, base, {
   link: "/data-story",
   label: "Data Story",
-  icon: { size: 30, src: "/images/nav/colloquium.svg" }
+  icon: { size: 30, src: "/images/nav/dataStory.svg" }
 });
+dataStory.number = {
+  value: 0,
+  primary: true,
+  size: { width: 22, height: 24 }
+};
 let colloquium = Object.assign({}, base, {
   link: "/colloquiums",
   label: "Colloquium",
@@ -55,4 +60,4 @@ colloquium.number = {
   size: { width: 22, height: 24 }
 };
 
-export default [event, jobs, innovators, colloquium];
+export default [event, jobs, innovators, dataStory, colloquium];

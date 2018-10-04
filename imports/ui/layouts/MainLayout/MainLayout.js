@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { withRouter } from "react-router-dom";
-import { Layout, Container, mixins, StyleUtil } from "btech-layout";
+import { Layout, mixins, StyleUtil } from "btech-layout";
 import Routes from "../../routes";
 import { connect } from "react-redux";
 import Navbar from "../../components/Navbar/Navbar";
@@ -22,7 +22,10 @@ const MainLayoutStyled = Styled(Layout)`
  bottom :0;
  bottom :0;
  min-height: initial;
+ 
  ${mixins.media.desktop`
+     background-image: url("/images/map-background-gtmetrix.png");
+     background-size: cover;
      min-height: 100vh;
      position:initial;
  `}
@@ -35,6 +38,7 @@ const ContentStyled = Styled(Layout)`
      margin-left:-100%!important;
   }
 `;
+
 let TopNavbar = Styled.div`
   height:80px;
   background:${props =>
@@ -46,6 +50,7 @@ let TopNavbar = Styled.div`
   right: 0;
   z-index: 11;
 `;
+
 TopNavbar = posed(TopNavbar)({
   showNavbar: {
     top: "0%",

@@ -37,13 +37,16 @@ const HNavBarButtons = function(props) {
   const size = { width: 38, height: 45 };
   const notSize = { width: 30, height: 34 };
   const avatarLink = props.curUser ? "/profile" : "/";
+  const hideIcons = props.isOpen || !props.curUser;
   return (
     <Container paddingX={"15px"}>
       <Layout mdHide colGap={"24px"} templateColumns={5} mdTemplateColumns={1}>
-        <SContainerIcon {...props}>
-          <Link to={avatarLink}>
-            <NavbarUserButton size={size} />
-          </Link>
+        <SContainerIcon>
+          <Container hide={hideIcons}>
+            <Link to={avatarLink}>
+              <NavbarUserButton size={size} />
+            </Link>
+          </Container>
         </SContainerIcon>
         <SContainerIcon {...props}>
           <HNavItem
