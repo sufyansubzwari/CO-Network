@@ -9,7 +9,7 @@ import { Container, Layout } from "btech-layout";
 import { LOOKING_FOR_DEFAULT, TAG_LEVEL } from "../../../../../constants";
 import { GetTags } from "../../../../../apollo-client/tag";
 import { Query } from "react-apollo";
-import MLTagsInput from '../../../../../components/TagsInputAutoComplete/TagsInputAutoComplete'
+import MLTagsInput from "../../../../../components/TagsInputAutoComplete/TagsInputAutoComplete";
 
 class ThirdStep extends React.Component {
   constructor(props) {
@@ -101,28 +101,27 @@ class ThirdStep extends React.Component {
   }
 
   tagsSuggested(tags, name) {
-      let sug = JSON.parse(JSON.stringify(tags));
-      if(name && this.state.user.knowledge && this.state.user.knowledge[name]){
+    let sug = JSON.parse(JSON.stringify(tags));
+    const data = this.state.user.knowledge && this.state.user.knowledge[name];
+    if (name && data) {
       return sug
-          .filter(tag =>
-              !this.state.user ||
-              !this.state.user.knowledge ||
-              this.state.user.knowledge[name].length === 0 ||
-              this.state.user.knowledge[name].findIndex(
-                  item => item.tag._id === tag._id
-              ) === -1)
-          .sort((a, b) => b.used - a.used)
-          .map(tag => ({
-              ...tag,
-              active:
-              this.state.user &&
-              this.state.user.knowledge &&
-              this.state.user.knowledge[name].findIndex(
-                  item => item.tag._id === tag._id
-              ) > -1
-          }))
-          .slice(0, 5);
-      }
+        .filter(
+          tag =>
+            !this.state.user ||
+            !this.state.user.knowledge ||
+            data ||
+            !data.some(item => item.tag._id === tag._id)
+        )
+        .sort((a, b) => b.used - a.used)
+        .map(tag => ({
+          ...tag,
+          active:
+            this.state.user &&
+            this.state.user.knowledge &&
+            data.some(item => item.tag._id === tag._id)
+        }))
+        .slice(0, 5);
+    }
   }
 
   render() {
@@ -131,10 +130,10 @@ class ThirdStep extends React.Component {
         <Container>
           <Query query={GetTags} variables={{ tags: { type: "Languages" } }}>
             {({ loading, error, data }) => {
-              if (loading) return <div></div>;
+              if (loading) return <div />;
               if (error) return <div>Error</div>;
               return (
-                <Container mt={'25px'}>
+                <Container mt={"25px"}>
                   <MLTagsInput
                     placeholderText={"Languages & Libraries"}
                     getAddedOptions={this.onAddTags.bind(
@@ -152,30 +151,31 @@ class ThirdStep extends React.Component {
                     name={"others"}
                     useIcon={true}
                     tags={
-                        this.state.user.knowledge && this.state.user.knowledge.languages
-                            ? this.state.user.knowledge.languages.map(item => ({
-                                active: true,
-                                useIcon: true,
-                                levelColor: item.levelColor || "",
-                                icon: item.icon || "",
-                                level: item.level || "",
-                                ...item.tag,
-                                showOptions: !item.levelColor
-                            }))
-                            : []
+                      this.state.user.knowledge &&
+                      this.state.user.knowledge.languages
+                        ? this.state.user.knowledge.languages.map(item => ({
+                            active: true,
+                            useIcon: true,
+                            levelColor: item.levelColor || "",
+                            icon: item.icon || "",
+                            level: item.level || "",
+                            ...item.tag,
+                            showOptions: !item.levelColor
+                          }))
+                        : []
                     }
                     levelOptions={TAG_LEVEL}
                     onCategoryChange={(index, value, color, icon) =>
-                        this.handleCategoryChange(
-                            index,
-                            value,
-                            color,
-                            icon,
-                            "languages"
-                        )
+                      this.handleCategoryChange(
+                        index,
+                        value,
+                        color,
+                        icon,
+                        "languages"
+                      )
                     }
                     onCloseTags={(e, tag, index) =>
-                        this.onCloseTags(e, tag, index, "languages")
+                      this.onCloseTags(e, tag, index, "languages")
                     }
                   />
                   <Container mt={"10px"}>
@@ -202,68 +202,69 @@ class ThirdStep extends React.Component {
         <Container>
           <Query query={GetTags} variables={{ tags: { type: "Curiosity" } }}>
             {({ loading, error, data }) => {
-              if (loading) return <div></div>;
+              if (loading) return <div />;
               if (error) return <div>Error</div>;
               return (
-                  <Container mt={'25px'}>
-                      <MLTagsInput
-                          placeholderText={"Curiosity & Experience"}
-                          getAddedOptions={this.onAddTags.bind(
-                              this,
-                              "curiosity",
-                              "Curiosity"
-                          )}
-                          getNewAddedOptions={this.onAddTags.bind(
-                              this,
-                              "curiosity",
-                              "Curiosity"
-                          )}
-                          options={data.tags}
-                          model={{ others: [] }}
-                          name={"others"}
-                          tags={
-                              this.state.user.knowledge && this.state.user.knowledge.curiosity
-                                  ? this.state.user.knowledge.curiosity.map(item => ({
-                                      active: true,
-                                      useIcon: true,
-                                      levelColor: item.levelColor || "",
-                                      icon: item.icon || "",
-                                      level: item.level || "",
-                                      ...item.tag,
-                                      showOptions: !item.levelColor
-                                  }))
-                                  : []
-                          }
-                          onCategoryChange={(index, value, color, icon) =>
-                              this.handleCategoryChange(
-                                  index,
-                                  value,
-                                  color,
-                                  icon,
-                                  "curiosity"
-                              )
-                          }
-                          onCloseTags={(e, tag, index) =>
-                              this.onCloseTags(e, tag, index, "curiosity")
-                          }
-                      />
-                      <Container mt={"10px"}>
-                          <TagList
-                              tags={this.tagsSuggested(data.tags, "curiosity")}
-                              onSelect={(event, tag, index) => {
-                                  if (!tag.active) {
-                                      delete tag.active;
-                                      this.onAddTags("curiosity", "Curiosity", tag);
-                                  } else {
-                                      const pos = this.state.user.knowledge.curiosity.findIndex(
-                                          item => item.tag._id === tag._id
-                                      );
-                                      this.onCloseTags(event, tag, pos, "curiosity");
-                                  }
-                              }}
-                          />
-                      </Container>
+                <Container mt={"25px"}>
+                  <MLTagsInput
+                    placeholderText={"Curiosity & Experience"}
+                    getAddedOptions={this.onAddTags.bind(
+                      this,
+                      "curiosity",
+                      "Curiosity"
+                    )}
+                    getNewAddedOptions={this.onAddTags.bind(
+                      this,
+                      "curiosity",
+                      "Curiosity"
+                    )}
+                    options={data.tags}
+                    model={{ others: [] }}
+                    name={"others"}
+                    tags={
+                      this.state.user.knowledge &&
+                      this.state.user.knowledge.curiosity
+                        ? this.state.user.knowledge.curiosity.map(item => ({
+                            active: true,
+                            useIcon: true,
+                            levelColor: item.levelColor || "",
+                            icon: item.icon || "",
+                            level: item.level || "",
+                            ...item.tag,
+                            showOptions: !item.levelColor
+                          }))
+                        : []
+                    }
+                    onCategoryChange={(index, value, color, icon) =>
+                      this.handleCategoryChange(
+                        index,
+                        value,
+                        color,
+                        icon,
+                        "curiosity"
+                      )
+                    }
+                    onCloseTags={(e, tag, index) =>
+                      this.onCloseTags(e, tag, index, "curiosity")
+                    }
+                  />
+                  <Container mt={"10px"}>
+                    <TagList
+                      tags={this.tagsSuggested(data.tags, "curiosity")}
+                      onSelect={(event, tag, index) => {
+                        if (!tag.active) {
+                          delete tag.active;
+                          this.onAddTags("curiosity", "Curiosity", tag);
+                        } else {
+                          const pos = this.state.user.knowledge.curiosity.findIndex(
+                            item => item.tag._id === tag._id
+                          );
+                          this.onCloseTags(event, tag, pos, "curiosity");
+                        }
+                      }}
+                    />
                   </Container>
+                </Container>
               );
             }}
           </Query>
