@@ -91,7 +91,7 @@ class ListInnovators extends Component {
       this.props.users.refetch({
         limit: this.state.limit,
         filter: this.state.filter || "",
-        users: this.state.filterStatus || {}
+        user: Object.keys(this.state.filterStatus).length ? this.state.filterStatus : {"_id":{"ne": this.props.curUser._id}}
       });
   }
 
@@ -304,14 +304,12 @@ class ListInnovators extends Component {
                     this.state.selectedItem.owner._id === this.props.curUser._id
                   }
                   image={
-                    this.state.selectedItem
-                      ? this.state.selectedItem.image
-                      : null
+                    this.state.currentTab.value === "members" ? (this.state.selectedItem && this.state.selectedItem.profile && this.state.selectedItem.profile.image) :
+                      (this.state.selectedItem && this.state.selectedItem.image)
                   }
                   backGroundImage={
-                    this.state.selectedItem
-                      ? this.state.selectedItem.cover
-                      : null
+                    this.state.currentTab.value === "members" ? (this.state.selectedItem && this.state.selectedItem.profile && this.state.selectedItem.profile.cover) :
+                      (this.state.selectedItem && this.state.selectedItem.cover)
                   }
                   onBackgroundChange={imageSrc =>
                     this.handleBackgroundChange(updateOrgImages, imageSrc)
@@ -368,9 +366,10 @@ export default withRouter(
       }),
       graphql(getUsers, {
         name: "users",
-        options: () => ({
+        options: (props) => ({
           variables: {
-            limit: 10
+            limit: 10,
+            user: {"_id":{"ne": props.curUser._id}}
           },
           fetchPolicy: "cache-and-network"
         })

@@ -107,7 +107,7 @@ type Query {
 }
 
 input UsersInputSearch {
-    title: TableStringFilterInput
+    _id: TableStringFilterInput
     description: TableStringFilterInput
     location: [LocationInput]
 }
