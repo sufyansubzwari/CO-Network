@@ -275,6 +275,7 @@ query getUsers($limit: Int, $filter: String, $user: UsersInputSearch){
             }
             views
       entity
+      followerList
     }
 }
 

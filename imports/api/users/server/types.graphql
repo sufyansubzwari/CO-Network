@@ -9,6 +9,7 @@ type User {
     subscriptions: [Subscription]
     views: Int
     entity: String
+    followerList: [String]
 }
 
 type Email {

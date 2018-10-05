@@ -19,6 +19,7 @@ import { connect } from "react-redux";
 import { PreviewData } from "../../actions/PreviewActions";
 import { Meteor } from "meteor/meteor";
 import { ViewsCountUpdate } from "../../apollo-client/viewCount";
+import { FollowAction } from "../../apollo-client/follow";
 
 /**
  * @module Events
@@ -82,18 +83,20 @@ class ListInnovators extends Component {
 
   reFetchQuery() {
     if (this.state.currentTab.value === "corporations")
-      this.props.organizations.refetch({
+      return this.props.organizations.refetch({
         limit: this.state.limit,
         filter: this.state.filter || "",
         organizations: this.state.filterStatus || {}
       });
     else if (this.state.currentTab.value === "members")
-      this.props.users.refetch({
+      return this.props.users.refetch({
         limit: this.state.limit,
         filter: this.state.filter || "",
         user: Object.keys(this.state.filterStatus).length
           ? this.state.filterStatus
-          : this.props.curUser && this.props.curUser._id ? { _id: { ne: this.props.curUser._id } } : {}
+          : this.props.curUser && this.props.curUser._id
+            ? { _id: { ne: this.props.curUser._id } }
+            : {}
       });
   }
 
@@ -235,6 +238,27 @@ class ListInnovators extends Component {
     );
   }
 
+  handleFollow(followAction, follow) {
+    let follower = {
+      entityId: this.state.selectedItem._id,
+      entity: this.state.selectedItem.entity
+    };
+    followAction({
+      variables: {
+        follower: follower,
+        id: this.state.selectedItem._id,
+        follow: follow
+      }
+    }).then(() => {
+      this.reFetchQuery().then(() => {
+        let selected = this.props.users.users.find(
+          item => item._id === this.state.selectedItem._id
+        );
+        this.setState({ selectedItem: selected });
+      });
+    });
+  }
+
   render() {
     let data = [];
     let isLoading = false;
@@ -280,87 +304,128 @@ class ListInnovators extends Component {
               onError={error => this.errorOnBackgroundChange(error)}
             >
               {(updateOrgImages, { job }) => (
-                <Preview
-                  isOpen={!!this.state.selectedItem}
-                  onClose={() => this.onChangeSelection(null, null)}
-                  key={"rightSide"}
-                  navClicked={index => console.log(index)}
-                  navOptions={[
-                    {
-                      text: "Edit",
-                      icon: "edit",
-                      checkVisibility: () => {
-                        const element = this.state.selectedItem;
-                        return (
-                          element &&
-                          element._id &&
-                          element.owner &&
-                          this.props.curUser &&
-                          element.owner._id === this.props.curUser._id
-                        );
-                      },
-                      onClick: () => {
-                        this.editOrg();
-                      }
-                    },
-                    {
-                      text: "Remove",
-                      icon: "delete",
-                      checkVisibility: () => {
-                        const element = this.state.selectedItem;
-                        return (
-                          element &&
-                          element._id &&
-                          element.owner &&
-                          this.props.curUser &&
-                          element.owner._id === this.props.curUser._id
-                        );
-                      },
-                      onClick: () => {
-                        this.removeOrg(deleteOrg, this.state.selectedItem);
-                      }
-                    }
-                  ]}
-                  showAvatar
-                  index={this.state.selectedIndex}
-                  data={this.state.selectedItem}
-                  allowChangeImages={
-                    this.state.selectedItem &&
-                    this.state.selectedItem.owner &&
-                    this.props.curUser &&
-                    this.state.selectedItem.owner._id === this.props.curUser._id
-                  }
-                  image={
-                    this.state.currentTab.value === "members"
-                      ? this.state.selectedItem &&
-                        this.state.selectedItem.profile &&
-                        this.state.selectedItem.profile.image
-                      : this.state.selectedItem && this.state.selectedItem.image
-                  }
-                  backGroundImage={
-                    this.state.currentTab.value === "members"
-                      ? this.state.selectedItem &&
-                        this.state.selectedItem.profile &&
-                        this.state.selectedItem.profile.cover
-                      : this.state.selectedItem && this.state.selectedItem.cover
-                  }
-                  onBackgroundChange={imageSrc =>
-                    this.handleBackgroundChange(updateOrgImages, imageSrc)
-                  }
-                  onUserPhotoChange={imageSrc =>
-                    this.handlePhotoChange(updateOrgImages, imageSrc)
-                  }
+                <Mutation
+                  mutation={FollowAction}
+                  onError={error => this.errorOnBackgroundChange(error)}
                 >
-                  {this.state.currentTab.value === "corporations" &&
-                  this.state.selectedItem ? (
-                    <OrganizationPreviewBody
-                      organization={this.state.selectedItem}
-                    />
-                  ) : this.state.currentTab.value === "members" &&
-                  this.state.selectedItem ? (
-                    <UserPreviewBody user={this.state.selectedItem.profile} />
-                  ) : null}
-                </Preview>
+                  {(followAction, { followResult }) => {
+                    const follow =
+                      this.props.curUser &&
+                      this.props.curUser._id &&
+                      this.state.selectedItem &&
+                      this.state.selectedItem.followerList &&
+                      this.state.selectedItem.followerList.indexOf(
+                        this.props.curUser._id
+                      ) > -1;
+                    return (
+                      <Preview
+                        isOpen={!!this.state.selectedItem}
+                        onClose={() => this.onChangeSelection(null, null)}
+                        key={"rightSide"}
+                        navClicked={index => console.log(index)}
+                        navOptions={[
+                          {
+                            text: !follow ? "Follow" : "Unfollow",
+                            primary: true,
+                            checkVisibility: () => {
+                              const element = this.state.selectedItem;
+                              return (
+                                this.state.currentTab.value === "members" &&
+                                element &&
+                                element._id &&
+                                this.props.curUser &&
+                                element._id !== this.props.curUser._id
+                              );
+                            },
+                            onClick: () =>
+                              this.handleFollow(followAction, follow)
+                          },
+                          {
+                            text: "Edit",
+                            icon: "edit",
+                            checkVisibility: () => {
+                              const element = this.state.selectedItem;
+                              return (
+                                element &&
+                                element._id &&
+                                element.owner &&
+                                this.props.curUser &&
+                                element.owner._id === this.props.curUser._id
+                              );
+                            },
+                            onClick: () => {
+                              this.editOrg();
+                            }
+                          },
+                          {
+                            text: "Remove",
+                            icon: "delete",
+                            checkVisibility: () => {
+                              const element = this.state.selectedItem;
+                              return (
+                                element &&
+                                element._id &&
+                                element.owner &&
+                                this.props.curUser &&
+                                element.owner._id === this.props.curUser._id
+                              );
+                            },
+                            onClick: () => {
+                              this.removeOrg(
+                                deleteOrg,
+                                this.state.selectedItem
+                              );
+                            }
+                          }
+                        ]}
+                        showAvatar
+                        index={this.state.selectedIndex}
+                        data={this.state.selectedItem}
+                        allowChangeImages={
+                          this.state.selectedItem &&
+                          this.state.selectedItem.owner &&
+                          this.props.curUser &&
+                          this.state.selectedItem.owner._id ===
+                            this.props.curUser._id
+                        }
+                        image={
+                          this.state.currentTab.value === "members"
+                            ? this.state.selectedItem &&
+                              this.state.selectedItem.profile &&
+                              this.state.selectedItem.profile.image
+                            : this.state.selectedItem &&
+                              this.state.selectedItem.image
+                        }
+                        backGroundImage={
+                          this.state.currentTab.value === "members"
+                            ? this.state.selectedItem &&
+                              this.state.selectedItem.profile &&
+                              this.state.selectedItem.profile.cover
+                            : this.state.selectedItem &&
+                              this.state.selectedItem.cover
+                        }
+                        onBackgroundChange={imageSrc =>
+                          this.handleBackgroundChange(updateOrgImages, imageSrc)
+                        }
+                        onUserPhotoChange={imageSrc =>
+                          this.handlePhotoChange(updateOrgImages, imageSrc)
+                        }
+                      >
+                        {this.state.currentTab.value === "corporations" &&
+                        this.state.selectedItem ? (
+                          <OrganizationPreviewBody
+                            organization={this.state.selectedItem}
+                          />
+                        ) : this.state.currentTab.value === "members" &&
+                        this.state.selectedItem ? (
+                          <UserPreviewBody
+                            user={this.state.selectedItem.profile}
+                          />
+                        ) : null}
+                      </Preview>
+                    );
+                  }}
+                </Mutation>
               )}
             </Mutation>
           )}
@@ -404,7 +469,8 @@ export default withRouter(
         options: props => ({
           variables: {
             limit: 10,
-            user: props.curUser && props.curUser._id && { _id: { ne: props.curUser._id } }
+            user: props.curUser &&
+              props.curUser._id && { _id: { ne: props.curUser._id } }
           },
           fetchPolicy: "cache-and-network"
         })
