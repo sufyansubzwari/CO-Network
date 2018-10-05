@@ -125,7 +125,14 @@ class MembersFilters extends React.Component {
             {({ loading, error, data }) => {
               if (loading) return <div />;
               if (error) return <div>Error</div>;
-              const elements = data.usersFieldCounts || LOOKING_FOR_DEFAULT
+              const elements =
+                data.usersFieldCounts && data.usersFieldCounts.length
+                  ? data.usersFieldCounts
+                  : LOOKING_FOR_DEFAULT.map(e => {
+                      e._id = e.label;
+                      e.number = 0;
+                      return e;
+                    });
               return (
                 <CheckBoxList
                   placeholderText={"Seeking"}
