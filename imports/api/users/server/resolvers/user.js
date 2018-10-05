@@ -3,6 +3,8 @@ import Tags from "../../../tags";
 import Places from "../../../places";
 import Achievements from "../../../archivements/server/service";
 import { normalizeTagsWithLevels } from "../../../aux-functions";
+import Followers from "../../../followers";
+
 const User = {};
 
 //------------------------------------------------------------------------------
@@ -64,6 +66,11 @@ User.profile = entity => {
       : null;
   }
   return entity.profile;
+};
+
+User.followerList = entity => {
+  const followers = Followers.service.getFollower({ entityId: entity._id, entity: entity.entity });
+  return (followers && followers.followers) || [];
 };
 
 export default User;
