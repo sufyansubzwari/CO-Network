@@ -43,7 +43,7 @@ const SLayout = styled(Layout)`
   border-left: none;
   border-right: none;
   padding: 0 10px;
-  
+
   @media (min-width: 62em) {
     padding: 0 60px;
   }
@@ -80,7 +80,7 @@ const NavLinks = styled(Layout)`
 const SPreviewContainer = styled(Container)`
   zoom: 100%;
   padding: 25px 10px;
- 
+
   @media (min-width: 62em) {
     zoom: 80%;
     padding: 25px 75px;
@@ -96,6 +96,15 @@ const SButtonIcon = styled.span`
   i {
     padding-right: 5px;
   }
+`;
+
+const SText = styled.span`
+    color: rgb(0,0,0,0.8);
+    font-family: "Roboto Mono";
+    margin-right: 25px;
+    i {
+      padding-right: 5px;
+    }
 `;
 
 const SNavLinkItem = styled.a`
@@ -150,19 +159,27 @@ export default class Preview extends React.Component {
               ? element.checkVisibility(element, index)
               : true;
           })
-          .map((element, index) => (
-            <Button
-              color={!element.primary ? "black" : null}
-              key={index}
-              secondary={!element.primary}
-              onClick={element.onClick}
-            >
-              <SButtonIcon>
-                {element.icon ? <MaterialIcon type={element.icon} /> : null}
-                {element.text}
-              </SButtonIcon>
-            </Button>
-          ))
+          .map(
+            (element, index) =>
+              element.type && element.type === "text" ? (
+                <SText>
+                  {element.icon ? <MaterialIcon type={element.icon} /> : null}
+                  {element.text}
+                </SText>
+              ) : (
+                <Button
+                  color={!element.primary ? "black" : null}
+                  key={index}
+                  secondary={!element.primary}
+                  onClick={element.onClick}
+                >
+                  <SButtonIcon>
+                    {element.icon ? <MaterialIcon type={element.icon} /> : null}
+                    {element.text}
+                  </SButtonIcon>
+                </Button>
+              )
+          )
       : [];
     return (
       <PreviewContainer
@@ -217,10 +234,7 @@ export default class Preview extends React.Component {
             {options}
           </NavLinks>
         </SLayout>
-        <SPreviewContainer
-          gridArea="content"
-          fullY
-        >
+        <SPreviewContainer gridArea="content" fullY>
           <Scrollbars
             universal
             autoHide
