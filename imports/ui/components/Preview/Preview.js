@@ -162,7 +162,7 @@ export default class Preview extends React.Component {
           .map(
             (element, index) =>
               element.type && element.type === "text" ? (
-                <SText>
+                <SText key={index}>
                   {element.icon ? <MaterialIcon type={element.icon} /> : null}
                   {element.text}
                 </SText>
