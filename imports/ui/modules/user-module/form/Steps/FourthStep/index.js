@@ -6,6 +6,7 @@ import {
 } from "btech-base-forms-component";
 import { Container, Layout } from "btech-layout";
 import SelectTag from "./../../../../../components/SelectTag/SelectTag";
+import IndustrySector from "../../../../../components/IndustrySector/IndustrySector";
 import { JOB_TYPE_DEFAULT } from "../../../../../constants";
 import { GetTags } from "../../../../../apollo-client/tag";
 import { Query } from "react-apollo";
@@ -138,33 +139,15 @@ class ThirdStep extends React.Component {
           />
           <div />
         </Layout>
-        <Query query={GetTags} variables={{ tags: { type: "INDUSTRY" } }}>
-          {({ loading, error, data }) => {
-            if (loading) return <div></div>;
-            if (error) return <div>Error</div>;
-            return (
-              <SelectTag
-                placeholderText={"Industry | Sector"}
-                tags={
-                  this.state.user.professional &&
-                  this.state.user.professional.industry &&
-                      this.state.user.professional.industry.length &&
-                      this.state.user.professional.industry.map( (tag) => ({
-                          ...tag,
-                          active: true
-                      }) )
-                }
-                selectOptions={data.tags}
-                getTags={obj => this.handleTags(obj)}
-                model={{ obj: [] }}
-                name={"obj"}
-                tagsCloseable={true}
-                tagsIcon={"star"}
-                tagsUseIcon={true}
-              />
-            );
-          }}
-        </Query>
+        <IndustrySector
+          tags={
+              this.state.user.professional &&
+              this.state.user.professional.industry &&
+              this.state.user.professional.industry.length &&
+              this.state.user.professional.industry
+          }
+          handleTags={obj => this.handleTags(obj)}
+        />
         <CheckBoxList
           placeholderText={"Job Type"}
           options={this.state.jobtype}

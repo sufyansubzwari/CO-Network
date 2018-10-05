@@ -16,6 +16,8 @@ import { Query } from "react-apollo";
 import { GetTags } from "../../../../../apollo-client/tag";
 import MLTagsInput from "../../../../../components/TagsInputAutoComplete/TagsInputAutoComplete";
 import SelectTag from "./../../../../../components/SelectTag/SelectTag";
+import IndustrySector from "../../../../../components/IndustrySector/IndustrySector";
+
 
 class ThirdStep extends React.Component {
   constructor(props) {
@@ -311,34 +313,15 @@ class ThirdStep extends React.Component {
           </Query>
         </Container>
         <Container>
-          <Query query={GetTags} variables={{ tags: { type: "INDUSTRY" } }}>
-            {({ loading, error, data }) => {
-              if (loading) return <div />;
-              if (error) return <div />;
-              return (
-                <SelectTag
-                  hideValue={true}
-                  placeholderText={"Industry | Sector"}
-                  tags={
-                    this.state.apply.professional &&
-                    this.state.apply.professional.industry &&
-                    this.state.apply.professional.industry.length &&
-                    this.state.apply.professional.industry.map(tag => ({
-                      ...tag,
-                      active: true
-                    }))
-                  }
-                  selectOptions={data.tags}
-                  getTags={obj => this.handleTags(obj)}
-                  model={{ obj: [] }}
-                  name={"obj"}
-                  tagsCloseable={true}
-                  tagsIcon={"star"}
-                  tagsUseIcon={true}
-                />
-              );
-            }}
-          </Query>
+          <IndustrySector
+            tags={
+              this.state.apply.professional &&
+              this.state.apply.professional.industry &&
+              this.state.apply.professional.industry.length &&
+              this.state.apply.professional.industry
+            }
+            handleTags={obj => this.handleTags(obj)}
+          />
         </Container>
       </Layout>
     );
