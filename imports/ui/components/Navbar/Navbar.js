@@ -131,8 +131,8 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
   return {
-    closeSideBar: () => dispatch(toggleSideBar(false, false)),
-    toggleSideBar: status => dispatch(toggleSideBar(status, true))
+    closeSideBar: () => dispatch(toggleSideBar(false, false, false)),
+    toggleSideBar: status => dispatch(toggleSideBar(status, true, false))
   };
 };
 

@@ -48,6 +48,11 @@ class ListLayout extends Component {
     this.props.toggleSideBar(!this.props.addSidebarIsOpen, true);
   }
 
+  onFilterToggle() {
+    this.props.setFilterEntity(this.props.entityType);
+    this.props.toggleSideBar(true);
+  }
+
   onSearch(value) {
     this.props.onSearchText && this.props.onSearchText(value);
   }
@@ -76,7 +81,7 @@ class ListLayout extends Component {
                         fontSize={"18px"}
                         color={"black"}
                         secondary
-                        onClick={() => this.props.toggleSideBar(true)}
+                        onClick={() => this.onFilterToggle()}
                       >
                         <MaterialIcon type={"sort"} />
                       </Button>

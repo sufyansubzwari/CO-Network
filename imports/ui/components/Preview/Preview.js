@@ -98,6 +98,15 @@ const SButtonIcon = styled.span`
   }
 `;
 
+const SText = styled.span`
+    color: rgb(0,0,0,0.8);
+    font-family: "Roboto Mono";
+    margin-right: 25px;
+    i {
+      padding-right: 5px;
+    }
+`;
+
 const SNavLinkItem = styled.a`
   cursor: pointer;
 `;
@@ -150,19 +159,27 @@ export default class Preview extends React.Component {
               ? element.checkVisibility(element, index)
               : true;
           })
-          .map((element, index) => (
-            <Button
-              color={!element.primary ? "black" : null}
-              key={index}
-              secondary={!element.primary}
-              onClick={element.onClick}
-            >
-              <SButtonIcon>
-                {element.icon ? <MaterialIcon type={element.icon} /> : null}
-                {element.text}
-              </SButtonIcon>
-            </Button>
-          ))
+          .map(
+            (element, index) =>
+              element.type && element.type === "text" ? (
+                <SText>
+                  {element.icon ? <MaterialIcon type={element.icon} /> : null}
+                  {element.text}
+                </SText>
+              ) : (
+                <Button
+                  color={!element.primary ? "black" : null}
+                  key={index}
+                  secondary={!element.primary}
+                  onClick={element.onClick}
+                >
+                  <SButtonIcon>
+                    {element.icon ? <MaterialIcon type={element.icon} /> : null}
+                    {element.text}
+                  </SButtonIcon>
+                </Button>
+              )
+          )
       : [];
     return (
       <PreviewContainer

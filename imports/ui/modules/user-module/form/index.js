@@ -53,6 +53,8 @@ class UserForm extends Component {
         onFinish={() =>
           this.props.onFinish && this.props.onFinish(this.state.user)
         }
+        editMode={this.props.curUser._id && this.props.curUser._id !== ""}
+        radioColor={'#000000'}
         onCancel={() => this.props.onCancel && this.props.onCancel()}
         showProgress
       >

@@ -25,7 +25,7 @@ const LogoutBtn = ({ client, btnType, disabled, onLogoutHook }) => (
     <span style={{ fontSize: 16 }}>
       <MaterialIcon type={"square-right"} rotate={180} />
     </span>{" "}
-    Log out
+    Log Out
   </Button>
 );
 

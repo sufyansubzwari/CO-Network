@@ -86,6 +86,8 @@ class EventForm extends Component {
         title={"Post a Event"}
         onFinish={() => this.props.onFinish && this.props.onFinish(event)}
         showProgress
+        editMode={this.state.event._id && this.state.event._id !== ""}
+        radioColor={'#000000'}
         onCancel={() => this.props.onCancel && this.props.onCancel()}
       >
         <WizardStepForm title={"Event Details"} isValid>

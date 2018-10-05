@@ -7,11 +7,11 @@ import {
 } from "btech-base-forms-component";
 import { Container, Layout } from "btech-layout";
 import SelectTag from "../../../../../components/SelectTag/SelectTag";
-import {JOB_TYPE, TAG_LEVEL} from "../../../../../constants";
+import { JOB_TYPE, TAG_LEVEL } from "../../../../../constants";
 import { GetTags } from "../../../../../apollo-client/tag";
 import { Query } from "react-apollo";
 import MLTagsInput from "../../../../../components/TagsInputAutoComplete/TagsInputAutoComplete";
-
+import IndustrySector from "../../../../../components/IndustrySector/IndustrySector";
 
 class FourthStep extends React.Component {
   constructor(props) {
@@ -78,7 +78,7 @@ class FourthStep extends React.Component {
 
   onAddTags(name, tag) {
     if (tag.label && tag.label.length > 0) {
-      let newTag = Object.assign({}, {tag: {...tag}});
+      let newTag = Object.assign({}, { tag: { ...tag } });
       let tags = this.state.organization.tech[name] || [];
       !newTag.name ? (newTag.name = newTag.label) : null;
       newTag.tag.type = "Languages";
@@ -98,46 +98,54 @@ class FourthStep extends React.Component {
   }
 
   tagsSuggested(tags, name) {
-      let sug = JSON.parse(JSON.stringify(tags));
-      if(name && this.state.organization.tech && this.state.organization.tech[name]){
-          return sug
-              .filter(tag =>
-                  !this.state.organization ||
-                  !this.state.organization.tech ||
-                  this.state.organization.tech[name].length === 0 ||
-                  this.state.organization.tech[name].findIndex(
-                      item => item.tag._id === tag._id
-                  ) === -1)
-              .sort((a, b) => b.used - a.used)
-              .map(tag => ({
-                  ...tag,
-                  active:
-                  this.state.organization &&
-                  this.state.organization.tech &&
-                  this.state.organization.tech[name].findIndex(
-                      item => item.tag._id === tag._id
-                  ) > -1
-              }))
-              .slice(0, 5);
-      }
+    let sug = JSON.parse(JSON.stringify(tags));
+    if (
+      name &&
+      this.state.organization.tech &&
+      this.state.organization.tech[name]
+    ) {
+      return sug
+        .filter(
+          tag =>
+            !this.state.organization ||
+            !this.state.organization.tech ||
+            this.state.organization.tech[name].length === 0 ||
+            this.state.organization.tech[name].findIndex(
+              item => item.tag._id === tag._id
+            ) === -1
+        )
+        .sort((a, b) => b.used - a.used)
+        .map(tag => ({
+          ...tag,
+          active:
+            this.state.organization &&
+            this.state.organization.tech &&
+            this.state.organization.tech[name].findIndex(
+              item => item.tag._id === tag._id
+            ) > -1
+        }))
+        .slice(0, 5);
+    }
   }
 
   handleCategoryChange(index, value, color, icon, name) {
-      if (
-          value &&
-          this.state.organization.tech &&
-          this.state.organization.tech[name] &&
-          this.state.organization.tech[name][index]
-      ) {
-          let newTag = {
-              ...this.state.organization.tech[name][index],
-              levelColor: color,
-              icon: icon,
-              level: value
-          };
-          this.state.organization.tech[name][index] = newTag;
-          this.setState({ organization: this.state.organization }, () => this.notifyParent());
-      }
+    if (
+      value &&
+      this.state.organization.tech &&
+      this.state.organization.tech[name] &&
+      this.state.organization.tech[name][index]
+    ) {
+      let newTag = {
+        ...this.state.organization.tech[name][index],
+        levelColor: color,
+        icon: icon,
+        level: value
+      };
+      this.state.organization.tech[name][index] = newTag;
+      this.setState({ organization: this.state.organization }, () =>
+        this.notifyParent()
+      );
+    }
   }
 
   render() {
@@ -146,87 +154,84 @@ class FourthStep extends React.Component {
         <Container>
           <Query query={GetTags} variables={{ tags: { type: "Languages" } }}>
             {({ loading, error, data }) => {
-              if (loading) return <div/>;
-              if (error) return <div/>;
+              if (loading) return <div />;
+              if (error) return <div />;
               return (
-                  <Container mt={'25px'}>
-                      <MLTagsInput
-                          placeholderText={"Tech Stack: Languages, Libraries, Skills Tags"}
-                          getAddedOptions={this.onAddTags.bind(
-                              this,
-                              "stack"
-                          )}
-                          getNewAddedOptions={this.onAddTags.bind(
-                              this,
-                              "stack"
-                          )}
-                          options={data.tags}
-                          model={{ others: [] }}
-                          name={"others"}
-                          useIcon={true}
-                          tags={
-                              this.state.organization.tech && this.state.organization.tech.stack
-                                  ? this.state.organization.tech.stack.map(item => ({
-                                      active: true,
-                                      useIcon: true,
-                                      levelColor: item.levelColor || "",
-                                      icon: item.icon || "",
-                                      level: item.level || "",
-                                      ...item.tag,
-                                      showOptions: !item.levelColor
-                                  }))
-                                  : []
-                          }
-                          levelOptions={TAG_LEVEL}
-                          onCategoryChange={(index, value, color, icon) =>
-                              this.handleCategoryChange(
-                                  index,
-                                  value,
-                                  color,
-                                  icon,
-                                  "stack"
-                              )
-                          }
-                          onCloseTags={(e, tag, index) =>
-                              this.onCloseTags(e, tag, index, "stack")
-                          }
-                      />
-                      <Container mt={"10px"}>
-                          <TagList
-                              tags={this.tagsSuggested(data.tags, "stack")}
-                              onSelect={(event, tag, index) => {
-                                  if (!tag.active) {
-                                      delete tag.active;
-                                      this.onAddTags("stack", tag);
-                                  } else {
-                                      const pos = this.state.organization.tech.stack.findIndex(
-                                          item => item.tag._id === tag._id
-                                      );
-                                      this.onCloseTags(event, tag, pos, "stack");
-                                  }
-                              }}
-                          />
-                      </Container>
+                <Container mt={"25px"}>
+                  <MLTagsInput
+                    placeholderText={
+                      "Tech Stack: Languages, Libraries, Skills Tags"
+                    }
+                    getAddedOptions={this.onAddTags.bind(this, "stack")}
+                    getNewAddedOptions={this.onAddTags.bind(this, "stack")}
+                    options={data.tags}
+                    model={{ others: [] }}
+                    name={"others"}
+                    useIcon={true}
+                    tags={
+                      this.state.organization.tech &&
+                      this.state.organization.tech.stack
+                        ? this.state.organization.tech.stack.map(item => ({
+                            active: true,
+                            useIcon: true,
+                            levelColor: item.levelColor || "",
+                            icon: item.icon || "",
+                            level: item.level || "",
+                            ...item.tag,
+                            showOptions: !item.levelColor
+                          }))
+                        : []
+                    }
+                    levelOptions={TAG_LEVEL}
+                    onCategoryChange={(index, value, color, icon) =>
+                      this.handleCategoryChange(
+                        index,
+                        value,
+                        color,
+                        icon,
+                        "stack"
+                      )
+                    }
+                    onCloseTags={(e, tag, index) =>
+                      this.onCloseTags(e, tag, index, "stack")
+                    }
+                  />
+                  <Container mt={"10px"}>
+                    <TagList
+                      tags={this.tagsSuggested(data.tags, "stack")}
+                      onSelect={(event, tag, index) => {
+                        if (!tag.active) {
+                          delete tag.active;
+                          this.onAddTags("stack", tag);
+                        } else {
+                          const pos = this.state.organization.tech.stack.findIndex(
+                            item => item.tag._id === tag._id
+                          );
+                          this.onCloseTags(event, tag, pos, "stack");
+                        }
+                      }}
+                    />
                   </Container>
+                </Container>
               );
             }}
           </Query>
           {/*<Container mt={"10px"}>*/}
-            {/*<TagList*/}
-              {/*tags={*/}
-                {/*this.state.organization.tech.stack &&*/}
-                {/*this.state.organization.tech.stack.length > 0*/}
-                  {/*? this.state.organization.tech.stack.map(item => ({*/}
-                      {/*active: true,*/}
-                      {/*...item*/}
-                    {/*}))*/}
-                  {/*: []*/}
-              {/*}*/}
-              {/*closeable={true}*/}
-              {/*onClose={(e, tag, index) =>*/}
-                {/*this.onCloseTags(e, tag, index, "stack")*/}
-              {/*}*/}
-            {/*/>*/}
+          {/*<TagList*/}
+          {/*tags={*/}
+          {/*this.state.organization.tech.stack &&*/}
+          {/*this.state.organization.tech.stack.length > 0*/}
+          {/*? this.state.organization.tech.stack.map(item => ({*/}
+          {/*active: true,*/}
+          {/*...item*/}
+          {/*}))*/}
+          {/*: []*/}
+          {/*}*/}
+          {/*closeable={true}*/}
+          {/*onClose={(e, tag, index) =>*/}
+          {/*this.onCloseTags(e, tag, index, "stack")*/}
+          {/*}*/}
+          {/*/>*/}
           {/*</Container>*/}
         </Container>
         <Layout templateColumns={2}>
@@ -257,32 +262,14 @@ class FourthStep extends React.Component {
           />
           <div />
         </Layout>
-        <Query query={GetTags} variables={{ tags: { type: "INDUSTRY" } }}>
-          {({ loading, error, data }) => {
-              if (loading) return <div/>;
-              if (error) return <div/>;
-            return (
-              <SelectTag
-                placeholderText={"Industry | Sector"}
-                tags={
-                  this.state.organization.tech &&
-                  this.state.organization.tech.industry &&
-                  this.state.organization.tech.industry.map(element => ({
-                    name: element.name,
-                    active: true,
-                    userAdd: true,
-                    closable: true
-                  }))
-                }
-                selectOptions={data.tags}
-                getTags={obj => this.handleIndustry(obj)}
-                model={{ obj: [] }}
-                name={"obj"}
-                tagsCloseable
-              />
-            );
-          }}
-        </Query>
+        <IndustrySector
+          tags={
+            this.state.organization.tech &&
+            this.state.organization.tech.industry &&
+            this.state.organization.tech.industry
+          }
+          handleTags={obj => this.handleIndustry(obj)}
+        />
         <CheckBoxList
           placeholderText={"Job Type"}
           options={this.state.jobType}
