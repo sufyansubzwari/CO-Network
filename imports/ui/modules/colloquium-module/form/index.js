@@ -46,7 +46,7 @@ class ColloquiumForm extends Component {
       let colloquium = this.props.location.state.colloquium;
       this.setState(
         { colloquium: colloquium },
-        () => this.props.handleChange && this.props.handleChange(colloquium)
+        () => this.props.handleChange && this.props.handleChange(colloquium, true)
       );
     }
   }
@@ -59,6 +59,7 @@ class ColloquiumForm extends Component {
           this.props.onFinish && this.props.onFinish(this.state.colloquium)
         }
         editMode={this.state.colloquium._id && this.state.colloquium._id !== ""}
+        edited={this.props.formChange}
         radioColor={'#000000'}
         onCancel={() => this.props.onCancel && this.props.onCancel()}
         showProgress

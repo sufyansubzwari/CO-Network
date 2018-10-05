@@ -37,7 +37,8 @@ class PostJob extends Component {
           min: 100,
           max: 1000
         }
-      }
+      },
+    formChange: false
     };
   }
 
@@ -59,6 +60,16 @@ class PostJob extends Component {
   }
 
   onPostAction(createJob, query) {
+      if(this.state.formChange){
+          this.setState({
+              formChange: false
+          })
+      }
+      else{
+          this.setState({
+              redirect: true
+          })
+      }
     let queryJob = Object.assign({}, query);
     //todo: remove when location improvement
     queryJob.place &&
@@ -83,21 +94,20 @@ class PostJob extends Component {
           key={"leftSide"}
           mutation={CreateJob}
           onCompleted={() =>
-            this.props.history.push("/jobs", { postJob: true })
+              this.state.redirect && this.props.history.push("/jobs", { postJob: true })
           }
           onError={error => console.log("Error: ", error)}
         >
           {(createJob, { jobCreated }) => (
             <JobForm
-              onFinish={data => {
-                this.onPostAction(createJob, data);
-              }}
+              onFinish={data => this.onPostAction(createJob,data)}
               onCancel={() => this.onCancel()}
               {...this.props}
-              handleJobChange={job =>
-                this.setState({ job: { ...this.state.job, ...job } })
+              handleJobChange={ (job,loading) =>
+                this.setState({ job: { ...this.state.job, ...job }, formChange: !loading && true })
               }
               job={this.state.job}
+              formChange={this.state.formChange}
             />
           )}
         </Mutation>
