@@ -34,22 +34,22 @@ class Sponsor extends React.Component {
     };
   }
 
-    onAdd(props,obj){
+  onAdd(props, obj) {
+    this.setState({
+      userValid: true
+    });
+    props.onAdd(obj.label, "name");
+    props.onAdd(obj.email, "email");
+  }
 
-        this.setState({
-            userValid: true
-        })
-        props.onAdd(obj.label, "name");
-        props.onAdd(obj.email, "email");
-    }
-
-    onAddNew(props,obj){
-        this.setState({
-            userValid: false
-        })
-        props.onAdd(obj.label, "name");
-        props.onAdd(obj.email, "email");
-    }
+  onAddNew(props, obj) {
+    if (!!obj.label && obj.label !== "")
+      this.setState({
+        userValid: false
+      });
+    props.onAdd(obj.label, "name");
+    props.onAdd(obj.email, "email");
+  }
 
   render() {
     return (
@@ -61,34 +61,41 @@ class Sponsor extends React.Component {
             this.props.handleSave();
           }}
         >
-          <Layout templateColumns={2} colGap={"20px"}>
-              <Container>
-                  <InputAutoComplete
-                      placeholderText={"Name"}
-                      name={"name"}
-                      model={this.props.model}
-                      options={this.props.users.map(user => ({
-                          label: `${user.profile.name} ${user.profile.lastName}`,
-                          value: user.profile.name,
-                          email: user.profile.email
-                      }))}
-                      getAddedOptions={obj => this.onAdd(this.props, obj)}
-                      getNewAddedOptions={obj => this.onAddNew(this.props, obj)}
-                      required={true}
-                  />
-                  <Container>
-                      {this.state.userValid ? null : <SErrorMessage>The user was not found, please fill the email field to notify him</SErrorMessage>}
-                  </Container>
+          <Container>
+            <Layout templateColumns={2} colGap={"20px"}>
+              <Container ml={"1px"}>
+                <InputAutoComplete
+                  placeholderText={"Name"}
+                  name={"name"}
+                  model={this.props.model}
+                  options={this.props.users.map(user => ({
+                    label: `${user.profile.name} ${user.profile.lastName}`,
+                    value: user.profile.name,
+                    email: user.profile.email
+                  }))}
+                  getAddedOptions={obj => this.onAdd(this.props, obj)}
+                  getNewAddedOptions={obj => this.onAddNew(this.props, obj)}
+                  required={true}
+                />
               </Container>
-            <Input
-              placeholderText={"Email"}
-              name={"email"}
-              validate={EMAIL_REGEX}
-              required={true}
-              model={this.props.model}
-              getValue={(model, name, value) => this.props.onAdd(value, name)}
-            />
-          </Layout>
+              <Input
+                placeholderText={"Email"}
+                name={"email"}
+                validate={EMAIL_REGEX}
+                required={!this.state.userValid}
+                model={this.props.model}
+                getValue={(model, name, value) => this.props.onAdd(value, name)}
+              />
+            </Layout>
+            <Container mt={"5px"}>
+              {this.state.userValid ? null : (
+                <SErrorMessage>
+                  The user was not found, please fill the email field to notify
+                  him
+                </SErrorMessage>
+              )}
+            </Container>
+          </Container>
           <TextArea
             placeholderText={"Sponsorship Details"}
             name={"details"}
