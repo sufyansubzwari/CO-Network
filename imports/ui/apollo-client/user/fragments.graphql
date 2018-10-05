@@ -1,7 +1,7 @@
 fragment userFragment on User {
   _id
   services
-
+  createdAt
   profile {
       isSignUp
       name
@@ -24,6 +24,8 @@ fragment userFragment on User {
       website
       phone
   }
+  views
+  entity
   subscriptions {
     endpoint
     keys {

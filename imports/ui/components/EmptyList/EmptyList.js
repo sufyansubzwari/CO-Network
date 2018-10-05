@@ -6,10 +6,19 @@ import { toggleSideBar } from "../../actions/SideBarActions";
 import { connect } from "react-redux";
 
 const SMainContainer = styled.div`
-  height: 100%;
+  height: 75%;
   display: flex;
   align-items: center;
   justify-content: center;
+  zoom: 100%;
+  
+  @media (min-width: 62em) {
+    zoom: 80%;
+  }
+
+  @media (min-width: 86em) {
+    zoom: 100%;
+  }
 `;
 
 const STitle = styled(Container)`

@@ -14,7 +14,17 @@ const SNav = styled.nav`
 const SLink = styled.a`
   padding-right: 20px;
   cursor: pointer;
-  :hover{
+  zoom: 100%;
+
+  @media (min-width: 62em) {
+    zoom: 80%;
+  }
+
+  @media (min-width: 86em) {
+    zoom: 100%;
+  }
+
+  :hover {
     color: rgba(0, 0, 0) !important;
   }
 `;
@@ -24,12 +34,15 @@ class NavMenu extends Component {
     super(props);
     this.state = {
       options: props.options,
-      active: props.active || props.options[0],
+      active: props.active || props.options[0]
     };
   }
 
   handleClick(link) {
-    this.setState({active: link}, () => this.props.getActive && this.props.getActive(link));
+    this.setState(
+      { active: link },
+      () => this.props.getActive && this.props.getActive(link)
+    );
   }
 
   render() {
@@ -43,7 +56,12 @@ class NavMenu extends Component {
           {this.state.options.map((link, key) => (
             <SLink
               key={key}
-              style={{color: link.value === this.state.active.value ? 'rgba(0, 0, 0)' : 'rgba(0, 0, 0, 0.5)'}}
+              style={{
+                color:
+                  link.value === this.state.active.value
+                    ? "rgba(0, 0, 0)"
+                    : "rgba(0, 0, 0, 0.5)"
+              }}
               active={link.value === this.state.active.value}
               data-rol="nav-menu"
               onClick={() => this.handleClick(link)}
@@ -63,7 +81,7 @@ ItemsList.propTypes = {
   getActive: PropTypes.func,
   fontFamily: PropTypes.string,
   fontSize: PropTypes.string,
-  lineHeight: PropTypes.string,
+  lineHeight: PropTypes.string
 };
 
 export default NavMenu;

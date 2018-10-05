@@ -57,6 +57,19 @@ const NullImageContainer = Styled.div`
     `};
 `;
 
+const SCardContainer = Styled(Container)`
+    zoom: 100%;
+    cursor: pointer;
+    
+    @media (min-width: 62em) {
+      zoom: 80%;
+    }
+  
+    @media (min-width: 86em) {
+      zoom: 100%;
+    }
+`;
+
 /**
  * @module Cards
  * @category MLSociety Card Base Component
@@ -211,7 +224,7 @@ class CardItem extends Component {
 
   render() {
     return (
-      <Container style={{ cursor: "pointer" }}>
+      <SCardContainer>
         <SMLCard
           background={"white"}
           onSelect={() =>
@@ -224,7 +237,7 @@ class CardItem extends Component {
           renderRightSide={this.getRightSide.bind(this)}
           renderLeftSide={this.renderLeftSide.bind(this)}
         />
-      </Container>
+      </SCardContainer>
     );
   }
 }

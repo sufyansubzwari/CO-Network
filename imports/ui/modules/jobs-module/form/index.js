@@ -72,6 +72,8 @@ class JobForm extends React.Component {
           this.props.onFinish && this.props.onFinish(this.state.job)
         }
         showProgress
+        editMode={this.state.job._id && this.state.job._id !== ""}
+        radioColor={'#000000'}
         onCancel={() => this.props.onCancel && this.props.onCancel()}
       >
         <WizardStepForm title={"Job Details"} isValid>

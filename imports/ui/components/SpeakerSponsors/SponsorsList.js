@@ -25,6 +25,24 @@ const SItemContainer = styled(Container)`
   margin-top: 5px;
 `;
 
+const SItem = styled(Layout)`
+  
+  .buttons {
+    opacity: 1;
+    transition: all 200ms ease-out; 
+  }
+  
+  :hover {
+      .buttons { opacity: 1;}
+  }
+    
+  @media (min-width: 62em){
+    .buttons {
+      opacity: 0;
+    }
+  }   
+`;
+
 class SponsorsList extends React.Component {
   constructor(props) {
     super(props);
@@ -112,58 +130,11 @@ class SponsorsList extends React.Component {
       <Container style={{ display: elements.length ? "block" : "none" }}>
         {elements.length ? (
           <Layout
-            customTemplateColumns={"1fr auto"}
+            customTemplateColumns={"1fr"}
             style={{ paddingRight: "10px" }}
+            mb={'5px'}
           >
             <SLabel>{this.props.type}</SLabel>
-            {!this.state.editingChild ? (
-              <Layout customTemplateColumns={"auto auto auto"} colGap={"5px"}>
-                <Button
-                  type={"button"}
-                  secondary
-                  height={"auto"}
-                  color={"black"}
-                  opacity={"0.5"}
-                  border={"none"}
-                  hoverBackground={"transparent"}
-                  hoverColor={"initial"}
-                  onClick={this.handleAdd}
-                >
-                  <MaterialIcon type={"plus-circle"} />
-                </Button>
-                <Button
-                  type={"button"}
-                  secondary
-                  height={"auto"}
-                  color={"black"}
-                  opacity={"0.5"}
-                  border={"none"}
-                  hoverBackground={"transparent"}
-                  hoverColor={"initial"}
-                  onClick={() =>
-                    this.setState({
-                      isEditable: !this.state.isEditable,
-                      editingChild: false
-                    })
-                  }
-                >
-                  <MaterialIcon type={"edit"} />
-                </Button>
-                <Button
-                  type={"button"}
-                  secondary
-                  height={"auto"}
-                  color={"black"}
-                  opacity={"0.5"}
-                  border={"none"}
-                  hoverBackground={"transparent"}
-                  hoverColor={"initial"}
-                  onClick={this.handleDelete}
-                >
-                  <MaterialIcon type={"delete"} />
-                </Button>
-              </Layout>
-            ) : null}
           </Layout>
         ) : null}
         <SItemContainer background={this.props.background}>
@@ -188,12 +159,12 @@ class SponsorsList extends React.Component {
                       />
                     ) : null
                   ) : (
-                    <Layout padding={"10px"} customTemplateColumns={"1fr auto"}>
+                    <SItem padding={"10px"} customTemplateColumns={"1fr auto"}>
                       <Container>{item.name}</Container>
-                      {this.state.isEditable ? (
                         <Layout
                           customTemplateColumns={"auto auto"}
                           colGap={"5px"}
+                          className={'buttons'}
                         >
                           <Button
                             type={"button"}
@@ -222,8 +193,7 @@ class SponsorsList extends React.Component {
                             <MaterialIcon type={"delete"} />
                           </Button>
                         </Layout>
-                      ) : null}
-                    </Layout>
+                    </SItem>
                   )
                 ) : null
             )}
