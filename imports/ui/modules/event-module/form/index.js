@@ -52,7 +52,7 @@ class EventForm extends Component {
       this.setState(
         { event: event },
         () =>
-          this.props.handleChangeEvent && this.props.handleChangeEvent(event)
+          this.props.handleChangeEvent && this.props.handleChangeEvent(event, true)
       );
     }
   }
@@ -65,11 +65,10 @@ class EventForm extends Component {
     }
   }
 
-  handleChange(event, step) {
+  handleChange(event) {
     this.setState(
       {
         event: event,
-          edited: step
       },
       () => this.props.handleChangeEvent && this.props.handleChangeEvent(event)
     );
@@ -85,10 +84,10 @@ class EventForm extends Component {
     return (
       <MlWizardForm
         title={"Post a Event"}
-        onFinish={(lastPage) => this.props.onFinish && this.props.onFinish(event,lastPage)}
+        onFinish={() => this.props.onFinish && this.props.onFinish(event)}
         showProgress
         editMode={this.state.event._id && this.state.event._id !== ""}
-        edited={this.state.edited}
+        edited={this.props.formChange}
         radioColor={'#000000'}
         onCancel={() => this.props.onCancel && this.props.onCancel()}
       >

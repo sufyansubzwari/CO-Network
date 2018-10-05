@@ -28,7 +28,6 @@ class JobForm extends React.Component {
           max: 1000
         }
       },
-      edited: -1
     };
     this.handleChange = this.handleChange.bind(this);
   }
@@ -51,17 +50,16 @@ class JobForm extends React.Component {
         { job: this.props.location.state.job },
         () =>
           this.props.handleJobChange &&
-          this.props.handleJobChange(this.props.location.state.job)
+          this.props.handleJobChange(this.props.location.state.job, true)
       );
     }
   }
 
-  handleChange(job, step) {
+  handleChange(job) {
 
     this.setState(
       {
-        job: job,
-        edited: step
+        job: job
       },
       () => this.props.handleJobChange && this.props.handleJobChange(job)
     );
@@ -71,11 +69,11 @@ class JobForm extends React.Component {
     return (
       <MlWizardForm
         title={"Post a Job"}
-        onFinish={lastPage => this.props.onFinish && this.props.onFinish(this.state.job, lastPage)
+        onFinish={() => this.props.onFinish && this.props.onFinish(this.state.job)
         }
         showProgress
         editMode={this.state.job._id && this.state.job._id !== ""}
-        edited={this.state.edited}
+        edited={this.props.formChange}
         radioColor={'#000000'}
         onCancel={() => this.props.onCancel && this.props.onCancel()}
       >

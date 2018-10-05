@@ -27,7 +27,8 @@ class PostColloquiums extends Component {
         },
         competences: [],
         tags: []
-      }
+      },
+        formChange: false
     };
   }
 
@@ -48,6 +49,18 @@ class PostColloquiums extends Component {
   }
 
   onPostAction(createColloquium, query) {
+
+      if(this.state.formChange){
+          this.setState({
+              formChange: false
+          })
+      }
+      else{
+          this.setState({
+              redirect: true
+          })
+      }
+
     let queryColloquium = Object.assign({}, query);
     //todo: remove when location improvement
     queryColloquium.place &&
@@ -72,7 +85,7 @@ class PostColloquiums extends Component {
           key={"leftSide"}
           mutation={CreateColloquium}
           onCompleted={() =>
-            this.props.history.push("/colloquiums", { postColloquium: true })
+              this.state.redirect && this.props.history.push("/colloquiums", { postColloquium: true })
           }
           onError={error => console.log("Error: ", error)}
         >
@@ -84,12 +97,14 @@ class PostColloquiums extends Component {
               }}
               onCancel={() => this.onCancel()}
               {...this.props}
-              handleChange={colloquium =>
+              handleChange={(colloquium, loading) =>
                 this.setState({
-                  colloquium: { ...this.state.colloquium, ...colloquium }
+                  colloquium: { ...this.state.colloquium, ...colloquium },
+                    formChange: !loading && true
                 })
               }
               colloquium={this.state.colloquium}
+              formChange={this.state.formChange}
             />
           )}
         </Mutation>

@@ -64,11 +64,11 @@ class PostOrganization extends Component {
         }
         //plan: 0
       },
-        lastPage: false
+
+    formChange: false
     };
     this.handleBackgroundChange = this.handleBackgroundChange.bind(this);
     this.handleUserPhotoChange = this.handleUserPhotoChange.bind(this);
-    this.onPostAction = this.onPostAction.bind(this)
   }
 
   componentDidMount() {
@@ -99,12 +99,18 @@ class PostOrganization extends Component {
     this.props.history.push(`/innovators`);
   }
 
-  onPostAction(createOrg, query, lastPage) {
+  onPostAction(createOrg, query) {
 
-      this.setState({
-          lastPage: lastPage
-      });
-
+    if(this.state.formChange){
+        this.setState({
+            formChange: false
+        })
+    }
+    else{
+        this.setState({
+            redirect: true
+        })
+    }
     let orgQuery = Object.assign({}, query);
     //todo: remove when location improvement
     orgQuery.place &&
@@ -129,23 +135,25 @@ class PostOrganization extends Component {
           key={"leftSide"}
           mutation={CreateOrg}
           onCompleted={() =>
-            this.state.lastPage && this.props.history.push("/innovators", { postInnovator: true })
+            this.state.redirect && this.props.history.push("/innovators", { postInnovator: true })
           }
           onError={error => console.log("Error: ", error)}
         >
           {(createOrg, { orgCreated }) => (
             <OrganizationForm
-              onFinish={(data,lastPage) => this.onPostAction(createOrg, data,lastPage)}
+              onFinish={data => this.onPostAction(createOrg, data)}
               onCancel={() => this.onCancel()}
-              handleOrgChange={organization =>
+              handleOrgChange={(organization, loading) =>
                 this.setState({
                   organization: {
                     ...this.state.organization,
                     ...organization
-                  }
+                  },
+                  formChange: !loading && true
                 })
               }
               organization={this.state.organization}
+              formChange={this.state.formChange}
               {...this.props}
             />
           )}
