@@ -9,6 +9,7 @@ import EventsFilters from "../../modules/event-module/filters";
 import JobsFilters from "../../modules/jobs-module/filters";
 import ColloquiumFilters from "../../modules/colloquium-module/filters";
 import OrganizationFilters from "../../modules/organization-module/filters";
+import ProfileSideBar from "../../modules/user-module/profileSidebar/profileSidebar";
 import posed from "react-pose";
 
 const SSideBarContainerStyed = styled(Container)`
@@ -59,8 +60,17 @@ class SideBar extends Component {
             this.props.toggleSideBar && this.props.toggleSideBar(false)
           }
         />
-      );
-    } else {
+       );
+    }else if(this.props.isProfileAction){
+        return (
+            <ProfileSideBar
+                curUser={this.props.curUser}
+                onClose={() =>
+                    this.props.toggleSideBar && this.props.toggleSideBar(false)
+                }
+            />);
+    }
+    else {
       const typeEntity = this.props.filterEntityType || "events";
       switch (typeEntity.toLowerCase()) {
         case "events":
@@ -127,7 +137,8 @@ const mapStateToProps = state => {
   const { sideBarStatus, sideBarEntity } = state;
   return {
     isAddAction: sideBarStatus ? sideBarStatus.isAdd : false,
-    filterEntityType: sideBarEntity ? sideBarEntity.entityType : null
+    filterEntityType: sideBarEntity ? sideBarEntity.entityType : null,
+    isProfileAction: sideBarStatus ? sideBarStatus.profile : false
   };
 };
 

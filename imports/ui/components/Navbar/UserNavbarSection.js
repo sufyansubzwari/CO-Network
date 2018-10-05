@@ -8,7 +8,7 @@ import SideBarLink from "./SideBarLink";
 import styled, { ThemeProvider } from "styled-components";
 import { Link } from "react-router-dom";
 import { connect } from "react-redux";
-import { toggleSideBar } from "../../actions/SideBarActions";
+import {cleanFilters, setFilterEntity, setFilters, toggleSideBar} from "../../actions/SideBarActions";
 import LogoutBtn from "../smart/auth/logout-btn";
 import NavbarUserButton from "../NavbarUserButton/NavbarUserButton";
 import services from "../LoginModal/service.constant";
@@ -103,15 +103,21 @@ class UserNavbarSection extends React.Component {
     this.loginSize = { width: 28, height: 33 };
     this.loginServices = services.filter(element => element.visible);
     this.isOpenCreateSidebar = false;
+
+    this.state = {}
   }
 
   onAddToggle() {
-    this.props.toggleSideBar(!this.props.addSidebarIsOpen);
+    this.props.toggleSideBar(!this.props.addSidebarIsOpen, true);
     this.props.callback && this.props.callback(false);
   }
 
   processAuthRequest(service) {
     Authorization.login(service);
+  }
+
+  onUserToggle(){
+      this.props.toggleSideBar(!this.props.profileSideBarIsOpen,false, !this.props.profileSideBarIsOpen);
   }
 
   render() {
@@ -190,25 +196,25 @@ class UserNavbarSection extends React.Component {
                   />
                 </RenderCondition>
                 <RenderCondition>
-                  <Link to={avatarLink}>
+                  <Container onClick={() => this.onUserToggle()}>
                     <NavbarUserButton size={this.size} />
-                  </Link>
+                  </Container>
                 </RenderCondition>
               </Group>
             </GroupContainer>
-            <Layout
-              rowGap="5px"
-              padding="0 20px 20px;"
-              className={"center terms"}
-            >
-              <ThemeProvider theme={theme}>
-                <Layout rowGap="10px">
-                  {!!isAuthenticated ? <LogoutBtn /> : null}
-                  <SideBarLink href={this.policy}> Terms Policies </SideBarLink>
-                  <SideBarLink> CONetwork © 2018 </SideBarLink>
-                </Layout>
-              </ThemeProvider>
-            </Layout>
+            {/*<Layout*/}
+              {/*rowGap="5px"*/}
+              {/*padding="0 20px 20px;"*/}
+              {/*className={"center terms"}*/}
+            {/*>*/}
+              {/*<ThemeProvider theme={theme}>*/}
+                {/*<Layout rowGap="10px">*/}
+                  {/*{!!isAuthenticated ? <LogoutBtn /> : null}*/}
+                  {/*<SideBarLink href={this.policy}> Terms Policies </SideBarLink>*/}
+                  {/*<SideBarLink> CONetwork © 2018 </SideBarLink>*/}
+                {/*</Layout>*/}
+              {/*</ThemeProvider>*/}
+            {/*</Layout>*/}
           </Layout>
         </Container>
       </Layout>
@@ -219,13 +225,15 @@ class UserNavbarSection extends React.Component {
 const mapStateToProps = state => {
   const { sideBarStatus } = state;
   return {
-    addSidebarIsOpen: sideBarStatus.status && sideBarStatus.isAdd
+    addSidebarIsOpen: sideBarStatus.status && sideBarStatus.isAdd,
+    profileSideBarIsOpen: sideBarStatus.status && sideBarStatus.profile
   };
 };
 
 const mapDispatchToProps = dispatch => {
   return {
-    toggleSideBar: status => dispatch(toggleSideBar(status, true))
+    toggleSideBar: (status, isAdd, profile) => dispatch(toggleSideBar(status, isAdd, profile)),
+    setFilterEntity: entityType => dispatch(setFilterEntity(entityType))
   };
 };
 
