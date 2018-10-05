@@ -62,6 +62,7 @@ class OrganizationForm extends React.Component {
           this.props.onFinish && this.props.onFinish(this.state.organization)
         }
         showProgress
+        editMode={this.state.organization._id && this.state.organization._id !== ""}
         radioColor={'#000000'}
         onCancel={() => this.props.onCancel && this.props.onCancel()}
       >
