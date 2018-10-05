@@ -100,8 +100,8 @@ const SButtonIcon = styled.span`
 
 const SText = styled.span`
     color: rgb(0,0,0,0.8);
-    font-family: "Roboto Mono";
     margin-right: 25px;
+    
     i {
       padding-right: 5px;
     }
