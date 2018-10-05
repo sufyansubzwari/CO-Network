@@ -169,7 +169,8 @@ const bigtag = {
 const lists = {
   scrollSeparation: 15,
   scrollBottomSeparation: 15,
-  itemSeparation: 15
+  itemSeparation: 15,
+  mobileItemSeparation: 30
 };
 
 const texts = {

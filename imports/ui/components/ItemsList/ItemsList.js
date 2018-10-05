@@ -7,7 +7,7 @@ import PropTypes from "prop-types";
 import { Layout, Container } from "btech-layout";
 import styled from "styled-components";
 import { LOADINGDATA } from "./mockData";
-import NavMenu from './components/navMenu';
+import NavMenu from "./components/navMenu";
 
 const SListTitle = styled(Container)`
   font-family: ${props =>
@@ -15,6 +15,15 @@ const SListTitle = styled(Container)`
   font-size: ${props => props.size || "18px"};
   line-height: ${props => props.lineHeight || "26px"};
   margin-bottom: 5px;
+  zoom: 100%;
+
+  @media (min-width: 62em) {
+    zoom: 80%;
+  }
+
+  @media (min-width: 86em) {
+    zoom: 100%;
+  }
 `;
 
 /**
@@ -74,18 +83,24 @@ class ItemsList extends Component {
   render() {
     return (
       <Container fullY>
-        {this.props.navList ?
-          <NavMenu options={this.props.navList} getActive={this.props.getNavActive}/>
-        :
+        {this.props.navList ? (
+          <NavMenu
+            options={this.props.navList}
+            getActive={this.props.getNavActive}
+          />
+        ) : (
           <SListTitle>{this.props.title}</SListTitle>
-        }
+        )}
         {this.props.loading || (this.props.data && this.props.data.length) ? (
           <List
             renderItem={
               this.props.renderItem ? this.props.renderItem : this.renderItem
             }
             onFetchData={() => this.fetchMoreItems()}
-            itemSeparation={theme.lists.itemSeparation}
+            itemSeparation={{
+              xs: theme.lists.mobileItemSeparation,
+              md: theme.lists.itemSeparation
+            }}
             scrollSeparation={theme.lists.scrollSeparation}
             data={this.props.loading ? this.state.mockData : this.props.data}
           />
