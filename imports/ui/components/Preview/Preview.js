@@ -99,12 +99,12 @@ const SButtonIcon = styled.span`
 `;
 
 const SText = styled.span`
-    color: rgb(0,0,0,0.8);
-    margin-right: 25px;
-    
-    i {
-      padding-right: 5px;
-    }
+  color: rgb(0, 0, 0, 0.8);
+  margin-right: 25px;
+
+  i {
+    padding-right: 5px;
+  }
 `;
 
 const SNavLinkItem = styled.a`
