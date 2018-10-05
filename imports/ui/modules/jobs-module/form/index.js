@@ -27,7 +27,8 @@ class JobForm extends React.Component {
           min: 100,
           max: 1000
         }
-      }
+      },
+      edited: -1
     };
     this.handleChange = this.handleChange.bind(this);
   }
@@ -55,10 +56,12 @@ class JobForm extends React.Component {
     }
   }
 
-  handleChange(job) {
+  handleChange(job, step) {
+
     this.setState(
       {
-        job: job
+        job: job,
+        edited: step
       },
       () => this.props.handleJobChange && this.props.handleJobChange(job)
     );
@@ -68,30 +71,30 @@ class JobForm extends React.Component {
     return (
       <MlWizardForm
         title={"Post a Job"}
-        onFinish={() =>
-          this.props.onFinish && this.props.onFinish(this.state.job)
+        onFinish={lastPage => this.props.onFinish && this.props.onFinish(this.state.job, lastPage)
         }
         showProgress
         editMode={this.state.job._id && this.state.job._id !== ""}
+        edited={this.state.edited}
         radioColor={'#000000'}
         onCancel={() => this.props.onCancel && this.props.onCancel()}
       >
         <WizardStepForm title={"Job Details"} isValid>
           <FirstStep
             data={this.state.job}
-            onChange={job => this.handleChange(job)}
+            onChange={job => this.handleChange(job,0)}
           />
         </WizardStepForm>
         <WizardStepForm title={"Job Requirements"} isValid>
           <SecondStep
             data={this.state.job}
-            onChange={job => this.handleChange(job)}
+            onChange={job => this.handleChange(job,1)}
           />
         </WizardStepForm>
         <WizardStepForm title={"Organizational Culture"} isValid>
           <ThirdStep
             data={this.state.job}
-            onChange={job => this.handleChange(job)}
+            onChange={job => this.handleChange(job,2)}
           />
         </WizardStepForm>
         {/*<WizardStepForm title={"Submit"}>*/}

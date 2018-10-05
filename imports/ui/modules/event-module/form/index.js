@@ -65,10 +65,11 @@ class EventForm extends Component {
     }
   }
 
-  handleChange(event) {
+  handleChange(event, step) {
     this.setState(
       {
-        event: event
+        event: event,
+          edited: step
       },
       () => this.props.handleChangeEvent && this.props.handleChangeEvent(event)
     );
@@ -84,34 +85,35 @@ class EventForm extends Component {
     return (
       <MlWizardForm
         title={"Post a Event"}
-        onFinish={() => this.props.onFinish && this.props.onFinish(event)}
+        onFinish={(lastPage) => this.props.onFinish && this.props.onFinish(event,lastPage)}
         showProgress
         editMode={this.state.event._id && this.state.event._id !== ""}
+        edited={this.state.edited}
         radioColor={'#000000'}
         onCancel={() => this.props.onCancel && this.props.onCancel()}
       >
         <WizardStepForm title={"Event Details"} isValid>
           <EventStep1
             data={event}
-            onChange={event => this.handleChange(event)}
+            onChange={event => this.handleChange(event,0)}
           />
         </WizardStepForm>
         <WizardStepForm title={"Speaker & Sponsors"} isValid>
           <EventStep2
             data={event}
-            onChange={event => this.handleChange(event)}
+            onChange={event => this.handleChange(event,1)}
           />
         </WizardStepForm>
         <WizardStepForm title={"Venue"} isValid>
           <EventStep3
             data={event}
-            onChange={event => this.handleChange(event)}
+            onChange={event => this.handleChange(event,2)}
           />
         </WizardStepForm>
         <WizardStepForm title={"Ticket Type"} isValid>
           <EventStep4
             data={event}
-            onChange={event => this.handleChange(event)}
+            onChange={event => this.handleChange(event,3)}
           />
         </WizardStepForm>
         {/*<WizardStepForm title={"Receive Payments"} isValid>*/}

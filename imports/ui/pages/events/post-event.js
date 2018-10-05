@@ -36,9 +36,11 @@ class PostEvent extends Component {
         },
         sponsors: [],
         tickets: []
-      }
+      },
+        lastPage: false
     };
     this.handleBackgroundChange = this.handleBackgroundChange.bind(this);
+    this.onPostAction = this.onPostAction.bind(this)
     // this.handleUserPhotoChange = this.handleUserPhotoChange.bind(this);
   }
 
@@ -61,7 +63,12 @@ class PostEvent extends Component {
     });
   }
 
-  onPostAction(createEvent, query) {
+  onPostAction(createEvent, query, lastPage) {
+
+      this.setState({
+          lastPage: lastPage
+      });
+
     let queryEvent = Object.assign({}, query);
     queryEvent.category = _.uniq(queryEvent.others.concat(queryEvent.category));
     delete queryEvent.others;
@@ -89,13 +96,13 @@ class PostEvent extends Component {
           key={"leftSide"}
           mutation={CreateEvent}
           onCompleted={() =>
-            this.props.history.push("/events", { postEvent: true })
+            this.state.lastPage && this.props.history.push("/events", { postEvent: true })
           }
           onError={error => console.log("Error: ", error)}
         >
           {(createEvent, { eventCreated }) => (
             <EventForm
-              onFinish={data => this.onPostAction(createEvent, data)}
+              onFinish={(data,lastPage) => this.onPostAction(createEvent, data, lastPage)}
               onCancel={() => this.onCancel()}
               handleChangeEvent={event =>
                 this.setState({ event: { ...this.state.event, ...event } })

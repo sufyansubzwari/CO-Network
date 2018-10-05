@@ -63,10 +63,12 @@ class PostOrganization extends Component {
           }
         }
         //plan: 0
-      }
+      },
+        lastPage: false
     };
     this.handleBackgroundChange = this.handleBackgroundChange.bind(this);
     this.handleUserPhotoChange = this.handleUserPhotoChange.bind(this);
+    this.onPostAction = this.onPostAction.bind(this)
   }
 
   componentDidMount() {
@@ -97,7 +99,12 @@ class PostOrganization extends Component {
     this.props.history.push(`/innovators`);
   }
 
-  onPostAction(createOrg, query) {
+  onPostAction(createOrg, query, lastPage) {
+
+      this.setState({
+          lastPage: lastPage
+      });
+
     let orgQuery = Object.assign({}, query);
     //todo: remove when location improvement
     orgQuery.place &&
@@ -122,13 +129,13 @@ class PostOrganization extends Component {
           key={"leftSide"}
           mutation={CreateOrg}
           onCompleted={() =>
-            this.props.history.push("/innovators", { postInnovator: true })
+            this.state.lastPage && this.props.history.push("/innovators", { postInnovator: true })
           }
           onError={error => console.log("Error: ", error)}
         >
           {(createOrg, { orgCreated }) => (
             <OrganizationForm
-              onFinish={data => this.onPostAction(createOrg, data)}
+              onFinish={(data,lastPage) => this.onPostAction(createOrg, data,lastPage)}
               onCancel={() => this.onCancel()}
               handleOrgChange={organization =>
                 this.setState({

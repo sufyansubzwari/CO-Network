@@ -22,10 +22,11 @@ class OrganizationForm extends React.Component {
     this.handleChange = this.handleChange.bind(this);
   }
 
-  handleChange(org) {
+  handleChange(org,step) {
     this.setState(
       {
-        organization: org
+        organization: org,
+        edited: step
       },
       () => this.props.handleOrgChange && this.props.handleOrgChange(org)
     );
@@ -58,48 +59,49 @@ class OrganizationForm extends React.Component {
     return (
       <MlWizardForm
         title={"Organization Profile"}
-        onFinish={() =>
-          this.props.onFinish && this.props.onFinish(this.state.organization)
+        onFinish={(lastPage) =>
+          this.props.onFinish && this.props.onFinish(this.state.organization,lastPage)
         }
         showProgress
         editMode={this.state.organization._id && this.state.organization._id !== ""}
+        edited={this.state.edited}
         radioColor={'#000000'}
         onCancel={() => this.props.onCancel && this.props.onCancel()}
       >
         <WizardStepForm title={"Details"}>
           <FirstStep
             data={this.state.organization}
-            onChange={organization => this.handleChange(organization)}
+            onChange={organization => this.handleChange(organization,0)}
           />
         </WizardStepForm>
         <WizardStepForm title={"Vision | Culture"}>
           <SecondStep
             data={this.state.organization}
-            onChange={organization => this.handleChange(organization)}
+            onChange={organization => this.handleChange(organization,1)}
           />
         </WizardStepForm>
         <WizardStepForm title={"Community Engagement"}>
           <ThirdStep
             data={this.state.organization}
-            onChange={organization => this.handleChange(organization)}
+            onChange={organization => this.handleChange(organization,2)}
           />
         </WizardStepForm>
         <WizardStepForm title={"Technical Recruitment"}>
           <FourthStep
             data={this.state.organization}
-            onChange={organization => this.handleChange(organization)}
+            onChange={organization => this.handleChange(organization,3)}
           />
         </WizardStepForm>
         <WizardStepForm title={"Products | Services"}>
           <FifthStep
             data={this.state.organization}
-            onChange={organization => this.handleChange(organization)}
+            onChange={organization => this.handleChange(organization,4)}
           />
         </WizardStepForm>
         <WizardStepForm title={"Media"}>
           <SixthStep
             data={this.state.organization}
-            onChange={organization => this.handleChange(organization)}
+            onChange={organization => this.handleChange(organization,5)}
           />
         </WizardStepForm>
         {/*<WizardStepForm title={"CO Network Services"}>*/}
