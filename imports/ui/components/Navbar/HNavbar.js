@@ -1,10 +1,9 @@
 import React from "react";
-import { Layout, Container, StyleUtil, mixins } from "btech-layout";
+import { Container, Layout, mixins, StyleUtil } from "btech-layout";
 import PropTypes from "prop-types";
 import posed from "react-pose";
 import { HNavItem } from "btech-horizantal-navbar";
 import styled from "styled-components";
-// import HNavItem from '../HNavItem/HNavItem'
 
 const HNavLayout = styled(Layout)`
    z-index: 1000;

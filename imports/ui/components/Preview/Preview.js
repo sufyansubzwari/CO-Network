@@ -1,5 +1,5 @@
 import React from "react";
-import { Layout, Container, mixins } from "btech-layout";
+import { Container, Layout, mixins } from "btech-layout";
 import styled from "styled-components";
 import PropsTypes from "prop-types";
 import MaterialIcon from "react-material-iconic-font";
@@ -43,7 +43,7 @@ const SLayout = styled(Layout)`
   border-left: none;
   border-right: none;
   padding: 0 10px;
-  
+
   @media (min-width: 62em) {
     padding: 0 60px;
   }
@@ -80,7 +80,7 @@ const NavLinks = styled(Layout)`
 const SPreviewContainer = styled(Container)`
   zoom: 100%;
   padding: 25px 10px;
- 
+
   @media (min-width: 62em) {
     zoom: 80%;
     padding: 25px 75px;
@@ -166,7 +166,7 @@ export default class Preview extends React.Component {
       : [];
     return (
       <PreviewContainer
-        customTemplateRows={"70px 190px 1fr"}
+        customTemplateRows={"68px 190px 1fr"}
         mdCustomTemplateRows={"190px 70px 1fr"}
         layoutAreas={{
           xs: `'options' 'picture' 'content'`,
@@ -186,11 +186,12 @@ export default class Preview extends React.Component {
         />
         <SLayout
           gridArea="options"
-          customTemplateColumns={
+          customTemplateColumns={"1fr auto"}
+          mdCustomTemplateColumns={
             this.props.showAvatar ? "140px 1fr auto" : "1fr auto"
           }
         >
-          {this.props.showAvatar ? <Container /> : null}
+          {this.props.showAvatar ? <Container hide mdShow /> : null}
           <Container height="100%" hide mdShow>
             <NavLinks
               style={{
@@ -217,10 +218,7 @@ export default class Preview extends React.Component {
             {options}
           </NavLinks>
         </SLayout>
-        <SPreviewContainer
-          gridArea="content"
-          fullY
-        >
+        <SPreviewContainer gridArea="content" fullY>
           <Scrollbars
             universal
             autoHide
