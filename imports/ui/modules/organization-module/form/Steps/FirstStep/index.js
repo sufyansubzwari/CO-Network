@@ -1,9 +1,29 @@
 import React from "react";
-import { Input, CheckBoxList, SocialButton } from "btech-base-forms-component";
+import { CheckBoxList, Input, SocialButton } from "btech-base-forms-component";
 import { GeoInputLocation } from "btech-location";
-import { Layout } from "btech-layout";
-import { ORGANIZATION_TYPE } from "../../../../../constants";
-import { EMAIL_REGEX, PHONE_REGEX } from "../../../../../constants";
+import { Layout, Container } from "btech-layout";
+import { FormMainLayout } from "../../../../../components";
+import {
+  EMAIL_REGEX,
+  ORGANIZATION_TYPE,
+  PHONE_REGEX
+} from "../../../../../constants";
+import styled from "styled-components";
+
+const Label = styled.label`
+  font-size: 12px;
+  font-family: Roboto Mono;
+  color: #010101;
+`;
+
+const NetworkLabel = styled(Label)`
+  margin-bottom: 0;
+  font-weight: bold;
+`;
+
+const NetworkSubLabel = styled(Label)`
+  color: rgba(0, 0, 0, 0.5);
+`;
 
 class FirstStep extends React.Component {
   constructor(props) {
@@ -81,8 +101,8 @@ class FirstStep extends React.Component {
 
   render() {
     return (
-      <Layout rowGap={"25px"}>
-        <Layout templateColumns={2} colGap={"20px"}>
+      <FormMainLayout>
+        <Layout mdTemplateColumns={2} mdColGap={"20px"} rowGap={"5px"}>
           <Input
             required
             name={"name"}
@@ -108,7 +128,7 @@ class FirstStep extends React.Component {
           checkboxSize={"15px"}
           getValue={actives => this.changeOrgTypes(actives)}
         />
-        <Layout templateColumns={2} colGap={"20px"}>
+        <Layout mdTemplateColumns={2} mdColGap={"20px"} rowGap={"5px"}>
           <Input
             required
             name={"email"}
@@ -125,36 +145,46 @@ class FirstStep extends React.Component {
             validate={PHONE_REGEX}
           />
         </Layout>
-        <Layout templateColumns={4} colGap={"10px"} height={"90px"}>
-          <SocialButton
-            social={"github"}
-            connected={!!this.state.organization.social.github}
-            data={this.state.organization.social.github}
-            onClick={() => console.log("trying to log for github")}
-          />
-          <SocialButton
-            social={"google"}
-            data={this.state.organization.social.google}
-            onClick={this.handleGoogle}
-            onPlus={() => console.log("plus")}
-            connected={!!this.state.organization.social.google}
-          />
-          <SocialButton
-            social={"facebook"}
-            data={this.state.organization.social.facebook}
-            onClick={() => console.log("trying to log for facebook")}
-            fields={["account"]}
-            connected={!!this.state.organization.social.facebook}
-          />
-          <SocialButton
-            social={"twitter"}
-            data={this.state.organization.social.twitter}
-            onClick={() => console.log("trying to log for twitter")}
-            loading={false}
-            connected={!!this.state.organization.social.twitter}
-          />
-        </Layout>
-      </Layout>
+        <Container mt={"5px"}>
+          <Container>
+            <NetworkLabel>Connect Networks</NetworkLabel>
+            <Container>
+              <NetworkSubLabel>
+                Connect from your social networks
+              </NetworkSubLabel>
+            </Container>
+          </Container>
+          <Layout templateColumns={4} colGap={"10px"} height={"90px"}>
+            <SocialButton
+              social={"github"}
+              connected={!!this.state.organization.social.github}
+              data={this.state.organization.social.github}
+              onClick={() => console.log("trying to log for github")}
+            />
+            <SocialButton
+              social={"google"}
+              data={this.state.organization.social.google}
+              onClick={this.handleGoogle}
+              onPlus={() => console.log("plus")}
+              connected={!!this.state.organization.social.google}
+            />
+            <SocialButton
+              social={"facebook"}
+              data={this.state.organization.social.facebook}
+              onClick={() => console.log("trying to log for facebook")}
+              fields={["account"]}
+              connected={!!this.state.organization.social.facebook}
+            />
+            <SocialButton
+              social={"twitter"}
+              data={this.state.organization.social.twitter}
+              onClick={() => console.log("trying to log for twitter")}
+              loading={false}
+              connected={!!this.state.organization.social.twitter}
+            />
+          </Layout>
+        </Container>
+      </FormMainLayout>
     );
   }
 }

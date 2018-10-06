@@ -57,7 +57,7 @@ class Speaker extends React.Component {
           }}
         >
           <Container>
-            <Layout mdTemplateColumns={2} mdColGap={"20px"}>
+            <Layout mdTemplateColumns={2} mdColGap={"20px"} rowGap={"5px"}>
               <Container ml={"1px"}>
                 <InputAutoComplete
                   placeholderText={"Name"}
