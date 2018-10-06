@@ -25,7 +25,7 @@ class OrganizationForm extends React.Component {
   handleChange(org) {
     this.setState(
       {
-        organization: org
+        organization: org,
       },
       () => this.props.handleOrgChange && this.props.handleOrgChange(org)
     );
@@ -46,10 +46,10 @@ class OrganizationForm extends React.Component {
       this.props.location.state.organization
     ) {
       this.setState(
-        { organization: this.props.location.state.organization },
+        { organization: this.props.location.state.organization},
         () =>
           this.props.handleOrgChange &&
-          this.props.handleOrgChange(this.props.location.state.organization)
+          this.props.handleOrgChange(this.props.location.state.organization, true)
       );
     }
   }
@@ -63,6 +63,7 @@ class OrganizationForm extends React.Component {
         }
         showProgress
         editMode={this.state.organization._id && this.state.organization._id !== ""}
+        edited={this.props.formChange}
         radioColor={'#000000'}
         onCancel={() => this.props.onCancel && this.props.onCancel()}
       >

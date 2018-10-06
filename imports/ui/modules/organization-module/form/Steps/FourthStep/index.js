@@ -259,6 +259,7 @@ class FourthStep extends React.Component {
                 () => this.notifyParent()
               );
             }}
+            addDollar={true}
           />
           <div />
         </Layout>

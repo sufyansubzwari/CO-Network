@@ -63,7 +63,9 @@ class PostOrganization extends Component {
           }
         }
         //plan: 0
-      }
+      },
+
+    formChange: false
     };
     this.handleBackgroundChange = this.handleBackgroundChange.bind(this);
     this.handleUserPhotoChange = this.handleUserPhotoChange.bind(this);
@@ -98,6 +100,17 @@ class PostOrganization extends Component {
   }
 
   onPostAction(createOrg, query) {
+
+    if(this.state.formChange){
+        this.setState({
+            formChange: false
+        })
+    }
+    else{
+        this.setState({
+            redirect: true
+        })
+    }
     let orgQuery = Object.assign({}, query);
     //todo: remove when location improvement
     orgQuery.place &&
@@ -122,7 +135,7 @@ class PostOrganization extends Component {
           key={"leftSide"}
           mutation={CreateOrg}
           onCompleted={() =>
-            this.props.history.push("/innovators", { postInnovator: true })
+            this.state.redirect && this.props.history.push("/innovators", { postInnovator: true })
           }
           onError={error => console.log("Error: ", error)}
         >
@@ -130,15 +143,17 @@ class PostOrganization extends Component {
             <OrganizationForm
               onFinish={data => this.onPostAction(createOrg, data)}
               onCancel={() => this.onCancel()}
-              handleOrgChange={organization =>
+              handleOrgChange={(organization, loading) =>
                 this.setState({
                   organization: {
                     ...this.state.organization,
                     ...organization
-                  }
+                  },
+                  formChange: !loading && true
                 })
               }
               organization={this.state.organization}
+              formChange={this.state.formChange}
               {...this.props}
             />
           )}

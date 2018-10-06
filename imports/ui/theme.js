@@ -175,9 +175,19 @@ const lists = {
 
 const texts = {
   title: {
-    fontFamily: "Helvetica Neue LT Std"
+    fontFamily: "Helvetica Neue LT Std",
+    titleColor: "#000000",
+    titleFamily: "Roboto Mono",
+    titleSize: "14px",
+    titleLineHeight: "24px",
+    titleWeight: "600",
   },
-  fontFamily: "Roboto Mono"
+  fontFamily: "Roboto Mono",
+  textColor: "#2b2b2b",
+  textFamily: "Roboto Mono",
+  textSize: "12px",
+  textLineHeight: "14px",
+  textWeight: "300",
 };
 
 const font = {

@@ -8,7 +8,12 @@ import SideBarLink from "./SideBarLink";
 import styled, { ThemeProvider } from "styled-components";
 import { Link } from "react-router-dom";
 import { connect } from "react-redux";
-import {cleanFilters, setFilterEntity, setFilters, toggleSideBar} from "../../actions/SideBarActions";
+import {
+  cleanFilters,
+  setFilterEntity,
+  setFilters,
+  toggleSideBar
+} from "../../actions/SideBarActions";
 import LogoutBtn from "../smart/auth/logout-btn";
 import NavbarUserButton from "../NavbarUserButton/NavbarUserButton";
 import services from "../LoginModal/service.constant";
@@ -109,7 +114,7 @@ class UserNavbarSection extends React.Component {
     this.loginServices = services.filter(element => element.visible);
     this.isOpenCreateSidebar = false;
 
-    this.state = {}
+    this.state = {};
   }
 
   onAddToggle() {
@@ -121,8 +126,21 @@ class UserNavbarSection extends React.Component {
     Authorization.login(service);
   }
 
-  onUserToggle(){
-      this.props.toggleSideBar(!this.props.profileSideBarIsOpen,false, !this.props.profileSideBarIsOpen);
+  onUserToggle() {
+    this.props.toggleSideBar(
+      !this.props.profileSideBarIsOpen,
+      false,
+      !this.props.profileSideBarIsOpen
+    );
+  }
+
+  onNotificationToggle(){
+    this.props.toggleSideBar(
+        !this.props.notificationsSideBarIsOpen,
+        false,
+        false,
+        !this.props.notificationsSideBarIsOpen
+    );
   }
 
   render() {
@@ -136,7 +154,7 @@ class UserNavbarSection extends React.Component {
         className={"center nav-profile"}
       >
         <Container />
-        <Container>
+        <Container paddingY={"10px"} paddingT={"0px"}>
           <Layout rowGap="15px">
             <GroupContainer
               pose={isAuthenticated ? "showUserOptions" : "hideUserOptions"}
@@ -202,6 +220,7 @@ class UserNavbarSection extends React.Component {
                       size: { width: 22, height: 24 }
                     }}
                     activeEval={this.activeEval}
+                    onClick={() => this.onNotificationToggle()}
                   />
                 </RenderCondition>
                 <RenderCondition>
@@ -211,19 +230,6 @@ class UserNavbarSection extends React.Component {
                 </RenderCondition>
               </Group>
             </GroupContainer>
-            {/*<Layout*/}
-              {/*rowGap="5px"*/}
-              {/*padding="0 20px 20px;"*/}
-              {/*className={"center terms"}*/}
-            {/*>*/}
-              {/*<ThemeProvider theme={theme}>*/}
-                {/*<Layout rowGap="10px">*/}
-                  {/*{!!isAuthenticated ? <LogoutBtn /> : null}*/}
-                  {/*<SideBarLink href={this.policy}> Terms Policies </SideBarLink>*/}
-                  {/*<SideBarLink> CONetwork © 2018 </SideBarLink>*/}
-                {/*</Layout>*/}
-              {/*</ThemeProvider>*/}
-            {/*</Layout>*/}
           </Layout>
         </Container>
       </Layout>
@@ -235,13 +241,15 @@ const mapStateToProps = state => {
   const { sideBarStatus } = state;
   return {
     addSidebarIsOpen: sideBarStatus.status && sideBarStatus.isAdd,
-    profileSideBarIsOpen: sideBarStatus.status && sideBarStatus.profile
+    profileSideBarIsOpen: sideBarStatus.status && sideBarStatus.profile,
+    notificationsSideBarIsOpen: sideBarStatus.status && sideBarStatus.notifications
   };
 };
 
 const mapDispatchToProps = dispatch => {
   return {
-    toggleSideBar: (status, isAdd, profile) => dispatch(toggleSideBar(status, isAdd, profile)),
+    toggleSideBar: (status, isAdd, profile, notifications) =>
+      dispatch(toggleSideBar(status, isAdd, profile, notifications)),
     setFilterEntity: entityType => dispatch(setFilterEntity(entityType))
   };
 };

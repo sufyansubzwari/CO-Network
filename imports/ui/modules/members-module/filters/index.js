@@ -8,6 +8,7 @@ import {
   Separator
 } from "./../../../components";
 import { Query } from "react-apollo";
+import { LOOKING_FOR_DEFAULT } from "../../../constants";
 import { CheckBoxList, Button, CheckBox } from "btech-base-forms-component";
 import { UsersFieldCounts } from "../../../apollo-client/user";
 import { cleanFilters, setFilters } from "../../../actions/SideBarActions";
@@ -124,10 +125,18 @@ class MembersFilters extends React.Component {
             {({ loading, error, data }) => {
               if (loading) return <div />;
               if (error) return <div>Error</div>;
+              const elements =
+                data.usersFieldCounts && data.usersFieldCounts.length
+                  ? data.usersFieldCounts
+                  : LOOKING_FOR_DEFAULT.map(e => {
+                      e._id = e.label;
+                      e.number = 0;
+                      return e;
+                    });
               return (
                 <CheckBoxList
                   placeholderText={"Seeking"}
-                  options={data.usersFieldCounts.map((item, key) => ({
+                  options={elements.map((item, key) => ({
                     ...item,
                     label: item._id,
                     value: item._id,
@@ -141,7 +150,7 @@ class MembersFilters extends React.Component {
                     this.addFilters(
                       "profile_DOT_knowledge_DOT_lookingFor",
                       selected,
-                      data.usersFieldCounts.map(item => ({
+                      elements.map(item => ({
                         ...item,
                         label: item._id
                       }))

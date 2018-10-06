@@ -42,14 +42,11 @@ const Photo = styled(Container)`
         ")"
         : " linear-gradient(180deg,#32363D, #202225)"};
   background-size: cover;
-  zoom: 100%;
+  
+    zoom: 100%;
 
   @media (min-width: 62em) {
     zoom: 80%;
-  }
-
-  @media (min-width: 86em) {
-    zoom: 100%;
   }
 `;
 
@@ -71,7 +68,7 @@ const ItemsContainer = function(props) {
     return (
         <SContainer fullY customTemplateRows={"160px 1fr 72px"}>
             <Photo image={ props.curUser && props.curUser.profile && props.curUser.profile.cover !== "" ? props.curUser.profile.cover : null }>
-                <Container fullX style={{bottom: '-2px', position: 'absolute'}}>
+                <Container fullX style={{bottom: '0', position: 'absolute'}}>
                     <ReactSVG src={'/images/sidebar/bordercreate.svg'} />
                 </Container>
             </Photo>
@@ -86,14 +83,14 @@ const ItemsContainer = function(props) {
                 </Scrollbars>
             </SContainer>
             <Container>
+                <ThemeProvider theme={theme}>
+                    <Container ml={'10px'} >
+                        <SideBarLink href={props.policy}> Terms Policies </SideBarLink>
+                        <SideBarLink> CONetwork © 2018 </SideBarLink>
+                    </Container>
+                </ThemeProvider>
                 <Separator/>
                 <Container ml={'35px'} mt={'10px'}>
-                    <ThemeProvider theme={theme}>
-                        <Container >
-                            <SideBarLink href={props.policy}> Terms Policies </SideBarLink>
-                            <SideBarLink> CONetwork © 2018 </SideBarLink>
-                        </Container>
-                    </ThemeProvider>
                     <LogoutBtn
                         btnType="link"
                         onLogoutHook={window.hideMenu}

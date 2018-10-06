@@ -208,6 +208,7 @@ class ThirdStep extends React.Component {
         <Layout templateColumns={2} colGap={"20px"}>
           <SalaryRange
             required
+            addDollar={true}
             placeholder={"000"}
             labelText={"Expected Salary Range"}
             min={

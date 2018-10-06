@@ -1,5 +1,5 @@
 import React from "react";
-import { Layout, Container, mixins } from "btech-layout";
+import { Container, Layout, mixins } from "btech-layout";
 import styled from "styled-components";
 import PropsTypes from "prop-types";
 import MaterialIcon from "react-material-iconic-font";
@@ -99,12 +99,12 @@ const SButtonIcon = styled.span`
 `;
 
 const SText = styled.span`
-    color: rgb(0,0,0,0.8);
-    font-family: "Roboto Mono";
-    margin-right: 25px;
-    i {
-      padding-right: 5px;
-    }
+  color: rgb(0, 0, 0, 0.8);
+  margin-right: 25px;
+
+  i {
+    padding-right: 5px;
+  }
 `;
 
 const SNavLinkItem = styled.a`
@@ -162,7 +162,7 @@ export default class Preview extends React.Component {
           .map(
             (element, index) =>
               element.type && element.type === "text" ? (
-                <SText>
+                <SText key={index}>
                   {element.icon ? <MaterialIcon type={element.icon} /> : null}
                   {element.text}
                 </SText>
@@ -183,7 +183,7 @@ export default class Preview extends React.Component {
       : [];
     return (
       <PreviewContainer
-        customTemplateRows={"70px 190px 1fr"}
+        customTemplateRows={"68px 190px 1fr"}
         mdCustomTemplateRows={"190px 70px 1fr"}
         layoutAreas={{
           xs: `'options' 'picture' 'content'`,
@@ -203,11 +203,12 @@ export default class Preview extends React.Component {
         />
         <SLayout
           gridArea="options"
-          customTemplateColumns={
+          customTemplateColumns={"1fr auto"}
+          mdCustomTemplateColumns={
             this.props.showAvatar ? "140px 1fr auto" : "1fr auto"
           }
         >
-          {this.props.showAvatar ? <Container /> : null}
+          {this.props.showAvatar ? <Container hide mdShow /> : null}
           <Container height="100%" hide mdShow>
             <NavLinks
               style={{

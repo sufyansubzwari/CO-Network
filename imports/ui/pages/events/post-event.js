@@ -36,9 +36,11 @@ class PostEvent extends Component {
         },
         sponsors: [],
         tickets: []
-      }
+      },
+        formChange: false
     };
     this.handleBackgroundChange = this.handleBackgroundChange.bind(this);
+    this.onPostAction = this.onPostAction.bind(this)
     // this.handleUserPhotoChange = this.handleUserPhotoChange.bind(this);
   }
 
@@ -62,6 +64,16 @@ class PostEvent extends Component {
   }
 
   onPostAction(createEvent, query) {
+      if(this.state.formChange){
+          this.setState({
+              formChange: false
+          })
+      }
+      else{
+          this.setState({
+              redirect: true
+          })
+      }
     let queryEvent = Object.assign({}, query);
     queryEvent.category = _.uniq(queryEvent.others.concat(queryEvent.category));
     delete queryEvent.others;
@@ -89,7 +101,7 @@ class PostEvent extends Component {
           key={"leftSide"}
           mutation={CreateEvent}
           onCompleted={() =>
-            this.props.history.push("/events", { postEvent: true })
+              this.state.redirect && this.props.history.push("/events", { postEvent: true })
           }
           onError={error => console.log("Error: ", error)}
         >
@@ -97,11 +109,12 @@ class PostEvent extends Component {
             <EventForm
               onFinish={data => this.onPostAction(createEvent, data)}
               onCancel={() => this.onCancel()}
-              handleChangeEvent={event =>
-                this.setState({ event: { ...this.state.event, ...event } })
+              handleChangeEvent={ (event,loading) =>
+                this.setState({ event: { ...this.state.event, ...event },formChange: !loading && true })
               }
               event={this.state.event}
               {...this.props}
+              formChange={this.state.formChange}
             />
           )}
         </Mutation>

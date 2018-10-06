@@ -42,6 +42,8 @@ innovators.number = {
 let dataStory = Object.assign({}, base, {
   link: "/data-story",
   label: "Data Story",
+  comming: true,
+  disabled: true,
   icon: { size: 30, src: "/images/nav/dataStory.svg" }
 });
 dataStory.number = {

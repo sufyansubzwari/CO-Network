@@ -11,6 +11,7 @@ import ColloquiumFilters from "../../modules/colloquium-module/filters";
 import OrganizationFilters from "../../modules/organization-module/filters";
 import MembersFilters from "../../modules/members-module/filters";
 import ProfileSideBar from "../../modules/user-module/profileSidebar/profileSidebar";
+import NotificationsSidebar from "../Notifications/Sidebar/NotificationsSidebar";
 import posed from "react-pose";
 
 const SSideBarContainerStyed = styled(Container)`
@@ -66,6 +67,14 @@ class SideBar extends Component {
         return (
             <ProfileSideBar
                 curUser={this.props.curUser}
+                onClose={() =>
+                    this.props.toggleSideBar && this.props.toggleSideBar(false)
+                }
+            />);
+    }
+    else if(this.props.isNotificationsAction){
+        return (
+            <NotificationsSidebar
                 onClose={() =>
                     this.props.toggleSideBar && this.props.toggleSideBar(false)
                 }
@@ -147,7 +156,8 @@ const mapStateToProps = state => {
   return {
     isAddAction: sideBarStatus ? sideBarStatus.isAdd : false,
     filterEntityType: sideBarEntity ? sideBarEntity.entityType : null,
-    isProfileAction: sideBarStatus ? sideBarStatus.profile : false
+    isProfileAction: sideBarStatus ? sideBarStatus.profile : false,
+    isNotificationsAction: sideBarStatus ? sideBarStatus.notifications: false
   };
 };
 

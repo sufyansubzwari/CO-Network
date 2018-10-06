@@ -67,7 +67,8 @@ class UserProfile extends Component {
     let userObject = Object.assign(user, currentUser);
     this.state = {
       openPreview: false,
-      user: userObject
+      user: userObject,
+      formChange: false
     };
     this.handleBackgroundChange = this.handleBackgroundChange.bind(this);
     this.handleUserPhotoChange = this.handleUserPhotoChange.bind(this);
@@ -111,6 +112,16 @@ class UserProfile extends Component {
   }
 
   onPostAction(createProfile, query) {
+      if(this.state.formChange){
+          this.setState({
+              formChange: false
+          })
+      }
+      else{
+          this.setState({
+              redirect: true
+          })
+      }
     let profile = Object.assign({}, query);
     //todo: remove when location improvement
     profile.place &&
@@ -132,7 +143,7 @@ class UserProfile extends Component {
           <Mutation
             mutation={CreateUser}
             onCompleted={() =>
-              this.props.history.push("/", { userCreate: true })
+                this.state.redirect && this.props.history.push("/", { userCreate: true })
             }
             onError={error => console.log("Error: ", error)}
           >
@@ -141,10 +152,11 @@ class UserProfile extends Component {
                 onFinish={data => this.onPostAction(createProfile, data)}
                 onCancel={() => this.onCancel()}
                 userLogged={false}
-                handleChangeProfile={user =>
-                  this.setState({ user: { ...this.state.user, ...user } })
+                handleChangeProfile={ (user,loading) =>
+                  this.setState({ user: { ...this.state.user, ...user }, formChange: !loading && true })
                 }
                 user={this.state.user}
+                formChange={this.state.formChange}
                 {...this.props}
               />
             )}
