@@ -188,6 +188,11 @@ const forms = {
   mobileRowSpace: "5px"
 };
 
+const labels = {
+  top: -22,
+  left: 0
+};
+
 export const theme = {
   textColor: color.black,
   color,
@@ -204,5 +209,6 @@ export const theme = {
   signup,
   font,
   forms,
+  labels,
   borderColor: color.grey
 };

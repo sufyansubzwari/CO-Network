@@ -78,30 +78,25 @@ const SCardContainer = Styled(Container)`
 class CardItem extends Component {
   constructor(props) {
     super(props);
+    const elements = [{ key: "views", icon: "eye" }].concat(
+      this.props.topOptions
+    );
     this.state = {
       loadingImage: true,
-      topOptions: [
-        {
-          key: "views",
-          icon: "eye"
-        }
-      ]
+      topOptions: elements
     };
     if (props.image) {
       this.loadImage(props.image);
     }
   }
 
-  componentDidMount() {
+  componentWillReceiveProps(newProps) {
+    if (!newProps.image) return;
+    if (newProps.image !== this.props.image) this.loadImage(newProps.image);
     if (this.props.topOptions && this.props.topOptions.length)
       this.setState({
         topOptions: this.state.topOptions.concat(this.props.topOptions)
       });
-  }
-
-  componentWillReceiveProps(newProps) {
-    if (!newProps.image) return;
-    if (newProps.image !== this.props.image) this.loadImage(newProps.image);
   }
 
   loadImage(imageSrc) {
