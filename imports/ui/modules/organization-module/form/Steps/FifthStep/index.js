@@ -1,6 +1,6 @@
 import React from "react";
 import { Layout } from "btech-layout";
-import { ProductsServices } from "../../../../../components";
+import { ProductsServices, FormMainLayout } from "../../../../../components";
 
 class Fifth extends React.Component {
   constructor(props) {
@@ -39,12 +39,12 @@ class Fifth extends React.Component {
 
   render() {
     return (
-      <Layout rowGap={"25px"}>
+      <FormMainLayout>
         <ProductsServices
           onChange={this.handleChange}
           products={this.state.organization.products}
         />
-      </Layout>
+      </FormMainLayout>
     );
   }
 }

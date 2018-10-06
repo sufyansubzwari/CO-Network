@@ -1,12 +1,11 @@
 import React from "react";
-import { Layout, Container } from "btech-layout";
+import { Container, Layout } from "btech-layout";
 import {
+  AttachedFile,
   Button,
   Input,
-  Select,
   TextArea,
-  UploadFileButton,
-  AttachedFile
+  UploadFileButton
 } from "btech-base-forms-component";
 import MaterialIcon from "react-material-iconic-font";
 import LineSeparator from "./LineSeparator";
@@ -31,7 +30,7 @@ export default (Service = function(props) {
           rowGap={"10px"}
           colGap={"10px"}
           minH={"35px"}
-          mt={"25px"}
+          mt={{ xs: "5px", md: "15px" }}
           customTemplateColumns={"repeat(auto-fit, 120px)"}
         >
           <UploadFileButton
