@@ -97,11 +97,10 @@ class ItemsList extends Component {
               this.props.renderItem ? this.props.renderItem : this.renderItem
             }
             onFetchData={() => this.fetchMoreItems()}
-            itemSeparation={{
-              xs: theme.lists.mobileItemSeparation,
-              md: theme.lists.itemSeparation
+            scrollSeparation={{
+              xs: theme.lists.mobileScrollSeparation,
+              md: theme.lists.scrollSeparation
             }}
-            scrollSeparation={theme.lists.scrollSeparation}
             data={this.props.loading ? this.state.mockData : this.props.data}
           />
         ) : null}

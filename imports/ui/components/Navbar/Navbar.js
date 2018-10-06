@@ -11,9 +11,12 @@ import { connect } from "react-redux";
 import { toggleSideBar } from "../../actions/SideBarActions";
 
 const SNavBarContainerStyled = Styled(Container)`
-    z-index: 15;
-//    hack for pose
-   ${mixins.media.desktop`margin-top:0px!important;transform:none!important;`}
+   z-index: 15;
+   
+   ${mixins.media.desktop`
+    margin-top:0px !important;
+    transform:none !important;
+   `}
 `;
 
 const SNavBarContainer = posed(SNavBarContainerStyled)({
