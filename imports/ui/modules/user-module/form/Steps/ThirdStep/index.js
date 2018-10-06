@@ -9,7 +9,7 @@ import { Container, Layout } from "btech-layout";
 import { LOOKING_FOR_DEFAULT, TAG_LEVEL } from "../../../../../constants";
 import { GetTags } from "../../../../../apollo-client/tag";
 import { Query } from "react-apollo";
-import MLTagsInput from "../../../../../components/TagsInputAutoComplete/TagsInputAutoComplete";
+import { MLTagsInput } from "../../../../../components";
 
 class ThirdStep extends React.Component {
   constructor(props) {
@@ -19,7 +19,7 @@ class ThirdStep extends React.Component {
 
     this.state = {
       user: data,
-      lookingFor: LOOKING_FOR_DEFAULT
+      lookingSDateRangeContainerFor: LOOKING_FOR_DEFAULT
     };
   }
 

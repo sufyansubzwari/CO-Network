@@ -4,6 +4,7 @@ import PropTypes from "prop-types";
 import { Input, SalaryRange } from "btech-base-forms-component";
 import { GeoInputLocation } from "btech-location";
 import { EMAIL_REGEX } from "../../../../constants";
+import { FormMainLayout } from "../../../../components";
 
 /**
  * @module Event
@@ -59,9 +60,9 @@ class EventStep3 extends Component {
 
   render() {
     return (
-      <Layout rowGap={"25px"}>
+      <FormMainLayout>
         <Container>
-          <Layout templateColumns={2} colGap={"25px"}>
+          <Layout mdTemplateColumns={2} mdColGap={"20px"} rowGap={"5px"}>
             <Container>
               <Input
                 required
@@ -93,45 +94,41 @@ class EventStep3 extends Component {
               this.notifyParentLocation(model, name, value)
             }
           />
-
         </Container>
         <Container>
           <Layout
             fullY
-            customTemplateColumns={"70% auto"}
-            smCustomTemplateColumns={"1fr"}
-            lgCustomTemplateColumns={"70% auto"}
+            customTemplateColumns={"1fr"}
+            mdCustomTemplateColumns={"70% auto"}
           >
-            <Container>
-              <SalaryRange
-                placeholder={"000"}
-                labelText={"Expected Attendees"}
-                min={
-                  this.state.event &&
-                  this.state.event.attenders &&
-                  this.state.event.attenders.min
-                }
-                max={
-                  this.state.event &&
-                  this.state.event.attenders &&
-                  this.state.event.attenders.max
-                }
-                getValue={data => {
-                  const { min, max } = data;
-                  const event = this.state.event;
-                  event.attenders = { min: min, max: max };
-                  this.setState(
-                    {
-                      event: event
-                    },
-                    () => this.notifyParent()
-                  );
-                }}
-              />
-            </Container>
+            <SalaryRange
+              placeholder={"000"}
+              labelText={"Expected Attendees"}
+              min={
+                this.state.event &&
+                this.state.event.attenders &&
+                this.state.event.attenders.min
+              }
+              max={
+                this.state.event &&
+                this.state.event.attenders &&
+                this.state.event.attenders.max
+              }
+              getValue={data => {
+                const { min, max } = data;
+                const event = this.state.event;
+                event.attenders = { min: min, max: max };
+                this.setState(
+                  {
+                    event: event
+                  },
+                  () => this.notifyParent()
+                );
+              }}
+            />
           </Layout>
         </Container>
-      </Layout>
+      </FormMainLayout>
     );
   }
 }

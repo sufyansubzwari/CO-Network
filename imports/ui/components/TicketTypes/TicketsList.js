@@ -18,7 +18,6 @@ const SItemContainer = styled(Container)`
 `;
 
 const SListTitleContainer = styled(Container)`
-  margin-left: 10px;
   font-weight: bold;
 `;
 /**

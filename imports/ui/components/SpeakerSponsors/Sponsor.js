@@ -62,7 +62,7 @@ class Sponsor extends React.Component {
           }}
         >
           <Container>
-            <Layout templateColumns={2} colGap={"20px"}>
+            <Layout mdTemplateColumns={2} mdColGap={"20px"}>
               <Container ml={"1px"}>
                 <InputAutoComplete
                   placeholderText={"Name"}

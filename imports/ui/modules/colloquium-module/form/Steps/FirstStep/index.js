@@ -6,7 +6,7 @@ import {
   TagList,
   TextArea
 } from "btech-base-forms-component";
-import MLTagsInput from "../../../../../components/TagsInputAutoComplete/TagsInputAutoComplete";
+import { MLTagsInput } from "../../../../../components";
 import { Container, Layout } from "btech-layout";
 import { GeoInputLocation } from "btech-location";
 import { COLLOQUIUM_LEVEL } from "../../../../../constants";

@@ -19,7 +19,7 @@ import { cleanFilters, setFilters } from "../../../actions/SideBarActions";
 import { connect } from "react-redux";
 import { Query } from "react-apollo";
 import { GetTags as tags } from "../../../apollo-client/tag";
-import { TagsInputAutoComplete as MLTagsInput } from "../../../components/";
+import { MLTagsInput } from "../../../components";
 
 class OrganizationFilters extends React.Component {
   constructor(props) {

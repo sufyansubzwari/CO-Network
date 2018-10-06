@@ -1,18 +1,15 @@
 import React from "react";
 import PropTypes from "prop-types";
-import { Layout, Container } from "btech-layout";
+import { Container, Layout } from "btech-layout";
 import styled from "styled-components";
-import { Button, Input, Select, TextArea } from "btech-base-forms-component";
+import { Button } from "btech-base-forms-component";
 import MaterialIcon from "react-material-iconic-font";
 import Speaker from "./Speaker";
 import Sponsor from "./Sponsor";
-import LineSeparator from "./LineSeparator";
-import { EMAIL_REGEX } from "../../constants";
 
 const SLabel = styled.div`
   font-size: 12px;
   font-family: Roboto Mono, serif;
-  margin-left: 10px;
   font-weight: bold;
 `;
 
@@ -26,21 +23,22 @@ const SItemContainer = styled(Container)`
 `;
 
 const SItem = styled(Layout)`
-  
   .buttons {
     opacity: 1;
-    transition: all 200ms ease-out; 
+    transition: all 200ms ease-out;
   }
-  
+
   :hover {
-      .buttons { opacity: 1;}
+    .buttons {
+      opacity: 1;
+    }
   }
-    
-  @media (min-width: 62em){
+
+  @media (min-width: 62em) {
     .buttons {
       opacity: 0;
     }
-  }   
+  }
 `;
 
 class SponsorsList extends React.Component {
@@ -80,13 +78,10 @@ class SponsorsList extends React.Component {
 
   handleSave(index) {
     let spo = this.state.sponsors;
-
-    // if(spo[index] && spo[index].name && spo[index].name !== "" && spo[index].email && spo[index].email && EMAIL_REGEX.test(spo[index].email) ){
-      spo[index] = { ...spo[index], edit: false };
-      this.setState({ sponsors: spo, editingChild: false }, () =>
-        this.notifyParent()
-      );
-    // }
+    spo[index] = { ...spo[index], edit: false };
+    this.setState({ sponsors: spo, editingChild: false }, () =>
+      this.notifyParent()
+    );
   }
 
   handleChange(index) {
@@ -132,7 +127,7 @@ class SponsorsList extends React.Component {
           <Layout
             customTemplateColumns={"1fr"}
             style={{ paddingRight: "10px" }}
-            mb={'5px'}
+            mb={"5px"}
           >
             <SLabel>{this.props.type}</SLabel>
           </Layout>
@@ -145,6 +140,7 @@ class SponsorsList extends React.Component {
                   item.edit ? (
                     item.type === "Speakers" ? (
                       <Speaker
+                        key={index}
                         users={this.props.users}
                         model={this.state.sponsors[index]}
                         handleSave={() => this.handleSave(index)}
@@ -152,6 +148,7 @@ class SponsorsList extends React.Component {
                       />
                     ) : item.type === "Sponsors" ? (
                       <Sponsor
+                        key={index}
                         users={this.props.users}
                         model={this.state.sponsors[index]}
                         handleSave={() => this.handleSave(index)}
@@ -159,40 +156,44 @@ class SponsorsList extends React.Component {
                       />
                     ) : null
                   ) : (
-                    <SItem padding={"10px"} customTemplateColumns={"1fr auto"}>
+                    <SItem
+                      padding={"10px"}
+                      customTemplateColumns={"1fr auto"}
+                      key={index}
+                    >
                       <Container>{item.name}</Container>
-                        <Layout
-                          customTemplateColumns={"auto auto"}
-                          colGap={"5px"}
-                          className={'buttons'}
+                      <Layout
+                        customTemplateColumns={"auto auto"}
+                        colGap={"5px"}
+                        className={"buttons"}
+                      >
+                        <Button
+                          type={"button"}
+                          secondary
+                          height={"auto"}
+                          color={"black"}
+                          opacity={"0.5"}
+                          border={"none"}
+                          hoverBackground={"transparent"}
+                          hoverColor={"initial"}
+                          onClick={() => this.handleChange(index)}
                         >
-                          <Button
-                            type={"button"}
-                            secondary
-                            height={"auto"}
-                            color={"black"}
-                            opacity={"0.5"}
-                            border={"none"}
-                            hoverBackground={"transparent"}
-                            hoverColor={"initial"}
-                            onClick={() => this.handleChange(index)}
-                          >
-                            <MaterialIcon type={"edit"} />
-                          </Button>
-                          <Button
-                            type={"button"}
-                            secondary
-                            height={"auto"}
-                            color={"black"}
-                            opacity={"0.5"}
-                            border={"none"}
-                            hoverBackground={"transparent"}
-                            hoverColor={"initial"}
-                            onClick={() => this.handleRemove(index)}
-                          >
-                            <MaterialIcon type={"delete"} />
-                          </Button>
-                        </Layout>
+                          <MaterialIcon type={"edit"} />
+                        </Button>
+                        <Button
+                          type={"button"}
+                          secondary
+                          height={"auto"}
+                          color={"black"}
+                          opacity={"0.5"}
+                          border={"none"}
+                          hoverBackground={"transparent"}
+                          hoverColor={"initial"}
+                          onClick={() => this.handleRemove(index)}
+                        >
+                          <MaterialIcon type={"delete"} />
+                        </Button>
+                      </Layout>
                     </SItem>
                   )
                 ) : null

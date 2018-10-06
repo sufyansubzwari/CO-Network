@@ -1,21 +1,11 @@
 import React from "react";
-import {
-  SalaryRange,
-  InputAutoComplete,
-  TagList,
-  Select
-} from "btech-base-forms-component";
+import { SalaryRange, Select, TagList } from "btech-base-forms-component";
 import { Container, Layout } from "btech-layout";
 
-import {
-  LOOKING_FOR_DEFAULT,
-  TAG_LEVEL,
-  DEGREE
-} from "../../../../../constants";
+import { DEGREE, TAG_LEVEL } from "../../../../../constants";
 import { Query } from "react-apollo";
 import { GetTags } from "../../../../../apollo-client/tag";
-import MLTagsInput from "../../../../../components/TagsInputAutoComplete/TagsInputAutoComplete";
-import SelectTag from "./../../../../../components/SelectTag/SelectTag";
+import { MLTagsInput } from "../../../../../components";
 import IndustrySector from "../../../../../components/IndustrySector/IndustrySector";
 
 

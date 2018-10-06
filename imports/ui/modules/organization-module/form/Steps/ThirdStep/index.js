@@ -8,7 +8,7 @@ import { Container, Layout } from "btech-layout";
 import { ACTIVELY } from "../../../../../constants";
 import { GetTags } from "../../../../../apollo-client/tag";
 import { Query } from "react-apollo";
-import MLTagsInput from "../../../../../components/TagsInputAutoComplete/TagsInputAutoComplete";
+import { MLTagsInput } from "../../../../../components";
 
 
 class ThirdStep extends React.Component {

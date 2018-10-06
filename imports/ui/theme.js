@@ -184,6 +184,11 @@ const font = {
   fontSize: "12px"
 }
 
+const forms = {
+  rowSpace: "25px",
+  mobileRowSpace: "5px"
+}
+
 export const theme = {
   textColor: color.black,
   color,
@@ -199,5 +204,6 @@ export const theme = {
   create,
   signup,
   font,
+  forms,
   borderColor: color.grey
 };

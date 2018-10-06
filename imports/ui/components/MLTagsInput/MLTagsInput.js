@@ -80,7 +80,7 @@ const SLabel = styled.label`
   transition: all 0.2s ease-out;
 `;
 
-export default class TagsInputAutoComplete extends Component {
+export default class MLTagsInput extends Component {
   constructor(props) {
     super(props);
 
@@ -285,12 +285,12 @@ export default class TagsInputAutoComplete extends Component {
   }
 }
 
-TagsInputAutoComplete.defaultProps = {
+MLTagsInput.defaultProps = {
   iconClass: "plus",
   fixLabel: false
 };
 
-TagsInputAutoComplete.propTypes = {
+MLTagsInput.propTypes = {
   options: PropsTypes.array,
   fixLabel: PropsTypes.bool,
   iconClass: PropsTypes.string,

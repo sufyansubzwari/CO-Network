@@ -1,16 +1,10 @@
 import React from "react";
-import {
-  TagList,
-  SalaryRange,
-  CheckBoxList,
-  InputAutoComplete
-} from "btech-base-forms-component";
+import { CheckBoxList, SalaryRange, TagList } from "btech-base-forms-component";
 import { Container, Layout } from "btech-layout";
-import SelectTag from "../../../../../components/SelectTag/SelectTag";
 import { JOB_TYPE, TAG_LEVEL } from "../../../../../constants";
 import { GetTags } from "../../../../../apollo-client/tag";
 import { Query } from "react-apollo";
-import MLTagsInput from "../../../../../components/TagsInputAutoComplete/TagsInputAutoComplete";
+import { MLTagsInput } from "../../../../../components";
 import IndustrySector from "../../../../../components/IndustrySector/IndustrySector";
 
 class FourthStep extends React.Component {

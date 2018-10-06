@@ -14,7 +14,7 @@ import { JOB_TYPE, POSITION_TAGS } from "../../../../../constants";
 import PropTypes from "prop-types";
 import { Query } from "react-apollo";
 import { GetTags as tags } from "../../../../../apollo-client/tag";
-import MLTagsInput from "../../../../../components/TagsInputAutoComplete/TagsInputAutoComplete";
+import { MLTagsInput } from "../../../../../components";
 
 class FirstStep extends React.Component {
   constructor(props) {
@@ -201,7 +201,7 @@ class FirstStep extends React.Component {
             <Container>
               <Query query={tags} variables={{ tags: { type: "JobPosition" } }}>
                 {({ loading, error, data }) => {
-                  if (loading) return <div></div>;
+                  if (loading) return <div />;
                   if (error) return <div>Error</div>;
                   return (
                     <div>

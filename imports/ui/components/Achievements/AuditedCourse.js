@@ -1,16 +1,10 @@
 import React from "react";
-import { Layout, Container } from "btech-layout";
-import {
-  Button,
-  Input,
-  Select,
-  InputAutoComplete,
-  TagList
-} from "btech-base-forms-component";
+import { Container, Layout } from "btech-layout";
+import { Button, Input, Select } from "btech-base-forms-component";
 import MaterialIcon from "react-material-iconic-font";
 import LineSeparator from "./LineSeparator";
 import { EXPERIENCE_LEVEL } from "./constants";
-import MLTagsInput from "../../components/TagsInputAutoComplete/TagsInputAutoComplete";
+import { MLTagsInput } from "../../components";
 
 export default (AuditedCourse = function(props) {
   return (
