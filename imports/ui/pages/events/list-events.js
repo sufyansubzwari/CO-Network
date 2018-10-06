@@ -188,6 +188,16 @@ class ListEvents extends Component {
                         navClicked={index => console.log(index)}
                         navOptions={[
                           {
+                            type: "text",
+                            icon: "mail-reply",
+                            text:
+                              this.state.selectedItem &&
+                              this.state.selectedItem.followerList
+                                ? this.state.selectedItem.followerList.length +
+                                " Followers"
+                                : null
+                          },
+                          {
                             text: !follow ? "Follow" : "Unfollow",
                             checkVisibility: () => {
                               const element = this.state.selectedItem;
