@@ -1,6 +1,6 @@
 import * as types from "./types";
 
-export function toggleSideBar(status, add, profile) {
+export function toggleSideBar(status, add, profile, notifications) {
   return {
     type: status
       ? add
@@ -11,7 +11,8 @@ export function toggleSideBar(status, add, profile) {
         : types.HIDE_SIDEBAR,
     isAdd: add,
     status: status,
-      profile: profile && !add
+    profile: profile && !add,
+    notifications: notifications
   };
 }
 

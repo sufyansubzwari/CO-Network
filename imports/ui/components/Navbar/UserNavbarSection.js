@@ -134,6 +134,15 @@ class UserNavbarSection extends React.Component {
     );
   }
 
+  onNotificationToggle(){
+    this.props.toggleSideBar(
+        !this.props.notificationsSideBarIsOpen,
+        false,
+        false,
+        !this.props.notificationsSideBarIsOpen
+    );
+  }
+
   render() {
     const isAuthenticated = this.props.curUser;
     const avatarLink = isAuthenticated ? "/profile" : "/";
@@ -211,6 +220,7 @@ class UserNavbarSection extends React.Component {
                       size: { width: 22, height: 24 }
                     }}
                     activeEval={this.activeEval}
+                    onClick={() => this.onNotificationToggle()}
                   />
                 </RenderCondition>
                 <RenderCondition>
@@ -231,14 +241,15 @@ const mapStateToProps = state => {
   const { sideBarStatus } = state;
   return {
     addSidebarIsOpen: sideBarStatus.status && sideBarStatus.isAdd,
-    profileSideBarIsOpen: sideBarStatus.status && sideBarStatus.profile
+    profileSideBarIsOpen: sideBarStatus.status && sideBarStatus.profile,
+    notificationsSideBarIsOpen: sideBarStatus.status && sideBarStatus.notifications
   };
 };
 
 const mapDispatchToProps = dispatch => {
   return {
-    toggleSideBar: (status, isAdd, profile) =>
-      dispatch(toggleSideBar(status, isAdd, profile)),
+    toggleSideBar: (status, isAdd, profile, notifications) =>
+      dispatch(toggleSideBar(status, isAdd, profile, notifications)),
     setFilterEntity: entityType => dispatch(setFilterEntity(entityType))
   };
 };
