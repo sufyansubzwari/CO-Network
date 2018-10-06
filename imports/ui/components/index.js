@@ -20,6 +20,7 @@ import EmptyList from "./EmptyList/EmptyList";
 import SpeakersSponsors from "./SpeakerSponsors/SpeakersSponsors";
 import FormMainLayout from "./FormMainLayout/FormMainLayout";
 import TicketTypes from "./TicketTypes/TicketTypes";
+import IndustrySector from "./IndustrySector/IndustrySector";
 
 // layouts
 import InternalLayout from "../layouts/InternalLayout/InternalLayout";
@@ -53,5 +54,6 @@ export {
   Messages,
   EmptyList,
   FormMainLayout,
-  TicketTypes
+  TicketTypes,
+  IndustrySector
 };

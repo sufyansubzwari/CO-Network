@@ -1,15 +1,13 @@
 import React from "react";
 import { MlWizardForm, WizardStepForm } from "btech-base-forms-component";
 import {
-  FirstStep,
-  SecondStep,
-  ThirdStep,
-  FourthStep,
   FifthStep,
-  SixthStep
+  FirstStep,
+  FourthStep,
+  SecondStep,
+  SixthStep,
+  ThirdStep
 } from "./Steps";
-
-import SeventhStep from "./Steps/SeventhStep";
 import PropTypes from "prop-types";
 
 class OrganizationForm extends React.Component {
@@ -62,8 +60,10 @@ class OrganizationForm extends React.Component {
           this.props.onFinish && this.props.onFinish(this.state.organization)
         }
         showProgress
-        editMode={this.state.organization._id && this.state.organization._id !== ""}
-        radioColor={'#000000'}
+        editMode={
+          this.state.organization._id && this.state.organization._id !== ""
+        }
+        radioColor={"#000000"}
         onCancel={() => this.props.onCancel && this.props.onCancel()}
       >
         <WizardStepForm title={"Details"}>
@@ -103,10 +103,10 @@ class OrganizationForm extends React.Component {
           />
         </WizardStepForm>
         {/*<WizardStepForm title={"CO Network Services"}>*/}
-          {/*<SeventhStep*/}
-            {/*data={this.state.organization}*/}
-            {/*onChange={organization => this.handleChange(organization)}*/}
-          {/*/>*/}
+        {/*<SeventhStep*/}
+        {/*data={this.state.organization}*/}
+        {/*onChange={organization => this.handleChange(organization)}*/}
+        {/*/>*/}
         {/*</WizardStepForm>*/}
       </MlWizardForm>
     );
