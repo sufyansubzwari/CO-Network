@@ -20,12 +20,6 @@ const SErrorMessage = styled.label`
   transition: all 0.2s ease-out;
 `;
 
-// const onAdd = (props, obj) => {
-//   props.onAdd(obj.label, "name");
-//   props.onAdd(obj.email, "email");
-// };
-// };
-
 class Speaker extends React.Component {
   constructor(props) {
     super(props);
