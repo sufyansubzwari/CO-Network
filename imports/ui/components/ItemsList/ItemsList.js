@@ -4,7 +4,7 @@ import CardItem from "../CardItem/CardItem";
 import EmptyList from "../EmptyList/EmptyList";
 import { theme } from "../../theme";
 import PropTypes from "prop-types";
-import { Layout, Container } from "btech-layout";
+import { Container, mixins } from "btech-layout";
 import styled from "styled-components";
 import { LOADINGDATA } from "./mockData";
 import NavMenu from "./components/navMenu";
@@ -12,10 +12,14 @@ import NavMenu from "./components/navMenu";
 const SListTitle = styled(Container)`
   font-family: ${props =>
     props.theme.texts.title.fontFamily || "Helvetica Neue LT Std"};
-  font-size: ${props => props.size || "18px"};
-  line-height: ${props => props.lineHeight || "26px"};
-  margin-bottom: 5px;
+  font-size: ${props => props.size || "14px"};
   zoom: 100%;
+  
+  ${mixins.media.desktop`
+    font-size: ${props => props.size || "18px"};
+    line-height: ${props => props.lineHeight || "26px"};
+    margin-bottom: 5px;
+  `}
 
   @media (min-width: 62em) {
     zoom: 80%;
