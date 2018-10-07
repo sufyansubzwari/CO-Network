@@ -96,9 +96,7 @@ class HomePage extends Component {
     const st = this.state.zoomStep;
     const newZoom = isPlus ? this.state.zoomMap + st : this.state.zoomMap - st;
     if (newZoom > 0)
-      this.setState({ zoomMap: newZoom }, () => {
-        console.log(this.state.zoomMap);
-      });
+      this.setState({ zoomMap: newZoom });
   }
 
   render() {
