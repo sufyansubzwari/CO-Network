@@ -22,6 +22,7 @@ import FormMainLayout from "./FormMainLayout/FormMainLayout";
 import TicketTypes from "./TicketTypes/TicketTypes";
 import IndustrySector from "./IndustrySector/IndustrySector";
 import Media from "./Media/Media";
+import Achievements from "./Achievements/Achievements";
 
 // layouts
 import InternalLayout from "../layouts/InternalLayout/InternalLayout";
@@ -57,5 +58,6 @@ export {
   FormMainLayout,
   TicketTypes,
   IndustrySector,
-  Media
+  Media,
+  Achievements
 };

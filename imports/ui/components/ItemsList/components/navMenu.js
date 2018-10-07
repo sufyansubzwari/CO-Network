@@ -7,12 +7,12 @@ import ItemsList from "../ItemsList";
 const SNav = styled.nav`
   font-family: ${props => props.fontFamily || "Helvetica Neue LT Std"};
   font-size: ${props => props.size || "14px"};
-  
+
   ${mixins.media.desktop`
     font-size: ${props => props.size || "18px"};
     line-height: ${props => props.lineHeight || "26px"};
     margin-bottom: 5px;
-  `}
+  `};
 `;
 
 const SLink = styled.a`

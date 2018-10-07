@@ -1,18 +1,13 @@
 import React from "react";
-import {
-  CheckBoxList,
-  InputAutoComplete,
-  TagList,
-  SwitchButton
-} from "btech-base-forms-component";
+import { CheckBoxList, SwitchButton } from "btech-base-forms-component";
 import { Container, Layout } from "btech-layout";
 import {
-    PREFERRED_STAGE,
-    LOOKING_FOR_DEFAULT_SPEAKER, TAG_LEVEL
+  LOOKING_FOR_DEFAULT_SPEAKER,
+  PREFERRED_STAGE
 } from "../../../../../constants";
 import { GetTags } from "../../../../../apollo-client/tag";
 import { Query } from "react-apollo";
-import { MLTagsInput } from "../../../../../components";
+import { FormMainLayout, MLTagsInput } from "../../../../../components";
 
 class SixthStep extends React.Component {
   constructor(props) {
@@ -111,180 +106,196 @@ class SixthStep extends React.Component {
 
   render() {
     return (
-      <Layout rowGap={"25px"}>
-        <SwitchButton
-          onChange={value => {
-            const user = this.state.user;
-            user.speaker.join = value;
-            this.setState({ user: user }, () => this.notifyParent());
-          }}
-          checked={this.state.user.speaker.join}
-          text={"Join the Speaker Directory"}
-          description={
-            "A forum for the exchange of transformation ideas in Science, Technology and Culture"
-          }
-        />
-        <Container>
-          <CheckBoxList
-            placeholderText={"Looking for"}
-            options={this.state.lookingfor}
-            checkboxVerticalSeparation={"10px"}
-            checkboxSize={"15px"}
-            getValue={actives => this.changeCategoryEvents(actives)}
-            columns={2}
+      <FormMainLayout>
+        <Container mt={"15px"}>
+          <SwitchButton
+            onChange={value => {
+              const user = this.state.user;
+              user.speaker.join = value;
+              this.setState({ user: user }, () => this.notifyParent());
+            }}
+            checked={this.state.user.speaker.join}
+            text={"Join the Speaker Directory"}
+            description={
+              "A forum for the exchange of transformation ideas in Science, Technology and Culture"
+            }
           />
-          <Layout customTemplateColumns={"1fr 1fr"}>
-              <Container>
-                  <Query query={GetTags} variables={{ tags: { type: "LookingFor" } }}>
-                      {({ loading, error, data }) => {
-                          if (loading) return <div></div>;
-                          if (error) return <div></div>;
-                          return (
-                              <Container mt={'25px'}>
-                                  <MLTagsInput
-                                      placeholderText={"Other"}
-                                      getAddedOptions={this.onAddTags.bind(
-                                          this,
-                                          "otherlooking",
-                                          "LookingFor"
-                                      )}
-                                      getNewAddedOptions={this.onAddTags.bind(
-                                          this,
-                                          "otherlooking",
-                                          "LookingFor"
-                                      )}
-                                      options={data.tags}
-                                      model={{ others: [] }}
-                                      name={"others"}
-                                      tags={
-                                          this.state.user.speaker && this.state.user.speaker.otherlooking
-                                              ? this.state.user.speaker.otherlooking.map(item => ({
-                                                  active: true,
-                                                  useIcon: true,
-                                                  levelColor: item.levelColor || "",
-                                                  icon: item.icon || "",
-                                                  level: item.level || "",
-                                                  ...item,
-                                                  showOptions: !item.levelColor
-                                              }))
-                                              : []
-                                      }
-                                      onCloseTags={(e, tag, index) =>
-                                          this.onCloseTags(e, tag, index, "otherlooking")
-                                      }
-                                  />
-                              </Container>
-                          );
-                      }}
-                  </Query>
-              </Container>
-            <div />
-          </Layout>
-          <div />
         </Container>
+        <Container hide={!this.state.user.speaker.join}>
           <Container>
-              <Query query={GetTags} variables={{ tags: { type: "Topic" } }}>
-                  {({ loading, error, data }) => {
-                      if (loading) return <div></div>;
-                      if (error) return <div></div>;
-                      return (
-                          <Container mt={'25px'}>
-                              <MLTagsInput
-                                  placeholderText={"Topics you speak about"}
-                                  getAddedOptions={this.onAddTags.bind(
-                                      this,
-                                      "topic",
-                                      "Topic"
-                                  )}
-                                  getNewAddedOptions={this.onAddTags.bind(
-                                      this,
-                                      "topic",
-                                      "Topic"
-                                  )}
-                                  options={data.tags}
-                                  model={{ others: [] }}
-                                  name={"others"}
-                                  tags={
-                                      this.state.user.speaker && this.state.user.speaker.topic
-                                          ? this.state.user.speaker.topic.map(item => ({
-                                              active: true,
-                                              useIcon: true,
-                                              levelColor: item.levelColor || "",
-                                              icon: item.icon || "",
-                                              level: item.level || "",
-                                              ...item,
-                                              showOptions: !item.levelColor
-                                          }))
-                                          : []
-                                  }
-                                  onCloseTags={(e, tag, index) =>
-                                      this.onCloseTags(e, tag, index, "topic")
-                                  }
-                              />
-                          </Container>
-                      );
-                  }}
-              </Query>
-          </Container>
-        <Container>
-          <CheckBoxList
-            placeholderText={"Preferred stage"}
-            options={this.state.preferred}
-            checkboxVerticalSeparation={"10px"}
-            checkboxSize={"15px"}
-            getValue={actives => this.changePreferredStages(actives)}
-            columns={2}
-          />
-          <Layout customTemplateColumns={"1fr 1fr"}>
+            <CheckBoxList
+              placeholderText={"Looking for"}
+              options={this.state.lookingfor}
+              checkboxVerticalSeparation={"10px"}
+              checkboxSize={"15px"}
+              getValue={actives => this.changeCategoryEvents(actives)}
+              columns={2}
+            />
+            <Layout mdCustomTemplateColumns={"1fr 1fr"}>
               <Container>
-                  <Query query={GetTags} variables={{ tags: { type: "Preferred" } }}>
-                      {({ loading, error, data }) => {
-                          if (loading) return <div></div>;
-                          if (error) return <div></div>;
-                          return (
-                              <Container mt={'25px'}>
-                                  <MLTagsInput
-                                      placeholderText={"Other"}
-                                      getAddedOptions={this.onAddTags.bind(
-                                          this,
-                                          "otherpreferred",
-                                          "Preferred"
-                                      )}
-                                      getNewAddedOptions={this.onAddTags.bind(
-                                          this,
-                                          "otherpreferred",
-                                          "Preferred"
-                                      )}
-                                      options={data.tags}
-                                      model={{ others: [] }}
-                                      name={"others"}
-                                      tags={
-                                          this.state.user.speaker && this.state.user.speaker.otherpreferred
-                                              ? this.state.user.speaker.otherpreferred.map(item => ({
-                                                  active: true,
-                                                  useIcon: true,
-                                                  levelColor: item.levelColor || "",
-                                                  icon: item.icon || "",
-                                                  level: item.level || "",
-                                                  ...item,
-                                                  showOptions: !item.levelColor
-                                              }))
-                                              : []
-                                      }
-                                      onCloseTags={(e, tag, index) =>
-                                          this.onCloseTags(e, tag, index, "otherpreferred")
-                                      }
-                                  />
-                              </Container>
-                          );
-                      }}
-                  </Query>
+                <Query
+                  query={GetTags}
+                  variables={{ tags: { type: "LookingFor" } }}
+                >
+                  {({ loading, error, data }) => {
+                    if (loading) return <div />;
+                    if (error) return <div />;
+                    return (
+                      <Container mt={"25px"}>
+                        <MLTagsInput
+                          placeholderText={"Other"}
+                          getAddedOptions={this.onAddTags.bind(
+                            this,
+                            "otherlooking",
+                            "LookingFor"
+                          )}
+                          getNewAddedOptions={this.onAddTags.bind(
+                            this,
+                            "otherlooking",
+                            "LookingFor"
+                          )}
+                          options={data.tags}
+                          model={{ others: [] }}
+                          name={"others"}
+                          tags={
+                            this.state.user.speaker &&
+                            this.state.user.speaker.otherlooking
+                              ? this.state.user.speaker.otherlooking.map(
+                                  item => ({
+                                    active: true,
+                                    useIcon: true,
+                                    levelColor: item.levelColor || "",
+                                    icon: item.icon || "",
+                                    level: item.level || "",
+                                    ...item,
+                                    showOptions: !item.levelColor
+                                  })
+                                )
+                              : []
+                          }
+                          onCloseTags={(e, tag, index) =>
+                            this.onCloseTags(e, tag, index, "otherlooking")
+                          }
+                        />
+                      </Container>
+                    );
+                  }}
+                </Query>
               </Container>
+              <div />
+            </Layout>
             <div />
-          </Layout>
-          <div />
+          </Container>
+          <Container>
+            <Query query={GetTags} variables={{ tags: { type: "Topic" } }}>
+              {({ loading, error, data }) => {
+                if (loading) return <div />;
+                if (error) return <div />;
+                return (
+                  <Container mt={"25px"}>
+                    <MLTagsInput
+                      placeholderText={"Topics you speak about"}
+                      getAddedOptions={this.onAddTags.bind(
+                        this,
+                        "topic",
+                        "Topic"
+                      )}
+                      getNewAddedOptions={this.onAddTags.bind(
+                        this,
+                        "topic",
+                        "Topic"
+                      )}
+                      options={data.tags}
+                      model={{ others: [] }}
+                      name={"others"}
+                      tags={
+                        this.state.user.speaker && this.state.user.speaker.topic
+                          ? this.state.user.speaker.topic.map(item => ({
+                              active: true,
+                              useIcon: true,
+                              levelColor: item.levelColor || "",
+                              icon: item.icon || "",
+                              level: item.level || "",
+                              ...item,
+                              showOptions: !item.levelColor
+                            }))
+                          : []
+                      }
+                      onCloseTags={(e, tag, index) =>
+                        this.onCloseTags(e, tag, index, "topic")
+                      }
+                    />
+                  </Container>
+                );
+              }}
+            </Query>
+          </Container>
+          <Container>
+            <CheckBoxList
+              placeholderText={"Preferred stage"}
+              options={this.state.preferred}
+              checkboxVerticalSeparation={"10px"}
+              checkboxSize={"15px"}
+              getValue={actives => this.changePreferredStages(actives)}
+              columns={2}
+            />
+            <Layout mdCustomTemplateColumns={"1fr 1fr"}>
+              <Container>
+                <Query
+                  query={GetTags}
+                  variables={{ tags: { type: "Preferred" } }}
+                >
+                  {({ loading, error, data }) => {
+                    if (loading) return <div />;
+                    if (error) return <div />;
+                    return (
+                      <Container mt={"25px"}>
+                        <MLTagsInput
+                          placeholderText={"Other"}
+                          getAddedOptions={this.onAddTags.bind(
+                            this,
+                            "otherpreferred",
+                            "Preferred"
+                          )}
+                          getNewAddedOptions={this.onAddTags.bind(
+                            this,
+                            "otherpreferred",
+                            "Preferred"
+                          )}
+                          options={data.tags}
+                          model={{ others: [] }}
+                          name={"others"}
+                          tags={
+                            this.state.user.speaker &&
+                            this.state.user.speaker.otherpreferred
+                              ? this.state.user.speaker.otherpreferred.map(
+                                  item => ({
+                                    active: true,
+                                    useIcon: true,
+                                    levelColor: item.levelColor || "",
+                                    icon: item.icon || "",
+                                    level: item.level || "",
+                                    ...item,
+                                    showOptions: !item.levelColor
+                                  })
+                                )
+                              : []
+                          }
+                          onCloseTags={(e, tag, index) =>
+                            this.onCloseTags(e, tag, index, "otherpreferred")
+                          }
+                        />
+                      </Container>
+                    );
+                  }}
+                </Query>
+              </Container>
+              <div />
+            </Layout>
+            <div />
+          </Container>
         </Container>
-      </Layout>
+      </FormMainLayout>
     );
   }
 }

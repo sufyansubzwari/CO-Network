@@ -1,6 +1,6 @@
 import React from "react";
 import { Layout } from "btech-layout";
-import Achievements from "../../../../../components/Achievements/Achievements";
+import { Achievements, FormMainLayout } from "../../../../../components";
 
 class FifthStep extends React.Component {
   constructor(props) {
@@ -33,12 +33,12 @@ class FifthStep extends React.Component {
 
   render() {
     return (
-      <Layout rowGap={"25px"}>
+      <FormMainLayout>
         <Achievements
           onChange={this.handleChange}
           achievements={this.state.user.achievements}
         />
-      </Layout>
+      </FormMainLayout>
     );
   }
 }

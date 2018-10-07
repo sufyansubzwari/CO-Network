@@ -1,6 +1,6 @@
 import React from "react";
 import { TextArea } from "btech-base-forms-component";
-import { Layout } from "btech-layout";
+import { FormMainLayout } from "../../../../../components";
 
 class SecondStep extends React.Component {
   constructor(props) {
@@ -31,7 +31,7 @@ class SecondStep extends React.Component {
 
   render() {
     return (
-      <Layout rowGap={"25px"}>
+      <FormMainLayout>
         <TextArea
           height={"100px"}
           model={this.state.user.aboutMe}
@@ -57,7 +57,7 @@ class SecondStep extends React.Component {
           }
           getValue={this.notifyParent.bind(this)}
         />
-      </Layout>
+      </FormMainLayout>
     );
   }
 }
