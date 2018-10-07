@@ -80,6 +80,7 @@ class AchievementsList extends React.Component {
       () => this.notifyParent()
     );
   }
+
   handleSave(index) {
     let ach = this.state.achievements;
     ach[index] = { ...ach[index], edit: false };
@@ -129,9 +130,6 @@ class AchievementsList extends React.Component {
     let elements = this.state.achievements.filter(
       item => item.type === this.props.type
     );
-
-    let edit = elements.filter(item => item.edit === true);
-
     return (
       <Container style={{ display: elements.length ? "block" : "none" }}>
         {elements.length ? (
