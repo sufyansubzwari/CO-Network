@@ -9,7 +9,7 @@ export default (Patents = function(props) {
   return (
     <Container marginX={"-10px"} style={{ background: "white" }}>
       <Layout rowGap={"10px"} style={{ background: "rgb(209,209,209,0.2)" }}>
-        <Layout templateColumns={2} colGap={"20px"}>
+        <Layout mdTemplateColumns={2} mdColGap={"20px"} rowGap={"5px"}>
           <Input
             placeholderText={"Patent ID"}
             name={"id"}
@@ -21,7 +21,7 @@ export default (Patents = function(props) {
             model={props.model}
           />
         </Layout>
-        <Layout templateColumns={2}>
+        <Layout mdTemplateColumns={2}>
           <Input
             placeholderText={"Patent Name"}
             model={props.model}

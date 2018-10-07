@@ -1,25 +1,19 @@
 import React from "react";
 import PropTypes from "prop-types";
-import { Layout, Container } from "btech-layout";
+import { Container, Layout } from "btech-layout";
 import styled from "styled-components";
-import { Button, Input, Select, TextArea } from "btech-base-forms-component";
+import { Button } from "btech-base-forms-component";
 import MaterialIcon from "react-material-iconic-font";
 import ProfessionalExperience from "./ProfessionalExperience";
 import AcademicBackground from "./AcademicBackground";
 import AuditedCourse from "./AuditedCourse";
 import Publications from "./Publications";
 import Patents from "./Patents";
-import LineSeparator from "./LineSeparator";
 
 const SLabel = styled.div`
   font-size: 12px;
   font-family: Roboto Mono, serif;
-  margin-left: 10px;
   font-weight: bold;
-`;
-
-const SContainer = styled(Container)`
-  font-size: 14px;
 `;
 
 const SItemContainer = styled(Container)`
@@ -27,28 +21,27 @@ const SItemContainer = styled(Container)`
 `;
 
 const SItem = styled(Layout)`
-  
   .buttons {
     opacity: 1;
-    transition: all 200ms ease-out; 
+    transition: all 200ms ease-out;
   }
-  
+
   :hover {
-      .buttons { opacity: 1;}
+    .buttons {
+      opacity: 1;
+    }
   }
-    
-  @media (min-width: 62em){
+
+  @media (min-width: 62em) {
     .buttons {
       opacity: 0;
     }
-  }   
+  }
 `;
-
 
 class AchievementsList extends React.Component {
   constructor(props) {
     super(props);
-
     this.state = {
       achievements:
         this.props.data && this.props.data.length ? this.props.data : [],
@@ -200,43 +193,43 @@ class AchievementsList extends React.Component {
                       customTemplateColumns={"1fr auto"}
                     >
                       <Container>{item.name}</Container>
-                        <Layout
-                          className={'buttons'}
-                          customTemplateColumns={"auto auto"}
-                          colGap={"5px"}
+                      <Layout
+                        className={"buttons"}
+                        customTemplateColumns={"auto auto"}
+                        colGap={"5px"}
+                      >
+                        <Button
+                          type={"button"}
+                          secondary
+                          height={"auto"}
+                          color={"black"}
+                          opacity={"0.5"}
+                          border={"none"}
+                          hoverBackground={"transparent"}
+                          hoverColor={"initial"}
+                          onClick={event => {
+                            event.preventDefault();
+                            this.handleChange(index);
+                          }}
+                          style={{ fontSize: "14px" }}
                         >
-                          <Button
-                            type={"button"}
-                            secondary
-                            height={"auto"}
-                            color={"black"}
-                            opacity={"0.5"}
-                            border={"none"}
-                            hoverBackground={"transparent"}
-                            hoverColor={"initial"}
-                            onClick={event => {
-                              event.preventDefault();
-                              this.handleChange(index);
-                            }}
-                            style={{ fontSize: "14px" }}
-                          >
-                            <MaterialIcon type={"edit"} />
-                          </Button>
-                          <Button
-                            type={"button"}
-                            secondary
-                            height={"auto"}
-                            color={"black"}
-                            opacity={"0.5"}
-                            border={"none"}
-                            hoverBackground={"transparent"}
-                            hoverColor={"initial"}
-                            onClick={() => this.handleRemove(index)}
-                            style={{ fontSize: "14px" }}
-                          >
-                            <MaterialIcon type={"delete"} />
-                          </Button>
-                        </Layout>
+                          <MaterialIcon type={"edit"} />
+                        </Button>
+                        <Button
+                          type={"button"}
+                          secondary
+                          height={"auto"}
+                          color={"black"}
+                          opacity={"0.5"}
+                          border={"none"}
+                          hoverBackground={"transparent"}
+                          hoverColor={"initial"}
+                          onClick={() => this.handleRemove(index)}
+                          style={{ fontSize: "14px" }}
+                        >
+                          <MaterialIcon type={"delete"} />
+                        </Button>
+                      </Layout>
                     </SItem>
                   )
                 ) : null
