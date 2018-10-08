@@ -2,7 +2,6 @@ import React from "react";
 import { Container, Layout, mixins } from "btech-layout";
 import styled from "styled-components";
 import { Scrollbars } from "react-custom-scrollbars";
-import { Separator } from "../../../components";
 import BackButton from "../../BackButton/BackButton";
 import { Button } from "btech-base-forms-component";
 import PropTypes from "prop-types";
@@ -126,14 +125,13 @@ const ItemsContainer = function(props) {
 export default ItemsContainer;
 
 ItemsContainer.defaultProps = {
-    title: 'Notifications',
-    subtitle: 'Across my network'
-}
-
+  title: "Notifications",
+  subtitle: "Across my network"
+};
 
 ItemsContainer.propTypes = {
   onClear: PropTypes.func,
   onClose: PropTypes.func,
-    title: PropTypes.string,
-    subtitle: PropTypes.string
+  title: PropTypes.string,
+  subtitle: PropTypes.string
 };
