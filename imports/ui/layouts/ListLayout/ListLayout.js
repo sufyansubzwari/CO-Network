@@ -70,7 +70,6 @@ class ListLayout extends Component {
               <TopSearchContainer
                 {...this.state}
                 background={"white"}
-                mt={{ md: "10px" }}
               >
                 <Layout
                   colGap={"10px"}
