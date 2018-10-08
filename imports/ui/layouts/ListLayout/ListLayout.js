@@ -57,6 +57,10 @@ class ListLayout extends Component {
     this.props.toggleSideBar(true);
   }
 
+  checkResolutionFirst() {
+    if (this.props.isMobile) this.onFilterToggle();
+  }
+
   render() {
     return (
       <InternalLayout>
@@ -95,10 +99,12 @@ class ListLayout extends Component {
                   ) : null}
                   <Container>
                     <TopSearcher
+                      isMobile={this.props.isMobile}
                       onSearchAction={(value, tags) =>
                         this.props.onSearchAction &&
                         this.props.onSearchAction(value, tags)
                       }
+                      onFocusSearch={() => this.checkResolutionFirst()}
                       onCreateAction={() => this.onAddToggle()}
                     />
                   </Container>

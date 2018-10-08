@@ -159,6 +159,7 @@ class ListEvents extends Component {
       (!this.props.data.events || !this.props.data.events.length);
     return (
       <ListLayout
+        {...this.props}
         entityType={"events"}
         onSearchAction={(text, tags) => this.onSearch(text, tags)}
       >

@@ -2,6 +2,7 @@ import React from "react";
 import styled from "styled-components";
 import { Button } from "btech-base-forms-component";
 import MaterialIcon from "react-material-iconic-font";
+
 /**
  * @module Data
  * @category Component
@@ -27,19 +28,18 @@ const Icon = styled.span`
  * @description This component is a wrapper for the react-table
  */
 const BackButton = function(props) {
-    // some logic
-    return (
-      <BackButtonStyled
-        secondary={true}
-        onClick={() => props.onClick && props.onClick()}
-        color={"black"}
-      >
-        <Icon>
-          <MaterialIcon type={"chevron-left"} />
-        </Icon>
-      </BackButtonStyled>
-    );
+  // some logic
+  return (
+    <BackButtonStyled
+      secondary={true}
+      onClick={() => props.onClick && props.onClick()}
+      color={"black"}
+    >
+      <Icon>
+        <MaterialIcon type={"chevron-left"} />
+      </Icon>
+    </BackButtonStyled>
+  );
 };
-
 
 export default BackButton;

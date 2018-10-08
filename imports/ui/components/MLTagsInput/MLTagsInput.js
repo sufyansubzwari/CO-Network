@@ -77,7 +77,7 @@ export default class MLTagsInput extends Component {
       active: props.active ? props.active : props.value !== "",
       valid: true,
       dropDownOpen: false,
-      options: this.props.options,
+      options: this.props.options || [],
       activeOption: -1,
       tags: this.props.tags
     };
@@ -107,6 +107,7 @@ export default class MLTagsInput extends Component {
 
   onFocus() {
     this.InputRef && this.InputRef.current && this.InputRef.current.focus();
+    this.props.onFocusAction && this.props.onFocusAction(this.InputRef);
   }
 
   toggleDropDown() {
@@ -290,6 +291,7 @@ MLTagsInput.propTypes = {
   fixLabel: PropsTypes.bool,
   iconClass: PropsTypes.string,
   getAddedOptions: PropsTypes.func,
+  onFocusAction: PropsTypes.func,
   getNewAddedOptions: PropsTypes.func,
   onCloseTags: PropsTypes.func,
   tags: PropsTypes.array,
