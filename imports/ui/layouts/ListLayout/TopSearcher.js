@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { Button } from "btech-base-forms-component";
-import { Layout, Container } from "btech-layout";
+import { Container, Layout } from "btech-layout";
 import PropTypes from "prop-types";
 import MaterialIcon from "react-material-iconic-font";
 import { MLTagsInput } from "../../components";
@@ -50,6 +50,7 @@ class TopSearcher extends Component {
       );
     }
   }
+
   onSearchText(value) {
     this.setState(
       { value: value },
@@ -80,16 +81,18 @@ class TopSearcher extends Component {
           <Container>
             <Query query={tags} fetchPolicy={"cache-and-network"}>
               {({ loading, error, data }) => {
-                if (loading) return <div />;
                 if (error) return <div>Error</div>;
                 return (
                   <MLTagsInput
-                    autoFocus
+                    autoFocus={!this.props.isMobile}
                     iconClass={"arrow-forward"}
                     inputPlaceholder={"Discover"}
                     getAddedOptions={value => this.onSearchTags(value)}
                     getNewAddedOptions={value => this.onSearchTags(value)}
                     fixLabel
+                    onFocusAction={() =>
+                      this.props.onFocusSearch && this.props.onFocusSearch()
+                    }
                     optionsLimit={9}
                     noAddNewTagsOnEnter={true}
                     onCloseTags={(e, tag, index) => {
@@ -132,13 +135,14 @@ class TopSearcher extends Component {
 
 TopSearcher.defaultProps = {
   suggestions: [],
-  tagsLimit: 4
+  tagsLimit: 5
 };
 
 TopSearcher.propTypes = {
   onCreateAction: PropTypes.func.isRequired,
   onSearchAction: PropTypes.func,
   suggestions: PropTypes.array,
+  onFocusSearch: PropTypes.func,
   tagsLimit: PropTypes.number
 };
 

@@ -75,6 +75,7 @@ class ColloquiumFilters extends React.Component {
   render() {
     return (
       <FiltersContainer
+        onSearchAction={(value, tags) => alert("change tags filters")}
         onClose={() => this.props.onClose && this.props.onClose()}
       >
         <FilterItem>

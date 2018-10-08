@@ -99,7 +99,8 @@ class MainLayout extends Component {
   render() {
     let props = this.props;
     const isSignUp = props.user ? props.user.profile.isSignUp : true;
-    let propsProvider = { curUser: props.user, isSignUp };
+    const isMobile = window.document.body.clientWidth <= 376;
+    let propsProvider = { curUser: props.user, isSignUp, isMobile };
     const contentPose = props.showSidebar ? "leftOpen" : "leftClose";
     this.props.setUser(this.props.user || null);
     return (

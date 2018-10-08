@@ -1,5 +1,5 @@
-import { EMAIL_REGEX } from "./regex.contant";
-import { PHONE_REGEX } from "./regex.contant";
+import { EMAIL_REGEX } from "./regex.constant";
+import { PHONE_REGEX } from "./regex.constant";
 import {
   COURSE_LEVEL,
   defaultFilter,
