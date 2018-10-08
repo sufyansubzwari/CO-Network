@@ -19,6 +19,7 @@ import { connect } from "react-redux";
 import { PreviewData } from "../../actions/PreviewActions";
 import { ViewsCountUpdate } from "../../apollo-client/viewCount";
 import { FollowAction } from "../../apollo-client/follow";
+import { INNOVATORS_TYPES } from "../../constants";
 
 /**
  * @module Events
@@ -35,24 +36,8 @@ class ListInnovators extends Component {
       limit: 10,
       filter: "",
       filterStatus: {},
-      currentTab: {
-        title: "Corporations",
-        value: "corporations"
-      },
-      navList: [
-        {
-          title: "Corporations",
-          value: "corporations"
-        },
-        // {
-        //   title: "Communities",
-        //   value: "communities"
-        // },
-        {
-          title: "Members",
-          value: "members"
-        }
-      ]
+      navList: INNOVATORS_TYPES,
+      currentTab: INNOVATORS_TYPES[0]
     };
     this.customRenderItem = this.customRenderItem.bind(this);
   }

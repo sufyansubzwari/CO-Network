@@ -20,7 +20,7 @@ export const FILTER_MY_VIEW = [
   { label: "Organizations", entity: "organization" }
 ];
 
-export const MESSAGES_SIDEBAR_OPTIONS = ['All', 'Unread', 'Read']
+export const MESSAGES_SIDEBAR_OPTIONS = ["All", "Unread", "Read"];
 
 export const POST_JOB_ACTION = [{ link: "/post-job?new", title: "POST JOB" }];
 
@@ -990,12 +990,17 @@ export const LOOKING_FOR_DEFAULT = [
 ];
 
 export const TAG_LEVEL = [
-  { value: "expert", label: "Expert", levelColor: "#FF1493", icon: "/images/icons/line3.svg" },
+  {
+    value: "expert",
+    label: "Expert",
+    levelColor: "#FF1493",
+    icon: "/images/icons/line3.svg"
+  },
   {
     value: "experienced",
     label: "Experienced",
     levelColor: "#464646",
-    icon: "/images/icons/line2.svg",
+    icon: "/images/icons/line2.svg"
   },
   {
     value: "entryLevel",
@@ -1055,4 +1060,19 @@ export const COLLOQUIUM_LEVEL = [
     label: "Beginner",
     value: "Beginner"
   }
+];
+
+export const INNOVATORS_TYPES = [
+  {
+    title: "Members",
+    value: "members"
+  },
+  {
+    title: "Corporations",
+    value: "corporations"
+  }
+  // {
+  //   title: "Communities",
+  //   value: "communities"
+  // }
 ];
