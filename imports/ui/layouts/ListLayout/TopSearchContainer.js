@@ -1,4 +1,4 @@
-import { Container } from "btech-layout";
+import { Container, mixins } from "btech-layout";
 import styled from "styled-components";
 
 /**
@@ -13,9 +13,13 @@ import styled from "styled-components";
 const TopSearchContainer = styled(Container)`
   padding: ${props => (!props.isOpenFilters ? "10px 66px" : "10px 48px")};
   box-shadow: ${props => "0 1px 0 0 " + props.theme.color.grey};
-  padding: 15px;
+  padding: 10px;
   zoom: 100%;
 
+  ${mixins.media.desktop`
+    padding: 15px;
+  `}
+  
   @media (min-width: 62em) {
     zoom: 80%;
   }

@@ -3,7 +3,7 @@ import { InputAutoComplete, Button } from "btech-base-forms-component";
 import { Layout, Container } from "btech-layout";
 import PropTypes from "prop-types";
 import MaterialIcon from "react-material-iconic-font";
-import { TagsInputAutoComplete as MLTagsInput } from "../../components";
+import { MLTagsInput } from "../../components";
 import { GetTags as tags } from "../../apollo-client/tag";
 import { Query } from "react-apollo";
 import { connect } from "react-redux";
@@ -72,7 +72,11 @@ class TopSearcher extends Component {
   render() {
     return (
       <Container background={"white"}>
-        <Layout colGap={"10px"} customTemplateColumns={"1fr auto"}>
+        <Layout
+          colGap={"10px"}
+          customTemplateColumns={"1fr"}
+          mdCustomTemplateColumns={"1fr auto"}
+        >
           <Container>
             <Query query={tags} fetchPolicy={"cache-and-network"}>
               {({ loading, error, data }) => {

@@ -9,12 +9,15 @@ import styled from "styled-components";
 import ListContainer from "./ListContainer";
 import TopSearchContainer from "./TopSearchContainer";
 import { connect } from "react-redux";
-import { setFilterEntity, toggleSideBar } from "../../actions/SideBarActions/index";
+import {
+  setFilterEntity,
+  toggleSideBar
+} from "../../actions/SideBarActions/index";
 
 const SListContainer = styled(Container)`
   ${mixins.media.desktop`
     border-right: ${props => "1px solid " + props.theme.color.grey};
-  `}
+  `};
 `;
 
 /**
@@ -30,8 +33,7 @@ class ListLayout extends Component {
     this.props.setFilterEntity(this.props.entityType);
   }
   componentWillReceiveProps(nextProps) {
-    if(nextProps.entityType)
-      this.props.setFilterEntity(this.props.entityType);
+    if (nextProps.entityType) this.props.setFilterEntity(this.props.entityType);
   }
 
   getComponent(key) {
@@ -39,8 +41,8 @@ class ListLayout extends Component {
     const needFilter = typeof element === "object" && element.length;
     return needFilter
       ? element.filter(function(comp) {
-        return comp && comp.key === key;
-      })
+          return comp && comp.key === key;
+        })
       : element.key === key
         ? element
         : null;
@@ -65,15 +67,20 @@ class ListLayout extends Component {
               customTemplateRows={"68px 1fr"}
               mdCustomTemplateRows={"65px 1fr"}
             >
-              <TopSearchContainer {...this.state} background={"white"}>
+              <TopSearchContainer
+                {...this.state}
+                background={"white"}
+                mt={{ md: "10px" }}
+              >
                 <Layout
                   colGap={"10px"}
-                  customTemplateColumns={
+                  customTemplateColumns={"1fr"}
+                  mdCustomTemplateColumns={
                     !this.props.sidebarIsOpen ? "auto 1fr" : "1fr"
                   }
                 >
                   {!this.props.sidebarIsOpen ? (
-                    <Container>
+                    <Container hide mdShow>
                       <Button
                         width={"44px"}
                         height={"44px"}
@@ -88,7 +95,10 @@ class ListLayout extends Component {
                   ) : null}
                   <Container>
                     <TopSearcher
-                      onSearchAction={(value, tags) => this.props.onSearchAction && this.props.onSearchAction(value, tags)}
+                      onSearchAction={(value, tags) =>
+                        this.props.onSearchAction &&
+                        this.props.onSearchAction(value, tags)
+                      }
                       onCreateAction={() => this.onAddToggle()}
                     />
                   </Container>
