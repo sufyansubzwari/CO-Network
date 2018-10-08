@@ -1,13 +1,13 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import { Layout, Container } from "btech-layout";
+import { Container, Layout } from "btech-layout";
 import styled from "styled-components";
 import MaterialIcon from "react-material-iconic-font";
 import {
+  Button,
   Input,
-  TextArea,
   SalaryRange,
-  Button
+  TextArea
 } from "btech-base-forms-component";
 import LineSeparator from "./LineSeparator";
 
@@ -81,19 +81,18 @@ class TicketItem extends Component {
           </Container>
           {this.props.isPaid ? (
             <SalaryRange
-
-                labelText={"Price Range"}
-                placeholder={"000"}
-                min={Number(this.state.ticket.min) || 0}
-                max={Number(this.state.ticket.max) || 0}
-                getValue={data => {
-                  const { min, max } = data;
-                  const ticket = this.state.ticket;
-                  ticket.min = min;
-                  ticket.max = max;
-                  this.setState({ ticket: ticket });
-                }}
-              />
+              labelText={"Price Range"}
+              placeholder={"000"}
+              min={Number(this.state.ticket.min) || 0}
+              max={Number(this.state.ticket.max) || 0}
+              getValue={data => {
+                const { min, max } = data;
+                const ticket = this.state.ticket;
+                ticket.min = min;
+                ticket.max = max;
+                this.setState({ ticket: ticket });
+              }}
+            />
           ) : null}
           <Container>
             <Layout customTemplateColumns={"1fr auto"}>

@@ -177,7 +177,6 @@ class JobsFilters extends React.Component {
                 () => this.props.setFilters("jobs", this.state.filters)
               );
             }}
-
           />
         </FilterItem>
         <Separator />

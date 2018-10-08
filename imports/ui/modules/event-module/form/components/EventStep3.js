@@ -102,31 +102,31 @@ class EventStep3 extends Component {
             mdCustomTemplateColumns={"70% auto"}
           >
             <SalaryRange
-                placeholder={"000"}
-                labelText={"Expected Attendees"}
-                min={
-                  this.state.event &&
-                  this.state.event.attenders &&
-                  this.state.event.attenders.min
-                }
-                max={
-                  this.state.event &&
-                  this.state.event.attenders &&
-                  this.state.event.attenders.max
-                }
-                getValue={data => {
-                  const { min, max } = data;
-                  const event = this.state.event;
-                  event.attenders = { min: min, max: max };
-                  this.setState(
-                    {
-                      event: event
-                    },
-                    () => this.notifyParent()
-                  );
-                }}
-              addChar={''}/>
-
+              placeholder={"000"}
+              labelText={"Expected Attendees"}
+              min={
+                this.state.event &&
+                this.state.event.attenders &&
+                this.state.event.attenders.min
+              }
+              max={
+                this.state.event &&
+                this.state.event.attenders &&
+                this.state.event.attenders.max
+              }
+              getValue={data => {
+                const { min, max } = data;
+                const event = this.state.event;
+                event.attenders = { min: min, max: max };
+                this.setState(
+                  {
+                    event: event
+                  },
+                  () => this.notifyParent()
+                );
+              }}
+              addChar={""}
+            />
           </Layout>
         </Container>
       </FormMainLayout>

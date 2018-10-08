@@ -5,9 +5,9 @@ import { JOB_TYPE, TAG_LEVEL } from "../../../../../constants";
 import { GetTags } from "../../../../../apollo-client/tag";
 import { Query } from "react-apollo";
 import {
-  MLTagsInput,
+  FormMainLayout,
   IndustrySector,
-  FormMainLayout
+  MLTagsInput
 } from "../../../../../components";
 
 class FourthStep extends React.Component {
@@ -255,7 +255,6 @@ class FourthStep extends React.Component {
                 () => this.notifyParent()
               );
             }}
-
           />
           <div />
         </Layout>

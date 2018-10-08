@@ -134,7 +134,6 @@ class ThirdStep extends React.Component {
                 () => this.notifyParent()
               );
             }}
-
           />
           <div />
         </Layout>

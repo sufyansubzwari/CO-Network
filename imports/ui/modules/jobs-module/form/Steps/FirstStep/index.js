@@ -1,12 +1,10 @@
 import React from "react";
 import {
-  WizardStepForm,
-  Input,
   CheckBoxList,
+  Input,
   SalaryRange,
-  TextArea,
-  InputAutoComplete,
-  TagList
+  TagList,
+  TextArea
 } from "btech-base-forms-component";
 import { GeoInputLocation } from "btech-location";
 import { Container, Layout } from "btech-layout";
@@ -14,7 +12,7 @@ import { JOB_TYPE, POSITION_TAGS } from "../../../../../constants";
 import PropTypes from "prop-types";
 import { Query } from "react-apollo";
 import { GetTags as tags } from "../../../../../apollo-client/tag";
-import { MLTagsInput, FormMainLayout } from "../../../../../components";
+import { FormMainLayout, MLTagsInput } from "../../../../../components";
 
 class FirstStep extends React.Component {
   constructor(props) {
@@ -197,7 +195,6 @@ class FirstStep extends React.Component {
                 () => this.notifyParent()
               );
             }}
-
           />
         </Container>
         <Container>

@@ -177,7 +177,6 @@ class EventsFilters extends React.Component {
                 () => this.props.setFilters("events", this.state.filters)
               );
             }}
-
           />
         </FilterItem>
         <Separator />
