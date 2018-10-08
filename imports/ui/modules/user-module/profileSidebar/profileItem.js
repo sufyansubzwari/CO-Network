@@ -11,13 +11,12 @@ import { Container, mixins } from "btech-layout";
  * Using "theme" to define our style
  */
 
-const FilterItem = styled(Container)`
-  padding: 10px;
+const ProfileItem = styled(Container)`
+  padding: 5px 10px 10px;
   zoom: 100%;
 
   ${mixins.media.desktop`
     padding: 20px 10px;
-    margin-right: 10px;
   `}
   
   @media (min-width: 62em) {
@@ -29,4 +28,4 @@ const FilterItem = styled(Container)`
   }
 `;
 
-export default FilterItem;
+export default ProfileItem;

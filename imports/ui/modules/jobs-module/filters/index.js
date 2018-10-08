@@ -2,24 +2,20 @@ import React from "react";
 import { Layout } from "btech-layout";
 import { GeoInputLocation } from "btech-location";
 import {
-  FiltersContainer,
   BigTag,
-  Separator,
-  FilterItem
+  FilterItem,
+  FiltersContainer,
+  Separator
 } from "../../../components";
+import { CheckBoxList, SalaryRange } from "btech-base-forms-component";
 import {
-  SalaryRange,
-  CheckBoxList,
-  InputAutoComplete
-} from "btech-base-forms-component";
-import {
-  JOB_TYPE_NUMBER,
-  EXPERIENCE_REQUIERED_NUMBER
+  EXPERIENCE_REQUIERED_NUMBER,
+  JOB_TYPE_NUMBER
 } from "../../../constants";
 import PropsTypes from "prop-types";
 import { cleanFilters, setFilters } from "../../../actions/SideBarActions";
 import { connect } from "react-redux";
-import { JobCounts, GetMyJobs } from "../../../apollo-client/job";
+import { GetMyJobs, JobCounts } from "../../../apollo-client/job";
 import { Query } from "react-apollo";
 import { Meteor } from "meteor/meteor";
 
@@ -260,7 +256,6 @@ class JobsFilters extends React.Component {
             }}
           </Query>
         </FilterItem>
-        <Separator />
       </FiltersContainer>
     );
   }

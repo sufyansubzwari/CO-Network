@@ -35,7 +35,6 @@ const SIconContainer = styled.span`
 const HNavBarButtons = function(props) {
   const size = { width: 38, height: 45 };
   const notSize = { width: 30, height: 34 };
-  const avatarLink = props.curUser ? "/profile" : "/";
   const hideIcons = props.isOpen || !props.curUser;
   return (
     <Container paddingX={"15px"}>
@@ -89,10 +88,11 @@ const HNavBarButtons = function(props) {
           </Container>
         </SContainerIcon>
         <SContainerIcon>
-          <Container hide={hideIcons}>
-            <Link to={avatarLink}>
-              <NavbarUserButton size={size} />
-            </Link>
+          <Container
+            hide={hideIcons}
+            onClick={() => props.onUserToggle && props.onUserToggle()}
+          >
+            <NavbarUserButton size={size} />
           </Container>
         </SContainerIcon>
       </Layout>
@@ -107,6 +107,7 @@ HNavBarButtons.defaultProps = {
 HNavBarButtons.propTypes = {
   onToggleNavBar: PropTypes.func,
   onAddToggle: PropTypes.func,
+  onUserToggle: PropTypes.func,
   onMessageToggle: PropTypes.func,
   onNotificationToggle: PropTypes.func,
   curUser: PropTypes.object,
