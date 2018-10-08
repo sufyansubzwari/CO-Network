@@ -9,80 +9,84 @@ import ReportToggle from "./ReportToggle";
 import { PlaceHolder } from "btech-placeholder-component";
 
 const TitleCardContainer = Styled.div`
-    font-family: Helvetica Neue LT Std;
-    font-size: 14px;
-    font-weight: bold;
-    
-    ${mixins.media.desktop`
-      font-size: 18px;
-    `};
+  font-family: Helvetica Neue LT Std;
+  font-size: 14px;
+  font-weight: bold;
+  
+  ${mixins.media.desktop`
+    font-size: 18px;
+  `};
 `;
 
 const SKeyContainer = Styled.span`
-    font-size: 12px;
-    
-    ${mixins.media.desktop`
-      font-size: 14px;
-      line-height: 18px;
-    `};
+  font-size: 12px;
+  
+  ${mixins.media.desktop`
+    font-size: 14px;
+    line-height: 18px;
+  `};
 `;
 
 const SIconContainer = Styled.span`
-    font-size: 12px;
-    margin-right: 5px;
-    
-    ${mixins.media.desktop`
-      font-size: 14px;
-      line-height: 18px;
-    `};
+  font-size: 12px;
+  margin-right: 5px;
+  
+  ${mixins.media.desktop`
+    font-size: 14px;
+    line-height: 18px;
+  `};
 `;
 
 const SubTitleCardContainer = Styled.div`
-    font-size: 12px;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    
-    ${mixins.media.desktop`
-      font-size: 14px;
-    `};
+  font-size: 12px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  
+  ${mixins.media.desktop`
+    font-size: 14px;
+  `};
 `;
 
 const SMLCard = Styled(Card)`
-    line-height: inherit;
+  line-height: inherit;
 `;
 
 const EmptyTagsContainer = Styled.div`
-    min-height: 32px;
+  min-height: 32px;
 `;
 
 const NullImageContainer = Styled.div`
-    font-family: Helvetica Neue LT Std;
-    position: absolute;
-    font-weight: 700;
-    color: white;
-    bottom: 0;
-    font-size: 12px;
-    left: 0;
-    
-    ${mixins.media.desktop`
-      bottom: 10px;
-      font-size: 15px;
-      left: 10px;
-    `};
+  font-family: Helvetica Neue LT Std;
+  position: absolute;
+  font-weight: 700;
+  color: white;
+  bottom: 0;
+  font-size: 12px;
+  left: 0;
+  
+  ${mixins.media.desktop`
+    bottom: 10px;
+    font-size: 15px;
+    left: 10px;
+  `};
 `;
 
 const SCardContainer = Styled(Container)`
-    zoom: 100%;
-    cursor: pointer;
-    
-    @media (min-width: 62em) {
-      zoom: 80%;
-    }
+  zoom: 100%;
+  cursor: pointer;
   
-    @media (min-width: 86em) {
-      zoom: 100%;
-    }
+  @media (min-width: 62em) {
+    zoom: 80%;
+  }
+
+  @media (min-width: 86em) {
+    zoom: 100%;
+  }
+`;
+
+const SImage = Styled.img`
+  position: absolute;
 `;
 
 /**
@@ -211,7 +215,7 @@ class CardItem extends Component {
     const imageElement = loading ? (
       <PlaceHolder rect loading={loading} height={398} width={395} />
     ) : (
-      <img width="100%" height="100%" src={this.props.image} />
+      <SImage width="100%" height="100%" src={this.props.image} />
     );
     return this.props.image && this.props.image ? (
       <Container relative fullView>

@@ -89,7 +89,11 @@ class FiltersContainer extends Component {
 
   render() {
     return (
-      <SContainer fullY customTemplateRows={"auto 1fr"}>
+      <SContainer
+        fullY
+        customTemplateRows={"68px 1fr"}
+        mdCustomTemplateRows={"auto 1fr"}
+      >
         <STitleLayout
           customTemplateColumns={"auto 1fr"}
           colGap={"5px"}
