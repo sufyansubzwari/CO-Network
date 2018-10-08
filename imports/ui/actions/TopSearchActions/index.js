@@ -1,15 +1,15 @@
 import * as types from "./types";
 
-export function onSearchTags(filters) {
+export function onSearchTags(tag) {
   return {
     type: types.ON_SEARCH,
-    filters: filters
+    tag: tag
   };
 }
 
 export function cleanSearch() {
   return {
     type: types.CLEAN_SEARCH,
-    filters: null
+    tag: null
   };
 }

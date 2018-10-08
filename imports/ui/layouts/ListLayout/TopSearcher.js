@@ -8,6 +8,7 @@ import { GetTags as tags } from "../../apollo-client/tag";
 import { Query } from "react-apollo";
 import { connect } from "react-redux";
 import { cleanSearch, onSearchTags } from "../../actions/TopSearchActions";
+import * as type from "../../actions/TopSearchActions/types";
 
 /**
  * @module Data
@@ -18,15 +19,45 @@ class TopSearcher extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      value: ""
+      value: "",
+      tags: []
     };
   }
 
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.tags) {
+      this.setState({ tags: nextProps.tags });
+    }
+    if (
+      nextProps.tagSelected &&
+      nextProps.tagSelected.type === type.ON_SEARCH
+    ) {
+      this.addTagFromOutside(nextProps.tagSelected.tag);
+    }
+  }
+
+  addTagFromOutside(tag) {
+    let tags = this.state.tags;
+    let tagExist = tags.some(item => item.label === tag.label);
+    if (!tagExist) {
+      tags.push(tag);
+    }
+  }
+
+  //Todo:  change this to send words filters and tags filters
   onSearchChange(value) {
+    const tags = this.state.tags;
+    tags.push(value);
     this.setState(
-      { value: value.value },
+      { value: value.value, tags: tags },
       () => this.props.onSearchAction && this.props.onSearchAction(value.value)
     );
+  }
+
+  onCloseTags(e, tag, index) {
+    //Todo: Notify parent on closing tags!!
+    this.state.tags.splice(index, 1);
+    this.setState({ tags: this.state.tags });
   }
 
   render() {
@@ -53,10 +84,8 @@ class TopSearcher extends Component {
                     }
                     options={data.tags}
                     tags={
-                      this.state.job &&
-                      this.state.job.positionTags &&
-                      this.state.job.positionTags.length > 0
-                        ? this.state.job.positionTags.map(item => ({
+                      this.state.tags && this.state.tags.length
+                        ? this.state.tags.map(item => ({
                             active: true,
                             ...item
                           }))
@@ -110,13 +139,13 @@ TopSearcher.propTypes = {
 const mapStateToProps = state => {
   const { topSearch } = state;
   return {
-    topSearch: topSearch
+    tagSelected: topSearch.tag
   };
 };
 
 const mapDispatchToProps = dispatch => {
   return {
-    onSearchTags: filter => dispatch(onSearchTags(filter)),
+    onSearchTags: tag => dispatch(onSearchTags(tag)),
     cleanSearch: () => dispatch(cleanSearch())
   };
 };

@@ -8,6 +8,7 @@ import { DeleteEvent, GetEvents, UpdateImageEvent } from "../../apollo-client/ev
 import { FollowAction } from "../../apollo-client/follow";
 import { ViewsCountUpdate } from "../../apollo-client/viewCount";
 import { withRouter } from "react-router-dom";
+import {cleanSearch, onSearchTags} from "../../actions/TopSearchActions";
 
 /**
  * @module Events
@@ -140,6 +141,10 @@ class ListEvents extends Component {
     });
   }
 
+  onSelectTag(tag){
+    this.props.onSearchTags(tag);
+  }
+
   render() {
     const isLoading =
       this.props.data.loading &&
@@ -157,6 +162,7 @@ class ListEvents extends Component {
               onSelectCard={(item, key) =>
                 this.onChangeSelection(item, key, viewsUpdate)
               }
+              onSelectTag={(tag, index) => this.onSelectTag(tag, index)}
             />
           )}
         </Mutation>
@@ -295,6 +301,8 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
   return {
+    onSearchTags: tag => dispatch(onSearchTags(tag)),
+    cleanSearch: () => dispatch(cleanSearch()),
     sendPreviewData: (item, key, type) => dispatch(PreviewData(item, key, type))
   };
 };

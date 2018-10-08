@@ -2,7 +2,7 @@ import * as type from "../../../actions/TopSearchActions/types";
 
 const initial = {
   type: null,
-  filters: null
+  tag: null
 };
 
 
