@@ -2,8 +2,6 @@ import { WebAuth, Management } from "auth0-js/dist/auth0";
 import { Meteor } from "meteor/meteor";
 import react from "react";
 import Axios from "axios";
-import { userQuery } from "../../apollo-client/user";
-import { Accounts } from "meteor/accounts-base";
 
 class Authorization extends react.Component {
   constructor() {
@@ -156,9 +154,22 @@ class Authorization extends react.Component {
     });
   }
 
-  linkAccountCallback(authResult, service, callback) {
+  async linkAccountCallback(authResult, service, callback) {
     localStorage.setItem(service, authResult.idTokenPayload.sub);
-    this.linkAccount(authResult.idToken, callback);
+    //Verify if account exist in the system
+    const exist = await this.verifyUserExist(authResult.idTokenPayload.sub);
+    if (exist) {
+      //Todo: return error
+    } else this.linkAccount(authResult.idToken, callback);
+  }
+
+  async verifyUserExist(idToken) {
+    return await new Promise((resolve, reject) =>
+      Meteor.call("users.findUser", idToken, (error, result) => {
+        if (error) return reject(error);
+        resolve(result.length > 0);
+      })
+    );
   }
 
   linkAccount(secondaryIdToken, callback) {
