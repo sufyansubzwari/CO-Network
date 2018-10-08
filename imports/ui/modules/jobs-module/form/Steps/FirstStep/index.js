@@ -197,7 +197,7 @@ class FirstStep extends React.Component {
                 () => this.notifyParent()
               );
             }}
-            addChar={'$'}
+
           />
         </Container>
         <Container>

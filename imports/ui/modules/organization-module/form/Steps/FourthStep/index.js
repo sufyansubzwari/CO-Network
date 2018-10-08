@@ -255,7 +255,7 @@ class FourthStep extends React.Component {
                 () => this.notifyParent()
               );
             }}
-            addChar={'$'}
+
           />
           <div />
         </Layout>
