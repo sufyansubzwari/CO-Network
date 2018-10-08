@@ -15,6 +15,7 @@ import {
     Dropdown
 } from "reactstrap";
 import {theme} from "../../../theme";
+import {MESSAGES_SIDEBAR_OPTIONS} from "../../../constants";
 
 const SLabel = styled(Label)`
     display: flex;
@@ -57,7 +58,7 @@ class MessagesSidebar extends React.Component {
             "https://platform-lookaside.fbsbx.com/platform/profilepic/?asid=977488369126162&height=50&width=50&ext=1540656370&hash=AeQ0pwHoOv1S_-06",
           user: "Tristen",
           description:
-            "Lorem ipsum dolor nostra, per inceptos himenaeos lorem upsum dolorem. Lorem per inceptos himenaeos.",
+            "Lorem ipsum dolor nostra, per inceptos himenaeos lorem upsum dolorem.",
           entity: "ML Society",
           time: new Date().toLocaleTimeString([], {
             hour: "2-digit",
@@ -70,7 +71,7 @@ class MessagesSidebar extends React.Component {
           image: "",
           user: "Tristen1",
           description:
-            "Lorem ipsum dolor nostra, per inceptos himenaeos, lorem ipsum dolorem. Lorem ipsum himenaeos.",
+            "Lorem ipsum dolor nostra, per inceptos himenaeos.",
           entity: "ML Society",
           time: new Date().toLocaleTimeString([], {
             hour: "2-digit",
@@ -180,9 +181,7 @@ class MessagesSidebar extends React.Component {
                       <MaterialIcon type={'chevron-down'}/>
                   </DropdownToggle>
                   <DropdownMenu>
-                      <SDropdownItem onClick={() => this.setState({read: 'All'})}>All</SDropdownItem>
-                      <SDropdownItem onClick={() => this.setState({read: 'Unread'})}>Unread</SDropdownItem>
-                      <SDropdownItem onClick={() => this.setState({read: 'Read'})}>Read</SDropdownItem>
+                      {MESSAGES_SIDEBAR_OPTIONS.map( (option, index) => <SDropdownItem key={index} onClick={() => this.setState({read: option})}>{option}</SDropdownItem> )}
                   </DropdownMenu>
                 </Dropdown>
             </Container>
