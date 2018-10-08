@@ -20,6 +20,7 @@ import { PreviewData } from "../../actions/PreviewActions";
 import { ViewsCountUpdate } from "../../apollo-client/viewCount";
 import { FollowAction } from "../../apollo-client/follow";
 import { INNOVATORS_TYPES } from "../../constants";
+import { cleanSearch, onSearchTags } from "../../actions/TopSearchActions";
 
 /**
  * @module Events
@@ -121,63 +122,58 @@ class ListInnovators extends Component {
   }
 
   customRenderItem(item, key, isLoading, viewsUpdate) {
-    switch (this.state.currentTab.value) {
-      case "corporations":
-        return (
-          <CardItem
-            lgCustomTemplateColumns={"155px 1fr"}
-            onSelect={() => this.onChangeSelection(item, key, viewsUpdate)}
-            isActive={
-              this.state.selectedIndex !== null
-                ? this.state.selectedIndex === key
-                : false
-            }
-            data={item}
-            loading={isLoading}
-            title={item.name}
-            subTitle={item.reason ? item.reason.bio : ""}
-            image={item.image || null}
-            tags={item.description || []}
-            views={item.views}
-            key={key}
-          />
-        );
-      case "members":
-        return (
-          <CardItem
-            lgCustomTemplateColumns={"155px 1fr"}
-            onSelect={() => this.onChangeSelection(item, key, viewsUpdate)}
-            isActive={
-              this.state.selectedIndex !== null
-                ? this.state.selectedIndex === key
-                : false
-            }
-            data={item}
-            loading={isLoading}
-            title={
-              item.profile && item.profile.name + " " + item.profile.lastName
-            }
-            subTitle={
-              (item.profile &&
-                item.profile.aboutMe &&
-                item.profile.aboutMe.yourPassion) ||
-              ""
-            }
-            image={(item.profile && item.profile.image) || null}
-            tags={
-              (item.profile &&
-                item.profile.knowledge &&
-                item.profile.knowledge.languages &&
-                item.profile.knowledge.languages.map(item => item.tag)) ||
-              []
-            }
-            views={item.views}
-            key={key}
-          />
-        );
+    switch ( this.state.currentTab.value ) {
+      case "corporations" :
+      return (<CardItem
+        lgCustomTemplateColumns={"155px 1fr"}
+        onSelect={() => this.onChangeSelection(item, key, viewsUpdate)}
+        isActive={
+          this.state.selectedIndex !== null
+            ? this.state.selectedIndex === key
+            : false
+        }
+        data={item}
+        loading={isLoading}
+        title={item.name}
+        subTitle={item.reason ? item.reason.bio : ""}
+        image={item.image || null}
+        tags={item.description || []}
+        views={item.views}
+        key={key}
+      onSelectTag={(tag, index) => this.onSelectTag(tag, index)}/>
+    ) ;
+      case "members" :
+      return (<CardItem
+        lgCustomTemplateColumns={"155px 1fr"}
+        onSelect={() => this.onChangeSelection(item, key, viewsUpdate)}
+        isActive={
+          this.state.selectedIndex !== null
+            ? this.state.selectedIndex === key
+            : false
+        }
+        data={item}
+        loading={isLoading}
+        title={item.profile && item.profile.name + " " + item.profile.lastName}
+        subTitle={
+          (item.profile &&
+            item.profile.aboutMe &&
+            item.profile.aboutMe.yourPassion) ||
+          ""
+        }
+        image={(item.profile && item.profile.image) || null}
+        tags={
+          (item.profile &&
+            item.profile.knowledge &&
+            item.profile.knowledge.languages &&
+            item.profile.knowledge.languages.map(item => item.tag)) ||
+          []
+        }
+        views={item.views}
+        key={key}onSelectTag={(tag, index) => this.onSelectTag(tag, index)}
+      />
+    ) ;
       default:
-        return null;
-    }
+        return null;}
   }
 
   editOrg() {
@@ -187,10 +183,6 @@ class ListInnovators extends Component {
     this.props.history.push("/post-organization", {
       organization: org
     });
-  }
-
-  onSearch(value) {
-    this.setState({ filter: value }, () => this.reFetchQuery());
   }
 
   handleBackgroundChange(updateOrgImages, src) {
@@ -252,6 +244,25 @@ class ListInnovators extends Component {
     });
   }
 
+  onSelectTag(tag) {
+    this.props.onSearchTags(tag);
+  }
+
+  onSearch(value, tags) {
+    let tagsFilters = {};
+    if (this.state.currentTab.value === "corporations")
+      tags.length
+        ? (tagsFilters.description = { in: tags.map(item => item._id) })
+        : null;
+    if (this.state.currentTab.value === "members")
+      tags.length
+        ? (tagsFilters.profile_DOT_knowledge_DOT_languages_DOT_tag = { in: tags.map(item => item._id) })
+        : null;
+    this.setState({ filter: value, filterStatus: tagsFilters }, () =>
+      this.reFetchQuery()
+    );
+  }
+
   render() {
     let data = [];
     let isLoading = true;
@@ -273,7 +284,7 @@ class ListInnovators extends Component {
     return (
       <ListLayout
         entityType={this.state.currentTab.value}
-        onSearchText={this.onSearch.bind(this)}
+        onSearchAction={(text, tags) => this.onSearch(text, tags)}
       >
         <Mutation key={"listComponent"} mutation={ViewsCountUpdate}>
           {(viewsUpdate, {}) => (
@@ -450,6 +461,8 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
   return {
+    onSearchTags: tag => dispatch(onSearchTags(tag)),
+    cleanSearch: () => dispatch(cleanSearch()),
     sendPreviewData: (item, key, type) => dispatch(PreviewData(item, key, type))
   };
 };

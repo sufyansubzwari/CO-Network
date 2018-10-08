@@ -76,6 +76,7 @@ class ItemsList extends Component {
         views={item.views}
         key={key}
         data={item}
+        onSelectTag={this.props.onSelectTag}
       />
     );
   }
@@ -126,7 +127,8 @@ ItemsList.propTypes = {
   renderItem: PropTypes.func,
   onSelectCard: PropTypes.func,
   navList: PropTypes.array,
-  getNavActive: PropTypes.func
+  getNavActive: PropTypes.func,
+  onSelectTag: PropTypes.func
 };
 
 export default ItemsList;

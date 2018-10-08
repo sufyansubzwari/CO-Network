@@ -4,10 +4,15 @@ import { graphql, Mutation } from "react-apollo";
 import { connect } from "react-redux";
 import { PreviewData } from "../../actions/PreviewActions";
 import EventPreviewBody from "../../components/Preview/EventPreviewBody";
-import { DeleteEvent, GetEvents, UpdateImageEvent } from "../../apollo-client/event";
+import {
+  DeleteEvent,
+  GetEvents,
+  UpdateImageEvent
+} from "../../apollo-client/event";
 import { FollowAction } from "../../apollo-client/follow";
 import { ViewsCountUpdate } from "../../apollo-client/viewCount";
 import { withRouter } from "react-router-dom";
+import { cleanSearch, onSearchTags } from "../../actions/TopSearchActions";
 
 /**
  * @module Events
@@ -115,8 +120,12 @@ class ListEvents extends Component {
     console.log("Error to change the image");
   }
 
-  onSearch(value) {
-    this.setState({ filter: value }, () => this.reFetchQuery());
+  onSearch(value, tags) {
+    let tagsFilters = {};
+    tags.length ? tagsFilters.category = { in: tags.map(item => item._id) } : null;
+    this.setState({ filter: value, filterStatus: tagsFilters }, () =>
+      this.reFetchQuery()
+    );
   }
 
   handleFollow(followAction, follow) {
@@ -140,12 +149,19 @@ class ListEvents extends Component {
     });
   }
 
+  onSelectTag(tag) {
+    this.props.onSearchTags(tag);
+  }
+
   render() {
     const isLoading =
       this.props.data.loading &&
       (!this.props.data.events || !this.props.data.events.length);
     return (
-      <ListLayout entityType={"events"} onSearchText={this.onSearch.bind(this)}>
+      <ListLayout
+        entityType={"events"}
+        onSearchAction={(text, tags) => this.onSearch(text, tags)}
+      >
         <Mutation key={"listComponent"} mutation={ViewsCountUpdate}>
           {(viewsUpdate, {}) => (
             <ItemsList
@@ -157,6 +173,7 @@ class ListEvents extends Component {
               onSelectCard={(item, key) =>
                 this.onChangeSelection(item, key, viewsUpdate)
               }
+              onSelectTag={(tag, index) => this.onSelectTag(tag, index)}
             />
           )}
         </Mutation>
@@ -194,7 +211,7 @@ class ListEvents extends Component {
                               this.state.selectedItem &&
                               this.state.selectedItem.followerList
                                 ? this.state.selectedItem.followerList.length +
-                                " Followers"
+                                  " Followers"
                                 : null
                           },
                           {
@@ -295,6 +312,8 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
   return {
+    onSearchTags: tag => dispatch(onSearchTags(tag)),
+    cleanSearch: () => dispatch(cleanSearch()),
     sendPreviewData: (item, key, type) => dispatch(PreviewData(item, key, type))
   };
 };

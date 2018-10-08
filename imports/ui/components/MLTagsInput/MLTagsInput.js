@@ -19,8 +19,7 @@ const SDropDownMenu = styled(DropdownMenu)`
 `;
 
 const SContainer = styled.div`
-  margin-top: 25px;
-  position: relative;
+  ${props => (props.marginTop ? "margin-top: 25px;" : "")} position: relative;
   background: #ffffff;
   height: auto;
   width: 100%;
@@ -123,13 +122,17 @@ export default class MLTagsInput extends Component {
   }
 
   onAddNewOption() {
-    const tag = {
-      label: this.state.value,
-      value: this.state.value,
-      name: this.state.value
-    };
-    this.props.getNewAddedOptions && this.props.getNewAddedOptions(tag);
-    !this.props.keepText ? this.setState({ value: "" }) : null;
+    if (this.props.noAddNewTagsOnEnter) {
+      this.props.onSearch && this.props.onSearch(this.state.value);
+    } else {
+      const tag = {
+        label: this.state.value,
+        value: this.state.value,
+        name: this.state.value
+      };
+      this.props.getNewAddedOptions && this.props.getNewAddedOptions(tag);
+      !this.props.keepText ? this.setState({ value: "" }) : null;
+    }
   }
 
   onKeyDown(event) {
@@ -150,31 +153,36 @@ export default class MLTagsInput extends Component {
         event.preventDefault();
         this.setState({ activeOption: this.state.activeOption - 1 });
       }
-      if (
-        event.key === "Enter" &&
-        this.state.dropDownOpen &&
-        this.state.activeOption !== -1
-      ) {
+      if (event.key === "Enter" && this.state.dropDownOpen) {
         event.preventDefault();
-        this.onAddOption(this.state.options[this.state.activeOption]);
         this.toggleDropDown();
+        if (this.state.activeOption !== -1) {
+          this.onAddOption(this.state.options[this.state.activeOption]);
+        } else {
+          this.onAddNewOption();
+        }
       }
     }
   }
 
   render() {
     return (
-      <SContainer onClick={() => this.onFocus()}>
-        <SLabel
-          inactive={!this.state.active}
-          onClick={() => this.onFocus()}
-          fontSize={this.props.fontSize}
-          fontFamily={this.props.fontFamily}
-          fontWeight={this.props.fontWeight}
-        >
-          {this.props.placeholderText}
-          {this.props.required ? <SRequiredLabel>*</SRequiredLabel> : null}
-        </SLabel>
+      <SContainer
+        marginTop={!!this.props.placeholderText}
+        onClick={() => this.onFocus()}
+      >
+        {this.props.placeholderText ? (
+          <SLabel
+            inactive={!this.state.active}
+            onClick={() => this.onFocus()}
+            fontSize={this.props.fontSize}
+            fontFamily={this.props.fontFamily}
+            fontWeight={this.props.fontWeight}
+          >
+            {this.props.placeholderText}
+            {this.props.required ? <SRequiredLabel>*</SRequiredLabel> : null}
+          </SLabel>
+        ) : null}
         <InputGroup style={{ height: "auto", padding: "4px 8px" }}>
           <InputGroupAddon addonType="prepend">
             <TagList
@@ -184,8 +192,9 @@ export default class MLTagsInput extends Component {
               levelOptions={this.props.levelOptions}
               closeable={true}
               tags={this.state.tags}
-              onClose={(e, tag, index) =>
+              onClose={(e, tag, index) => {
                 this.props.onCloseTags && this.props.onCloseTags(e, tag, index)
+              }
               }
             />
           </InputGroupAddon>
@@ -240,7 +249,7 @@ export default class MLTagsInput extends Component {
               type={"text"}
               // onFocus={this.onFocus}
               placeholder={this.props.inputPlaceholder || "Discover..."}
-              // autoFocus={this.props.autoFocus}
+              autoFocus={this.props.autoFocus}
               onChange={this.handleChange}
               disabled={this.props.disabled}
               placeholderModel={this.props.placeholder}
@@ -292,5 +301,8 @@ MLTagsInput.propTypes = {
   fontWeight: PropsTypes.string,
   inputPlaceholder: PropsTypes.string,
   onCategoryChange: PropsTypes.func,
-  levelOptions: PropsTypes.array
+  levelOptions: PropsTypes.array,
+  onAddLimit: PropsTypes.number,
+  noAddNewTagsOnEnter: PropsTypes.bool,
+  onSearch: PropsTypes.func
 };

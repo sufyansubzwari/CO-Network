@@ -53,6 +53,7 @@ input JobsInputSearch {
     salaryRange_DOT_min: TableStringFilterInput
     salaryRange_DOT_max: TableStringFilterInput
     jobType: JobTypeElemMatch
+    positionTags: TableStringFilterInput
     jobExperience: JobTypeElemMatch
     startDate: TableDateFilterInput
     endDate: TableDateFilterInput

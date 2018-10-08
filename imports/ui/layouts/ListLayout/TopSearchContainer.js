@@ -11,7 +11,7 @@ import styled from "styled-components";
  */
 
 const TopSearchContainer = styled(Container)`
-  padding: ${props => (!props.isOpenFilters ? "20px 66px" : "20px 48px")};
+  padding: ${props => (!props.isOpenFilters ? "10px 66px" : "10px 48px")};
   box-shadow: ${props => "0 1px 0 0 " + props.theme.color.grey};
   padding: 15px;
   zoom: 100%;
@@ -25,11 +25,11 @@ const TopSearchContainer = styled(Container)`
   }
 
   @media (min-width: 62em) {
-    padding: ${props => (!props.isOpenFilters ? "20px 35px" : "20px 48px")};
+    padding: ${props => (!props.isOpenFilters ? "10px 35px" : "10px 48px")};
   }
 
   @media (min-width: 86em) {
-    padding: ${props => (!props.isOpenFilters ? "20px 35px" : "20px 48px")};
+    padding: ${props => (!props.isOpenFilters ? "10px 35px" : "10px 48px")};
   }
 `;
 

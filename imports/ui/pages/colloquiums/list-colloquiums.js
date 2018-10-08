@@ -11,6 +11,7 @@ import {
 import { withRouter } from "react-router-dom";
 import { ViewsCountUpdate } from "../../apollo-client/viewCount";
 import ColloquiumPreviewBody from "../../components/Preview/ColloquiumPreviewBody";
+import {cleanSearch, onSearchTags} from "../../actions/TopSearchActions";
 
 /**
  * @module Colloquiums
@@ -118,8 +119,18 @@ class ListColloquiums extends Component {
     console.log("Error to change the image");
   }
 
-  onSearch(value) {
-    this.setState({ filter: value }, () => this.reFetchQuery());
+  onSelectTag(tag) {
+    this.props.onSearchTags(tag);
+  }
+
+  onSearch(value, tags) {
+    let tagsFilters = {};
+      tags.length
+        ? (tagsFilters.tags = { in: tags.map(item => item._id) })
+        : null;
+    this.setState({ filter: value, filterStatus: tagsFilters }, () =>
+      this.reFetchQuery()
+    );
   }
 
   render() {
@@ -129,7 +140,7 @@ class ListColloquiums extends Component {
     return (
       <ListLayout
         entityType={"colloquiums"}
-        onSearchText={this.onSearch.bind(this)}
+        onSearchAction={(text, tags) => this.onSearch(text, tags)}
       >
         <Mutation key={"listComponent"} mutation={ViewsCountUpdate}>
           {(viewsUpdate, {}) => (
@@ -153,6 +164,7 @@ class ListColloquiums extends Component {
               onSelectCard={(item, key) =>
                 this.onChangeSelection(item, key, viewsUpdate)
               }
+              onSelectTag={(tag, index) => this.onSelectTag(tag, index)}
             />
           )}
         </Mutation>
@@ -250,6 +262,8 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
   return {
+    onSearchTags: tag => dispatch(onSearchTags(tag)),
+    cleanSearch: () => dispatch(cleanSearch()),
     sendPreviewData: (item, key, type) => dispatch(PreviewData(item, key, type))
   };
 };

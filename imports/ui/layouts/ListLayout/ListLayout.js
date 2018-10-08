@@ -55,10 +55,6 @@ class ListLayout extends Component {
     this.props.toggleSideBar(true);
   }
 
-  onSearch(value) {
-    this.props.onSearchText && this.props.onSearchText(value);
-  }
-
   render() {
     return (
       <InternalLayout>
@@ -67,7 +63,7 @@ class ListLayout extends Component {
             <Layout
               fullY
               customTemplateRows={"68px 1fr"}
-              mdCustomTemplateRows={"75px 1fr"}
+              mdCustomTemplateRows={"65px 1fr"}
             >
               <TopSearchContainer {...this.state} background={"white"}>
                 <Layout
@@ -79,8 +75,9 @@ class ListLayout extends Component {
                   {!this.props.sidebarIsOpen ? (
                     <Container>
                       <Button
-                        width={"35px"}
-                        fontSize={"18px"}
+                        width={"44px"}
+                        height={"44px"}
+                        fontSize={"25px"}
                         color={"black"}
                         secondary
                         onClick={() => this.onFilterToggle()}
@@ -91,7 +88,7 @@ class ListLayout extends Component {
                   ) : null}
                   <Container>
                     <TopSearcher
-                      onSearchAction={value => this.onSearch(value)}
+                      onSearchAction={(value, tags) => this.props.onSearchAction && this.props.onSearchAction(value, tags)}
                       onCreateAction={() => this.onAddToggle()}
                     />
                   </Container>
@@ -119,7 +116,7 @@ ListLayout.propTypes = {
   renderSearcher: PropTypes.func,
   entityType: PropTypes.string,
   autoOpenFilters: PropTypes.bool,
-  onSearchText: PropTypes.func
+  onSearchAction: PropTypes.func
 };
 
 const mapStateToProps = state => {
