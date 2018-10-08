@@ -1,6 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { Container, mixins } from "btech-layout";
+import { Container } from "btech-layout";
 import Styled from "styled-components";
 import ReactSVG from "react-svg";
 import { HIcon } from "btech-horizantal-navbar";

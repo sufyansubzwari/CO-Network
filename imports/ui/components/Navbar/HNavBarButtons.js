@@ -54,9 +54,7 @@ const HNavBarButtons = function(props) {
         <SContainerIcon>
           <Container
             hide={hideIcons}
-            onClick={() =>
-              props.onMessageToggle && props.onMessageToggle()
-            }
+            onClick={() => props.onMessageToggle && props.onMessageToggle()}
           >
             <HNavItem
               mt={{ xs: "5px", md: "0" }}
