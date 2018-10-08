@@ -5,7 +5,9 @@ import PropTypes from "prop-types";
 import MaterialIcon from "react-material-iconic-font";
 import { TagsInputAutoComplete as MLTagsInput } from "../../components";
 import { GetTags as tags } from "../../apollo-client/tag";
-import { Query } from 'react-apollo';
+import { Query } from "react-apollo";
+import { connect } from "react-redux";
+import { cleanSearch, onSearchTags } from "../../actions/TopSearchActions";
 
 /**
  * @module Data
@@ -65,17 +67,17 @@ class TopSearcher extends Component {
               }}
             </Query>
             {/*<InputAutoComplete*/}
-              {/*autoFocus*/}
-              {/*iconClass={"arrow-forward"}*/}
-              {/*placeholderText={"Discover"}*/}
-              {/*getNewAddedOptions={value => this.onSearchChange(value)}*/}
-              {/*fixLabel*/}
-              {/*name={"value"}*/}
-              {/*model={this.state}*/}
-              {/*options={this.props.suggestions}*/}
-              {/*optionsLimit={9}*/}
-              {/*keepText={true}*/}
-              {/*getAddedOptions={value => this.onSearchChange(value)}*/}
+            {/*autoFocus*/}
+            {/*iconClass={"arrow-forward"}*/}
+            {/*placeholderText={"Discover"}*/}
+            {/*getNewAddedOptions={value => this.onSearchChange(value)}*/}
+            {/*fixLabel*/}
+            {/*name={"value"}*/}
+            {/*model={this.state}*/}
+            {/*options={this.props.suggestions}*/}
+            {/*optionsLimit={9}*/}
+            {/*keepText={true}*/}
+            {/*getAddedOptions={value => this.onSearchChange(value)}*/}
             {/*/>*/}
           </Container>
           <Container hide mdShow>
@@ -105,4 +107,21 @@ TopSearcher.propTypes = {
   suggestions: PropTypes.array
 };
 
-export default TopSearcher;
+const mapStateToProps = state => {
+  const { topSearch } = state;
+  return {
+    topSearch: topSearch
+  };
+};
+
+const mapDispatchToProps = dispatch => {
+  return {
+    onSearchTags: filter => dispatch(onSearchTags(filter)),
+    cleanSearch: () => dispatch(cleanSearch())
+  };
+};
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(TopSearcher);
