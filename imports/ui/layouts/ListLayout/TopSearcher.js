@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { InputAutoComplete, Button } from "btech-base-forms-component";
+import { Button } from "btech-base-forms-component";
 import { Layout, Container } from "btech-layout";
 import PropTypes from "prop-types";
 import MaterialIcon from "react-material-iconic-font";
@@ -7,7 +7,7 @@ import { MLTagsInput } from "../../components";
 import { GetTags as tags } from "../../apollo-client/tag";
 import { Query } from "react-apollo";
 import { connect } from "react-redux";
-import { cleanSearch, onSearchTags } from "../../actions/TopSearchActions";
+import { cleanSearch } from "../../actions/TopSearchActions";
 import * as type from "../../actions/TopSearchActions/types";
 
 /**
@@ -111,19 +111,6 @@ class TopSearcher extends Component {
                 );
               }}
             </Query>
-            {/*<InputAutoComplete*/}
-            {/*autoFocus*/}
-            {/*iconClass={"arrow-forward"}*/}
-            {/*placeholderText={"Discover"}*/}
-            {/*getNewAddedOptions={value => this.onSearchChange(value)}*/}
-            {/*fixLabel*/}
-            {/*name={"value"}*/}
-            {/*model={this.state}*/}
-            {/*options={this.props.suggestions}*/}
-            {/*optionsLimit={9}*/}
-            {/*keepText={true}*/}
-            {/*getAddedOptions={value => this.onSearchChange(value)}*/}
-            {/*/>*/}
           </Container>
           <Container hide mdShow>
             <Button
