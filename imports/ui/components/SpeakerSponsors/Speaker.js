@@ -12,6 +12,7 @@ import { EMAIL_REGEX } from "../../constants";
 import styled from "styled-components";
 
 const SErrorMessage = styled.label`
+  padding: 5px;
   color: ${props =>
     props.theme.color.gray ? props.theme.color.gray : "rgba(0,0,0,0.5)"};
   font-size: ${props =>
