@@ -177,7 +177,7 @@ class JobsFilters extends React.Component {
                 () => this.props.setFilters("jobs", this.state.filters)
               );
             }}
-            addDollar={true}
+            addChar={'$'}
           />
         </FilterItem>
         <Separator />

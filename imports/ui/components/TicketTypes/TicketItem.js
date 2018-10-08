@@ -81,7 +81,8 @@ class TicketItem extends Component {
           </Container>
           {this.props.isPaid ? (
             <SalaryRange
-                addDollar={true}labelText={"Price Range"}
+                addChar={'$'}
+                labelText={"Price Range"}
                 placeholder={"000"}
                 min={Number(this.state.ticket.min) || 0}
                 max={Number(this.state.ticket.max) || 0}
@@ -93,7 +94,6 @@ class TicketItem extends Component {
                   this.setState({ ticket: ticket });
                 }}
               />
-
           ) : null}
           <Container>
             <Layout customTemplateColumns={"1fr auto"}>
