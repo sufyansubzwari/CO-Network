@@ -112,6 +112,7 @@ input UsersInputSearch {
     _id: TableStringFilterInput
     profile_DOT_speaker_DOT_join: Boolean
     profile_DOT_knowledge_DOT_lookingFor: JobTypeElemMatch
+    profile_DOT_knowledge_DOT_languages_DOT_tag: TableStringFilterInput
     location: [LocationInput]
 }
 

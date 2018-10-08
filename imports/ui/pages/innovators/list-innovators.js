@@ -20,6 +20,7 @@ import { PreviewData } from "../../actions/PreviewActions";
 import { Meteor } from "meteor/meteor";
 import { ViewsCountUpdate } from "../../apollo-client/viewCount";
 import { FollowAction } from "../../apollo-client/follow";
+import { cleanSearch, onSearchTags } from "../../actions/TopSearchActions";
 
 /**
  * @module Events
@@ -154,6 +155,7 @@ class ListInnovators extends Component {
         tags={item.description || []}
         views={item.views}
         key={key}
+        onSelectTag={(tag, index) => this.onSelectTag(tag, index)}
       />
     ) : this.state.currentTab.value === "members" ? (
       <CardItem
@@ -183,6 +185,7 @@ class ListInnovators extends Component {
         }
         views={item.views}
         key={key}
+        onSelectTag={(tag, index) => this.onSelectTag(tag, index)}
       />
     ) : null;
   }
@@ -194,10 +197,6 @@ class ListInnovators extends Component {
     this.props.history.push("/post-organization", {
       organization: org
     });
-  }
-
-  onSearch(value) {
-    this.setState({ filter: value }, () => this.reFetchQuery());
   }
 
   handleBackgroundChange(updateOrgImages, src) {
@@ -259,6 +258,25 @@ class ListInnovators extends Component {
     });
   }
 
+  onSelectTag(tag) {
+    this.props.onSearchTags(tag);
+  }
+
+  onSearch(value, tags) {
+    let tagsFilters = {};
+    if (this.state.currentTab.value === "corporations")
+      tags.length
+        ? (tagsFilters.description = { in: tags.map(item => item._id) })
+        : null;
+    if (this.state.currentTab.value === "members")
+      tags.length
+        ? (tagsFilters.profile_DOT_knowledge_DOT_languages_DOT_tag = { in: tags.map(item => item._id) })
+        : null;
+    this.setState({ filter: value, filterStatus: tagsFilters }, () =>
+      this.reFetchQuery()
+    );
+  }
+
   render() {
     let data = [];
     let isLoading = false;
@@ -278,7 +296,7 @@ class ListInnovators extends Component {
     return (
       <ListLayout
         entityType={this.state.currentTab.value}
-        onSearchText={this.onSearch.bind(this)}
+        onSearchAction={(text, tags) => this.onSearch(text, tags)}
       >
         <Mutation key={"listComponent"} mutation={ViewsCountUpdate}>
           {(viewsUpdate, {}) => (
@@ -455,6 +473,8 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
   return {
+    onSearchTags: tag => dispatch(onSearchTags(tag)),
+    cleanSearch: () => dispatch(cleanSearch()),
     sendPreviewData: (item, key, type) => dispatch(PreviewData(item, key, type))
   };
 };
