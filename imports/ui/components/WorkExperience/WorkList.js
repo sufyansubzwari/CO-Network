@@ -1,25 +1,32 @@
 import React from "react";
 import PropTypes from "prop-types";
-import { Layout, Container } from "btech-layout";
+import { Container, Layout } from "btech-layout";
 import styled from "styled-components";
-import { Button, Input, Select, TextArea } from "btech-base-forms-component";
+import { Button } from "btech-base-forms-component";
 import MaterialIcon from "react-material-iconic-font";
-import WorkItem from "./WorkItem"
-
-const SLabel = styled.div`
-  font-size: 12px;
-  font-family: Roboto Mono, serif;
-  margin-left: 10px;
-  display: flex;
-  align-items: center;
-`;
-
-const SContainer = styled(Container)`
-  font-size: 14px;
-`;
+import WorkItem from "./WorkItem";
 
 const SItemContainer = styled(Container)`
   border-radius: 3px;
+`;
+
+const SWorkItem = styled(Layout)`
+  .buttons {
+    opacity: 1;
+    transition: all 200ms ease-out;
+  }
+
+  :hover {
+    .buttons {
+      opacity: 1;
+    }
+  }
+
+  @media (min-width: 62em) {
+    .buttons {
+      opacity: 0;
+    }
+  }
 `;
 
 class WorkList extends React.Component {
@@ -60,7 +67,7 @@ class WorkList extends React.Component {
     );
   }
 
-    handleDelete() {
+  handleDelete() {
     let arr = this.state.experience.filter(
       item => item.type !== this.props.type
     );
@@ -71,9 +78,10 @@ class WorkList extends React.Component {
       () => this.notifyParent()
     );
   }
+
   handleSave(index) {
     let exp = this.state.experience;
-      exp[index] = { ...exp[index], edit: false };
+    exp[index] = { ...exp[index], edit: false };
     this.setState(
       {
         experience: exp
@@ -84,7 +92,7 @@ class WorkList extends React.Component {
 
   handleChange(index) {
     let exp = this.state.experience;
-      exp[index] = { ...exp[index], edit: true };
+    exp[index] = { ...exp[index], edit: true };
     this.props.onChange && this.props.onChange(exp);
   }
 
@@ -106,124 +114,71 @@ class WorkList extends React.Component {
   }
 
   render() {
-    let edit = this.state.experience && this.state.experience.length && this.state.experience.filter(item => item.edit === true);
+    let edit =
+      this.state.experience &&
+      this.state.experience.length &&
+      this.state.experience.filter(item => item.edit === true);
 
     return (
-      <Container style={{ display: this.state.experience.length ? "block" : "none" }}>
-        {this.state.experience.length ? (
-          <Layout
-            customTemplateColumns={"1fr auto"}
-            style={{ paddingRight: "10px" }}
-            mb={'5px'}
-          >
-            <div/>
-            {edit.length === 0 ? (
-              <Layout customTemplateColumns={"auto auto auto"}>
-                <Button
-                  type={"button"}
-                  secondary
-                  height={"auto"}
-                  color={"black"}
-                  opacity={"0.5"}
-                  border={"none"}
-                  hoverBackground={"transparent"}
-                  hoverColor={"initial"}
-                  onClick={this.handleAdd}
-                  style={{ fontSize: "14px" }}
-                >
-                  <MaterialIcon type={"plus-circle"} />
-                </Button>
-                <Button
-                  type={"button"}
-                  secondary
-                  height={"auto"}
-                  color={"black"}
-                  opacity={"0.5"}
-                  border={"none"}
-                  hoverBackground={"transparent"}
-                  hoverColor={"initial"}
-                  onClick={() =>
-                    this.setState({ isEditable: !this.state.isEditable })
-                  }
-                  style={{ fontSize: "14px" }}
-                >
-                  <MaterialIcon type={"edit"} />
-                </Button>
-                <Button
-                  type={"button"}
-                  secondary
-                  height={"auto"}
-                  color={"black"}
-                  opacity={"0.5"}
-                  border={"none"}
-                  hoverBackground={"transparent"}
-                  hoverColor={"initial"}
-                  onClick={this.handleDelete}
-                  style={{ fontSize: "14px" }}
-                >
-                  <MaterialIcon type={"delete"} />
-                </Button>
-              </Layout>
-            ) : null}
-          </Layout>
-        ) : null}
+      <Container
+        style={{ display: this.state.experience.length ? "block" : "none" }}
+      >
         <SItemContainer paddingX={"10px"} background={this.props.background}>
           <Container>
             {this.state.experience.map(
               (item, index) =>
-                  item.edit ? (
-                      <WorkItem
-                          model={this.state.experience[index]}
-                          handleSave={() => this.handleSave(index)}
-                          handleRemove={() => this.handleRemove(index)}
-                      />
-                  ) : (
+                item.edit ? (
+                  <WorkItem
+                    model={this.state.experience[index]}
+                    handleSave={() => this.handleSave(index)}
+                    handleRemove={() => this.handleRemove(index)}
+                  />
+                ) : (
+                  <SWorkItem
+                    paddingY={"10px"}
+                    customTemplateColumns={"1fr auto"}
+                  >
+                    <Container>{item.employer}</Container>
                     <Layout
-                      paddingY={"10px"}
-                      customTemplateColumns={"1fr auto"}
+                      customTemplateColumns={"auto auto"}
+                      colGap={"5px"}
+                      className={"buttons"}
                     >
-                      <Container>{item.employer}</Container>
-                      {this.state.isEditable ? (
-                        <Layout
-                          customTemplateColumns={"auto auto"}
-                          colGap={"5px"}
-                        >
-                          <Button
-                            type={"button"}
-                            secondary
-                            height={"auto"}
-                            color={"black"}
-                            opacity={"0.5"}
-                            border={"none"}
-                            hoverBackground={"transparent"}
-                            hoverColor={"initial"}
-                            onClick={event => {
-                              event.preventDefault();
-                              this.handleChange(index);
-                            }}
-                            style={{ fontSize: "14px" }}
-                          >
-                            <MaterialIcon type={"edit"} />
-                          </Button>
-                          <Button
-                            type={"button"}
-                            secondary
-                            height={"auto"}
-                            color={"black"}
-                            opacity={"0.5"}
-                            border={"none"}
-                            hoverBackground={"transparent"}
-                            hoverColor={"initial"}
-                            onClick={() => this.handleRemove(index)}
-                            style={{ fontSize: "14px" }}
-                          >
-                            <MaterialIcon type={"delete"} />
-                          </Button>
-                        </Layout>
-                      ) : null}
+                      <Button
+                        type={"button"}
+                        secondary
+                        height={"auto"}
+                        color={"black"}
+                        opacity={"0.5"}
+                        border={"none"}
+                        hoverBackground={"transparent"}
+                        hoverColor={"initial"}
+                        onClick={event => {
+                          event.preventDefault();
+                          this.handleChange(index);
+                        }}
+                        style={{ fontSize: "14px" }}
+                      >
+                        <MaterialIcon type={"edit"} />
+                      </Button>
+                      <Button
+                        type={"button"}
+                        secondary
+                        height={"auto"}
+                        color={"black"}
+                        opacity={"0.5"}
+                        border={"none"}
+                        hoverBackground={"transparent"}
+                        hoverColor={"initial"}
+                        onClick={() => this.handleRemove(index)}
+                        style={{ fontSize: "14px" }}
+                      >
+                        <MaterialIcon type={"delete"} />
+                      </Button>
                     </Layout>
-                  ))
-            }
+                  </SWorkItem>
+                )
+            )}
           </Container>
         </SItemContainer>
       </Container>
@@ -233,7 +188,7 @@ class WorkList extends React.Component {
 
 WorkList.defaultProps = {
   data: [],
-  background: "#E9EFF0",
+  background: "#E9EFF0"
 };
 
 WorkList.propTypes = {

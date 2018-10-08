@@ -1,7 +1,6 @@
 import React from "react";
 import PropTypes from "prop-types";
 import { Container, Layout } from "btech-layout";
-import { Button } from "btech-base-forms-component";
 import LineSeparator from "./LineSeparator";
 import MediaList from "./MediaList";
 import styled from "styled-components";

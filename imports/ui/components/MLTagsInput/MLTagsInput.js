@@ -108,9 +108,6 @@ export default class MLTagsInput extends Component {
 
   onFocus() {
     this.InputRef && this.InputRef.current && this.InputRef.current.focus();
-    // this.setState({
-    //   active: true
-    // });
   }
 
   toggleDropDown() {
