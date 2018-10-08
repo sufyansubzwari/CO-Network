@@ -38,11 +38,12 @@ const Icon = styled.span`
 `;
 
 const SText = styled.span`
-    overflow: hidden;
-    white-space: normal;
-    text-overflow: ellipsis;
-    height: 35px;
-    display: inline-block;
+  overflow: hidden;
+  white-space: normal;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
 `;
 
 class BigTag extends React.Component {

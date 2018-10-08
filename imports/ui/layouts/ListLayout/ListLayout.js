@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Layout, Container } from "btech-layout";
+import { Layout, Container, mixins } from "btech-layout";
 import PropTypes from "prop-types";
 import TopSearcher from "./TopSearcher";
 import InternalLayout from "../InternalLayout/InternalLayout";
@@ -12,7 +12,9 @@ import { connect } from "react-redux";
 import { setFilterEntity, toggleSideBar } from "../../actions/SideBarActions/index";
 
 const SListContainer = styled(Container)`
-  border-right: ${props => "1px solid " + props.theme.color.grey};
+  ${mixins.media.desktop`
+    border-right: ${props => "1px solid " + props.theme.color.grey};
+  `}
 `;
 
 /**

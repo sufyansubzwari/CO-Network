@@ -1,9 +1,8 @@
 import React from "react";
-import { Layout, Container } from "btech-layout";
+import { Container, Layout } from "btech-layout";
 import { FilterItem, Separator } from "../../../components";
-import styled, { ThemeProvider } from "styled-components";
+import styled from "styled-components";
 import PropTypes from "prop-types";
-import theme from "../../../theme";
 
 const Title = styled.label`
   font-family: ${props =>
@@ -41,35 +40,33 @@ const SubTitle = styled.label`
 const SNotification = styled(Container)`
   background: ${props =>
     props.theme ? props.theme.color.innerBackground : "#fbfbf9"};
-  
+
   :hover {
-  background: ${props =>
-    props.theme ? props.theme.color.background : "#dadada"};
+    background: ${props =>
+      props.theme ? props.theme.color.background : "#dadada"};
   }
   cursor: pointer;
 `;
 
 export default (Notification = function(props) {
   return (
-    <ThemeProvider theme={theme}>
-      <SNotification onClick={() => props.onClick && props.onClick()}>
-        <FilterItem ml={"10px"}>
+    <SNotification onClick={() => props.onClick && props.onClick()}>
+      <FilterItem>
+        <Container>
           <Container>
-            <Container>
-              <Title>{props.title}</Title>
-            </Container>
-            <Container>
-              <Description>{props.description}</Description>
-            </Container>
-            <Layout mt={"5px"} customTemplateColumns={"1fr auto"}>
-              <SubTitle>{props.entity}</SubTitle>
-              <SubTitle>{props.time}</SubTitle>
-            </Layout>
+            <Title>{props.title}</Title>
           </Container>
-        </FilterItem>
-        <Separator />
-      </SNotification>
-    </ThemeProvider>
+          <Container>
+            <Description>{props.description}</Description>
+          </Container>
+          <Layout mt={"5px"} customTemplateColumns={"1fr auto"}>
+            <SubTitle>{props.entity}</SubTitle>
+            <SubTitle>{props.time}</SubTitle>
+          </Layout>
+        </Container>
+      </FilterItem>
+      <Separator />
+    </SNotification>
   );
 });
 

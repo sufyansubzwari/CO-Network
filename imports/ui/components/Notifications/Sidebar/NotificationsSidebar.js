@@ -1,5 +1,4 @@
 import React from "react";
-import PropTypes from "prop-types";
 import { cleanFilters, setFilters } from "../../../actions/SideBarActions";
 import { connect } from "react-redux";
 import Notification from "./Notification";
@@ -15,46 +14,62 @@ class NotificationsSidebar extends React.Component {
           title: "Data Science Professional",
           description: "Lorem ipsum dolor nostra, per inceptos himenaeos.",
           entity: "ML Society",
-            time: new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})
+          time: new Date().toLocaleTimeString([], {
+            hour: "2-digit",
+            minute: "2-digit"
+          })
         },
         {
           title: "Data Science Professional",
           description: "Lorem ipsum dolor nostra, per inceptos himenaeos.",
           entity: "ML Society",
-            time: new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})
+          time: new Date().toLocaleTimeString([], {
+            hour: "2-digit",
+            minute: "2-digit"
+          })
         },
         {
           title: "Data Science Professional",
           description: "Lorem ipsum dolor nostra, per inceptos himenaeos.",
           entity: "ML Society",
-            time: new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})
+          time: new Date().toLocaleTimeString([], {
+            hour: "2-digit",
+            minute: "2-digit"
+          })
         },
         {
           title: "Data Science Professional",
           description: "Lorem ipsum dolor nostra, per inceptos himenaeos.",
           entity: "ML Society",
-            time: new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})
+          time: new Date().toLocaleTimeString([], {
+            hour: "2-digit",
+            minute: "2-digit"
+          })
         },
         {
           title: "Data Science Professional",
           description: "Lorem ipsum dolor nostra, per inceptos himenaeos.",
           entity: "ML Society",
-            time: new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})
+          time: new Date().toLocaleTimeString([], {
+            hour: "2-digit",
+            minute: "2-digit"
+          })
         },
         {
           title: "Data Science Professional",
           description: "Lorem ipsum dolor nostra, per inceptos himenaeos.",
           entity: "ML Society",
-          time: new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})
+          time: new Date().toLocaleTimeString([], {
+            hour: "2-digit",
+            minute: "2-digit"
+          })
         }
       ]
     };
     this.handleClear = this.handleClear.bind(this);
   }
 
-  componentWillMount() {
-
-  }
+  componentWillMount() {}
 
   componentWillReceiveProps(nextProps) {
     if (nextProps.notifications) {
@@ -78,7 +93,7 @@ class NotificationsSidebar extends React.Component {
         description={not.description}
         entity={not.entity}
         time={not.time}
-        onClick={() => console.log("notification clicked: "+index)}
+        onClick={() => console.log("notification clicked: " + index)}
       />
     ));
 
