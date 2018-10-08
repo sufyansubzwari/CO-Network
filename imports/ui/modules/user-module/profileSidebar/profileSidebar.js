@@ -1,12 +1,11 @@
 import React from "react";
 import { Container, Layout, mixins } from "btech-layout";
-import styled, { ThemeProvider } from "styled-components";
+import styled from "styled-components";
 import { Scrollbars } from "react-custom-scrollbars";
 import { Separator } from "../../../components";
 import { Button } from "btech-base-forms-component";
 import { Link } from "react-router-dom";
 import { LogoutBtn } from "../../../components/smart/auth";
-import { theme } from "../../../theme";
 import SideBarLink from "../../../components/Navbar/SideBarLink";
 import ReactSVG from "react-svg";
 import MaterialIcon from "react-material-iconic-font";
@@ -30,8 +29,8 @@ const Photo = styled(Container)`
           ")"
         : " linear-gradient(180deg,#32363D, #202225)"};
   background-size: cover;
-  
-    zoom: 100%;
+
+  zoom: 100%;
 
   @media (min-width: 62em) {
     zoom: 80%;
@@ -126,10 +125,12 @@ const ItemsContainer = function(props) {
       <Container>
         <Separator />
         <ProfileItem>
-          <Container>
+          <Container ml={'10px'} >
             <SideBarLink href={props.policy}> Terms Policies </SideBarLink>
             <SideBarLink> CONetwork © 2018 </SideBarLink>
           </Container>
+        </ProfileItem>
+        <ProfileItem>
           <LogoutBtn btnType="link" onLogoutHook={window.hideMenu} />
         </ProfileItem>
       </Container>
