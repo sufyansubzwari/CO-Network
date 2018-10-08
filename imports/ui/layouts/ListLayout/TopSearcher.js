@@ -32,32 +32,41 @@ class TopSearcher extends Component {
       nextProps.tagSelected &&
       nextProps.tagSelected.type === type.ON_SEARCH
     ) {
-      this.addTagFromOutside(nextProps.tagSelected.tag);
+      this.onSearchTags(nextProps.tagSelected.tag);
+      this.props.cleanSearch();
     }
   }
 
-  addTagFromOutside(tag) {
+  onSearchTags(tag) {
     let tags = this.state.tags;
     let tagExist = tags.some(item => item.label === tag.label);
-    if (!tagExist) {
+    if (!tagExist && this.state.tags.length < this.props.tagsLimit) {
       tags.push(tag);
+      this.setState(
+        { tags: tags },
+        () =>
+          this.props.onSearchAction &&
+          this.props.onSearchAction(this.state.value, tags)
+      );
     }
   }
-
-  //Todo:  change this to send words filters and tags filters
-  onSearchChange(value) {
-    const tags = this.state.tags;
-    tags.push(value);
+  onSearchText(value) {
     this.setState(
-      { value: value.value, tags: tags },
-      () => this.props.onSearchAction && this.props.onSearchAction(value.value)
+      { value: value },
+      () =>
+        this.props.onSearchAction &&
+        this.props.onSearchAction(value, this.state.tags)
     );
   }
 
   onCloseTags(e, tag, index) {
-    //Todo: Notify parent on closing tags!!
     this.state.tags.splice(index, 1);
-    this.setState({ tags: this.state.tags });
+    this.setState(
+      { tags: this.state.tags },
+      () =>
+        this.props.onSearchAction &&
+        this.props.onSearchAction(this.state.value, this.state.tags)
+    );
   }
 
   render() {
@@ -74,14 +83,17 @@ class TopSearcher extends Component {
                     autoFocus
                     iconClass={"arrow-forward"}
                     inputPlaceholder={"Discover"}
-                    getAddedOptions={value => this.onSearchChange(value)}
-                    getNewAddedOptions={value => this.onSearchChange(value)}
+                    getAddedOptions={value => this.onSearchTags(value)}
+                    getNewAddedOptions={value => this.onSearchTags(value)}
                     fixLabel
                     optionsLimit={9}
-                    keepText={true}
-                    onCloseTags={(e, tag, index) =>
-                      this.onCloseTags(e, tag, index)
-                    }
+                    noAddNewTagsOnEnter={true}
+                    onCloseTags={(e, tag, index) => {
+                      e.preventDefault();
+                      e.stopPropagation();
+                      this.onCloseTags(e, tag, index);
+                    }}
+                    onSearch={value => this.onSearchText(value)}
                     options={data.tags}
                     tags={
                       this.state.tags && this.state.tags.length
@@ -127,25 +139,26 @@ class TopSearcher extends Component {
 }
 
 TopSearcher.defaultProps = {
-  suggestions: []
+  suggestions: [],
+  tagsLimit: 4
 };
 
 TopSearcher.propTypes = {
   onCreateAction: PropTypes.func.isRequired,
   onSearchAction: PropTypes.func,
-  suggestions: PropTypes.array
+  suggestions: PropTypes.array,
+  tagsLimit: PropTypes.number
 };
 
 const mapStateToProps = state => {
   const { topSearch } = state;
   return {
-    tagSelected: topSearch.tag
+    tagSelected: topSearch
   };
 };
 
 const mapDispatchToProps = dispatch => {
   return {
-    onSearchTags: tag => dispatch(onSearchTags(tag)),
     cleanSearch: () => dispatch(cleanSearch())
   };
 };

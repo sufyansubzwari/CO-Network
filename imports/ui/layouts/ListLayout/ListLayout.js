@@ -53,10 +53,6 @@ class ListLayout extends Component {
     this.props.toggleSideBar(true);
   }
 
-  onSearch(value) {
-    this.props.onSearchText && this.props.onSearchText(value);
-  }
-
   render() {
     return (
       <InternalLayout>
@@ -89,7 +85,7 @@ class ListLayout extends Component {
                   ) : null}
                   <Container>
                     <TopSearcher
-                      onSearchAction={value => this.onSearch(value)}
+                      onSearchAction={(value, tags) => this.props.onSearchAction && this.props.onSearchAction(value, tags)}
                       onCreateAction={() => this.onAddToggle()}
                     />
                   </Container>
@@ -117,7 +113,7 @@ ListLayout.propTypes = {
   renderSearcher: PropTypes.func,
   entityType: PropTypes.string,
   autoOpenFilters: PropTypes.bool,
-  onSearchText: PropTypes.func
+  onSearchAction: PropTypes.func
 };
 
 const mapStateToProps = state => {

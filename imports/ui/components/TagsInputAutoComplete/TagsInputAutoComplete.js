@@ -19,8 +19,7 @@ const SDropDownMenu = styled(DropdownMenu)`
 `;
 
 const SContainer = styled.div`
-  ${props => (props.marginTop ? "margin-top: 25px;" : "")} 
-  position: relative;
+  ${props => (props.marginTop ? "margin-top: 25px;" : "")} position: relative;
   background: #ffffff;
   height: auto;
   width: 100%;
@@ -137,13 +136,17 @@ export default class TagsInputAutoComplete extends Component {
   }
 
   onAddNewOption() {
-    const tag = {
-      label: this.state.value,
-      value: this.state.value,
-      name: this.state.value
-    };
-    this.props.getNewAddedOptions && this.props.getNewAddedOptions(tag);
-    !this.props.keepText ? this.setState({ value: "" }) : null;
+    if (this.props.noAddNewTagsOnEnter) {
+      this.props.onSearch && this.props.onSearch(this.state.value);
+    } else {
+      const tag = {
+        label: this.state.value,
+        value: this.state.value,
+        name: this.state.value
+      };
+      this.props.getNewAddedOptions && this.props.getNewAddedOptions(tag);
+      !this.props.keepText ? this.setState({ value: "" }) : null;
+    }
   }
 
   onKeyDown(event) {
@@ -164,14 +167,14 @@ export default class TagsInputAutoComplete extends Component {
         event.preventDefault();
         this.setState({ activeOption: this.state.activeOption - 1 });
       }
-      if (
-        event.key === "Enter" &&
-        this.state.dropDownOpen &&
-        this.state.activeOption !== -1
-      ) {
+      if (event.key === "Enter" && this.state.dropDownOpen) {
         event.preventDefault();
-        this.onAddOption(this.state.options[this.state.activeOption]);
         this.toggleDropDown();
+        if (this.state.activeOption !== -1) {
+          this.onAddOption(this.state.options[this.state.activeOption]);
+        } else {
+          this.onAddNewOption();
+        }
       }
     }
   }
@@ -203,8 +206,9 @@ export default class TagsInputAutoComplete extends Component {
               levelOptions={this.props.levelOptions}
               closeable={true}
               tags={this.state.tags}
-              onClose={(e, tag, index) =>
+              onClose={(e, tag, index) => {
                 this.props.onCloseTags && this.props.onCloseTags(e, tag, index)
+              }
               }
             />
           </InputGroupAddon>
@@ -311,5 +315,8 @@ TagsInputAutoComplete.propTypes = {
   fontWeight: PropsTypes.string,
   inputPlaceholder: PropsTypes.string,
   onCategoryChange: PropsTypes.func,
-  levelOptions: PropsTypes.array
+  levelOptions: PropsTypes.array,
+  onAddLimit: PropsTypes.number,
+  noAddNewTagsOnEnter: PropsTypes.bool,
+  onSearch: PropsTypes.func
 };
