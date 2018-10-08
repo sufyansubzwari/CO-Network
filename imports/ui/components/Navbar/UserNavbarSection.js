@@ -143,6 +143,16 @@ class UserNavbarSection extends React.Component {
     );
   }
 
+  onMessageToggle(){
+      this.props.toggleSideBar(
+          !this.props.messagesSideBarIsOpen,
+          false,
+          false,
+          false,
+          !this.props.messagesSideBarIsOpen
+      );
+  }
+
   render() {
     const isAuthenticated = this.props.curUser;
     const avatarLink = isAuthenticated ? "/profile" : "/";
@@ -205,6 +215,7 @@ class UserNavbarSection extends React.Component {
                       size: { width: 22, height: 24 }
                     }}
                     activeEval={this.activeEval}
+                    onClick={() => this.onMessageToggle()}
                   />
                 </RenderCondition>
                 <RenderCondition>
@@ -242,14 +253,15 @@ const mapStateToProps = state => {
   return {
     addSidebarIsOpen: sideBarStatus.status && sideBarStatus.isAdd,
     profileSideBarIsOpen: sideBarStatus.status && sideBarStatus.profile,
-    notificationsSideBarIsOpen: sideBarStatus.status && sideBarStatus.notifications
+    notificationsSideBarIsOpen: sideBarStatus.status && sideBarStatus.notifications,
+    messagesSideBarIsOpen: sideBarStatus.status && sideBarStatus.messages
   };
 };
 
 const mapDispatchToProps = dispatch => {
   return {
-    toggleSideBar: (status, isAdd, profile, notifications) =>
-      dispatch(toggleSideBar(status, isAdd, profile, notifications)),
+    toggleSideBar: (status, isAdd, profile, notifications, messages) =>
+      dispatch(toggleSideBar(status, isAdd, profile, notifications, messages)),
     setFilterEntity: entityType => dispatch(setFilterEntity(entityType))
   };
 };
