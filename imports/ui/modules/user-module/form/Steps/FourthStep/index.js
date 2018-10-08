@@ -136,7 +136,7 @@ class ThirdStep extends React.Component {
                 () => this.notifyParent()
               );
             }}
-            addDollar={true}
+            addChar={'$'}
           />
           <div />
         </Layout>
