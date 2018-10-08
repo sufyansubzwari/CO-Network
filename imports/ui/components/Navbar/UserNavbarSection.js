@@ -9,6 +9,8 @@ import NavbarUserButton from "../NavbarUserButton/NavbarUserButton";
 import services from "../LoginModal/service.constant";
 import posed from "react-pose";
 import Authorization from "../../services/authorization";
+import SideBarLink from "./SideBarLink";
+import { Meteor } from "meteor/meteor";
 
 const SAddMaterialIcon = styled.span`
   > i {
@@ -102,6 +104,7 @@ class UserNavbarSection extends React.Component {
     this.loginSize = { width: 28, height: 33 };
     this.loginServices = services.filter(element => element.visible);
     this.state = {};
+    this.policy = Meteor.settings.public.policyUrl;
   }
 
   onAddToggle() {
@@ -122,23 +125,23 @@ class UserNavbarSection extends React.Component {
     this.props.callback && this.props.callback(false);
   }
 
-  onNotificationToggle(){
+  onNotificationToggle() {
     this.props.toggleSideBar(
-        !this.props.notificationsSideBarIsOpen,
-        false,
-        false,
-        !this.props.notificationsSideBarIsOpen
+      !this.props.notificationsSideBarIsOpen,
+      false,
+      false,
+      !this.props.notificationsSideBarIsOpen
     );
   }
 
-  onMessageToggle(){
-      this.props.toggleSideBar(
-          !this.props.messagesSideBarIsOpen,
-          false,
-          false,
-          false,
-          !this.props.messagesSideBarIsOpen
-      );
+  onMessageToggle() {
+    this.props.toggleSideBar(
+      !this.props.messagesSideBarIsOpen,
+      false,
+      false,
+      false,
+      !this.props.messagesSideBarIsOpen
+    );
   }
 
   render() {
@@ -229,6 +232,12 @@ class UserNavbarSection extends React.Component {
               </Group>
             </GroupContainer>
           </Layout>
+          <Container mdHide mt={"25px"}>
+            <Layout rowGap="10px">
+              <SideBarLink href={this.policy}> Terms Policies </SideBarLink>
+              <SideBarLink> CONetwork © 2018 </SideBarLink>
+            </Layout>
+          </Container>
         </Container>
       </Layout>
     );
@@ -240,7 +249,8 @@ const mapStateToProps = state => {
   return {
     addSidebarIsOpen: sideBarStatus.status && sideBarStatus.isAdd,
     profileSideBarIsOpen: sideBarStatus.status && sideBarStatus.profile,
-    notificationsSideBarIsOpen: sideBarStatus.status && sideBarStatus.notifications,
+    notificationsSideBarIsOpen:
+      sideBarStatus.status && sideBarStatus.notifications,
     messagesSideBarIsOpen: sideBarStatus.status && sideBarStatus.messages
   };
 };

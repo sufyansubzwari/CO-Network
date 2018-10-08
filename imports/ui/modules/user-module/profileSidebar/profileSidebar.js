@@ -10,6 +10,7 @@ import SideBarLink from "../../../components/Navbar/SideBarLink";
 import ReactSVG from "react-svg";
 import MaterialIcon from "react-material-iconic-font";
 import ProfileItem from "./profileItem";
+import { Meteor } from "meteor/meteor";
 import Text from "../../../components/Preview/components/Text";
 
 const SContainer = styled(Layout)`
@@ -84,12 +85,28 @@ const CButton = styled(Button)`
   `};
 `;
 
+const SPolicyContainer = styled(Container)`
+  display: none;
+
+  ${mixins.media.desktop`
+    display: initial;
+  `};
+`;
+
+const SLogoutContainer = styled(Container)`
+  text-align: center;
+
+  ${mixins.media.desktop`
+    text-align: initial;
+  `};
+`;
+
 const ItemsContainer = function(props) {
   return (
     <SContainer
       fullY
-      customTemplateRows={"95px 1fr 72px"}
-      mdCustomTemplateRows={"160px 1fr 72px"}
+      customTemplateRows={"95px 1fr 52px"}
+      mdCustomTemplateRows={"160px 1fr 62px"}
     >
       <Photo
         image={
@@ -124,15 +141,13 @@ const ItemsContainer = function(props) {
       </SContainer>
       <Container>
         <Separator />
-        <ProfileItem>
-          <Container ml={'10px'} >
-            <SideBarLink href={props.policy}> Terms Policies </SideBarLink>
-            <SideBarLink> CONetwork © 2018 </SideBarLink>
-          </Container>
-        </ProfileItem>
-        <ProfileItem>
+        <SPolicyContainer paddingX={"10px"}>
+          <SideBarLink href={props.policy}> Terms Policies </SideBarLink>
+          <SideBarLink> CONetwork © 2018 </SideBarLink>
+        </SPolicyContainer>
+        <SLogoutContainer paddingX={"10px"}>
           <LogoutBtn btnType="link" onLogoutHook={window.hideMenu} />
-        </ProfileItem>
+        </SLogoutContainer>
       </Container>
     </SContainer>
   );

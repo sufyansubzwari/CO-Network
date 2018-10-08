@@ -25,7 +25,7 @@ const SNavBarContainer = posed(SNavBarContainerStyled)({
     marginTop: "121px",
     staggerChildren: 100,
     transition: {
-      ease: "circOut" //circOut
+      ease: "circOut"
     }
   },
   close: {
@@ -33,9 +33,16 @@ const SNavBarContainer = posed(SNavBarContainerStyled)({
     marginTop: "0px",
     staggerChildren: 100,
     transition: {
-      ease: "circOut" //circOut
+      ease: "circOut"
     }
   }
+});
+
+const SDragContainer = posed(SNavBarContainerStyled)({
+  hoverable: true,
+  draggable: "y",
+  dragBounds: { top: "-60%", bottom: "60%" },
+  dragEnd: { transition: "spring" }
 });
 
 /**
@@ -100,6 +107,16 @@ class Navbar extends Component {
     this.openNavbar(false);
   }
 
+  observerDragBoundaries(y) {
+    if (y === "-25%") {
+      console.info("Open at", y);
+      // this.openNavbar(true);
+    } else if (y === "25%") {
+      console.info("Open at", y);
+      // this.openNavbar(false);
+    }
+  }
+
   render() {
     let activeLink = -1;
     navs.some((item, index) => {
@@ -116,6 +133,10 @@ class Navbar extends Component {
         mdHeight="inherit"
         pose={this.state.isOpen ? "open" : "close"}
       >
+        {/*<SDragContainer*/}
+        {/*// onValueChange=*/}
+        {/*{{ y: y => this.observerDragBoundaries(y) }}*/}
+        {/*>*/}
         <HNavbar
           mdRowGap={10}
           activeLink={activeLink}
@@ -140,6 +161,7 @@ class Navbar extends Component {
             callback={value => this.openNavbar(value)}
           />
         </HNavbar>
+        {/*</SDragContainer>*/}
       </SNavBarContainer>
     );
   }

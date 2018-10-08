@@ -108,10 +108,6 @@ class CardItem extends Component {
   componentWillReceiveProps(newProps) {
     if (!newProps.image) return;
     if (newProps.image !== this.props.image) this.loadImage(newProps.image);
-    if (this.props.topOptions && this.props.topOptions.length)
-      this.setState({
-        topOptions: this.state.topOptions.concat(this.props.topOptions)
-      });
   }
 
   loadImage(imageSrc) {
@@ -136,7 +132,7 @@ class CardItem extends Component {
       ? element.transformIcon(this.props.data[element.key])
       : element.icon;
     return (
-      <Container key={index} inLine mr={"15px"}>
+      <Container key={index} inLine mr={{ xs: "5px", md: "15px" }}>
         <SIconContainer>
           <MaterialIcon type={iconToShow} />
         </SIconContainer>
