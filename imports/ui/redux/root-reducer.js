@@ -4,6 +4,7 @@ import {
   filterStatus,
   sideBarEntity
 } from "./reducers/SideBarView";
+import { topSearch } from "./reducers/TopSearch";
 import previewData from "./reducers/PreviewActions";
 import loginModal from "./reducers/LoginModal/LoginModal";
 import User from "./user";
@@ -14,7 +15,8 @@ const rootReducer = combineReducers({
   sideBarStatus,
   previewData,
   sideBarEntity,
-  loginModal
+  loginModal,
+  topSearch
 });
 
 export default rootReducer;
