@@ -10,27 +10,42 @@ import { PlaceHolder } from "btech-placeholder-component";
 
 const TitleCardContainer = Styled.div`
     font-family: Helvetica Neue LT Std;
-    font-size: 18px;
+    font-size: 14px;
     font-weight: bold;
+    
+    ${mixins.media.desktop`
+      font-size: 18px;
+    `};
 `;
 
 const SKeyContainer = Styled.span`
-    font-size: 14px;
-    line-height: 18px;
+    font-size: 12px;
+    
+    ${mixins.media.desktop`
+      font-size: 14px;
+      line-height: 18px;
+    `};
 `;
 
 const SIconContainer = Styled.span`
-    line-height: 18px;
-    line-height: 18px;
-    font-size: 14px;
+    font-size: 12px;
     margin-right: 5px;
+    
+    ${mixins.media.desktop`
+      font-size: 14px;
+      line-height: 18px;
+    `};
 `;
 
 const SubTitleCardContainer = Styled.div`
-    font-size: 14px;
+    font-size: 12px;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
+    
+    ${mixins.media.desktop`
+      font-size: 14px;
+    `};
 `;
 
 const SMLCard = Styled(Card)`
@@ -47,7 +62,7 @@ const NullImageContainer = Styled.div`
     font-weight: 700;
     color: white;
     bottom: 0;
-    font-size: 14px;
+    font-size: 12px;
     left: 0;
     
     ${mixins.media.desktop`
@@ -78,30 +93,25 @@ const SCardContainer = Styled(Container)`
 class CardItem extends Component {
   constructor(props) {
     super(props);
+    const elements = [{ key: "views", icon: "eye" }].concat(
+      this.props.topOptions
+    );
     this.state = {
       loadingImage: true,
-      topOptions: [
-        {
-          key: "views",
-          icon: "eye"
-        }
-      ]
+      topOptions: elements
     };
     if (props.image) {
       this.loadImage(props.image);
     }
   }
 
-  componentDidMount() {
+  componentWillReceiveProps(newProps) {
+    if (!newProps.image) return;
+    if (newProps.image !== this.props.image) this.loadImage(newProps.image);
     if (this.props.topOptions && this.props.topOptions.length)
       this.setState({
         topOptions: this.state.topOptions.concat(this.props.topOptions)
       });
-  }
-
-  componentWillReceiveProps(newProps) {
-    if (!newProps.image) return;
-    if (newProps.image !== this.props.image) this.loadImage(newProps.image);
   }
 
   loadImage(imageSrc) {
@@ -143,10 +153,10 @@ class CardItem extends Component {
         minH={"initial"}
         mdMinH={"100px"}
         customTemplateRows={"1fr"}
-        rowGap={"5px"}
+        mdRowGap={"5px"}
         mdCustomTemplateRows={"1fr auto"}
       >
-        <Layout fullY customTemplateRows={"auto auto 1fr"} rowGap={"5px"}>
+        <Layout fullY customTemplateRows={"auto auto auto"} mdRowGap={"5px"}>
           <Container mdMinH={"25px"}>
             <Layout
               customTemplateColumns={"1fr"}

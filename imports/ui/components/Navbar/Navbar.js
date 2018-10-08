@@ -11,9 +11,12 @@ import { connect } from "react-redux";
 import { toggleSideBar } from "../../actions/SideBarActions";
 
 const SNavBarContainerStyled = Styled(Container)`
-    z-index: 15;
-//    hack for pose
-   ${mixins.media.desktop`margin-top:0px!important;transform:none!important;`}
+   z-index: 15;
+   
+   ${mixins.media.desktop`
+    margin-top:0px !important;
+    transform:none !important;
+   `}
 `;
 
 const SNavBarContainer = posed(SNavBarContainerStyled)({
@@ -63,7 +66,7 @@ class Navbar extends Component {
   };
 
   onAddToggle() {
-    this.props.toggleSideBar(!this.props.addSidebarIsOpen);
+    this.props.toggleSideBar(!this.props.addSidebarIsOpen, true, false);
     this.props.callback && this.props.callback(false);
   }
 
@@ -76,6 +79,15 @@ class Navbar extends Component {
 
   componentWillUnmount() {
     this.routeListen && this.routeListen();
+  }
+
+  onUserToggle() {
+    this.props.toggleSideBar(
+      !this.props.profileSideBarIsOpen,
+      false,
+      !this.props.profileSideBarIsOpen
+    );
+    this.openNavbar(false);
   }
 
   render() {
@@ -107,6 +119,7 @@ class Navbar extends Component {
               isOpen={this.state.isOpen}
               onToggleNavBar={this.toggleNavbar}
               onAddToggle={() => this.onAddToggle()}
+              onUserToggle={() => this.onUserToggle()}
               curUser={this.props.curUser}
             />
           </Layout>
@@ -125,14 +138,16 @@ const mapStateToProps = state => {
   const { sideBarStatus, sideBarEntity } = state;
   return {
     addSidebarIsOpen: sideBarStatus.status && sideBarStatus.isAdd,
-    filterEntityType: sideBarEntity ? sideBarEntity.entityType : null
+    filterEntityType: sideBarEntity ? sideBarEntity.entityType : null,
+    profileSideBarIsOpen: sideBarStatus.status && sideBarStatus.profile
   };
 };
 
 const mapDispatchToProps = dispatch => {
   return {
     closeSideBar: () => dispatch(toggleSideBar(false, false, false)),
-    toggleSideBar: status => dispatch(toggleSideBar(status, true, false))
+    toggleSideBar: (status, isAdd, profile) =>
+      dispatch(toggleSideBar(status, isAdd, profile))
   };
 };
 

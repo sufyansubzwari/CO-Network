@@ -2,12 +2,12 @@ import React from "react";
 import { Layout } from "btech-layout";
 import { GeoInputLocation } from "btech-location";
 import {
-  FiltersContainer,
-  Separator,
   BigTag,
-  FilterItem
+  FilterItem,
+  FiltersContainer,
+  Separator
 } from "../../../components";
-import { CheckBoxList, SwitchButton } from "btech-base-forms-component";
+import { CheckBoxList } from "btech-base-forms-component";
 import PropsTypes from "prop-types";
 import { cleanFilters, setFilters } from "../../../actions/SideBarActions";
 import { connect } from "react-redux";
@@ -106,13 +106,13 @@ class ColloquiumFilters extends React.Component {
         </FilterItem>
         <Separator />
         {/*<FilterItem>*/}
-          {/*<SwitchButton*/}
-            {/*checked={this.state.privacy}*/}
-            {/*text={`Show ${*/}
-              {/*!this.state.privacy ? "Public" : "Private"*/}
-            {/*} Colloquiums`}*/}
-            {/*onChange={status => this.handleChangePrivacy(status)}*/}
-          {/*/>*/}
+        {/*<SwitchButton*/}
+        {/*checked={this.state.privacy}*/}
+        {/*text={`Show ${*/}
+        {/*!this.state.privacy ? "Public" : "Private"*/}
+        {/*} Colloquiums`}*/}
+        {/*onChange={status => this.handleChangePrivacy(status)}*/}
+        {/*/>*/}
         {/*</FilterItem>*/}
         {/*<Separator />*/}
         <FilterItem>
@@ -124,7 +124,6 @@ class ColloquiumFilters extends React.Component {
             getValue={actives => this.changeLevel(actives)}
           />
         </FilterItem>
-        <Separator />
       </FiltersContainer>
     );
   }

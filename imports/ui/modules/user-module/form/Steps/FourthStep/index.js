@@ -1,15 +1,13 @@
 import React from "react";
 import {
+  CheckBox,
   CheckBoxList,
-  SalaryRange,
-  CheckBox
+  SalaryRange
 } from "btech-base-forms-component";
 import { Container, Layout } from "btech-layout";
-import SelectTag from "./../../../../../components/SelectTag/SelectTag";
 import IndustrySector from "../../../../../components/IndustrySector/IndustrySector";
 import { JOB_TYPE_DEFAULT } from "../../../../../constants";
-import { GetTags } from "../../../../../apollo-client/tag";
-import { Query } from "react-apollo";
+import { FormMainLayout } from "../../../../../components";
 
 class ThirdStep extends React.Component {
   constructor(props) {
@@ -94,7 +92,7 @@ class ThirdStep extends React.Component {
 
   render() {
     return (
-      <Layout rowGap={"25px"}>
+      <FormMainLayout>
         <Container>
           <CheckBoxList
             placeholderText={"Are you actively seeking employment?"}
@@ -111,7 +109,7 @@ class ThirdStep extends React.Component {
             onSelected={this.handleSeeking.bind(this, 1)}
           />
         </Container>
-        <Layout customTemplateColumns={"1fr 1fr"}>
+        <Layout mdCustomTemplateColumns={"1fr 1fr"}>
           <SalaryRange
             labelText={"Expected Salary Range"}
             placeholder={"000"}
@@ -142,10 +140,10 @@ class ThirdStep extends React.Component {
         </Layout>
         <IndustrySector
           tags={
-              this.state.user.professional &&
-              this.state.user.professional.industry &&
-              this.state.user.professional.industry.length &&
-              this.state.user.professional.industry
+            this.state.user.professional &&
+            this.state.user.professional.industry &&
+            this.state.user.professional.industry.length &&
+            this.state.user.professional.industry
           }
           handleTags={obj => this.handleTags(obj)}
         />
@@ -157,7 +155,7 @@ class ThirdStep extends React.Component {
           getValue={actives => this.changeCategoryEvents(actives)}
           columns={2}
         />
-      </Layout>
+      </FormMainLayout>
     );
   }
 }

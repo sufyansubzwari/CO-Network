@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import { Layout, Container } from "btech-layout";
+import { Container, Layout } from "btech-layout";
 import TicketItem from "./TicketItem";
 import TicketsList from "./TicketsList";
 import ButtonMenu from "../../components/ButtonMenu/ButtonMenu";

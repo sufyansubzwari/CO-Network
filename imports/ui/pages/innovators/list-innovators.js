@@ -1,23 +1,22 @@
 import React, { Component } from "react";
 import {
+  CardItem,
   ItemsList,
   ListLayout,
-  Preview,
-  CardItem
+  Preview
 } from "../../../ui/components";
-import { graphql, Mutation, compose } from "react-apollo";
+import { compose, graphql, Mutation } from "react-apollo";
 import { withRouter } from "react-router-dom";
 import {
-  GetOrg,
   DeleteOrg,
+  GetOrg,
   UpdateOrgImages
 } from "../../apollo-client/organization";
-import { getUsers, DeleteUser } from "../../apollo-client/user";
+import { DeleteUser, getUsers } from "../../apollo-client/user";
 import OrganizationPreviewBody from "../../components/Preview/OrganizationPreviewBody";
 import UserPreviewBody from "../../components/Preview/UserPreviewBody";
 import { connect } from "react-redux";
 import { PreviewData } from "../../actions/PreviewActions";
-import { Meteor } from "meteor/meteor";
 import { ViewsCountUpdate } from "../../apollo-client/viewCount";
 import { FollowAction } from "../../apollo-client/follow";
 
@@ -137,54 +136,63 @@ class ListInnovators extends Component {
   }
 
   customRenderItem(item, key, isLoading, viewsUpdate) {
-    return this.state.currentTab.value === "corporations" ? (
-      <CardItem
-        lgCustomTemplateColumns={"155px 1fr"}
-        onSelect={() => this.onChangeSelection(item, key, viewsUpdate)}
-        isActive={
-          this.state.selectedIndex !== null
-            ? this.state.selectedIndex === key
-            : false
-        }
-        data={item}
-        loading={isLoading}
-        title={item.name}
-        subTitle={item.reason ? item.reason.bio : ""}
-        image={item.image || null}
-        tags={item.description || []}
-        views={item.views}
-        key={key}
-      />
-    ) : this.state.currentTab.value === "members" ? (
-      <CardItem
-        lgCustomTemplateColumns={"155px 1fr"}
-        onSelect={() => this.onChangeSelection(item, key, viewsUpdate)}
-        isActive={
-          this.state.selectedIndex !== null
-            ? this.state.selectedIndex === key
-            : false
-        }
-        data={item}
-        loading={isLoading}
-        title={item.profile && item.profile.name + " " + item.profile.lastName}
-        subTitle={
-          (item.profile &&
-            item.profile.aboutMe &&
-            item.profile.aboutMe.yourPassion) ||
-          ""
-        }
-        image={(item.profile && item.profile.image) || null}
-        tags={
-          (item.profile &&
-            item.profile.knowledge &&
-            item.profile.knowledge.languages &&
-            item.profile.knowledge.languages.map(item => item.tag)) ||
-          []
-        }
-        views={item.views}
-        key={key}
-      />
-    ) : null;
+    switch (this.state.currentTab.value) {
+      case "corporations":
+        return (
+          <CardItem
+            lgCustomTemplateColumns={"155px 1fr"}
+            onSelect={() => this.onChangeSelection(item, key, viewsUpdate)}
+            isActive={
+              this.state.selectedIndex !== null
+                ? this.state.selectedIndex === key
+                : false
+            }
+            data={item}
+            loading={isLoading}
+            title={item.name}
+            subTitle={item.reason ? item.reason.bio : ""}
+            image={item.image || null}
+            tags={item.description || []}
+            views={item.views}
+            key={key}
+          />
+        );
+      case "members":
+        return (
+          <CardItem
+            lgCustomTemplateColumns={"155px 1fr"}
+            onSelect={() => this.onChangeSelection(item, key, viewsUpdate)}
+            isActive={
+              this.state.selectedIndex !== null
+                ? this.state.selectedIndex === key
+                : false
+            }
+            data={item}
+            loading={isLoading}
+            title={
+              item.profile && item.profile.name + " " + item.profile.lastName
+            }
+            subTitle={
+              (item.profile &&
+                item.profile.aboutMe &&
+                item.profile.aboutMe.yourPassion) ||
+              ""
+            }
+            image={(item.profile && item.profile.image) || null}
+            tags={
+              (item.profile &&
+                item.profile.knowledge &&
+                item.profile.knowledge.languages &&
+                item.profile.knowledge.languages.map(item => item.tag)) ||
+              []
+            }
+            views={item.views}
+            key={key}
+          />
+        );
+      default:
+        return null;
+    }
   }
 
   editOrg() {
@@ -261,18 +269,20 @@ class ListInnovators extends Component {
 
   render() {
     let data = [];
-    let isLoading = false;
+    let isLoading = true;
     if (this.state.currentTab.value === "corporations") {
       isLoading =
-        !this.props.organizations &&
-        !this.props.organizations.length &&
-        this.props.organizations.loading;
+        !this.props.organizations ||
+        (this.props.organizations.organizations &&
+          !this.props.organizations.organizations.length &&
+          this.props.organizations.loading);
       data = this.props.organizations && this.props.organizations.organizations;
     } else if (this.state.currentTab.value === "members") {
       isLoading =
-        !this.props.users &&
-        !this.props.users.length &&
-        this.props.users.loading;
+        !this.props.users ||
+        (this.props.users.users &&
+          !this.props.users.users.length &&
+          this.props.users.loading);
       data = this.props.users && this.props.users.users;
     }
     return (

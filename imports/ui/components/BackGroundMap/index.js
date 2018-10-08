@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { Map, Marker, TileLayer, Tooltip } from "react-leaflet";
 import styled from "styled-components";
-import { Query } from "react-apollo";
+import { graphql } from "react-apollo";
 import { Container } from "btech-layout";
 import L from "leaflet";
 import ReactDOMServer from "react-dom/server";
@@ -44,6 +44,30 @@ class MapBackGround extends Component {
     });
   }
 
+  componentWillMount() {
+    this.reFetchQuery();
+  }
+
+  reFetchQuery() {
+    return this.props.data.refetch();
+  }
+
+  renderPlaces() {
+    return this.props.data && this.props.data.places
+      ? this.props.data.places.map((element, index) => {
+          const location = element.location;
+          const coordinates = element.location.location;
+          return (
+            <Marker key={index} position={[coordinates.lat, coordinates.lng]}>
+              <Tooltip>
+                <span>{location.address}</span>
+              </Tooltip>
+            </Marker>
+          );
+        })
+      : null;
+  }
+
   render() {
     const position = [this.state.lat, this.state.lng];
     return (
@@ -69,26 +93,7 @@ class MapBackGround extends Component {
             showCoverageOnHover={false}
             spiderfyDistanceMultiplier={2}
           >
-            <Query query={GetLocations} pollInterval={5000}>
-              {({ loading, error, data }) => {
-                return data && data.places
-                  ? data.places.map((element, index) => {
-                      const location = element.location;
-                      const coordinates = element.location.location;
-                      return (
-                        <Marker
-                          key={index}
-                          position={[coordinates.lat, coordinates.lng]}
-                        >
-                          <Tooltip>
-                            <span>{location.address}</span>
-                          </Tooltip>
-                        </Marker>
-                      );
-                    })
-                  : null;
-              }}
-            </Query>
+            {this.renderPlaces()}
           </MarkerClusterGroup>
         </SMapContainer>
       </Container>
@@ -96,4 +101,8 @@ class MapBackGround extends Component {
   }
 }
 
-export default MapBackGround;
+export default graphql(GetLocations, {
+  options: () => ({
+    fetchPolicy: "cache-and-network"
+  })
+})(MapBackGround);

@@ -168,9 +168,8 @@ const bigtag = {
 
 const lists = {
   scrollSeparation: 15,
-  scrollBottomSeparation: 15,
-  itemSeparation: 15,
-  mobileItemSeparation: 30
+  mobileScrollSeparation: 10,
+  itemSeparation: 10
 };
 
 const texts = {
@@ -192,7 +191,17 @@ const texts = {
 
 const font = {
   fontSize: "12px"
-}
+};
+
+const forms = {
+  rowSpace: "25px",
+  mobileRowSpace: "5px"
+};
+
+const labels = {
+  top: -22,
+  left: 0
+};
 
 export const theme = {
   textColor: color.black,
@@ -209,5 +218,7 @@ export const theme = {
   create,
   signup,
   font,
+  forms,
+  labels,
   borderColor: color.grey
 };

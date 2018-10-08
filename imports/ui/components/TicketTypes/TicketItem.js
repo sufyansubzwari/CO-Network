@@ -17,7 +17,6 @@ const SButtonText = styled.span`
 const STitleText = styled.div`
   font-size: 12px;
   font-family: Roboto Mono, serif;
-  margin-left: 10px;
   font-weight: bold;
 `;
 
@@ -52,7 +51,7 @@ class TicketItem extends Component {
         <STitleText>{this.props.title}</STitleText>
         <Layout rowGap={"5px"}>
           <Container>
-            <Layout templateColumns={2} colGap={"25px"}>
+            <Layout mdTemplateColumns={2} mdColGap={"20px"} rowGap={"5px"}>
               <Container>
                 <Input
                   placeholderText={"Ticket Name"}
@@ -81,10 +80,8 @@ class TicketItem extends Component {
             />
           </Container>
           {this.props.isPaid ? (
-            <Container>
-              <SalaryRange
-                  addDollar={true}
-                labelText={"Price Range"}
+            <SalaryRange
+                addDollar={true}labelText={"Price Range"}
                 placeholder={"000"}
                 min={Number(this.state.ticket.min) || 0}
                 max={Number(this.state.ticket.max) || 0}
@@ -96,7 +93,7 @@ class TicketItem extends Component {
                   this.setState({ ticket: ticket });
                 }}
               />
-            </Container>
+
           ) : null}
           <Container>
             <Layout customTemplateColumns={"1fr auto"}>

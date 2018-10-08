@@ -1,8 +1,9 @@
 import React from "react";
-import { Input, CheckBoxList, CheckBox } from "btech-base-forms-component";
+import { CheckBox, CheckBoxList, Input } from "btech-base-forms-component";
 import { Container, Layout } from "btech-layout";
 import services from "../../../../../components/LoginModal/service.constant";
 import { EMAIL_REGEX, PHONE_REGEX } from "../../../../../constants";
+import { FormMainLayout } from "../../../../../components";
 
 class FirstStep extends React.Component {
   constructor(props) {
@@ -41,8 +42,8 @@ class FirstStep extends React.Component {
 
   render() {
     return (
-      <Layout rowGap={"25px"}>
-        <Layout templateColumns={2} colGap={"20px"}>
+      <FormMainLayout>
+        <Layout mdTemplateColumns={2} mdColGap={"20px"} rowGap={"5px"}>
           <Input
             required={true}
             name={"name"}
@@ -58,7 +59,7 @@ class FirstStep extends React.Component {
             getValue={this.notifyParent.bind(this)}
           />
         </Layout>
-        <Layout templateColumns={2} colGap={"20px"}>
+        <Layout mdTemplateColumns={2} mdColGap={"20px"} rowGap={"5px"}>
           <Input
             required={true}
             name={"country"}
@@ -74,7 +75,7 @@ class FirstStep extends React.Component {
             getValue={this.notifyParent.bind(this)}
           />
         </Layout>
-        <Layout templateColumns={2} colGap={"20px"}>
+        <Layout mdTemplateColumns={2}>
           <Container>
             <CheckBoxList placeholderText={"Remote?"} options={[]} />
             <Layout templateColumns={2}>
@@ -92,7 +93,7 @@ class FirstStep extends React.Component {
           </Container>
           <Container />
         </Layout>
-        <Layout templateColumns={2} colGap={"20px"}>
+        <Layout mdTemplateColumns={2} mdColGap={"20px"} rowGap={"5px"}>
           <Input
             required={true}
             name={"email"}
@@ -109,7 +110,7 @@ class FirstStep extends React.Component {
             getValue={this.notifyParent.bind(this)}
           />
         </Layout>
-        <Layout templateColumns={2} colGap={"20px"}>
+        <Layout mdTemplateColumns={2}>
           <Input
             name={"website"}
             model={this.state.apply}
@@ -118,7 +119,7 @@ class FirstStep extends React.Component {
           />
           <Container />
         </Layout>
-      </Layout>
+      </FormMainLayout>
     );
   }
 }

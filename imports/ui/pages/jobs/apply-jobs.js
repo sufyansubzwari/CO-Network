@@ -1,8 +1,8 @@
 import React, { Component } from "react";
 import ApplyJobForm from "../../modules/apply-jobs-module/form/index";
-import { Preview, PostLayout } from "../../../ui/components";
+import { PostLayout, Preview } from "../../../ui/components";
 import { withRouter } from "react-router-dom";
-import { Mutation, graphql } from "react-apollo";
+import { graphql, Mutation } from "react-apollo";
 import { CreateJobApply } from "../../apollo-client/jobApply";
 import { Meteor } from "meteor/meteor";
 import { userQuery } from "../../apollo-client/user";
@@ -64,7 +64,7 @@ class ApplyJob extends Component {
         user.profile.aboutMe.existingProblem || "";
       apply.jobSpecific.steps = user.profile.aboutMe.steps || "";
       apply.professional.languages =
-        user.profile
+        user.profile &&
         user.profile.knowledge &&
         user.profile.knowledge.languages &&
         user.profile.knowledge.languages.length
@@ -114,10 +114,10 @@ class ApplyJob extends Component {
     }
   }
 
-    render() {
-        return (
-            <PostLayout>
-                <Mutation
+  render() {
+    return (
+      <PostLayout>
+        <Mutation
           key={"leftSide"}
           mutation={CreateJobApply}
           onCompleted={() =>
@@ -127,47 +127,47 @@ class ApplyJob extends Component {
         >
           {(createJobApply, { jobCreated }) => (
             <ApplyJobForm
-                    key={"leftSide"}
-                    onFinish={data => {
-                        this.onPostAction(createJobApply, data);
-                    }}
-                    onCancel={() => this.onCancel()}
-                    {...this.props}
-                    handleApplyChange={apply =>
-                        this.setState({ apply: { ...this.state.apply, ...apply } })
-                    }
-                    apply={this.state.apply}
-                />)}
+              key={"leftSide"}
+              onFinish={data => {
+                this.onPostAction(createJobApply, data);
+              }}
+              onCancel={() => this.onCancel()}
+              {...this.props}
+              handleApplyChange={apply =>
+                this.setState({ apply: { ...this.state.apply, ...apply } })
+              }
+              apply={this.state.apply}
+            />
+          )}
         </Mutation>
-                <Preview
-                    isOpen={this.state.openPreview}
-                    onClose={()=>this.setState({openPreview:false})}
-                    key={"rightSide"}
-                    navClicked={index => console.log(index)}
-                    navOptions={[
-                        {
-                            text: "Remove",
-                            icon: "delete",
-                            checkVisibility: () => {
-                                return this.state.selectedItem && this.state.selectedItem.id;
-                            },
-                            onClick: function() {
-                                console.log("Remove");
-                            }
-                        }
-                    ]}
-
-                    index={this.state.selectedIndex}
-                    data={this.state.selectedItem}
-                    allowChangeImages
-                    backGroundImage={this.state.job && this.state.job.image}
-                    onBackgroundChange={imageSrc => this.handleBackgroundChange(imageSrc)}
-                >
-                    <div>Here goes the preview for apply job</div>
-                </Preview>
-            </PostLayout>
-        );
-    }
+        <Preview
+          isOpen={this.state.openPreview}
+          onClose={() => this.setState({ openPreview: false })}
+          key={"rightSide"}
+          navClicked={index => console.log(index)}
+          navOptions={[
+            {
+              text: "Remove",
+              icon: "delete",
+              checkVisibility: () => {
+                return this.state.selectedItem && this.state.selectedItem.id;
+              },
+              onClick: function() {
+                console.log("Remove");
+              }
+            }
+          ]}
+          index={this.state.selectedIndex}
+          data={this.state.selectedItem}
+          allowChangeImages
+          backGroundImage={this.state.job && this.state.job.image}
+          onBackgroundChange={imageSrc => this.handleBackgroundChange(imageSrc)}
+        >
+          <div>Here goes the preview for apply job</div>
+        </Preview>
+      </PostLayout>
+    );
+  }
 }
 
 export default withRouter(

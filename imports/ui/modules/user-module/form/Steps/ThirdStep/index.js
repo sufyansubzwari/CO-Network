@@ -1,15 +1,10 @@
 import React from "react";
-import {
-  CheckBoxList,
-  InputAutoComplete,
-  TagList
-} from "btech-base-forms-component";
-import { Container, Layout } from "btech-layout";
-
+import { CheckBoxList, TagList } from "btech-base-forms-component";
+import { Container } from "btech-layout";
 import { LOOKING_FOR_DEFAULT, TAG_LEVEL } from "../../../../../constants";
 import { GetTags } from "../../../../../apollo-client/tag";
 import { Query } from "react-apollo";
-import MLTagsInput from "../../../../../components/TagsInputAutoComplete/TagsInputAutoComplete";
+import { FormMainLayout, MLTagsInput } from "../../../../../components";
 
 class ThirdStep extends React.Component {
   constructor(props) {
@@ -19,7 +14,7 @@ class ThirdStep extends React.Component {
 
     this.state = {
       user: data,
-      lookingFor: LOOKING_FOR_DEFAULT
+      lookingSDateRangeContainerFor: LOOKING_FOR_DEFAULT
     };
   }
 
@@ -126,7 +121,7 @@ class ThirdStep extends React.Component {
 
   render() {
     return (
-      <Layout rowGap={"25px"}>
+      <FormMainLayout>
         <Container>
           <Query query={GetTags} variables={{ tags: { type: "Languages" } }}>
             {({ loading, error, data }) => {
@@ -277,7 +272,7 @@ class ThirdStep extends React.Component {
           getValue={actives => this.changeCategoryEvents(actives)}
           columns={2}
         />
-      </Layout>
+      </FormMainLayout>
     );
   }
 }

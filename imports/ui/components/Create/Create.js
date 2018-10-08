@@ -1,20 +1,30 @@
 import React from "react";
-import { Layout, Container, mixins } from "btech-layout";
+import { Container, Layout, mixins } from "btech-layout";
 import styled from "styled-components";
 import PropsTypes from "prop-types";
 import { Link } from "react-router-dom";
 import { Button } from "btech-base-forms-component";
 import MaterialIcon from "react-material-iconic-font";
+import ReactSVG from "react-svg";
 
 const Header = styled(Container)`
-  background-image: url("/images/create-head.png");
-  background-size: cover;
   width: 100%;
-  height: 230px;
-  
+  height: 150px;
+  position: relative;
+  background: linear-gradient(0deg, #f92672, #e826f9);
+
   ${mixins.media.desktop`
     height: 175px;
-  `}
+  `};
+`;
+
+const SBottomSvg = styled(Container)`
+  position: absolute;
+  bottom: 0px;
+
+  ${mixins.media.desktop`
+    bottom: -2px;
+  `};
 `;
 
 const SHeaderContent = styled(Container)`
@@ -23,8 +33,12 @@ const SHeaderContent = styled(Container)`
     justify-content: center;
     align-items: middle;
     zoom: 100%;
-    height: 175px;
-
+    height: 130px;
+    
+    ${mixins.media.desktop`
+      height: 175px;
+    `};
+    
     @media (min-width: 62em) {
       zoom: 80%;
     }
@@ -167,6 +181,9 @@ class Create extends React.Component {
         onBlur={() => this.props.onBlur && this.props.onBlur()}
       >
         <Header>
+          <SBottomSvg fullX>
+            <ReactSVG src={"/images/sidebar/border.svg"} />
+          </SBottomSvg>
           <SHeaderContent>
             <CButton
               primary

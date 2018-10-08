@@ -1,23 +1,29 @@
 import React from "react";
 import PropTypes from "prop-types";
-import { Layout, Container } from "btech-layout";
+import { Container, Layout } from "btech-layout";
 import styled from "styled-components";
-import { Button, Input, Select, TextArea } from "btech-base-forms-component";
+import { Button } from "btech-base-forms-component";
 import MaterialIcon from "react-material-iconic-font";
-import MediaItem from "./MediaItem"
-import {UploadToS3} from "../../services";
-import {UploadToS3FromClient} from "../../services";
+import MediaItem from "./MediaItem";
+import { UploadToS3FromClient } from "../../services";
 
-const SLabel = styled.div`
-  font-size: 12px;
-  font-family: Roboto Mono, serif;
-  margin-left: 10px;
-  display: flex;
-  align-items: center;
-`;
+const SMediaItem = styled(Layout)`
+  .buttons {
+    opacity: 1;
+    transition: all 200ms ease-out;
+  }
 
-const SContainer = styled(Container)`
-  font-size: 14px;
+  :hover {
+    .buttons {
+      opacity: 1;
+    }
+  }
+
+  @media (min-width: 62em) {
+    .buttons {
+      opacity: 0;
+    }
+  }
 `;
 
 const SItemContainer = styled(Container)`
@@ -29,9 +35,7 @@ class MediaList extends React.Component {
     super(props);
 
     this.state = {
-      media:
-        this.props.data && this.props.data.length ? this.props.data : [],
-      isEditable: false
+      media: this.props.data && this.props.data.length ? this.props.data : []
     };
 
     this.handleSave = this.handleSave.bind(this);
@@ -46,8 +50,7 @@ class MediaList extends React.Component {
   componentWillReceiveProps(nextProps) {
     if (nextProps.data) {
       this.setState({
-        media:
-          nextProps.data && nextProps.data.length ? nextProps.data : []
+        media: nextProps.data && nextProps.data.length ? nextProps.data : []
       });
     }
   }
@@ -64,33 +67,28 @@ class MediaList extends React.Component {
     );
   }
 
-  handleClose(pos){
-      let sta = this.state.media;
-      sta[pos]['files'] = '';
-      this.setState({
-              media: sta
-          })
+  handleClose(pos) {
+    let sta = this.state.media;
+    sta[pos]["files"] = "";
+    this.setState({
+      media: sta
+    });
   }
 
-    async handleUpload(files, index) {
-        if (files) {
-            if(files.size <= 10 * 1024 * 1024){
-              let media = this.state.media;
-                let result = await UploadToS3FromClient.uploadFromClient(files);
-              // const result = await UploadToS3.uploadFileSync(files);
-                if(result !== -1)
-                  media[index]["files"] = { name: files.name, link: result };
-              this.setState({ media: media }, () => this.notifyParent());
-            }
-            else
-                alert("File shouldn't be bigger than 10Mb");
-        }
+  async handleUpload(files, index) {
+    if (files) {
+      if (files.size <= 10 * 1024 * 1024) {
+        let media = this.state.media;
+        let result = await UploadToS3FromClient.uploadFromClient(files);
+        if (result !== -1)
+          media[index]["files"] = { name: files.name, link: result };
+        this.setState({ media: media }, () => this.notifyParent());
+      } else alert("File shouldn't be bigger than 10Mb"); // todo: integrate with the notification alerts
     }
+  }
 
-    handleDelete() {
-    let arr = this.state.media.filter(
-      item => item.type !== this.props.type
-    );
+  handleDelete() {
+    let arr = this.state.media.filter(item => item.type !== this.props.type);
     this.setState(
       {
         media: arr
@@ -98,9 +96,10 @@ class MediaList extends React.Component {
       () => this.notifyParent()
     );
   }
+
   handleSave(index) {
     let med = this.state.media;
-      med[index] = { ...med[index], edit: false };
+    med[index] = { ...med[index], edit: false };
     this.setState(
       {
         media: med
@@ -111,7 +110,7 @@ class MediaList extends React.Component {
 
   handleChange(index) {
     let med = this.state.media;
-      med[index] = { ...med[index], edit: true };
+    med[index] = { ...med[index], edit: true };
     this.props.onChange && this.props.onChange(med);
   }
 
@@ -133,125 +132,67 @@ class MediaList extends React.Component {
   }
 
   render() {
-    let edit = this.state.media && this.state.media.length && this.state.media.filter(item => item.edit === true);
-
     return (
-      <Container style={{ display: this.state.media.length ? "block" : "none" }}>
-        {this.state.media.length ? (
-          <Layout
-            customTemplateColumns={"1fr auto"}
-            style={{ paddingRight: "10px" }}
-            mb={'5px'}
-          >
-            <SLabel>Media</SLabel>
-            {edit.length === 0 ? (
-              <Layout customTemplateColumns={"auto auto auto"}>
-                <Button
-                  type={"button"}
-                  secondary
-                  height={"auto"}
-                  color={"black"}
-                  opacity={"0.5"}
-                  border={"none"}
-                  hoverBackground={"transparent"}
-                  hoverColor={"initial"}
-                  onClick={this.handleAdd}
-                  style={{ fontSize: "14px" }}
-                >
-                  <MaterialIcon type={"plus-circle"} />
-                </Button>
-                <Button
-                  type={"button"}
-                  secondary
-                  height={"auto"}
-                  color={"black"}
-                  opacity={"0.5"}
-                  border={"none"}
-                  hoverBackground={"transparent"}
-                  hoverColor={"initial"}
-                  onClick={() =>
-                    this.setState({ isEditable: !this.state.isEditable })
-                  }
-                  style={{ fontSize: "14px" }}
-                >
-                  <MaterialIcon type={"edit"} />
-                </Button>
-                <Button
-                  type={"button"}
-                  secondary
-                  height={"auto"}
-                  color={"black"}
-                  opacity={"0.5"}
-                  border={"none"}
-                  hoverBackground={"transparent"}
-                  hoverColor={"initial"}
-                  onClick={this.handleDelete}
-                  style={{ fontSize: "14px" }}
-                >
-                  <MaterialIcon type={"delete"} />
-                </Button>
-              </Layout>
-            ) : null}
-          </Layout>
-        ) : null}
+      <Container
+        style={{ display: this.state.media.length ? "block" : "none" }}
+      >
         <SItemContainer paddingX={"10px"} background={this.props.background}>
           <Container>
             {this.state.media.map(
               (item, index) =>
-                  item.edit ? (
-                      <MediaItem
-                          model={this.state.media[index]}
-                          handleSave={() => this.handleSave(index)}
-                          handleUpload={(file) => this.handleUpload(file, index)}
-                          onClose ={ () => this.handleClose(index) }
-                      />
-                  ) : (
+                item.edit ? (
+                  <MediaItem
+                    model={this.state.media[index]}
+                    handleSave={() => this.handleSave(index)}
+                    handleUpload={file => this.handleUpload(file, index)}
+                    onClose={() => this.handleClose(index)}
+                  />
+                ) : (
+                  <SMediaItem
+                    paddingY={"10px"}
+                    customTemplateColumns={"1fr auto"}
+                  >
+                    <Container>{item.title}</Container>
                     <Layout
-                      paddingY={"10px"}
-                      customTemplateColumns={"1fr auto"}
+                      customTemplateColumns={"auto auto"}
+                      colGap={"5px"}
+                      className={"buttons"}
                     >
-                      <Container>{item.title}</Container>
-                      {this.state.isEditable ? (
-                        <Layout
-                          customTemplateColumns={"auto auto"}
-                          colGap={"5px"}
-                        >
-                          <Button
-                            type={"button"}
-                            secondary
-                            height={"auto"}
-                            color={"black"}
-                            opacity={"0.5"}
-                            border={"none"}
-                            hoverBackground={"transparent"}
-                            hoverColor={"initial"}
-                            onClick={event => {
-                              event.preventDefault();
-                              this.handleChange(index);
-                            }}
-                            style={{ fontSize: "14px" }}
-                          >
-                            <MaterialIcon type={"edit"} />
-                          </Button>
-                          <Button
-                            type={"button"}
-                            secondary
-                            height={"auto"}
-                            color={"black"}
-                            opacity={"0.5"}
-                            border={"none"}
-                            hoverBackground={"transparent"}
-                            hoverColor={"initial"}
-                            onClick={() => this.handleRemove(index)}
-                            style={{ fontSize: "14px" }}
-                          >
-                            <MaterialIcon type={"delete"} />
-                          </Button>
-                        </Layout>
-                      ) : null}
+                      <Button
+                        type={"button"}
+                        secondary
+                        height={"auto"}
+                        color={"black"}
+                        opacity={"0.5"}
+                        border={"none"}
+                        hoverBackground={"transparent"}
+                        hoverColor={"initial"}
+                        onClick={event => {
+                          event.preventDefault();
+                          this.handleChange(index);
+                        }}
+                        style={{ fontSize: "14px" }}
+                      >
+                        <MaterialIcon type={"edit"} />
+                      </Button>
+                      <Button
+                        type={"button"}
+                        secondary
+                        height={"auto"}
+                        color={"black"}
+                        opacity={"0.5"}
+                        border={"none"}
+                        hoverBackground={"transparent"}
+                        hoverColor={"initial"}
+                        onClick={() => this.handleRemove(index)}
+                        style={{ fontSize: "14px" }}
+                      >
+                        <MaterialIcon type={"delete"} />
+                      </Button>
                     </Layout>
-                  ))
-            }
+                  </SMediaItem>
+                )
+            )}
           </Container>
         </SItemContainer>
       </Container>
@@ -261,14 +202,13 @@ class MediaList extends React.Component {
 
 MediaList.defaultProps = {
   data: [],
-  background: "#E9EFF0",
+  background: "#E9EFF0"
 };
 
 MediaList.propTypes = {
   data: PropTypes.array,
   background: PropTypes.string,
-  onAdd: PropTypes.func,
-  isEditable: PropTypes.bool
+  onAdd: PropTypes.func
 };
 
 export default MediaList;

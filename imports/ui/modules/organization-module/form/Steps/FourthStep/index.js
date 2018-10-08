@@ -1,17 +1,14 @@
 import React from "react";
-import {
-  TagList,
-  SalaryRange,
-  CheckBoxList,
-  InputAutoComplete
-} from "btech-base-forms-component";
+import { CheckBoxList, SalaryRange, TagList } from "btech-base-forms-component";
 import { Container, Layout } from "btech-layout";
-import SelectTag from "../../../../../components/SelectTag/SelectTag";
 import { JOB_TYPE, TAG_LEVEL } from "../../../../../constants";
 import { GetTags } from "../../../../../apollo-client/tag";
 import { Query } from "react-apollo";
-import MLTagsInput from "../../../../../components/TagsInputAutoComplete/TagsInputAutoComplete";
-import IndustrySector from "../../../../../components/IndustrySector/IndustrySector";
+import {
+  MLTagsInput,
+  IndustrySector,
+  FormMainLayout
+} from "../../../../../components";
 
 class FourthStep extends React.Component {
   constructor(props) {
@@ -135,13 +132,12 @@ class FourthStep extends React.Component {
       this.state.organization.tech[name] &&
       this.state.organization.tech[name][index]
     ) {
-      let newTag = {
+      this.state.organization.tech[name][index] = {
         ...this.state.organization.tech[name][index],
         levelColor: color,
         icon: icon,
         level: value
       };
-      this.state.organization.tech[name][index] = newTag;
       this.setState({ organization: this.state.organization }, () =>
         this.notifyParent()
       );
@@ -150,7 +146,7 @@ class FourthStep extends React.Component {
 
   render() {
     return (
-      <Layout rowGap={"25px"}>
+      <FormMainLayout>
         <Container>
           <Query query={GetTags} variables={{ tags: { type: "Languages" } }}>
             {({ loading, error, data }) => {
@@ -234,7 +230,7 @@ class FourthStep extends React.Component {
           {/*/>*/}
           {/*</Container>*/}
         </Container>
-        <Layout templateColumns={2}>
+        <Layout mdTemplateColumns={2} mdColGap={"20px"} rowGap={"5px"}>
           <SalaryRange
             labelText={"Salary Range"}
             placeholder={"000"}
@@ -279,7 +275,7 @@ class FourthStep extends React.Component {
           checkboxSize={"15px"}
           getValue={actives => this.changeJobTypes(actives)}
         />
-      </Layout>
+      </FormMainLayout>
     );
   }
 }

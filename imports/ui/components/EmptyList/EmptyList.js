@@ -1,6 +1,6 @@
 import React from "react";
 import PropTypes from "prop-types";
-import { Container } from "btech-layout";
+import { Container, mixins } from "btech-layout";
 import styled from "styled-components";
 import { toggleSideBar } from "../../actions/SideBarActions";
 import { connect } from "react-redux";
@@ -11,7 +11,7 @@ const SMainContainer = styled.div`
   align-items: center;
   justify-content: center;
   zoom: 100%;
-  
+
   @media (min-width: 62em) {
     zoom: 80%;
   }
@@ -22,10 +22,14 @@ const SMainContainer = styled.div`
 `;
 
 const STitle = styled(Container)`
-  font-size: 28px;
+  font-size: 24px;
   font-family: Helvetica Neue LT Std;
   color: #ababab;
   line-height: 30px;
+
+  ${mixins.media.desktop`
+    font-size: 28px;
+  `};
 `;
 
 const SSubTitle = styled(Container)`
@@ -53,7 +57,7 @@ const EmptyList = function(props) {
       <Container textCenter>
         <STitle>No {props.entityName}</STitle>
         <STitle>To Show</STitle>
-        <SSubTitle mt={"10px"}>
+        <SSubTitle mt={{ md: "10px" }}>
           Feel free to{" "}
           <STitleAction onClick={() => onAddToggle()}>create</STitleAction> your
         </SSubTitle>

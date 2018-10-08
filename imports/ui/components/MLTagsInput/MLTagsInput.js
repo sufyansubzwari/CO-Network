@@ -10,7 +10,7 @@ import {
   DropdownItem,
   InputGroupAddon
 } from "reactstrap";
-import { TagList } from "btech-base-forms-component";
+import { TagList, SLabel } from "btech-base-forms-component";
 
 const SDropDownMenu = styled(DropdownMenu)`
   font-size: ${props => props.fontSize || "12px"} !important;
@@ -69,18 +69,7 @@ const SInput = styled.input`
   }
 `;
 
-const SLabel = styled.label`
-  position: absolute;
-  top: ${props => (props.inactive ? "8px" : "-22px")};
-  left: ${props => (props.inactive ? "10px" : "10px")};
-  font-size: ${props => (props.fontSize ? props.fontSize : null)};
-  font-family: ${props => (props.fontFamily ? props.fontFamily : null)};
-  font-weight: ${props => (props.fontWeight ? props.fontWeight : null)};
-  color: ${props => (props.inactive ? "rgba(0,0,0,0.5)" : "#2B2B2B")};
-  transition: all 0.2s ease-out;
-`;
-
-export default class TagsInputAutoComplete extends Component {
+export default class MLTagsInput extends Component {
   constructor(props) {
     super(props);
 
@@ -119,9 +108,6 @@ export default class TagsInputAutoComplete extends Component {
 
   onFocus() {
     this.InputRef && this.InputRef.current && this.InputRef.current.focus();
-    // this.setState({
-    //   active: true
-    // });
   }
 
   toggleDropDown() {
@@ -285,12 +271,12 @@ export default class TagsInputAutoComplete extends Component {
   }
 }
 
-TagsInputAutoComplete.defaultProps = {
+MLTagsInput.defaultProps = {
   iconClass: "plus",
   fixLabel: false
 };
 
-TagsInputAutoComplete.propTypes = {
+MLTagsInput.propTypes = {
   options: PropsTypes.array,
   fixLabel: PropsTypes.bool,
   iconClass: PropsTypes.string,

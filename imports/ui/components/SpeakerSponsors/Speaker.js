@@ -20,12 +20,6 @@ const SErrorMessage = styled.label`
   transition: all 0.2s ease-out;
 `;
 
-// const onAdd = (props, obj) => {
-//   props.onAdd(obj.label, "name");
-//   props.onAdd(obj.email, "email");
-// };
-// };
-
 class Speaker extends React.Component {
   constructor(props) {
     super(props);
@@ -44,12 +38,12 @@ class Speaker extends React.Component {
   }
 
   onAddNew(props, obj) {
-  if (!!obj.label && obj.label !== "")
+    if (!!obj.label && obj.label !== "")
       this.setState({
-          userValid: false
+        userValid: false
       });
-  props.onAdd(obj.label, "name");
-  props.onAdd(obj.email, "email");
+    props.onAdd(obj.label, "name");
+    props.onAdd(obj.email, "email");
   }
 
   render() {
@@ -63,7 +57,7 @@ class Speaker extends React.Component {
           }}
         >
           <Container>
-            <Layout templateColumns={2} colGap={"20px"}>
+            <Layout mdTemplateColumns={2} mdColGap={"20px"} rowGap={"5px"}>
               <Container ml={"1px"}>
                 <InputAutoComplete
                   placeholderText={"Name"}

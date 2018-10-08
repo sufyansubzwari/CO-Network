@@ -31,7 +31,7 @@ class OrganizationPreviewBody extends React.Component {
     let products = [];
     if (this.state.organization && this.state.organization.products)
       products = this.state.organization.products.map((prod, index) => (
-        <Container>
+        <Container key={index}>
           <Text header={`${prod.type}s`} marginBottom={"0px"} />
           <ProductService data={prod} files={prod.files} type={prod.type} />
         </Container>
@@ -39,17 +39,17 @@ class OrganizationPreviewBody extends React.Component {
     return products;
   }
 
-    handleMedia() {
-        let media = [];
-        if (this.state.organization && this.state.organization.media)
-            media = this.state.organization.media.map((med, index) => (
-                <Container>
-                    <Text header={`Media`} marginBottom={"0px"} />
-                    <Media data={med} file={med.files}/>
-                </Container>
-            ));
-        return media;
-    }
+  handleMedia() {
+    let media = [];
+    if (this.state.organization && this.state.organization.media)
+      media = this.state.organization.media.map((med, index) => (
+        <Container key={index}>
+          <Text header={`Media`} marginBottom={"0px"} />
+          <Media data={med} file={med.files} />
+        </Container>
+      ));
+    return media;
+  }
 
   handleSocialInfo() {
     let socials = [];
@@ -81,16 +81,16 @@ class OrganizationPreviewBody extends React.Component {
       this.state.organization.tech &&
       this.state.organization.tech[elementName]
     )
-      if(elementName === 'stack')
+      if (elementName === "stack")
         elements = this.state.organization.tech[elementName].map(element => ({
-           ...element.tag,
+          ...element.tag,
           active: true
         }));
       else
-          elements = this.state.organization.tech[elementName].map(element => ({
-              ...element,
-              active: true
-          }));
+        elements = this.state.organization.tech[elementName].map(element => ({
+          ...element,
+          active: true
+        }));
     return elements;
   }
 
@@ -129,8 +129,12 @@ class OrganizationPreviewBody extends React.Component {
       <Layout rowGap={"15px"}>
         {this.state.organization ? (
           <Container>
-            <Container><Title text={this.state.organization.name} /></Container>
-              <Container><Location location={this.state.organization.place} /></Container>
+            <Container>
+              <Title text={this.state.organization.name} />
+            </Container>
+            <Container>
+              <Location location={this.state.organization.place} />
+            </Container>
             <Social socials={socials} />
             {organizationTypes && organizationTypes.length ? (
               <Text header={"Organization Type"}>

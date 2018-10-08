@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import { Layout } from "btech-layout";
-import SpeakersSponsors from "../../../../components/SpeakerSponsors/SpeakersSponsors";
+import { SpeakersSponsors, FormMainLayout } from "../../../../components";
 import { userList as users } from "../../../../apollo-client/user";
 import { Query } from "react-apollo";
 
@@ -48,7 +47,7 @@ class EventStep2 extends Component {
 
   render() {
     return (
-      <Layout rowGap={"25px"}>
+      <FormMainLayout>
         <Query query={users}>
           {({ loading, error, data }) => {
             if (error) return <div>Error loading the information</div>;
@@ -61,7 +60,7 @@ class EventStep2 extends Component {
             );
           }}
         </Query>
-      </Layout>
+      </FormMainLayout>
     );
   }
 }

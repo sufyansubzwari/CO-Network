@@ -1,20 +1,22 @@
-import React, { Component } from "react";
+import React from "react";
 import PropTypes from "prop-types";
-import { Layout, Container } from "btech-layout";
+import { Container, Layout } from "btech-layout";
 import { Button } from "btech-base-forms-component";
-import ButtonMenu from "../../components/ButtonMenu/ButtonMenu";
 import LineSeparator from "./LineSeparator";
 import WorkList from "./WorkList";
 import MaterialIcon from "react-material-iconic-font";
 import styled from "styled-components";
 
 const SLabel = styled.div`
+  font-size: 12px;
+  margin: 0 5px;
+  cursor: pointer;
+`;
+
+const SButtonContainer = styled(Container)`
   display: flex;
   align-items: center;
-  font-size: 13px;
-  font-family: Roboto Mono, serif;
-  margin-left: 10px;
-  font-weight: bold;
+  justify-content: center;
 `;
 
 class WorkExperience extends React.Component {
@@ -31,7 +33,6 @@ class WorkExperience extends React.Component {
 
     this.onSelectToAdd = this.onSelectToAdd.bind(this);
     this.handleChange = this.handleChange.bind(this);
-    this.onAdd = this.onAdd.bind(this);
   }
 
   notifyParent() {
@@ -47,9 +48,7 @@ class WorkExperience extends React.Component {
     );
   }
 
-  onSelectToAdd(experience, key) {
-    // this.setState({ tickets: list, editIndex: list.length - 1 });
-
+  onSelectToAdd(experience) {
     const list = this.state.experience;
     list.push({
       type: experience.type,
@@ -70,7 +69,10 @@ class WorkExperience extends React.Component {
         <Layout rowGap={"10px"}>
           <Container mt={"10px"}>
             <Layout customTemplateColumns={"auto 1fr"}>
-              <SLabel>Work Experience</SLabel>
+              <SButtonContainer onClick={() => this.onAdd()}>
+                <MaterialIcon type={"plus-circle"} />
+                <SLabel>Work Experience</SLabel>
+              </SButtonContainer>
               <LineSeparator />
             </Layout>
           </Container>
@@ -79,11 +81,6 @@ class WorkExperience extends React.Component {
               data={this.state.experience}
               onChange={this.handleChange}
             />
-          </Container>
-          <Container>
-            <Button type={"button"} onClick={this.onAdd}>
-              Add
-            </Button>
           </Container>
         </Layout>
       </Container>

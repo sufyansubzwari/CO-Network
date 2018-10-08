@@ -1,21 +1,19 @@
-import React from 'react';
-import {TextArea} from 'btech-base-forms-component';
-import {Container, Layout} from 'btech-layout';
+import React from "react";
+import { TextArea } from "btech-base-forms-component";
+import { FormMainLayout } from "../../../../../components";
 import PropTypes from "prop-types";
-import EventStep1 from "../../../../event-module/form/components/EventStep1";
 
 class ThirdStep extends React.Component {
-
   constructor(props) {
-    super(props)
+    super(props);
     this.state = {
-      job: this.props.data,
-    }
+      job: this.props.data
+    };
   }
 
   componentWillReceiveProps(nextProps) {
     if (nextProps.data && nextProps.data !== this.state.job)
-      this.setState({job: nextProps.data});
+      this.setState({ job: nextProps.data });
   }
 
   notifyParent(model, name, value) {
@@ -23,7 +21,7 @@ class ThirdStep extends React.Component {
       let job = this.state.job;
       job[name] = value;
       this.setState(
-        {job: job},
+        { job: job },
         () => this.props.onChange && this.props.onChange(this.state.job)
       );
     } else this.props.onChange && this.props.onChange(this.state.job);
@@ -31,29 +29,29 @@ class ThirdStep extends React.Component {
 
   render() {
     return (
-      <Layout rowGap={'25px'}>
+      <FormMainLayout>
         <TextArea
-          height={'100px'}
-          placeholderText={'What make your culture unique?'}
+          height={"100px"}
+          placeholderText={"What make your culture unique?"}
           model={this.state.job}
-          name={'culture'}
+          name={"culture"}
           getValue={this.notifyParent.bind(this)}
         />
         <TextArea
-          height={'100px'}
-          placeholderText={'Tell us about the team'}
+          height={"100px"}
+          placeholderText={"Tell us about the team"}
           model={this.state.job}
-          name={'aboutUsTeam'}
+          name={"aboutUsTeam"}
           getValue={this.notifyParent.bind(this)}
         />
         <TextArea
-          height={'100px'}
-          placeholderText={'Do you have a question for the candidate?'}
+          height={"100px"}
+          placeholderText={"Do you have a question for the candidate?"}
           model={this.state.job}
-          name={'candidateQuestions'}
+          name={"candidateQuestions"}
           getValue={this.notifyParent.bind(this)}
         />
-      </Layout>
+      </FormMainLayout>
     );
   }
 }
@@ -67,4 +65,4 @@ ThirdStep.propTypes = {
   onChange: PropTypes.func
 };
 
-export default ThirdStep
+export default ThirdStep;

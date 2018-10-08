@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Container, mixins, StyleUtil } from "btech-layout";
+import { Container } from "btech-layout";
 import styled from "styled-components";
 import { connect } from "react-redux";
 import { toggleSideBar } from "../../actions/SideBarActions";
@@ -19,6 +19,7 @@ const SSideBarContainerStyed = styled(Container)`
   overflow: hidden;
   z-index: 10;
 `;
+
 const SSideBarContainer = posed(SSideBarContainerStyed)({
   openSidebar: {
     x: "0%",
@@ -57,22 +58,21 @@ class SideBar extends Component {
         <Create
           options={CREATE_LINKS}
           onChangeRoute={() => this.props.toggleSideBar(false, null, true)}
-          onBlur={() => console.log("adsdasdasdasd")}
           onClose={() =>
             this.props.toggleSideBar && this.props.toggleSideBar(false)
           }
         />
-       );
-    }else if(this.props.isProfileAction){
-        return (
-            <ProfileSideBar
-                curUser={this.props.curUser}
-                onClose={() =>
-                    this.props.toggleSideBar && this.props.toggleSideBar(false)
-                }
-            />);
-    }
-    else if(this.props.isNotificationsAction){
+      );
+    } else if (this.props.isProfileAction) {
+      return (
+        <ProfileSideBar
+          curUser={this.props.curUser}
+          onClose={() =>
+            this.props.toggleSideBar && this.props.toggleSideBar(false)
+          }
+        />
+      );
+    } else if(this.props.isNotificationsAction){
         return (
             <NotificationsSidebar
                 onClose={() =>
