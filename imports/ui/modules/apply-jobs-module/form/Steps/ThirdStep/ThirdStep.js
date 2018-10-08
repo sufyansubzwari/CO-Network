@@ -1,13 +1,14 @@
 import React from "react";
 import { SalaryRange, Select, TagList } from "btech-base-forms-component";
 import { Container, Layout } from "btech-layout";
-
 import { DEGREE, TAG_LEVEL } from "../../../../../constants";
 import { Query } from "react-apollo";
 import { GetTags } from "../../../../../apollo-client/tag";
-import { MLTagsInput } from "../../../../../components";
-import IndustrySector from "../../../../../components/IndustrySector/IndustrySector";
-
+import {
+  FormMainLayout,
+  IndustrySector,
+  MLTagsInput
+} from "../../../../../components";
 
 class ThirdStep extends React.Component {
   constructor(props) {
@@ -90,6 +91,7 @@ class ThirdStep extends React.Component {
       this.setState({ apply: this.state.apply }, () => this.notifyParent());
     }
   }
+
   tagsSuggested(tags, name) {
     let sug = JSON.parse(JSON.stringify(tags));
     if (
@@ -104,7 +106,9 @@ class ThirdStep extends React.Component {
             !this.state.apply.professional ||
             !this.state.apply.professional[name] ||
             !this.state.apply.professional[name].length ||
-            !this.state.apply.professional[name].some(item => item.tag._id === tag._id)
+            !this.state.apply.professional[name].some(
+              item => item.tag._id === tag._id
+            )
         )
         .sort((a, b) => b.used - a.used)
         .map(tag => ({
@@ -124,7 +128,7 @@ class ThirdStep extends React.Component {
 
   render() {
     return (
-      <Layout rowGap={"25px"}>
+      <FormMainLayout>
         <Container>
           <Query query={GetTags} variables={{ tags: { type: "Languages" } }}>
             {({ loading, error, data }) => {
@@ -195,7 +199,7 @@ class ThirdStep extends React.Component {
             }}
           </Query>
         </Container>
-        <Layout templateColumns={2} colGap={"20px"}>
+        <Layout mdTemplateColumns={2} mdColGap={"20px"} rowGap={"5px"}>
           <SalaryRange
             required
             placeholder={"000"}
@@ -313,7 +317,7 @@ class ThirdStep extends React.Component {
             handleTags={obj => this.handleTags(obj)}
           />
         </Container>
-      </Layout>
+      </FormMainLayout>
     );
   }
 }
