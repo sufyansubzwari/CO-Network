@@ -15,46 +15,62 @@ class NotificationsSidebar extends React.Component {
           title: "Data Science Professional",
           description: "Lorem ipsum dolor nostra, per inceptos himenaeos.",
           entity: "ML Society",
-            time: new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})
+          time: new Date().toLocaleTimeString([], {
+            hour: "2-digit",
+            minute: "2-digit"
+          })
         },
         {
           title: "Data Science Professional",
           description: "Lorem ipsum dolor nostra, per inceptos himenaeos.",
           entity: "ML Society",
-            time: new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})
+          time: new Date().toLocaleTimeString([], {
+            hour: "2-digit",
+            minute: "2-digit"
+          })
         },
         {
           title: "Data Science Professional",
           description: "Lorem ipsum dolor nostra, per inceptos himenaeos.",
           entity: "ML Society",
-            time: new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})
+          time: new Date().toLocaleTimeString([], {
+            hour: "2-digit",
+            minute: "2-digit"
+          })
         },
         {
           title: "Data Science Professional",
           description: "Lorem ipsum dolor nostra, per inceptos himenaeos.",
           entity: "ML Society",
-            time: new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})
+          time: new Date().toLocaleTimeString([], {
+            hour: "2-digit",
+            minute: "2-digit"
+          })
         },
         {
           title: "Data Science Professional",
           description: "Lorem ipsum dolor nostra, per inceptos himenaeos.",
           entity: "ML Society",
-            time: new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})
+          time: new Date().toLocaleTimeString([], {
+            hour: "2-digit",
+            minute: "2-digit"
+          })
         },
         {
           title: "Data Science Professional",
           description: "Lorem ipsum dolor nostra, per inceptos himenaeos.",
           entity: "ML Society",
-          time: new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})
+          time: new Date().toLocaleTimeString([], {
+            hour: "2-digit",
+            minute: "2-digit"
+          })
         }
       ]
     };
     this.handleClear = this.handleClear.bind(this);
   }
 
-  componentWillMount() {
-
-  }
+  componentWillMount() {}
 
   componentWillReceiveProps(nextProps) {
     if (nextProps.notifications) {
@@ -71,16 +87,7 @@ class NotificationsSidebar extends React.Component {
   }
 
   render() {
-    let notifications = this.state.notifications.map((not, index) => (
-      <Notification
-        key={index}
-        title={not.title}
-        description={not.description}
-        entity={not.entity}
-        time={not.time}
-        onClick={() => console.log("notification clicked: "+index)}
-      />
-    ));
+    // let notifications =
 
     return (
       <NotificationContainer
@@ -88,7 +95,16 @@ class NotificationsSidebar extends React.Component {
         onClose={() => this.props.onClose && this.props.onClose()}
         onClear={this.handleClear}
       >
-        {notifications}
+        {this.state.notifications.map((not, index) => (
+          <Notification
+            key={index}
+            title={not.title}
+            description={not.description}
+            entity={not.entity}
+            time={not.time}
+            onClick={() => console.log("notification clicked: " + index)}
+          />
+        ))}
       </NotificationContainer>
     );
   }
