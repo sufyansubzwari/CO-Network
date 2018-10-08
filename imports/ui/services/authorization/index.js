@@ -103,9 +103,10 @@ class Authorization extends react.Component {
     if (profile) {
       this.userProfile = profile;
       profile.expireIn = localStorage.expires_at;
-      const service = localStorage.getItem("currentService");
+      const userService = profile.user_id.split('|')[0];
+
       // insert user from Auth0
-      Meteor.call("users.insertUserAuth0", profile, service, (err, result) => {
+      Meteor.call("users.insertUserAuth0", profile, userService, (err, result) => {
         if (!err) {
           Meteor.loginWithToken(
             result.token,
