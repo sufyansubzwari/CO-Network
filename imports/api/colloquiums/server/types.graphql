@@ -23,7 +23,7 @@ type Query {
 input ColloquiumSearchInput{
     title: TableStringFilterInput
     description: TableStringFilterInput
-    tags: JobTypeElemMatch
+    tags: TableStringFilterInput
     competences: JobTypeElemMatch
     isPublic: Boolean
     location: [LocationInput]
