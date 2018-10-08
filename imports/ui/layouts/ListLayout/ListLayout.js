@@ -61,7 +61,7 @@ class ListLayout extends Component {
             <Layout
               fullY
               customTemplateRows={"68px 1fr"}
-              mdCustomTemplateRows={"75px 1fr"}
+              mdCustomTemplateRows={"65px 1fr"}
             >
               <TopSearchContainer {...this.state} background={"white"}>
                 <Layout
@@ -73,8 +73,9 @@ class ListLayout extends Component {
                   {!this.props.sidebarIsOpen ? (
                     <Container>
                       <Button
-                        width={"35px"}
-                        fontSize={"18px"}
+                        width={"44px"}
+                        height={"44px"}
+                        fontSize={"25px"}
                         color={"black"}
                         secondary
                         onClick={() => this.onFilterToggle()}

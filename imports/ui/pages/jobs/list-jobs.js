@@ -8,7 +8,7 @@ import { CreateJob, DeleteJob, UpdateJobsImage } from "../../apollo-client/job";
 import { GetJobs } from "../../apollo-client/job";
 import { withRouter } from "react-router-dom";
 import { ViewsCountUpdate } from "../../apollo-client/viewCount";
-import { Meteor } from "meteor/meteor";
+import {cleanSearch, onSearchTags} from "../../actions/TopSearchActions";
 
 /**
  * @module Jobs
@@ -109,10 +109,6 @@ class ListJobs extends Component {
     });
   }
 
-  onSearch(value) {
-    this.setState({ filter: value }, () => this.reFetchQuery());
-  }
-
   handleBackgroundChange(updateJobsImage, src) {
     updateJobsImage({
       variables: { id: this.state.selectedItem._id, image: src }
@@ -128,12 +124,24 @@ class ListJobs extends Component {
     console.log("Error to change the image");
   }
 
+  onSelectTag(tag) {
+    this.props.onSearchTags(tag);
+  }
+
+  onSearch(value, tags) {
+    let tagsFilters = {};
+    tags.length ? tagsFilters.positionTags = { in: tags.map(item => item._id) } : null;
+    this.setState({ filter: value, filterStatus: tagsFilters }, () =>
+      this.reFetchQuery()
+    );
+  }
+
   render() {
     const isLoading =
       this.props.data.loading &&
       (!this.props.data.jobs || !this.props.data.jobs.length);
     return (
-      <ListLayout entityType={"jobs"} onSearchText={this.onSearch.bind(this)}>
+      <ListLayout entityType={"jobs"} onSearchAction={(text, tags) => this.onSearch(text, tags)}>
         <Mutation key={"listComponent"} mutation={ViewsCountUpdate}>
           {(viewsUpdate, {}) => (
             <ItemsList
@@ -145,6 +153,7 @@ class ListJobs extends Component {
               onSelectCard={(item, key) =>
                 this.onChangeSelection(item, key, viewsUpdate)
               }
+              onSelectTag={(tag, index) => this.onSelectTag(tag, index)}
             />
           )}
         </Mutation>
@@ -250,6 +259,8 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
   return {
+    onSearchTags: tag => dispatch(onSearchTags(tag)),
+    cleanSearch: () => dispatch(cleanSearch()),
     sendPreviewData: (item, key, type) => dispatch(PreviewData(item, key, type))
   };
 };
