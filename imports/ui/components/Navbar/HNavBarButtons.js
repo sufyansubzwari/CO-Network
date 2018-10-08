@@ -2,7 +2,6 @@ import React from "react";
 import PropTypes from "prop-types";
 import { Container, Layout, mixins } from "btech-layout";
 import HomeButton from "./HomeButton";
-import { Link } from "react-router-dom";
 import styled from "styled-components";
 import NavbarUserButton from "../NavbarUserButton/NavbarUserButton";
 import { HButtom, HNavItem } from "btech-horizantal-navbar";
@@ -53,7 +52,12 @@ const HNavBarButtons = function(props) {
           </Container>
         </SContainerIcon>
         <SContainerIcon>
-          <Container hide={hideIcons}>
+          <Container
+            hide={hideIcons}
+            onClick={() =>
+              props.onMessageToggle && props.onMessageToggle()
+            }
+          >
             <HNavItem
               mt={{ xs: "5px", md: "0" }}
               size={notSize}
@@ -72,7 +76,12 @@ const HNavBarButtons = function(props) {
           onOpenNavbar={() => props.onToggleNavBar && props.onToggleNavBar()}
         />
         <SContainerIcon>
-          <Container hide={hideIcons}>
+          <Container
+            hide={hideIcons}
+            onClick={() =>
+              props.onNotificationToggle && props.onNotificationToggle()
+            }
+          >
             <HNavItem
               mt={{ xs: "5px", md: "0" }}
               size={notSize}

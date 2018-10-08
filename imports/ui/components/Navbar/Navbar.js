@@ -67,7 +67,7 @@ class Navbar extends Component {
 
   onAddToggle() {
     this.props.toggleSideBar(!this.props.addSidebarIsOpen, true, false);
-    this.props.callback && this.props.callback(false);
+    this.openNavbar(false);
   }
 
   componentDidMount() {
@@ -86,6 +86,16 @@ class Navbar extends Component {
       !this.props.profileSideBarIsOpen,
       false,
       !this.props.profileSideBarIsOpen
+    );
+    this.openNavbar(false);
+  }
+
+  onNotificationToggle() {
+    this.props.toggleSideBar(
+      !this.props.notificationsSideBarIsOpen,
+      false,
+      false,
+      !this.props.notificationsSideBarIsOpen
     );
     this.openNavbar(false);
   }
@@ -120,6 +130,7 @@ class Navbar extends Component {
               onToggleNavBar={this.toggleNavbar}
               onAddToggle={() => this.onAddToggle()}
               onUserToggle={() => this.onUserToggle()}
+              onNotificationToggle={() => this.onNotificationToggle()}
               curUser={this.props.curUser}
             />
           </Layout>
@@ -139,15 +150,17 @@ const mapStateToProps = state => {
   return {
     addSidebarIsOpen: sideBarStatus.status && sideBarStatus.isAdd,
     filterEntityType: sideBarEntity ? sideBarEntity.entityType : null,
-    profileSideBarIsOpen: sideBarStatus.status && sideBarStatus.profile
+    profileSideBarIsOpen: sideBarStatus.status && sideBarStatus.profile,
+    notificationsSideBarIsOpen:
+      sideBarStatus.status && sideBarStatus.notifications
   };
 };
 
 const mapDispatchToProps = dispatch => {
   return {
     closeSideBar: () => dispatch(toggleSideBar(false, false, false)),
-    toggleSideBar: (status, isAdd, profile) =>
-      dispatch(toggleSideBar(status, isAdd, profile))
+    toggleSideBar: (status, isAdd, profile, notifications) =>
+      dispatch(toggleSideBar(status, isAdd, profile, notifications))
   };
 };
 

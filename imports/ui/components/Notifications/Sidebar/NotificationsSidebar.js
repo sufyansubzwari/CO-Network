@@ -1,5 +1,4 @@
 import React from "react";
-import PropTypes from "prop-types";
 import { cleanFilters, setFilters } from "../../../actions/SideBarActions";
 import { connect } from "react-redux";
 import Notification from "./Notification";

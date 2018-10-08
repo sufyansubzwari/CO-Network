@@ -1,7 +1,7 @@
 import React from "react";
-import { Layout, Container } from "btech-layout";
+import { Container, Layout } from "btech-layout";
 import { FilterItem, Separator } from "../../../components";
-import styled, { ThemeProvider } from "styled-components";
+import styled from "styled-components";
 import PropTypes from "prop-types";
 import { HButtom } from "btech-horizantal-navbar";
 import theme from "../../../theme";
@@ -62,7 +62,7 @@ class Notification extends React.Component {
       title: props.title ? props.title : "",
       description: props.description ? props.description : "",
       entity: props.entity ? props.entity : "",
-      time: props.time ? props.time : ""
+      time: props.time ?props.time : ""
     };
   }
 
@@ -75,11 +75,8 @@ class Notification extends React.Component {
   }
 
   render() {
-    return (
-      <ThemeProvider theme={theme}>
-        <SNotification
-          onClick={() => this.props.onClick && this.props.onClick()}
-          selected={this.props.selected}
+  return (
+    <SNotification onClick={() => this.props.onClick && this.props.onClick()}selected={this.props.selected}
         >
           <Layout
             customTemplateColumns={this.props.hasIcon ? "auto 1fr" : null}
@@ -95,27 +92,25 @@ class Notification extends React.Component {
                 />
               </Icon>
             ) : null}
-            <FilterItem ml={"10px"}>
-              <Container>
-                <Container>
-                  <Title selected={this.props.selected}>{this.state.title}</Title>
-                </Container>
-                <Container>
-                  <Description selected={this.props.selected}>{this.state.description}</Description>
-                </Container>
-                <Layout mt={"5px"} customTemplateColumns={"1fr auto"}>
-                  <SubTitle selected={this.props.selected}>{this.state.entity}</SubTitle>
-                  <SubTitle selected={this.props.selected} >{this.state.time}</SubTitle>
-                </Layout>
-              </Container>
-            </FilterItem>
-          </Layout>
-          <Separator />
-        </SNotification>
-      </ThemeProvider>
-    );
-  }
-}
+        <FilterItem >
+          <Container>
+            <Container>
+              <Title selected={this.props.selected}>{this.state.title}</Title>
+            </Container>
+            <Container>
+              <Description selected={this.props.selected}>{this.state.description}</Description>
+            </Container>
+            <Layout mt={"5px"} customTemplateColumns={"1fr auto"}>
+              <SubTitle selected={this.props.selected}>{this.state.entity}</SubTitle>
+              <SubTitle selected={this.props.selected} >{this.state.time}</SubTitle>
+            </Layout>
+          </Container>
+        </FilterItem></Layout>
+        <Separator />
+      </SNotification>
+
+  );
+}}
 
 export default Notification;
 
