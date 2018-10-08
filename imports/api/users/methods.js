@@ -1,6 +1,7 @@
 import { Meteor } from "meteor/meteor";
 import { check } from "meteor/check";
 import { Accounts } from "meteor/accounts-base";
+
 Meteor.methods({
   "users.insertUserAuth0": function insertUserAuth0(profile, service) {
     // todo integrate with the new grapql api
