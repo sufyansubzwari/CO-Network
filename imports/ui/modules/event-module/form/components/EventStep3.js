@@ -127,6 +127,7 @@ class EventStep3 extends Component {
                     () => this.notifyParent()
                   );
                 }}
+                addChar={''}
               />
             </Container>
           </Layout>
