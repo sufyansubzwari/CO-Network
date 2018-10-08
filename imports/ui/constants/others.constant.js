@@ -20,6 +20,8 @@ export const FILTER_MY_VIEW = [
   { label: "Organizations", entity: "organization" }
 ];
 
+export const MESSAGES_SIDEBAR_OPTIONS = ['All', 'Unread', 'Read']
+
 export const POST_JOB_ACTION = [{ link: "/post-job?new", title: "POST JOB" }];
 
 export const POST_EVENT_ACTION = [{ link: "/post-event", title: "POST EVENT" }];

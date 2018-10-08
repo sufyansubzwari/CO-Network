@@ -1,20 +1,10 @@
-import React, { Component } from "react";
+import React from "react";
 import PropTypes from "prop-types";
-import { Layout, Container } from "btech-layout";
-import { Button } from "btech-base-forms-component";
+import { Container, Layout } from "btech-layout";
 import ButtonMenu from "../../components/ButtonMenu/ButtonMenu";
 import LineSeparator from "./LineSeparator";
 import ProductList from "./ProductList";
-import MaterialIcon from "react-material-iconic-font";
-import styled from "styled-components";
 import { PRODUCTS_TYPES } from "./constants";
-
-const SLabel = styled.div`
-  font-size: 13px;
-  font-family: Roboto Mono, serif;
-  margin-left: 10px;
-  font-weight: bold;
-`;
 
 class ProductsServices extends React.Component {
   constructor(props) {
@@ -68,8 +58,8 @@ class ProductsServices extends React.Component {
               <LineSeparator />
             </Layout>
           </Container>
-          {PRODUCTS_TYPES.map(item => (
-            <Container>
+          {PRODUCTS_TYPES.map((item, index) => (
+            <Container key={index}>
               <ProductList
                 data={this.state.products}
                 onChange={this.handleChange}

@@ -2,17 +2,16 @@ import React, { Component } from "react";
 import { Container, Layout } from "btech-layout";
 import PropTypes from "prop-types";
 import {
-  Input,
-  TextArea,
   CheckBoxList,
-  InputAutoComplete,
+  DatePickerRange,
+  Input,
   TagList,
-  DatePickerRange
+  TextArea
 } from "btech-base-forms-component";
 import { EVENT_TYPE } from "../../../../constants";
 import { Query } from "react-apollo";
 import { GetTags as tags } from "../../../../apollo-client/tag";
-import MLTagsInput from '../../../../components/TagsInputAutoComplete/TagsInputAutoComplete';
+import { MLTagsInput, FormMainLayout } from "../../../../../ui/components";
 
 /**
  * @module Event
@@ -32,8 +31,7 @@ class EventStep1 extends Component {
     if (this.props.data && this.props.data.category) {
       let event = this.props.data;
       event.others = this.props.data.category.filter(
-        item =>
-          EVENT_TYPE.findIndex(c => c.label === item.label) === -1
+        item => EVENT_TYPE.findIndex(c => c.label === item.label) === -1
       );
       this.setState({
         category: EVENT_TYPE.map(e => {
@@ -106,22 +104,20 @@ class EventStep1 extends Component {
   tagsSuggested(tags) {
     let sug = JSON.parse(JSON.stringify(tags));
     return sug
-      .filter(tag =>
-        !this.state.event ||
-        !this.state.event.others ||
-        this.state.event.others.length === 0 ||
-        this.state.event.others.findIndex(
-          item => item._id === tag._id
-        ) === -1)
+      .filter(
+        tag =>
+          !this.state.event ||
+          !this.state.event.others ||
+          this.state.event.others.length === 0 ||
+          this.state.event.others.findIndex(item => item._id === tag._id) === -1
+      )
       .sort((a, b) => b.used - a.used)
       .map(tag => ({
         ...tag,
         active:
-        this.state.event &&
-        this.state.event.others &&
-        this.state.event.others.findIndex(
-          item => item._id === tag._id
-        ) > -1
+          this.state.event &&
+          this.state.event.others &&
+          this.state.event.others.findIndex(item => item._id === tag._id) > -1
       }))
       .slice(0, 5);
   }
@@ -129,7 +125,7 @@ class EventStep1 extends Component {
   render() {
     const { category } = this.state;
     return (
-      <Layout rowGap={"25px"}>
+      <FormMainLayout>
         <Container>
           <Input
             required
@@ -151,6 +147,7 @@ class EventStep1 extends Component {
         <Container>
           <DatePickerRange
             required
+            labelText={"Dates"}
             reverse={true}
             placeholderStartDate={"Start Date"}
             placeholderEndDate={"End Date"}
@@ -175,27 +172,31 @@ class EventStep1 extends Component {
         <Container>
           <Layout rowGap={"10px"}>
             <Container>
-              <Query query={tags} variables={{tags: {type: "EVENT"}}}>
-                {({loading, error, data}) => {
-                  if (loading) return <div></div>;
+              <Query query={tags} variables={{ tags: { type: "EVENT" } }}>
+                {({ loading, error, data }) => {
+                  if (loading) return <div />;
                   if (error) return <div>Error</div>;
                   return (
                     <div>
-
                       <MLTagsInput
                         inputPlaceholder={"Discover..."}
                         placeholderText={"Other"}
                         getAddedOptions={this.onAddTags.bind(this)}
                         getNewAddedOptions={this.onAddTags.bind(this)}
-                        onCloseTags={(e, tag, index) => this.onCloseTags(e, tag, index)}
+                        onCloseTags={(e, tag, index) =>
+                          this.onCloseTags(e, tag, index)
+                        }
                         options={data.tags}
-                        tags={this.state.event && this.state.event.others &&
-                        this.state.event.others.length > 0
-                          ? this.state.event.others.map(item => ({
-                            active: true,
-                            ...item
-                          }))
-                          : []}
+                        tags={
+                          this.state.event &&
+                          this.state.event.others &&
+                          this.state.event.others.length > 0
+                            ? this.state.event.others.map(item => ({
+                                active: true,
+                                ...item
+                              }))
+                            : []
+                        }
                       />
                       <Container mt={"10px"}>
                         <TagList
@@ -220,7 +221,7 @@ class EventStep1 extends Component {
             </Container>
           </Layout>
         </Container>
-      </Layout>
+      </FormMainLayout>
     );
   }
 }

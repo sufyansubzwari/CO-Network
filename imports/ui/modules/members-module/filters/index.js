@@ -9,7 +9,7 @@ import {
 } from "./../../../components";
 import { Query } from "react-apollo";
 import { LOOKING_FOR_DEFAULT } from "../../../constants";
-import { CheckBoxList, Button, CheckBox } from "btech-base-forms-component";
+import { CheckBoxList } from "btech-base-forms-component";
 import { UsersFieldCounts } from "../../../apollo-client/user";
 import { cleanFilters, setFilters } from "../../../actions/SideBarActions";
 import { connect } from "react-redux";

@@ -1,9 +1,7 @@
-import React, { Component } from "react";
+import React from "react";
 import PropTypes from "prop-types";
-import { Layout, Container } from "btech-layout";
-import { Button } from "btech-base-forms-component";
+import { Container, Layout } from "btech-layout";
 import ButtonMenu from "../../components/ButtonMenu/ButtonMenu";
-// import { ticketsTypes } from "./options.constant";
 import LineSeparator from "./LineSeparator";
 import SponsorsList from "./SponsorsList";
 import styled from "styled-components";

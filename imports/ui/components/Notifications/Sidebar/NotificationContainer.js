@@ -48,8 +48,8 @@ const ItemsContainer = function(props) {
         <SContainer fullY customTemplateRows={"75px 1fr 60px"}>
             <RLayout customTemplateColumns={"1fr auto"} paddingX={"20px"}>
                 <STitle>
-                    <Title>Notifications</Title>
-                    <SubTitle>Across my network</SubTitle>
+                    <Title>{props.title}</Title>
+                    <SubTitle>{props.subtitle}</SubTitle>
                 </STitle>
                 <BackButton onClick={() => props.onClose && props.onClose()} />
             </RLayout>
@@ -84,7 +84,15 @@ const ItemsContainer = function(props) {
 
 export default ItemsContainer
 
+ItemsContainer.defaultProps = {
+    title: 'Notifications',
+    subtitle: 'Across my network'
+}
+
+
 ItemsContainer.propTypes = {
     onClear: PropTypes.func,
-    onClose: PropTypes.func
+    onClose: PropTypes.func,
+    title: PropTypes.string,
+    subtitle: PropTypes.string
 }

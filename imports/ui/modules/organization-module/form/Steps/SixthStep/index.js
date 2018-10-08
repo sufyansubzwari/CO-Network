@@ -1,19 +1,14 @@
 import React from "react";
-import { Layout } from "btech-layout";
-import Media from "../../../../../components/Media/Media"
-
+import { FormMainLayout, Media } from "../../../../../components";
 
 class SixthStep extends React.Component {
   constructor(props) {
     super(props);
-
     let data = props.data ? props.data : {};
-
     this.state = {
       organization: data
     };
-
-    this.handleChange = this.handleChange.bind(this)
+    this.handleChange = this.handleChange.bind(this);
   }
 
   componentWillReceiveProps(nextProps) {
@@ -21,17 +16,17 @@ class SixthStep extends React.Component {
       this.setState({ organization: nextProps.data });
   }
 
-    handleChange(media) {
-        this.setState(
-            {
-                organization: {
-                    ...this.state.organization,
-                    media: media
-                }
-            },
-            () => this.notifyParent()
-        );
-    }
+  handleChange(media) {
+    this.setState(
+      {
+        organization: {
+          ...this.state.organization,
+          media: media
+        }
+      },
+      () => this.notifyParent()
+    );
+  }
 
   notifyParent(model, name, value) {
     if (model && name && value) {
@@ -46,10 +41,14 @@ class SixthStep extends React.Component {
   }
 
   render() {
-    return <Layout rowGap={"25px"}><Media
-        onChange={this.handleChange}
-        media={this.state.organization.media}
-    /></Layout>;
+    return (
+      <FormMainLayout>
+        <Media
+          onChange={this.handleChange}
+          media={this.state.organization.media}
+        />
+      </FormMainLayout>
+    );
   }
 }
 

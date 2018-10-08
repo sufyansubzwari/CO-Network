@@ -1,20 +1,11 @@
-import React, { Component } from "react";
+import React from "react";
 import PropTypes from "prop-types";
-import { Layout, Container } from "btech-layout";
-import { Button } from "btech-base-forms-component";
+import { Container, Layout } from "btech-layout";
 import ButtonMenu from "../../components/ButtonMenu/ButtonMenu";
 import LineSeparator from "./LineSeparator";
 import AchievementList from "./AchievementList";
-import MaterialIcon from "react-material-iconic-font";
 import styled from "styled-components";
 import { ACHIEVEMENTS_TYPES } from "./constants";
-
-const SLabel = styled.div`
-  font-size: 13px;
-  font-family: Roboto Mono, serif;
-  margin-left: 10px;
-  font-weight: bold;
-`;
 
 class Achievements extends React.Component {
   constructor(props) {
@@ -79,15 +70,22 @@ class Achievements extends React.Component {
               <LineSeparator />
             </Layout>
           </Container>
-          {ACHIEVEMENTS_TYPES.map((item, index) => (
-            <Container key={index}>
-              <AchievementList
-                data={this.state.achievements}
-                onChange={this.handleChange}
-                type={item.type}
-              />
-            </Container>
-          ))}
+          {ACHIEVEMENTS_TYPES.map((item, index) => {
+            const elements = this.state.achievements
+              ? this.state.achievements.filter(
+                  archiv => archiv.type === item.type
+                )
+              : [];
+            return (
+              <Container key={index} hide={!elements.length}>
+                <AchievementList
+                  data={this.state.achievements}
+                  onChange={this.handleChange}
+                  type={item.type}
+                />
+              </Container>
+            );
+          })}
         </Layout>
       </Container>
     );

@@ -1,20 +1,10 @@
 import React from "react";
-import { Meteor } from "meteor/meteor";
 import { Container, Layout, mixins } from "btech-layout";
 import { HButtom, HButtonGroup, HNavItem } from "btech-horizantal-navbar";
 import MaterialIcon from "react-material-iconic-font";
-import { theme } from "../../theme";
-import SideBarLink from "./SideBarLink";
-import styled, { ThemeProvider } from "styled-components";
-import { Link } from "react-router-dom";
+import styled from "styled-components";
 import { connect } from "react-redux";
-import {
-  cleanFilters,
-  setFilterEntity,
-  setFilters,
-  toggleSideBar
-} from "../../actions/SideBarActions";
-import LogoutBtn from "../smart/auth/logout-btn";
+import { setFilterEntity, toggleSideBar } from "../../actions/SideBarActions";
 import NavbarUserButton from "../NavbarUserButton/NavbarUserButton";
 import services from "../LoginModal/service.constant";
 import posed from "react-pose";
@@ -107,13 +97,10 @@ const RenderSocialCondition = posed.div({
 class UserNavbarSection extends React.Component {
   constructor(props) {
     super(props);
-    this.policy = Meteor.settings.public.policyUrl;
     this.size = { width: 46, height: 53 };
     this.notSize = { width: 33, height: 39 };
     this.loginSize = { width: 28, height: 33 };
     this.loginServices = services.filter(element => element.visible);
-    this.isOpenCreateSidebar = false;
-
     this.state = {};
   }
 
@@ -132,6 +119,7 @@ class UserNavbarSection extends React.Component {
       false,
       !this.props.profileSideBarIsOpen
     );
+    this.props.callback && this.props.callback(false);
   }
 
   onNotificationToggle(){
@@ -143,9 +131,18 @@ class UserNavbarSection extends React.Component {
     );
   }
 
+  onMessageToggle(){
+      this.props.toggleSideBar(
+          !this.props.messagesSideBarIsOpen,
+          false,
+          false,
+          false,
+          !this.props.messagesSideBarIsOpen
+      );
+  }
+
   render() {
     const isAuthenticated = this.props.curUser;
-    const avatarLink = isAuthenticated ? "/profile" : "/";
     return (
       <Layout
         customTemplateRows={"1fr auto"}
@@ -205,6 +202,7 @@ class UserNavbarSection extends React.Component {
                       size: { width: 22, height: 24 }
                     }}
                     activeEval={this.activeEval}
+                    onClick={() => this.onMessageToggle()}
                   />
                 </RenderCondition>
                 <RenderCondition>
@@ -242,14 +240,15 @@ const mapStateToProps = state => {
   return {
     addSidebarIsOpen: sideBarStatus.status && sideBarStatus.isAdd,
     profileSideBarIsOpen: sideBarStatus.status && sideBarStatus.profile,
-    notificationsSideBarIsOpen: sideBarStatus.status && sideBarStatus.notifications
+    notificationsSideBarIsOpen: sideBarStatus.status && sideBarStatus.notifications,
+    messagesSideBarIsOpen: sideBarStatus.status && sideBarStatus.messages
   };
 };
 
 const mapDispatchToProps = dispatch => {
   return {
-    toggleSideBar: (status, isAdd, profile, notifications) =>
-      dispatch(toggleSideBar(status, isAdd, profile, notifications)),
+    toggleSideBar: (status, isAdd, profile, notifications, messages) =>
+      dispatch(toggleSideBar(status, isAdd, profile, notifications, messages)),
     setFilterEntity: entityType => dispatch(setFilterEntity(entityType))
   };
 };

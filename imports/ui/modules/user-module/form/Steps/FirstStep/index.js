@@ -5,6 +5,7 @@ import { GeoInputLocation } from "btech-location";
 import styled from "styled-components";
 import services from "../../../../../components/LoginModal/service.constant";
 import { EMAIL_REGEX } from "../../../../../constants";
+import { FormMainLayout } from "../../../../../components";
 import Authorization from "../../../../../services/authorization";
 import { UpdateIdentities } from "../../../../../apollo-client/user";
 import { Mutation } from "react-apollo";
@@ -131,8 +132,8 @@ class FirstStep extends React.Component {
 
   render() {
     return (
-      <Layout rowGap={"25px"}>
-        <Layout templateColumns={2} colGap={"20px"}>
+      <FormMainLayout>
+        <Layout mdTemplateColumns={2} mdColGap={"20px"} rowGap={"5px"}>
           <Input
             name={"name"}
             model={this.state.user}
@@ -153,7 +154,7 @@ class FirstStep extends React.Component {
           placeholder={"Location"}
           onChange={this.notifyParentLocation.bind(this)}
         />
-        <Layout templateColumns={2} colGap={"20px"}>
+        <Layout mdTemplateColumns={2} mdColGap={"20px"} rowGap={"5px"}>
           <Input
             name={"website"}
             model={this.state.user}
@@ -244,7 +245,7 @@ class FirstStep extends React.Component {
             </Container>
           )}
         </Mutation>
-      </Layout>
+      </FormMainLayout>
     );
   }
 }

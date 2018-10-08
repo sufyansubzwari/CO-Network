@@ -3,16 +3,15 @@ import { Layout } from "btech-layout";
 import { GeoInputLocation } from "btech-location";
 import {
   BigTag,
-  FiltersContainer,
   FilterItem,
-  Label,
-  Separator,
-  MLCheckBoxList
+  FiltersContainer,
+  MLCheckBoxList,
+  Separator
 } from "./../../../components";
-import { SalaryRange, DatePickerRange } from "btech-base-forms-component";
+import { DatePickerRange, SalaryRange } from "btech-base-forms-component";
 import PropsTypes from "prop-types";
 import { connect } from "react-redux";
-import { setFilters, cleanFilters } from "../../../actions/SideBarActions";
+import { cleanFilters, setFilters } from "../../../actions/SideBarActions";
 import { GetTags } from "../../../apollo-client/tag";
 import { graphql } from "react-apollo";
 
@@ -178,7 +177,7 @@ class EventsFilters extends React.Component {
                 () => this.props.setFilters("events", this.state.filters)
               );
             }}
-            addDollar={true}
+            addChar={'$'}
           />
         </FilterItem>
         <Separator />
@@ -198,7 +197,6 @@ class EventsFilters extends React.Component {
             onMoreAction={this.handleShowMore.bind(this)}
           />
         </FilterItem>
-        <Separator />
       </FiltersContainer>
     );
   }

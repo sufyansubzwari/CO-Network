@@ -1,22 +1,16 @@
 import React from "react";
-import { Layout, Container } from "btech-layout";
-import {
-  Button,
-  Input,
-  Select,
-  InputAutoComplete,
-  TagList
-} from "btech-base-forms-component";
+import { Container, Layout } from "btech-layout";
+import { Button, Input, Select } from "btech-base-forms-component";
 import MaterialIcon from "react-material-iconic-font";
 import LineSeparator from "./LineSeparator";
 import { EXPERIENCE_LEVEL } from "./constants";
-import MLTagsInput from "../../components/TagsInputAutoComplete/TagsInputAutoComplete";
+import { MLTagsInput } from "../../components";
 
 export default (AuditedCourse = function(props) {
   return (
     <Container marginX={"-10px"} style={{ background: "white" }}>
       <Layout rowGap={"10px"} style={{ background: "rgb(209,209,209,0.2)" }}>
-        <Layout templateColumns={2} colGap={"20px"}>
+        <Layout mdTemplateColumns={2} mdColGap={"20px"} rowGap={"5px"}>
           <Input
             placeholderText={"Course Name"}
             name={"name"}
@@ -28,7 +22,7 @@ export default (AuditedCourse = function(props) {
             model={props.model}
           />
         </Layout>
-        <Layout templateColumns={2}>
+        <Layout mdTemplateColumns={2}>
           <Select
             placeholderText={"Level"}
             model={props.model}

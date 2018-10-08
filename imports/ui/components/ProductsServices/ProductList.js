@@ -1,23 +1,36 @@
 import React from "react";
 import PropTypes from "prop-types";
-import { Layout, Container } from "btech-layout";
+import { Container, Layout } from "btech-layout";
 import styled from "styled-components";
 import { Button } from "btech-base-forms-component";
 import MaterialIcon from "react-material-iconic-font";
 import Product from "./Product";
 import Service from "./Service";
-import { UploadToS3 } from "../../services";
-import {UploadToS3FromClient} from "../../services";
+import { UploadToS3FromClient } from "../../services";
 
 const SLabel = styled.div`
   font-size: 12px;
   font-family: Roboto Mono, serif;
-  margin-left: 10px;
   font-weight: bold;
 `;
 
-const SContainer = styled(Container)`
-  font-size: 14px;
+const SItem = styled(Layout)`
+  .buttons {
+    opacity: 1;
+    transition: all 200ms ease-out;
+  }
+
+  :hover {
+    .buttons {
+      opacity: 1;
+    }
+  }
+
+  @media (min-width: 62em) {
+    .buttons {
+      opacity: 0;
+    }
+  }
 `;
 
 const SItemContainer = styled(Container)`
@@ -30,8 +43,7 @@ class ProductList extends React.Component {
 
     this.state = {
       products:
-        this.props.data && this.props.data.length ? this.props.data : [],
-      isEditable: false
+        this.props.data && this.props.data.length ? this.props.data : []
     };
 
     this.handleSave = this.handleSave.bind(this);
@@ -65,34 +77,30 @@ class ProductList extends React.Component {
 
   async handleUpload(files, index) {
     if (files && files[0]) {
-
       if (files[0].size <= 10 * 1024 * 1024) {
+        let products = this.state.products;
+        let filesProd = this.state.products[index].files
+          ? this.state.products[index].files
+          : [];
+        for (let i = 0; i < files.length; i++) {
+          const file = files.item(i);
+          let result = await UploadToS3FromClient.uploadFromClient(file);
 
-            let products = this.state.products;
-            let filesProd = this.state.products[index].files
-              ? this.state.products[index].files
-              : [];
-            for (let i = 0; i < files.length; i++) {
-              const file = files.item(i);
-              let result = await UploadToS3FromClient.uploadFromClient(file);
-
-              if(result !== -1 )
-                filesProd.push({ name: file.name, link: result });
-            }
-            const cache = {};
-            products[index]["files"] = filesProd.filter(file => {
-              if (!cache[file.name]) {
-                cache[file.name] = true;
-                return true;
-              }
-              return false;
-            });
-            this.setState({ products: products }, () => this.notifyParent());
-
-        };
-      } else {
-        alert("File shouldn't be bigger than 10Mb");
+          if (result !== -1) filesProd.push({ name: file.name, link: result });
+        }
+        const cache = {};
+        products[index]["files"] = filesProd.filter(file => {
+          if (!cache[file.name]) {
+            cache[file.name] = true;
+            return true;
+          }
+          return false;
+        });
+        this.setState({ products: products }, () => this.notifyParent());
       }
+    } else {
+      alert("File shouldn't be bigger than 10Mb");
+    }
   }
 
   handleDelete() {
@@ -136,54 +144,6 @@ class ProductList extends React.Component {
             mb={"5px"}
           >
             <SLabel>{this.props.type}</SLabel>
-            {edit.length === 0 ? (
-              <Layout customTemplateColumns={"auto auto auto"}>
-                <Button
-                  type={"button"}
-                  secondary
-                  height={"auto"}
-                  color={"black"}
-                  opacity={"0.5"}
-                  border={"none"}
-                  hoverBackground={"transparent"}
-                  hoverColor={"initial"}
-                  onClick={this.handleAdd}
-                  style={{ fontSize: "14px" }}
-                >
-                  <MaterialIcon type={"plus-circle"} />
-                </Button>
-                <Button
-                  type={"button"}
-                  secondary
-                  height={"auto"}
-                  color={"black"}
-                  opacity={"0.5"}
-                  border={"none"}
-                  hoverBackground={"transparent"}
-                  hoverColor={"initial"}
-                  onClick={() =>
-                    this.setState({ isEditable: !this.state.isEditable })
-                  }
-                  style={{ fontSize: "14px" }}
-                >
-                  <MaterialIcon type={"edit"} />
-                </Button>
-                <Button
-                  type={"button"}
-                  secondary
-                  height={"auto"}
-                  color={"black"}
-                  opacity={"0.5"}
-                  border={"none"}
-                  hoverBackground={"transparent"}
-                  hoverColor={"initial"}
-                  onClick={this.handleDelete}
-                  style={{ fontSize: "14px" }}
-                >
-                  <MaterialIcon type={"delete"} />
-                </Button>
-              </Layout>
-            ) : null}
           </Layout>
         ) : null}
         <SItemContainer paddingX={"10px"} background={this.props.background}>
@@ -210,51 +170,50 @@ class ProductList extends React.Component {
                       />
                     ) : null
                   ) : (
-                    <Layout
+                    <SItem
                       key={index}
                       paddingY={"10px"}
                       customTemplateColumns={"1fr auto"}
                     >
                       <Container>{item.name}</Container>
-                      {this.state.isEditable ? (
-                        <Layout
-                          customTemplateColumns={"auto auto"}
-                          colGap={"5px"}
+                      <Layout
+                        className={"buttons"}
+                        customTemplateColumns={"auto auto"}
+                        colGap={"5px"}
+                      >
+                        <Button
+                          type={"button"}
+                          secondary
+                          height={"auto"}
+                          color={"black"}
+                          opacity={"0.5"}
+                          border={"none"}
+                          hoverBackground={"transparent"}
+                          hoverColor={"initial"}
+                          onClick={event => {
+                            event.preventDefault();
+                            this.handleChange(index);
+                          }}
+                          style={{ fontSize: "14px" }}
                         >
-                          <Button
-                            type={"button"}
-                            secondary
-                            height={"auto"}
-                            color={"black"}
-                            opacity={"0.5"}
-                            border={"none"}
-                            hoverBackground={"transparent"}
-                            hoverColor={"initial"}
-                            onClick={event => {
-                              event.preventDefault();
-                              this.handleChange(index);
-                            }}
-                            style={{ fontSize: "14px" }}
-                          >
-                            <MaterialIcon type={"edit"} />
-                          </Button>
-                          <Button
-                            type={"button"}
-                            secondary
-                            height={"auto"}
-                            color={"black"}
-                            opacity={"0.5"}
-                            border={"none"}
-                            hoverBackground={"transparent"}
-                            hoverColor={"initial"}
-                            onClick={() => this.handleRemove(index)}
-                            style={{ fontSize: "14px" }}
-                          >
-                            <MaterialIcon type={"delete"} />
-                          </Button>
-                        </Layout>
-                      ) : null}
-                    </Layout>
+                          <MaterialIcon type={"edit"} />
+                        </Button>
+                        <Button
+                          type={"button"}
+                          secondary
+                          height={"auto"}
+                          color={"black"}
+                          opacity={"0.5"}
+                          border={"none"}
+                          hoverBackground={"transparent"}
+                          hoverColor={"initial"}
+                          onClick={() => this.handleRemove(index)}
+                          style={{ fontSize: "14px" }}
+                        >
+                          <MaterialIcon type={"delete"} />
+                        </Button>
+                      </Layout>
+                    </SItem>
                   )
                 ) : null
             )}
@@ -289,8 +248,7 @@ ProductList.propTypes = {
   background: PropTypes.string,
   onEdit: PropTypes.func,
   onDelete: PropTypes.func,
-  onAdd: PropTypes.func,
-  isEditable: PropTypes.bool
+  onAdd: PropTypes.func
 };
 
 export default ProductList;

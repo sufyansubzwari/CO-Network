@@ -1,9 +1,9 @@
 import React, { Component } from "react";
 import {
+  ButtonDropdown,
   DropdownItem,
   DropdownMenu,
-  DropdownToggle,
-  ButtonDropdown
+  DropdownToggle
 } from "reactstrap";
 import PropTypes from "prop-types";
 import MaterialIcon from "react-material-iconic-font";
@@ -13,7 +13,7 @@ import { theme } from "../../theme";
 const SDropdownItem = styled(DropdownItem)`
   cursor: pointer;
   font-size: 12px;
-  
+
   :hover {
     background-color: ${props =>
       props.optionBackColor
@@ -21,9 +21,7 @@ const SDropdownItem = styled(DropdownItem)`
         : theme.color.dropDownHover} !important;
     outline: none;
     color: ${props =>
-      props.optionTextColor
-        ? props.optionTextColor
-        : 'initial'} !important;
+      props.optionTextColor ? props.optionTextColor : "initial"} !important;
   }
 `;
 

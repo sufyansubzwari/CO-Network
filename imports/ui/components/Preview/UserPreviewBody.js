@@ -1,6 +1,6 @@
 import React from "react";
-import { Layout, Container } from "btech-layout";
-import { Title, Location, Social, Text, TagsAdd } from "./components/index";
+import { Container, Layout } from "btech-layout";
+import { Location, Social, TagsAdd, Text, Title } from "./components/index";
 import services from "../../components/LoginModal/service.constant";
 
 class UserPreviewBody extends React.Component {
@@ -216,9 +216,7 @@ class UserPreviewBody extends React.Component {
         {this.state.user.aboutMe &&
         this.state.user.aboutMe.existingProblem !== "" ? (
           <Text
-            header={
-              "What is the most exciting problem you want to solve?"
-            }
+            header={"What is the most exciting problem you want to solve?"}
             text={
               this.state.user.aboutMe && this.state.user.aboutMe.existingProblem
             }

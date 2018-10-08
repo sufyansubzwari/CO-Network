@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Container, mixins, StyleUtil } from "btech-layout";
+import { Container } from "btech-layout";
 import styled from "styled-components";
 import { connect } from "react-redux";
 import { toggleSideBar } from "../../actions/SideBarActions";
@@ -12,6 +12,7 @@ import OrganizationFilters from "../../modules/organization-module/filters";
 import MembersFilters from "../../modules/members-module/filters";
 import ProfileSideBar from "../../modules/user-module/profileSidebar/profileSidebar";
 import NotificationsSidebar from "../Notifications/Sidebar/NotificationsSidebar";
+import MessagesSideBar from "../Messages/Sidebar/MessagesSidebar";
 import posed from "react-pose";
 
 const SSideBarContainerStyed = styled(Container)`
@@ -19,6 +20,7 @@ const SSideBarContainerStyed = styled(Container)`
   overflow: hidden;
   z-index: 10;
 `;
+
 const SSideBarContainer = posed(SSideBarContainerStyed)({
   openSidebar: {
     x: "0%",
@@ -57,24 +59,31 @@ class SideBar extends Component {
         <Create
           options={CREATE_LINKS}
           onChangeRoute={() => this.props.toggleSideBar(false, null, true)}
-          onBlur={() => console.log("adsdasdasdasd")}
           onClose={() =>
             this.props.toggleSideBar && this.props.toggleSideBar(false)
           }
         />
-       );
-    }else if(this.props.isProfileAction){
+      );
+    } else if (this.props.isProfileAction) {
+      return (
+        <ProfileSideBar
+          curUser={this.props.curUser}
+          onClose={() =>
+            this.props.toggleSideBar && this.props.toggleSideBar(false)
+          }
+        />
+      );
+    } else if(this.props.isNotificationsAction){
         return (
-            <ProfileSideBar
-                curUser={this.props.curUser}
+            <NotificationsSidebar
                 onClose={() =>
                     this.props.toggleSideBar && this.props.toggleSideBar(false)
                 }
             />);
     }
-    else if(this.props.isNotificationsAction){
+    else if(this.props.isMessagesAction){
         return (
-            <NotificationsSidebar
+            <MessagesSideBar
                 onClose={() =>
                     this.props.toggleSideBar && this.props.toggleSideBar(false)
                 }
@@ -157,7 +166,8 @@ const mapStateToProps = state => {
     isAddAction: sideBarStatus ? sideBarStatus.isAdd : false,
     filterEntityType: sideBarEntity ? sideBarEntity.entityType : null,
     isProfileAction: sideBarStatus ? sideBarStatus.profile : false,
-    isNotificationsAction: sideBarStatus ? sideBarStatus.notifications: false
+    isNotificationsAction: sideBarStatus ? sideBarStatus.notifications: false,
+    isMessagesAction: sideBarStatus ? sideBarStatus.messages : false
   };
 };
 

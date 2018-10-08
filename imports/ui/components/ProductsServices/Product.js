@@ -1,13 +1,11 @@
 import React from "react";
-import { Layout, Container } from "btech-layout";
-import styled from "styled-components";
+import { Container, Layout } from "btech-layout";
 import {
+  AttachedFile,
   Button,
   Input,
-  Select,
   TextArea,
-  UploadFileButton,
-  AttachedFile
+  UploadFileButton
 } from "btech-base-forms-component";
 import MaterialIcon from "react-material-iconic-font";
 import LineSeparator from "./LineSeparator";
@@ -16,7 +14,7 @@ export default (Product = function(props) {
   return (
     <Container marginX={"-10px"} style={{ background: "white" }}>
       <Layout rowGap={"10px"} style={{ background: "rgb(209,209,209,0.2)" }}>
-        <Layout templateColumns={2} colGap={"20px"}>
+        <Layout mdTemplateColumns={2} mdColGap={"20px"} rowGap={"5px"}>
           <Input
             placeholderText={"Product Name"}
             name={"name"}
@@ -32,7 +30,7 @@ export default (Product = function(props) {
           rowGap={"10px"}
           colGap={"10px"}
           minH={"35px"}
-          mt={"25px"}
+          mt={{ xs: "5px", md: "15px" }}
           customTemplateColumns={"repeat(auto-fit, 120px)"}
         >
           <UploadFileButton

@@ -12,11 +12,18 @@ import BigTag from "./BigTag/BigTag";
 import FiltersContainer from "./FiltersContainer/FiltersContainer";
 import Separator from "./FiltersContainer/Separator";
 import FilterItem from "./FiltersContainer/FilterItem";
-import TagsInputAutoComplete from "./TagsInputAutoComplete/TagsInputAutoComplete";
+import MLTagsInput from "./MLTagsInput/MLTagsInput";
 import Label from "./Label/Label";
 import MLCheckBoxList from "./CheckBoxList/CheckBoxList";
 import Messages from "./Messages/Messages";
 import EmptyList from "./EmptyList/EmptyList";
+import SpeakersSponsors from "./SpeakerSponsors/SpeakersSponsors";
+import FormMainLayout from "./FormMainLayout/FormMainLayout";
+import TicketTypes from "./TicketTypes/TicketTypes";
+import IndustrySector from "./IndustrySector/IndustrySector";
+import Media from "./Media/Media";
+import Achievements from "./Achievements/Achievements";
+import WorkExperience from "./WorkExperience/WorkExperience";
 
 // layouts
 import InternalLayout from "../layouts/InternalLayout/InternalLayout";
@@ -43,9 +50,16 @@ export {
   Separator,
   BigTag,
   Label,
-  TagsInputAutoComplete,
+  SpeakersSponsors,
+  MLTagsInput,
   ProductsServices,
   MLCheckBoxList,
   Messages,
-  EmptyList
+  EmptyList,
+  FormMainLayout,
+  TicketTypes,
+  IndustrySector,
+  WorkExperience,
+  Media,
+  Achievements
 };

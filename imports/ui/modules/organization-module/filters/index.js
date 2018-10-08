@@ -1,25 +1,21 @@
 import React from "react";
-import { Layout, Container } from "btech-layout";
+import { Container, Layout } from "btech-layout";
 import { GeoInputLocation } from "btech-location";
-import {
-  CheckBoxList,
-  InputAutoComplete,
-  TagList
-} from "btech-base-forms-component";
+import { CheckBoxList, TagList } from "btech-base-forms-component";
 import { ORG_TYPE_NUMBER } from "../../../constants";
 import PropsTypes from "prop-types";
 import {
-  FiltersContainer,
   BigTag,
-  Separator,
   FilterItem,
-  MLCheckBoxList
+  FiltersContainer,
+  MLCheckBoxList,
+  MLTagsInput,
+  Separator
 } from "../../../components";
 import { cleanFilters, setFilters } from "../../../actions/SideBarActions";
 import { connect } from "react-redux";
 import { Query } from "react-apollo";
 import { GetTags as tags } from "../../../apollo-client/tag";
-import { TagsInputAutoComplete as MLTagsInput } from "../../../components/";
 
 class OrganizationFilters extends React.Component {
   constructor(props) {
@@ -328,7 +324,6 @@ class OrganizationFilters extends React.Component {
             ]}
           />
         </FilterItem>
-        <Separator />
       </FiltersContainer>
     );
   }

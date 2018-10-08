@@ -6,12 +6,24 @@ import {
   TagList,
   TextArea
 } from "btech-base-forms-component";
-import MLTagsInput from "../../../../../components/TagsInputAutoComplete/TagsInputAutoComplete";
+import { FormMainLayout, MLTagsInput } from "../../../../../components";
 import { Container, Layout } from "btech-layout";
 import { GeoInputLocation } from "btech-location";
 import { COLLOQUIUM_LEVEL } from "../../../../../constants";
 import { Query } from "react-apollo";
 import { GetTags } from "../../../../../apollo-client/tag";
+import styled from "styled-components";
+
+const SCommingSoon = styled(Container)`
+  background: black;
+  color: white;
+  font-size: 10px;
+  text-align: center;
+  font-family: Helvetica Neue LT Std;
+  padding: 5px 0px;
+  line-height: 9px;
+  margin-bottom: 5px;
+`;
 
 class FirstStep extends React.Component {
   constructor(props) {
@@ -118,8 +130,8 @@ class FirstStep extends React.Component {
 
   render() {
     return (
-      <Layout rowGap={"25px"}>
-        <Layout templateColumns={2} colGap={"20px"}>
+      <FormMainLayout>
+        <Layout mdTemplateColumns={2} mdColGap={"20px"} rowGap={"5px"}>
           <Input
             name={"title"}
             model={this.state.colloquium}
@@ -194,19 +206,21 @@ class FirstStep extends React.Component {
             }}
           </Query>
         </Container>
-        {/*<Container>*/}
-          {/*<SwitchButton*/}
-            {/*checked={this.state.colloquium.isPublic}*/}
-            {/*text={"Make Public this Colloquium"}*/}
-            {/*onChange={status =>*/}
-              {/*this.notifyParent(this.state.colloquium, "isPublic", status)*/}
-            {/*}*/}
-            {/*description={*/}
-              {/*"Allow access for the exchange of transformation ideas in Science, Technology, Culture and Others."*/}
-            {/*}*/}
-          {/*/>*/}
-        {/*</Container>*/}
-      </Layout>
+        <Container>
+          <SCommingSoon>Coming Soon</SCommingSoon>
+          <SwitchButton
+            checked={!this.state.colloquium.isPublic}
+            disabled
+            text={"Make Private this Colloquium"}
+            onChange={status =>
+              this.notifyParent(this.state.colloquium, "isPublic", status)
+            }
+            description={
+              "Restring the access for the exchange of transformation ideas in Science, Technology, Culture and Others."
+            }
+          />
+        </Container>
+      </FormMainLayout>
     );
   }
 }

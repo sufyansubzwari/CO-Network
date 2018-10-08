@@ -14,7 +14,7 @@ import { JOB_TYPE, POSITION_TAGS } from "../../../../../constants";
 import PropTypes from "prop-types";
 import { Query } from "react-apollo";
 import { GetTags as tags } from "../../../../../apollo-client/tag";
-import MLTagsInput from "../../../../../components/TagsInputAutoComplete/TagsInputAutoComplete";
+import { MLTagsInput, FormMainLayout } from "../../../../../components";
 
 class FirstStep extends React.Component {
   constructor(props) {
@@ -137,8 +137,8 @@ class FirstStep extends React.Component {
 
   render() {
     return (
-      <Layout rowGap={"25px"}>
-        <Layout templateColumns={2} colGap={"20px"}>
+      <FormMainLayout>
+        <Layout mdTemplateColumns={2} mdColGap={"20px"} rowGap={"5px"}>
           <Input
             name={"title"}
             required
@@ -169,7 +169,10 @@ class FirstStep extends React.Component {
           options={this.state.jobType}
           getValue={actives => this.changeCategory(actives)}
         />
-        <Container width={"250px"}>
+        <Container
+          customTemplateColumns={"1fr"}
+          mdCustomTemplateColumns={"70% auto"}
+        >
           <SalaryRange
             placeholder={"000"}
             labelText={"Salary Range"}
@@ -194,7 +197,7 @@ class FirstStep extends React.Component {
                 () => this.notifyParent()
               );
             }}
-            addDollar={true}
+            addChar={'$'}
           />
         </Container>
         <Container>
@@ -202,7 +205,7 @@ class FirstStep extends React.Component {
             <Container>
               <Query query={tags} variables={{ tags: { type: "JobPosition" } }}>
                 {({ loading, error, data }) => {
-                  if (loading) return <div></div>;
+                  if (loading) return <div />;
                   if (error) return <div>Error</div>;
                   return (
                     <div>
@@ -248,7 +251,7 @@ class FirstStep extends React.Component {
             </Container>
           </Layout>
         </Container>
-      </Layout>
+      </FormMainLayout>
     );
   }
 }

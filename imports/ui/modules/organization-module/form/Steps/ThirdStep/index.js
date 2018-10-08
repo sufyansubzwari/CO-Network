@@ -1,15 +1,10 @@
 import React from "react";
-import {
-  CheckBoxList,
-  InputAutoComplete,
-  TagList
-} from "btech-base-forms-component";
+import { CheckBoxList } from "btech-base-forms-component";
 import { Container, Layout } from "btech-layout";
 import { ACTIVELY } from "../../../../../constants";
 import { GetTags } from "../../../../../apollo-client/tag";
 import { Query } from "react-apollo";
-import MLTagsInput from "../../../../../components/TagsInputAutoComplete/TagsInputAutoComplete";
-
+import { MLTagsInput, FormMainLayout } from "../../../../../components";
 
 class ThirdStep extends React.Component {
   constructor(props) {
@@ -88,58 +83,60 @@ class ThirdStep extends React.Component {
 
   render() {
     return (
-      <Layout rowGap={"25px"}>
-        <CheckBoxList
-          placeholderText={"Does your organization actively..."}
-          options={this.state.actively}
-          checkboxVerticalSeparation={"10px"}
-          checkboxSize={"15px"}
-          getValue={actives => this.changeActively(actives)}
-        />
+      <FormMainLayout>
+        <Container>
+          <CheckBoxList
+            placeholderText={"Does your organization actively..."}
+            options={this.state.actively}
+            checkboxVerticalSeparation={"10px"}
+            checkboxSize={"15px"}
+            getValue={actives => this.changeActively(actives)}
+          />
+        </Container>
         <Container>
           <Query query={GetTags} variables={{ tags: { type: "OrgDesc" } }}>
             {({ loading, error, data }) => {
-              if (loading) return <div></div>;
+              if (loading) return <div />;
               if (error) return <div>Error</div>;
               return (
-                  <Container mt={'25px'}>
-                      <MLTagsInput
-                          requiered={true}
-                          placeholderText={"Tags that best describe your organization"}
-                          getAddedOptions={this.onAddTags.bind(
-                              this,
-                              "description"
-                          )}
-                          getNewAddedOptions={this.onAddTags.bind(
-                              this,
-                              "description"
-                          )}
-                          options={data.tags}
-                          model={{ others: [] }}
-                          name={"others"}
-                          tags={
-                              this.state.organization.description && this.state.organization.description.length
-                                  ? this.state.organization.description.map(item => ({
-                                      active: true,
-                                      useIcon: true,
-                                      levelColor: item.levelColor || "",
-                                      icon: item.icon || "",
-                                      level: item.level || "",
-                                      ...item,
-                                      showOptions: !item.levelColor
-                                  }))
-                                  : []
-                          }
-                          onCloseTags={(e, tag, index) =>
-                              this.onCloseTags(e, tag, index, "description")
-                          }
-                      />
-                  </Container>
+                <Container mt={"25px"}>
+                  <MLTagsInput
+                    requiered={true}
+                    placeholderText={
+                      "Tags that best describe your organization"
+                    }
+                    getAddedOptions={this.onAddTags.bind(this, "description")}
+                    getNewAddedOptions={this.onAddTags.bind(
+                      this,
+                      "description"
+                    )}
+                    options={data.tags}
+                    model={{ others: [] }}
+                    name={"others"}
+                    tags={
+                      this.state.organization.description &&
+                      this.state.organization.description.length
+                        ? this.state.organization.description.map(item => ({
+                            active: true,
+                            useIcon: true,
+                            levelColor: item.levelColor || "",
+                            icon: item.icon || "",
+                            level: item.level || "",
+                            ...item,
+                            showOptions: !item.levelColor
+                          }))
+                        : []
+                    }
+                    onCloseTags={(e, tag, index) =>
+                      this.onCloseTags(e, tag, index, "description")
+                    }
+                  />
+                </Container>
               );
             }}
           </Query>
         </Container>
-      </Layout>
+      </FormMainLayout>
     );
   }
 }
