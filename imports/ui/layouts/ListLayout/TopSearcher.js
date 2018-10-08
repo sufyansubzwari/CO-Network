@@ -1,8 +1,11 @@
-import React, {Component} from "react";
-import {InputAutoComplete, Button} from "btech-base-forms-component";
-import {Layout, Container} from "btech-layout";
+import React, { Component } from "react";
+import { InputAutoComplete, Button } from "btech-base-forms-component";
+import { Layout, Container } from "btech-layout";
 import PropTypes from "prop-types";
 import MaterialIcon from "react-material-iconic-font";
+import { TagsInputAutoComplete as MLTagsInput } from "../../components";
+import { GetTags as tags } from "../../apollo-client/tag";
+import { Query } from 'react-apollo';
 
 /**
  * @module Data
@@ -18,7 +21,9 @@ class TopSearcher extends Component {
   }
 
   onSearchChange(value) {
-    this.setState({value: value.value}, () => this.props.onSearchAction && this.props.onSearchAction(value.value)
+    this.setState(
+      { value: value.value },
+      () => this.props.onSearchAction && this.props.onSearchAction(value.value)
     );
   }
 
@@ -27,23 +32,51 @@ class TopSearcher extends Component {
       <Container background={"white"}>
         <Layout colGap={"10px"} customTemplateColumns={"1fr auto"}>
           <Container>
-            <InputAutoComplete
-              autoFocus
-              iconClass={'arrow-forward'}
-              placeholderText={"Discover"}
-              getNewAddedOptions={value =>
-                this.onSearchChange(value)
-              }
-              fixLabel
-              name={"value"}
-              model={this.state}
-              options={this.props.suggestions}
-              optionsLimit={9}
-              keepText={true}
-              getAddedOptions={value =>
-                this.onSearchChange(value)
-              }
-            />
+            <Query query={tags} fetchPolicy={"cache-and-network"}>
+              {({ loading, error, data }) => {
+                if (loading) return <div />;
+                if (error) return <div>Error</div>;
+                return (
+                  <MLTagsInput
+                    autoFocus
+                    iconClass={"arrow-forward"}
+                    inputPlaceholder={"Discover"}
+                    getAddedOptions={value => this.onSearchChange(value)}
+                    getNewAddedOptions={value => this.onSearchChange(value)}
+                    fixLabel
+                    optionsLimit={9}
+                    keepText={true}
+                    onCloseTags={(e, tag, index) =>
+                      this.onCloseTags(e, tag, index)
+                    }
+                    options={data.tags}
+                    tags={
+                      this.state.job &&
+                      this.state.job.positionTags &&
+                      this.state.job.positionTags.length > 0
+                        ? this.state.job.positionTags.map(item => ({
+                            active: true,
+                            ...item
+                          }))
+                        : []
+                    }
+                  />
+                );
+              }}
+            </Query>
+            {/*<InputAutoComplete*/}
+              {/*autoFocus*/}
+              {/*iconClass={"arrow-forward"}*/}
+              {/*placeholderText={"Discover"}*/}
+              {/*getNewAddedOptions={value => this.onSearchChange(value)}*/}
+              {/*fixLabel*/}
+              {/*name={"value"}*/}
+              {/*model={this.state}*/}
+              {/*options={this.props.suggestions}*/}
+              {/*optionsLimit={9}*/}
+              {/*keepText={true}*/}
+              {/*getAddedOptions={value => this.onSearchChange(value)}*/}
+            {/*/>*/}
           </Container>
           <Container hide mdShow>
             <Button
@@ -53,7 +86,7 @@ class TopSearcher extends Component {
                 this.props.onCreateAction && this.props.onCreateAction()
               }
             >
-              <MaterialIcon type={"plus"}/>
+              <MaterialIcon type={"plus"} />
             </Button>
           </Container>
         </Layout>

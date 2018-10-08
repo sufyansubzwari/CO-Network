@@ -19,7 +19,7 @@ const SDropDownMenu = styled(DropdownMenu)`
 `;
 
 const SContainer = styled.div`
-  margin-top: 25px;
+  ${props => (props.marginTop ? "margin-top: 25px;" : "")} 
   position: relative;
   background: #ffffff;
   height: auto;
@@ -178,17 +178,22 @@ export default class TagsInputAutoComplete extends Component {
 
   render() {
     return (
-      <SContainer onClick={() => this.onFocus()}>
-        <SLabel
-          inactive={!this.state.active}
-          onClick={() => this.onFocus()}
-          fontSize={this.props.fontSize}
-          fontFamily={this.props.fontFamily}
-          fontWeight={this.props.fontWeight}
-        >
-          {this.props.placeholderText}
-          {this.props.required ? <SRequiredLabel>*</SRequiredLabel> : null}
-        </SLabel>
+      <SContainer
+        marginTop={!!this.props.placeholderText}
+        onClick={() => this.onFocus()}
+      >
+        {this.props.placeholderText ? (
+          <SLabel
+            inactive={!this.state.active}
+            onClick={() => this.onFocus()}
+            fontSize={this.props.fontSize}
+            fontFamily={this.props.fontFamily}
+            fontWeight={this.props.fontWeight}
+          >
+            {this.props.placeholderText}
+            {this.props.required ? <SRequiredLabel>*</SRequiredLabel> : null}
+          </SLabel>
+        ) : null}
         <InputGroup style={{ height: "auto", padding: "4px 8px" }}>
           <InputGroupAddon addonType="prepend">
             <TagList
@@ -254,7 +259,7 @@ export default class TagsInputAutoComplete extends Component {
               type={"text"}
               // onFocus={this.onFocus}
               placeholder={this.props.inputPlaceholder || "Discover..."}
-              // autoFocus={this.props.autoFocus}
+              autoFocus={this.props.autoFocus}
               onChange={this.handleChange}
               disabled={this.props.disabled}
               placeholderModel={this.props.placeholder}
