@@ -100,7 +100,7 @@ class FollowersService {
   /**
    * @name getFollower
    * @summary Get follower followers by entity
-   * @param {String} query - query parameters
+   * @param {Object} query - query parameters
    * @return {Object} Follower
    */
   static getFollower = query => {

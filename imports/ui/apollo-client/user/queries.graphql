@@ -285,3 +285,10 @@ query UsersFieldCounts($field: String){
     number
   }
 }
+
+query GetFollowFollowers{
+  followFollowers{
+    myFollowers
+    myFollowings
+  }
+}

@@ -35,7 +35,7 @@ class FollowingsService {
   /**
    * @name getFollowing
    * @summary Get following by id
-   * @param {String} _id - following id
+   * @param {Object} _id - following id
    * @return {Object} Followings
    */
   static getFollowing = _id => {

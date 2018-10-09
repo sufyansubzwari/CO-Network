@@ -106,6 +106,12 @@ type Query {
     users(user: UsersInputSearch, filter: String, limit: Int): [User]
     user(id: String): User
     usersFieldCounts(field: String): [Counts]
+    followFollowers: MyFollow
+}
+
+type MyFollow{
+    myFollowings: [String]
+    myFollowers: [String]
 }
 
 input UsersInputSearch {

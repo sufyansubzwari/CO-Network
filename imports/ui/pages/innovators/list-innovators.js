@@ -511,9 +511,9 @@ export default withRouter(
             variables: {
               limit: 10,
               user: props.curUser &&
-                props.curUser._id && {
-                  _id: { ne: props.curUser._id, ...filters }
-                },
+                props.curUser._id ? Object.assign({},{
+                  _id: { ne: props.curUser._id }
+                },filters) : filters,
               filter: (props.filterStatus && props.filterStatus.entityType === "members" && props.filterStatus.text) || "",
             },
             fetchPolicy: "cache-and-network"

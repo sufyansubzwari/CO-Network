@@ -13,6 +13,7 @@ import { CheckBoxList } from "btech-base-forms-component";
 import { UsersFieldCounts } from "../../../apollo-client/user";
 import { cleanFilters, setFilters } from "../../../actions/SideBarActions";
 import { connect } from "react-redux";
+import { GetFollowFollowers } from "../../../apollo-client/user";
 
 class MembersFilters extends React.Component {
   constructor(props) {
@@ -28,6 +29,16 @@ class MembersFilters extends React.Component {
       profile_DOT_knowledge_DOT_lookingFor: [],
       profile_DOT_speaker_DOT_join: [
         { label: "On Speaker Directory", active: false }
+      ],
+      usersFilters: [
+        {
+          label: "I'm Followings",
+          active: false
+        },
+        {
+          label: "Following Me",
+          active: false
+        }
       ]
     };
     this.handleScroll = this.handleScroll(this);
@@ -87,10 +98,31 @@ class MembersFilters extends React.Component {
   onSearch(value, tags) {
     let filters = this.state.filters;
     tags.length
-      ? (filters.profile_DOT_knowledge_DOT_languages_DOT_tag = { in: tags.map(item => item._id) })
+      ? (filters.profile_DOT_knowledge_DOT_languages_DOT_tag = {
+          in: tags.map(item => item._id)
+        })
       : delete filters.profile_DOT_knowledge_DOT_languages_DOT_tag;
     this.setState({ filters: filters }, () =>
       this.props.setFilters("members", filters, value)
+    );
+  }
+
+  userFollowFilters(actives, followings, followers) {
+    const selected = this.state.usersFilters.map((category, index) => {
+      category["active"] = actives[index];
+      return category;
+    });
+    let filter = this.state.filters;
+    filter["_id"] = { in: [] };
+    if (actives[0]) {
+      filter["_id"]["in"] = filter["_id"]["in"].concat(followings);
+    }
+    if (actives[1]) {
+      filter["_id"]["in"] = filter["_id"]["in"].concat(followers);
+    }
+    !actives[0] && !actives[1] ? delete filter["_id"] : null;
+    this.setState({ usersFilters: selected, filters: filter }, () =>
+      this.props.setFilters("members", this.state.filters)
     );
   }
 
@@ -185,6 +217,31 @@ class MembersFilters extends React.Component {
             }
           />
         </FilterItem>
+        <Query query={GetFollowFollowers} fetchPolicy={"cache-and-network"}>
+          {({ loading, error, data }) => {
+            if (loading) return <div />;
+            if (error) return <div>Error</div>;
+            return (
+              <CheckBoxList
+                placeholderText={"My Follows"}
+                options={this.state.usersFilters.map((item, key) => ({
+                  ...item,
+                  number:
+                    key === 0
+                      ? data.followFollowers.myFollowings.length
+                      : data.followFollowers.myFollowers.length
+                }))}
+                getValue={selected =>
+                  this.userFollowFilters(
+                    selected,
+                    data.followFollowers.myFollowings,
+                    data.followFollowers.myFollowers
+                  )
+                }
+              />
+            );
+          }}
+        </Query>
       </FiltersContainer>
     );
   }
@@ -197,7 +254,8 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
   return {
-    setFilters: (type, filters, text) => dispatch(setFilters(type, filters, text)),
+    setFilters: (type, filters, text) =>
+      dispatch(setFilters(type, filters, text)),
     cleanFilters: () => dispatch(cleanFilters())
   };
 };

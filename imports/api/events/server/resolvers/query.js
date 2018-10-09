@@ -40,7 +40,7 @@ Query.myEvents = async (root, { owner }, context) => {
   );
   return {
     myEvents,
-    followings: followings.followings
+    followings: followings && followings.followings ? followings.followings : []
   };
 };
 
