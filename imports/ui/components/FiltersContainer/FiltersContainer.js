@@ -87,6 +87,15 @@ class FiltersContainer extends Component {
     }
   }
 
+  onSearchText(value) {
+    this.setState(
+      { value: value },
+      () =>
+        this.props.onSearchAction &&
+        this.props.onSearchAction(value, this.state.tags)
+    );
+  }
+
   render() {
     return (
       <SContainer
