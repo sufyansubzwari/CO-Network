@@ -64,6 +64,11 @@ class ListInnovators extends Component {
       let filters = Object.assign({}, nextProps.filterStatus.filters);
       this.setState({ filterStatus: filters }, () => this.reFetchQuery());
     }
+    if (
+      nextProps.filterStatus &&
+      nextProps.filterStatus.text && nextProps.filterStatus.text !== this.state.filter){
+      this.setState({filter: nextProps.filterStatus.text}, () => this.reFetchQuery());
+    }
   }
 
   reFetchQuery() {
@@ -490,7 +495,8 @@ export default withRouter(
             variables: {
               limit: 10,
               organizations:
-                (props.filterStatus && props.filterStatus.entityType === "organizations" && props.filterStatus.filters) || {}
+                (props.filterStatus && props.filterStatus.entityType === "organizations" && props.filterStatus.filters) || {},
+              filter: (props.filterStatus && props.filterStatus.entityType === "organizations" && props.filterStatus.text) || "",
             },
             fetchPolicy: "cache-and-network"
           };
@@ -507,7 +513,8 @@ export default withRouter(
               user: props.curUser &&
                 props.curUser._id && {
                   _id: { ne: props.curUser._id, ...filters }
-                }
+                },
+              filter: (props.filterStatus && props.filterStatus.entityType === "members" && props.filterStatus.text) || "",
             },
             fetchPolicy: "cache-and-network"
           };

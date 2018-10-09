@@ -90,7 +90,7 @@ class MembersFilters extends React.Component {
       ? (filters.profile_DOT_knowledge_DOT_languages_DOT_tag = { in: tags.map(item => item._id) })
       : delete filters.profile_DOT_knowledge_DOT_languages_DOT_tag;
     this.setState({ filters: filters }, () =>
-      this.props.setFilters("members", filters)
+      this.props.setFilters("members", filters, value)
     );
   }
 
@@ -197,7 +197,7 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
   return {
-    setFilters: (type, filters) => dispatch(setFilters(type, filters)),
+    setFilters: (type, filters, text) => dispatch(setFilters(type, filters, text)),
     cleanFilters: () => dispatch(cleanFilters())
   };
 };

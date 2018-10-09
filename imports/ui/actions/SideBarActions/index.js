@@ -24,11 +24,12 @@ export function setFilterEntity(type) {
   };
 }
 
-export function setFilters(type, filters) {
+export function setFilters(type, filters, text) {
   return {
     type: types.SET_FILTERS,
     entityType: type || null,
-    filters: filters
+    filters: filters,
+    text: text
   };
 }
 
@@ -36,6 +37,7 @@ export function cleanFilters() {
   return {
     type: types.CLEAN_FILTERS,
     entityType: null,
-    filters: null
+    filters: null,
+    text: null
   };
 }

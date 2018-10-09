@@ -61,6 +61,11 @@ class ListEvents extends Component {
       const filters = Object.assign({}, nextProps.filterStatus.filters);
       this.setState({ filterStatus: filters }, () => this.reFetchQuery());
     }
+    if (
+      nextProps.filterStatus &&
+        nextProps.filterStatus.text && nextProps.filterStatus.text !== this.state.filter){
+      this.setState({filter: nextProps.filterStatus.text}, () => this.reFetchQuery());
+    }
   }
 
   onChangeSelection(item, key, viewsUpdate) {
@@ -331,10 +336,11 @@ export default withRouter(
         return {
           variables: {
             limit: 10,
-            events: (props.filterStatus && props.filterStatus.entityType === "events" && props.filterStatus.filters) || {}
+            events: (props.filterStatus && props.filterStatus.entityType === "events" && props.filterStatus.filters) || {},
+            filter: (props.filterStatus && props.filterStatus.entityType === "events" && props.filterStatus.text) || "",
           },
           fetchPolicy: "cache-and-network"
-        };
+        }
       }
     })(ListEvents)
   )

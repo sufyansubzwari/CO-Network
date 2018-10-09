@@ -13,7 +13,8 @@ const initialType = {
 const initialFilters = {
   type: null,
   entityType: null,
-  filters: null
+  filters: null,
+  text: null,
 };
 
 export const sideBarStatus = (state = initial, action) => {

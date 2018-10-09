@@ -78,7 +78,7 @@ class ColloquiumFilters extends React.Component {
       ? (filters.tags = { in: tags.map(item => item._id) })
       : delete filters.tags;
     this.setState({ filters: filters }, () =>
-      this.props.setFilters("colloquiums", filters)
+      this.props.setFilters("colloquiums", filters, value)
     );
   }
 
@@ -151,7 +151,7 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
   return {
-    setFilters: (type, filters) => dispatch(setFilters(type, filters)),
+    setFilters: (type, filters, text) => dispatch(setFilters(type, filters,text)),
     cleanFilters: () => dispatch(cleanFilters())
   };
 };

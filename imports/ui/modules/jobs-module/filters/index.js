@@ -127,7 +127,7 @@ class JobsFilters extends React.Component {
       ? (filters.positionTags = { in: tags.map(item => item._id) })
       : delete filters.positionTags;
     this.setState({ filters: filters }, () =>
-      this.props.setFilters("jobs", filters)
+      this.props.setFilters("jobs", filters, value)
     );
   }
 
@@ -283,7 +283,7 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
   return {
-    setFilters: (type, filters) => dispatch(setFilters(type, filters)),
+    setFilters: (type, filters, text) => dispatch(setFilters(type, filters, text)),
     cleanFilters: () => dispatch(cleanFilters())
   };
 };

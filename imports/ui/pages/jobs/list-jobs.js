@@ -52,6 +52,11 @@ class ListJobs extends Component {
       const filters = Object.assign({}, nextProps.filterStatus.filters);
       this.setState({ filterStatus: filters }, () => this.reFetchQuery());
     }
+    if (
+      nextProps.filterStatus &&
+      nextProps.filterStatus.text && nextProps.filterStatus.text !== this.state.filter){
+      this.setState({filter: nextProps.filterStatus.text}, () => this.reFetchQuery());
+    }
   }
 
   reFetchQuery() {
@@ -289,7 +294,8 @@ export default withRouter(
               (props.filterStatus &&
                 props.filterStatus.entityType === "jobs" &&
                 props.filterStatus.filters) ||
-              {}
+              {},
+            filter: (props.filterStatus && props.filterStatus.entityType === "jobs" && props.filterStatus.text) || "",
           },
           fetchPolicy: "cache-and-network"
         };

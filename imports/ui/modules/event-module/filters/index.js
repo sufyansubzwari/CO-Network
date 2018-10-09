@@ -11,10 +11,7 @@ import {
 import { DatePickerRange, SalaryRange } from "btech-base-forms-component";
 import PropsTypes from "prop-types";
 import { connect } from "react-redux";
-import {
-  cleanFilters,
-  setFilters
-} from "../../../actions/SideBarActions";
+import { cleanFilters, setFilters } from "../../../actions/SideBarActions";
 import { GetTags } from "../../../apollo-client/tag";
 import { Query } from "react-apollo";
 
@@ -101,13 +98,20 @@ class EventsFilters extends React.Component {
   }
 
   onSearch(value, tags) {
-    let filters = {};
-    tags.length
-      ? (filters.category = { in: tags.map(item => item._id) })
-      : delete filters.category;
-    filters = Object.assign({}, filters, this.state.filters);
-    this.setState({ filters: filters }, () =>
-      this.props.setFilters("events", filters)
+    let category = {
+      in: tags
+        .map(item => item._id)
+        .concat(
+          this.state.category
+            .filter(item => !!item.active)
+            .map(item => item._id)
+        )
+    };
+    category.in.length
+      ? (this.state.filters.category = category)
+      : delete this.state.filters.category;
+    this.setState({ filters: this.state.filters }, () =>
+      this.props.setFilters("events", this.state.filters, value)
     );
   }
 
@@ -247,7 +251,7 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
   return {
-    setFilters: (type, filters) => dispatch(setFilters(type, filters)),
+    setFilters: (type, filters, text) => dispatch(setFilters(type, filters, text)),
     cleanFilters: () => dispatch(cleanFilters())
   };
 };
