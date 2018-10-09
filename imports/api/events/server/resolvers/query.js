@@ -38,7 +38,6 @@ Query.myEvents = async (root, { owner }, context) => {
     { entityId: owner, entity: "EVENT" },
     { fields: { followings: 1 } }
   );
-  console.log("follow", followings);
   return {
     myEvents,
     followings: followings.followings
