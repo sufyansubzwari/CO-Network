@@ -1,4 +1,4 @@
-query GetOrganizations($limit: Int, $filter: String, $organizations: OrganizationSearchInput) {
+query GetOrg($limit: Int, $filter: String, $organizations: OrganizationSearchInput) {
     organizations(limit: $limit, filter: $filter, organizations: $organizations) {
         _id
         owner {
@@ -94,5 +94,12 @@ query GetOrganizations($limit: Int, $filter: String, $organizations: Organizatio
                 link
             }
         }
+    }
+}
+
+query GetOrgFilters($owner: String) {
+    orgFilters(owner: $owner) {
+        myOrg
+        hosting
     }
 }

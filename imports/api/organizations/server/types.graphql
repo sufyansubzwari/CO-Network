@@ -80,9 +80,16 @@ type Reason {
 type Query {
     organizations(filter: String, limit: Int, organizations: OrganizationSearchInput): [Organizations]
     organization(_id: String): Organizations
+    orgFilters(owner: String): MyOrgs
+}
+
+type MyOrgs {
+    myOrg: [String]
+    hosting: [String]
 }
 
 input OrganizationSearchInput{
+    _id: TableStringFilterInput
     title: TableStringFilterInput
     description: TableStringFilterInput
     tech_DOT_industry: TableStringFilterInput

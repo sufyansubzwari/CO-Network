@@ -16,6 +16,8 @@ import { cleanFilters, setFilters } from "../../../actions/SideBarActions";
 import { connect } from "react-redux";
 import { Query } from "react-apollo";
 import { GetTags as tags } from "../../../apollo-client/tag";
+import { Meteor } from "meteor/meteor";
+import { GetOrgFilters } from "../../../apollo-client/organization";
 
 class OrganizationFilters extends React.Component {
   constructor(props) {
@@ -35,7 +37,14 @@ class OrganizationFilters extends React.Component {
       filters: {},
       tech_DOT_industry: [],
       description: [],
-      limit: 4
+      limit: 4,
+      orgFilters: [
+        {
+          label: "My Organizations",
+          active: false
+        },
+        { label: "Hosting Events", active: false }
+      ]
     };
   }
 
@@ -141,6 +150,26 @@ class OrganizationFilters extends React.Component {
           this.state[type].findIndex(item => item._id === tag._id) > -1
       }))
       .slice(0, 5);
+  }
+
+  orgFilters(actives, org, host) {
+    console.log(actives);
+    const selected = this.state.orgFilters.map((category, index) => {
+      category["active"] = actives[index];
+      return category;
+    });
+    let filter = this.state.filters;
+    filter["_id"] = { in: [] };
+    if (actives[0]) {
+      filter["_id"]["in"] = filter["_id"]["in"].concat(org);
+    }
+    if (actives[1]) {
+      filter["_id"]["in"] = filter["_id"]["in"].concat(host);
+    }
+    !actives[0] && !actives[1] ? delete filter["_id"] : null;
+    this.setState({ orgFilters: selected, filters: filter }, () =>
+      this.props.setFilters("organizations", this.state.filters)
+    );
   }
 
   onSearch(value, tags) {
@@ -324,16 +353,31 @@ class OrganizationFilters extends React.Component {
         </FilterItem>
         <Separator />
         <FilterItem>
-          <CheckBoxList
-            placeholderText={"My Organizations"}
-            options={[
-              {
-                label: "My Looking for Talent",
-                active: true
-              },
-              { label: "Hosting Events", active: false }
-            ]}
-          />
+          <Query query={GetOrgFilters} variables={{ owner: Meteor.userId() }} fetchPolicy={"cache-and-network"}>
+            {({ loading, error, data }) => {
+              if (loading) return <div />;
+              if (error) return <div>Error</div>;
+              return (
+                <CheckBoxList
+                  placeholderText={""}
+                  options={this.state.orgFilters.map((item, key) => ({
+                    ...item,
+                    number:
+                      key === 0
+                        ? data.orgFilters.myOrg.length
+                        : data.orgFilters.hosting.length
+                  }))}
+                  getValue={selected =>
+                    this.orgFilters(
+                      selected,
+                      data.orgFilters.myOrg,
+                      data.orgFilters.hosting
+                    )
+                  }
+                />
+              );
+            }}
+          </Query>
         </FilterItem>
       </FiltersContainer>
     );
