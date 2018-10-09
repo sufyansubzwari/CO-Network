@@ -292,6 +292,7 @@ class ListInnovators extends Component {
     }
     return (
       <ListLayout
+        {...this.props}
         entityType={this.state.currentTab.value}
         onSearchAction={(text, tags) => this.onSearch(text, tags)}
       >

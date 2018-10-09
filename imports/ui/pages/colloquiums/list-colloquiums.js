@@ -139,6 +139,7 @@ class ListColloquiums extends Component {
       (!this.props.data.colloquiums || !this.props.data.colloquiums.length);
     return (
       <ListLayout
+        {...this.props}
         entityType={"colloquiums"}
         onSearchAction={(text, tags) => this.onSearch(text, tags)}
       >

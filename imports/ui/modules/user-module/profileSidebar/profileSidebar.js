@@ -160,6 +160,7 @@ class ProfileSideBar extends React.Component {
   }
 
   render() {
+    !this.props.curUser && this.props.onClose && this.props.onClose();
     let name =
       this.props.curUser &&
       this.props.curUser.profile &&

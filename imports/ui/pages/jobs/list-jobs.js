@@ -4,11 +4,15 @@ import { graphql, Mutation } from "react-apollo";
 import { connect } from "react-redux";
 import { PreviewData } from "../../actions/PreviewActions";
 import JobPreviewBody from "../../components/Preview/JobPreviewBody";
-import { CreateJob, DeleteJob, UpdateJobsImage } from "../../apollo-client/job";
-import { GetJobs } from "../../apollo-client/job";
+import {
+  CreateJob,
+  DeleteJob,
+  GetJobs,
+  UpdateJobsImage
+} from "../../apollo-client/job";
 import { withRouter } from "react-router-dom";
 import { ViewsCountUpdate } from "../../apollo-client/viewCount";
-import {cleanSearch, onSearchTags} from "../../actions/TopSearchActions";
+import { cleanSearch, onSearchTags } from "../../actions/TopSearchActions";
 
 /**
  * @module Jobs
@@ -130,7 +134,9 @@ class ListJobs extends Component {
 
   onSearch(value, tags) {
     let tagsFilters = {};
-    tags.length ? tagsFilters.positionTags = { in: tags.map(item => item._id) } : null;
+    tags.length
+      ? (tagsFilters.positionTags = { in: tags.map(item => item._id) })
+      : null;
     this.setState({ filter: value, filterStatus: tagsFilters }, () =>
       this.reFetchQuery()
     );
@@ -141,7 +147,11 @@ class ListJobs extends Component {
       this.props.data.loading &&
       (!this.props.data.jobs || !this.props.data.jobs.length);
     return (
-      <ListLayout entityType={"jobs"} onSearchAction={(text, tags) => this.onSearch(text, tags)}>
+      <ListLayout
+        entityType={"jobs"}
+        onSearchAction={(text, tags) => this.onSearch(text, tags)}
+        {...this.props}
+      >
         <Mutation key={"listComponent"} mutation={ViewsCountUpdate}>
           {(viewsUpdate, {}) => (
             <ItemsList
@@ -271,13 +281,19 @@ export default withRouter(
     mapDispatchToProps
   )(
     graphql(GetJobs, {
-      options: (props) => {
-        return{variables: {
+      options: props => {
+        return {
+          variables: {
             limit: 10,
-            jobs: (props.filterStatus && props.filterStatus.entityType === "jobs" && props.filterStatus.filters) || {}
+            jobs:
+              (props.filterStatus &&
+                props.filterStatus.entityType === "jobs" &&
+                props.filterStatus.filters) ||
+              {}
           },
           fetchPolicy: "cache-and-network"
-        }}
+        };
+      }
     })(ListJobs)
   )
 );
