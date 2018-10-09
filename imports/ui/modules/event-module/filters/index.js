@@ -8,12 +8,14 @@ import {
   MLCheckBoxList,
   Separator
 } from "./../../../components";
-import { DatePickerRange, SalaryRange } from "btech-base-forms-component";
+import { DatePickerRange, SalaryRange, CheckBoxList } from "btech-base-forms-component";
 import PropsTypes from "prop-types";
 import { connect } from "react-redux";
 import { cleanFilters, setFilters } from "../../../actions/SideBarActions";
 import { GetTags } from "../../../apollo-client/tag";
 import { Query } from "react-apollo";
+import { Meteor } from "meteor/meteor";
+import { GetMyEvents } from "../../../apollo-client/event";
 
 class EventsFilters extends React.Component {
   constructor(props) {
@@ -28,7 +30,17 @@ class EventsFilters extends React.Component {
       industry: "",
       filters: {},
       category: [],
-      limit: 4
+      limit: 4,
+      eventsFilters: [
+        {
+          label: "My Events",
+          active: false
+        },
+        {
+          label: "My Followings",
+          active: false
+        }
+      ]
     };
   }
 
@@ -112,6 +124,25 @@ class EventsFilters extends React.Component {
       : delete this.state.filters.category;
     this.setState({ filters: this.state.filters }, () =>
       this.props.setFilters("events", this.state.filters, value)
+    );
+  }
+
+  eventOwnerFilters(actives, events, followings) {
+    const selected = this.state.eventsFilters.map((category, index) => {
+      category["active"] = actives[index];
+      return category;
+    });
+    let filter = this.state.filters;
+    filter["_id"] = { in: [] };
+    if (actives[0]) {
+      filter["_id"]["in"] = filter["_id"]["in"].concat(events);
+    }
+    if (actives[1]) {
+      filter["_id"]["in"] = filter["_id"]["in"].concat(followings);
+    }
+    !actives[0] && !actives[1] ? delete filter["_id"] : null;
+    this.setState({ eventsFilters: selected, filters: filter }, () =>
+      this.props.setFilters("events", this.state.filters)
     );
   }
 
@@ -234,6 +265,37 @@ class EventsFilters extends React.Component {
             }}
           </Query>
         </FilterItem>
+        <FilterItem>
+          <Query
+            query={GetMyEvents}
+            variables={{ owner: Meteor.userId() }}
+            fetchPolicy={"cache-and-network"}
+          >
+            {({ loading, error, data }) => {
+              if (loading) return <div />;
+              if (error) return <div>Error</div>;
+              return (
+                <CheckBoxList
+                  placeholderText={"My Events"}
+                  options={this.state.eventsFilters.map((item, key) => ({
+                    ...item,
+                    number:
+                      key === 0
+                        ? data.myEvents.myEvents.length
+                        : data.myEvents.followings.length
+                  }))}
+                  getValue={selected =>
+                    this.eventOwnerFilters(
+                      selected,
+                      data.myEvents.myEvents,
+                      data.myEvents.followings
+                    )
+                  }
+                />
+              );
+            }}
+          </Query>
+        </FilterItem>
       </FiltersContainer>
     );
   }
@@ -251,7 +313,8 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
   return {
-    setFilters: (type, filters, text) => dispatch(setFilters(type, filters, text)),
+    setFilters: (type, filters, text) =>
+      dispatch(setFilters(type, filters, text)),
     cleanFilters: () => dispatch(cleanFilters())
   };
 };

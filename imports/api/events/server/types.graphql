@@ -47,6 +47,12 @@ type Sponsors {
 type Query {
     events(filter: String, limit: Int, events: EventsInputSearch): [Events]
     event(_id: String): Events
+    myEvents(owner: String): myEvents
+}
+
+type myEvents {
+    myEvents: [String]
+    followings: [String]
 }
 
 type TicketsType{
@@ -59,6 +65,7 @@ type TicketsType{
 }
 
 input EventsInputSearch {
+    _id: TableStringFilterInput
     title: TableStringFilterInput
     description: TableStringFilterInput
     startDate: TableDateFilterInput

@@ -224,6 +224,7 @@ class ListEvents extends Component {
                           },
                           {
                             text: !follow ? "Follow" : "Unfollow",
+                            primary: true,
                             checkVisibility: () => {
                               const element = this.state.selectedItem;
                               return (
