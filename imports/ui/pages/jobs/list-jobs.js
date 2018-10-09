@@ -271,12 +271,13 @@ export default withRouter(
     mapDispatchToProps
   )(
     graphql(GetJobs, {
-      options: () => ({
-        variables: {
-          limit: 10
-        },
-        fetchPolicy: "cache-and-network"
-      })
+      options: (props) => {
+        return{variables: {
+            limit: 10,
+            jobs: (props.filterStatus && props.filterStatus.entityType === "jobs" && props.filterStatus.filters) || {}
+          },
+          fetchPolicy: "cache-and-network"
+        }}
     })(ListJobs)
   )
 );

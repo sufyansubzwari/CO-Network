@@ -122,58 +122,65 @@ class ListInnovators extends Component {
   }
 
   customRenderItem(item, key, isLoading, viewsUpdate) {
-    switch ( this.state.currentTab.value ) {
-      case "corporations" :
-      return (<CardItem
-        lgCustomTemplateColumns={"155px 1fr"}
-        onSelect={() => this.onChangeSelection(item, key, viewsUpdate)}
-        isActive={
-          this.state.selectedIndex !== null
-            ? this.state.selectedIndex === key
-            : false
-        }
-        data={item}
-        loading={isLoading}
-        title={item.name}
-        subTitle={item.reason ? item.reason.bio : ""}
-        image={item.image || null}
-        tags={item.description || []}
-        views={item.views}
-        key={key}
-      onSelectTag={(tag, index) => this.onSelectTag(tag, index)}/>
-    ) ;
-      case "members" :
-      return (<CardItem
-        lgCustomTemplateColumns={"155px 1fr"}
-        onSelect={() => this.onChangeSelection(item, key, viewsUpdate)}
-        isActive={
-          this.state.selectedIndex !== null
-            ? this.state.selectedIndex === key
-            : false
-        }
-        data={item}
-        loading={isLoading}
-        title={item.profile && item.profile.name + " " + item.profile.lastName}
-        subTitle={
-          (item.profile &&
-            item.profile.aboutMe &&
-            item.profile.aboutMe.yourPassion) ||
-          ""
-        }
-        image={(item.profile && item.profile.image) || null}
-        tags={
-          (item.profile &&
-            item.profile.knowledge &&
-            item.profile.knowledge.languages &&
-            item.profile.knowledge.languages.map(item => item.tag)) ||
-          []
-        }
-        views={item.views}
-        key={key}onSelectTag={(tag, index) => this.onSelectTag(tag, index)}
-      />
-    ) ;
+    switch (this.state.currentTab.value) {
+      case "corporations":
+        return (
+          <CardItem
+            lgCustomTemplateColumns={"155px 1fr"}
+            onSelect={() => this.onChangeSelection(item, key, viewsUpdate)}
+            isActive={
+              this.state.selectedIndex !== null
+                ? this.state.selectedIndex === key
+                : false
+            }
+            data={item}
+            loading={isLoading}
+            title={item.name}
+            subTitle={item.reason ? item.reason.bio : ""}
+            image={item.image || null}
+            tags={item.description || []}
+            views={item.views}
+            key={key}
+            onSelectTag={(tag, index) => this.onSelectTag(tag, index)}
+          />
+        );
+      case "members":
+        return (
+          <CardItem
+            lgCustomTemplateColumns={"155px 1fr"}
+            onSelect={() => this.onChangeSelection(item, key, viewsUpdate)}
+            isActive={
+              this.state.selectedIndex !== null
+                ? this.state.selectedIndex === key
+                : false
+            }
+            data={item}
+            loading={isLoading}
+            title={
+              item.profile && item.profile.name + " " + item.profile.lastName
+            }
+            subTitle={
+              (item.profile &&
+                item.profile.aboutMe &&
+                item.profile.aboutMe.yourPassion) ||
+              ""
+            }
+            image={(item.profile && item.profile.image) || null}
+            tags={
+              (item.profile &&
+                item.profile.knowledge &&
+                item.profile.knowledge.languages &&
+                item.profile.knowledge.languages.map(item => item.tag)) ||
+              []
+            }
+            views={item.views}
+            key={key}
+            onSelectTag={(tag, index) => this.onSelectTag(tag, index)}
+          />
+        );
       default:
-        return null;}
+        return null;
+    }
   }
 
   editOrg() {
@@ -256,7 +263,9 @@ class ListInnovators extends Component {
         : null;
     if (this.state.currentTab.value === "members")
       tags.length
-        ? (tagsFilters.profile_DOT_knowledge_DOT_languages_DOT_tag = { in: tags.map(item => item._id) })
+        ? (tagsFilters.profile_DOT_knowledge_DOT_languages_DOT_tag = {
+            in: tags.map(item => item._id)
+          })
         : null;
     this.setState({ filter: value, filterStatus: tagsFilters }, () =>
       this.reFetchQuery()
@@ -475,23 +484,33 @@ export default withRouter(
     compose(
       graphql(GetOrg, {
         name: "organizations",
-        options: () => ({
-          variables: {
-            limit: 10
-          },
-          fetchPolicy: "cache-and-network"
-        })
+        options: props => {
+          return {
+            variables: {
+              limit: 10,
+              organizations:
+                (props.filterStatus && props.filterStatus.entityType === "organizations" && props.filterStatus.filters) || {}
+            },
+            fetchPolicy: "cache-and-network"
+          };
+        }
       }),
       graphql(getUsers, {
         name: "users",
-        options: props => ({
-          variables: {
-            limit: 10,
-            user: props.curUser &&
-              props.curUser._id && { _id: { ne: props.curUser._id } }
-          },
-          fetchPolicy: "cache-and-network"
-        })
+        options: props => {
+          const filters =
+            (props.filterStatus && props.filterStatus.entityType === "members" && props.filterStatus.filters) || {};
+          return {
+            variables: {
+              limit: 10,
+              user: props.curUser &&
+                props.curUser._id && {
+                  _id: { ne: props.curUser._id, ...filters }
+                }
+            },
+            fetchPolicy: "cache-and-network"
+          };
+        }
       })
     )(ListInnovators)
   )

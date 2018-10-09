@@ -122,7 +122,9 @@ class ListEvents extends Component {
 
   onSearch(value, tags) {
     let tagsFilters = {};
-    tags.length ? tagsFilters.category = { in: tags.map(item => item._id) } : null;
+    tags.length
+      ? (tagsFilters.category = { in: tags.map(item => item._id) })
+      : null;
     this.setState({ filter: value, filterStatus: tagsFilters }, () =>
       this.reFetchQuery()
     );
@@ -325,12 +327,15 @@ export default withRouter(
     mapDispatchToProps
   )(
     graphql(GetEvents, {
-      options: () => ({
-        variables: {
-          limit: 10
-        },
-        fetchPolicy: "cache-and-network"
-      })
+      options: props => {
+        return {
+          variables: {
+            limit: 10,
+            events: (props.filterStatus && props.filterStatus.entityType === "events" && props.filterStatus.filters) || {}
+          },
+          fetchPolicy: "cache-and-network"
+        };
+      }
     })(ListEvents)
   )
 );

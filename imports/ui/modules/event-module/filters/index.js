@@ -96,10 +96,20 @@ class EventsFilters extends React.Component {
     } else this.setState({ limit: 5 });
   }
 
+  onSearch(value, tags) {
+    let filters = this.state.filters;
+    tags.length
+      ? (filters.category = { in: tags.map(item => item._id) })
+      : delete filters.category;
+    this.setState({ filters: filters }, () =>
+      this.props.setFilters("events", filters)
+    );
+  }
+
   render() {
     return (
       <FiltersContainer
-        onSearchAction={(value, tags) => alert("change tags filters")}
+        onSearchAction={(value, tags) => this.onSearch(value, tags)}
         onClose={() => this.props.onClose && this.props.onClose()}
       >
         <FilterItem>

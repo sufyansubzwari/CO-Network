@@ -143,10 +143,20 @@ class OrganizationFilters extends React.Component {
       .slice(0, 5);
   }
 
+  onSearch(value, tags) {
+    let filters = this.state.filters;
+    tags.length
+      ? (filters.description = { in: tags.map(item => item._id) })
+      : delete filters.description;
+    this.setState({ filters: filters }, () =>
+      this.props.setFilters("organizations", filters)
+    );
+  }
+
   render() {
     return (
       <FiltersContainer
-        onSearchAction={(value, tags) => alert("change tags filters")}
+        onSearchAction={(value, tags) => this.onSearch(value, tags)}
         onClose={() => this.props.onClose && this.props.onClose()}
       >
         <Separator />
@@ -201,7 +211,7 @@ class OrganizationFilters extends React.Component {
                     onCloseTags={(e, tag, index) =>
                       this.onCloseTags(e, tag, index, "description")
                     }
-                    options={data.tags}
+                    options={data && data.tags}
                     tags={
                       this.state.description && this.state.description.length
                         ? this.state.description.map(item => ({
@@ -275,7 +285,7 @@ class OrganizationFilters extends React.Component {
                     onCloseTags={(e, tag, index) =>
                       this.onCloseTags(e, tag, index, "tech_DOT_industry")
                     }
-                    options={data.tags}
+                    options={data && data.tags}
                     tags={
                       this.state.tech_DOT_industry &&
                       this.state.tech_DOT_industry.length

@@ -274,12 +274,15 @@ export default withRouter(
     mapDispatchToProps
   )(
     graphql(GetColloquiums, {
-      options: () => ({
-        variables: {
-          limit: 10
-        },
-        fetchPolicy: "cache-and-network"
-      })
+      options: props => {
+        return {
+          variables: {
+            limit: 10,
+            colloquiums: (props.filterStatus && props.filterStatus.entityType === "colloquiums"  && props.filterStatus.filters) || {}
+          },
+          fetchPolicy: "cache-and-network"
+        };
+      }
     })(ListColloquiums)
   )
 );

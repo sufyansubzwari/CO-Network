@@ -84,10 +84,20 @@ class MembersFilters extends React.Component {
     );
   }
 
+  onSearch(value, tags) {
+    let filters = this.state.filters;
+    tags.length
+      ? (filters.profile_DOT_knowledge_DOT_languages_DOT_tag = { in: tags.map(item => item._id) })
+      : delete filters.profile_DOT_knowledge_DOT_languages_DOT_tag;
+    this.setState({ filters: filters }, () =>
+      this.props.setFilters("members", filters)
+    );
+  }
+
   render() {
     return (
       <FiltersContainer
-        onSearchAction={(value, tags) => alert("change tags filters")}
+        onSearchAction={(value, tags) => this.onSearch(value, tags)}
         onClose={() => this.props.onClose && this.props.onClose()}
       >
         <FilterItem>
