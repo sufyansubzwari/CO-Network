@@ -58,7 +58,7 @@ class EventsService {
    *@name events
    * @summary Get all events
    * @param {Object} query - query parameters
-   * @param {Number} limit - limit parameters
+   * @param {Object} limit - limit parameters
    * @return {Object}||[{Object }] Return one or all events
    */
   static events = (query, limit) => {

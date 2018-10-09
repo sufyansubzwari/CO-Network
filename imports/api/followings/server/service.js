@@ -45,10 +45,11 @@ class FollowingsService {
    *@name followings
    * @summary Get all followings
    * @param {Object} query - query parameters
+   * @param {Object} limit - limit parameters
    * @return {Object}||[{Object }] Return one or all following
    */
-  static followings = query => {
-    return Followings.collection.find(query).fetch();
+  static followings = (query, limit) => {
+    return Followings.collection.find(query, limit).fetch();
   };
 }
 
