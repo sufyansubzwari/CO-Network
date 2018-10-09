@@ -28,4 +28,13 @@ Query.organizations = (root, { filter, limit, organizations }, context) => {
   return Service.organizations(query, limitQuery);
 }
 
+Query.orgFilters = async (root, { owner }, context) => {
+  const myOrg = await Service.organizations({ owner: owner }, {fields: {_id: 1 }}).map(item => item._id);
+  const hosting = await Service.organizations({'services.hostEvents': true}, {fields: {_id: 1 }}).map(item => item._id);
+  return {
+    myOrg,
+    hosting
+  };
+};
+
 export default Query;
