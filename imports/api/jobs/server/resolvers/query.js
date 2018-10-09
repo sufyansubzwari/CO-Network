@@ -12,7 +12,6 @@ Query.jobs = (root, { filter, limit, jobs }, context) => {
   let query = {};
   if (jobs) {
     if (jobs.location) {
-      console.log(jobs.location.map(item => item.address));
       let loc = Places.service.places({
         "location.address": { $in: jobs.location.map(item => item.address) }
       });
@@ -43,7 +42,6 @@ Query.myJobs = async (root, { owner }, context) => {
     { owner: owner },
     { fields: { job: 1 } }
   ).map(item => item.job);
-  console.log(jobs);
   const myApplies = await Service.jobs({ _id: { $in: jobs } }, {fields: {_id: 1 }}).map(item => item._id);
   return {
     myJobs,

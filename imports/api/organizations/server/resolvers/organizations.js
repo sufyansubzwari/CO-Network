@@ -21,7 +21,6 @@ Organizations.description = entity => {
 
 Organizations.tech = entity => {
   if (entity && entity.tech) {
-    console.log(entity.tech.stack)
     const tech = entity.tech.stack
       ? { stack: normalizeTagsWithLevels(entity.tech.stack) }
       : {};

@@ -14,7 +14,6 @@ Query.events = (root, {filter, limit, events}, context) => {
   if (events) {
 
     if (events.location) {
-      console.log(events.location.map(item => item.address));
       let loc = Places.service.places({'location.address': {"$in": events.location.map(item => item.address)}});
       events["_id"] = {"$in": loc.map(item => item.owner)};
       delete events.location;
