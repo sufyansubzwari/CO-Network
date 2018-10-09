@@ -8,6 +8,6 @@ Query.tag = (root, {_id}, context) => {
 Query.tags = (root, {tags, limit}, context) => {
   let query = tags || {};
   let limitQuery = limit ? {limit: limit} : {};
-  return Service.tags(query, limitQuery)
+  return Service.tags(query, limitQuery).sort((a, b) => b.used - a.used)
 };
 export default Query;

@@ -11,9 +11,12 @@ import {
 import { DatePickerRange, SalaryRange } from "btech-base-forms-component";
 import PropsTypes from "prop-types";
 import { connect } from "react-redux";
-import { cleanFilters, setFilters } from "../../../actions/SideBarActions";
+import {
+  cleanFilters,
+  setFilters
+} from "../../../actions/SideBarActions";
 import { GetTags } from "../../../apollo-client/tag";
-import { graphql } from "react-apollo";
+import { Query } from "react-apollo";
 
 class EventsFilters extends React.Component {
   constructor(props) {
@@ -36,28 +39,29 @@ class EventsFilters extends React.Component {
     this.props.cleanFilters();
   }
 
-  componentWillReceiveProps(nextProps) {
-    if (nextProps.data && !nextProps.data.loading && nextProps.data.tags) {
-      let category = JSON.parse(JSON.stringify(nextProps.data.tags));
-      this.setState({
-        category: category
-          .filter(item => !!item.used)
-          .sort((a, b) => b.used - a.used)
-      });
-    }
-  }
+  // componentWillReceiveProps(nextProps) {
+  //   if (nextProps.data && !nextProps.data.loading && nextProps.data.tags) {
+  //     let category = JSON.parse(JSON.stringify(nextProps.data.tags));
+  //     this.setState({
+  //       category: category
+  //         .filter(item => !!item.used)
+  //         .sort((a, b) => b.used - a.used)
+  //     });
+  //   }
+  // }
 
-  addFilters(type, actives) {
+  addFilters(type, actives, options) {
+    const obj = JSON.parse(JSON.stringify(options));
     let filters = this.state.filters;
-    const selected = this.state[type].map((category, index) => {
+    const selected = obj.map((category, index) => {
       category["active"] = actives[index];
       return category;
     });
     const activeSelected = selected.filter(element => element.active);
     activeSelected.length > 0
-      ? (filters.category = { in: activeSelected.map(item => item._id) })
-      : delete filters.category;
-    this.setState({ filters: filters }, () =>
+      ? (filters[type] = { in: activeSelected.map(item => item._id) })
+      : delete filters[type];
+    this.setState({ [type]: selected, filters: filters }, () =>
       this.props.setFilters("events", filters)
     );
   }
@@ -97,10 +101,11 @@ class EventsFilters extends React.Component {
   }
 
   onSearch(value, tags) {
-    let filters = this.state.filters;
+    let filters = {};
     tags.length
       ? (filters.category = { in: tags.map(item => item._id) })
       : delete filters.category;
+    filters = Object.assign({}, filters, this.state.filters);
     this.setState({ filters: filters }, () =>
       this.props.setFilters("events", filters)
     );
@@ -192,20 +197,38 @@ class EventsFilters extends React.Component {
         </FilterItem>
         <Separator />
         <FilterItem>
-          <MLCheckBoxList
-            showMore
-            limit={this.state.limit}
-            title={"Event Category"}
-            sizeList={this.state.category.length}
-            options={this.state.category
-              .slice(0, this.state.limit)
-              .map(item => ({
-                ...item,
-                number: item.used || 0
-              }))}
-            onSelect={selected => this.addFilters("category", selected)}
-            onMoreAction={this.handleShowMore.bind(this)}
-          />
+          <Query
+            query={GetTags}
+            variables={{ tags: { type: "EVENT" } }}
+            fetchPolicy={"cache-and-network"}
+          >
+            {({ loading, error, data }) => {
+              if (loading) return <div />;
+              if (error) return <div>Error</div>;
+              return (
+                <MLCheckBoxList
+                  showMore
+                  limit={this.state.limit}
+                  title={"Event Category"}
+                  sizeList={this.state.category.length}
+                  options={
+                    data &&
+                    data.tags.slice(0, this.state.limit).map((item, key) => ({
+                      ...item,
+                      number: item.used || 0,
+                      active:
+                        this.state.category[key] &&
+                        this.state.category[key].active
+                    }))
+                  }
+                  onSelect={selected =>
+                    this.addFilters("category", selected, data.tags)
+                  }
+                  onMoreAction={this.handleShowMore.bind(this)}
+                />
+              );
+            }}
+          </Query>
         </FilterItem>
       </FiltersContainer>
     );
@@ -232,13 +255,4 @@ const mapDispatchToProps = dispatch => {
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(
-  graphql(GetTags, {
-    options: () => ({
-      variables: {
-        tags: { type: "EVENT" }
-      },
-      fetchPolicy: "cache-and-network"
-    })
-  })(EventsFilters)
-);
+)(EventsFilters);
