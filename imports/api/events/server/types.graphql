@@ -145,6 +145,7 @@ input ObjectTypeInput {
     value: String
     name: String
     active: String
+    number: Int
 }
 
 input TicketsTypeInput{
