@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Preview, PostLayout } from "../../../ui/components";
+import { PostLayout } from "../../../ui/components";
 import { withRouter } from "react-router-dom";
 import ColloquiumForm from "../../modules/colloquium-module/form";
 import { CreateColloquium } from "../../apollo-client/colloquium";
@@ -28,7 +28,7 @@ class PostColloquiums extends Component {
         competences: [],
         tags: []
       },
-        formChange: false
+      formChange: false
     };
   }
 
@@ -49,18 +49,12 @@ class PostColloquiums extends Component {
   }
 
   onPostAction(createColloquium, query) {
-
-      if(this.state.formChange){
-          this.setState({
-              formChange: false
-          })
-      }
-      else{
-          this.setState({
-              redirect: true
-          })
-      }
-
+    const isEditMode = this.state.colloquium && this.state.colloquium._id;
+    if (this.state.formChange)
+      this.setState({
+        formChange: false,
+        redirect: !isEditMode
+      });
     let queryColloquium = Object.assign({}, query);
     //todo: remove when location improvement
     queryColloquium.place &&
@@ -85,7 +79,8 @@ class PostColloquiums extends Component {
           key={"leftSide"}
           mutation={CreateColloquium}
           onCompleted={() =>
-              this.state.redirect && this.props.history.push("/colloquiums", { postColloquium: true })
+            this.state.redirect &&
+            this.props.history.push("/colloquiums", { postColloquium: true })
           }
           onError={error => console.log("Error: ", error)}
         >
@@ -100,7 +95,7 @@ class PostColloquiums extends Component {
               handleChange={(colloquium, loading) =>
                 this.setState({
                   colloquium: { ...this.state.colloquium, ...colloquium },
-                    formChange: !loading && true
+                  formChange: !loading && true
                 })
               }
               colloquium={this.state.colloquium}

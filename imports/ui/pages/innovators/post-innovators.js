@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import OrganizationForm from "../../modules/organization-module/form";
-import { Preview, PostLayout } from "../../../ui/components";
+import { PostLayout, Preview } from "../../../ui/components";
 import OrganizationPreviewBody from "../../components/Preview/OrganizationPreviewBody";
 import { withRouter } from "react-router-dom";
 import { CreateOrg } from "../../apollo-client/organization";
@@ -65,7 +65,7 @@ class PostOrganization extends Component {
         //plan: 0
       },
 
-    formChange: false
+      formChange: false
     };
     this.handleBackgroundChange = this.handleBackgroundChange.bind(this);
     this.handleUserPhotoChange = this.handleUserPhotoChange.bind(this);
@@ -100,17 +100,12 @@ class PostOrganization extends Component {
   }
 
   onPostAction(createOrg, query) {
-
-    if(this.state.formChange){
-        this.setState({
-            formChange: false
-        })
-    }
-    else{
-        this.setState({
-            redirect: true
-        })
-    }
+    const isEditMode = this.state.organization && this.state.organization._id;
+    if (this.state.formChange)
+      this.setState({
+        formChange: false,
+        redirect: !isEditMode
+      });
     let orgQuery = Object.assign({}, query);
     //todo: remove when location improvement
     orgQuery.place &&
@@ -135,7 +130,8 @@ class PostOrganization extends Component {
           key={"leftSide"}
           mutation={CreateOrg}
           onCompleted={() =>
-            this.state.redirect && this.props.history.push("/innovators", { postInnovator: true })
+            this.state.redirect &&
+            this.props.history.push("/innovators", { postInnovator: true })
           }
           onError={error => console.log("Error: ", error)}
         >

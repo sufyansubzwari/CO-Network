@@ -52,7 +52,8 @@ class EventForm extends Component {
       this.setState(
         { event: event },
         () =>
-          this.props.handleChangeEvent && this.props.handleChangeEvent(event, true)
+          this.props.handleChangeEvent &&
+          this.props.handleChangeEvent(event, true)
       );
     }
   }
@@ -68,7 +69,7 @@ class EventForm extends Component {
   handleChange(event) {
     this.setState(
       {
-        event: event,
+        event: event
       },
       () => this.props.handleChangeEvent && this.props.handleChangeEvent(event)
     );
@@ -86,33 +87,33 @@ class EventForm extends Component {
         title={"Post a Event"}
         onFinish={() => this.props.onFinish && this.props.onFinish(event)}
         showProgress
-        editMode={this.state.event._id && this.state.event._id !== ""}
+        editMode={this.state.event && this.state.event._id}
         edited={this.props.formChange}
-        radioColor={'#000000'}
+        radioColor={"#000000"}
         onCancel={() => this.props.onCancel && this.props.onCancel()}
       >
         <WizardStepForm title={"Event Details"} isValid>
           <EventStep1
             data={event}
-            onChange={event => this.handleChange(event,0)}
+            onChange={event => this.handleChange(event, 0)}
           />
         </WizardStepForm>
         <WizardStepForm title={"Speaker & Sponsors"} isValid>
           <EventStep2
             data={event}
-            onChange={event => this.handleChange(event,1)}
+            onChange={event => this.handleChange(event, 1)}
           />
         </WizardStepForm>
         <WizardStepForm title={"Venue"} isValid>
           <EventStep3
             data={event}
-            onChange={event => this.handleChange(event,2)}
+            onChange={event => this.handleChange(event, 2)}
           />
         </WizardStepForm>
         <WizardStepForm title={"Ticket Type"} isValid>
           <EventStep4
             data={event}
-            onChange={event => this.handleChange(event,3)}
+            onChange={event => this.handleChange(event, 3)}
           />
         </WizardStepForm>
         {/*<WizardStepForm title={"Receive Payments"} isValid>*/}

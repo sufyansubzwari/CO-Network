@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import JobForm from "../../modules/jobs-module/form";
-import { Preview, PostLayout } from "../../../ui/components";
+import { PostLayout, Preview } from "../../../ui/components";
 import JobPreviewBody from "../../components/Preview/JobPreviewBody";
 import { withRouter } from "react-router-dom";
 import { CreateJob } from "../../apollo-client/job";
@@ -14,7 +14,7 @@ class PostJob extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      openPreview:false,
+      openPreview: false,
       job: {
         title: "",
         description: "",
@@ -38,15 +38,14 @@ class PostJob extends Component {
           max: 1000
         }
       },
-    formChange: false
+      formChange: false
     };
   }
 
-  componentDidMount(){
-    setTimeout(()=>{
-      if(document.body.offsetWidth>992)
-           this.setState({openPreview:true})
-    },200)
+  componentDidMount() {
+    setTimeout(() => {
+      if (document.body.offsetWidth > 992) this.setState({ openPreview: true });
+    }, 200);
   }
 
   onCancel() {
@@ -60,16 +59,12 @@ class PostJob extends Component {
   }
 
   onPostAction(createJob, query) {
-      if(this.state.formChange){
-          this.setState({
-              formChange: false
-          })
-      }
-      else{
-          this.setState({
-              redirect: true
-          })
-      }
+    const isEditMode = this.state.job && this.state.job._id;
+    if (this.state.formChange)
+      this.setState({
+        formChange: false,
+        redirect: !isEditMode
+      });
     let queryJob = Object.assign({}, query);
     //todo: remove when location improvement
     queryJob.place &&
@@ -94,17 +89,21 @@ class PostJob extends Component {
           key={"leftSide"}
           mutation={CreateJob}
           onCompleted={() =>
-              this.state.redirect && this.props.history.push("/jobs", { postJob: true })
+            this.state.redirect &&
+            this.props.history.push("/jobs", { postJob: true })
           }
           onError={error => console.log("Error: ", error)}
         >
           {(createJob, { jobCreated }) => (
             <JobForm
-              onFinish={data => this.onPostAction(createJob,data)}
+              onFinish={data => this.onPostAction(createJob, data)}
               onCancel={() => this.onCancel()}
               {...this.props}
-              handleJobChange={ (job,loading) =>
-                this.setState({ job: { ...this.state.job, ...job }, formChange: !loading && true })
+              handleJobChange={(job, loading) =>
+                this.setState({
+                  job: { ...this.state.job, ...job },
+                  formChange: !loading && true
+                })
               }
               job={this.state.job}
               formChange={this.state.formChange}
@@ -113,7 +112,7 @@ class PostJob extends Component {
         </Mutation>
         <Preview
           isOpen={this.state.openPreview}
-          onClose={()=>this.setState({openPreview:false})}
+          onClose={() => this.setState({ openPreview: false })}
           key={"rightSide"}
           navClicked={index => console.log(index)}
           navOptions={[

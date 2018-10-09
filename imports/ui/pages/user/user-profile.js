@@ -4,7 +4,7 @@ import UserForm from "./../../modules/user-module/form/";
 import PostLayout from "../../layouts/PostLayout/PostLayout";
 import { Preview } from "../../../ui/components";
 import UserPreviewBody from "../../components/Preview/UserPreviewBody";
-import { Mutation, graphql } from "react-apollo";
+import { graphql, Mutation } from "react-apollo";
 import { CreateUser, userQuery } from "../../apollo-client/user";
 
 /**
@@ -112,16 +112,12 @@ class UserProfile extends Component {
   }
 
   onPostAction(createProfile, query) {
-      if(this.state.formChange){
-          this.setState({
-              formChange: false
-          })
-      }
-      else{
-          this.setState({
-              redirect: true
-          })
-      }
+    const isEditMode = this.state.user && this.state.user._id;
+    if (this.state.formChange)
+      this.setState({
+        formChange: false,
+        redirect: !isEditMode
+      });
     let profile = Object.assign({}, query);
     //todo: remove when location improvement
     profile.place &&
@@ -143,7 +139,8 @@ class UserProfile extends Component {
           <Mutation
             mutation={CreateUser}
             onCompleted={() =>
-                this.state.redirect && this.props.history.push("/", { userCreate: true })
+              this.state.redirect &&
+              this.props.history.push("/", { userCreate: true })
             }
             onError={error => console.log("Error: ", error)}
           >
@@ -152,8 +149,11 @@ class UserProfile extends Component {
                 onFinish={data => this.onPostAction(createProfile, data)}
                 onCancel={() => this.onCancel()}
                 userLogged={false}
-                handleChangeProfile={ (user,loading) =>
-                  this.setState({ user: { ...this.state.user, ...user }, formChange: !loading && true })
+                handleChangeProfile={(user, loading) =>
+                  this.setState({
+                    user: { ...this.state.user, ...user },
+                    formChange: !loading && true
+                  })
                 }
                 user={this.state.user}
                 formChange={this.state.formChange}

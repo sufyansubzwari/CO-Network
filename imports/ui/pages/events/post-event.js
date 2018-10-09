@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import EventForm from "../../modules/event-module/form";
-import { Preview, PostLayout } from "../../../ui/components";
+import { PostLayout, Preview } from "../../../ui/components";
 import EventPreviewBody from "../../components/Preview/EventPreviewBody";
 import { withRouter } from "react-router-dom";
 import { CreateEvent } from "../../apollo-client/event";
@@ -37,11 +37,9 @@ class PostEvent extends Component {
         sponsors: [],
         tickets: []
       },
-        formChange: false
+      formChange: false
     };
     this.handleBackgroundChange = this.handleBackgroundChange.bind(this);
-    this.onPostAction = this.onPostAction.bind(this)
-    // this.handleUserPhotoChange = this.handleUserPhotoChange.bind(this);
   }
 
   componentDidMount() {
@@ -64,16 +62,12 @@ class PostEvent extends Component {
   }
 
   onPostAction(createEvent, query) {
-      if(this.state.formChange){
-          this.setState({
-              formChange: false
-          })
-      }
-      else{
-          this.setState({
-              redirect: true
-          })
-      }
+    const isEditMode = this.state.event && this.state.event._id;
+    if (this.state.formChange)
+      this.setState({
+        formChange: false,
+        redirect: !isEditMode
+      });
     let queryEvent = Object.assign({}, query);
     queryEvent.category = _.uniq(queryEvent.others.concat(queryEvent.category));
     delete queryEvent.others;
@@ -101,7 +95,8 @@ class PostEvent extends Component {
           key={"leftSide"}
           mutation={CreateEvent}
           onCompleted={() =>
-              this.state.redirect && this.props.history.push("/events", { postEvent: true })
+            this.state.redirect &&
+            this.props.history.push("/events", { postEvent: true })
           }
           onError={error => console.log("Error: ", error)}
         >
@@ -109,8 +104,11 @@ class PostEvent extends Component {
             <EventForm
               onFinish={data => this.onPostAction(createEvent, data)}
               onCancel={() => this.onCancel()}
-              handleChangeEvent={ (event,loading) =>
-                this.setState({ event: { ...this.state.event, ...event },formChange: !loading && true })
+              handleChangeEvent={(event, loading) =>
+                this.setState({
+                  event: { ...this.state.event, ...event },
+                  formChange: !loading && true
+                })
               }
               event={this.state.event}
               {...this.props}
