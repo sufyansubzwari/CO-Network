@@ -72,7 +72,7 @@ class JobForm extends React.Component {
         onFinish={() => this.props.onFinish && this.props.onFinish(this.state.job)
         }
         showProgress
-        editMode={this.state.job._id && this.state.job._id !== ""}
+        editMode={this.state.job && this.state.job._id}
         edited={this.props.formChange}
         radioColor={'#000000'}
         onCancel={() => this.props.onCancel && this.props.onCancel()}
