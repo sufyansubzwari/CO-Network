@@ -53,7 +53,7 @@ class Messages extends React.Component {
     let _this = this.scroll;
     setTimeout(
       function() {
-        _this.scrollToBottom();
+        _this && _this.scrollToBottom();
       }.bind(this),
       100
     );

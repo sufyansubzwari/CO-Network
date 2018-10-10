@@ -1,15 +1,9 @@
 import React, { Component } from "react";
 import moment from "moment";
 import PropTypes from "prop-types";
-import { Container, Layout } from "btech-layout";
-import { HButtom } from "btech-horizantal-navbar";
-import {
-  SLineTime,
-  SReplyButton,
-  SText,
-  SUser,
-  VSeparator
-} from "./styledComponents";
+import { Container, Layout, mixins } from "btech-layout";
+import styled from "styled-components";
+import { SLineTime, SReplyButton, SText, SUser } from "./styledComponents";
 import ReplyBox from "./ReplyBox";
 import MaterialIcon from "react-material-iconic-font";
 import { updateMessage } from "../Service/service";
@@ -17,6 +11,14 @@ import { Meteor } from "meteor/meteor";
 import { userQuery } from "../../../apollo-client/user";
 import { Query } from "react-apollo";
 import ChatUserInfo from "./ChatUserInfo";
+
+export const SMessageItem = styled(Container)`
+  line-height: 15px;
+  
+  ${mixins.media.desktop`
+    line-height: initial;
+  `}
+`;
 
 class LoadMessages extends Component {
   constructor(props) {
@@ -154,7 +156,7 @@ class LoadMessages extends Component {
                   <Container fullY key={k} style={{ height: "auto" }}>
                     <Layout customTemplateColumns={"auto 1fr"} mb={"15px"}>
                       <ChatUserInfo owner={owner} />
-                      <Container ml={"10px"}>
+                      <SMessageItem ml={"10px"}>
                         <SUser>
                           <span id={"user-name"}>
                             {owner && owner.profile.name}
@@ -171,7 +173,7 @@ class LoadMessages extends Component {
                           ) : null}
                         </SUser>
                         <SText>{message.text}</SText>
-                      </Container>
+                      </SMessageItem>
                     </Layout>
                     {message._id === this.state.replyMessage ? (
                       <div

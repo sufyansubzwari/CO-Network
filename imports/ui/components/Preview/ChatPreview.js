@@ -130,7 +130,7 @@ export default class ChatPreview extends Preview {
               </Container>
             </SLayout>
             <Container
-              padding={{ md: "15px 40px" }}
+              padding={{ md: "15px 25px", xs: "10px" }}
               fullY
               gridArea="content"
             >

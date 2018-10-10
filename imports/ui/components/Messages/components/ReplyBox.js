@@ -11,23 +11,32 @@ import { TextArea, Button } from "btech-base-forms-component";
  */
 export const ReplyBox = props => (
   <SReplyBox>
-    <Layout customTemplateRows={"1fr auto"} rowGap={"10px"} padding={"10px"}>
+    <Layout
+      mdCustomTemplateRows={"1fr auto"}
+      mdRowGap={"10px"}
+      padding={{ md: "10px" }}
+    >
       <TextArea
         placeholderText={props.placeholder}
         name={props.name}
+        fixLabel
+        padding={"6px 12px"}
+        marginTop={"0px"}
         model={props.model}
         onKeyPress={event => props.onKeyPress && props.onKeyPress(event)}
       />
-      <Layout customTemplateColumns={"1fr auto"} mb={"10px"}>
-        <Container />
-        <Button
-          width={"62px"}
-          height={"30px"}
-          onClick={() => props.onClick && props.onClick()}
-        >
-          {props.buttonText}
-        </Button>
-      </Layout>
+      <Container hide mdShow>
+        <Layout customTemplateColumns={"1fr auto"} mb={"10px"}>
+          <Container />
+          <Button
+            width={"62px"}
+            height={"30px"}
+            onClick={() => props.onClick && props.onClick()}
+          >
+            {props.buttonText}
+          </Button>
+        </Layout>
+      </Container>
     </Layout>
   </SReplyBox>
 );

@@ -1,12 +1,12 @@
 import React from "react";
 import styled from "styled-components";
-import { Container } from "btech-layout";
+import { Container, mixins } from "btech-layout";
 
 export const SChat = styled(Container)`
   background-color: ${props => props.backgroundColor || "#FFFFFF"};
   height: ${props => props.height || "100%"};
   zoom: 100%;
-  
+
   @media (min-width: 62em) {
     zoom: 80%;
   }
@@ -19,6 +19,12 @@ export const SChat = styled(Container)`
 export const SReplyBox = styled(Container)`
   background-color: ${props => props.backgroundColor || "#F9F9FB"};
   width: 100%;
+  padding: 15px 5px;
+  padding-top: 5px;
+  
+  ${mixins.media.desktop`
+    padding: 24px;
+  `}
 `;
 
 export const VSeparator = styled(Container)`
@@ -56,23 +62,42 @@ export const SImage = styled.img`
 export const SUser = styled(Container)`
   display: flex;
   flex-direction: row;
-  font-size: 14px;
-  
+  font-size: 12px;
+
   > #user-name {
     font-family: "Helvetica Neue LT Std";
-    line-height: 25px;
+    
+    ${mixins.media.desktop`
+      line-height: 25px;
+    `}
   }
   > #time {
-    font-size: 13px;
+    font-size: 12px;
     font-family: "Roboto Mono";
   }
   > span {
     margin-right: 10px;
   }
+
+  ${mixins.media.desktop`
+    > #user-name {
+      font-family: "Helvetica Neue LT Std";
+      line-height: 25px;
+      font-size: 14px;
+    }
+    > #time {
+      font-size: 13px;
+      font-family: "Roboto Mono";
+    }
+  `};
 `;
 
 export const SText = styled.span`
-  font-size: 14px;
+  font-size: 12px;
+
+  ${mixins.media.desktop`
+    font-size: 14px;
+  `};
 `;
 
 export const SReplyButton = styled.span`

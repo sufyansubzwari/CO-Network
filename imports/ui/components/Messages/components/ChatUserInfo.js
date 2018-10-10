@@ -1,12 +1,18 @@
 import React from "react";
 import PropTypes from "prop-types";
 import { HButtom } from "btech-horizantal-navbar";
+import { mixins } from "btech-layout";
 import styled from "styled-components";
 
 const SInitialsContainer = styled.span`
   font-family: "Helvetica Neue Light";
   font-weight: bold;
   letter-spacing: 1px;
+  font-size: 12px;
+  
+  ${mixins.media.desktop`
+    font-size: 14px;
+  `}
 `;
 
 /**
