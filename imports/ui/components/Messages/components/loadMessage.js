@@ -1,23 +1,22 @@
 import React, { Component } from "react";
 import moment from "moment";
 import PropTypes from "prop-types";
-import { Layout, Container } from "btech-layout";
-import { HButtom, HNavItem } from "btech-horizantal-navbar";
+import { Container, Layout } from "btech-layout";
+import { HButtom } from "btech-horizantal-navbar";
 import {
   SLineTime,
-  SImage,
-  SUser,
-  SText,
-  SReplyMessage,
   SReplyButton,
-  ReplyBox,
+  SText,
+  SUser,
   VSeparator
 } from "./styledComponents";
+import ReplyBox from "./ReplyBox";
 import MaterialIcon from "react-material-iconic-font";
 import { updateMessage } from "../Service/service";
 import { Meteor } from "meteor/meteor";
 import { userQuery } from "../../../apollo-client/user";
 import { Query } from "react-apollo";
+import ChatUserInfo from "./ChatUserInfo";
 
 class LoadMessages extends Component {
   constructor(props) {
@@ -153,12 +152,9 @@ class LoadMessages extends Component {
                 const owner = data.user;
                 return (
                   <Container fullY key={k} style={{ height: "auto" }}>
-                    <Layout customTemplateColumns={"auto 1fr"} mb={"20px"}>
-                      <HButtom
-                        image={!!owner ? owner.profile.image : ""}
-                        size={this.props.size}
-                      />
-                      <div style={{ margin: "0 10px" }}>
+                    <Layout customTemplateColumns={"auto 1fr"} mb={"15px"}>
+                      <ChatUserInfo owner={owner} />
+                      <Container ml={"10px"}>
                         <SUser>
                           <span id={"user-name"}>
                             {owner && owner.profile.name}
@@ -175,7 +171,7 @@ class LoadMessages extends Component {
                           ) : null}
                         </SUser>
                         <SText>{message.text}</SText>
-                      </div>
+                      </Container>
                     </Layout>
                     {message._id === this.state.replyMessage ? (
                       <div
@@ -196,28 +192,20 @@ class LoadMessages extends Component {
                       </div>
                     ) : null}
                     {message.replies && message.replies.length > 0 ? (
-                      <div style={{ width: "100%", marginBottom: "10px" }}>
-                        {/*<SReplyMessage onClick={() => this.handleShowReplies(message)}>*/}
-                        {/*Show Replies <MaterialIcon type={"chevron-down"}/>*/}
-                        {/*</SReplyMessage>*/}
-                        <div
-                          style={{
-                            marginLeft: "20px",
-                            display: "flex",
-                            flexDirection: "row"
-                          }}
-                        >
-                          <VSeparator />
-                          <div style={{ height: "auto", width: "100%" }}>
-                            {//message.showReply &&
-                            this.renderMessages(
-                              message.replies.sort(
-                                (a, b) => b.createdAt - a.createdAt
-                              )
-                            )}
-                          </div>
-                        </div>
-                      </div>
+                      <Container
+                        mb={"15px"}
+                        ml={"15px"}
+                        style={{
+                          borderLeft: "4px solid lightgrey",
+                          paddingLeft: "15px"
+                        }}
+                      >
+                        {this.renderMessages(
+                          message.replies.sort(
+                            (a, b) => b.createdAt - a.createdAt
+                          )
+                        )}
+                      </Container>
                     ) : null}
                   </Container>
                 );

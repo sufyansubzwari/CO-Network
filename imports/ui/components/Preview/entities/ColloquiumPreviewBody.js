@@ -1,13 +1,13 @@
 import React from "react";
-import { Layout, Container } from "btech-layout";
-import { Title, Location, Text } from "./components/index";
-import { Messages } from "../index";
+import { Container, Layout } from "btech-layout";
+import { Location, Title } from "../components/index";
+import { Messages } from "../../index";
 import styled from "styled-components";
 
 const SMessagesContainer = styled(Container)`
   zoom: 100%;
   padding: -10px;
- 
+
   @media (min-width: 62em) {
     zoom: 80%;
     padding: -75px;

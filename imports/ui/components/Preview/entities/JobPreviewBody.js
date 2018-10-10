@@ -1,6 +1,6 @@
 import React from "react";
 import { Layout, Container } from "btech-layout";
-import { Title, Location, Social, Text, TagsAdd } from "./components/index";
+import { Title, Location, Social, Text, TagsAdd } from "../components/index";
 
 class JobPreviewBody extends React.Component {
   constructor(props) {

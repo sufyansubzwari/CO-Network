@@ -4,6 +4,7 @@ import SideBarLink from "./Navbar/SideBarLink";
 import UserNavbarSection from "./Navbar/UserNavbarSection";
 import Create from "./Create/Create";
 import Preview from "./Preview/Preview";
+import ChatPreview from "./Preview/ChatPreview";
 import UserPhoto from "./UserPhoto/UserPhoto";
 import CardItem from "./CardItem/CardItem";
 import ClusterIcon from "./ClusterIcon/ClusterIcon";
@@ -61,5 +62,6 @@ export {
   IndustrySector,
   WorkExperience,
   Media,
-  Achievements
+  Achievements,
+  ChatPreview
 };

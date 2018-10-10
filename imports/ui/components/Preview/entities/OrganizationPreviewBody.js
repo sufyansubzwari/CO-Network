@@ -8,7 +8,7 @@ import {
   Title,
   Social,
   Media
-} from "./components/index";
+} from "../components/index";
 
 class OrganizationPreviewBody extends React.Component {
   constructor(props) {

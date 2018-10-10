@@ -1,6 +1,6 @@
 import React, { Component } from "react";
-import { ItemsList, ListLayout, Preview } from "../../../ui/components";
-import { Mutation, graphql } from "react-apollo";
+import { ItemsList, ListLayout, ChatPreview } from "../../../ui/components";
+import { graphql, Mutation } from "react-apollo";
 import { connect } from "react-redux";
 import { PreviewData } from "../../actions/PreviewActions";
 import {
@@ -10,8 +10,8 @@ import {
 } from "../../apollo-client/colloquium";
 import { withRouter } from "react-router-dom";
 import { ViewsCountUpdate } from "../../apollo-client/viewCount";
-import ColloquiumPreviewBody from "../../components/Preview/ColloquiumPreviewBody";
-import {cleanSearch, onSearchTags} from "../../actions/TopSearchActions";
+import { ColloquiumPreviewBody } from "../../components/Preview";
+import { cleanSearch, onSearchTags } from "../../actions/TopSearchActions";
 
 /**
  * @module Colloquiums
@@ -62,8 +62,12 @@ class ListColloquiums extends Component {
     }
     if (
       nextProps.filterStatus &&
-      nextProps.filterStatus.text && nextProps.filterStatus.text !== this.state.filter){
-      this.setState({filter: nextProps.filterStatus.text}, () => this.reFetchQuery());
+      nextProps.filterStatus.text &&
+      nextProps.filterStatus.text !== this.state.filter
+    ) {
+      this.setState({ filter: nextProps.filterStatus.text }, () =>
+        this.reFetchQuery()
+      );
     }
   }
 
@@ -97,7 +101,7 @@ class ListColloquiums extends Component {
 
   removeColloquium(deleteColloquium, colloquium) {
     deleteColloquium({ variables: { id: colloquium._id } });
-    this.setState({ selectedItem: null }, () => this.reFetchQuery());
+    this.setState({ selectedItem: null, selectedIndex: key }, () => this.reFetchQuery());
   }
 
   editColloquium() {
@@ -130,9 +134,9 @@ class ListColloquiums extends Component {
 
   onSearch(value, tags) {
     let tagsFilters = {};
-      tags.length
-        ? (tagsFilters.tags = { in: tags.map(item => item._id) })
-        : null;
+    tags.length
+      ? (tagsFilters.tags = { in: tags.map(item => item._id) })
+      : null;
     this.setState({ filter: value, filterStatus: tagsFilters }, () =>
       this.reFetchQuery()
     );
@@ -181,11 +185,10 @@ class ListColloquiums extends Component {
               onError={error => this.errorOnBackgroundChange(error)}
             >
               {(updateImage, { colloquium }) => (
-                <Preview
+                <ChatPreview
                   onClose={() => this.onChangeSelection(null, null)}
                   key={"rightSide"}
                   isOpen={!!this.state.selectedItem}
-                  navClicked={index => console.log(index)}
                   navOptions={[
                     {
                       text: "Edit",
@@ -227,6 +230,7 @@ class ListColloquiums extends Component {
                   ]}
                   index={this.state.selectedIndex}
                   data={this.state.selectedItem}
+                  isColloquium
                   allowChangeImages={
                     this.state.selectedItem &&
                     this.state.selectedItem.owner &&
@@ -241,14 +245,8 @@ class ListColloquiums extends Component {
                   onBackgroundChange={imageSrc =>
                     this.handleBackgroundChange(updateImage, imageSrc)
                   }
-                >
-                  {this.state.selectedItem ? (
-                    <ColloquiumPreviewBody
-                      colloquium={this.state.selectedItem}
-                      {...this.props}
-                    />
-                  ) : null}
-                </Preview>
+                  curUser={this.props.curUser}
+                />
               )}
             </Mutation>
           )}
@@ -284,8 +282,16 @@ export default withRouter(
         return {
           variables: {
             limit: 10,
-            colloquiums: (props.filterStatus && props.filterStatus.entityType === "colloquiums"  && props.filterStatus.filters) || {},
-            filter: (props.filterStatus && props.filterStatus.entityType === "colloquiums" && props.filterStatus.text) || "",
+            colloquiums:
+              (props.filterStatus &&
+                props.filterStatus.entityType === "colloquiums" &&
+                props.filterStatus.filters) ||
+              {},
+            filter:
+              (props.filterStatus &&
+                props.filterStatus.entityType === "colloquiums" &&
+                props.filterStatus.text) ||
+              ""
           },
           fetchPolicy: "cache-and-network"
         };

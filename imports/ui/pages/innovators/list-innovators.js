@@ -13,8 +13,8 @@ import {
   UpdateOrgImages
 } from "../../apollo-client/organization";
 import { DeleteUser, getUsers } from "../../apollo-client/user";
-import OrganizationPreviewBody from "../../components/Preview/OrganizationPreviewBody";
-import UserPreviewBody from "../../components/Preview/UserPreviewBody";
+import OrganizationPreviewBody from "../../components/Preview/entities/OrganizationPreviewBody";
+import UserPreviewBody from "../../components/Preview/entities/UserPreviewBody";
 import { connect } from "react-redux";
 import { PreviewData } from "../../actions/PreviewActions";
 import { ViewsCountUpdate } from "../../apollo-client/viewCount";

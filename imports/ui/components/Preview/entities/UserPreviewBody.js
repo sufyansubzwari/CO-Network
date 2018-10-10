@@ -1,7 +1,7 @@
 import React from "react";
 import { Container, Layout } from "btech-layout";
-import { Location, Social, TagsAdd, Text, Title } from "./components/index";
-import services from "../../components/LoginModal/service.constant";
+import { Location, Social, TagsAdd, Text, Title } from "../components/index";
+import services from "../../LoginModal/service.constant";
 
 class UserPreviewBody extends React.Component {
   constructor(props) {

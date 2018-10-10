@@ -1,9 +1,9 @@
 import React from "react";
-import { Layout, Container } from "btech-layout";
-import { Title, Location, Social, Text, TagsAdd } from "./components/index";
-import services from "../../components/LoginModal/service.constant";
+import { Container, Layout } from "btech-layout";
+import { Location, Social, TagsAdd, Text, Title } from "../components/index";
+import services from "../../LoginModal/service.constant";
 
-class UserPreviewBody extends React.Component {
+class ApplyJobPreviewBody extends React.Component {
   constructor(props) {
     super(props);
     this.servicesSocial = services;
@@ -30,12 +30,12 @@ class UserPreviewBody extends React.Component {
     if (!iden.profileData)
       return `${this.getService(iden.provider).link}/${
         this.state.user.nickName
-        }`;
+      }`;
     else {
       const data = iden.profileData;
       if (data.link) return data.link;
       return `${this.getService(iden.provider).link}/${data.screen_name ||
-      data.nickName}`;
+        data.nickName}`;
     }
   }
 
@@ -114,73 +114,73 @@ class UserPreviewBody extends React.Component {
       this.state.user.speaker.stage.map(stage => <div>{stage.label}</div>);
     let achieve = this.state.user.achievements
       ? this.state.user.achievements.map((ach, index) => {
-        let tags =
-          ach.category && ach.category.map(tag => ({ ...tag, active: true }));
-        return ach.type === "Academic Background" ? (
-          <Container key={index}>
-            <Text header={"Academic Background"} />
-            <Layout templateColumns={3}>
-              <Text header={"Institution Name"} text={ach.name} />
-              <Text header={"Area of study"} text={ach.study} />
-              <Text header={"Degree"} text={ach.degree && ach.degree.label} />
-            </Layout>
-            <Text header={"Tell us a story"} text={ach.story} />
-          </Container>
-        ) : ach.type === "Audited Courses" ? (
-          <Container key={index}>
-            <Text header={"Audited Courses"} />
-            <Layout templateColumns={3}>
-              <Text header={"Course Name"} text={ach.name} />
-              <Text header={"Link to the Course"} text={ach.link} />
-              <Text header={"Level"} text={ach.level && ach.level.label} />
-            </Layout>
-            {tags && tags.length ? (
-              <TagsAdd header={"Category"} tags={tags} />
-            ) : null}
-          </Container>
-        ) : ach.type === "Professional Experience" ? (
-          <Container key={index}>
-            <Text header={"Professional Experience"} />
-            <Layout templateColumns={3}>
-              <Text header={"Organization Name"} text={ach.name} />
-              <Text header={"Position"} text={ach.position} />
-              <Text header={"Level"} text={ach.level && ach.level.label} />
-            </Layout>
-            <Text
-              header={"What did you help to discover or create?"}
-              text={ach.help}
-            />
-            {tags && tags.length ? (
-              <TagsAdd header={"Category"} tags={tags} />
-            ) : null}
-          </Container>
-        ) : ach.type === "Patents" ? (
-          <Container key={index}>
-            <Text header={"Patent"} />
-            <Layout templateColumns={3}>
-              <Text header={"Patent ID"} text={ach.id} />
-              <Text header={"Link to the Patent"} text={ach.link} />
-              <Text header={"Patent Name"} text={ach.name} />
-            </Layout>
-            {tags && tags.length ? (
-              <TagsAdd header={"Category"} tags={tags} />
-            ) : null}
-          </Container>
-        ) : ach.type === "Publications" ? (
-          <Container key={index}>
-            <Text header={"Publications"} />
-            <Layout templateColumns={3}>
-              <Text header={"Publication Name"} text={ach.name} />
-              <Text header={"Link to Publication"} text={ach.link} />
-              <Text header={"Year Published"} text={ach.year} />
-            </Layout>
-            <Text header={"Explain your Observation"} text={ach.explain} />
-            {tags && tags.length ? (
-              <TagsAdd header={"Category"} tags={tags} />
-            ) : null}
-          </Container>
-        ) : null;
-      })
+          let tags =
+            ach.category && ach.category.map(tag => ({ ...tag, active: true }));
+          return ach.type === "Academic Background" ? (
+            <Container key={index}>
+              <Text header={"Academic Background"} />
+              <Layout templateColumns={3}>
+                <Text header={"Institution Name"} text={ach.name} />
+                <Text header={"Area of study"} text={ach.study} />
+                <Text header={"Degree"} text={ach.degree && ach.degree.label} />
+              </Layout>
+              <Text header={"Tell us a story"} text={ach.story} />
+            </Container>
+          ) : ach.type === "Audited Courses" ? (
+            <Container key={index}>
+              <Text header={"Audited Courses"} />
+              <Layout templateColumns={3}>
+                <Text header={"Course Name"} text={ach.name} />
+                <Text header={"Link to the Course"} text={ach.link} />
+                <Text header={"Level"} text={ach.level && ach.level.label} />
+              </Layout>
+              {tags && tags.length ? (
+                <TagsAdd header={"Category"} tags={tags} />
+              ) : null}
+            </Container>
+          ) : ach.type === "Professional Experience" ? (
+            <Container key={index}>
+              <Text header={"Professional Experience"} />
+              <Layout templateColumns={3}>
+                <Text header={"Organization Name"} text={ach.name} />
+                <Text header={"Position"} text={ach.position} />
+                <Text header={"Level"} text={ach.level && ach.level.label} />
+              </Layout>
+              <Text
+                header={"What did you help to discover or create?"}
+                text={ach.help}
+              />
+              {tags && tags.length ? (
+                <TagsAdd header={"Category"} tags={tags} />
+              ) : null}
+            </Container>
+          ) : ach.type === "Patents" ? (
+            <Container key={index}>
+              <Text header={"Patent"} />
+              <Layout templateColumns={3}>
+                <Text header={"Patent ID"} text={ach.id} />
+                <Text header={"Link to the Patent"} text={ach.link} />
+                <Text header={"Patent Name"} text={ach.name} />
+              </Layout>
+              {tags && tags.length ? (
+                <TagsAdd header={"Category"} tags={tags} />
+              ) : null}
+            </Container>
+          ) : ach.type === "Publications" ? (
+            <Container key={index}>
+              <Text header={"Publications"} />
+              <Layout templateColumns={3}>
+                <Text header={"Publication Name"} text={ach.name} />
+                <Text header={"Link to Publication"} text={ach.link} />
+                <Text header={"Year Published"} text={ach.year} />
+              </Layout>
+              <Text header={"Explain your Observation"} text={ach.explain} />
+              {tags && tags.length ? (
+                <TagsAdd header={"Category"} tags={tags} />
+              ) : null}
+            </Container>
+          ) : null;
+        })
       : null;
     return (
       <Layout rowGap={"15px"}>
@@ -255,11 +255,11 @@ class UserPreviewBody extends React.Component {
                 this.state.user.professional.salaryRange.min !== null
                   ? this.state.user.professional.salaryRange.min
                   : null
-                } - ${
+              } - ${
                 this.state.user.professional.salaryRange.max !== null
                   ? this.state.user.professional.salaryRange.max
                   : null
-                }`}
+              }`}
             />
           ) : null}
           {jobtype && jobtype.length ? (
@@ -298,4 +298,4 @@ class UserPreviewBody extends React.Component {
   }
 }
 
-export default UserPreviewBody;
+export default ApplyJobPreviewBody;
