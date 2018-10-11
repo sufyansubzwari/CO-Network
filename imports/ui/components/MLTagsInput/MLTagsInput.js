@@ -102,7 +102,7 @@ export default class MLTagsInput extends Component {
         item.label.toLowerCase().indexOf(e.target.value.toLowerCase()) > -1
       );
     });
-    this.setState({ dropDownOpen: filters.length > 0, options: filters });
+    this.setState({ dropDownOpen: filters.length > 0, options: filters }, () => this.props.onTextChange && this.props.onTextChange());
   }
 
   onFocus() {
@@ -164,6 +164,13 @@ export default class MLTagsInput extends Component {
         }
       }
     }
+  }
+
+  handleClose(){
+    this.setState({
+        value: ""
+    }, () => this.props.onClose && this.props.onClose())
+
   }
 
   render() {
@@ -271,9 +278,9 @@ export default class MLTagsInput extends Component {
           </InputGroupButtonDropdown>
           <SAddButton
             inactive={!this.state.active}
-            onClick={() => this.onAddNewOption()}
+            onClick={ this.props.showClose ? this.props.newAdded ? () => this.handleClose() : () => this.onAddNewOption()  : () => this.onAddNewOption()}
           >
-            <MaterialIcon type={this.props.iconClass} />
+            <MaterialIcon type={ this.props.showClose ? this.props.newAdded ? 'close' : this.props.iconClass : this.props.iconClass } />
           </SAddButton>
         </InputGroup>
       </SContainer>
@@ -306,5 +313,9 @@ MLTagsInput.propTypes = {
   levelOptions: PropsTypes.array,
   onAddLimit: PropsTypes.number,
   noAddNewTagsOnEnter: PropsTypes.bool,
-  onSearch: PropsTypes.func
+  onSearch: PropsTypes.func,
+  newAdded: PropsTypes.bool,
+  showClose: PropsTypes.bool,
+  onTextChange: PropsTypes.func,
+  onClose: PropsTypes.func
 };

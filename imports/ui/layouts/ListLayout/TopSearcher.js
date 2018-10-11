@@ -20,8 +20,11 @@ class TopSearcher extends Component {
     super(props);
     this.state = {
       value: "",
-      tags: []
+      tags: [],
+      added: false
     };
+
+    this.handleClose = this.handleClose.bind(this)
   }
 
   componentWillReceiveProps(nextProps) {
@@ -38,6 +41,11 @@ class TopSearcher extends Component {
   }
 
   onSearchTags(tag) {
+
+    this.setState({
+        added: true
+    })
+
     let tags = this.state.tags;
     let tagExist = tags.some(item => item.label === tag.label);
     if (!tagExist && this.state.tags.length < this.props.tagsLimit) {
@@ -51,7 +59,25 @@ class TopSearcher extends Component {
     }
   }
 
+    handleClose(){
+    let tags = []
+    let value = ""
+
+    this.setState({
+        tags: tags,
+        value: value,
+        added: false
+    }, () =>
+        this.props.onSearchAction &&
+        this.props.onSearchAction(value, this.state.tags))
+  }
+
   onSearchText(value) {
+
+      this.setState({
+          added: true
+      })
+
     this.setState(
       { value: value },
       () =>
@@ -87,7 +113,7 @@ class TopSearcher extends Component {
                     autoFocus={!this.props.isMobile}
                     iconClass={"arrow-forward"}
                     inputPlaceholder={"Discover"}
-                    getAddedOptions={value => this.onSearchTags(value)}
+                    getAddedOptions={value => {this.onSearchTags(value)}}
                     getNewAddedOptions={value => this.onSearchTags(value)}
                     fixLabel
                     onFocusAction={() =>
@@ -110,6 +136,10 @@ class TopSearcher extends Component {
                           }))
                         : []
                     }
+                    showClose={true}
+                    newAdded={this.state.added}
+                    onClose={this.handleClose}
+                    onTextChange={() => this.setState({added: false})}
                   />
                 );
               }}
