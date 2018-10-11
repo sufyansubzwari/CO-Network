@@ -12,6 +12,7 @@ import { EVENT_TYPE } from "../../../../constants";
 import { Query } from "react-apollo";
 import { GetTags as tags } from "../../../../apollo-client/tag";
 import { MLTagsInput, FormMainLayout } from "../../../../../ui/components";
+import moment from "moment";
 
 /**
  * @module Event
@@ -147,6 +148,7 @@ class EventStep1 extends Component {
         <Container>
           <DatePickerRange
             required
+            minDate={moment()}
             labelText={"Dates"}
             reverse={true}
             placeholderStartDate={"Start Date"}
