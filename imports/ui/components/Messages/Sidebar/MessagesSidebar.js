@@ -99,6 +99,7 @@ class MessagesSidebar extends React.Component {
         title={"Messages"}
         onClose={() => this.props.onClose && this.props.onClose()}
         onClear={this.handleClear}
+        childrens={this.state.messages.length}
       >
         <Container>
           <RLayout padding={"10px 20px"} customTemplateColumns={"1fr auto"}>
