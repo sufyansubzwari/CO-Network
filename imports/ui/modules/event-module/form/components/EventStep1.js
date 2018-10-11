@@ -200,7 +200,7 @@ class EventStep1 extends Component {
                       />
                       <Container mt={"10px"}>
                         <TagList
-                          tags={this.tagsSuggested(data.tags)}
+                          tags={this.tagsSuggested(data.tags.filter(tag => this.state.category.findIndex(item => item.label === tag.label) === -1))}
                           onSelect={(event, tag, index) => {
                             if (!tag.active) {
                               delete tag.active;
