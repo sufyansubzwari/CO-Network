@@ -46,13 +46,11 @@ class EventPreviewBody extends React.Component {
                 <Text header={"Ticket Name"} text={ticket.name} />
                 <Text header={"Available"} text={`${ticket.available || 0}`} />
                 <Text
-                  header={"Salary Range"}
-                  text={`${this.state.event.attenders.min} - ${
-                    this.state.event.attenders.max
-                  }`}
+                  header={"Price Range"}
+                  text={`${ticket.min} - ${ticket.max}`}
                 />
               </Layout>
-              <Text header={"Ticket Description"} text={ticket.description} />
+              {ticket.description ? <Text header={"Ticket Description"} text={ticket.description} /> :null}
             </Container>
           ) : (
             <Container key={index}>
@@ -61,7 +59,7 @@ class EventPreviewBody extends React.Component {
                 <Text header={"Available"} text={`${ticket.available || 0}`} />
                 <div/>
               </Layout>
-              <Text header={"Ticket Description"} text={ticket.description} />
+              {ticket.description ? <Text header={"Ticket Description"} text={ticket.description} /> :null}
             </Container>
           );
         })
