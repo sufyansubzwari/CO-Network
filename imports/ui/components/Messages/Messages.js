@@ -13,11 +13,8 @@ class Messages extends React.Component {
     this.state = {
       messages: [],
       receptor: this.props.receptor,
-      type: this.props.type,
-      limit: 10,
-      textMessage: ""
+      type: this.props.type
     };
-    this.handleScroll = this.handleScroll.bind(this);
   }
 
   componentWillMount() {
@@ -33,30 +30,19 @@ class Messages extends React.Component {
       });
     }
     if (nextProps.messages !== this.state.messages) {
-      this.setState({ messages: nextProps.messages });
-    }
-  }
-
-  handleScroll(event) {
-    let target = event.target;
-    if (
-      target.scrollTop === 0 &&
-      this.state.limit <= this.state.messages.length
-    ) {
-      this.setState({ limit: this.state.limit + 10 }, () => {
-        Session.set("limitMessage", this.state.limit);
+      this.setState({ messages: nextProps.messages }, () => {
+        this.props.onLoadMessages &&
+          this.props.onLoadMessages(nextProps.messages);
       });
     }
   }
 
   setScroll() {
-    let _this = this.scroll;
-    setTimeout(
-      function() {
+    let _this = this.props.scroll;
+    if (this.props.scroll)
+      setTimeout(() => {
         _this && _this.scrollToBottom();
-      }.bind(this),
-      100
-    );
+      }, 100);
   }
 
   render() {
@@ -81,6 +67,8 @@ Messages.defaultProps = {
 Messages.propTypes = {
   receptor: propTypes.object.isRequired,
   type: propTypes.string.isRequired,
+  scroll: propTypes.any,
+  onLoadMessages: propTypes.func,
   isColloquium: propTypes.bool
 };
 

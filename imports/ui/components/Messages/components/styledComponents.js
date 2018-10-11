@@ -21,10 +21,10 @@ export const SReplyBox = styled(Container)`
   width: 100%;
   padding: 15px 5px;
   padding-top: 5px;
-  
+
   ${mixins.media.desktop`
-    padding: 24px;
-  `}
+    padding: 0px;
+  `};
 `;
 
 export const VSeparator = styled(Container)`
@@ -63,13 +63,10 @@ export const SUser = styled(Container)`
   display: flex;
   flex-direction: row;
   font-size: 12px;
+  margin-bottom: 5px;
 
   > #user-name {
-    font-family: "Helvetica Neue LT Std";
-    
-    ${mixins.media.desktop`
-      line-height: 25px;
-    `}
+    font-weight: bold;
   }
   > #time {
     font-size: 12px;
@@ -80,6 +77,8 @@ export const SUser = styled(Container)`
   }
 
   ${mixins.media.desktop`
+    margin-bottom: 0px;
+    
     > #user-name {
       font-family: "Helvetica Neue LT Std";
       line-height: 25px;

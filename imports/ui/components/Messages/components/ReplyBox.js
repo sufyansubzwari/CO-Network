@@ -11,20 +11,29 @@ import { TextArea, Button } from "btech-base-forms-component";
  */
 export const ReplyBox = props => (
   <SReplyBox>
-    <Layout
-      mdCustomTemplateRows={"1fr auto"}
-      mdRowGap={"10px"}
-      padding={{ md: "10px" }}
-    >
-      <TextArea
-        placeholderText={props.placeholder}
-        name={props.name}
-        fixLabel
-        padding={"6px 12px"}
-        marginTop={"0px"}
-        model={props.model}
-        onKeyPress={event => props.onKeyPress && props.onKeyPress(event)}
-      />
+    <Layout mdCustomTemplateRows={"1fr auto"} padding={{ md: "10px" }}>
+      <Container hide mdShow>
+        <TextArea
+          placeholderText={props.placeholder}
+          name={props.name}
+          fixLabel
+          marginTop={"0px"}
+          model={props.model}
+          onKeyPress={event => props.onKeyPress && props.onKeyPress(event)}
+        />
+      </Container>
+      <Container mdHide>
+        <TextArea
+          placeholderText={props.placeholder}
+          name={props.name}
+          fixLabel
+          height={"35px"}
+          padding={"6px 12px"}
+          marginTop={"0px"}
+          model={props.model}
+          onKeyPress={event => props.onKeyPress && props.onKeyPress(event)}
+        />
+      </Container>
       <Container hide mdShow>
         <Layout customTemplateColumns={"1fr auto"} mb={"10px"}>
           <Container />

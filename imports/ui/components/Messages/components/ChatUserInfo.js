@@ -9,10 +9,10 @@ const SInitialsContainer = styled.span`
   font-weight: bold;
   letter-spacing: 1px;
   font-size: 12px;
-  
+
   ${mixins.media.desktop`
     font-size: 14px;
-  `}
+  `};
 `;
 
 /**
@@ -48,7 +48,7 @@ const ChatUserInfo = function(props) {
           : ""
       }
     >
-      {props.owner.profile && !props.owner.profile.image ? (
+      {props.owner && props.owner.profile && !props.owner.profile.image ? (
         <SInitialsContainer>{initials}</SInitialsContainer>
       ) : null}
     </HButtom>

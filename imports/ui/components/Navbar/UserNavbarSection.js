@@ -147,99 +147,103 @@ class UserNavbarSection extends React.Component {
   render() {
     const isAuthenticated = this.props.curUser;
     return (
-      <Layout
-        customTemplateRows={"1fr auto"}
-        fullY
-        textCenter
-        className={"center nav-profile"}
-      >
-        <Container />
-        <Container paddingY={"10px"} paddingT={"0px"}>
-          <Layout rowGap="15px">
-            <GroupContainer
-              pose={isAuthenticated ? "showUserOptions" : "hideUserOptions"}
-            >
-              <GroupSocial
-                authenticated={isAuthenticated}
-                title={!isAuthenticated ? "Login" : null}
+      <Container mdMinH={"170px"}>
+        <Layout
+          customTemplateRows={"1fr auto"}
+          fullY
+          textCenter
+          className={"center nav-profile"}
+        >
+          <Container />
+          <Container paddingY={"10px"} paddingT={"0px"}>
+            <Layout rowGap="15px">
+              <GroupContainer
+                pose={isAuthenticated ? "showUserOptions" : "hideUserOptions"}
               >
-                {this.loginServices.map((service, index) => {
-                  return (
-                    <RenderSocialCondition key={index}>
-                      <HButtom
-                        size={this.loginSize}
-                        onClick={() => this.processAuthRequest(service.service)}
-                      >
-                        <SAddMaterialIcon>
-                          <MaterialIcon
-                            type={service.label || service.service}
-                          />
-                        </SAddMaterialIcon>
-                      </HButtom>
-                    </RenderSocialCondition>
-                  );
-                })}
-              </GroupSocial>
-              <Group authenticated={isAuthenticated}>
-                <RenderCondition>
-                  <HButtom
-                    primary
-                    size={this.size}
-                    onClick={() => this.onAddToggle()}
-                  >
-                    <SAddMaterialIcon>
-                      <MaterialIcon type={"plus"} size={2} />
-                    </SAddMaterialIcon>
-                  </HButtom>
-                </RenderCondition>
-                <RenderCondition>
-                  <HNavItem
-                    mt={{ xs: "5px", md: "0" }}
-                    size={this.notSize}
-                    icon={{ size: 35, src: "/images/nav/messages.svg" }}
-                    number={{
-                      top: "-5px",
-                      right: "-5px",
-                      value: Math.floor(Math.random() * 120),
-                      primary: true,
-                      size: { width: 22, height: 24 }
-                    }}
-                    activeEval={this.activeEval}
-                    onClick={() => this.onMessageToggle()}
-                  />
-                </RenderCondition>
-                <RenderCondition>
-                  <HNavItem
-                    mt={{ xs: "5px", md: "0" }}
-                    size={this.notSize}
-                    icon={{ size: 35, src: "/images/nav/notifications.svg" }}
-                    number={{
-                      top: "-5px",
-                      right: "-5px",
-                      value: Math.floor(Math.random() * 120),
-                      primary: true,
-                      size: { width: 22, height: 24 }
-                    }}
-                    activeEval={this.activeEval}
-                    onClick={() => this.onNotificationToggle()}
-                  />
-                </RenderCondition>
-                <RenderCondition>
-                  <Container onClick={() => this.onUserToggle()}>
-                    <NavbarUserButton size={this.size} />
-                  </Container>
-                </RenderCondition>
-              </Group>
-            </GroupContainer>
-          </Layout>
-          <Container mdHide mt={"25px"}>
-            <Layout rowGap="10px">
-              <SideBarLink href={this.policy}> Terms Policies </SideBarLink>
-              <SideBarLink> CONetwork © 2018 </SideBarLink>
+                <GroupSocial
+                  authenticated={isAuthenticated}
+                  title={!isAuthenticated ? "Login" : null}
+                >
+                  {this.loginServices.map((service, index) => {
+                    return (
+                      <RenderSocialCondition key={index}>
+                        <HButtom
+                          size={this.loginSize}
+                          onClick={() =>
+                            this.processAuthRequest(service.service)
+                          }
+                        >
+                          <SAddMaterialIcon>
+                            <MaterialIcon
+                              type={service.label || service.service}
+                            />
+                          </SAddMaterialIcon>
+                        </HButtom>
+                      </RenderSocialCondition>
+                    );
+                  })}
+                </GroupSocial>
+                <Group authenticated={isAuthenticated}>
+                  <RenderCondition>
+                    <HButtom
+                      primary
+                      size={this.size}
+                      onClick={() => this.onAddToggle()}
+                    >
+                      <SAddMaterialIcon>
+                        <MaterialIcon type={"plus"} size={2} />
+                      </SAddMaterialIcon>
+                    </HButtom>
+                  </RenderCondition>
+                  <RenderCondition>
+                    <HNavItem
+                      mt={{ xs: "5px", md: "0" }}
+                      size={this.notSize}
+                      icon={{ size: 35, src: "/images/nav/messages.svg" }}
+                      number={{
+                        top: "-5px",
+                        right: "-5px",
+                        value: Math.floor(Math.random() * 120),
+                        primary: true,
+                        size: { width: 22, height: 24 }
+                      }}
+                      activeEval={this.activeEval}
+                      onClick={() => this.onMessageToggle()}
+                    />
+                  </RenderCondition>
+                  <RenderCondition>
+                    <HNavItem
+                      mt={{ xs: "5px", md: "0" }}
+                      size={this.notSize}
+                      icon={{ size: 35, src: "/images/nav/notifications.svg" }}
+                      number={{
+                        top: "-5px",
+                        right: "-5px",
+                        value: Math.floor(Math.random() * 120),
+                        primary: true,
+                        size: { width: 22, height: 24 }
+                      }}
+                      activeEval={this.activeEval}
+                      onClick={() => this.onNotificationToggle()}
+                    />
+                  </RenderCondition>
+                  <RenderCondition>
+                    <Container onClick={() => this.onUserToggle()}>
+                      <NavbarUserButton size={this.size} />
+                    </Container>
+                  </RenderCondition>
+                </Group>
+              </GroupContainer>
             </Layout>
+            <Container mdHide mt={"25px"}>
+              <Layout rowGap="10px">
+                <SideBarLink href={this.policy}> Terms Policies </SideBarLink>
+                <SideBarLink> CONetwork © 2018 </SideBarLink>
+              </Layout>
+            </Container>
           </Container>
-        </Container>
-      </Layout>
+        </Layout>
+      </Container>
     );
   }
 }

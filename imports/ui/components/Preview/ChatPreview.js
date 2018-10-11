@@ -9,6 +9,7 @@ import ReplyBox from "../Messages/components/ReplyBox";
 import Messages from "../Messages/Messages";
 import { insertMessage } from "../Messages/Service/service";
 import { Scrollbars } from "react-custom-scrollbars";
+import { Session } from "meteor/session";
 
 const ResponsiveContainer = styled(Layout)`
   margin-left: -100%;
@@ -56,9 +57,39 @@ const SLayout = styled(Layout)`
   }
 `;
 
+const NavLinks = styled(Layout)`
+  align-items: center;
+  font-weight: ${props =>
+    props.theme ? props.theme.preview.nav.fontweight : "normal"};
+  font-size: ${props =>
+    props.theme ? props.theme.preview.nav.fontsize : "14px"};
+  color: ${props => (props.theme ? props.theme.preview.nav.color : "black")};
+  font-family: ${props =>
+    props.theme ? props.theme.preview.nav.family : "Roboto Mono"};
+  zoom: 100%;
+
+  button {
+    margin-right: 10px;
+  }
+
+  @media (min-width: 62em) {
+    zoom: 80%;
+  }
+
+  @media (min-width: 86em) {
+    zoom: 100%;
+  }
+`;
+
 export default class ChatPreview extends Preview {
   constructor(props) {
     super(props);
+    this.state = {
+      limit: 10,
+      textMessage: ""
+    };
+    this.scroll = null;
+    this.messagesLength = 0;
   }
 
   onKeyPress(event) {
@@ -84,6 +115,15 @@ export default class ChatPreview extends Preview {
     );
   }
 
+  handleScroll(event) {
+    let target = event.target;
+    if (target.scrollTop === 0 && this.state.limit <= this.messagesLength) {
+      this.setState({ limit: this.state.limit + 10 }, () => {
+        Session.set("limitMessage", this.state.limit);
+      });
+    }
+  }
+
   getState() {
     let state = "public";
     if (this.props.data && !this.props.data.isPublic) state = "private";
@@ -98,7 +138,11 @@ export default class ChatPreview extends Preview {
         background={"white"}
         pose={this.props.isOpen ? "openPreview" : "closedPreview"}
       >
-        <Scrollbars style={{ height: "100%" }}>
+        <Scrollbars
+          style={{ height: "100%" }}
+          onScroll={event => this.handleScroll(event)}
+          ref={scroll => (this.scroll = scroll)}
+        >
           <Layout
             customTemplateRows={"68px 90px 1fr"}
             mdCustomTemplateRows={"65px 68px 1fr"}
@@ -128,6 +172,15 @@ export default class ChatPreview extends Preview {
                   onClick={() => this.props.onClose && this.props.onClose()}
                 />
               </Container>
+              <NavLinks
+                style={{
+                  display: "flex",
+                  flexDirection: "row",
+                  justifyContent: "center"
+                }}
+              >
+                {this.getNavOptions()}
+              </NavLinks>
             </SLayout>
             <Container
               padding={{ md: "15px 25px", xs: "10px" }}
@@ -136,7 +189,11 @@ export default class ChatPreview extends Preview {
             >
               {this.props.data ? (
                 <Messages
+                  scroll={this.scroll}
                   receptor={this.props.data}
+                  onLoadMessages={list => {
+                    this.messagesLength = list.length;
+                  }}
                   type={this.getState()}
                   {...this.props}
                 />
@@ -144,7 +201,7 @@ export default class ChatPreview extends Preview {
             </Container>
           </Layout>
         </Scrollbars>
-        <Container>
+        <Container hide={!this.props.curUser}>
           <ReplyBox
             placeholder={"Type Something"}
             name={"textMessage"}

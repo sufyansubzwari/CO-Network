@@ -14,10 +14,10 @@ import ChatUserInfo from "./ChatUserInfo";
 
 export const SMessageItem = styled(Container)`
   line-height: 15px;
-  
+
   ${mixins.media.desktop`
     line-height: initial;
-  `}
+  `};
 `;
 
 class LoadMessages extends Component {
@@ -97,10 +97,10 @@ class LoadMessages extends Component {
     let blocks = {
       today: [],
       yesterday: [],
-      thisWeek: [],
-      lastWeek: [],
-      thisMonth: [],
-      lastMonth: [],
+      "this Week": [],
+      "last Week": [],
+      "this Month": [],
+      "last Month": [],
       older: []
     };
     let currentDate = new Date();
@@ -112,11 +112,11 @@ class LoadMessages extends Component {
     currentDate.setDate(
       currentDate.getDate() - ((currentDate.getDay() + 6) % 7)
     );
-    keys.push(["thisWeek", new Date(currentDate)]); // clone
+    keys.push(["this Week", new Date(currentDate)]); // clone
     currentDate.setDate(
       currentDate.getDate() - ((currentDate.getDay() + 12) % 14)
     );
-    keys.push(["lastWeek", new Date(currentDate)]); // clone
+    keys.push(["last Week", new Date(currentDate)]); // clone
     let order = this.state.groups;
     messages.forEach(message => {
       let messageDate = new Date(message.createdAt);
@@ -140,7 +140,6 @@ class LoadMessages extends Component {
   renderMessages(blocks) {
     return blocks.length > 0
       ? blocks.map((message, k) => {
-          console.info(message.owner);
           return (
             <Query
               key={k}
@@ -149,7 +148,6 @@ class LoadMessages extends Component {
               fetchPolicy={"cache-and-network"}
             >
               {({ loading, error, data }) => {
-                if (loading) return <div />;
                 if (error) return <div />;
                 const owner = data.user;
                 return (
@@ -169,6 +167,7 @@ class LoadMessages extends Component {
                               onClick={() => this.handleReply(message)}
                             >
                               <MaterialIcon type={"mail-reply"} />
+                              <span style={{ marginLeft: "5px" }}>Reply</span>
                             </SReplyButton>
                           ) : null}
                         </SUser>
@@ -176,13 +175,10 @@ class LoadMessages extends Component {
                       </SMessageItem>
                     </Layout>
                     {message._id === this.state.replyMessage ? (
-                      <div
-                        style={{
-                          marginLeft: "20px"
-                        }}
-                      >
+                      <Container ml={"20px"}>
                         <ReplyBox
-                          placeholder={"Type to Reply"}
+                          placeholder={`Type a reply to ${owner &&
+                            owner.profile.name}`}
                           name={"textReply"}
                           model={this.state}
                           buttonText={"Reply"}
@@ -191,7 +187,7 @@ class LoadMessages extends Component {
                             this.handleMessage(this.state.textReply, message)
                           }
                         />
-                      </div>
+                      </Container>
                     ) : null}
                     {message.replies && message.replies.length > 0 ? (
                       <Container
@@ -204,7 +200,7 @@ class LoadMessages extends Component {
                       >
                         {this.renderMessages(
                           message.replies.sort(
-                            (a, b) => b.createdAt - a.createdAt
+                            (a, b) => a.createdAt - b.createdAt
                           )
                         )}
                       </Container>
