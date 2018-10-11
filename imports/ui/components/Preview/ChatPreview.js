@@ -130,24 +130,56 @@ export default class ChatPreview extends Preview {
     return state;
   }
 
+  renderOptionsNav() {
+    return (
+      <SLayout
+        gridArea="options"
+        fullY
+        customTemplateColumns={"1fr auto"}
+        mdCustomTemplateColumns={
+          this.props.showAvatar ? "140px 1fr auto" : "1fr auto"
+        }
+      >
+        <Container>
+          <Container mdHide>
+            <BackButton
+              onClick={() => this.props.onClose && this.props.onClose()}
+            />
+          </Container>
+        </Container>
+        <NavLinks
+          style={{
+            display: "flex",
+            flexDirection: "row",
+            justifyContent: "center"
+          }}
+        >
+          {this.getNavOptions()}
+        </NavLinks>
+      </SLayout>
+    );
+  }
+
   render() {
     return (
       <PreviewContainer
-        customTemplateRows={"1fr auto"}
+        customTemplateRows={"68px 1fr auto"}
+        mdCustomTemplateRows={"1fr auto"}
         fullY
         background={"white"}
         pose={this.props.isOpen ? "openPreview" : "closedPreview"}
       >
+        <Container mdHide>{this.renderOptionsNav()}</Container>
         <Scrollbars
           style={{ height: "100%" }}
           onScroll={event => this.handleScroll(event)}
           ref={scroll => (this.scroll = scroll)}
         >
           <Layout
-            customTemplateRows={"68px 90px 1fr"}
+            customTemplateRows={"90px 1fr"}
             mdCustomTemplateRows={"65px 68px 1fr"}
             layoutAreas={{
-              xs: `'options' 'picture' 'content'`,
+              xs: `'picture' 'content'`,
               md: `'picture' 'options' 'content'`
             }}
             fullY
@@ -160,28 +192,9 @@ export default class ChatPreview extends Preview {
               allowChangeImages={this.props.allowChangeImages}
               gridArea="picture"
             />
-            <SLayout
-              gridArea="options"
-              customTemplateColumns={"1fr auto"}
-              mdCustomTemplateColumns={
-                this.props.showAvatar ? "140px 1fr auto" : "1fr auto"
-              }
-            >
-              <Container mdHide>
-                <BackButton
-                  onClick={() => this.props.onClose && this.props.onClose()}
-                />
-              </Container>
-              <NavLinks
-                style={{
-                  display: "flex",
-                  flexDirection: "row",
-                  justifyContent: "center"
-                }}
-              >
-                {this.getNavOptions()}
-              </NavLinks>
-            </SLayout>
+            <Container hide mdShow>
+              {this.renderOptionsNav()}
+            </Container>
             <Container
               padding={{ md: "15px 25px", xs: "10px" }}
               fullY
