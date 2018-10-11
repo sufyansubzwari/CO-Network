@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import OrganizationForm from "../../modules/organization-module/form";
 import { PostLayout, Preview } from "../../../ui/components";
-import OrganizationPreviewBody from "../../components/Preview/OrganizationPreviewBody";
+import OrganizationPreviewBody from "../../components/Preview/entities/OrganizationPreviewBody";
 import { withRouter } from "react-router-dom";
 import { CreateOrg } from "../../apollo-client/organization";
 import { Mutation } from "react-apollo";

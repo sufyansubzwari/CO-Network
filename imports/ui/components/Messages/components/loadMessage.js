@@ -1,23 +1,24 @@
 import React, { Component } from "react";
 import moment from "moment";
 import PropTypes from "prop-types";
-import { Layout, Container } from "btech-layout";
-import { HButtom, HNavItem } from "btech-horizantal-navbar";
-import {
-  SLineTime,
-  SImage,
-  SUser,
-  SText,
-  SReplyMessage,
-  SReplyButton,
-  ReplyBox,
-  VSeparator
-} from "./styledComponents";
+import { Container, Layout, mixins } from "btech-layout";
+import styled from "styled-components";
+import { SLineTime, SReplyButton, SText, SUser } from "./styledComponents";
+import ReplyBox from "./ReplyBox";
 import MaterialIcon from "react-material-iconic-font";
 import { updateMessage } from "../Service/service";
 import { Meteor } from "meteor/meteor";
 import { userQuery } from "../../../apollo-client/user";
 import { Query } from "react-apollo";
+import ChatUserInfo from "./ChatUserInfo";
+
+export const SMessageItem = styled(Container)`
+  line-height: 15px;
+
+  ${mixins.media.desktop`
+    line-height: initial;
+  `};
+`;
 
 class LoadMessages extends Component {
   constructor(props) {
@@ -96,10 +97,10 @@ class LoadMessages extends Component {
     let blocks = {
       today: [],
       yesterday: [],
-      thisWeek: [],
-      lastWeek: [],
-      thisMonth: [],
-      lastMonth: [],
+      "this Week": [],
+      "last Week": [],
+      "this Month": [],
+      "last Month": [],
       older: []
     };
     let currentDate = new Date();
@@ -111,11 +112,11 @@ class LoadMessages extends Component {
     currentDate.setDate(
       currentDate.getDate() - ((currentDate.getDay() + 6) % 7)
     );
-    keys.push(["thisWeek", new Date(currentDate)]); // clone
+    keys.push(["this Week", new Date(currentDate)]); // clone
     currentDate.setDate(
       currentDate.getDate() - ((currentDate.getDay() + 12) % 14)
     );
-    keys.push(["lastWeek", new Date(currentDate)]); // clone
+    keys.push(["last Week", new Date(currentDate)]); // clone
     let order = this.state.groups;
     messages.forEach(message => {
       let messageDate = new Date(message.createdAt);
@@ -139,7 +140,6 @@ class LoadMessages extends Component {
   renderMessages(blocks) {
     return blocks.length > 0
       ? blocks.map((message, k) => {
-          console.info(message.owner);
           return (
             <Query
               key={k}
@@ -148,17 +148,13 @@ class LoadMessages extends Component {
               fetchPolicy={"cache-and-network"}
             >
               {({ loading, error, data }) => {
-                if (loading) return <div />;
                 if (error) return <div />;
                 const owner = data.user;
                 return (
                   <Container fullY key={k} style={{ height: "auto" }}>
-                    <Layout customTemplateColumns={"auto 1fr"} mb={"20px"}>
-                      <HButtom
-                        image={!!owner ? owner.profile.image : ""}
-                        size={this.props.size}
-                      />
-                      <div style={{ margin: "0 10px" }}>
+                    <Layout customTemplateColumns={"auto 1fr"} mb={"15px"}>
+                      <ChatUserInfo owner={owner} />
+                      <SMessageItem ml={"10px"}>
                         <SUser>
                           <span id={"user-name"}>
                             {owner && owner.profile.name}
@@ -171,20 +167,18 @@ class LoadMessages extends Component {
                               onClick={() => this.handleReply(message)}
                             >
                               <MaterialIcon type={"mail-reply"} />
+                              <span style={{ marginLeft: "5px" }}>Reply</span>
                             </SReplyButton>
                           ) : null}
                         </SUser>
                         <SText>{message.text}</SText>
-                      </div>
+                      </SMessageItem>
                     </Layout>
                     {message._id === this.state.replyMessage ? (
-                      <div
-                        style={{
-                          marginLeft: "20px"
-                        }}
-                      >
+                      <Container ml={"20px"}>
                         <ReplyBox
-                          placeholder={"Type to Reply"}
+                          placeholder={`Type a reply to ${owner &&
+                            owner.profile.name}`}
                           name={"textReply"}
                           model={this.state}
                           buttonText={"Reply"}
@@ -193,31 +187,23 @@ class LoadMessages extends Component {
                             this.handleMessage(this.state.textReply, message)
                           }
                         />
-                      </div>
+                      </Container>
                     ) : null}
                     {message.replies && message.replies.length > 0 ? (
-                      <div style={{ width: "100%", marginBottom: "10px" }}>
-                        {/*<SReplyMessage onClick={() => this.handleShowReplies(message)}>*/}
-                        {/*Show Replies <MaterialIcon type={"chevron-down"}/>*/}
-                        {/*</SReplyMessage>*/}
-                        <div
-                          style={{
-                            marginLeft: "20px",
-                            display: "flex",
-                            flexDirection: "row"
-                          }}
-                        >
-                          <VSeparator />
-                          <div style={{ height: "auto", width: "100%" }}>
-                            {//message.showReply &&
-                            this.renderMessages(
-                              message.replies.sort(
-                                (a, b) => b.createdAt - a.createdAt
-                              )
-                            )}
-                          </div>
-                        </div>
-                      </div>
+                      <Container
+                        mb={"15px"}
+                        ml={"15px"}
+                        style={{
+                          borderLeft: "4px solid lightgrey",
+                          paddingLeft: "15px"
+                        }}
+                      >
+                        {this.renderMessages(
+                          message.replies.sort(
+                            (a, b) => a.createdAt - b.createdAt
+                          )
+                        )}
+                      </Container>
                     ) : null}
                   </Container>
                 );

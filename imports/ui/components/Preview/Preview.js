@@ -138,9 +138,8 @@ export default class Preview extends React.Component {
       this.props.onUserPhotoChange && this.props.onUserPhotoChange(src);
   }
 
-  render() {
-    const isOpen = this.props.isOpen;
-    let navlinks =
+  getLinks() {
+    return (
       this.props.navlinks &&
       this.props.navlinks.map((element, index) => (
         <SNavLinkItem
@@ -150,9 +149,12 @@ export default class Preview extends React.Component {
         >
           {element}
         </SNavLinkItem>
-      ));
+      ))
+    );
+  }
 
-    let options = this.props.navOptions
+  getNavOptions() {
+    return this.props.navOptions
       ? this.props.navOptions
           .filter((element, index) => {
             return element.checkVisibility
@@ -181,6 +183,9 @@ export default class Preview extends React.Component {
               )
           )
       : [];
+  }
+
+  render() {
     return (
       <PreviewContainer
         customTemplateRows={"68px 190px 1fr"}
@@ -191,7 +196,7 @@ export default class Preview extends React.Component {
         }}
         fullY
         background={"white"}
-        pose={isOpen ? "openPreview" : "closedPreview"}
+        pose={this.props.isOpen ? "openPreview" : "closedPreview"}
       >
         <TopPreview
           handleUpload={this.handleUploadChange}
@@ -217,7 +222,7 @@ export default class Preview extends React.Component {
                 flexDirection: "row"
               }}
             >
-              {navlinks}
+              {this.getLinks()}
             </NavLinks>
           </Container>
           <Container mdHide>
@@ -232,7 +237,7 @@ export default class Preview extends React.Component {
               justifyContent: "center"
             }}
           >
-            {options}
+            {this.getNavOptions()}
           </NavLinks>
         </SLayout>
         <SPreviewContainer gridArea="content" fullY>
@@ -252,7 +257,8 @@ export default class Preview extends React.Component {
 
 Preview.defaultProps = {
   showAvatar: false,
-  allowChangeImages: false
+  allowChangeImages: false,
+  isOpen: false
 };
 
 Preview.propTypes = {

@@ -7,7 +7,7 @@ import {
   Text,
   TagsAdd,
   Dates
-} from "./components/index";
+} from "../components/index";
 
 class EventPreviewBody extends React.Component {
   constructor(props) {

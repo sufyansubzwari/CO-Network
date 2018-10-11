@@ -3,7 +3,7 @@ import { ItemsList, ListLayout, Preview } from "../../../ui/components";
 import { graphql, Mutation } from "react-apollo";
 import { connect } from "react-redux";
 import { PreviewData } from "../../actions/PreviewActions";
-import JobPreviewBody from "../../components/Preview/JobPreviewBody";
+import JobPreviewBody from "../../components/Preview/entities/JobPreviewBody";
 import {
   CreateJob,
   DeleteJob,

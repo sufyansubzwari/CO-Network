@@ -3,7 +3,7 @@ import { Container } from "btech-layout";
 import UserForm from "./../../modules/user-module/form/";
 import PostLayout from "../../layouts/PostLayout/PostLayout";
 import { Preview } from "../../../ui/components";
-import UserPreviewBody from "../../components/Preview/UserPreviewBody";
+import UserPreviewBody from "../../components/Preview/entities/UserPreviewBody";
 import { graphql, Mutation } from "react-apollo";
 import { CreateUser, userQuery } from "../../apollo-client/user";
 

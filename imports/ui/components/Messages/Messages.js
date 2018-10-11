@@ -3,13 +3,9 @@ import { Meteor } from "meteor/meteor";
 import { Session } from "meteor/session";
 import { withTracker } from "meteor/react-meteor-data";
 import propTypes from "prop-types";
-import Scrollbars from "react-custom-scrollbars";
 import MessagesCollection from "../../../api/messages/collection";
-import { insertMessage } from "./Service/service";
 import LoadMessages from "./components/loadMessage";
-import { SChat, ReplyBox } from "./components/styledComponents";
-import { Layout, Container } from "btech-layout";
-import { TextArea, Button } from "btech-base-forms-component";
+import { SChat } from "./components/styledComponents";
 
 class Messages extends React.Component {
   constructor(props) {
@@ -17,14 +13,8 @@ class Messages extends React.Component {
     this.state = {
       messages: [],
       receptor: this.props.receptor,
-      type: this.props.type,
-      limit: 10,
-      textMessage: ""
+      type: this.props.type
     };
-    this.onKeyPress = this.onKeyPress.bind(this);
-    this.handleScroll = this.handleScroll.bind(this);
-    // this.handleMessage = this.handleMessage.bind(this);
-    // this.onMessage = this.onMessage.bind(this);
   }
 
   componentWillMount() {
@@ -40,56 +30,19 @@ class Messages extends React.Component {
       });
     }
     if (nextProps.messages !== this.state.messages) {
-      this.setState({ messages: nextProps.messages });
-    }
-  }
-
-  handleScroll(event) {
-    let target = event.target;
-    if (
-      target.scrollTop === 0 &&
-      this.state.limit <= this.state.messages.length
-    ) {
-      this.setState({ limit: this.state.limit + 10 }, () => {
-        Session.set("limitMessage", this.state.limit);
+      this.setState({ messages: nextProps.messages }, () => {
+        this.props.onLoadMessages &&
+          this.props.onLoadMessages(nextProps.messages);
       });
-      // this.updateScroll();
     }
   }
 
   setScroll() {
-    let _this = this.scroll;
-    setTimeout(
-      function() {
-        _this.scrollToBottom();
-      }.bind(this),
-      100
-    );
-  }
-
-  handleMessage(text) {
-    let message = {
-      owner: this.props.curUser._id,
-      receptor: this.state.receptor._id,
-      text: text,
-      type: this.state.type,
-      attachment: ""
-    };
-    insertMessage(message, res => {
-      if (res === "success") {
-        this.setState({ textMessage: "" }, () => this.setScroll());
-      } else {
-        console.log(res.reason, "danger");
-      }
-    });
-  }
-
-  onKeyPress(event) {
-    if (event.key === "Enter" && event.shiftKey === false) {
-      event.preventDefault();
-      if (event.target.value.trim() !== "")
-        this.handleMessage(event.target.value);
-    }
+    let _this = this.props.scroll;
+    if (this.props.scroll)
+      setTimeout(() => {
+        _this && _this.scrollToBottom();
+      }, 100);
   }
 
   render() {
@@ -97,43 +50,25 @@ class Messages extends React.Component {
     const usersArray = [this.props.curUser].concat(users);
     if (!this.props.isColloquium) usersArray.unshift(receptor);
     return (
-      <Layout fullY customTemplateRows={"1fr auto"} rowGap={"10px"}>
-        <SChat>
-          <Scrollbars
-            style={{ height: "100%" }}
-            onScroll={this.handleScroll}
-            ref={scroll => {
-              this.scroll = scroll;
-            }}
-          >
-            {messages.length ? (
-              <LoadMessages
-                on={this.onMessage}
-                messages={messages}
-                users={usersArray}
-              />
-            ) : null}
-          </Scrollbars>
-        </SChat>
-        <ReplyBox
-          placeholder={"Type Something"}
-          name={"textMessage"}
-          model={this.state}
-          onKeyPress={this.onKeyPress}
-        />
-      </Layout>
+      <SChat fullY>
+        {messages.length ? (
+          <LoadMessages messages={messages} users={usersArray} />
+        ) : null}
+      </SChat>
     );
   }
 }
 
 Messages.defaultProps = {
   type: "public",
-  isColloquium: false
+  isColloquium: true
 };
 
 Messages.propTypes = {
   receptor: propTypes.object.isRequired,
   type: propTypes.string.isRequired,
+  scroll: propTypes.any,
+  onLoadMessages: propTypes.func,
   isColloquium: propTypes.bool
 };
 
