@@ -32,8 +32,21 @@ Meteor.publish("messages.view", (receptor, type, limit) => {
   return Messages.find();
 });
 
+Meteor.publish("messages.myNewMessages", limit => {
+  check(limit, Number);
+  const userId = Meteor.userId();
+  return Messages.find(
+    {
+      $or: [{ receptor: userId }, { owner: userId, replies: { $exists: true } }]
+    },
+    {
+      limit: limit || 10,
+      sort: { date: 1 }
+    }
+  );
+});
 
-Meteor.publishComposite('messages.getMessages', (receptor, type, limit) => {
+Meteor.publishComposite("messages.getMessages", (receptor, type, limit) => {
   check(receptor, String);
   check(type, String);
   check(limit, Number);
@@ -49,15 +62,15 @@ Meteor.publishComposite('messages.getMessages', (receptor, type, limit) => {
     },
     children: [
       {
-        find: function (message) {
-          return Meteor.users.find({_id: message.owner});
+        find: function(message) {
+          return Meteor.users.find({ _id: message.owner });
         }
-      // },
-      // {
-      //   find: function (message) {
-      //     return Meteor.users.find({_id: message.receptor});
-      //   }
+        // },
+        // {
+        //   find: function (message) {
+        //     return Meteor.users.find({_id: message.receptor});
+        //   }
       }
     ]
-  }
+  };
 });
