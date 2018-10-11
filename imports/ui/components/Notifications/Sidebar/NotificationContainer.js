@@ -74,7 +74,7 @@ const ItemsContainer = function(props) {
     <SContainer
       fullY
       customTemplateRows={"68px 1fr"}
-      mdCustomTemplateRows={"76px 1fr 40px"}
+      mdCustomTemplateRows={"66px 1fr 40px"}
     >
       <RLayout
         customTemplateColumns={"1fr auto auto"}

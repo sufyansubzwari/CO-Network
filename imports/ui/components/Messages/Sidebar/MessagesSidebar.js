@@ -51,6 +51,18 @@ const SDropdownItem = styled(DropdownItem)`
   }
 `;
 
+const RLayout = styled(Layout)`
+  zoom: 100%;
+
+  @media (min-width: 62em) {
+    zoom: 80%;
+  }
+
+  @media (min-width: 86em) {
+    zoom: 100%;
+  }
+`;
+
 class MessagesSidebar extends React.Component {
   constructor(props) {
     super(props);
@@ -89,7 +101,7 @@ class MessagesSidebar extends React.Component {
         onClear={this.handleClear}
       >
         <Container>
-          <Layout padding={"10px 20px"} customTemplateColumns={"1fr auto"}>
+          <RLayout padding={"10px 20px"} customTemplateColumns={"1fr auto"}>
             <Layout customTemplateColumns={"auto auto 1fr"} colGap={"20px"}>
               <SLabel
                 active={this.state.type === "direct"}
@@ -141,7 +153,7 @@ class MessagesSidebar extends React.Component {
                 </DropdownMenu>
               </Dropdown>
             </Container>
-          </Layout>
+          </RLayout>
           <Separator />
         </Container>
 
@@ -150,7 +162,8 @@ class MessagesSidebar extends React.Component {
           this.state.messages
             .filter(
               item =>
-                this.state.type === "direct" && !item.replies || this.state.type === "related" && item.replies
+                (this.state.type === "direct" && !item.replies) ||
+                (this.state.type === "related" && item.replies)
             )
             .map((message, index) => (
               <Query
