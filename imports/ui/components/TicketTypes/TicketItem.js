@@ -38,9 +38,9 @@ class TicketItem extends Component {
   }
 
   notifyParent(model, name, value) {
-    if (model && name && value) {
+    if (model && name) {
       let data = this.state.ticket;
-      data[name] = value;
+      value ? data[name] = value : delete data[name];
       this.setState({ ticket: data });
     }
   }

@@ -56,9 +56,10 @@ class EventPreviewBody extends React.Component {
             </Container>
           ) : (
             <Container key={index}>
-              <Layout templateColumns={2}>
+              <Layout templateColumns={3}>
                 <Text header={"Ticket Name"} text={ticket.name} />
                 <Text header={"Available"} text={`${ticket.available || 0}`} />
+                <div/>
               </Layout>
               <Text header={"Ticket Description"} text={ticket.description} />
             </Container>
