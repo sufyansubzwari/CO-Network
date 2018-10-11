@@ -8,6 +8,7 @@ import {
   TagsAdd,
   Dates
 } from "../components/index";
+import _ from 'lodash';
 
 class EventPreviewBody extends React.Component {
   constructor(props) {
@@ -26,15 +27,13 @@ class EventPreviewBody extends React.Component {
   }
 
   render() {
-    //tags
     let others =
-      this.state.event.others &&
-      this.state.event.others.map(other => ({ ...other, active: true }));
+      (this.state.event.others &&
+      this.state.event.others.map(other => ({ ...other, active: true }))) || [];
 
-    //checkboxes
-    let community =
-      this.state.event.category &&
-      this.state.event.category.map((comm, index) => (
+    let category = this.state.event.category || [];
+    category = _.uniqBy(category.concat(others), 'label');
+    let categories = category && category.map((comm, index) => (
         <div key={index}>{comm.label}</div>
       ));
 
@@ -79,12 +78,12 @@ class EventPreviewBody extends React.Component {
           <Text header={"Summary"} text={this.state.event.description} />
         ) : null}
         <Layout templateColumns={2}>
-          {community && community.length ? (
-            <Text header={"Community Event Categories"}>{community}</Text>
+          {categories && categories.length ? (
+            <Text header={"Community Event Categories"}>{categories}</Text>
           ) : null}
-          {others && others.length ? (
-            <TagsAdd header={"Other"} tags={others} />
-          ) : null}
+          {/*{others && others.length ? (*/}
+            {/*<TagsAdd header={"Other"} tags={others} />*/}
+          {/*) : null}*/}
         </Layout>
         <Layout templateColumns={3}>
           {this.state.event.venueName !== "" ? (
