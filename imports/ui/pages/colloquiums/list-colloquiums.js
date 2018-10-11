@@ -90,12 +90,29 @@ class ListColloquiums extends Component {
   }
 
   fetchMoreSelection(isLoading) {
-    if (!isLoading)
+    if (!isLoading && this.state.limit <= this.props.data.colloquiums.length)
       this.setState(
         {
           limit: this.state.limit + 10
         },
-        () => this.reFetchQuery()
+        () => {
+          this.props.data.fetchMore({
+            variables: {
+              limit: this.state.limit,
+              filter: this.state.filter || "",
+              colloquiums: this.state.filterStatus || {}
+            },
+            updateQuery: (
+              previousResult,
+              { fetchMoreResult, queryVariables }
+            ) => {
+              return {
+                ...previousResult,
+                colloquiums: [...fetchMoreResult.colloquiums]
+              };
+            }
+          });
+        }
       );
   }
 
@@ -293,7 +310,8 @@ export default withRouter(
                 props.filterStatus.text) ||
               ""
           },
-          fetchPolicy: "cache-and-network"
+          fetchPolicy: "cache-and-network",
+          errorPolicy: "all"
         };
       }
     })(ListColloquiums)

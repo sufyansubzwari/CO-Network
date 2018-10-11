@@ -58,6 +58,8 @@ class ItemsList extends Component {
   }
 
   renderItem(item, key) {
+    if(!item)
+      return null
     return (
       <CardItem
         lgCustomTemplateColumns={"155px 1fr"}
@@ -69,13 +71,13 @@ class ItemsList extends Component {
         }
         topOptions={this.props.topOptions}
         loading={this.props.loading}
-        title={item.title || ""}
-        subTitle={item.description || ""}
-        image={item.image || null}
-        tags={item.tags || item.category || item.positionTags || []}
-        views={item.views}
+        title={(item && item.title) || ""}
+        subTitle={(item && item.description) || ""}
+        image={(item && item.image) || null}
+        tags={(item && (item.tags || item.category || item.positionTags)) || []}
+        views={item && item.views}
         key={key}
-        data={item}
+        data={item || 0}
         onSelectTag={this.props.onSelectTag}
       />
     );
