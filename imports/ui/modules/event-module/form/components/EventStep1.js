@@ -21,7 +21,7 @@ import moment from "moment";
 class EventStep1 extends Component {
   constructor(props) {
     super(props);
-    this.dateFormat = "MM/DD/YYYY HH:mm";
+    this.dateFormat = "MM/DD/YYYY HH:mm A";
     this.state = {
       event: this.props.data,
       category: EVENT_TYPE
