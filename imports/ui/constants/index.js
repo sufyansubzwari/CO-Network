@@ -1,5 +1,4 @@
-import { EMAIL_REGEX } from "./regex.constant";
-import { PHONE_REGEX } from "./regex.constant";
+import { EMAIL_REGEX, NAME_REGEX, PHONE_REGEX } from "./regex.constant";
 import {
   COURSE_LEVEL,
   defaultFilter,
@@ -56,6 +55,7 @@ import {
 export {
   EMAIL_REGEX,
   PHONE_REGEX,
+  NAME_REGEX,
   COURSE_LEVEL,
   defaultFilter,
   DEGREE,

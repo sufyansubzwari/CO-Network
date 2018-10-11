@@ -8,7 +8,7 @@ import {
 } from "btech-base-forms-component";
 import MaterialIcon from "react-material-iconic-font";
 import LineSeparator from "./LineSeparator";
-import { EMAIL_REGEX } from "../../constants";
+import {EMAIL_REGEX, NAME_REGEX} from "../../constants";
 import styled from "styled-components";
 
 const SErrorMessage = styled.label`
@@ -74,6 +74,7 @@ class Sponsor extends React.Component {
                     value: user.profile.name,
                     email: user.profile.email
                   }))}
+                  validate={NAME_REGEX}
                   getAddedOptions={obj => this.onAdd(this.props, obj)}
                   getNewAddedOptions={obj => this.onAddNew(this.props, obj)}
                   required={true}
