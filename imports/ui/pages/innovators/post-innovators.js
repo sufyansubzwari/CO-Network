@@ -101,11 +101,10 @@ class PostOrganization extends Component {
 
   onPostAction(createOrg, query) {
     const isEditMode = this.state.organization && this.state.organization._id;
-    if (this.state.formChange)
-      this.setState({
-        formChange: false,
-        redirect: !isEditMode
-      });
+    this.setState({
+      formChange: false,
+      redirect: !this.state.formChange || !isEditMode
+    });
     let orgQuery = Object.assign({}, query);
     //todo: remove when location improvement
     orgQuery.place &&

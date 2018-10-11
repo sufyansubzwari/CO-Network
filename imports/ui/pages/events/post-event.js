@@ -63,11 +63,10 @@ class PostEvent extends Component {
 
   onPostAction(createEvent, query) {
     const isEditMode = this.state.event && this.state.event._id;
-    if (this.state.formChange)
-      this.setState({
-        formChange: false,
-        redirect: !isEditMode
-      });
+    this.setState({
+      formChange: false,
+      redirect: !this.state.formChange || !isEditMode
+    });
     let queryEvent = Object.assign({}, query);
     queryEvent.category = _.uniq(queryEvent.others.concat(queryEvent.category));
     delete queryEvent.others;

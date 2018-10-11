@@ -60,11 +60,10 @@ class PostJob extends Component {
 
   onPostAction(createJob, query) {
     const isEditMode = this.state.job && this.state.job._id;
-    if (this.state.formChange)
-      this.setState({
-        formChange: false,
-        redirect: !isEditMode
-      });
+    this.setState({
+      formChange: false,
+      redirect: !this.state.formChange || !isEditMode
+    });
     let queryJob = Object.assign({}, query);
     //todo: remove when location improvement
     queryJob.place &&

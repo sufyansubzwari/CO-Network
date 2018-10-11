@@ -50,11 +50,10 @@ class PostColloquiums extends Component {
 
   onPostAction(createColloquium, query) {
     const isEditMode = this.state.colloquium && this.state.colloquium._id;
-    if (this.state.formChange)
-      this.setState({
-        formChange: false,
-        redirect: !isEditMode
-      });
+    this.setState({
+      formChange: false,
+      redirect: !this.state.formChange || !isEditMode
+    });
     let queryColloquium = Object.assign({}, query);
     //todo: remove when location improvement
     queryColloquium.place &&
