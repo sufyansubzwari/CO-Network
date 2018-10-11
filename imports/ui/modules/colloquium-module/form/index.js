@@ -63,6 +63,7 @@ class ColloquiumForm extends Component {
         radioColor={'#000000'}
         onCancel={() => this.props.onCancel && this.props.onCancel()}
         showProgress
+        inactiveColor={"#A0A0A0"}
       >
         <WizardStepForm title={"Details"} isValid>
           <FirstStep

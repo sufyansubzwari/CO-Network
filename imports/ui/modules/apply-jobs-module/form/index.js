@@ -40,6 +40,7 @@ class ApplyJobForm extends React.Component {
                     this.props.onFinish && this.props.onFinish(this.state.apply)
                 }
                 showProgress
+                inactiveColor={"#A0A0A0"}
                 onCancel={() => this.props.onCancel && this.props.onCancel()}
             >
                 <WizardStepForm title={"Personal Info"} isValid>
