@@ -106,6 +106,7 @@ class CardItem extends Component {
   }
 
   componentWillReceiveProps(newProps) {
+    setTimeout(() => { this.setState({loadingImage: this.state.loadingImage}) }, 500);
     if (!newProps.image) return;
     if (newProps.image !== this.props.image) this.loadImage(newProps.image);
     if (this.props.topOptions && this.props.topOptions.length)
@@ -191,9 +192,15 @@ class CardItem extends Component {
             </Layout>
           </Container>
         </Layout>
-        <Container hide mdShow>
+        <Container
+          hide
+          mdShow
+          ref={this.tagRef}
+        >
           {tags.length ? (
             <TagList
+              containerRef={this.tagcontainer}
+              cut={true}
               tags={tags}
               onSelect={(event, tag, index) => {
                 event.stopPropagation();
