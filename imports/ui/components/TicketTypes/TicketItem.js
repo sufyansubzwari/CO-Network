@@ -48,6 +48,13 @@ class TicketItem extends Component {
   render() {
     return (
       <Container padding={"5px"}>
+        <form
+          onSubmit={e => {
+            e.preventDefault();
+            e.stopPropagation();
+            this.props.onSave && this.props.onSave(this.state.ticket)
+          }}
+        >
         <STitleText>{this.props.title}</STitleText>
         <Layout rowGap={"5px"}>
           <Container>
@@ -58,6 +65,7 @@ class TicketItem extends Component {
                   name={"name"}
                   getValue={this.notifyParent.bind(this)}
                   model={this.state.ticket}
+                  required={true}
                 />
               </Container>
               <Container>
@@ -81,6 +89,7 @@ class TicketItem extends Component {
           </Container>
           {this.props.isPaid ? (
             <SalaryRange
+              required={true}
               labelText={"Price Range"}
               placeholder={"000"}
               min={Number(this.state.ticket.min) || 0}
@@ -99,16 +108,16 @@ class TicketItem extends Component {
               <LineSeparator />
               <Button
                 secondary
-                type={"button"}
+                type={"submit"}
                 role={"button"}
                 color={"black"}
                 opacity={"0.5"}
                 border={"none"}
                 hoverBackground={"transparent"}
                 hoverColor={"initial"}
-                onClick={() =>
-                  this.props.onSave && this.props.onSave(this.state.ticket)
-                }
+                // onClick={() =>
+                //   this.props.onSave && this.props.onSave(this.state.ticket)
+                // }
               >
                 <MaterialIcon type={"save"} />
                 <SButtonText>Save</SButtonText>
@@ -116,6 +125,7 @@ class TicketItem extends Component {
             </Layout>
           </Container>
         </Layout>
+        </form>
       </Container>
     );
   }

@@ -44,7 +44,7 @@ class EventPreviewBody extends React.Component {
             <Container key={index}>
               <Layout templateColumns={3}>
                 <Text header={"Ticket Name"} text={ticket.name} />
-                <Text header={"Available"} text={`${ticket.available}`} />
+                <Text header={"Available"} text={`${ticket.available || 0}`} />
                 <Text
                   header={"Salary Range"}
                   text={`${this.state.event.attenders.min} - ${
@@ -58,7 +58,7 @@ class EventPreviewBody extends React.Component {
             <Container key={index}>
               <Layout templateColumns={2}>
                 <Text header={"Ticket Name"} text={ticket.name} />
-                <Text header={"Available"} text={`${ticket.available}`} />
+                <Text header={"Available"} text={`${ticket.available || 0}`} />
               </Layout>
               <Text header={"Ticket Description"} text={ticket.description} />
             </Container>
