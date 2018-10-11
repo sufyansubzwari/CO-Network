@@ -91,7 +91,7 @@ class EventPreviewBody extends React.Component {
           ) : null}
           {this.state.event.venueEmail !== "" ? (
             <Text
-              header={"Venue Contac Email"}
+              header={"Venue Contact Email"}
               text={this.state.event.venueEmail}
             />
           ) : null}
