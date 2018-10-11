@@ -63,8 +63,12 @@ class ListEvents extends Component {
     }
     if (
       nextProps.filterStatus &&
-        nextProps.filterStatus.text && nextProps.filterStatus.text !== this.state.filter){
-      this.setState({filter: nextProps.filterStatus.text}, () => this.reFetchQuery());
+      nextProps.filterStatus.text &&
+      nextProps.filterStatus.text !== this.state.filter
+    ) {
+      this.setState({ filter: nextProps.filterStatus.text }, () =>
+        this.reFetchQuery()
+      );
     }
   }
 
@@ -87,12 +91,29 @@ class ListEvents extends Component {
   }
 
   fetchMoreSelection(isLoading) {
-    if (!isLoading)
+    if (!isLoading && this.state.limit <= this.props.data.events.length)
       this.setState(
         {
           limit: this.state.limit + 10
         },
-        () => this.reFetchQuery()
+        () => {
+          this.props.data.fetchMore({
+            variables: {
+              limit: this.state.limit,
+              filter: this.state.filter || "",
+              events: this.state.filterStatus || {}
+            },
+            updateQuery: (
+              previousResult,
+              { fetchMoreResult, queryVariables }
+            ) => {
+              return {
+                ...previousResult,
+                events: [...fetchMoreResult.events]
+              };
+            }
+          });
+        }
       );
   }
 
@@ -161,6 +182,7 @@ class ListEvents extends Component {
   }
 
   render() {
+    //Todo: handle graphQL errors
     const isLoading =
       this.props.data.loading &&
       (!this.props.data.events || !this.props.data.events.length);
@@ -337,11 +359,20 @@ export default withRouter(
         return {
           variables: {
             limit: 10,
-            events: (props.filterStatus && props.filterStatus.entityType === "events" && props.filterStatus.filters) || {},
-            filter: (props.filterStatus && props.filterStatus.entityType === "events" && props.filterStatus.text) || "",
+            events:
+              (props.filterStatus &&
+                props.filterStatus.entityType === "events" &&
+                props.filterStatus.filters) ||
+              {},
+            filter:
+              (props.filterStatus &&
+                props.filterStatus.entityType === "events" &&
+                props.filterStatus.text) ||
+              ""
           },
-          fetchPolicy: "cache-and-network"
-        }
+          fetchPolicy: "cache-and-network",
+          errorPolicy: "all"
+        };
       }
     })(ListEvents)
   )

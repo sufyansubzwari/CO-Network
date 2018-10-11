@@ -112,12 +112,40 @@ class ListInnovators extends Component {
   }
 
   fetchMoreSelection(isLoading) {
-    if (!isLoading)
+    let count = 0;
+    let entity = "users";
+    if (this.state.currentTab.value === "corporations") {
+      count = this.state.organizations.organizations.length;
+      entity = "organizations";
+    }
+    if (this.state.currentTab.value === "members"){
+      count = this.state.users.users.length;
+      entity = "users";
+    }
+    if (!isLoading && this.state.limit <= count)
       this.setState(
         {
           limit: this.state.limit + 10
         },
-        () => this.reFetchQuery()
+        () => {
+          this.props.data.fetchMore({
+            variables: {
+              limit: this.state.limit,
+
+              filter: this.state.filter || "",
+              [entity]: this.state.filterStatus || {}
+            },
+            updateQuery: (
+              previousResult,
+              { fetchMoreResult, queryVariables }
+            ) => {
+              return {
+                ...previousResult,
+                [entity]: [...fetchMoreResult[entity]]
+              };
+            }
+          });
+        }
       );
   }
 
@@ -498,7 +526,8 @@ export default withRouter(
                 (props.filterStatus && props.filterStatus.entityType === "organizations" && props.filterStatus.filters) || {},
               filter: (props.filterStatus && props.filterStatus.entityType === "organizations" && props.filterStatus.text) || "",
             },
-            fetchPolicy: "cache-and-network"
+            fetchPolicy: "cache-and-network",
+            errorPolicy: "all"
           };
         }
       }),
@@ -516,7 +545,8 @@ export default withRouter(
                 },filters) : filters,
               filter: (props.filterStatus && props.filterStatus.entityType === "members" && props.filterStatus.text) || "",
             },
-            fetchPolicy: "cache-and-network"
+            fetchPolicy: "cache-and-network",
+            errorPolicy: "all"
           };
         }
       })
