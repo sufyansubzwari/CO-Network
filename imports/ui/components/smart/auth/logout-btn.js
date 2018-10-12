@@ -3,13 +3,25 @@ import React from "react";
 import PropTypes from "prop-types";
 import { withApollo } from "react-apollo";
 import MaterialIcon from "react-material-iconic-font";
-import Button from "../../Navbar/SideBarLink";
+import { Button } from "btech-base-forms-component";
+import styled from "styled-components";
 //------------------------------------------------------------------------------
 // COMPONENT:
 //------------------------------------------------------------------------------
+
+const SLogout = styled(Button)`
+  opacity: 0.5;
+
+  :hover {
+    opacity: 1;
+  }
+`;
+
 const LogoutBtn = ({ client, btnType, disabled, onLogoutHook }) => (
-  <Button
+  <SLogout
+    secondary
     pointer
+    height={"28px"}
     onClick={evt => {
       if (evt) {
         evt.preventDefault();
@@ -26,7 +38,7 @@ const LogoutBtn = ({ client, btnType, disabled, onLogoutHook }) => (
       <MaterialIcon type={"square-right"} rotate={180} />
     </span>{" "}
     Log Out
-  </Button>
+  </SLogout>
 );
 
 LogoutBtn.propTypes = {
