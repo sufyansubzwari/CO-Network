@@ -49,7 +49,7 @@ const SLayout = styled(Layout)`
   z-index: 1;
   width: 100%;
   height: 68px;
-  
+
   ${mixins.media.desktop`
     position: sticky;
     height: 66px;
@@ -100,14 +100,6 @@ const SPreviewContainer = styled(Container)`
   @media (min-width: 86em) {
     zoom: 100%;
     padding: 25px 75px;
-  }
-
-  > div > div {
-    position: relative !important;
-
-    ${mixins.media.desktop`
-      position: absolute;
-    `};
   }
 `;
 

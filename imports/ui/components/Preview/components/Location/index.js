@@ -33,7 +33,7 @@ class Location extends React.Component {
   }
 
   render() {
-    return (
+    return this.props.location ? (
       <ThemeProvider theme={theme}>
         <STitle {...this.props}>
           {this.props.location
@@ -41,7 +41,7 @@ class Location extends React.Component {
             : this.props.children}
         </STitle>
       </ThemeProvider>
-    );
+    ) : null;
   }
 }
 
