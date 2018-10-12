@@ -17,6 +17,10 @@ type Query {
     notification(_id: String): Notifications
 }
 
+type Subscription {
+    subNotifications(limit: Int, notifications: NotificationsInput): [Notifications]
+}
+
 input NotificationsInput {
     _id: ID
     title: String

@@ -132,7 +132,7 @@ class NotificationsService {
 
   static notifyUser = (userId, action, entityId, entity, title) => {
     console.log("Action => notifyUser");
-    const user = Users.service.getUser({ _id: userId });
+    const user = Users.service.getUser({ _id: entityId });
     Notifications.collection.insert({
       action: action,
       owner: userId,

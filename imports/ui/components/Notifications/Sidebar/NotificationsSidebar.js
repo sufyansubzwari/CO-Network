@@ -3,9 +3,10 @@ import { cleanFilters, setFilters } from "../../../actions/SideBarActions";
 import { connect } from "react-redux";
 import Notification from "./Notification";
 import NotificationContainer from "./NotificationContainer";
-import { GetNotifications } from "../../../apollo-client/notifications";
-import { Query } from "react-apollo";
+import { GetNotifications, OnNotifications } from "../../../apollo-client/notifications";
+import { Query, Subscription } from "react-apollo";
 import { Meteor } from "meteor/meteor";
+import moment from "moment";
 
 class NotificationsSidebar extends React.Component {
   constructor(props) {
@@ -42,31 +43,30 @@ class NotificationsSidebar extends React.Component {
         onClose={() => this.props.onClose && this.props.onClose()}
         onClear={this.handleClear}
       >
-        <Query
-          query={GetNotifications}
+        <Subscription
           variables={{ notifications: { owner: Meteor.userId() } }}
           fetchPolicy={"cache-and-network"}
-          pollInterval={10000}
+          subscription={OnNotifications}
         >
           {({ loading, error, data }) => {
             if (loading) return <div />;
             if (error) return <div>Error</div>;
             return (
               data &&
-              data.notifications &&
-              data.notifications.map((not, index) => (
+              data.subNotifications &&
+              data.subNotifications.map((not, index) => (
                 <Notification
                   key={index}
                   title={not.title}
                   description={not.message}
                   entity={not.entity}
-                  time={not.createdAt}
+                  time={moment(not.createdAt).format("hh:mm")}
                   onClick={() => console.log("notification clicked: " + index)}
                 />
               ))
             );
           }}
-        </Query>
+        </Subscription>
       </NotificationContainer>
     );
   }

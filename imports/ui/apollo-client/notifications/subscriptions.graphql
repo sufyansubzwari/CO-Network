@@ -1,0 +1,15 @@
+subscription OnNotifications($notifications: NotificationsInput) {
+    subNotifications(notifications: $notifications) {
+        _id
+        title
+        message
+        owner{
+            _id
+        }
+        action
+        entity
+        entityId
+        viewed
+        createdAt
+    }
+}
