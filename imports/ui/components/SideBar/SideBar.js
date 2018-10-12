@@ -73,28 +73,29 @@ class SideBar extends Component {
           }
         />
       );
-    } else if(this.props.isNotificationsAction){
-        return (
-            <NotificationsSidebar
-                onClose={() =>
-                    this.props.toggleSideBar && this.props.toggleSideBar(false)
-                }
-            />);
-    }
-    else if(this.props.isMessagesAction){
-        return (
-            <MessagesSideBar
-                onClose={() =>
-                    this.props.toggleSideBar && this.props.toggleSideBar(false)
-                }
-            />);
-    }
-    else {
+    } else if (this.props.isNotificationsAction) {
+      return (
+        <NotificationsSidebar
+          onClose={() =>
+            this.props.toggleSideBar && this.props.toggleSideBar(false)
+          }
+        />
+      );
+    } else if (this.props.isMessagesAction) {
+      return (
+        <MessagesSideBar
+          onClose={() =>
+            this.props.toggleSideBar && this.props.toggleSideBar(false)
+          }
+        />
+      );
+    } else {
       const typeEntity = this.props.filterEntityType || "events";
       switch (typeEntity.toLowerCase()) {
         case "events":
           return (
             <EventsFilters
+              {...this.props}
               onClose={() =>
                 this.props.toggleSideBar && this.props.toggleSideBar(false)
               }
@@ -103,6 +104,7 @@ class SideBar extends Component {
         case "jobs":
           return (
             <JobsFilters
+              {...this.props}
               onClose={() =>
                 this.props.toggleSideBar && this.props.toggleSideBar(false)
               }
@@ -119,6 +121,7 @@ class SideBar extends Component {
         case "members":
           return (
             <MembersFilters
+              {...this.props}
               onClose={() =>
                 this.props.toggleSideBar && this.props.toggleSideBar(false)
               }
@@ -127,6 +130,7 @@ class SideBar extends Component {
         case "colloquiums":
           return (
             <ColloquiumFilters
+              {...this.props}
               onClose={() =>
                 this.props.toggleSideBar && this.props.toggleSideBar(false)
               }
@@ -166,7 +170,7 @@ const mapStateToProps = state => {
     isAddAction: sideBarStatus ? sideBarStatus.isAdd : false,
     filterEntityType: sideBarEntity ? sideBarEntity.entityType : null,
     isProfileAction: sideBarStatus ? sideBarStatus.profile : false,
-    isNotificationsAction: sideBarStatus ? sideBarStatus.notifications: false,
+    isNotificationsAction: sideBarStatus ? sideBarStatus.notifications : false,
     isMessagesAction: sideBarStatus ? sideBarStatus.messages : false
   };
 };

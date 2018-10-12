@@ -121,6 +121,7 @@ class FiltersContainer extends Component {
                 if (error) return <div>Error</div>;
                 return (
                   <MLTagsInput
+                    autoFocus={!this.props.isMobile}
                     iconClass={"arrow-forward"}
                     inputPlaceholder={"Discover"}
                     getAddedOptions={value => this.onSearchTags(value)}

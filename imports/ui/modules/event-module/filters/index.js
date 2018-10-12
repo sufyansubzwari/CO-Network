@@ -149,6 +149,7 @@ class EventsFilters extends React.Component {
   render() {
     return (
       <FiltersContainer
+        {...this.props}
         onSearchAction={(value, tags) => this.onSearch(value, tags)}
         onClose={() => this.props.onClose && this.props.onClose()}
       >
