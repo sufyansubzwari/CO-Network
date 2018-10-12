@@ -113,7 +113,7 @@ MlSelectTag.propTypes = {
   isSearchable: PropsTypes.bool,
   active: PropsTypes.bool,
   selectOptions: PropsTypes.array,
-  inputValue: PropsTypes.inputValue,
+  inputValue: PropsTypes.string,
   tags: PropsTypes.array,
   tagsCloseable: PropsTypes.bool,
   tagsIcon: PropsTypes.string,
