@@ -114,7 +114,6 @@ class FirstStep extends React.Component {
             model={this.state.organization.place}
             name={"location"}
             placeholder={"Location"}
-            isGeoLocationAvailable={true}
             onChange={(model, name, value) =>
               this.notifyParentLocation(model, name, value)
             }
