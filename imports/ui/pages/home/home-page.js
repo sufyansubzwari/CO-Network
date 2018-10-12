@@ -35,15 +35,6 @@ const SHomeActions = styled(Container)`
   z-index: 2;
 `;
 
-const SHomeNavigationActions = styled(Container)`
-  text-align: center;
-`;
-
-const SHomeMessage = styled(Container)`
-  text-align: center;
-  font-size: 12px;
-`;
-
 const SBlackTitle = styled.span`
   color: black;
 
@@ -95,16 +86,25 @@ class HomePage extends Component {
   onChangeZoom(isPlus) {
     const st = this.state.zoomStep;
     const newZoom = isPlus ? this.state.zoomMap + st : this.state.zoomMap - st;
-    if (newZoom > 0)
-      this.setState({ zoomMap: newZoom });
+    if (newZoom > 0) this.setState({ zoomMap: newZoom });
   }
 
   render() {
     const isAuthenticated = this.props.curUser;
     return (
       <Container fullY relative>
-        <MapBackGround zoomMap={this.state.zoomMap} />
-        <SHomeActions mdMaxW={"350px"} lgMaxW={"350px"} relative fullY>
+        <MapBackGround
+          zoomMap={this.state.zoomMap}
+          isMobile={this.props.isMobile}
+        />
+        <SHomeActions
+          mdMaxW={"350px"}
+          lgMaxW={"350px"}
+          relative
+          fullY
+          hide
+          mdShow
+        >
           <Layout
             paddingX={"50px"}
             paddingY={"30px"}
@@ -122,32 +122,11 @@ class HomePage extends Component {
                   <SBlackTitle> Collaborate</SBlackTitle>
                   <SBorderedTitle>Digitally</SBorderedTitle>
                 </SPageTitle>
-                <SHomeNavigationActions mdHide>
-                  <HButtonGroup rows={[3, 2, 3]} gap={8} rowGap={-2}>
-                    {navs.map((item, key) => (
-                      <HNavItem
-                        key={key}
-                        {...item}
-                        gaps={15}
-                        itemOptions={{ title: { hide: true, mdShow: true } }}
-                      />
-                    ))}
-                  </HButtonGroup>
-                </SHomeNavigationActions>
-                <SHomeMessage mdHide>
-                  Lorem ipsum dolor sit amet consectetur adipisicing
-                </SHomeMessage>
                 <LoginButtons
                   show={!isAuthenticated}
                   onSelect={service => this.processAuthRequest(service)}
                 />
               </Layout>
-            </Container>
-            <Container hide mdShow>
-              <ZoomButtons
-                onLess={() => this.onChangeZoom(false)}
-                onPlus={() => this.onChangeZoom(true)}
-              />
             </Container>
           </Layout>
         </SHomeActions>

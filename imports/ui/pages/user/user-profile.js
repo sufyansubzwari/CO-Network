@@ -112,12 +112,11 @@ class UserProfile extends Component {
   }
 
   onPostAction(createProfile, query) {
-    const isEditMode = this.props.curUser && this.props.curUser._id;
-    if (this.state.formChange)
-      this.setState({
-        formChange: false,
-        redirect: !this.state.formChange || !isEditMode
-      });
+    const isEditMode = true; //this.state.user && this.state.user._id;
+    this.setState({
+      formChange: false,
+      redirect: !this.state.formChange || !isEditMode
+    });
     let profile = Object.assign({}, query);
     //todo: remove when location improvement
     profile.place &&

@@ -71,32 +71,30 @@ class MapBackGround extends Component {
   render() {
     const position = [this.state.lat, this.state.lng];
     return (
-      <Container hide mdShow>
-        <SMapContainer
-          zoomControl={false}
-          attributionControl={false}
-          center={position}
+      <SMapContainer
+        zoomControl={false}
+        attributionControl={false}
+        center={position}
+        detectRetina
+        minZoom={this.state.minZoom}
+        maxZoom={this.state.maxZoom}
+        zoom={this.props.zoomMap || 3}
+      >
+        <TileLayer
           detectRetina
-          minZoom={this.state.minZoom}
-          maxZoom={this.state.maxZoom}
-          zoom={this.props.zoomMap || 3}
+          attribution="&copy; <a href=&quot;http://www.openstreetmap.org/copyright&quot;>OpenStreetMap</a> &copy; <a href=&quot;http://cartodb.com/attributions&quot;>CartoDB</a>"
+          subdomains="abcd"
+          maxZoom={18}
+          url="https://cartodb-basemaps-{s}.global.ssl.fastly.net/dark_nolabels/{z}/{x}/{y}{r}.png"
+        />
+        <MarkerClusterGroup
+          iconCreateFunction={this.createClusterCustomIcon}
+          showCoverageOnHover={false}
+          spiderfyDistanceMultiplier={2}
         >
-          <TileLayer
-            detectRetina
-            attribution="&copy; <a href=&quot;http://www.openstreetmap.org/copyright&quot;>OpenStreetMap</a> &copy; <a href=&quot;http://cartodb.com/attributions&quot;>CartoDB</a>"
-            subdomains="abcd"
-            maxZoom={18}
-            url="https://cartodb-basemaps-{s}.global.ssl.fastly.net/dark_nolabels/{z}/{x}/{y}{r}.png"
-          />
-          <MarkerClusterGroup
-            iconCreateFunction={this.createClusterCustomIcon}
-            showCoverageOnHover={false}
-            spiderfyDistanceMultiplier={2}
-          >
-            {this.renderPlaces()}
-          </MarkerClusterGroup>
-        </SMapContainer>
-      </Container>
+          {this.renderPlaces()}
+        </MarkerClusterGroup>
+      </SMapContainer>
     );
   }
 }
