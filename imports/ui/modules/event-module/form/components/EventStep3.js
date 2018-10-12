@@ -89,7 +89,6 @@ class EventStep3 extends Component {
             name={"location"}
             model={this.state.event.place}
             placeholder={"Location"}
-            isGeoLocationAvailable={true}
             onChange={(model, name, value) =>
               this.notifyParentLocation(model, name, value)
             }

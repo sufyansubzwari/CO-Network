@@ -139,7 +139,6 @@ class MembersFilters extends React.Component {
             name={"location"}
             model={this.state}
             placeholder={"Location"}
-            isGeoLocationAvailable={true}
             onChange={this.notifyParentLocation.bind(this)}
           />
           <Layout

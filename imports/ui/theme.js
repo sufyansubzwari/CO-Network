@@ -110,7 +110,8 @@ const preview = {
     family: "Roboto Mono",
     size: "14px",
     lineheight: "initial",
-    color: "#2b2b2b"
+    color: "#2b2b2b",
+    colorIcon: color.primary
   },
   social: {
     size: "15px",
@@ -179,14 +180,14 @@ const texts = {
     titleFamily: "Roboto Mono",
     titleSize: "14px",
     titleLineHeight: "24px",
-    titleWeight: "600",
+    titleWeight: "600"
   },
   fontFamily: "Roboto Mono",
   textColor: "#2b2b2b",
   textFamily: "Roboto Mono",
   textSize: "12px",
   textLineHeight: "14px",
-  textWeight: "300",
+  textWeight: "300"
 };
 
 const font = {
