@@ -3,68 +3,16 @@ import { cleanFilters, setFilters } from "../../../actions/SideBarActions";
 import { connect } from "react-redux";
 import Notification from "./Notification";
 import NotificationContainer from "./NotificationContainer";
+import { GetNotifications } from "../../../apollo-client/notifications";
+import { Query } from "react-apollo";
+import { Meteor } from "meteor/meteor";
 
 class NotificationsSidebar extends React.Component {
   constructor(props) {
     super(props);
 
     this.state = {
-      notifications: [
-        {
-          title: "Data Science Professional",
-          description: "Lorem ipsum dolor nostra, per inceptos himenaeos.",
-          entity: "ML Society",
-          time: new Date().toLocaleTimeString([], {
-            hour: "2-digit",
-            minute: "2-digit"
-          })
-        },
-        {
-          title: "Data Science Professional",
-          description: "Lorem ipsum dolor nostra, per inceptos himenaeos.",
-          entity: "ML Society",
-          time: new Date().toLocaleTimeString([], {
-            hour: "2-digit",
-            minute: "2-digit"
-          })
-        },
-        {
-          title: "Data Science Professional",
-          description: "Lorem ipsum dolor nostra, per inceptos himenaeos.",
-          entity: "ML Society",
-          time: new Date().toLocaleTimeString([], {
-            hour: "2-digit",
-            minute: "2-digit"
-          })
-        },
-        {
-          title: "Data Science Professional",
-          description: "Lorem ipsum dolor nostra, per inceptos himenaeos.",
-          entity: "ML Society",
-          time: new Date().toLocaleTimeString([], {
-            hour: "2-digit",
-            minute: "2-digit"
-          })
-        },
-        {
-          title: "Data Science Professional",
-          description: "Lorem ipsum dolor nostra, per inceptos himenaeos.",
-          entity: "ML Society",
-          time: new Date().toLocaleTimeString([], {
-            hour: "2-digit",
-            minute: "2-digit"
-          })
-        },
-        {
-          title: "Data Science Professional",
-          description: "Lorem ipsum dolor nostra, per inceptos himenaeos.",
-          entity: "ML Society",
-          time: new Date().toLocaleTimeString([], {
-            hour: "2-digit",
-            minute: "2-digit"
-          })
-        }
-      ]
+      notifications: []
     };
     this.handleClear = this.handleClear.bind(this);
   }
@@ -94,16 +42,31 @@ class NotificationsSidebar extends React.Component {
         onClose={() => this.props.onClose && this.props.onClose()}
         onClear={this.handleClear}
       >
-        {this.state.notifications.map((not, index) => (
-          <Notification
-            key={index}
-            title={not.title}
-            description={not.description}
-            entity={not.entity}
-            time={not.time}
-            onClick={() => console.log("notification clicked: " + index)}
-          />
-        ))}
+        <Query
+          query={GetNotifications}
+          variables={{ notifications: { owner: Meteor.userId() } }}
+          fetchPolicy={"cache-and-network"}
+          pollInterval={10000}
+        >
+          {({ loading, error, data }) => {
+            if (loading) return <div />;
+            if (error) return <div>Error</div>;
+            return (
+              data &&
+              data.notifications &&
+              data.notifications.map((not, index) => (
+                <Notification
+                  key={index}
+                  title={not.title}
+                  description={not.message}
+                  entity={not.entity}
+                  time={not.createdAt}
+                  onClick={() => console.log("notification clicked: " + index)}
+                />
+              ))
+            );
+          }}
+        </Query>
       </NotificationContainer>
     );
   }

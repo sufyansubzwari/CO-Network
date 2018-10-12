@@ -6,6 +6,9 @@ type Notifications {
     message: String
     owner: User!
     action: String
+    entity: String
+    entityId: String
+    createdAt: Date
     viewed: Boolean
 }
 
@@ -20,6 +23,8 @@ input NotificationsInput {
     message: String
     owner: String
     action: String
+    entity: String
+    entityId: String
     viewed: Boolean
 }
 
