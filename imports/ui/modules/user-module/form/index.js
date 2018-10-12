@@ -1,11 +1,11 @@
 import React, { Component } from "react";
 import {
-  FirstStep,
-  SecondStep,
-  ThirdStep,
-  FourthStep,
   FifthStep,
-  SixthStep
+  FirstStep,
+  FourthStep,
+  SecondStep,
+  SixthStep,
+  ThirdStep
 } from "./Steps/index";
 import { MlWizardForm, WizardStepForm } from "btech-base-forms-component";
 import PropTypes from "prop-types";
@@ -55,7 +55,8 @@ class UserForm extends Component {
         }
         editMode={this.props.curUser && this.props.curUser._id}
         edited={this.props.formChange}
-        radioColor={'#000000'}
+        radioColor={"#000000"}
+        onBackAction={() => this.props.onCancel && this.props.onCancel()}
         onCancel={() => this.props.onCancel && this.props.onCancel()}
         showProgress
         inactiveColor={"#A0A0A0"}

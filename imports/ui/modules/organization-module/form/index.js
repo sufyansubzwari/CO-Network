@@ -67,6 +67,7 @@ class OrganizationForm extends React.Component {
         editMode={this.state.organization && this.state.organization._id}
         edited={this.props.formChange}
         radioColor={"#000000"}
+        onBackAction={() => this.props.onCancel && this.props.onCancel()}
         onCancel={() => this.props.onCancel && this.props.onCancel()}
       >
         <WizardStepForm title={"Details"}>

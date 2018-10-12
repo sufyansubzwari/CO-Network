@@ -20,7 +20,7 @@ const Header = styled(Container)`
 
 const SBottomSvg = styled(Container)`
   position: absolute;
-  bottom: 0px;
+  bottom: -1px;
 
   ${mixins.media.desktop`
     bottom: -2px;

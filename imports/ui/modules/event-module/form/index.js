@@ -87,6 +87,7 @@ class EventForm extends Component {
         title={"Post a Event"}
         onFinish={() => this.props.onFinish && this.props.onFinish(event)}
         showProgress
+        onBackAction={() => this.props.onCancel && this.props.onCancel()}
         inactiveColor={"#A0A0A0"}
         editMode={this.state.event && this.state.event._id}
         edited={this.props.formChange}
