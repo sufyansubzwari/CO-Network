@@ -12,6 +12,7 @@ import { EVENT_TYPE } from "../../../../constants";
 import { Query } from "react-apollo";
 import { GetTags as tags } from "../../../../apollo-client/tag";
 import { MLTagsInput, FormMainLayout } from "../../../../../ui/components";
+import moment from "moment";
 
 /**
  * @module Event
@@ -20,7 +21,7 @@ import { MLTagsInput, FormMainLayout } from "../../../../../ui/components";
 class EventStep1 extends Component {
   constructor(props) {
     super(props);
-    this.dateFormat = "MM/DD/YYYY HH:mm";
+    this.dateFormat = "MM/DD/YYYY HH:mm A";
     this.state = {
       event: this.props.data,
       category: EVENT_TYPE
@@ -147,6 +148,7 @@ class EventStep1 extends Component {
         <Container>
           <DatePickerRange
             required
+            minDate={moment()}
             labelText={"Dates"}
             reverse={true}
             placeholderStartDate={"Start Date"}
@@ -200,7 +202,7 @@ class EventStep1 extends Component {
                       />
                       <Container mt={"10px"}>
                         <TagList
-                          tags={this.tagsSuggested(data.tags)}
+                          tags={this.tagsSuggested(data.tags.filter(tag => this.state.category.findIndex(item => item.label === tag.label) === -1))}
                           onSelect={(event, tag, index) => {
                             if (!tag.active) {
                               delete tag.active;

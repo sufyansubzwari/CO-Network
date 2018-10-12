@@ -12,6 +12,7 @@ const TitleCardContainer = Styled.div`
   font-family: Helvetica Neue LT Std;
   font-size: 14px;
   font-weight: bold;
+  color: ${props => props.isActive ? '#ffffff' : "#000000"};    
   
   ${mixins.media.desktop`
     font-size: 18px;
@@ -20,6 +21,7 @@ const TitleCardContainer = Styled.div`
 
 const SKeyContainer = Styled.span`
   font-size: 12px;
+  color: ${props => props.isActive ? '#ffffff' : "#000000"};
   
   ${mixins.media.desktop`
     font-size: 14px;
@@ -30,6 +32,7 @@ const SKeyContainer = Styled.span`
 const SIconContainer = Styled.span`
   font-size: 12px;
   margin-right: 5px;
+  color: ${props => props.isActive ? '#ffffff' : "#000000"};
   
   ${mixins.media.desktop`
     font-size: 14px;
@@ -42,6 +45,7 @@ const SubTitleCardContainer = Styled.div`
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+  color: ${props => props.isActive ? '#ffffff' : "#000000"};
   
   ${mixins.media.desktop`
     font-size: 14px;
@@ -50,6 +54,10 @@ const SubTitleCardContainer = Styled.div`
 
 const SMLCard = Styled(Card)`
   line-height: inherit;
+  
+  :hover {
+    background: red;
+  }
 `;
 
 const EmptyTagsContainer = Styled.div`
@@ -73,6 +81,7 @@ const NullImageContainer = Styled.div`
 `;
 
 const SCardContainer = Styled(Container)`
+
   zoom: 100%;
   cursor: pointer;
   
@@ -138,10 +147,10 @@ class CardItem extends Component {
       : element.icon;
     return (
       <Container key={index} inLine mr={{ xs: "5px", md: "15px" }}>
-        <SIconContainer>
+        <SIconContainer isActive={this.props.isActive}>
           <MaterialIcon type={iconToShow} />
         </SIconContainer>
-        <SKeyContainer>{valueToShow}</SKeyContainer>
+        <SKeyContainer isActive={this.props.isActive}>{valueToShow}</SKeyContainer>
       </Container>
     );
   }
@@ -179,14 +188,14 @@ class CardItem extends Component {
           </Container>
           <Container>
             <Layout customTemplateRows={"1fr"}>
-              <TitleCardContainer>
+              <TitleCardContainer isActive={this.props.isActive}>
                 {this.props.title || "No title"}
               </TitleCardContainer>
             </Layout>
           </Container>
           <Container>
             <Layout customTemplateRows={"1fr"}>
-              <SubTitleCardContainer>
+              <SubTitleCardContainer isActive={this.props.isActive}>
                 {this.props.subTitle || "No description"}
               </SubTitleCardContainer>
             </Layout>
@@ -207,6 +216,9 @@ class CardItem extends Component {
                 event.preventDefault();
                 this.props.onSelectTag && this.props.onSelectTag(tag, index);
               }}
+              backgroundTagColor={this.props.isActive ? "#000000" : null}
+              borderColor={"#F92672"}
+              activeColor={this.props.isActive ? "white" : "black"}
             />
           ) : (
             <EmptyTagsContainer />
@@ -243,7 +255,8 @@ class CardItem extends Component {
     return (
       <SCardContainer>
         <SMLCard
-          background={"white"}
+          className={"card"}
+          background={this.props.isActive ? "#000000" : "white"}
           onSelect={() =>
             this.props.onSelect && this.props.onSelect({ ...this.props.data })
           }
