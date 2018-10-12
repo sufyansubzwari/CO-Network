@@ -17,6 +17,7 @@ export { default as FeedBacks } from './feedBack';
 export { default as Followers } from './followers';
 export { default as Followings } from './followings';
 export { default as StripeCustomer } from './stripeCustomer';
+export { default as Notifications } from './notifications';
 // export { default as Messages } from './messages';
 export { default as Utils } from './utils';
 export { default as Constants } from './constants';

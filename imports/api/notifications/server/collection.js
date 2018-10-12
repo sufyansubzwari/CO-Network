@@ -51,9 +51,12 @@ Notifications.schema = new SimpleSchema({
     label: 'The action that generate the notification.',
   },
   entity: {
-    type: Object,
+    type: String,
     label: 'The entity type that generate the notification.',
-    blackbox: true,
+  },
+  entityId: {
+    type: String,
+    label: 'The entity id that generate the notification.',
   },
   viewed: {
     type: Boolean,

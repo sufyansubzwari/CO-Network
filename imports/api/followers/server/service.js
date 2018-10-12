@@ -1,6 +1,7 @@
 import Followers from "../index";
 import Following from "../../followings/index";
 import { Meteor } from "meteor/meteor";
+import Notifications from "../../notifications";
 
 /**
  * @class FollowersService
@@ -48,11 +49,13 @@ class FollowersService {
           entity: data.entity,
           followings: [data.entityId]
         });
+        Notifications.service.generateNotification("FOLLOW", data.entityId, data.entity, userId);
       } else {
         Following.collection.update(
           { entityId: userId, entity: data.entity },
           { $addToSet: { followings: data.entityId } }
         );
+        Notifications.service.generateNotification("FOLLOW", data.entityId, data.entity, userId);
       }
     } catch (exception) {
       throw new Meteor.Error(

@@ -1,6 +1,5 @@
 import Followings from "../index";
 import * as _ from "lodash";
-import Notifications from "../../notifications";
 
 /**
  * @class FollowingsService
@@ -16,7 +15,6 @@ class FollowingsService {
   static following = async data => {
     if (_.isUndefined(data._id)) {
       const id = Followings.collection.insert(data);
-      Notifications.service.generateNotification();
       return Followings.collection.findOne(id);
     } else {
       let id = data._id;
