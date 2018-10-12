@@ -10,6 +10,7 @@ import Messages from "../Messages/Messages";
 import { insertMessage } from "../Messages/Service/service";
 import { Scrollbars } from "react-custom-scrollbars";
 import { Session } from "meteor/session";
+import { Emoji } from 'emoji-mart'
 
 const ResponsiveContainer = styled(Layout)`
   margin-left: -100%;
@@ -86,10 +87,12 @@ export default class ChatPreview extends Preview {
     super(props);
     this.state = {
       limit: 10,
-      textMessage: ""
+      textMessage: "",
+      showEmoji: false
     };
     this.scroll = null;
     this.messagesLength = 0;
+    this.emojiClicked = this.emojiClicked.bind(this)
   }
 
   onKeyPress(event) {
@@ -122,6 +125,22 @@ export default class ChatPreview extends Preview {
         Session.set("limitMessage", this.state.limit);
       });
     }
+  }
+
+  handleEmoji(emoji){
+    if(emoji && emoji.native){
+      let message = this.state.textMessage;
+      message = message + emoji.native;
+      this.setState({
+          textMessage: message
+      })
+    }
+  }
+
+  emojiClicked(){
+    this.setState({
+        showEmoji: !this.state.showEmoji
+    })
   }
 
   getState() {
@@ -216,10 +235,13 @@ export default class ChatPreview extends Preview {
         </Scrollbars>
         <Container hide={!this.props.curUser}>
           <ReplyBox
+            showEmojis={this.state.showEmoji}
             placeholder={"Type Something"}
             name={"textMessage"}
             model={this.state}
             onKeyPress={event => this.onKeyPress(event)}
+            onEmojiSelect={(emoji) => this.handleEmoji(emoji)}
+            handleEmojiClicked={this.emojiClicked}
           />
         </Container>
       </PreviewContainer>
