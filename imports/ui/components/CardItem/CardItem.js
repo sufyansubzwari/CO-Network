@@ -217,7 +217,7 @@ class CardItem extends Component {
                 this.props.onSelectTag && this.props.onSelectTag(tag, index);
               }}
               backgroundTagColor={this.props.isActive ? "#000000" : null}
-              borderColor={this.props.isActive ? "red" : null}
+              borderColor={"#F92672"}
               activeColor={this.props.isActive ? "white" : "black"}
             />
           ) : (
@@ -256,7 +256,7 @@ class CardItem extends Component {
       <SCardContainer>
         <SMLCard
           className={"card"}
-          background={this.props.isActive ? "black" : "white"}
+          background={this.props.isActive ? "#000000" : "white"}
           onSelect={() =>
             this.props.onSelect && this.props.onSelect({ ...this.props.data })
           }
