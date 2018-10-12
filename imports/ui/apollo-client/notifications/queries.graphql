@@ -1,0 +1,15 @@
+query GetNotifications($notifications: NotificationsInput) {
+    notifications(notifications: $notifications) {
+        _id
+        title
+        message
+        owner{
+            _id
+        }
+        action
+        entity
+        entityId
+        viewed
+        createdAt
+    }
+}
