@@ -81,9 +81,10 @@ class ListEvents extends Component {
         actualDate: new Date()
       };
       if (view.user && view.user !== item.owner._id)
-        viewsUpdate({ variables: { view: view } }).then(() => {
-          this.setState({ selectedItem: item, selectedIndex: key }, () =>
-            this.reFetchQuery()
+        viewsUpdate({ variables: { view: view } }).then(result => {
+          this.setState(
+            { selectedItem: item, selectedIndex: key },
+            () => result.data.viewUpdate && this.reFetchQuery()
           );
         });
       else this.setState({ selectedItem: item, selectedIndex: key });

@@ -5,6 +5,7 @@ import Org from "../../organizations";
 import Jobs from "../../jobs";
 import Events from "../../events";
 import Colloquiums from "../../colloquiums";
+import moment from "moment";
 
 /**
  * @class ViewsCount Service
@@ -28,9 +29,8 @@ class ViewsCountService {
       const id = ViewsCount.collection.insert(data);
       ViewsCountService.updateEntity(data.entityViewed, data.entityType);
       return ViewsCount.collection.findOne(id);
-    } else if (data.actualDate.getDate() + 1 - view.lastView >= 24) {
-      let id = data._id || tags._id;
-      data._id ? delete data._id : null;
+    } else if (moment(data.actualDate).diff(moment(view.lastView), 'hours') >= 24) {
+      let id = view._id;
       data.lastView = data.actualDate;
       delete data.actualDate;
       await ViewsCount.collection.update(id, { $set: data });
