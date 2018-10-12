@@ -1,5 +1,6 @@
 import Events from "../index";
 import * as _ from "lodash";
+import Notifications from "../../notifications";
 
 /**
  * @class Event Service
@@ -15,11 +16,13 @@ class EventsService {
   static event = async data => {
     if (_.isUndefined(data._id)) {
       const id = Events.collection.insert(data);
+      Notifications.service.generateNotification("POST", data.owner, data.entity, id);
       return Events.collection.findOne(id);
     } else {
       let id = data._id;
       delete data._id;
       await Events.collection.update(id, { $set: data });
+      Notifications.service.generateNotification("UPDATE", data.owner, data.entity, id);
       return Events.collection.findOne(id);
     }
   };

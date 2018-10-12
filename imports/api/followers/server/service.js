@@ -49,13 +49,13 @@ class FollowersService {
           entity: data.entity,
           followings: [data.entityId]
         });
-        Notifications.service.generateNotification("FOLLOW", userId, data.entity, data.entityId);
+        Notifications.service.generateNotification(data.entity === "USER" ?"FOLLOW" : "FOLLOW_ACTION", userId, data.entity, data.entityId);
       } else {
         Following.collection.update(
           { entityId: userId, entity: data.entity },
           { $addToSet: { followings: data.entityId } }
         );
-        Notifications.service.generateNotification("FOLLOW", userId, data.entity, data.entityId);
+        Notifications.service.generateNotification(data.entity === "USER" ?"FOLLOW" : "FOLLOW_ACTION", userId, data.entity, data.entityId);
       }
     } catch (exception) {
       throw new Meteor.Error(
