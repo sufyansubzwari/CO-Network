@@ -119,7 +119,7 @@ class ApplyJobPreviewBody extends React.Component {
           return ach.type === "Academic Background" ? (
             <Container key={index}>
               <Text header={"Academic Background"} />
-              <Layout templateColumns={3}>
+              <Layout mdRowGap={"15px"} mdTemplateColumns={3}>
                 <Text header={"Institution Name"} text={ach.name} />
                 <Text header={"Area of study"} text={ach.study} />
                 <Text header={"Degree"} text={ach.degree && ach.degree.label} />
@@ -129,7 +129,7 @@ class ApplyJobPreviewBody extends React.Component {
           ) : ach.type === "Audited Courses" ? (
             <Container key={index}>
               <Text header={"Audited Courses"} />
-              <Layout templateColumns={3}>
+              <Layout mdRowGap={"5px"} mdTemplateColumns={3}>
                 <Text header={"Course Name"} text={ach.name} />
                 <Text header={"Link to the Course"} text={ach.link} />
                 <Text header={"Level"} text={ach.level && ach.level.label} />
@@ -141,7 +141,7 @@ class ApplyJobPreviewBody extends React.Component {
           ) : ach.type === "Professional Experience" ? (
             <Container key={index}>
               <Text header={"Professional Experience"} />
-              <Layout templateColumns={3}>
+              <Layout mdRowGap={"5px"} mdTemplateColumns={3}>
                 <Text header={"Organization Name"} text={ach.name} />
                 <Text header={"Position"} text={ach.position} />
                 <Text header={"Level"} text={ach.level && ach.level.label} />
@@ -157,7 +157,7 @@ class ApplyJobPreviewBody extends React.Component {
           ) : ach.type === "Patents" ? (
             <Container key={index}>
               <Text header={"Patent"} />
-              <Layout templateColumns={3}>
+              <Layout mdRowGap={"5px"} mdTemplateColumns={3}>
                 <Text header={"Patent ID"} text={ach.id} />
                 <Text header={"Link to the Patent"} text={ach.link} />
                 <Text header={"Patent Name"} text={ach.name} />
@@ -169,7 +169,7 @@ class ApplyJobPreviewBody extends React.Component {
           ) : ach.type === "Publications" ? (
             <Container key={index}>
               <Text header={"Publications"} />
-              <Layout templateColumns={3}>
+              <Layout mdRowGap={"5px"} mdTemplateColumns={3}>
                 <Text header={"Publication Name"} text={ach.name} />
                 <Text header={"Link to Publication"} text={ach.link} />
                 <Text header={"Year Published"} text={ach.year} />
@@ -183,7 +183,7 @@ class ApplyJobPreviewBody extends React.Component {
         })
       : null;
     return (
-      <Layout rowGap={"15px"}>
+      <Layout mdRowGap={"15px"}>
         <Title text={this.state.user.name + " " + this.state.user.lastName} />
         <Location location={this.state.user.place} />
         {<Social socials={socials} links={website} />}
@@ -191,7 +191,7 @@ class ApplyJobPreviewBody extends React.Component {
         (industry && industry.length) ||
         (curious && curious.length) ? (
           <Container>
-            <Layout templateColumns={2}>
+            <Layout mdRowGap={"15px"} mdTemplateColumns={2}>
               {languages && languages.length ? (
                 <TagsAdd header={"Languages"} tags={languages} />
               ) : null}
@@ -235,7 +235,7 @@ class ApplyJobPreviewBody extends React.Component {
         {lookingfor && lookingfor.length ? (
           <Text header={"Looking For"}>{lookingfor}</Text>
         ) : null}
-        <Layout templateColumns={3}>
+        <Layout mdRowGap={"15px"} mdTemplateColumns={3}>
           {this.state.user.professional &&
           this.state.user.professional.seeking !== undefined ? (
             <Text
@@ -274,7 +274,7 @@ class ApplyJobPreviewBody extends React.Component {
             text={this.state.user.speaker.join ? "Yes" : "No"}
           />
         ) : null}
-        <Layout templateColumns={2}>
+        <Layout mdRowGap={"15px"} mdTemplateColumns={2}>
           {lookingforS && lookingforS.length ? (
             <Text header={"Looking For"}>{lookingforS}</Text>
           ) : null}
@@ -285,7 +285,7 @@ class ApplyJobPreviewBody extends React.Component {
         {topics && topics.length ? (
           <TagsAdd header={"Topics you speak about"} tags={topics} />
         ) : null}
-        <Layout templateColumns={2}>
+        <Layout mdRowGap={"15px"} mdTemplateColumns={2}>
           {preferred && preferred.length ? (
             <Text header={"Preferred Stage"}>{preferred}</Text>
           ) : null}

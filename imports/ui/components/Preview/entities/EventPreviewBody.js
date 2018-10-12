@@ -66,7 +66,7 @@ class EventPreviewBody extends React.Component {
       : [];
 
     return (
-      <Layout rowGap={"10px"}>
+      <Layout mdRowGap={"15px"}>
         <Title text={this.state.event.title} />
         <Dates
           startDate={this.state.event.startDate}
@@ -76,15 +76,12 @@ class EventPreviewBody extends React.Component {
         {this.state.event.description !== "" ? (
           <Text header={"Summary"} text={this.state.event.description} />
         ) : null}
-        <Layout templateColumns={2}>
+        <Layout mdRowGap={"15px"} mdTemplateColumns={2}>
           {categories && categories.length ? (
             <Text header={"Community Event Categories"}>{categories}</Text>
           ) : null}
-          {/*{others && others.length ? (*/}
-            {/*<TagsAdd header={"Other"} tags={others} />*/}
-          {/*) : null}*/}
         </Layout>
-        <Layout templateColumns={3}>
+        <Layout mdRowGap={"15px"} mdTemplateColumns={3}>
           {this.state.event.venueName !== "" ? (
             <Text header={"Venue Name"} text={this.state.event.venueName} />
           ) : null}

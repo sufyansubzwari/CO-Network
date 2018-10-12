@@ -1,6 +1,6 @@
 import React from "react";
-import { Layout, Container } from "btech-layout";
-import { Title, Location, Social, Text, TagsAdd } from "../components/index";
+import { Layout } from "btech-layout";
+import { Location, TagsAdd, Text, Title } from "../components/index";
 
 class JobPreviewBody extends React.Component {
   constructor(props) {
@@ -43,13 +43,13 @@ class JobPreviewBody extends React.Component {
       this.state.job.jobExperience.map(exp => <div>{exp.label}</div>);
 
     return (
-      <Layout rowGap={"15px"}>
+      <Layout mdRowGap={"15px"}>
         <Title text={this.state.job.title} />
         <Location location={this.state.job.place} />
         {this.state.job.description !== "" ? (
           <Text header={"Job Description"} text={this.state.job.description} />
         ) : null}
-        <Layout templateColumns={2}>
+        <Layout mdRowGap={"15px"} mdTemplateColumns={2}>
           {jobtype && jobtype.length ? (
             <Text header={"Job Type"}>{jobtype}</Text>
           ) : null}

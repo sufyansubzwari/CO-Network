@@ -1,8 +1,6 @@
 import Preview from "./Preview";
 import TopPreview from "./TopPreview";
 import ChatPreview from "./ChatPreview";
-
-import ColloquiumPreviewBody from "./entities/ColloquiumPreviewBody";
 import ApplyJobPreviewBody from "./entities/ApplyJobPreviewBody";
 import EventPreviewBody from "./entities/EventPreviewBody";
 import JobPreviewBody from "./entities/JobPreviewBody";
@@ -13,7 +11,6 @@ export {
   Preview,
   ChatPreview,
   TopPreview,
-  ColloquiumPreviewBody,
   ApplyJobPreviewBody,
   EventPreviewBody,
   JobPreviewBody,
