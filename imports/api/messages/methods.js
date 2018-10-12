@@ -13,7 +13,8 @@ Meteor.methods({
       receptor: String,
       type: String,
       text: String,
-      attachment: Match.Maybe(String)
+      attachment: Match.Maybe(Array),
+      images: Match.Maybe(Array)
     });
 
     try {

@@ -88,7 +88,9 @@ export default class ChatPreview extends Preview {
     this.state = {
       limit: 10,
       textMessage: "",
-      showEmoji: false
+      showEmoji: false,
+      attachments: [],
+      images: []
     };
     this.scroll = null;
     this.messagesLength = 0;
@@ -110,10 +112,11 @@ export default class ChatPreview extends Preview {
         receptor: this.props.data._id,
         text: text,
         type: this.getState(),
-        attachment: ""
+        attachment: this.state.attachments,
+        images: this.state.images
       },
       res => {
-        if (res === "success") this.setState({ textMessage: "" });
+        if (res === "success") this.setState({ textMessage: "", attachments: [], images: [] });
       }
     );
   }
@@ -147,6 +150,24 @@ export default class ChatPreview extends Preview {
     let state = "public";
     if (this.props.data && !this.props.data.isPublic) state = "private";
     return state;
+  }
+
+  onAttachmentUpload(file){
+    console.log("uploaded the file "+ file)
+    let attach = this.state.attachments;
+    attach.push(file);
+    this.setState({
+        attachments: attach
+    })
+  }
+
+  onImageUpload(file){
+      console.log("uploaded the image "+ file)
+      let imgs = this.state.images;
+      imgs.push(file);
+      this.setState({
+          images: imgs
+      })
   }
 
   renderOptionsNav() {
@@ -242,6 +263,8 @@ export default class ChatPreview extends Preview {
             onKeyPress={event => this.onKeyPress(event)}
             onEmojiSelect={(emoji) => this.handleEmoji(emoji)}
             handleEmojiClicked={this.emojiClicked}
+            getAttachment={(file) => this.onAttachmentUpload(file)}
+            getImage={(file) => this.onImageUpload(file)}
           />
         </Container>
       </PreviewContainer>
