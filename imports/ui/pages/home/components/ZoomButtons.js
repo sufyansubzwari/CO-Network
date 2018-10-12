@@ -77,7 +77,7 @@ const ZoomButtons = function(props) {
           </SLessZoomContainer>
         </Container>
         <STextContainer maxW={"145px"}>
-          Click on bubbles to see the action
+          Click on bubbles to change the zoom
         </STextContainer>
       </Layout>
     </SZoomContainer>
