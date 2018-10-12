@@ -88,8 +88,11 @@ class TopSearcher extends Component {
 
   onCloseTags(e, tag, index) {
     this.state.tags.splice(index, 1);
+
+    let value = this.state.tags.length === 0 && this.state.value === "";
+
     this.setState(
-      { tags: this.state.tags },
+      { tags: this.state.tags, added: !value },
       () =>
         this.props.onSearchAction &&
         this.props.onSearchAction(this.state.value, this.state.tags)
