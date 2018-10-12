@@ -14,7 +14,6 @@ Query.users = (root, { user, filter, limit }, context) => {
   let query = {};
 
   if (user) {
-    user["_id"] = Object.assign({}, user["_id"], { ne: context.userId });
     if (user.location) {
       let loc = Places.service.places({
         "location.address": { in: user.location.map(item => item.address) }

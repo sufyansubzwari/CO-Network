@@ -66,8 +66,12 @@ class ListInnovators extends Component {
     }
     if (
       nextProps.filterStatus &&
-      nextProps.filterStatus.text && nextProps.filterStatus.text !== this.state.filter){
-      this.setState({filter: nextProps.filterStatus.text}, () => this.reFetchQuery());
+      nextProps.filterStatus.text &&
+      nextProps.filterStatus.text !== this.state.filter
+    ) {
+      this.setState({ filter: nextProps.filterStatus.text }, () =>
+        this.reFetchQuery()
+      );
     }
   }
 
@@ -118,7 +122,7 @@ class ListInnovators extends Component {
       count = this.state.organizations.organizations.length;
       entity = "organizations";
     }
-    if (this.state.currentTab.value === "members"){
+    if (this.state.currentTab.value === "members") {
       count = this.state.users.users.length;
       entity = "users";
     }
@@ -311,16 +315,11 @@ class ListInnovators extends Component {
     if (this.state.currentTab.value === "corporations") {
       isLoading =
         !this.props.organizations ||
-        (this.props.organizations.loading &&
-          !this.props.organizations.organizations ||
-          !this.props.organizations.organizations.length);
+        (this.props.organizations && this.props.organizations.loading);
       data = this.props.organizations && this.props.organizations.organizations;
     } else if (this.state.currentTab.value === "members") {
       isLoading =
-        !this.props.users ||
-        (this.props.users.loading &&
-          !this.props.users.users ||
-          !this.props.users.users.length);
+        !this.props.users || (this.props.users && this.props.users.loading);
       data = this.props.users && this.props.users.users;
     }
     return (
@@ -523,8 +522,15 @@ export default withRouter(
             variables: {
               limit: 10,
               organizations:
-                (props.filterStatus && props.filterStatus.entityType === "organizations" && props.filterStatus.filters) || {},
-              filter: (props.filterStatus && props.filterStatus.entityType === "organizations" && props.filterStatus.text) || "",
+                (props.filterStatus &&
+                  props.filterStatus.entityType === "organizations" &&
+                  props.filterStatus.filters) ||
+                {},
+              filter:
+                (props.filterStatus &&
+                  props.filterStatus.entityType === "organizations" &&
+                  props.filterStatus.text) ||
+                ""
             },
             fetchPolicy: "cache-and-network",
             errorPolicy: "all"
@@ -535,15 +541,28 @@ export default withRouter(
         name: "users",
         options: props => {
           const filters =
-            (props.filterStatus && props.filterStatus.entityType === "members" && props.filterStatus.filters) || {};
+            (props.filterStatus &&
+              props.filterStatus.entityType === "members" &&
+              props.filterStatus.filters) ||
+            {};
           return {
             variables: {
               limit: 10,
-              user: props.curUser &&
-                props.curUser._id ? Object.assign({},{
-                  _id: { ne: props.curUser._id }
-                },filters) : filters,
-              filter: (props.filterStatus && props.filterStatus.entityType === "members" && props.filterStatus.text) || "",
+              user:
+                props.curUser && props.curUser._id
+                  ? Object.assign(
+                      {},
+                      {
+                        _id: { ne: props.curUser._id }
+                      },
+                      filters
+                    )
+                  : filters,
+              filter:
+                (props.filterStatus &&
+                  props.filterStatus.entityType === "members" &&
+                  props.filterStatus.text) ||
+                ""
             },
             fetchPolicy: "cache-and-network",
             errorPolicy: "all"
