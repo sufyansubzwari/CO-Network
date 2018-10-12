@@ -106,9 +106,10 @@ class ListInnovators extends Component {
         view.user &&
         ((item.owner && view.user !== item.owner._id) || view.user !== item._id)
       )
-        viewsUpdate({ variables: { view: view } }).then(() => {
-          this.setState({ selectedItem: item, selectedIndex: key }, () =>
-            this.reFetchQuery()
+        viewsUpdate({ variables: { view: view } }).then(result => {
+          this.setState(
+            { selectedItem: item, selectedIndex: key },
+            () => result.data.viewUpdate && this.reFetchQuery()
           );
         });
       else this.setState({ selectedItem: item, selectedIndex: key });
@@ -315,11 +316,17 @@ class ListInnovators extends Component {
     if (this.state.currentTab.value === "corporations") {
       isLoading =
         !this.props.organizations ||
-        (this.props.organizations && this.props.organizations.loading);
+        (this.props.organizations &&
+          this.props.organizations.loading &&
+          (!this.props.organizations.organizations ||
+            !this.props.organizations.organizations.length));
       data = this.props.organizations && this.props.organizations.organizations;
     } else if (this.state.currentTab.value === "members") {
       isLoading =
-        !this.props.users || (this.props.users && this.props.users.loading);
+        !this.props.users ||
+        (this.props.users &&
+          this.props.users.loading &&
+          (!this.props.users.users || !this.props.users.users.length));
       data = this.props.users && this.props.users.users;
     }
     return (
