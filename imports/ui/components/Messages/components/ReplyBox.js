@@ -3,12 +3,30 @@ import PropTypes from "prop-types";
 import { SReplyBox } from "../components/styledComponents";
 import { Layout, Container } from "btech-layout";
 import { TextArea, Button } from "btech-base-forms-component";
+import "emoji-mart/css/emoji-mart.css";
+import { Picker } from "emoji-mart";
+import styled from "styled-components";
+import MaterialIcon from "react-material-iconic-font";
 
 /**
  * @module Data
  * @category Component
  * @description This component is a wrapper for the ReplyBox
  */
+
+const SPicker = styled(Picker)`
+  position: absolute;
+  bottom: 20px;
+  right: 20px;
+  font-family: Roboto Mono;
+  font-size: 12px;
+  zoom: 80%;
+`;
+
+const SSpan = styled.span`
+  cursor: pointer;     
+`;
+
 export const ReplyBox = props => (
   <SReplyBox>
     <Layout mdCustomTemplateRows={"1fr auto"} padding={{ md: "10px" }}>
@@ -35,8 +53,27 @@ export const ReplyBox = props => (
         />
       </Container>
       <Container hide mdShow>
-        <Layout customTemplateColumns={"1fr auto"} mb={"10px"}>
-          <Container />
+        <Layout customTemplateColumns={"1fr auto"} mb={"20px"}>
+          <Layout colGap={'10px'} customTemplateColumns={"auto auto auto 1fr"} style={{ position: "relative" }}>
+              <SSpan><MaterialIcon type={'image-alt'}/></SSpan>
+              <SSpan><MaterialIcon type={'attachment'}/></SSpan>
+              <Container style={{position: 'relative'}}>
+                <SSpan onClick={() => props.handleEmojiClicked && props.handleEmojiClicked()}>
+                  <MaterialIcon type={'mood'} />
+                </SSpan>
+                  {
+                      props.showEmojis ?
+                          <SPicker
+                              showPreview={false}
+                              set={"emojione"}
+                              emoji={"point_up"}
+                              onSelect={(emoji) => props.onEmojiSelect && props.onEmojiSelect(emoji)}
+                              style={{position: 'absolute', bottom: '20px', left: '20px', fontFamily: 'Roboto Mono', fontSize: '12px'}}
+                          /> : null
+                  }
+              </Container>
+            <div/>
+          </Layout>
           <Button
             width={"62px"}
             height={"30px"}
@@ -60,7 +97,10 @@ ReplyBox.propTypes = {
   model: PropTypes.object,
   name: PropTypes.string,
   buttonText: PropTypes.string,
-  onClick: PropTypes.func
+  onClick: PropTypes.func,
+  onEmojiSelect: PropTypes.func,
+  showEmojis: PropTypes.bool,
+    handleEmojiClicked: PropTypes.func
 };
 
 export default ReplyBox;
