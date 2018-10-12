@@ -1,0 +1,29 @@
+# types for Notifications namespace
+
+type Notifications {
+    _id: ID
+    title: String!
+    message: String
+    owner: User!
+    action: String
+    viewed: Boolean
+}
+
+type Query {
+    notifications(limit: Int, notifications: NotificationsInput): [Notifications]
+    notification(_id: String): Notifications
+}
+
+input NotificationsInput {
+    _id: ID
+    title: String
+    message: String
+    owner: String
+    action: String
+    viewed: Boolean
+}
+
+type Mutation {
+    notification(notification: NotificationsInput!): Notifications
+    deleteNotification(_id: String!): Notifications
+}
