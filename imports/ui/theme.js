@@ -131,7 +131,7 @@ const preview = {
     textSize: "12px",
     textLineHeight: "24px",
     textWeight: "300",
-    marginBottom: "1rem",
+    marginBottom: "0.5rem",
     marginRight: "5px"
   },
   background: "#F9F9FB",

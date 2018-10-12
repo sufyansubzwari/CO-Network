@@ -1,6 +1,6 @@
 import React from "react";
 import styled from "styled-components";
-import { Container } from "btech-layout";
+import { Container, mixins } from "btech-layout";
 import PropsTypes from "prop-types";
 
 const STitle = styled.label`

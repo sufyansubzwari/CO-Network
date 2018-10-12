@@ -183,7 +183,7 @@ class UserPreviewBody extends React.Component {
         })
       : null;
     return (
-      <Layout rowGap={"15px"}>
+      <Layout mdRowGap={"15px"}>
         <Title text={this.state.user.name + " " + this.state.user.lastName} />
         <Location location={this.state.user.place} />
         {<Social socials={socials} links={website} />}
@@ -191,7 +191,7 @@ class UserPreviewBody extends React.Component {
         (industry && industry.length) ||
         (curious && curious.length) ? (
           <Container>
-            <Layout templateColumns={2}>
+            <Layout mdTemplateColumns={2} mdRowGap={"15px"}>
               {languages && languages.length ? (
                 <TagsAdd header={"Languages"} tags={languages} />
               ) : null}
@@ -204,8 +204,7 @@ class UserPreviewBody extends React.Component {
             ) : null}
           </Container>
         ) : null}
-        {this.state.user.aboutMe &&
-        this.state.user.aboutMe.yourPassion !== "" ? (
+        {this.state.user.aboutMe && this.state.user.aboutMe.yourPassion ? (
           <Text
             header={"About Me | Passion"}
             text={
@@ -213,8 +212,7 @@ class UserPreviewBody extends React.Component {
             }
           />
         ) : null}
-        {this.state.user.aboutMe &&
-        this.state.user.aboutMe.existingProblem !== "" ? (
+        {this.state.user.aboutMe && this.state.user.aboutMe.existingProblem ? (
           <Text
             header={"What is the most exciting problem you want to solve?"}
             text={
@@ -222,7 +220,7 @@ class UserPreviewBody extends React.Component {
             }
           />
         ) : null}
-        {this.state.user.aboutMe && this.state.user.aboutMe.steps !== "" ? (
+        {this.state.user.aboutMe && this.state.user.aboutMe.steps ? (
           <Text
             header={
               "What steps have you already taken towards achieving this mission?"
@@ -233,7 +231,7 @@ class UserPreviewBody extends React.Component {
         {lookingfor && lookingfor.length ? (
           <Text header={"Looking For"}>{lookingfor}</Text>
         ) : null}
-        <Layout templateColumns={3}>
+        <Layout mdRowGap={"15px"} mdTemplateColumns={3}>
           {this.state.user.professional &&
           this.state.user.professional.seeking !== undefined ? (
             <Text
@@ -272,7 +270,7 @@ class UserPreviewBody extends React.Component {
             text={this.state.user.speaker.join ? "Yes" : "No"}
           />
         ) : null}
-        <Layout templateColumns={2}>
+        <Layout mdRowGap={"15px"} mdTemplateColumns={2}>
           {lookingforS && lookingforS.length ? (
             <Text header={"Looking For"}>{lookingforS}</Text>
           ) : null}
@@ -283,7 +281,7 @@ class UserPreviewBody extends React.Component {
         {topics && topics.length ? (
           <TagsAdd header={"Topics you speak about"} tags={topics} />
         ) : null}
-        <Layout templateColumns={2}>
+        <Layout mdRowGap={"15px"} mdTemplateColumns={2}>
           {preferred && preferred.length ? (
             <Text header={"Preferred Stage"}>{preferred}</Text>
           ) : null}

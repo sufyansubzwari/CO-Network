@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { ItemsList, ListLayout, ChatPreview } from "../../../ui/components";
+import { ChatPreview, ItemsList, ListLayout } from "../../../ui/components";
 import { graphql, Mutation } from "react-apollo";
 import { connect } from "react-redux";
 import { PreviewData } from "../../actions/PreviewActions";
@@ -10,7 +10,6 @@ import {
 } from "../../apollo-client/colloquium";
 import { withRouter } from "react-router-dom";
 import { ViewsCountUpdate } from "../../apollo-client/viewCount";
-import { ColloquiumPreviewBody } from "../../components/Preview";
 import { cleanSearch, onSearchTags } from "../../actions/TopSearchActions";
 
 /**
@@ -118,7 +117,9 @@ class ListColloquiums extends Component {
 
   removeColloquium(deleteColloquium, colloquium) {
     deleteColloquium({ variables: { id: colloquium._id } });
-    this.setState({ selectedItem: null, selectedIndex: key }, () => this.reFetchQuery());
+    this.setState({ selectedItem: null, selectedIndex: key }, () =>
+      this.reFetchQuery()
+    );
   }
 
   editColloquium() {

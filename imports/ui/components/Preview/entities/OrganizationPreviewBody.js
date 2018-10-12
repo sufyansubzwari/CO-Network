@@ -125,106 +125,101 @@ class OrganizationPreviewBody extends React.Component {
         <div key={index}>{item.label}</div>
       ));
 
-    return (
-      <Layout rowGap={"15px"}>
-        {this.state.organization ? (
-          <Container>
-            <Container>
-              <Title text={this.state.organization.name} />
-            </Container>
-            <Container>
-              <Location location={this.state.organization.place} />
-            </Container>
-            <Social socials={socials} />
-            {organizationTypes && organizationTypes.length ? (
-              <Text header={"Organization Type"}>
-                {organizationTypes.map((type, index) => (
-                  <div key={index}>{type.label}</div>
-                ))}
-              </Text>
-            ) : null}
-            <Layout templateColumns={2}>
-              {this.state.organization.contact.email !== "" ? (
-                <Text
-                  header={"Verification Email"}
-                  text={this.state.organization.contact.email}
-                />
-              ) : null}
-              {this.state.organization.contact.phone !== "" ? (
-                <Text
-                  header={"Contact Number"}
-                  text={this.state.organization.contact.phone}
-                />
-              ) : null}
-            </Layout>
-            {this.state.organization.reason.bio ? (
-              <Text
-                header={"Org Bio"}
-                text={this.state.organization.reason.bio}
-              />
-            ) : null}
-            {this.state.organization.reason.vision !== "" ? (
-              <Text
-                header={"Vision | Mission"}
-                text={this.state.organization.reason.vision}
-              />
-            ) : null}
-            {this.state.organization.reason.orgDefine !== "" ? (
-              <Text
-                header={"How does the organization define / measure success?"}
-                text={this.state.organization.reason.orgDefine}
-              />
-            ) : null}
-            {actively && actively.length ? (
-              <Text header={"Does your organization actively"}>{actively}</Text>
-            ) : null}
-            {description && description.length ? (
-              <TagsAdd
-                header={"Tags that best describe your organization"}
-                tags={description}
-              />
-            ) : null}
-            <Layout templateColumns={2}>
-              {this.state.organization.tech.salaryRange &&
-              (this.state.organization.tech.salaryRange.min !== "" ||
-                this.state.organization.tech.salaryRange.max !== "") ? (
-                <Text
-                  header={"Salary Range"}
-                  text={`${
-                    this.state.organization.tech.salaryRange.min !== null
-                      ? this.state.organization.tech.salaryRange.min
-                      : null
-                  } - ${
-                    this.state.organization.tech.salaryRange.max !== null
-                      ? this.state.organization.tech.salaryRange.max
-                      : null
-                  }`}
-                />
-              ) : null}
-              {jobType && jobType.length ? (
-                <Text header={"Job Type"}>
-                  {jobType.map((job, index) => (
-                    <div key={index}>{job && job.label}</div>
-                  ))}
-                </Text>
-              ) : null}
-            </Layout>
-            <Layout templateColumns={2}>
-              {stacks && stacks.length ? (
-                <TagsAdd
-                  header={"Languages, Libraries, Skills Tags"}
-                  tags={stacks}
-                />
-              ) : null}
-              {industry && industry.length ? (
-                <TagsAdd header={"Industry | Sector"} tags={industry} />
-              ) : null}
-            </Layout>
-            {products}
-            {media}
-          </Container>
+    return this.state.organization ? (
+      <Layout mdRowGap={"15px"}>
+        <Container>
+          <Title text={this.state.organization.name} />
+        </Container>
+        <Container>
+          <Location location={this.state.organization.place} />
+        </Container>
+        <Social socials={socials} />
+        {organizationTypes && organizationTypes.length ? (
+          <Text header={"Organization Type"}>
+            {organizationTypes.map((type, index) => (
+              <div key={index}>{type.label}</div>
+            ))}
+          </Text>
         ) : null}
+        <Layout mdRowGap={"15px"} mdTemplateColumns={2}>
+          {this.state.organization.contact.email !== "" ? (
+            <Text
+              header={"Verification Email"}
+              text={this.state.organization.contact.email}
+            />
+          ) : null}
+          {this.state.organization.contact.phone !== "" ? (
+            <Text
+              header={"Contact Number"}
+              text={this.state.organization.contact.phone}
+            />
+          ) : null}
+        </Layout>
+        {this.state.organization.reason.bio ? (
+          <Text header={"Org Bio"} text={this.state.organization.reason.bio} />
+        ) : null}
+        {this.state.organization.reason.vision !== "" ? (
+          <Text
+            header={"Vision | Mission"}
+            text={this.state.organization.reason.vision}
+          />
+        ) : null}
+        {this.state.organization.reason.orgDefine !== "" ? (
+          <Text
+            header={"How does the organization define / measure success?"}
+            text={this.state.organization.reason.orgDefine}
+          />
+        ) : null}
+        {actively && actively.length ? (
+          <Text header={"Does your organization actively"}>{actively}</Text>
+        ) : null}
+        {description && description.length ? (
+          <TagsAdd
+            header={"Tags that best describe your organization"}
+            tags={description}
+          />
+        ) : null}
+        <Layout mdRowGap={"15px"} mdTemplateColumns={2}>
+          {this.state.organization.tech.salaryRange &&
+          (this.state.organization.tech.salaryRange.min !== "" ||
+            this.state.organization.tech.salaryRange.max !== "") ? (
+            <Text
+              header={"Salary Range"}
+              text={`${
+                this.state.organization.tech.salaryRange.min !== null
+                  ? this.state.organization.tech.salaryRange.min
+                  : null
+              } - ${
+                this.state.organization.tech.salaryRange.max !== null
+                  ? this.state.organization.tech.salaryRange.max
+                  : null
+              }`}
+            />
+          ) : null}
+          {jobType && jobType.length ? (
+            <Text header={"Job Type"}>
+              {jobType.map((job, index) => (
+                <div key={index}>{job && job.label}</div>
+              ))}
+            </Text>
+          ) : null}
+        </Layout>
+        <Layout mdRowGap={"15px"} mdTemplateColumns={2}>
+          {stacks && stacks.length ? (
+            <TagsAdd
+              header={"Languages, Libraries, Skills Tags"}
+              tags={stacks}
+            />
+          ) : null}
+          {industry && industry.length ? (
+            <TagsAdd header={"Industry | Sector"} tags={industry} />
+          ) : null}
+        </Layout>
+        {products}
+        {media}
       </Layout>
+    ) : (
+      <Container />
     );
   }
 }
