@@ -76,7 +76,7 @@ const CButton = styled(Button)`
   width: 34px;
   height: 34px;
   border-radius: 3px;
-  background-color: #fb60cc;
+  background-color: white;
   position: absolute;
   top: 40px;
   left: 20px;
@@ -84,11 +84,7 @@ const CButton = styled(Button)`
   font-weight: normal;
   font-style: normal;
   font-stretch: normal;
-  color: #fffefe;
   border: none;
-  & :hover {
-    background: linear-gradient(353deg, #f92672, #e826f9);
-  }
 `;
 
 const SBodyContainer = styled(Container)`

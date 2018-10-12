@@ -62,43 +62,52 @@ class FiltersContainer extends Component {
       tags: [],
       added: false
     };
-    this.handleClose = this.handleClose.bind(this)
+    this.handleClose = this.handleClose.bind(this);
   }
 
-  handleClose(){
-      let tags = []
-      let value = ""
+  handleClose() {
+    let tags = [];
+    let value = "";
 
-      this.setState({
-          tags: tags,
-          value: value,
-          added: false
-      }, () =>
-          this.props.onSearchAction &&
-          this.props.onSearchAction(value, this.state.tags))
+    this.setState(
+      {
+        tags: tags,
+        value: value,
+        added: false
+      },
+      () =>
+        this.props.onSearchAction &&
+        this.props.onSearchAction(value, this.state.tags)
+    );
   }
 
   onCloseTags(e, tag, index) {
     this.state.tags.splice(index, 1);
     let value = this.state.tags.length === 0 && this.state.value === "";
     this.setState(
-        { tags: this.state.tags, added: !value },
-        () =>
+      { tags: this.state.tags, added: !value },
+      () =>
         this.props.onSearchAction &&
         this.props.onSearchAction(this.state.value, this.state.tags)
     );
   }
 
   onSearchTags(tag) {
-      this.setState({
-          added: true
-      })
+    this.setState({
+      added: true
+    });
     let tags = this.state.tags;
     let tagExist = tags.some(item => item.label === tag.label);
     if (!tagExist && this.state.tags.length < this.props.tagsLimit) {
       tags.push(tag);
       this.setState(
-        { tags: tags },
+        {
+          tags: tags.map(elemnt => {
+            const copy = { ...elemnt };
+            copy.active = true;
+            return copy;
+          })
+        },
         () =>
           this.props.onSearchAction &&
           this.props.onSearchAction(this.state.value, tags)
@@ -107,10 +116,9 @@ class FiltersContainer extends Component {
   }
 
   onSearchText(value) {
-
-      this.setState({
-          added: true
-      })
+    this.setState({
+      added: true
+    });
 
     this.setState(
       { value: value },
@@ -159,7 +167,7 @@ class FiltersContainer extends Component {
                     showClose={true}
                     newAdded={this.state.added}
                     onClose={this.handleClose}
-                    onTextChange={() => this.setState({added: false})}
+                    onTextChange={() => this.setState({ added: false })}
                   />
                 );
               }}

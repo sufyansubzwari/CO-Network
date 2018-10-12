@@ -69,7 +69,9 @@ class MapBackGround extends Component {
   }
 
   render() {
-    const position = [this.state.lat, this.state.lng];
+    const position = this.props.isMobile
+      ? [37.0902, 95.7129]
+      : [this.state.lat, this.state.lng];
     return (
       <SMapContainer
         zoomControl={false}
