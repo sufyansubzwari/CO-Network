@@ -311,16 +311,16 @@ class ListInnovators extends Component {
     if (this.state.currentTab.value === "corporations") {
       isLoading =
         !this.props.organizations ||
-        (this.props.organizations.organizations &&
-          !this.props.organizations.organizations.length &&
-          this.props.organizations.loading);
+        (this.props.organizations.loading &&
+          !this.props.organizations.organizations ||
+          !this.props.organizations.organizations.length);
       data = this.props.organizations && this.props.organizations.organizations;
     } else if (this.state.currentTab.value === "members") {
       isLoading =
         !this.props.users ||
-        (this.props.users.users &&
-          !this.props.users.users.length &&
-          this.props.users.loading);
+        (this.props.users.loading &&
+          !this.props.users.users ||
+          !this.props.users.users.length);
       data = this.props.users && this.props.users.users;
     }
     return (
