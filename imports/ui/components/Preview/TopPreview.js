@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import styled from "styled-components";
-import { Layout, Container } from "btech-layout";
+import { Layout, Container, mixins } from "btech-layout";
 import UserPhoto from "./../UserPhoto/UserPhoto";
 import { UploadFile } from "./components";
 import PropsTypes from "prop-types";
@@ -41,6 +41,10 @@ const SBackground = styled(Container)`
 const SPhotoContainer = styled(Container)`
   position: absolute;
   bottom: -20px;
+  
+  ${mixins.media.desktop`
+    z-index: 2;
+  `};
 `;
 
 const SPhotoLabelContainer = styled(Container)`
@@ -52,7 +56,7 @@ const SPhotoLabelContainer = styled(Container)`
 const SBackLabelContainer = styled(Container)`
   position: absolute;
   bottom: 15px;
-  right: 10px
+  right: 10px;
 `;
 
 /**

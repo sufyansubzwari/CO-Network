@@ -380,7 +380,15 @@ class ListInnovators extends Component {
                               this.state.selectedItem.followerList
                                 ? this.state.selectedItem.followerList.length +
                                   " Followers"
-                                : null
+                                : null,
+                            checkVisibility: () => {
+                              const element = this.state.selectedItem;
+                              return (
+                                element &&
+                                element.followerList &&
+                                element.followerList.length
+                              );
+                            }
                           },
                           {
                             text: !follow ? "Follow" : "Unfollow",

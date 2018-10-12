@@ -9,7 +9,7 @@ import TopPreview from "./TopPreview";
 import posed from "react-pose";
 import BackButton from "../BackButton/BackButton";
 
-const ResponsiveContainer = styled(Layout)`
+const ResponsiveContainer = styled(Container)`
   margin-left: -100%;
   margin-right: 100%;
   ${mixins.media.desktop`
@@ -36,13 +36,24 @@ const PreviewContainer = posed(ResponsiveContainer)({
 });
 
 const SLayout = styled(Layout)`
-  border: ${props =>
+  border-bottom: ${props =>
     props.theme
       ? "1px solid " + props.theme.preview.borderColor
       : "1px solid transparent"};
   border-left: none;
   border-right: none;
   padding: 0 10px;
+  position: fixed;
+  background: white;
+  top: 0;
+  z-index: 1;
+  width: 100%;
+  height: 68px;
+  
+  ${mixins.media.desktop`
+    position: sticky;
+    height: 66px;
+  `};
 
   @media (min-width: 62em) {
     padding: 0 60px;
@@ -89,6 +100,14 @@ const SPreviewContainer = styled(Container)`
   @media (min-width: 86em) {
     zoom: 100%;
     padding: 25px 75px;
+  }
+
+  > div > div {
+    position: relative !important;
+
+    ${mixins.media.desktop`
+      position: absolute;
+    `};
   }
 `;
 
@@ -188,68 +207,72 @@ export default class Preview extends React.Component {
   render() {
     return (
       <PreviewContainer
-        customTemplateRows={"68px 190px 1fr"}
-        mdCustomTemplateRows={"190px 70px 1fr"}
-        layoutAreas={{
-          xs: `'options' 'picture' 'content'`,
-          md: `'picture' 'options' 'content'`
-        }}
         fullY
         background={"white"}
         pose={this.props.isOpen ? "openPreview" : "closedPreview"}
       >
-        <TopPreview
-          handleUpload={this.handleUploadChange}
-          image={this.state.image}
-          backGroundImage={this.state.backGroundImage}
-          showAvatar={this.props.showAvatar}
-          allowChangeImages={this.props.allowChangeImages}
-          gridArea="picture"
-        />
-        <SLayout
-          gridArea="options"
-          customTemplateColumns={"1fr auto"}
-          mdCustomTemplateColumns={
-            this.props.showAvatar ? "140px 1fr auto" : "1fr auto"
-          }
+        <Scrollbars
+          universal
+          autoHide
+          autoHideDuration={200}
+          style={{ height: "100%" }}
         >
-          {this.props.showAvatar ? <Container hide mdShow /> : null}
-          <Container height="100%" hide mdShow>
-            <NavLinks
-              style={{
-                height: "100%",
-                display: "flex",
-                flexDirection: "row"
-              }}
-            >
-              {this.getLinks()}
-            </NavLinks>
-          </Container>
-          <Container mdHide>
-            <BackButton
-              onClick={() => this.props.onClose && this.props.onClose()}
-            />
-          </Container>
-          <NavLinks
-            style={{
-              display: "flex",
-              flexDirection: "row",
-              justifyContent: "center"
+          <Layout
+            fullY
+            customTemplateRows={"68px 190px 1fr"}
+            mdCustomTemplateRows={"190px 66px 1fr"}
+            layoutAreas={{
+              xs: `'options' 'picture' 'content'`,
+              md: `'picture' 'options' 'content'`
             }}
           >
-            {this.getNavOptions()}
-          </NavLinks>
-        </SLayout>
-        <SPreviewContainer gridArea="content" fullY>
-          <Scrollbars
-            universal
-            autoHide
-            autoHideDuration={200}
-            style={{ height: "100%" }}
-          >
-            {this.props.children}
-          </Scrollbars>
-        </SPreviewContainer>
+            <TopPreview
+              handleUpload={this.handleUploadChange}
+              image={this.state.image}
+              backGroundImage={this.state.backGroundImage}
+              showAvatar={this.props.showAvatar}
+              allowChangeImages={this.props.allowChangeImages}
+              gridArea="picture"
+            />
+            <SLayout
+              gridArea="options"
+              customTemplateColumns={"1fr auto"}
+              mdCustomTemplateColumns={
+                this.props.showAvatar ? "140px 1fr auto" : "1fr auto"
+              }
+            >
+              {this.props.showAvatar ? <Container hide mdShow /> : null}
+              <Container height="100%" hide mdShow>
+                <NavLinks
+                  style={{
+                    height: "100%",
+                    display: "flex",
+                    flexDirection: "row"
+                  }}
+                >
+                  {this.getLinks()}
+                </NavLinks>
+              </Container>
+              <Container mdHide>
+                <BackButton
+                  onClick={() => this.props.onClose && this.props.onClose()}
+                />
+              </Container>
+              <NavLinks
+                style={{
+                  display: "flex",
+                  flexDirection: "row",
+                  justifyContent: "center"
+                }}
+              >
+                {this.getNavOptions()}
+              </NavLinks>
+            </SLayout>
+            <SPreviewContainer gridArea="content" fullY>
+              {this.props.children}
+            </SPreviewContainer>
+          </Layout>
+        </Scrollbars>
       </PreviewContainer>
     );
   }
