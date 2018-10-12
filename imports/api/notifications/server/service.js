@@ -1,5 +1,8 @@
 import Notifications from "../index";
 import * as _ from "lodash";
+import Followers from "../../followers";
+import { messages } from "../constants";
+import Users from "../../users";
 
 /**
  * @class Job Service
@@ -53,6 +56,51 @@ class NotificationsService {
       .find(query, { ...limit, sort: { createdAt: -1 } })
       .fetch();
   };
+  /**
+   * @name generateNotification
+   * @summary function for save and update
+   * @param {String} action - action that trigger the notification
+   * @param {Object} entity - title of the action that trigger the notification
+   * @param {String} userId - user Id that trigger the notification
+   * @param {String} title - title of  the notification
+   * @return {Object} Notification
+   */
+  static generateNotification = async (action, entity, userId, title) => {
+    let entityFollowers = Followers.service.getFollower({ entityId: entity._id, entity: entity.entity });
+    let userFollowers = Followers.service.getFollower({ entityId: userId, entity: "USER" });
+
+    switch (action) {
+      case "POST":
+        return this.notifyFollowers(userFollowers, action, entity, title);
+      case "UPDATE" || "DELETE":
+        return this.notifyFollowers(entityFollowers, action, entity, title);
+      case "FOLLOW":
+        return this.notifyUser(userId, action, entity, "New Follower.");
+      case "FOLLOW_ACTION" || "APPLY" || "SPONSOR" || "SPEAKER":
+        return this.notifyUser(userId, action, entity, title);
+      default:
+        return null;
+    }
+  };
+
+  static notifyFollowers = (followers, action, entity,title) => {
+    if(followers && followers.followers && followers.followers.length) {
+      followers.followers.forEach(userId => {
+        this.notifyUser(userId, action, entity, title);
+      });
+    }
+  };
+
+  static notifyUser = (userId, action, entity, title) => {
+    const user = Users.service.getUser({_id: userId});
+    Notifications.collection.insert({
+      action: action,
+      owner: userId,
+      message: messages(action, user.profile.name, entity.entity, title),
+      title: title,
+      entity: entity
+    });
+  }
 }
 
 export default NotificationsService;

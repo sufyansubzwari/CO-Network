@@ -39,6 +39,7 @@ Notifications.schema = new SimpleSchema({
   title: {
     type: String,
     label: 'The title of the notification.',
+    optional: true,
   },
   message: {
     type: String,
@@ -48,7 +49,11 @@ Notifications.schema = new SimpleSchema({
   action: {
     type: String,
     label: 'The action that generate the notification.',
-    optional: true
+  },
+  entity: {
+    type: Object,
+    label: 'The entity type that generate the notification.',
+    blackbox: true,
   },
   viewed: {
     type: Boolean,
