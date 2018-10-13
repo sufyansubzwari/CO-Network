@@ -12,7 +12,8 @@ const TitleCardContainer = Styled.div`
   font-family: Helvetica Neue LT Std;
   font-size: 14px;
   font-weight: bold;
-  color: ${props => props.isActive ? '#ffffff' : "#000000"};    
+  color: ${props => props.isActive ? '#ffffff' : "#000000"};
+  line-height: 1;    
   
   ${mixins.media.desktop`
     font-size: 18px;
@@ -46,11 +47,16 @@ const SubTitleCardContainer = Styled.div`
   overflow: hidden;
   text-overflow: ellipsis;
   color: ${props => props.isActive ? '#ffffff' : "#000000"};
+  line-height: 1;
   
   ${mixins.media.desktop`
     font-size: 14px;
   `};
 `;
+
+const ViewContainer = Styled(Container)`
+    line-height: 1;
+`
 
 const SMLCard = Styled(Card)`
   line-height: inherit;
@@ -96,6 +102,8 @@ const SCardContainer = Styled(Container)`
 
 const SImage = Styled.img`
   position: absolute;
+  border-top-left-radius: 5px;
+  border-bottom-left-radius: 5px;
 `;
 
 /**
@@ -146,12 +154,12 @@ class CardItem extends Component {
       ? element.transformIcon(this.props.data[element.key])
       : element.icon;
     return (
-      <Container key={index} inLine mr={{ xs: "5px", md: "15px" }}>
+      <ViewContainer key={index} inLine mr={{ xs: "5px", md: "15px" }}>
         <SIconContainer isActive={this.props.isActive}>
           <MaterialIcon type={iconToShow} />
         </SIconContainer>
         <SKeyContainer isActive={this.props.isActive}>{valueToShow}</SKeyContainer>
-      </Container>
+      </ViewContainer>
     );
   }
 
@@ -163,16 +171,16 @@ class CardItem extends Component {
         minH={"initial"}
         mdMinH={"100px"}
         customTemplateRows={"1fr"}
-        mdRowGap={"5px"}
-        mdCustomTemplateRows={"1fr auto"}
+        mdRowGap={"8px"}
+        mdCustomTemplateRows={"1fr 27px"}
       >
-        <Layout fullY customTemplateRows={"auto auto auto"} mdRowGap={"5px"}>
+        <Layout fullY customTemplateRows={"auto auto auto"} mdRowGap={"10px"} rowGap={"8px"}>
           <Container mdMinH={"25px"}>
             <Layout
               customTemplateColumns={"1fr"}
               mdCustomTemplateColumns={this.props.showMenu ? "1fr auto" : "1f"}
             >
-              <Container>
+              <Container style={{lineHeight: 1}}>
                 {this.state.topOptions.map((element, index) =>
                   this.renderTopOptionItem(element, index)
                 )}
@@ -234,7 +242,7 @@ class CardItem extends Component {
     const imageElement = loading ? (
       <PlaceHolder rect loading={loading} height={398} width={395} />
     ) : (
-      <SImage width="100%" height="100%" src={this.props.image} />
+      <SImage width="100%" height="100%" src={this.props.image}  />
     );
     return this.props.image && this.props.image ? (
       <Container relative fullView>
