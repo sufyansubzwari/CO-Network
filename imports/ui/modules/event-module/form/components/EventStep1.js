@@ -79,16 +79,24 @@ class EventStep1 extends Component {
     if (tag.label && tag.label.length > 0) {
       let newTag = Object.assign({}, tag);
       let tags = this.state.event.others || [];
+      let category = this.state.event.category || [];
       !newTag.name ? (newTag.name = newTag.label) : null;
       newTag.type = "EVENT";
       tags.push(newTag);
+      category.push(newTag);
       this.state.event.others = tags;
+      this.state.event.category = category;
       this.setState({ event: this.state.event }, () => this.notifyParent());
     }
   }
 
   onCloseTags(e, tag, index) {
     this.state.event.others.splice(index, 1);
+    let category = this.state.event.category;
+    let i = category.length && category.findIndex(cate => cate.label === tag.label);
+    if(i > -1)
+      category.splice(i,1);
+    this.state.event.category = category;
     this.setState({ event: this.state.event }, () => this.notifyParent());
   }
 
