@@ -5,6 +5,7 @@ import styled from "styled-components";
 import PropTypes from "prop-types";
 import NotificationItem from "./NotificationItem";
 import { HButtom } from "btech-horizantal-navbar";
+import MaterialIcon from "react-material-iconic-font";
 
 const Title = styled.label`
   font-family: ${props =>
@@ -69,7 +70,11 @@ const SNotification = styled(Container)`
       : props.theme
         ? props.theme.color.innerBackground
         : "#fbfbf9"};
-
+  
+  .deleteNotification{
+    opacity: 0
+  }
+  
   :hover {
     background: ${props =>
       props.selected
@@ -77,12 +82,22 @@ const SNotification = styled(Container)`
         : props.theme
           ? props.theme.color.background
           : "#dadada"};
+          
+    .deleteNotification{
+      opacity: 1;
+      transition: all 200ms ease-out;
+    }
   }
   cursor: pointer;
 `;
 
 const Icon = styled(Container)`
   padding-left: 20px;
+`;
+
+const SDeleteText = styled.span`
+  font-size: 12px;
+  margin-left: 5px;
 `;
 
 const SItemContainer = styled(Container)`
@@ -134,15 +149,25 @@ class Notification extends React.Component {
           ) : null}
           <NotificationItem>
             <SItemContainer>
-              <Layout
-                customTemplateColumns={"1fr auto"}
-                mdCustomTemplateColumns={"1fr"}
-              >
+              <Layout customTemplateColumns={"1fr auto"}>
                 <Title selected={this.props.selected}>{this.state.title}</Title>
                 <Container mdHide>
                   <SubTitle selected={this.props.selected}>
                     {this.state.time}
                   </SubTitle>
+                </Container>
+                <Container
+                  className="deleteNotification"
+                  hide
+                  mdShow
+                  onClick={event => {
+                    event.stopPropagation();
+                    event.preventDefault();
+                    this.props.onDelete && this.props.onDelete();
+                  }}
+                >
+                  <MaterialIcon type={"delete"} />
+                  <SDeleteText>Delete</SDeleteText>
                 </Container>
               </Layout>
               <Container>
@@ -183,5 +208,6 @@ Notification.propTypes = {
   hasIcon: PropTypes.bool,
   image: PropTypes.string,
   selected: PropTypes.bool,
+  onDelete: PropTypes.func,
   linesCut: PropTypes.number
 };

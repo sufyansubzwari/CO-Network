@@ -3,6 +3,8 @@ import Notification from "./Notification";
 import NotificationContainer from "./NotificationContainer";
 import { Container, mixins } from "btech-layout";
 import { List } from "btech-card-list-component";
+import { DeleteNotification } from "../../../apollo-client/notifications";
+import { Mutation } from "react-apollo";
 import moment from "moment";
 import posed from "react-pose/lib/index";
 import styled from "styled-components";
@@ -46,45 +48,69 @@ class NotificationsSidebar extends React.Component {
     });
   }
 
-  deleteNotification(not, index) {
-    const notifications = this.state.notifications;
-    const temporal = notifications.splice(index, 1);
-    this.setState({
-      notifications: notifications
-    });
+  deleteNotification(notification, index, deleteNotification) {
+    this.setState(
+      {
+        isDeleting: true
+      },
+      () => {
+        deleteNotification({ variables: { id: notification._id } }).then(() => {
+          const notifications = this.state.notifications;
+          const temporal = notifications.splice(index, 1);
+          this.setState({
+            notifications: notifications,
+            isDeleting: false
+          });
+        });
+      }
+    );
   }
 
-  observerDragBoundaries(x, not, index) {
+  observerDragBoundaries(x, notification, index, deleteNotification) {
     let value = 0;
     const type = typeof x;
     if (type === "string") value = Number(x.replace("%", ""));
-    if (value >= 85 && this.props.isMobile) {
-      console.info("Delete at", value);
-      this.deleteNotification(not, index);
+    if (value >= 85 && this.props.isMobile && !this.state.isDeleting) {
+      this.deleteNotification(notification, index, deleteNotification);
     }
   }
 
   renderItem(not, index) {
     if (!not) return null;
     return (
-      <Container relative key={index}>
-        <NotificationBack />
-        <SDragContainer
-          relative
-          onValueChange={{
-            dragEnd: dragEnd => console.log("s", dragEnd),
-            x: x => this.observerDragBoundaries(x, not, index)
-          }}
-        >
-          <Notification
-            title={not.title}
-            description={not.message}
-            entity={not.entity}
-            time={moment(not.createdAt).format("hh:mm")}
-            onClick={() => console.log("notification clicked: " + index)}
-          />
-        </SDragContainer>
-      </Container>
+      <Mutation
+        key={index}
+        mutation={DeleteNotification}
+        onCompleted={() =>
+          this.state.redirect &&
+          this.props.history.push("/jobs", { postJob: true })
+        }
+        onError={error => console.log("Error: ", error)}
+      >
+        {deleteNotification => (
+          <Container relative>
+            <NotificationBack />
+            <SDragContainer
+              relative
+              onValueChange={{
+                x: x =>
+                  this.observerDragBoundaries(x, not, index, deleteNotification)
+              }}
+            >
+              <Notification
+                title={not.title}
+                description={not.message}
+                entity={not.entity}
+                time={moment(not.createdAt).format("hh:mm")}
+                onDelete={() =>
+                  this.deleteNotification(not, index, deleteNotification)
+                }
+                onClick={() => console.log("notification clicked: " + index)}
+              />
+            </SDragContainer>
+          </Container>
+        )}
+      </Mutation>
     );
   }
 
