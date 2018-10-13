@@ -163,7 +163,7 @@ class ListInnovators extends Component {
       case "corporations":
         return (
           <CardItem
-            lgCustomTemplateColumns={"155px 1fr"}
+            lgCustomTemplateColumns={"195px 1fr"}
             onSelect={() => this.onChangeSelection(item, key, viewsUpdate)}
             isActive={
               this.state.selectedIndex !== null
@@ -184,7 +184,7 @@ class ListInnovators extends Component {
       case "members":
         return (
           <CardItem
-            lgCustomTemplateColumns={"155px 1fr"}
+            lgCustomTemplateColumns={"195px 1fr"}
             onSelect={() => this.onChangeSelection(item, key, viewsUpdate)}
             isActive={
               this.state.selectedIndex !== null

@@ -62,7 +62,7 @@ class ItemsList extends Component {
       return null
     return (
       <CardItem
-        lgCustomTemplateColumns={"155px 1fr"}
+        lgCustomTemplateColumns={"195px 1fr"}
         onSelect={() => this.onChangeSelection(item, key)}
         isActive={
           this.state.activeIndex !== null
