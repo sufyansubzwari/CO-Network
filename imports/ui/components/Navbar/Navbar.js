@@ -107,6 +107,17 @@ class Navbar extends Component {
     this.openNavbar(false);
   }
 
+  onMessageToggle() {
+    this.props.toggleSideBar(
+      !this.props.messagesSideBarIsOpen,
+      false,
+      false,
+      false,
+      !this.props.messagesSideBarIsOpen
+    );
+    this.openNavbar(false);
+  }
+
   observerDragBoundaries(y) {
     if (y === "-25%") {
       console.info("Open at", y);
@@ -152,6 +163,7 @@ class Navbar extends Component {
               onAddToggle={() => this.onAddToggle()}
               onUserToggle={() => this.onUserToggle()}
               onNotificationToggle={() => this.onNotificationToggle()}
+              onMessageToggle={() => this.onMessageToggle()}
               curUser={this.props.curUser}
             />
           </Layout>
@@ -174,15 +186,16 @@ const mapStateToProps = state => {
     filterEntityType: sideBarEntity ? sideBarEntity.entityType : null,
     profileSideBarIsOpen: sideBarStatus.status && sideBarStatus.profile,
     notificationsSideBarIsOpen:
-      sideBarStatus.status && sideBarStatus.notifications
+      sideBarStatus.status && sideBarStatus.notifications,
+    messagesSideBarIsOpen: sideBarStatus.status && sideBarStatus.messages
   };
 };
 
 const mapDispatchToProps = dispatch => {
   return {
     closeSideBar: () => dispatch(toggleSideBar(false, false, false)),
-    toggleSideBar: (status, isAdd, profile, notifications) =>
-      dispatch(toggleSideBar(status, isAdd, profile, notifications))
+    toggleSideBar: (status, isAdd, profile, notifications, messages) =>
+      dispatch(toggleSideBar(status, isAdd, profile, notifications, messages))
   };
 };
 

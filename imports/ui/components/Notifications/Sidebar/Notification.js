@@ -1,8 +1,9 @@
 import React from "react";
-import { Container, Layout } from "btech-layout";
-import { FilterItem, Separator } from "../../../components";
+import { Container, Layout, mixins } from "btech-layout";
+import { Separator } from "../../../components";
 import styled from "styled-components";
 import PropTypes from "prop-types";
+import NotificationItem from "./NotificationItem";
 import { HButtom } from "btech-horizantal-navbar";
 
 const Title = styled.label`
@@ -11,7 +12,7 @@ const Title = styled.label`
   font-weight: ${props =>
     props.theme ? props.theme.texts.title.titleWeight : "bold"};
   font-size: ${props =>
-    props.theme ? props.theme.texts.title.titleSize : "14px"};
+    props.theme ? props.theme.texts.title.titleSize : "12px"};
   color: ${props =>
     props.selected
       ? "white"
@@ -20,26 +21,45 @@ const Title = styled.label`
         : "black"};
   margin-bottom: 0;
   cursor: pointer;
+
+  ${mixins.media.desktop`
+    font-size: ${props =>
+      props.theme ? props.theme.texts.title.titleSize : "14px"};
+  `};
 `;
 
 const Description = styled.label`
   font-family: ${props =>
     props.theme ? props.theme.texts.textFamily : "Roboto Mono"};
   color: ${props => (props.selected ? "white" : "black")};
-  font-size: 12px;
+  font-size: 10px;
   line-height: ${props =>
     props.theme ? props.theme.texts.textLineHeight : "1"};
   margin-bottom: 0;
   cursor: pointer;
+  overflow: hidden;
+  white-space: normal;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: ${props => props.linesCut || 2};
+  -webkit-box-orient: vertical;
+
+  ${mixins.media.desktop`
+    font-size: 12px;
+  `};
 `;
 
 const SubTitle = styled.label`
   font-family: ${props =>
     props.theme ? props.theme.texts.textFamily : "Roboto Mono"};
   color: ${props => (props.selected ? "white" : "rgba(0, 0, 0, 0.5)")};
-  font-size: 12px;
+  font-size: 10px;
   margin-bottom: 0;
   cursor: pointer;
+
+  ${mixins.media.desktop`
+    font-size: 12px;
+  `};
 `;
 
 const SNotification = styled(Container)`
@@ -63,6 +83,14 @@ const SNotification = styled(Container)`
 
 const Icon = styled(Container)`
   padding-left: 20px;
+`;
+
+const SItemContainer = styled(Container)`
+  line-height: 15px;
+
+  ${mixins.media.desktop`
+    line-height: 20px;
+  `};
 `;
 
 class Notification extends React.Component {
@@ -93,7 +121,7 @@ class Notification extends React.Component {
       >
         <Layout customTemplateColumns={this.props.hasIcon ? "auto 1fr" : null}>
           {this.props.hasIcon ? (
-            <Icon mt={"20px"}>
+            <Icon mt={{ xs: "10px", md: "20px" }}>
               <HButtom
                 image={
                   this.props.image && this.props.image !== ""
@@ -101,30 +129,42 @@ class Notification extends React.Component {
                     : ""
                 }
                 size={{ width: 23, height: 29 }}
-                // primary={!user}
               />
             </Icon>
           ) : null}
-          <FilterItem>
-            <Container>
-              <Container>
+          <NotificationItem>
+            <SItemContainer>
+              <Layout
+                customTemplateColumns={"1fr auto"}
+                mdCustomTemplateColumns={"1fr"}
+              >
                 <Title selected={this.props.selected}>{this.state.title}</Title>
-              </Container>
+                <Container mdHide>
+                  <SubTitle selected={this.props.selected}>
+                    {this.state.time}
+                  </SubTitle>
+                </Container>
+              </Layout>
               <Container>
-                <Description selected={this.props.selected}>
+                <Description
+                  selected={this.props.selected}
+                  linesCut={this.props.linesCut}
+                >
                   {this.state.description}
                 </Description>
               </Container>
-              <Layout mt={"5px"} customTemplateColumns={"1fr auto"}>
-                <SubTitle selected={this.props.selected}>
-                  {this.state.entity}
-                </SubTitle>
-                <SubTitle selected={this.props.selected}>
-                  {this.state.time}
-                </SubTitle>
-              </Layout>
-            </Container>
-          </FilterItem>
+              <Container hide mdShow>
+                <Layout mt={"5px"} customTemplateColumns={"1fr auto"}>
+                  <SubTitle selected={this.props.selected}>
+                    {this.state.entity}
+                  </SubTitle>
+                  <SubTitle selected={this.props.selected}>
+                    {this.state.time}
+                  </SubTitle>
+                </Layout>
+              </Container>
+            </SItemContainer>
+          </NotificationItem>
         </Layout>
         <Separator />
       </SNotification>
@@ -142,5 +182,6 @@ Notification.propTypes = {
   onClick: PropTypes.func,
   hasIcon: PropTypes.bool,
   image: PropTypes.string,
-  selected: PropTypes.bool
+  selected: PropTypes.bool,
+  linesCut: PropTypes.number
 };

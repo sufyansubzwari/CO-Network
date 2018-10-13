@@ -105,23 +105,19 @@ const ItemsContainer = function(props) {
           {props.children}
         </Scrollbars>
       </Layout>
-      {props.childrens > 0 ? (
-        <BLayout customTemplateRows={"auto 1fr"}>
-          <Container paddingX={"20px"}>
-            <Layout customTemplateColumns={"1fr auto"} mt={"5px"}>
-              <div />
-              <Button
-                secondary={true}
-                onClick={() => props.onClear && props.onClear()}
-              >
-                Clear
-              </Button>
-            </Layout>
-          </Container>
-        </BLayout>
-      ) : (
-        <div />
-      )}
+      <BLayout customTemplateRows={"auto 1fr"}>
+        <Container paddingX={"20px"}>
+          <Layout customTemplateColumns={"1fr auto"} mt={"5px"}>
+            <div />
+            <Button
+              secondary={true}
+              onClick={() => props.onClear && props.onClear()}
+            >
+              Clear
+            </Button>
+          </Layout>
+        </Container>
+      </BLayout>
     </SContainer>
   );
 };

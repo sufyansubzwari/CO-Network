@@ -65,10 +65,10 @@ const NavItemStyled = styled.div`
     const isSecondLine = index % 6 > 2;
     return isSecondLine ? "transform: translateX(64%);" : "";
   }};
-  
+
   ${mixins.media.desktop`
        transform: none;
-  `}
+  `};
 `;
 
 const XsTextDescription = styled.div`
@@ -104,7 +104,7 @@ const HNavbar = function(props) {
       style={{ gridArea: props.gridArea }}
       {...props}
     >
-      <Layout>
+      <Layout customTemplateRows={"1fr auto"} mdCustomTemplateRows={"1fr"}>
         <Container mdMt={"38px"}>
           {getComponent("header")}
           <Layout

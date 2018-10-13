@@ -132,6 +132,7 @@ class UserNavbarSection extends React.Component {
       false,
       !this.props.notificationsSideBarIsOpen
     );
+    this.props.callback && this.props.callback(false);
   }
 
   onMessageToggle() {
@@ -142,6 +143,7 @@ class UserNavbarSection extends React.Component {
       false,
       !this.props.messagesSideBarIsOpen
     );
+    this.props.callback && this.props.callback(false);
   }
 
   render() {
