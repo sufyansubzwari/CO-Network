@@ -11,6 +11,8 @@ import { Meteor } from "meteor/meteor";
 import { userQuery } from "../../../apollo-client/user";
 import { Query } from "react-apollo";
 import ChatUserInfo from "./ChatUserInfo";
+import AttachedFile from "./AttachedFile";
+import AttachedImage from './Image';
 
 export const SMessageItem = styled(Container)`
   line-height: 15px;
@@ -172,6 +174,16 @@ class LoadMessages extends Component {
                           ) : null}
                         </SUser>
                         <SText>{message.text}</SText>
+                        {
+                          message.attachment && message.attachment.length > 0 && message.attachment.map((attach) =>
+                            <AttachedFile link={attach.link} filename={attach.name} />
+                            )
+                        }
+                        {
+                          message.images && message.images.length > 0 && message.images.map((img) =>
+                              <AttachedImage link={img.link} filename={img.name} />
+                          )
+                        }
                       </SMessageItem>
                     </Layout>
                     {message._id === this.state.replyMessage ? (

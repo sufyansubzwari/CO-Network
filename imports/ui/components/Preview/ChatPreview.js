@@ -156,8 +156,11 @@ export default class ChatPreview extends Preview {
     console.log("uploaded the file "+ file)
     let attach = this.state.attachments;
     attach.push(file);
+    // let value = this.state.textMessage;
+    // value = value + "^"+ file.name + "^";
     this.setState({
-        attachments: attach
+        attachments: attach,
+        // textMessage: value
     })
   }
 
@@ -165,8 +168,11 @@ export default class ChatPreview extends Preview {
       console.log("uploaded the image "+ file)
       let imgs = this.state.images;
       imgs.push(file);
+      // let value = this.state.textMessage;
+      // value = value + "^"+ file.name + "^";
       this.setState({
-          images: imgs
+          images: imgs,
+          // textMessage: value
       })
   }
 
