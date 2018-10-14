@@ -1,0 +1,2 @@
+export const OPEN_CHAT_VIEW = "OPEN_CHAT_VIEW";
+export const CLOSE_CHAT_VIEW = "CLOSE_CHAT_VIEW";

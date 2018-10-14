@@ -28,6 +28,7 @@ class NotificationsSidebar extends React.Component {
     super(props);
     this.state = {
       notifications: [],
+      selectedItem: -1,
       isDeleting: false
     };
     this.handleClear = this.handleClear.bind(this);
@@ -102,10 +103,11 @@ class NotificationsSidebar extends React.Component {
                 description={not.message}
                 entity={not.entity}
                 time={moment(not.createdAt).format("hh:mm")}
+                selected={this.state.selectedItem === index}
                 onDelete={() =>
                   this.deleteNotification(not, index, deleteNotification)
                 }
-                onClick={() => console.log("notification clicked: " + index)}
+                onClick={() => this.setState({ selectedItem: index })}
               />
             </SDragContainer>
           </Container>

@@ -19,8 +19,7 @@ export const SChat = styled(Container)`
 export const SReplyBox = styled(Container)`
   background-color: ${props => props.backgroundColor || "#F9F9FB"};
   width: 100%;
-  padding: 15px 5px;
-  padding-top: 5px;
+  padding: 5px;
 
   ${mixins.media.desktop`
     padding: 0px;

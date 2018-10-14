@@ -10,7 +10,9 @@ import Messages from "../Messages/Messages";
 import { insertMessage } from "../Messages/Service/service";
 import { Scrollbars } from "react-custom-scrollbars";
 import { Session } from "meteor/session";
-import { Emoji } from 'emoji-mart'
+import PropsTypes from "prop-types";
+import { openChatView, closeChatView } from "../../actions/ChatView";
+import { connect } from "react-redux";
 
 const ResponsiveContainer = styled(Layout)`
   margin-left: -100%;
@@ -82,7 +84,7 @@ const NavLinks = styled(Layout)`
   }
 `;
 
-export default class ChatPreview extends Preview {
+class ChatPreview extends Preview {
   constructor(props) {
     super(props);
     this.state = {
@@ -94,7 +96,7 @@ export default class ChatPreview extends Preview {
     };
     this.scroll = null;
     this.messagesLength = 0;
-    this.emojiClicked = this.emojiClicked.bind(this)
+    this.emojiClicked = this.emojiClicked.bind(this);
   }
 
   onKeyPress(event) {
@@ -116,7 +118,8 @@ export default class ChatPreview extends Preview {
         images: this.state.images
       },
       res => {
-        if (res === "success") this.setState({ textMessage: "", attachments: [], images: [] });
+        if (res === "success")
+          this.setState({ textMessage: "", attachments: [], images: [] });
       }
     );
   }
@@ -130,20 +133,20 @@ export default class ChatPreview extends Preview {
     }
   }
 
-  handleEmoji(emoji){
-    if(emoji && emoji.native){
+  handleEmoji(emoji) {
+    if (emoji && emoji.native) {
       let message = this.state.textMessage;
       message = message + emoji.native;
       this.setState({
-          textMessage: message
-      })
+        textMessage: message
+      });
     }
   }
 
-  emojiClicked(){
+  emojiClicked() {
     this.setState({
-        showEmoji: !this.state.showEmoji
-    })
+      showEmoji: !this.state.showEmoji
+    });
   }
 
   getState() {
@@ -152,22 +155,22 @@ export default class ChatPreview extends Preview {
     return state;
   }
 
-  onAttachmentUpload(file){
-    console.log("uploaded the file "+ file)
+  onAttachmentUpload(file) {
+    console.log("uploaded the file " + file);
     let attach = this.state.attachments;
     attach.push(file);
     this.setState({
-        attachments: attach
-    })
+      attachments: attach
+    });
   }
 
-  onImageUpload(file){
-      console.log("uploaded the image "+ file)
-      let imgs = this.state.images;
-      imgs.push(file);
-      this.setState({
-          images: imgs
-      })
+  onImageUpload(file) {
+    console.log("uploaded the image " + file);
+    let imgs = this.state.images;
+    imgs.push(file);
+    this.setState({
+      images: imgs
+    });
   }
 
   renderOptionsNav() {
@@ -198,6 +201,13 @@ export default class ChatPreview extends Preview {
         </NavLinks>
       </SLayout>
     );
+  }
+
+  componentWillUpdate() {
+    if (this.props.isMobile)
+      this.props.isOpen
+        ? this.props.openChatView()
+        : this.props.closeChatView();
   }
 
   render() {
@@ -261,10 +271,10 @@ export default class ChatPreview extends Preview {
             name={"textMessage"}
             model={this.state}
             onKeyPress={event => this.onKeyPress(event)}
-            onEmojiSelect={(emoji) => this.handleEmoji(emoji)}
+            onEmojiSelect={emoji => this.handleEmoji(emoji)}
             handleEmojiClicked={this.emojiClicked}
-            getAttachment={(file) => this.onAttachmentUpload(file)}
-            getImage={(file) => this.onImageUpload(file)}
+            getAttachment={file => this.onAttachmentUpload(file)}
+            getImage={file => this.onImageUpload(file)}
           />
         </Container>
       </PreviewContainer>
@@ -275,9 +285,27 @@ export default class ChatPreview extends Preview {
 ChatPreview.defaultProps = {
   ...Preview.defaultProps,
   showAvatar: false,
+  isMobile: false,
   allowChangeImages: false
 };
 
 ChatPreview.propTypes = {
-  ...Preview.propTypes
+  ...Preview.propTypes,
+  isMobile: PropsTypes.bool
 };
+
+const mapStateToProps = () => {
+  return {};
+};
+
+const mapDispatchToProps = dispatch => {
+  return {
+    closeChatView: () => dispatch(closeChatView()),
+    openChatView: () => dispatch(openChatView())
+  };
+};
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(ChatPreview);

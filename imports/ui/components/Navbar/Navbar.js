@@ -152,6 +152,7 @@ class Navbar extends Component {
           mdRowGap={10}
           activeLink={activeLink}
           isShow={this.props.isShow}
+          isHide={this.props.isHide}
           links={navs}
           activeEval={this.activeEval}
           itemOptions={{ title: { hide: true, mdShow: true } }}
