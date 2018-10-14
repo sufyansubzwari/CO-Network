@@ -67,7 +67,11 @@ class EventStep1 extends Component {
       category["type"] = "EVENT";
       return category;
     });
+
+    let others = this.state.event.others;
+
     const category = selected.filter(element => element.active);
+    others && others.map( tag => category.push(tag));
     const temp = this.state.event;
     temp["category"] = category;
     this.setState({ category: selected, event: temp }, () =>
