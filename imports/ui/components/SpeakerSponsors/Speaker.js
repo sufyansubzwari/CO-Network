@@ -39,7 +39,10 @@ class Speaker extends React.Component {
   }
 
   onAddNew(props, obj) {
-    if (!!obj.label && obj.label !== "")
+
+    let user = props.users.some(user => props.model['name'] === `${user.profile.name} ${user.profile.lastName}`)
+
+    if (!!obj.label && obj.label !== "" && !user)
       this.setState({
         userValid: false
       });
