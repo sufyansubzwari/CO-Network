@@ -1,24 +1,13 @@
 import React, { Component } from "react";
-import moment from "moment";
-import PropTypes from "prop-types";
-import { Container, Layout, mixins } from "btech-layout";
-import styled from "styled-components";
-import { SLineTime, SReplyButton, SText, SUser } from "./styledComponents";
+import { Container } from "btech-layout";
 import ReplyBox from "./ReplyBox";
-import MaterialIcon from "react-material-iconic-font";
 import { updateMessage } from "../Service/service";
 import { Meteor } from "meteor/meteor";
 import { userQuery } from "../../../apollo-client/user";
 import { Query } from "react-apollo";
-import ChatUserInfo from "./ChatUserInfo";
-
-export const SMessageItem = styled(Container)`
-  line-height: 15px;
-
-  ${mixins.media.desktop`
-    line-height: initial;
-  `};
-`;
+import PropTypes from "prop-types";
+import MessageItem from "./MessageItem";
+import { SLineTime } from "./styledComponents";
 
 class LoadMessages extends Component {
   constructor(props) {
@@ -29,6 +18,7 @@ class LoadMessages extends Component {
       messages: this.props.messages || [],
       groups: [],
       blocks: [],
+      selectMessageItem: -1,
       replyMessage: "",
       textReply: "",
       flag: true
@@ -47,11 +37,6 @@ class LoadMessages extends Component {
       const blocks = this.handleMessageBlocks(nextProps.messages);
       this.setState({ blocks: blocks, message: nextProps.messages });
     }
-  }
-
-  handleShowReplies(item) {
-    item.showReply = !item.showReply;
-    this.setState({ flag: !this.state.flag });
   }
 
   handleMessage(text, msg) {
@@ -137,6 +122,12 @@ class LoadMessages extends Component {
     return blocks;
   };
 
+  selectMessage(key) {
+    this.setState({
+      selectMessageItem: key
+    });
+  }
+
   renderMessages(blocks) {
     return blocks.length > 0
       ? blocks.map((message, k) => {
@@ -152,38 +143,26 @@ class LoadMessages extends Component {
                 const owner = data.user;
                 return (
                   <Container fullY key={k} style={{ height: "auto" }}>
-                    <Layout customTemplateColumns={"auto 1fr"} mb={"15px"}>
-                      <ChatUserInfo owner={owner} />
-                      <SMessageItem ml={"10px"}>
-                        <SUser>
-                          <span id={"user-name"}>
-                            {owner && owner.profile.name}
-                          </span>
-                          <span id={"time"}>
-                            {moment(message.createdAt).format("h:mm a")}
-                          </span>
-                          {message.canReply ? (
-                            <SReplyButton
-                              onClick={() => this.handleReply(message)}
-                            >
-                              <MaterialIcon type={"mail-reply"} />
-                              <span style={{ marginLeft: "5px" }}>Reply</span>
-                            </SReplyButton>
-                          ) : null}
-                        </SUser>
-                        <SText>{message.text}</SText>
-                      </SMessageItem>
-                    </Layout>
+                    <MessageItem
+                      owner={owner}
+                      isActive={k === this.state.selectMessageItem}
+                      onSelect={() => this.selectMessage(k)}
+                      message={message}
+                      onReplyAction={item => this.handleReply(item)}
+                    />
                     {message._id === this.state.replyMessage ? (
-                      <Container ml={"20px"}>
+                      <Container ml={{ md: "20px" }} mb={"15px"}>
                         <ReplyBox
                           placeholder={`Type a reply to ${owner &&
                             owner.profile.name}`}
                           name={"textReply"}
+                          onTextChange={text =>
+                            this.setState({ textReply: text })
+                          }
                           model={this.state}
                           buttonText={"Reply"}
                           onKeyPress={event => this.onKeyPress(event, message)}
-                          onClick={() =>
+                          onSend={() =>
                             this.handleMessage(this.state.textReply, message)
                           }
                         />

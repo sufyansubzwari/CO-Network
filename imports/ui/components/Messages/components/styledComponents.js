@@ -92,6 +92,12 @@ export const SUser = styled(Container)`
 
 export const SText = styled.span`
   font-size: 12px;
+  overflow: hidden;
+  white-space: normal;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  ${props => (props.isActive ? null : "-webkit-line-clamp: 3")};
+  -webkit-box-orient: vertical;
 
   ${mixins.media.desktop`
     font-size: 14px;
@@ -100,6 +106,7 @@ export const SText = styled.span`
 
 export const SReplyButton = styled.span`
   margin-left: auto;
+  cursor: pointer;
 `;
 
 export const SReplyMessage = styled(Container)`

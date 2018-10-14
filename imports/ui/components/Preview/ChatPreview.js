@@ -90,13 +90,11 @@ class ChatPreview extends Preview {
     this.state = {
       limit: 10,
       textMessage: "",
-      showEmoji: false,
       attachments: [],
       images: []
     };
     this.scroll = null;
     this.messagesLength = 0;
-    this.emojiClicked = this.emojiClicked.bind(this);
   }
 
   onKeyPress(event) {
@@ -112,7 +110,7 @@ class ChatPreview extends Preview {
       {
         owner: this.props.curUser._id,
         receptor: this.props.data._id,
-        text: text,
+        text: text || this.state.textMessage,
         type: this.getState(),
         attachment: this.state.attachments,
         images: this.state.images
@@ -131,22 +129,6 @@ class ChatPreview extends Preview {
         Session.set("limitMessage", this.state.limit);
       });
     }
-  }
-
-  handleEmoji(emoji) {
-    if (emoji && emoji.native) {
-      let message = this.state.textMessage;
-      message = message + emoji.native;
-      this.setState({
-        textMessage: message
-      });
-    }
-  }
-
-  emojiClicked() {
-    this.setState({
-      showEmoji: !this.state.showEmoji
-    });
   }
 
   getState() {
@@ -266,13 +248,12 @@ class ChatPreview extends Preview {
         </Scrollbars>
         <Container hide={!this.props.curUser}>
           <ReplyBox
-            showEmojis={this.state.showEmoji}
             placeholder={"Type Something"}
             name={"textMessage"}
             model={this.state}
+            onTextChange={text => this.setState({ textMessage: text })}
             onKeyPress={event => this.onKeyPress(event)}
-            onEmojiSelect={emoji => this.handleEmoji(emoji)}
-            handleEmojiClicked={this.emojiClicked}
+            onSend={() => this.handleMessage(this.state.textMessage)}
             getAttachment={file => this.onAttachmentUpload(file)}
             getImage={file => this.onImageUpload(file)}
           />
