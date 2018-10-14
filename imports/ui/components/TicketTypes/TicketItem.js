@@ -10,6 +10,7 @@ import {
   TextArea
 } from "btech-base-forms-component";
 import LineSeparator from "./LineSeparator";
+import {NAME_REGEX} from "../../constants";
 
 const SButtonText = styled.span`
   margin-left: 5px;
@@ -19,6 +20,14 @@ const STitleText = styled.div`
   font-family: Roboto Mono, serif;
   font-weight: bold;
 `;
+
+const SInput = styled(Container)`
+  input::-webkit-outer-spin-button,
+  input::-webkit-inner-spin-button {    
+  -webkit-appearance: none; 
+    margin: 0; 
+  }
+`
 
 /**
  * @module Data
@@ -66,9 +75,10 @@ class TicketItem extends Component {
                   getValue={this.notifyParent.bind(this)}
                   model={this.state.ticket}
                   required={true}
+                  validate={NAME_REGEX}
                 />
               </Container>
-              <Container>
+              <SInput>
                 <Input
                   placeholderText={"# Available"}
                   type={"number"}
@@ -76,7 +86,7 @@ class TicketItem extends Component {
                   getValue={this.notifyParent.bind(this)}
                   model={this.state.ticket}
                 />
-              </Container>
+              </SInput>
             </Layout>
           </Container>
           <Container>
@@ -88,20 +98,23 @@ class TicketItem extends Component {
             />
           </Container>
           {this.props.isPaid ? (
-            <SalaryRange
-              required={true}
-              labelText={"Price Range"}
-              placeholder={"000"}
-              min={Number(this.state.ticket.min) || 0}
-              max={Number(this.state.ticket.max) || 0}
-              getValue={data => {
-                const { min, max } = data;
-                const ticket = this.state.ticket;
-                ticket.min = min;
-                ticket.max = max;
-                this.setState({ ticket: ticket });
-              }}
+            <Layout customTemplateColumns={'1fr 1fr'}>
+              <SalaryRange
+                required={true}
+                labelText={"Ticket Price"}
+                placeholder={"000"}
+                min={Number(this.state.ticket.min) || 0}
+                max={Number(this.state.ticket.max) || 0}
+                getValue={data => {
+                  const { min, max } = data;
+                  const ticket = this.state.ticket;
+                  ticket.min = min;
+                  ticket.max = max;
+                  this.setState({ ticket: ticket });
+                }}
             />
+              <div/>
+            </Layout>
           ) : null}
           <Container>
             <Layout customTemplateColumns={"1fr auto"}>
