@@ -13,6 +13,7 @@ import Styled from "styled-components";
 import { Meteor } from "meteor/meteor";
 import { withTracker } from "meteor/react-meteor-data";
 import UserRedux from "../../redux/user";
+import isChatView from "../../redux/reducers/ChatView/ChatView";
 
 const MainLayoutStyled = Styled(Layout)`
  position:fixed;
@@ -106,7 +107,7 @@ class MainLayout extends Component {
     return (
       <MainLayoutStyled
         customTemplateColumns={`1fr 1fr`}
-        customTemplateRows={"1fr 56px"}
+        customTemplateRows={this.props.isChatView ? "1fr 0px" : "1fr 56px"}
         mdCustomTemplateColumns={`0.05498fr ${leftWidth}px 1fr`}
         mdCustomTemplateRows={"1fr"}
         layoutAreas={{
@@ -121,6 +122,7 @@ class MainLayout extends Component {
         />
         <Navbar
           {...propsProvider}
+          isHide={this.props.isChatView}
           isShow={this.state.isShow}
           onOpenNavbar={showNavbar => this.setState({ showNavbar })}
         />
@@ -143,9 +145,10 @@ MainLayout.defaultProps = {
 MainLayout.propTypes = {};
 
 const mapStateToProps = state => {
-  const { sideBarStatus } = state;
+  const { sideBarStatus, isChatView } = state;
   return {
-    showSidebar: sideBarStatus ? sideBarStatus.status : false
+    showSidebar: sideBarStatus ? sideBarStatus.status : false,
+    isChatView: isChatView ? isChatView.show : false
   };
 };
 

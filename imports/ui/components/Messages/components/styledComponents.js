@@ -1,6 +1,6 @@
 import React from "react";
 import styled from "styled-components";
-import { Container, mixins } from "btech-layout";
+import { Layout, Container, mixins } from "btech-layout";
 
 export const SChat = styled(Container)`
   background-color: ${props => props.backgroundColor || "#FFFFFF"};
@@ -19,8 +19,7 @@ export const SChat = styled(Container)`
 export const SReplyBox = styled(Container)`
   background-color: ${props => props.backgroundColor || "#F9F9FB"};
   width: 100%;
-  padding: 15px 5px;
-  padding-top: 5px;
+  padding: 5px;
 
   ${mixins.media.desktop`
     padding: 0px;
@@ -93,6 +92,12 @@ export const SUser = styled(Container)`
 
 export const SText = styled.span`
   font-size: 12px;
+  overflow: hidden;
+  white-space: normal;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  ${props => (props.isActive ? null : "-webkit-line-clamp: 3")};
+  -webkit-box-orient: vertical;
 
   ${mixins.media.desktop`
     font-size: 14px;
@@ -101,6 +106,7 @@ export const SText = styled.span`
 
 export const SReplyButton = styled.span`
   margin-left: auto;
+  cursor: pointer;
 `;
 
 export const SReplyMessage = styled(Container)`
@@ -111,3 +117,32 @@ export const SReplyMessage = styled(Container)`
   line-height: 24px;
   margin-bottom: 10px;
 `;
+
+
+export const Attachment = styled(Layout)`
+    border: 1px solid #BFBFBF;
+    background-color: #EDEDED;
+    font-size: 16px;
+    line-height: 14px;
+    font-weight: bold;
+    width: 198px;
+    font-family: Helvetica Neue LT Std;
+`
+
+export const Header = styled.span`
+    height: 12px;
+    width: 100px;	
+    opacity: 0.5;	
+    color: #000000;	
+    font-family: Roboto Mono;	
+    font-size: 12px;	
+    line-height: 0;
+`
+
+export const Link = styled.a`
+    color: #000000;
+    border-left: 1px solid #BFBFBF;
+    :hover {
+        color: #000000;
+    }    
+`

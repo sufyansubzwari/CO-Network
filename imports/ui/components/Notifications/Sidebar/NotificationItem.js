@@ -1,6 +1,6 @@
 import React from "react";
 import styled from "styled-components";
-import { Container, mixins, Layout } from "btech-layout";
+import { Container, mixins } from "btech-layout";
 
 /**
  * @module Data
@@ -11,10 +11,15 @@ import { Container, mixins, Layout } from "btech-layout";
  * Using "theme" to define our style
  */
 
-const ProfileItem = styled(Container)`
-  padding: 5px 10px 10px;
+const NotificationItem = styled(Container)`
+  padding: 10px;
   zoom: 100%;
 
+  ${mixins.media.desktop`
+    padding: 20px 10px;
+    margin-right: 10px;
+  `}
+  
   @media (min-width: 62em) {
     zoom: 80%;
   }
@@ -22,10 +27,6 @@ const ProfileItem = styled(Container)`
   @media (min-width: 86em) {
     zoom: 100%;
   }
-
-  ${mixins.media.desktop`
-    padding: 20px;
-  `};
 `;
 
-export default ProfileItem;
+export default NotificationItem;

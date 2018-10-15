@@ -65,7 +65,7 @@ const CButton = styled(Button)`
   width: 34px;
   height: 34px;
   border-radius: 3px;
-  background-color: #fb60cc;
+  background-color: white;
   position: absolute;
   top: 30px;
   left: 20px;
@@ -73,11 +73,7 @@ const CButton = styled(Button)`
   font-weight: normal;
   font-style: normal;
   font-stretch: normal;
-  color: #fffefe;
   border: none;
-  & :hover {
-    background: linear-gradient(353deg, #f92672, #e826f9);
-  }
 
   ${mixins.media.desktop`
     display: none;
@@ -89,16 +85,17 @@ const SPolicyContainer = styled(Container)`
   display: none;
 
   ${mixins.media.desktop`
-    display: initial;
+    display: block;
   `};
 `;
 
-const SLogoutContainer = styled(Container)`
-  text-align: center;
+const SInfoProfileItem = styled(ProfileItem)`
+  line-height: 15px;
+`;
 
-  ${mixins.media.desktop`
-    text-align: initial;
-  `};
+const SButtons = styled(Container)`
+  display: flex;
+  align-items: center;
 `;
 
 const ItemsContainer = function(props) {
@@ -139,15 +136,16 @@ const ItemsContainer = function(props) {
           {props.children}
         </Scrollbars>
       </SContainer>
-      <Container>
+      <Container hide mdShow>
         <Separator />
-        <SPolicyContainer paddingX={"10px"}>
-          <SideBarLink href={props.policy}> Terms Policies </SideBarLink>
-          <SideBarLink> CONetwork © 2018 </SideBarLink>
+        <SPolicyContainer paddingX={"20px"}>
+          <Container>
+            <SideBarLink href={props.policy}> Terms Policies </SideBarLink>
+          </Container>
+          <Container>
+            <SideBarLink> CONetwork © 2018 </SideBarLink>
+          </Container>
         </SPolicyContainer>
-        <SLogoutContainer paddingX={"10px"}>
-          <LogoutBtn btnType="link" onLogoutHook={window.hideMenu} />
-        </SLogoutContainer>
       </Container>
     </SContainer>
   );
@@ -181,8 +179,8 @@ class ProfileSideBar extends React.Component {
         policy={this.policy}
         onClose={() => this.props.onClose && this.props.onClose()}
       >
-        <ProfileItem>
-          <Container mt={{ md: "10px" }}>
+        <SInfoProfileItem>
+          <Container mt={{ xs: "10px" }}>
             <Container>
               <Username>
                 {name} {lastName}
@@ -195,11 +193,18 @@ class ProfileSideBar extends React.Component {
                   this.props.curUser.profile.website}
               </Website>
             </Container>
-            <Link to={"/profile"}>
-              <Button>See Profile</Button>
-            </Link>
+            <SButtons>
+              <Container inLine>
+                <Link to={"/profile"}>
+                  <Button height={"28px"}>See Profile</Button>
+                </Link>
+              </Container>
+              <Container inLine ml={"10px"}>
+                <LogoutBtn btnType="link" onLogoutHook={window.hideMenu} />
+              </Container>
+            </SButtons>
           </Container>
-        </ProfileItem>
+        </SInfoProfileItem>
         <Separator />
         <ProfileItem hide={!aboutMe}>
           <Text header={"Me self:"} text={aboutMe} />

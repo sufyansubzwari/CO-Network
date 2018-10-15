@@ -104,7 +104,7 @@ class ThirdStep extends React.Component {
           tag =>
             !this.state.user ||
             !this.state.user.knowledge ||
-            data ||
+            !data ||
             !data.some(item => item.tag._id === tag._id)
         )
         .sort((a, b) => b.used - a.used)
