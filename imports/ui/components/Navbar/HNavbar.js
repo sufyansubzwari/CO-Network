@@ -42,7 +42,14 @@ const HItemContainerLayout = posed(HNavLayout)({
     staggerChildren: 100,
     delayChildren: 200
   },
-  hide: { opacity: 0, x: "-100%" }
+  hide: { opacity: 0, x: "-100%" },
+  down: {
+    opacity: 0,
+    y: "20%",
+    staggerChildren: 100,
+    delayChildren: 200
+  },
+  up: { opacity: 1, y: "0%" }
 });
 
 // create all navs
@@ -87,6 +94,12 @@ const HNavbar = function(props) {
         })
       : "";
   };
+  let getPoseKey = () => {
+    let action = "show";
+    action = props.isShow ? "show" : "hide";
+    action = props.isHide ? "down" : "up";
+    return action;
+  };
   let mdRowGap = props.mdRowGap || 20;
   const pose = props.open;
   return (
@@ -96,7 +109,7 @@ const HNavbar = function(props) {
       padding={"0 0 68px 0"}
       mdPadding={"0"}
       pad
-      pose={props.isShow && !props.isHide ? "show" : "hide"}
+      pose={getPoseKey()}
       fullY
       style={{ gridArea: props.gridArea }}
       {...props}
