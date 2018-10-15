@@ -21,8 +21,14 @@ class LoadMessages extends Component {
       selectMessageItem: -1,
       replyMessage: "",
       textReply: "",
-      flag: true
+      flag: true,
+      attachment: [],
+      images: [],
+      showEmoji: false,
+
     };
+      this.emojiClicked = this.emojiClicked.bind(this)
+
   }
 
   componentWillMount() {
@@ -44,7 +50,8 @@ class LoadMessages extends Component {
     let reply = {
       owner: Meteor.userId(),
       text: text,
-      attachment: "",
+      attachment: this.state.attachment,
+      images: this.state.images,
       _id: new Date().toISOString(),
       createdAt: new Date()
     };
@@ -128,6 +135,46 @@ class LoadMessages extends Component {
     });
   }
 
+  onAttachmentUpload(file){
+      console.log("uploaded the file "+ file)
+      let attach = this.state.attachments;
+      attach.push(file);
+      // let value = this.state.textMessage;
+      // value = value + "^"+ file.name + "^";
+      this.setState({
+          attachments: attach,
+          // textMessage: value
+      })
+  }
+
+  onImageUpload(file){
+      console.log("uploaded the image "+ file)
+      let imgs = this.state.images;
+      imgs.push(file);
+      // let value = this.state.textMessage;
+      // value = value + "^"+ file.name + "^";
+      this.setState({
+          images: imgs,
+          // textMessage: value
+      })
+  }
+
+    handleEmoji(emoji){
+        if(emoji && emoji.native){
+            let message = this.state.textReply;
+            message = message + emoji.native;
+            this.setState({
+                textReply: message
+            })
+        }
+    }
+
+    emojiClicked(){
+        this.setState({
+            showEmoji: !this.state.showEmoji
+        })
+    }
+
   renderMessages(blocks) {
     return blocks.length > 0
       ? blocks.map((message, k) => {
@@ -165,6 +212,11 @@ class LoadMessages extends Component {
                           onSend={() =>
                             this.handleMessage(this.state.textReply, message)
                           }
+                          showEmojis={this.state.showEmoji}
+                          onEmojiSelect={(emoji) => this.handleEmoji(emoji)}
+                          handleEmojiClicked={this.emojiClicked}
+                          getAttachment={(file) => this.onAttachmentUpload(file)}
+                          getImage={(file) => this.onImageUpload(file)}
                         />
                       </Container>
                     ) : null}

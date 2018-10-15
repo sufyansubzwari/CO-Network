@@ -208,7 +208,7 @@ class ListEvents extends Component {
             />
           )}
         </Mutation>
-        <Mutation key={"rightSide"} mutation={DeleteEvent}>
+      <Mutation refetchQueries={['GetMyEvents']} key={"rightSide"} mutation={DeleteEvent}>
           {(deleteEvent, { eventDeleted }) => (
             <Mutation
               mutation={UpdateImageEvent}

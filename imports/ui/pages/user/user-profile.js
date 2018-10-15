@@ -128,7 +128,11 @@ class UserProfile extends Component {
       _id: this.props.curUser._id,
       profile: profile
     };
-    createProfile({ variables: { entity: user } });
+    createProfile({ variables: { entity: user } })
+      .then(({ data }) => {
+        this.props.data.refetch();
+      })
+      .catch(error => console.log(error));
   }
 
   render() {
@@ -136,6 +140,7 @@ class UserProfile extends Component {
       <PostLayout>
         <Container fullY key={"leftSide"}>
           <Mutation
+            refetchQueries={['user']}
             mutation={CreateUser}
             onCompleted={() =>
               this.state.redirect &&
