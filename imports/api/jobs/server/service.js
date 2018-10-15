@@ -1,5 +1,6 @@
 import Jobs from "../index";
 import * as _ from "lodash";
+import Notifications from "../../notifications";
 
 /**
  * @class Job Service
@@ -15,11 +16,13 @@ class JobsService {
   static job = async data => {
     if (_.isUndefined(data._id)) {
       const id = Jobs.collection.insert(data);
+      Notifications.service.generateNotification("POST", id, "JOB", data.owner, data.title);
       return Jobs.collection.findOne(id);
     } else {
       let id = data._id;
       delete data._id;
       await Jobs.collection.update(id, { $set: data });
+      Notifications.service.generateNotification("UPDATE", id, "JOB", data.owner, data.title);
       return Jobs.collection.findOne(id);
     }
   };
@@ -30,7 +33,10 @@ class JobsService {
    * @return {Object} Job deleted
    */
   static deleteJob = async id => {
-    return await Jobs.collection.remove(id);
+    const entity = Jobs.collection.findOne(id);
+    await Jobs.collection.remove(id);
+    Notifications.service.generateNotification("DELETE", id, entity.entity, entity.owner, entity.title);
+    return id;
   };
   /**
    * @name updateImage

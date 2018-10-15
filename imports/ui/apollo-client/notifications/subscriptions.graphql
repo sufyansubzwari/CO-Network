@@ -13,3 +13,10 @@ subscription OnNotifications($notifications: NotificationsInput) {
         createdAt
     }
 }
+
+subscription CountsNotAndMsg {
+    subNewNotAndMsg {
+        messages
+        notifications
+    }
+}

@@ -100,7 +100,7 @@ class UploadToS3 {
               },
               false
             );
-            readerCompressed.readAsDataURL(blob);
+            readerCompressed.readAsBinaryString(blob);
             reader.readAsBinaryString(image);
           } else {
             // to avoid upload the image and save the base64

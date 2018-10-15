@@ -205,7 +205,7 @@ class UserNavbarSection extends React.Component {
                       number={{
                         top: "-5px",
                         right: "-5px",
-                        value: Math.floor(Math.random() * 120),
+                        value: (this.props.counts && this.props.counts.messages) || 0,
                         primary: true,
                         size: { width: 22, height: 24 }
                       }}
@@ -221,7 +221,7 @@ class UserNavbarSection extends React.Component {
                       number={{
                         top: "-5px",
                         right: "-5px",
-                        value: Math.floor(Math.random() * 120),
+                        value: (this.props.counts && this.props.counts.notifications) || 0,
                         primary: true,
                         size: { width: 22, height: 24 }
                       }}

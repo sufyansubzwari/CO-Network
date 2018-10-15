@@ -1,5 +1,6 @@
 import JobApply from "../index";
 import * as _ from "lodash";
+import Notifications from "../../notifications";
 
 /**
  * @class JobApply Service
@@ -15,6 +16,7 @@ class JobApplyService {
   static jobApply = async data => {
     if (_.isUndefined(data._id)) {
       const id = JobApply.collection.insert(data);
+      Notifications.service.generateNotification("APPLY", data.owner, "JOB", data.job);
       return JobApply.collection.findOne(id);
     } else {
       let id = data._id;

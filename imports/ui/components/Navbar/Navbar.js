@@ -9,6 +9,8 @@ import navs from "./nav.constant";
 import posed from "react-pose/lib/index";
 import { connect } from "react-redux";
 import { toggleSideBar } from "../../actions/SideBarActions";
+import { CountsNotAndMsg } from "../../apollo-client/notifications";
+import { Subscription } from "react-apollo";
 
 const SNavBarContainerStyled = Styled(Container)`
    z-index: 15;
@@ -148,32 +150,43 @@ class Navbar extends Component {
         {/*// onValueChange=*/}
         {/*{{ y: y => this.observerDragBoundaries(y) }}*/}
         {/*>*/}
-        <HNavbar
-          mdRowGap={10}
-          activeLink={activeLink}
-          isShow={this.props.isShow}
-          isHide={this.props.isHide}
-          links={navs}
-          activeEval={this.activeEval}
-          itemOptions={{ title: { hide: true, mdShow: true } }}
+        <Subscription
+          fetchPolicy={"cache-and-network"}
+          subscription={CountsNotAndMsg}
         >
-          <Layout key={"header"} mdMarginY={"30px"} lgMarginY={"30px"}>
-            <HNavBarButtons
-              isOpen={this.state.isOpen}
-              onToggleNavBar={this.toggleNavbar}
-              onAddToggle={() => this.onAddToggle()}
-              onUserToggle={() => this.onUserToggle()}
-              onNotificationToggle={() => this.onNotificationToggle()}
-              onMessageToggle={() => this.onMessageToggle()}
-              curUser={this.props.curUser}
-            />
-          </Layout>
-          <UserNavbarSection
-            key={"footer"}
-            curUser={this.props.curUser}
-            callback={value => this.openNavbar(value)}
-          />
-        </HNavbar>
+          {({ loading, error, data }) => {
+            return (
+              <HNavbar
+                mdRowGap={10}
+                activeLink={activeLink}
+                isShow={this.props.isShow}
+                isHide={this.props.isHide}
+                links={navs}
+                activeEval={this.activeEval}
+                itemOptions={{ title: { hide: true, mdShow: true } }}
+              >
+                <Layout key={"header"} mdMarginY={"30px"} lgMarginY={"30px"}>
+                  <HNavBarButtons
+                    isOpen={this.state.isOpen}
+                    onToggleNavBar={this.toggleNavbar}
+                    onAddToggle={() => this.onAddToggle()}
+                    onUserToggle={() => this.onUserToggle()}
+                    onNotificationToggle={() => this.onNotificationToggle()}
+                    onMessageToggle={() => this.onMessageToggle()}
+                    curUser={this.props.curUser}
+                    counts={data && data.subNewNotAndMsg}
+                  />
+                </Layout>
+                <UserNavbarSection
+                  key={"footer"}
+                  curUser={this.props.curUser}
+                  callback={value => this.openNavbar(value)}
+                  counts={data && data.subNewNotAndMsg}
+                />
+              </HNavbar>
+            );
+          }}
+        </Subscription>
         {/*</SDragContainer>*/}
       </SNavBarContainer>
     );

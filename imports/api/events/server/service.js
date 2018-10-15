@@ -16,13 +16,13 @@ class EventsService {
   static event = async data => {
     if (_.isUndefined(data._id)) {
       const id = Events.collection.insert(data);
-      Notifications.service.generateNotification("POST", data.owner, data.entity, id);
+      Notifications.service.generateNotification("POST", id, "EVENT", data.owner, data.title);
       return Events.collection.findOne(id);
     } else {
       let id = data._id;
       delete data._id;
       await Events.collection.update(id, { $set: data });
-      Notifications.service.generateNotification("UPDATE", data.owner, data.entity, id);
+      Notifications.service.generateNotification("UPDATE", id, "EVENT", data.owner, data.title);
       return Events.collection.findOne(id);
     }
   };
@@ -33,7 +33,10 @@ class EventsService {
    * @return {Object} Event deleted
    */
   static deleteEvent = async id => {
-    return await Events.collection.remove(id);
+    const entity = Events.collection.findOne(id);
+    await Events.collection.remove(id);
+    Notifications.service.generateNotification("DELETE", id, entity.entity, entity.owner, entity.title);
+    return id;
   };
   /**
    * @name updateImage
