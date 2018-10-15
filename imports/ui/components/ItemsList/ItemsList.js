@@ -14,14 +14,12 @@ const SListTitle = styled(Container)`
     props.theme.texts.title.fontFamily || "Helvetica Neue LT Std"};
   font-size: ${props => props.size || "14px"};
   zoom: 100%;
-  
+
   ${mixins.media.desktop`
     font-size: ${props => props.size || "18px"};
     line-height: ${props => props.lineHeight || "26px"};
     margin-bottom: 5px;
-  `}
-
-  @media (min-width: 62em) {
+  `} @media (min-width: 62em) {
     zoom: 80%;
   }
 
@@ -58,8 +56,7 @@ class ItemsList extends Component {
   }
 
   renderItem(item, key) {
-    if(!item)
-      return null
+    if (!item) return null;
     return (
       <CardItem
         lgCustomTemplateColumns={"195px 1fr"}
@@ -96,7 +93,7 @@ class ItemsList extends Component {
             getActive={this.props.getNavActive}
           />
         ) : (
-          <SListTitle ml={'15px'}>{this.props.title}</SListTitle>
+          <SListTitle ml={{ md: "15px" }}>{this.props.title}</SListTitle>
         )}
         {this.props.loading || (this.props.data && this.props.data.length) ? (
           <List

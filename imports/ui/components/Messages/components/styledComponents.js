@@ -126,7 +126,7 @@ export const SReplyMessage = styled(Container)`
 `;
 
 
-export const Attachment = styled(Layout)`
+export const SAttachment = styled(Layout)`
     border: 1px solid #BFBFBF;
     background-color: #EDEDED;
     font-size: 16px;

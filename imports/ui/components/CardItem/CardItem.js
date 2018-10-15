@@ -13,7 +13,7 @@ const TitleCardContainer = Styled.div`
   font-family: Helvetica Neue LT Std;
   font-size: 14px;
   font-weight: bold;
-  color: ${props => props.isActive ? '#ffffff' : "#000000"};
+  color: ${props => (props.isActive ? "#ffffff" : "#000000")};
   line-height: 1;    
   
   ${mixins.media.desktop`
@@ -23,7 +23,7 @@ const TitleCardContainer = Styled.div`
 
 const SKeyContainer = Styled.span`
   font-size: 12px;
-  color: ${props => props.isActive ? '#ffffff' : "#000000"};
+  color: ${props => (props.isActive ? "#ffffff" : "#000000")};
   
   ${mixins.media.desktop`
     font-size: 14px;
@@ -34,7 +34,7 @@ const SKeyContainer = Styled.span`
 const SIconContainer = Styled.span`
   font-size: 12px;
   margin-right: 5px;
-  color: ${props => props.isActive ? '#ffffff' : "#000000"};
+  color: ${props => (props.isActive ? "#ffffff" : "#000000")};
   
   ${mixins.media.desktop`
     font-size: 14px;
@@ -47,7 +47,7 @@ const SubTitleCardContainer = Styled.div`
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-  color: ${props => props.isActive ? '#ffffff' : "#000000"};
+  color: ${props => (props.isActive ? "#ffffff" : "#000000")};
   line-height: 1;
   
   ${mixins.media.desktop`
@@ -57,7 +57,7 @@ const SubTitleCardContainer = Styled.div`
 
 const ViewContainer = Styled(Container)`
     line-height: 1;
-`
+`;
 
 const SMLCard = Styled(Card)`
   line-height: inherit;
@@ -88,7 +88,6 @@ const NullImageContainer = Styled.div`
 `;
 
 const SCardContainer = Styled(Container)`
-
   zoom: 100%;
   cursor: pointer;
   
@@ -100,21 +99,22 @@ const SCardContainer = Styled(Container)`
     zoom: 100%;
   }
   
-  margin-left: 15px;
+  ${mixins.media.desktop`
+    margin-left: 15px;
+  `}
 `;
 
 const PSCardContainer = posed(SCardContainer)({
-    hoverable: true,
-    init: { scale: 1 },
-    hover: { scale: 1.03 },
-})
-
+  hoverable: true,
+  init: { scale: 1 },
+  hover: { scale: 1.03 }
+});
 
 const SImage = Styled.div`
   position: absolute;
   border-top-left-radius: 3px;
   border-bottom-left-radius: 3px;
-  background: url(${props => props.src ? props.src : null}) no-repeat center;
+  background: url(${props => (props.src ? props.src : null)}) no-repeat center;
   background-size: cover;
   width: 100%;
   height: 100%;
@@ -141,7 +141,9 @@ class CardItem extends Component {
   }
 
   componentWillReceiveProps(newProps) {
-    setTimeout(() => { this.setState({loadingImage: this.state.loadingImage}) }, 500);
+    setTimeout(() => {
+      this.setState({ loadingImage: this.state.loadingImage });
+    }, 500);
     if (!newProps.image) return;
     if (newProps.image !== this.props.image) this.loadImage(newProps.image);
   }
@@ -172,7 +174,9 @@ class CardItem extends Component {
         <SIconContainer isActive={this.props.isActive}>
           <MaterialIcon type={iconToShow} />
         </SIconContainer>
-        <SKeyContainer isActive={this.props.isActive}>{valueToShow}</SKeyContainer>
+        <SKeyContainer isActive={this.props.isActive}>
+          {valueToShow}
+        </SKeyContainer>
       </ViewContainer>
     );
   }
@@ -188,13 +192,18 @@ class CardItem extends Component {
         mdRowGap={"8px"}
         mdCustomTemplateRows={"1fr 27px"}
       >
-        <Layout fullY customTemplateRows={"auto auto auto"} mdRowGap={"10px"} rowGap={"8px"}>
+        <Layout
+          fullY
+          customTemplateRows={"auto auto auto"}
+          mdRowGap={"10px"}
+          rowGap={"8px"}
+        >
           <Container mdMinH={"25px"}>
             <Layout
               customTemplateColumns={"1fr"}
               mdCustomTemplateColumns={this.props.showMenu ? "1fr auto" : "1f"}
             >
-              <Container style={{lineHeight: 1}}>
+              <Container style={{ lineHeight: 1 }}>
                 {this.state.topOptions.map((element, index) =>
                   this.renderTopOptionItem(element, index)
                 )}
@@ -223,11 +232,7 @@ class CardItem extends Component {
             </Layout>
           </Container>
         </Layout>
-        <Container
-          hide
-          mdShow
-          ref={this.tagRef}
-        >
+        <Container hide mdShow ref={this.tagRef}>
           {tags.length ? (
             <TagList
               containerRef={this.tagcontainer}
@@ -256,7 +261,7 @@ class CardItem extends Component {
     const imageElement = loading ? (
       <PlaceHolder rect loading={loading} height={398} width={395} />
     ) : (
-      <SImage src={this.props.image}  />
+      <SImage src={this.props.image} />
     );
     return this.props.image && this.props.image ? (
       <Container relative fullView>

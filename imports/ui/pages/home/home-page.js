@@ -5,9 +5,7 @@ import { connect } from "react-redux";
 import { toggleSideBar } from "../../actions/SideBarActions/index";
 import Authorization from "../../services/authorization/index";
 import MapBackGround from "../../components/BackGroundMap/index";
-import { LoginButtons, ZoomButtons } from "./components";
-import { HButtonGroup, HNavItem } from "btech-horizantal-navbar";
-import navs from "../../components/Navbar/nav.constant";
+import { LoginButtons } from "./components";
 
 const SPageTitle = styled(Container)`
   text-align: center;

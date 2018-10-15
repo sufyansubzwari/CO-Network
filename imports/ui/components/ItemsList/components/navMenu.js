@@ -51,7 +51,7 @@ class NavMenu extends Component {
 
   render() {
     return (
-      <Container ml={'10px'}>
+      <Container ml={{ md: "10px" }}>
         <SNav
           fontFamily={this.props.fontFamily}
           fontSize={this.props.fontSize}
