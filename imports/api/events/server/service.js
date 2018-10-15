@@ -33,9 +33,10 @@ class EventsService {
    * @return {Object} Event deleted
    */
   static deleteEvent = async id => {
-    const event = Events.collection.findOne(id);
-    Notifications.service.generateNotification("DELETE", id, event.entity, event.owner, event.title);
-    return await Events.collection.remove(id);
+    const entity = Events.collection.findOne(id);
+    await Events.collection.remove(id);
+    Notifications.service.generateNotification("DELETE", id, entity.entity, entity.owner, entity.title);
+    return id;
   };
   /**
    * @name updateImage
