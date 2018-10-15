@@ -7,6 +7,7 @@ import { Card } from "btech-card-list-component";
 import { TagList } from "btech-base-forms-component";
 import ReportToggle from "./ReportToggle";
 import { PlaceHolder } from "btech-placeholder-component";
+import posed from "react-pose";
 
 const TitleCardContainer = Styled.div`
   font-family: Helvetica Neue LT Std;
@@ -98,12 +99,25 @@ const SCardContainer = Styled(Container)`
   @media (min-width: 86em) {
     zoom: 100%;
   }
+  
+  margin-left: 15px;
 `;
 
-const SImage = Styled.img`
+const PSCardContainer = posed(SCardContainer)({
+    hoverable: true,
+    init: { scale: 1 },
+    hover: { scale: 1.03 },
+})
+
+
+const SImage = Styled.div`
   position: absolute;
-  border-top-left-radius: 5px;
-  border-bottom-left-radius: 5px;
+  border-top-left-radius: 3px;
+  border-bottom-left-radius: 3px;
+  background: url(${props => props.src ? props.src : null}) no-repeat center;
+  background-size: cover;
+  width: 100%;
+  height: 100%;
 `;
 
 /**
@@ -242,7 +256,7 @@ class CardItem extends Component {
     const imageElement = loading ? (
       <PlaceHolder rect loading={loading} height={398} width={395} />
     ) : (
-      <SImage width="100%" height="100%" src={this.props.image}  />
+      <SImage src={this.props.image}  />
     );
     return this.props.image && this.props.image ? (
       <Container relative fullView>
@@ -261,7 +275,7 @@ class CardItem extends Component {
 
   render() {
     return (
-      <SCardContainer>
+      <PSCardContainer>
         <SMLCard
           className={"card"}
           background={this.props.isActive ? "#000000" : "white"}
@@ -275,7 +289,7 @@ class CardItem extends Component {
           renderRightSide={this.getRightSide.bind(this)}
           renderLeftSide={this.renderLeftSide.bind(this)}
         />
-      </SCardContainer>
+      </PSCardContainer>
     );
   }
 }
