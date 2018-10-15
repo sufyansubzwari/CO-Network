@@ -3,9 +3,9 @@ const messages = (action, userName, entity, title) => {
     case "POST":
       return `The member ${userName} that you follow has create a new ${entity}. ${title}.`;
     case "UPDATE":
-      return `The ${entity} that you are following have been updated.`;
+      return `The ${entity} that you are following have been updated. ${title}`;
     case "DELETE":
-      return `The ${entity} that you are following have been deleted.`;
+      return `The ${entity} that you are following have been deleted. ${title}`;
     case "FOLLOW":
       return `The member ${userName} is now following you.`;
     case "FOLLOW_ENTITY":
