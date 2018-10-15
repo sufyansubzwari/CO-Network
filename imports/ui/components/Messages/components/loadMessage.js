@@ -8,6 +8,7 @@ import { Query } from "react-apollo";
 import PropTypes from "prop-types";
 import MessageItem from "./MessageItem";
 import { SLineTime } from "./styledComponents";
+import Attachment from "./Attachment";
 
 class LoadMessages extends Component {
   constructor(props) {
@@ -25,6 +26,7 @@ class LoadMessages extends Component {
       attachment: [],
       images: [],
       showEmoji: false,
+      listFiles: []
 
     };
       this.emojiClicked = this.emojiClicked.bind(this)
@@ -135,27 +137,27 @@ class LoadMessages extends Component {
     });
   }
 
-  onAttachmentUpload(file){
-      console.log("uploaded the file "+ file)
+  onAttachmentUpload(file, size) {
+      console.log("uploaded the file " + file);
       let attach = this.state.attachments;
       attach.push(file);
-      // let value = this.state.textMessage;
-      // value = value + "^"+ file.name + "^";
+      let listFiles = this.state.listFiles;
+      listFiles.push({...file, size: size, isImage: false})
       this.setState({
           attachments: attach,
-          // textMessage: value
-      })
+          listFiles: listFiles
+      });
   }
 
-  onImageUpload(file){
-      console.log("uploaded the image "+ file)
+  onImageUpload(file, size) {
+      console.log("uploaded the image " + file);
       let imgs = this.state.images;
       imgs.push(file);
-      // let value = this.state.textMessage;
-      // value = value + "^"+ file.name + "^";
+      let listFiles = this.state.listFiles;
+      listFiles.push({...file, size: size, isImage: true})
       this.setState({
           images: imgs,
-          // textMessage: value
+          listFiles: listFiles
       })
   }
 
@@ -172,6 +174,35 @@ class LoadMessages extends Component {
     emojiClicked(){
         this.setState({
             showEmoji: !this.state.showEmoji
+        })
+    }
+
+    closeImage(index){
+        let images = this.state.images;
+        let img = images.splice(index,1);
+        this.setState({images: images})
+    }
+
+    closeAttachment(index){
+        let att = this.state.attachments;
+        let attachmentDeleted = att.splice(index,1);
+        this.setState({attachments: att})
+    }
+
+    closeFile(index){
+        let files = this.state.listFiles;
+        let deleted = files.splice(index,1);
+
+        if(deleted[0].isImage){
+            let i = this.state.images.findIndex( (item) => item.name === deleted[0].name )
+            this.closeImage(i)
+        }
+        else{
+            let i = this.state.attachments.findIndex( (item) => item.name === deleted[0].name )
+            this.closeAttachment(i);
+        }
+        this.setState({
+            listFiles: files
         })
     }
 
@@ -199,6 +230,12 @@ class LoadMessages extends Component {
                     />
                     {message._id === this.state.replyMessage ? (
                       <Container ml={{ md: "20px" }} mb={"15px"}>
+                        <Container fullX>
+                            {
+                                this.state.listFiles.length > 0 ?
+                                    this.state.listFiles.map( (file, index) => <Attachment hideBorder={true} key={index} isImage={file.isImage} link={file.link} filename={file.name} size={file.size} loading={false} onClose={() => this.closeFile(index) } /> ) : null
+                            }
+                        </Container>
                         <ReplyBox
                           placeholder={`Type a reply to ${owner &&
                             owner.profile.name}`}
@@ -215,8 +252,8 @@ class LoadMessages extends Component {
                           showEmojis={this.state.showEmoji}
                           onEmojiSelect={(emoji) => this.handleEmoji(emoji)}
                           handleEmojiClicked={this.emojiClicked}
-                          getAttachment={(file) => this.onAttachmentUpload(file)}
-                          getImage={(file) => this.onImageUpload(file)}
+                          getAttachment={(file,size) => this.onAttachmentUpload(file,size)}
+                          getImage={(file,size) => this.onImageUpload(file,size)}
                         />
                       </Container>
                     ) : null}

@@ -13,15 +13,22 @@ const SImage = styled.img`
 export default (AttachedImage = props => {
   return (
     <Container>
-      <Header>{props.filename}</Header>
-      <Layout customTemplateColumns={"1fr"} mdCustomTemplateColumns={"1fr 1fr"}>
+        {props.showHeader ? <Header>{props.filename}</Header> : null}
+      <Layout customTemplateColumns={"1fr"} mdCustomTemplateColumns={ !props.fullWidth ? "1fr 1fr" : '1fr'}>
         <SImage style={{ width: "100%" }} src={props.link} />
       </Layout>
     </Container>
   );
 });
 
+AttachedImage.defaultProps = {
+    showHeader: true,
+    fullWidth: false
+}
+
 AttachedImage.propTypes = {
   filename: PropTypes.string,
-  link: PropTypes.string
+  link: PropTypes.string,
+  showHeader: PropTypes.bool,
+  fullWidth: PropTypes.bool
 };

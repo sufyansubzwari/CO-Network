@@ -2,14 +2,14 @@ import React from 'react';
 import {Container, Layout} from 'btech-layout';
 import PropTypes from 'prop-types';
 import MaterialIcon from 'react-material-iconic-font';
-import {Attachment, Header, Link} from "./styledComponents";
+import {SAttachment, Header, Link} from "./styledComponents";
 
 export default AttachedFile = props  => {
 
     return (
         <Container>
             <Header>{props.filename}</Header>
-            <Attachment customTemplateColumns={'1fr auto'}>
+            <SAttachment customTemplateColumns={'1fr auto'}>
                 <Layout padding={'15px'} customTemplateColumns={'auto 1fr'} colGap={'10px'}>
                     <span>
                         <MaterialIcon type={'attachment'}/>
@@ -21,7 +21,7 @@ export default AttachedFile = props  => {
                         <MaterialIcon type={'download'}/>
                      </Container>
                 </Link>
-            </Attachment>
+            </SAttachment>
         </Container>
     );
 }
