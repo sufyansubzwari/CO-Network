@@ -1,8 +1,9 @@
 import Notifications from "../index";
 import * as _ from "lodash";
 import Followers from "../../followers";
-import {messages} from "../constants";
+import { messages } from "../constants";
 import Users from "../../users";
+import ServiceCollection from "../../viewsCount/server/service";
 
 /**
  * @class Job Service
@@ -22,7 +23,7 @@ class NotificationsService {
     } else {
       let id = data._id;
       delete data._id;
-      await Notifications.collection.update(id, {$set: data});
+      await Notifications.collection.update(id, { $set: data });
       return Notifications.collection.findOne(id);
     }
   };
@@ -53,7 +54,7 @@ class NotificationsService {
    */
   static notifications = (query, limit) => {
     return Notifications.collection
-      .find(query, {...limit, sort: {createdAt: -1}})
+      .find(query, { ...limit, sort: { createdAt: -1 } })
       .fetch();
   };
   /**
@@ -66,23 +67,21 @@ class NotificationsService {
    * @param {String} title - title of  the notification
    * @return {Object} Notification
    */
-  static generateNotification = async (action,
-                                       entityId,
-                                       entity,
-                                       userId,
-                                       title) => {
+  static generateNotification = async (
+    action,
+    entityId,
+    entity,
+    userId,
+    title
+  ) => {
     console.log("Action => generateNotification");
-    let entityFollowers = await Followers.service.getFollower({
-      entityId: entityId,
-      entity: entity
-    });
-    let userFollowers = await Followers.service.getFollower({
-      entityId: userId,
-      entity: "USER"
-    });
 
     switch (action) {
       case "POST":
+        const userFollowers = await Followers.service.getFollower({
+          entityId: userId,
+          entity: "USER"
+        });
         return NotificationsService.notifyFollowers(
           userFollowers,
           action,
@@ -91,6 +90,10 @@ class NotificationsService {
           title
         );
       case "UPDATE" || "DELETE":
+        const entityFollowers = await Followers.service.getFollower({
+          entityId: entityId,
+          entity: entity
+        });
         return NotificationsService.notifyFollowers(
           entityFollowers,
           action,
@@ -106,8 +109,17 @@ class NotificationsService {
           entity,
           "New Follower."
         );
-      case "FOLLOW_ACTION" || "APPLY" || "SPONSOR" || "SPEAKER":
-        return NotificationsService.notifyUser(userId, action, entityId, entity, title);
+      case "FOLLOW_ENTITY" || "APPLY" || "SPONSOR" || "SPEAKER":
+        const collectionService = ServiceCollection.getCollection(entity);
+        const entityOwner = collectionService.findOne({ _id: userId });
+        console.log("entityOwner", entityOwner);
+        return NotificationsService.notifyUser(
+          entityOwner.owner,
+          action,
+          entityId,
+          "EVENT",
+          entityOwner.title
+        );
       default:
         return null;
     }
@@ -130,7 +142,7 @@ class NotificationsService {
 
   static notifyUser = (userId, action, entityId, entity, title) => {
     console.log("Action => notifyUser");
-    const user = Users.service.getUser({_id: entityId});
+    const user = Users.service.getUser({ _id: entityId });
     Notifications.collection.insert({
       action: action,
       owner: userId,

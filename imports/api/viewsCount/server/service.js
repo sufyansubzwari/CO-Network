@@ -1,10 +1,10 @@
 import ViewsCount from "../index";
 import * as _ from "lodash";
-import User from "../../users";
-import Org from "../../organizations";
-import Jobs from "../../jobs";
-import Events from "../../events";
-import Colloquiums from "../../colloquiums";
+import User from "../../users/server/collection";
+import Org from "../../organizations/server/collection";
+import Jobs from "../../jobs/server/collection";
+import Events from "../../events/server/collection";
+import Colloquiums from "../../colloquiums/server/collection";
 import moment from "moment";
 
 /**
@@ -41,7 +41,7 @@ class ViewsCountService {
   };
   static updateEntity = (id, entity) => {
     const entityService = ViewsCountService.getCollection(entity);
-    return entityService.collection.update({ _id: id }, { $inc: { views: 1 } });
+    return entityService.update({ _id: id }, { $inc: { views: 1 } });
   };
 
   static getCollection = entity => {
