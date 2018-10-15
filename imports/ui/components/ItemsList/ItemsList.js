@@ -96,7 +96,7 @@ class ItemsList extends Component {
             getActive={this.props.getNavActive}
           />
         ) : (
-          <SListTitle>{this.props.title}</SListTitle>
+          <SListTitle ml={'15px'}>{this.props.title}</SListTitle>
         )}
         {this.props.loading || (this.props.data && this.props.data.length) ? (
           <List

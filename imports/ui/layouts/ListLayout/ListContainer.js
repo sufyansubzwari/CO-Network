@@ -17,11 +17,11 @@ const ListContainer = styled(Container)`
   padding: 15px 10px;
   
   @media (min-width: 62em) {
-    padding: 20px 35px;
+    padding: 20px 20px;
   }
 
   @media (min-width: 86em) {
-    padding: 20px 35px 30px 35px;
+    padding: 20px 20px 30px 20px;
   }
 `;
 
