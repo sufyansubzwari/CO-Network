@@ -27,7 +27,7 @@ class NotificationsSidebar extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      notifications: [],
+      notifications: this.props.notifications,
       selectedItem: -1,
       isDeleting: false
     };

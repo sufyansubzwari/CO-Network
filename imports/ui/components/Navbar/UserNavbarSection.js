@@ -200,9 +200,7 @@ class UserNavbarSection extends React.Component {
                       number={{
                         top: "-5px",
                         right: "-5px",
-                        value:
-                          (this.props.counts && this.props.counts.messages) ||
-                          0,
+                        value: this.props.messages || 0,
                         primary: true,
                         size: { width: 22, height: 24 }
                       }}
@@ -218,10 +216,7 @@ class UserNavbarSection extends React.Component {
                       number={{
                         top: "-5px",
                         right: "-5px",
-                        value:
-                          (this.props.counts &&
-                            this.props.counts.notifications) ||
-                          0,
+                        value: this.props.notifications || 0,
                         primary: true,
                         size: { width: 22, height: 24 }
                       }}

@@ -13,6 +13,10 @@ import '../../api/messages/server/indexes';
 import '../../api/messages/server/publications';
 import '../../api/messages/methods';
 
+// Import Notifications methods and subscription
+import '../../api/notifications/server/publications/indexes';
+import '../../api/notifications/server/publications/publications';
+
 // Import all your server-side collections
 // import '../../api/installers/collection';
 // import '../../api/customers/collection';

@@ -1,7 +1,7 @@
 /* eslint-disable consistent-return */
 
 import SimpleSchema from 'simpl-schema';
-import BaseCollection from '../../base/collection';
+import BaseCollection from '../base/collection/index';
 
 const Notifications = new BaseCollection('Notifications');
 
