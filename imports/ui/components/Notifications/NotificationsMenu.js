@@ -1,36 +1,35 @@
 import React from "react";
 import NotificationsSidebar from "./Sidebar/NotificationsSidebar";
-import { OnNotifications } from "../../apollo-client/notifications";
-import { Subscription } from "react-apollo";
+import { Meteor } from "meteor/meteor";
+import { withTracker } from "meteor/react-meteor-data";
+import NotificationsCollection from "../../../api/notifications/collection";
+import _ from "lodash";
 
 class NotificationsMenu extends React.Component {
   constructor(props) {
     super(props);
   }
 
+  shouldComponentUpdate(nextProps) {
+    return !_.isEqual(this.props.notifications, nextProps.notifications);
+  }
+
   render() {
     return (
-      <Subscription
-        variables={{
-          notifications: {
-            owner: this.props.curUser ? this.props.curUser._id : null
-          }
-        }}
-        fetchPolicy={"cache-and-network"}
-        subscription={OnNotifications}
-      >
-        {({ loading, error, data }) => {
-          return (
-            <NotificationsSidebar
-              {...this.props}
-              loading={loading}
-              notifications={data ? data.subNotifications : []}
-            />
-          );
-        }}
-      </Subscription>
+      <NotificationsSidebar
+        {...this.props}
+        loading={this.props.loading}
+        notifications={this.props.notifications || []}
+      />
     );
   }
 }
 
-export default NotificationsMenu;
+export default withTracker(() => {
+  const subscription = Meteor.subscribe("notifications.myNotifications");
+  let notifications = NotificationsCollection.find().fetch();
+  return {
+    loading: !subscription.ready(),
+    notifications: notifications
+  };
+})(NotificationsMenu);

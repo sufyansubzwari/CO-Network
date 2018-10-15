@@ -11,7 +11,7 @@ const Notifications = {};
 
 // Load server-only utilities
 if (Meteor.isServer) {
-  import collection from "./server/collection";
+  import collection from "./collection";
   import types from "./server/types.graphql";
   import resolvers from "./server/resolvers";
   import service from "./server/service";

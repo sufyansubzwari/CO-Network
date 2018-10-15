@@ -63,7 +63,7 @@ const HNavBarButtons = function(props) {
               number={{
                 top: "-5px",
                 right: "-5px",
-                value: (props.counts && props.counts.messages) || 0,
+                value: props.messages || 0,
                 primary: true,
                 size: { width: 22, height: 24 }
               }}
@@ -87,7 +87,7 @@ const HNavBarButtons = function(props) {
               number={{
                 top: "-5px",
                 right: "-5px",
-                value: (props.counts && props.counts.notifications) || 0,
+                value: props.notifications || 0,
                 primary: true,
                 size: { width: 22, height: 24 }
               }}
