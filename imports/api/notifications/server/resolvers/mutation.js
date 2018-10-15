@@ -2,8 +2,8 @@ import Service from "../service";
 
 const Mutation = {};
 
-Mutation.notification = async (root, { job }, context) => {
-  return await Service.notification(job);
+Mutation.notification = async (root, { notification }, context) => {
+  return await Service.notification(notification);
 };
 
 Mutation.deleteNotification = async (root, { _id }, context) => {

@@ -1,5 +1,6 @@
 import Colloquiums from "../index";
 import * as _ from "lodash";
+import Notifications from "../../notifications";
 
 /**
  * @class Colloquium Service
@@ -15,11 +16,13 @@ class ColloquiumsService {
   static colloquium = async data => {
     if (_.isUndefined(data._id)) {
       const id = Colloquiums.collection.insert(data);
+      Notifications.service.generateNotification("POST", id, "COLLOQUIUM", data.owner, data.title);
       return Colloquiums.collection.findOne(id);
     } else {
       let id = data._id;
       delete data._id;
       await Colloquiums.collection.update(id, { $set: data });
+      Notifications.service.generateNotification("UPDATE", id, "COLLOQUIUM", data.owner, data.title);
       return Colloquiums.collection.findOne(id);
     }
   };
@@ -30,7 +33,10 @@ class ColloquiumsService {
    * @return {Object} Colloquium deleted
    */
   static deleteColloquium = async id => {
-    return await Colloquiums.collection.remove(id);
+    const entity = Colloquiums.collection.findOne(id);
+    await Colloquiums.collection.remove(id);
+    Notifications.service.generateNotification("DELETE", id, entity.entity, entity.owner, entity.title);
+    return id;
   };
   /**
    * @name updateImage

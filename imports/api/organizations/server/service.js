@@ -1,5 +1,7 @@
 import Organizations from "../index";
 import * as _ from "lodash";
+import Notifications from "../../notifications";
+import Events from "../../events";
 
 /**
  * @class Organization Service
@@ -15,11 +17,13 @@ class OrganizationsService {
   static organization = async data => {
     if (_.isUndefined(data._id)) {
       const id = Organizations.collection.insert(data);
+      Notifications.service.generateNotification("POST", id, "ORGANIZATION", data.owner, data.name);
       return Organizations.collection.findOne(id);
     } else {
       let id = data._id;
       delete data._id;
       await Organizations.collection.update(id, { $set: data });
+      Notifications.service.generateNotification("UPDATE", id, "ORGANIZATION", data.owner, data.name);
       return Organizations.collection.findOne(id);
     }
   };
@@ -30,7 +34,10 @@ class OrganizationsService {
    * @return {Object} Organization deleted
    */
   static deleteOrganization = async id => {
-    return await Organizations.collection.remove(id);
+    const entity = Organizations.collection.findOne(id);
+    await Organizations.collection.remove(id);
+    Notifications.service.generateNotification("DELETE", id, entity.entity, entity.owner, entity.name);
+    return id;
   };
   /**
    * @name updateImage
