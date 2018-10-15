@@ -14,7 +14,8 @@ import { Meteor } from "meteor/meteor";
 
 const SAddMaterialIcon = styled.span`
   > i {
-    line-height: 30px;
+    line-height: ${props =>
+      props.lineHeight ? `${props.lineHeight}px` : "30px"};
     font-size: 24px;
     font-size: 1.2rem;
 
@@ -26,7 +27,7 @@ const SAddMaterialIcon = styled.span`
 
 const SLoginTitle = styled.div`
   font-family: ${props => props.theme.texts.title.fontFamily};
-  font-size: 13px;
+  font-size: 12px;
 `;
 
 /**
@@ -67,7 +68,7 @@ const GroupSocial = props => {
   return (
     <Container mdHide inLine>
       {props.title ? (
-        <Container>
+        <Container margin={"auto"} mb={{ xs: "5px" }} maxW={"190px"}>
           <SLoginTitle>{props.title}</SLoginTitle>
         </Container>
       ) : null}
@@ -102,7 +103,7 @@ class UserNavbarSection extends React.Component {
     super(props);
     this.size = { width: 46, height: 53 };
     this.notSize = { width: 33, height: 39 };
-    this.loginSize = { width: 28, height: 33 };
+    this.loginSize = { width: 35, height: 40 };
     this.loginServices = services.filter(element => element.visible);
     this.state = {};
     this.policy = Meteor.settings.public.policyUrl;
@@ -165,7 +166,11 @@ class UserNavbarSection extends React.Component {
               >
                 <GroupSocial
                   authenticated={isAuthenticated}
-                  title={!isAuthenticated ? "Login" : null}
+                  title={
+                    !isAuthenticated
+                      ? "Discover what´s happening in our network"
+                      : null
+                  }
                 >
                   {this.loginServices.map((service, index) => {
                     return (
@@ -176,7 +181,7 @@ class UserNavbarSection extends React.Component {
                             this.processAuthRequest(service.service)
                           }
                         >
-                          <SAddMaterialIcon>
+                          <SAddMaterialIcon lineHeight={this.loginSize.height}>
                             <MaterialIcon
                               type={service.label || service.service}
                             />

@@ -66,12 +66,12 @@ class Navbar extends Component {
     this.state = { isOpen: false };
   }
 
-  shouldComponentUpdate(nextProps) {
-    return (
-      this.props.notifications !== nextProps.notifications ||
-      this.props.messages !== nextProps.messages
-    );
-  }
+  // shouldComponentUpdate(nextProps) {
+  //   return (
+  //     this.props.notifications !== nextProps.notifications ||
+  //     this.props.messages !== nextProps.messages
+  //   );
+  // }
 
   openNavbar(isOpen) {
     this.setState({ isOpen });
