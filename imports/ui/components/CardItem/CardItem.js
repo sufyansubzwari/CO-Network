@@ -90,6 +90,8 @@ const NullImageContainer = Styled.div`
 const SCardContainer = Styled(Container)`
   zoom: 100%;
   cursor: pointer;
+  backface-visibility: hidden;
+  -webkit-font-smoothing: subpixel-antialiased;
   
   @media (min-width: 62em) {
     zoom: 80%;
@@ -97,17 +99,16 @@ const SCardContainer = Styled(Container)`
 
   @media (min-width: 86em) {
     zoom: 100%;
-  }
-  
-  ${mixins.media.desktop`
-    margin-left: 15px;
-  `}
+  }  
+    
+  ${mixins.media.desktop`margin-left: 15px;`}
 `;
 
+//TODO review the blur when the scale is triggered
 const PSCardContainer = posed(SCardContainer)({
   hoverable: true,
   init: { scale: 1 },
-  hover: { scale: 1.03 }
+  hover: { scale: 1.028 }
 });
 
 const SImage = Styled.div`
@@ -280,7 +281,7 @@ class CardItem extends Component {
 
   render() {
     return (
-      <PSCardContainer>
+      <SCardContainer>
         <SMLCard
           className={"card"}
           background={this.props.isActive ? "#000000" : "white"}
@@ -294,7 +295,7 @@ class CardItem extends Component {
           renderRightSide={this.getRightSide.bind(this)}
           renderLeftSide={this.renderLeftSide.bind(this)}
         />
-      </PSCardContainer>
+      </SCardContainer>
     );
   }
 }
