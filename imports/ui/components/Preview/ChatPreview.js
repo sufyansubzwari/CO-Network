@@ -13,6 +13,7 @@ import { Session } from "meteor/session";
 import PropsTypes from "prop-types";
 import { openChatView, closeChatView } from "../../actions/ChatView";
 import { connect } from "react-redux";
+import Attachment from "../Messages/components/Attachment";
 
 const ResponsiveContainer = styled(Layout)`
   margin-left: -100%;
@@ -91,7 +92,8 @@ class ChatPreview extends Preview {
       limit: 10,
       textMessage: "",
       attachments: [],
-      images: []
+      images: [],
+      listFiles: []
     };
     this.scroll = null;
     this.messagesLength = 0;
@@ -117,7 +119,7 @@ class ChatPreview extends Preview {
       },
       res => {
         if (res === "success")
-          this.setState({ textMessage: "", attachments: [], images: [] });
+          this.setState({ textMessage: "", attachments: [], images: [], listFiles: [] });
       }
     );
   }
@@ -137,19 +139,28 @@ class ChatPreview extends Preview {
     return state;
   }
 
-  onAttachmentUpload(file) {
+  onAttachmentUpload(file, size) {
     console.log("uploaded the file " + file);
     let attach = this.state.attachments;
     attach.push(file);
+    let listFiles = this.state.listFiles;
+    listFiles.push({...file, size: size, isImage: false})
     this.setState({
-      attachments: attach
+      attachments: attach,
+      listFiles: listFiles
     });
   }
 
-  onImageUpload(file) {
+  onImageUpload(file, size) {
     console.log("uploaded the image " + file);
     let imgs = this.state.images;
     imgs.push(file);
+    let listFiles = this.state.listFiles;
+    listFiles.push({...file, size: size, isImage: true})
+    this.setState({
+        images: imgs,
+        listFiles: listFiles
+    })
   }
 
   renderOptionsNav() {
@@ -191,11 +202,40 @@ class ChatPreview extends Preview {
     this.triggerChatViewStatus(nextProps.isOpen);
   }
 
+  closeImage(index){
+    let images = this.state.images;
+    let img = images.splice(index,1);
+    this.setState({images: images})
+  }
+
+  closeAttachment(index){
+  let att = this.state.attachments;
+  let attachmentDeleted = att.splice(index,1);
+  this.setState({attachments: att})
+}
+
+  closeFile(index){
+   let files = this.state.listFiles;
+   let deleted = files.splice(index,1);
+
+   if(deleted[0].isImage){
+    let i = this.state.images.findIndex( (item) => item.name === deleted[0].name )
+    this.closeImage(i)
+   }
+   else{
+       let i = this.state.attachments.findIndex( (item) => item.name === deleted[0].name )
+       this.closeAttachment(i);
+   }
+   this.setState({
+      listFiles: files
+   })
+  }
+
   render() {
     return (
       <PreviewContainer
-        customTemplateRows={"68px 1fr auto"}
-        mdCustomTemplateRows={"1fr auto"}
+        customTemplateRows={"68px 1fr auto auto"}
+        mdCustomTemplateRows={"1fr auto auto"}
         fullY
         background={"white"}
         pose={this.props.isOpen ? "openPreview" : "closedPreview"}
@@ -245,6 +285,12 @@ class ChatPreview extends Preview {
             </Container>
           </Layout>
         </Scrollbars>
+        <Container fullX>
+            {
+                this.state.listFiles.length > 0 ?
+                  this.state.listFiles.map( (file, index) => <Attachment key={index} isImage={file.isImage} link={file.link} filename={file.name} size={file.size} loading={false} onClose={() => this.closeFile(index) } /> ) : null
+            }
+        </Container>
         <Container hide={!this.props.curUser}>
           <ReplyBox
             placeholder={"Type Something"}
@@ -253,8 +299,8 @@ class ChatPreview extends Preview {
             onTextChange={text => this.setState({ textMessage: text })}
             onKeyPress={event => this.onKeyPress(event)}
             onSend={() => this.handleMessage(this.state.textMessage)}
-            getAttachment={file => this.onAttachmentUpload(file)}
-            getImage={file => this.onImageUpload(file)}
+            getAttachment={(file,size) => this.onAttachmentUpload(file,size)}
+            getImage={(file,size) => this.onImageUpload(file,size)}
           />
         </Container>
       </PreviewContainer>
