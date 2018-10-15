@@ -19,6 +19,12 @@ type Query {
 
 type Subscription {
     subNotifications(limit: Int, notifications: NotificationsInput): [Notifications]
+    subNewNotAndMsg: NotAndMsg
+}
+
+type NotAndMsg{
+    messages: Int
+    notifications: Int
 }
 
 input NotificationsInput {

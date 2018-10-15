@@ -63,7 +63,7 @@ const HNavBarButtons = function(props) {
               number={{
                 top: "-5px",
                 right: "-5px",
-                value: Math.floor(Math.random() * 120),
+                value: (props.counts && props.counts.messages) || 0,
                 primary: true,
                 size: { width: 22, height: 24 }
               }}
@@ -87,7 +87,7 @@ const HNavBarButtons = function(props) {
               number={{
                 top: "-5px",
                 right: "-5px",
-                value: Math.floor(Math.random() * 120),
+                value: (props.counts && props.counts.notifications) || 0,
                 primary: true,
                 size: { width: 22, height: 24 }
               }}
@@ -118,7 +118,8 @@ HNavBarButtons.propTypes = {
   onMessageToggle: PropTypes.func,
   onNotificationToggle: PropTypes.func,
   curUser: PropTypes.object,
-  isOpen: PropTypes.bool
+  isOpen: PropTypes.bool,
+  counts: PropTypes.object,
 };
 
 export default HNavBarButtons;
