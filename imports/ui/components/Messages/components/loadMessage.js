@@ -139,12 +139,12 @@ class LoadMessages extends Component {
 
   onAttachmentUpload(file, size) {
       console.log("uploaded the file " + file);
-      let attach = this.state.attachments;
+      let attach = this.state.attachment;
       attach.push(file);
       let listFiles = this.state.listFiles;
       listFiles.push({...file, size: size, isImage: false})
       this.setState({
-          attachments: attach,
+          attachment: attach,
           listFiles: listFiles
       });
   }
@@ -184,9 +184,9 @@ class LoadMessages extends Component {
     }
 
     closeAttachment(index){
-        let att = this.state.attachments;
+        let att = this.state.attachment;
         let attachmentDeleted = att.splice(index,1);
-        this.setState({attachments: att})
+        this.setState({attachment: att})
     }
 
     closeFile(index){
@@ -198,7 +198,7 @@ class LoadMessages extends Component {
             this.closeImage(i)
         }
         else{
-            let i = this.state.attachments.findIndex( (item) => item.name === deleted[0].name )
+            let i = this.state.attachment.findIndex( (item) => item.name === deleted[0].name )
             this.closeAttachment(i);
         }
         this.setState({
