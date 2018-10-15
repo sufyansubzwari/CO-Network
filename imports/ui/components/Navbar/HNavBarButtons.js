@@ -12,6 +12,7 @@ const SContainerIcon = styled(Container)`
   justify-content: center;
   padding-top: 5px;
   display: initial;
+  opacity: ${props => (props.isActive ? "1" : "0.3")};
   text-align: center;
 
   ${mixins.media.desktop`
@@ -21,8 +22,8 @@ const SContainerIcon = styled(Container)`
 
 const SIconContainer = styled.span`
   i {
-    font-size: 18px;
-    line-height: 38px;
+    font-size: 24px;
+    line-height: 45px;
   }
 `;
 
@@ -34,27 +35,28 @@ const SIconContainer = styled.span`
 const HNavBarButtons = function(props) {
   const size = { width: 38, height: 45 };
   const notSize = { width: 30, height: 34 };
-  const hideIcons = props.isOpen || !props.curUser;
+  const witOutUser = !props.curUser;
   return (
     <Container paddingX={"15px"}>
       <Layout mdHide colGap={"24px"} templateColumns={5} mdTemplateColumns={1}>
-        <SContainerIcon>
-          <Container hide={hideIcons}>
-            <HButtom
-              primary
-              size={this.size}
-              onClick={() => props.onAddToggle && props.onAddToggle()}
-            >
-              <SIconContainer>
-                <MaterialIcon type={"plus"} />
-              </SIconContainer>
-            </HButtom>
+        <SContainerIcon isActive={!witOutUser}>
+          <Container
+            hide={props.isOpen}
+            onClick={() => {
+              if (witOutUser) props.onToggleNavBar && props.onToggleNavBar();
+              else props.onUserToggle && props.onUserToggle();
+            }}
+          >
+            <NavbarUserButton size={size} />
           </Container>
         </SContainerIcon>
-        <SContainerIcon>
+        <SContainerIcon isActive={!witOutUser}>
           <Container
-            hide={hideIcons}
-            onClick={() => props.onMessageToggle && props.onMessageToggle()}
+            hide={props.isOpen}
+            onClick={() => {
+              if (witOutUser) props.onToggleNavBar && props.onToggleNavBar();
+              else props.onMessageToggle && props.onMessageToggle();
+            }}
           >
             <HNavItem
               mt={{ xs: "5px", md: "0" }}
@@ -73,12 +75,13 @@ const HNavBarButtons = function(props) {
         <HomeButton
           onOpenNavbar={() => props.onToggleNavBar && props.onToggleNavBar()}
         />
-        <SContainerIcon>
+        <SContainerIcon isActive={!witOutUser}>
           <Container
-            hide={hideIcons}
-            onClick={() =>
-              props.onNotificationToggle && props.onNotificationToggle()
-            }
+            hide={props.isOpen}
+            onClick={() => {
+              if (witOutUser) props.onToggleNavBar && props.onToggleNavBar();
+              else props.onNotificationToggle && props.onNotificationToggle();
+            }}
           >
             <HNavItem
               mt={{ xs: "5px", md: "0" }}
@@ -94,12 +97,20 @@ const HNavBarButtons = function(props) {
             />
           </Container>
         </SContainerIcon>
-        <SContainerIcon>
-          <Container
-            hide={hideIcons}
-            onClick={() => props.onUserToggle && props.onUserToggle()}
-          >
-            <NavbarUserButton size={size} />
+        <SContainerIcon isActive={!witOutUser}>
+          <Container hide={props.isOpen}>
+            <HButtom
+              primary={!witOutUser}
+              size={size}
+              onClick={() => {
+                if (witOutUser) props.onToggleNavBar && props.onToggleNavBar();
+                else props.onAddToggle && props.onAddToggle();
+              }}
+            >
+              <SIconContainer>
+                <MaterialIcon type={"plus"} />
+              </SIconContainer>
+            </HButtom>
           </Container>
         </SContainerIcon>
       </Layout>
@@ -119,7 +130,7 @@ HNavBarButtons.propTypes = {
   onNotificationToggle: PropTypes.func,
   curUser: PropTypes.object,
   isOpen: PropTypes.bool,
-  counts: PropTypes.object,
+  counts: PropTypes.object
 };
 
 export default HNavBarButtons;

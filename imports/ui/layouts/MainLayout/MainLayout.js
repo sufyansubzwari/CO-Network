@@ -6,6 +6,7 @@ import { connect } from "react-redux";
 import Navbar from "../../components/Navbar/Navbar";
 import SideBar from "../../components/SideBar/SideBar";
 import LoginModal from "../../components/LoginModal/LoginModal";
+import isMobile from "../../constants/isMobile";
 import SignUpListener from "../../components/SignUpListener/SignUpListener";
 import posed from "react-pose";
 import { Scrollbars } from "react-custom-scrollbars";
@@ -88,6 +89,7 @@ class MainLayout extends Component {
   constructor(props) {
     super(props);
     this.state = { isShow: true, showNavbar: false };
+    this.isMobile = isMobile;
   }
 
   componentDidMount() {
@@ -99,7 +101,7 @@ class MainLayout extends Component {
   render() {
     let props = this.props;
     const isSignUp = props.user ? props.user.profile.isSignUp : true;
-    const isMobile = window.document.body.clientWidth <= 376;
+    const isMobile = this.isMobile() || window.document.body.clientWidth <= 376;
     let propsProvider = { curUser: props.user, isSignUp, isMobile };
     const contentPose = props.showSidebar ? "leftOpen" : "leftClose";
     this.props.setUser(this.props.user || null);

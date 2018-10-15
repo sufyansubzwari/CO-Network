@@ -15,6 +15,7 @@ import { Meteor } from "meteor/meteor";
 const SAddMaterialIcon = styled.span`
   > i {
     line-height: 30px;
+    font-size: 24px;
     font-size: 1.2rem;
 
     ${mixins.media.desktop`     
@@ -187,15 +188,9 @@ class UserNavbarSection extends React.Component {
                 </GroupSocial>
                 <Group authenticated={isAuthenticated}>
                   <RenderCondition>
-                    <HButtom
-                      primary
-                      size={this.size}
-                      onClick={() => this.onAddToggle()}
-                    >
-                      <SAddMaterialIcon>
-                        <MaterialIcon type={"plus"} size={2} />
-                      </SAddMaterialIcon>
-                    </HButtom>
+                    <Container onClick={() => this.onUserToggle()}>
+                      <NavbarUserButton size={this.size} />
+                    </Container>
                   </RenderCondition>
                   <RenderCondition>
                     <HNavItem
@@ -205,7 +200,9 @@ class UserNavbarSection extends React.Component {
                       number={{
                         top: "-5px",
                         right: "-5px",
-                        value: (this.props.counts && this.props.counts.messages) || 0,
+                        value:
+                          (this.props.counts && this.props.counts.messages) ||
+                          0,
                         primary: true,
                         size: { width: 22, height: 24 }
                       }}
@@ -221,7 +218,10 @@ class UserNavbarSection extends React.Component {
                       number={{
                         top: "-5px",
                         right: "-5px",
-                        value: (this.props.counts && this.props.counts.notifications) || 0,
+                        value:
+                          (this.props.counts &&
+                            this.props.counts.notifications) ||
+                          0,
                         primary: true,
                         size: { width: 22, height: 24 }
                       }}
@@ -230,9 +230,15 @@ class UserNavbarSection extends React.Component {
                     />
                   </RenderCondition>
                   <RenderCondition>
-                    <Container onClick={() => this.onUserToggle()}>
-                      <NavbarUserButton size={this.size} />
-                    </Container>
+                    <HButtom
+                      primary
+                      size={this.size}
+                      onClick={() => this.onAddToggle()}
+                    >
+                      <SAddMaterialIcon>
+                        <MaterialIcon type={"plus"} size={2} />
+                      </SAddMaterialIcon>
+                    </HButtom>
                   </RenderCondition>
                 </Group>
               </GroupContainer>
