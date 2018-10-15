@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Container } from "btech-layout";
+import { Container, Layout, mixins } from "btech-layout";
 import ReplyBox from "./ReplyBox";
 import { updateMessage } from "../Service/service";
 import { Meteor } from "meteor/meteor";
@@ -201,7 +201,7 @@ class LoadMessages extends Component {
             <Container key={key}>
               <SLineTime>
                 <hr />
-                <p>{item}</p>
+                {/*<p>{item}</p>*/}
               </SLineTime>
               {this.renderMessages(blocks[item])}
             </Container>

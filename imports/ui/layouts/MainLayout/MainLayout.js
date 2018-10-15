@@ -13,7 +13,6 @@ import Styled from "styled-components";
 import { Meteor } from "meteor/meteor";
 import { withTracker } from "meteor/react-meteor-data";
 import UserRedux from "../../redux/user";
-import isChatView from "../../redux/reducers/ChatView/ChatView";
 
 const MainLayoutStyled = Styled(Layout)`
  position:fixed;

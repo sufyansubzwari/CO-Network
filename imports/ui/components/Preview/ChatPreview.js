@@ -182,11 +182,13 @@ class ChatPreview extends Preview {
     );
   }
 
-  componentWillUpdate() {
+  triggerChatViewStatus(isOpen) {
     if (this.props.isMobile)
-      this.props.isOpen
-        ? this.props.openChatView()
-        : this.props.closeChatView();
+      isOpen ? this.props.openChatView() : this.props.closeChatView();
+  }
+
+  componentWillReceiveProps(nextProps) {
+    this.triggerChatViewStatus(nextProps.isOpen);
   }
 
   render() {
@@ -215,8 +217,8 @@ class ChatPreview extends Preview {
           >
             <TopPreview
               handleUpload={this.handleUploadChange}
-              image={this.state.image}
-              backGroundImage={this.state.backGroundImage}
+              image={this.props.image}
+              backGroundImage={this.props.backGroundImage}
               showAvatar={this.props.showAvatar}
               allowChangeImages={this.props.allowChangeImages}
               gridArea="picture"

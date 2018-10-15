@@ -68,6 +68,7 @@ export const SUser = styled(Container)`
     font-weight: bold;
   }
   > #time {
+    opacity: 0.5;
     font-size: 12px;
     font-family: "Roboto Mono";
   }
@@ -90,7 +91,7 @@ export const SUser = styled(Container)`
   `};
 `;
 
-export const SText = styled.span`
+export const SText = styled(Container)`
   font-size: 12px;
   overflow: hidden;
   white-space: normal;
@@ -106,7 +107,13 @@ export const SText = styled.span`
 
 export const SReplyButton = styled.span`
   margin-left: auto;
+  opacity: 0.5;
   cursor: pointer;
+  
+  :hover {
+    opacity: 1;
+    transition: all 200ms ease-out;
+  }
 `;
 
 export const SReplyMessage = styled(Container)`

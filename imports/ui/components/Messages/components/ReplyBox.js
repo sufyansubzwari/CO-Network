@@ -1,21 +1,14 @@
 import React from "react";
 import PropTypes from "prop-types";
 import { SReplyBox } from "../components/styledComponents";
-import { Layout, Container, mixins } from "btech-layout";
-import { TextArea, Button } from "btech-base-forms-component";
+import { Container, Layout } from "btech-layout";
+import { Button, TextArea } from "btech-base-forms-component";
 import "emoji-mart/css/emoji-mart.css";
 import { Picker } from "emoji-mart";
 import styled from "styled-components";
 import MaterialIcon from "react-material-iconic-font";
-import {
-  InputGroup,
-  InputGroupButtonDropdown,
-  DropdownToggle,
-  DropdownMenu,
-  DropdownItem,
-  InputGroupAddon
-} from "reactstrap";
 import { UploadToS3, UploadToS3FromClient } from "../../../services";
+import OutsideClickHandler from "react-outside-click-handler";
 
 /**
  * @module Data
@@ -84,6 +77,12 @@ export class ReplyBox extends React.Component {
   emojiClicked() {
     this.setState({
       showEmoji: !this.state.showEmoji
+    });
+  }
+
+  emojiClickedOut() {
+    this.setState({
+      showEmoji: false
     });
   }
 
@@ -174,20 +173,24 @@ export class ReplyBox extends React.Component {
                     <MaterialIcon type={"mood"} />
                   </SSpan>
                   {this.state.showEmoji ? (
-                    <Picker
-                      showPreview={false}
-                      set={"emojione"}
-                      emoji={"point_up"}
-                      onSelect={emoji => this.handleEmoji(emoji)}
-                      style={{
-                        position: "absolute",
-                        maxWidth: "250px",
-                        bottom: "20px",
-                        left: "20px",
-                        fontFamily: "Roboto Mono",
-                        fontSize: "12px"
-                      }}
-                    />
+                    <OutsideClickHandler
+                      onOutsideClick={() => this.emojiClickedOut()}
+                    >
+                      <Picker
+                        showPreview={false}
+                        set={"emojione"}
+                        emoji={"point_up"}
+                        onSelect={emoji => this.handleEmoji(emoji)}
+                        style={{
+                          position: "absolute",
+                          maxWidth: "250px",
+                          bottom: "20px",
+                          left: "20px",
+                          fontFamily: "Roboto Mono",
+                          fontSize: "12px"
+                        }}
+                      />
+                    </OutsideClickHandler>
                   ) : null}
                 </Container>
                 <div />

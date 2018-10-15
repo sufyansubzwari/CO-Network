@@ -52,7 +52,9 @@ const MessageItem = function(props) {
             </SReplyButton>
           ) : null}
         </SUser>
-        <SText isActive={props.isActive}>{props.message.text}</SText>
+        <SText isActive={props.isActive} mb={"10px"}>
+          {props.message.text}
+        </SText>
         {props.message &&
           props.message.attachment &&
           props.message.attachment.map((attach, index) => (

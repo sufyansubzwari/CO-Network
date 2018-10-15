@@ -58,10 +58,9 @@ class NotificationsSidebar extends React.Component {
         deleteNotification({ variables: { id: notification._id } }).then(() => {
           const notifications = this.state.notifications;
           const temporal = notifications.splice(index, 1);
-          this.setState({
-            notifications: notifications,
-            isDeleting: false
-          });
+          setTimeout(() => {
+            this.setState({ notifications: notifications, isDeleting: false });
+          }, 1000);
         });
       }
     );
