@@ -14,10 +14,10 @@ class StorageS3 {
         let awsKey;
         let awsSecret;
         try {
-            awsKey = Meteor.settings.private.aws.AWS_ACCESS_KEY_ID;
-            awsSecret = Meteor.settings.private.aws.AWS_SECRET_ACCESS_KEY;
-            bucket = Meteor.settings.private.aws.s3.bucket;
-            region = Meteor.settings.private.aws.s3.region;
+            awsKey = Meteor.settings.AWSAccessKeyId;
+            awsSecret = Meteor.settings.AWSSecretAccessKey;
+            bucket = Meteor.settings.s3.bucket;
+            region = Meteor.settings.s3.region;
         } catch (e) {
 
         }
