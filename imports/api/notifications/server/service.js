@@ -72,7 +72,8 @@ class NotificationsService {
     entityId,
     entity,
     userId,
-    title
+    title,
+    applyId
   ) => {
     console.log("Action => generateNotification");
 
@@ -120,9 +121,9 @@ class NotificationsService {
           entityOwner.owner,
           action,
           entityId,
-          "EVENT",
+          applyId ? "JOB-APPLY" : entityOwner.entity,
           entityOwner.title,
-          entityId,
+          applyId || entityId,
         );
       default:
         return null;
