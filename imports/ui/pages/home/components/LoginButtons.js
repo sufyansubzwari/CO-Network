@@ -35,12 +35,13 @@ const SAddMaterialIcon = styled.span`
   > i {
     line-height: 30px;
     font-size: 1.2rem;
-    
+
     ${mixins.media.desktop`
-      font-size: 1.6em;      
-      line-height: 50px;
+      font-size: 2em;   
+      line-height: ${props =>
+        props.lineHeight ? `${props.lineHeight}px` : "50px"};
     `};
-    
+
     &:hover {
       color: ${props => props.theme.color.primary};
     }
@@ -88,14 +89,14 @@ const MobileGroup = props => {
 };
 
 const Hicon = (element, index, onSelect, size) => {
-  if (!size) size = { width: 43, height: 50 };
+  if (!size) size = { width: 60, height: 68 };
   return (
     <HButtom
       key={index}
       size={size}
       onClick={() => onSelect && onSelect(element.service)}
     >
-      <SAddMaterialIcon>
+      <SAddMaterialIcon lineHeight={size.height}>
         <MaterialIcon type={element.label || element.service} />
       </SAddMaterialIcon>
     </HButtom>
@@ -118,17 +119,19 @@ const LoginButtons = function(props) {
   const mobileIcons = services
     .filter(element => element.visible)
     .map((element, index) => {
-      return Hicon(element, index, props.onSelect, { width: 28, height: 33 });
+      return Hicon(element, index, props.onSelect, { width: 36, height: 42 });
     });
   return (
     <SMainContainer hidden={!props.show}>
-      <Layout rowGap={"3px"} mdRowGap={"15px"}>
-        <Container>
-          <SLoginTitle>Login</SLoginTitle>
-          <SLoginSubTitle hide mdShow>
-            Discover it with CO
-          </SLoginSubTitle>
-        </Container>
+      <Layout mdRowGap={"15px"}>
+        {props.showTitle ? (
+          <Container>
+            <SLoginTitle>Login</SLoginTitle>
+            <SLoginSubTitle hide mdShow>
+              Discover it with CO
+            </SLoginSubTitle>
+          </Container>
+        ) : null}
         <Group>{desktopIcons}</Group>
         <MobileGroup>{mobileIcons}</MobileGroup>
       </Layout>
@@ -136,8 +139,13 @@ const LoginButtons = function(props) {
   );
 };
 
+LoginButtons.defaultProps = {
+  showTitle: true
+};
+
 LoginButtons.propTypes = {
   show: PropTypes.bool,
+  showTitle: PropTypes.bool,
   onSelect: PropTypes.func
 };
 

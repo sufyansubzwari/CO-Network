@@ -25,6 +25,7 @@ import IndustrySector from "./IndustrySector/IndustrySector";
 import Media from "./Media/Media";
 import Achievements from "./Achievements/Achievements";
 import WorkExperience from "./WorkExperience/WorkExperience";
+import LoginSidebar from "./LoginSidebar/LoginSidebar";
 
 // layouts
 import InternalLayout from "../layouts/InternalLayout/InternalLayout";
@@ -63,5 +64,6 @@ export {
   WorkExperience,
   Media,
   Achievements,
-  ChatPreview
+  ChatPreview,
+  LoginSidebar
 };

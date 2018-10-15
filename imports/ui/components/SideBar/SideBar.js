@@ -1,9 +1,9 @@
 import React, { Component } from "react";
 import { Container } from "btech-layout";
 import styled from "styled-components";
+import { Create, LoginSidebar } from "../../components";
 import { connect } from "react-redux";
 import { toggleSideBar } from "../../actions/SideBarActions";
-import { Create } from "../../components";
 import { CREATE_LINKS } from "./create-links";
 import EventsFilters from "../../modules/event-module/filters";
 import JobsFilters from "../../modules/jobs-module/filters";
@@ -65,9 +65,15 @@ class SideBar extends Component {
         />
       );
     } else if (this.props.isProfileAction) {
-      return (
+      return this.props.curUser ? (
         <ProfileSideBar
           curUser={this.props.curUser}
+          onClose={() =>
+            this.props.toggleSideBar && this.props.toggleSideBar(false)
+          }
+        />
+      ) : (
+        <LoginSidebar
           onClose={() =>
             this.props.toggleSideBar && this.props.toggleSideBar(false)
           }

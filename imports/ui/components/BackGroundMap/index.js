@@ -2,12 +2,12 @@ import React, { Component } from "react";
 import { Map, Marker, TileLayer, Tooltip } from "react-leaflet";
 import styled from "styled-components";
 import { graphql } from "react-apollo";
-import { Container } from "btech-layout";
 import L from "leaflet";
 import ReactDOMServer from "react-dom/server";
 import ClusterIcon from "../ClusterIcon/ClusterIcon";
 import MarkerClusterGroup from "react-leaflet-markercluster";
 import { GetLocations } from "../../apollo-client/location";
+import PropsTypes from "prop-types";
 
 const SMapContainer = styled(Map)`
   position: absolute;
@@ -80,6 +80,9 @@ class MapBackGround extends Component {
         detectRetina
         minZoom={this.state.minZoom}
         maxZoom={this.state.maxZoom}
+        onZoomEnd={() =>
+          this.props.onClusterClick && this.props.onClusterClick()
+        }
         zoom={this.props.zoomMap || 3}
       >
         <TileLayer
@@ -100,6 +103,10 @@ class MapBackGround extends Component {
     );
   }
 }
+
+MapBackGround.propTypes = {
+  onClusterClick: PropsTypes.func
+};
 
 export default graphql(GetLocations, {
   options: () => ({
