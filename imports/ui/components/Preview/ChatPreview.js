@@ -141,22 +141,15 @@ class ChatPreview extends Preview {
     console.log("uploaded the file " + file);
     let attach = this.state.attachments;
     attach.push(file);
-    // let value = this.state.textMessage;
-    // value = value + "^"+ file.name + "^";
     this.setState({
-      attachments: attach,
-        // textMessage: value
+      attachments: attach
     });
   }
 
-  onImageUpload(file){
-      console.log("uploaded the image "+ file);
-      let imgs = this.state.images;
-      imgs.push(file);
-      // let value = this.state.textMessage;
-      // value = value + "^"+ file.name + "^";this.setState({
-          images: imgs,
-      // textMessage: value});
+  onImageUpload(file) {
+    console.log("uploaded the image " + file);
+    let imgs = this.state.images;
+    imgs.push(file);
   }
 
   renderOptionsNav() {

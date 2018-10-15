@@ -14,7 +14,7 @@ const parseGoogleData = service => ({
     name: service.given_name,
     lastName: service.family_name,
     loginCount: service.logins_count || 0,
-    img: service.picture,
+    image: service.picture,
     email: service.email,
     location: "",
     gender: "",
