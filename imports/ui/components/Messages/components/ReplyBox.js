@@ -51,7 +51,7 @@ export class ReplyBox extends React.Component {
               link: response.imagePath,
               type: files[0].type
             };
-            this.props.getImage && this.props.getImage(img);
+            this.props.getImage && this.props.getImage(img, files[0].size);
           } else {
             // todo: show notification for error
           }
@@ -69,7 +69,7 @@ export class ReplyBox extends React.Component {
         if (result !== -1)
           file = { name: files[0].name, link: result, type: files[0].type };
         console.log(result);
-        this.props.getAttachment && this.props.getAttachment(file);
+        this.props.getAttachment && this.props.getAttachment(file,files[0].size);
       } else alert("File shouldn't be bigger than 10Mb"); // todo: integrate with the notification alerts
     }
   }
