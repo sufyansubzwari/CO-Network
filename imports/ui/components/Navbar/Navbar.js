@@ -9,8 +9,10 @@ import navs from "./nav.constant";
 import posed from "react-pose/lib/index";
 import { connect } from "react-redux";
 import { toggleSideBar } from "../../actions/SideBarActions";
-import { CountsNotAndMsg } from "../../apollo-client/notifications";
-import { Subscription } from "react-apollo";
+import { Meteor } from "meteor/meteor";
+import MessagesCollection from "../../../api/messages/collection";
+import NotificationsCollection from "../../../api/notifications/collection";
+import { withTracker } from "meteor/react-meteor-data";
 
 const SNavBarContainerStyled = Styled(Container)`
    z-index: 15;
@@ -62,6 +64,13 @@ class Navbar extends Component {
   constructor(props) {
     super(props);
     this.state = { isOpen: false };
+  }
+
+  shouldComponentUpdate(nextProps) {
+    return (
+      this.props.notifications !== nextProps.notifications ||
+      this.props.messages !== nextProps.messages
+    );
   }
 
   openNavbar(isOpen) {
@@ -150,43 +159,36 @@ class Navbar extends Component {
         {/*// onValueChange=*/}
         {/*{{ y: y => this.observerDragBoundaries(y) }}*/}
         {/*>*/}
-        <Subscription
-          fetchPolicy={"cache-and-network"}
-          subscription={CountsNotAndMsg}
+        <HNavbar
+          mdRowGap={10}
+          activeLink={activeLink}
+          isShow={this.props.isShow}
+          isHide={this.props.isHide}
+          links={navs}
+          activeEval={this.activeEval}
+          itemOptions={{ title: { hide: true, mdShow: true } }}
         >
-          {({ loading, error, data }) => {
-            return (
-              <HNavbar
-                mdRowGap={10}
-                activeLink={activeLink}
-                isShow={this.props.isShow}
-                isHide={this.props.isHide}
-                links={navs}
-                activeEval={this.activeEval}
-                itemOptions={{ title: { hide: true, mdShow: true } }}
-              >
-                <Layout key={"header"} mdMarginY={"30px"} lgMarginY={"30px"}>
-                  <HNavBarButtons
-                    isOpen={this.state.isOpen}
-                    onToggleNavBar={this.toggleNavbar}
-                    onAddToggle={() => this.onAddToggle()}
-                    onUserToggle={() => this.onUserToggle()}
-                    onNotificationToggle={() => this.onNotificationToggle()}
-                    onMessageToggle={() => this.onMessageToggle()}
-                    curUser={this.props.curUser}
-                    counts={data && data.subNewNotAndMsg}
-                  />
-                </Layout>
-                <UserNavbarSection
-                  key={"footer"}
-                  curUser={this.props.curUser}
-                  callback={value => this.openNavbar(value)}
-                  counts={data && data.subNewNotAndMsg}
-                />
-              </HNavbar>
-            );
-          }}
-        </Subscription>
+          <Layout key={"header"} mdMarginY={"30px"} lgMarginY={"30px"}>
+            <HNavBarButtons
+              isOpen={this.state.isOpen}
+              onToggleNavBar={this.toggleNavbar}
+              onAddToggle={() => this.onAddToggle()}
+              onUserToggle={() => this.onUserToggle()}
+              onNotificationToggle={() => this.onNotificationToggle()}
+              onMessageToggle={() => this.onMessageToggle()}
+              curUser={this.props.curUser}
+              notifications={!this.props.loading ? this.props.notifications : 0}
+              messages={!this.props.loading ? this.props.messages : 0}
+            />
+          </Layout>
+          <UserNavbarSection
+            key={"footer"}
+            curUser={this.props.curUser}
+            callback={value => this.openNavbar(value)}
+            notifications={this.props.notifications}
+            messages={this.props.messages}
+          />
+        </HNavbar>
         {/*</SDragContainer>*/}
       </SNavBarContainer>
     );
@@ -216,4 +218,16 @@ const mapDispatchToProps = dispatch => {
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(withRouter(Navbar));
+)(
+  withTracker(() => {
+    const subscription = Meteor.subscribe("messages.myNewMessages", 0);
+    const subscription2 = Meteor.subscribe("notifications.myNotifications");
+    let messages = MessagesCollection.find().fetch();
+    let notifications = NotificationsCollection.find().fetch();
+    return {
+      loading: !subscription.ready() && !subscription2.ready(),
+      messages: messages.length,
+      notifications: notifications.length
+    };
+  })(withRouter(Navbar))
+);
