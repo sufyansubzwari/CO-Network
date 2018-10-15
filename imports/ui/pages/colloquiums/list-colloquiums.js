@@ -265,6 +265,7 @@ class ListColloquiums extends Component {
                     this.handleBackgroundChange(updateImage, imageSrc)
                   }
                   curUser={this.props.curUser}
+                  isMobile={this.props.isMobile}
                 />
               )}
             </Mutation>

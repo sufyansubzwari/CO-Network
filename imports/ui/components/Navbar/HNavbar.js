@@ -43,9 +43,6 @@ const HItemContainerLayout = posed(HNavLayout)({
     delayChildren: 200
   },
   hide: { opacity: 0, x: "-100%" }
-
-  // open: { staggerChildren: 100, delayChildren : 100},
-  // close: { staggerChildren: 100 }
 });
 
 // create all navs
@@ -65,10 +62,10 @@ const NavItemStyled = styled.div`
     const isSecondLine = index % 6 > 2;
     return isSecondLine ? "transform: translateX(64%);" : "";
   }};
-  
+
   ${mixins.media.desktop`
        transform: none;
-  `}
+  `};
 `;
 
 const XsTextDescription = styled.div`
@@ -99,12 +96,12 @@ const HNavbar = function(props) {
       padding={"0 0 68px 0"}
       mdPadding={"0"}
       pad
-      pose={props.isShow ? "show" : "hide"}
+      pose={props.isShow && !props.isHide ? "show" : "hide"}
       fullY
       style={{ gridArea: props.gridArea }}
       {...props}
     >
-      <Layout>
+      <Layout customTemplateRows={"1fr auto"} mdCustomTemplateRows={"1fr"}>
         <Container mdMt={"38px"}>
           {getComponent("header")}
           <Layout
@@ -160,7 +157,8 @@ HNavbar.propTypes = {
   itemOptions: PropTypes.object,
   mdRowGap: PropTypes.number,
   xsColGap: PropTypes.number,
-  activeLink: PropTypes.number
+  activeLink: PropTypes.number,
+  isHide: PropTypes.bool
 };
 
 export default HNavbar;
