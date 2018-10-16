@@ -47,8 +47,10 @@ export const SLineTime = styled(Container)`
   display: flex;
   flex-direction: row;
   text-transform: capitalize;
+  margin-bottom: 10px;
   > p {
-    font-size: 12px;
+    font-size: 14px;
+    font-weight: bold;
     line-height: 20px;
     width: auto;
     margin: 0 8px;

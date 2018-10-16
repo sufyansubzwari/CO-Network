@@ -9,6 +9,7 @@ import PropTypes from "prop-types";
 import MessageItem from "./MessageItem";
 import { SLineTime, SShowReplies } from "./styledComponents";
 import Attachment from "./Attachment";
+import moment from "moment";
 
 class LoadMessages extends Component {
   constructor(props) {
@@ -90,10 +91,10 @@ class LoadMessages extends Component {
     let blocks = {
       today: [],
       yesterday: [],
-      "this Week": [],
-      "last Week": [],
-      "this Month": [],
-      "last Month": [],
+      // "this Week": [],
+      // "last Week": [],
+      // "this Month": [],
+      // "last Month": [],
       older: []
     };
     let currentDate = new Date();
@@ -102,22 +103,13 @@ class LoadMessages extends Component {
     keys.push(["today", new Date(currentDate)]); // clone
     currentDate.setDate(currentDate.getDate() - 1);
     keys.push(["yesterday", new Date(currentDate)]); // clone
-    currentDate.setDate(
-      currentDate.getDate() - ((currentDate.getDay() + 6) % 7)
-    );
-    keys.push(["this Week", new Date(currentDate)]); // clone
-    currentDate.setDate(
-      currentDate.getDate() - ((currentDate.getDay() + 12) % 14)
-    );
-    keys.push(["last Week", new Date(currentDate)]); // clone
+
     let order = this.state.groups;
     messages.forEach(message => {
       let messageDate = new Date(message.createdAt);
-      let [key] = keys.find(([key, date]) => messageDate >= date) || [];
-      // add the user data to the message
-      // message.owner = this.props.users.filter(user => !!user).find(user => {
-      //   return user._id === message.owner;
-      // });
+      let [key] = keys.find(([key, date]) => messageDate >= date) || [moment(messageDate).format("dddd, MMMM Do")];
+      !blocks[key] ? blocks[key] = [] : null;
+
       message.canReply = true;
       if (key) {
         blocks[key].unshift(message);
@@ -214,7 +206,7 @@ class LoadMessages extends Component {
   }
 
   renderMessages(blocks, parent) {
-    return blocks.length > 0
+    return blocks && blocks.length > 0
       ? <div>
         {blocks.map((message, k) => {
           return (
@@ -295,7 +287,7 @@ class LoadMessages extends Component {
         })
         }
         {parent && parent.replies.length > 3 ?
-          <SShowReplies onClick={() => this.handleShowReplies(parent)}>{(parent.showReplies || 3) > parent.replies.length ? 'Hide Replies' : `Show More (${parent.replies.length - (parent.showReplies || 3)})`}</SShowReplies>
+          <SShowReplies onClick={() => this.handleShowReplies(parent)}>{(parent.showReplies || 3) > parent.replies.length ? 'Show Less' : `Show More (${parent.replies.length - (parent.showReplies || 3)})`}</SShowReplies>
           : null}
       </div>
       : null;
@@ -308,8 +300,8 @@ class LoadMessages extends Component {
           return (
             <Container key={key}>
               <SLineTime>
+                <p>{item}</p>
                 <hr />
-                {/*<p>{item}</p>*/}
               </SLineTime>
               {this.renderMessages(blocks[item])}
             </Container>
