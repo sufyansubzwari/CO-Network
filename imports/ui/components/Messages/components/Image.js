@@ -8,6 +8,7 @@ const SImage = styled.img`
   border: 1px solid #bfbfbf;
   border-radius: 4px;
   margin-top: 5px;
+  cursor: pointer;
 `;
 
 export default (AttachedImage = props => {
@@ -15,7 +16,7 @@ export default (AttachedImage = props => {
     <Container>
         {props.showHeader ? <Header>{props.filename}</Header> : null}
       <Layout customTemplateColumns={"1fr"} mdCustomTemplateColumns={ !props.fullWidth ? "1fr 1fr" : '1fr'}>
-        <SImage style={{ width: "100%" }} src={props.link} />
+        <SImage style={{ width: "100%" }} src={props.link} onClick={props.onClick}/>
       </Layout>
     </Container>
   );
@@ -30,5 +31,6 @@ AttachedImage.propTypes = {
   filename: PropTypes.string,
   link: PropTypes.string,
   showHeader: PropTypes.bool,
-  fullWidth: PropTypes.bool
+  fullWidth: PropTypes.bool,
+  onClick: PropTypes.func
 };
