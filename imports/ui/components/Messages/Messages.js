@@ -72,16 +72,25 @@ Messages.propTypes = {
   isColloquium: propTypes.bool
 };
 
-export default withTracker(({ receptor, type }) => {
+export default withTracker(props => {
   const limit = Session.get("limitMessage");
   const subscription = Meteor.subscribe(
-    "messages.getMessages",
-    receptor._id,
-    type,
+    "messages.view",
+    props.receptor._id,
+    props.type,
     limit || 10
   );
+  const query =
+    props.type === "private"
+      ? {
+          $or: [
+            { receptor: props.receptor._id, owner: Meteor.userId() },
+            { receptor: Meteor.userId(), owner: props.receptor._id }
+          ]
+        }
+      : { receptor: props.receptor._id };
   let messages = MessagesCollection.find(
-    {},
+    { ...query },
     { sort: { createdAt: -1 }, limit: limit || 10 }
   ).fetch();
   return {
