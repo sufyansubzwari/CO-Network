@@ -97,8 +97,8 @@ class MessagesSidebar extends React.Component {
   }
 
   handleSelect() {
-    let messages = this.state.messages[this.state.selectedItem];
-    if (!messages.read) {
+    let messages = this.state.messages && this.state.selectedItem && this.state.messages[this.state.selectedItem];
+    if (messages && !messages.read) {
       Meteor.call("messages.markAsRead", [messages._id], (error, result) => {
         if (error) return console.log("ERROR - ", error);
       });
