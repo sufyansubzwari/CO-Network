@@ -1,6 +1,7 @@
 import Preview from "./Preview";
 import TopPreview from "./TopPreview";
 import ChatPreview from "./ChatPreview";
+import MemberPreview from "./MemberPreview";
 import ApplyJobPreviewBody from "./entities/ApplyJobPreviewBody";
 import EventPreviewBody from "./entities/EventPreviewBody";
 import JobPreviewBody from "./entities/JobPreviewBody";
@@ -15,5 +16,6 @@ export {
   EventPreviewBody,
   JobPreviewBody,
   OrganizationPreviewBody,
-  UserPreviewBody
+  UserPreviewBody,
+  MemberPreview
 };
