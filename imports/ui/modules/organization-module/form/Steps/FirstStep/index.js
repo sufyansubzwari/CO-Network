@@ -144,45 +144,45 @@ class FirstStep extends React.Component {
             validate={PHONE_REGEX}
           />
         </Layout>
-        <Container mt={"5px"}>
-          <Container>
-            <NetworkLabel>Connect Networks</NetworkLabel>
-            <Container>
-              <NetworkSubLabel>
-                Connect from your social networks
-              </NetworkSubLabel>
-            </Container>
-          </Container>
-          <Layout templateColumns={4} colGap={"10px"} height={"90px"}>
-            <SocialButton
-              social={"github"}
-              connected={!!this.state.organization.social.github}
-              data={this.state.organization.social.github}
-              onClick={() => console.log("trying to log for github")}
-            />
-            <SocialButton
-              social={"google"}
-              data={this.state.organization.social.google}
-              onClick={this.handleGoogle}
-              onPlus={() => console.log("plus")}
-              connected={!!this.state.organization.social.google}
-            />
-            <SocialButton
-              social={"facebook"}
-              data={this.state.organization.social.facebook}
-              onClick={() => console.log("trying to log for facebook")}
-              fields={["account"]}
-              connected={!!this.state.organization.social.facebook}
-            />
-            <SocialButton
-              social={"twitter"}
-              data={this.state.organization.social.twitter}
-              onClick={() => console.log("trying to log for twitter")}
-              loading={false}
-              connected={!!this.state.organization.social.twitter}
-            />
-          </Layout>
-        </Container>
+        {/*<Container mt={"5px"}>*/}
+          {/*<Container>*/}
+            {/*<NetworkLabel>Connect Networks</NetworkLabel>*/}
+            {/*<Container>*/}
+              {/*<NetworkSubLabel>*/}
+                {/*Connect from your social networks*/}
+              {/*</NetworkSubLabel>*/}
+            {/*</Container>*/}
+          {/*</Container>*/}
+          {/*<Layout templateColumns={4} colGap={"10px"} height={"90px"}>*/}
+            {/*<SocialButton*/}
+              {/*social={"github"}*/}
+              {/*connected={!!this.state.organization.social.github}*/}
+              {/*data={this.state.organization.social.github}*/}
+              {/*onClick={() => console.log("trying to log for github")}*/}
+            {/*/>*/}
+            {/*<SocialButton*/}
+              {/*social={"google"}*/}
+              {/*data={this.state.organization.social.google}*/}
+              {/*onClick={this.handleGoogle}*/}
+              {/*onPlus={() => console.log("plus")}*/}
+              {/*connected={!!this.state.organization.social.google}*/}
+            {/*/>*/}
+            {/*<SocialButton*/}
+              {/*social={"facebook"}*/}
+              {/*data={this.state.organization.social.facebook}*/}
+              {/*onClick={() => console.log("trying to log for facebook")}*/}
+              {/*fields={["account"]}*/}
+              {/*connected={!!this.state.organization.social.facebook}*/}
+            {/*/>*/}
+            {/*<SocialButton*/}
+              {/*social={"twitter"}*/}
+              {/*data={this.state.organization.social.twitter}*/}
+              {/*onClick={() => console.log("trying to log for twitter")}*/}
+              {/*loading={false}*/}
+              {/*connected={!!this.state.organization.social.twitter}*/}
+            {/*/>*/}
+          {/*</Layout>*/}
+        {/*</Container>*/}
       </FormMainLayout>
     );
   }

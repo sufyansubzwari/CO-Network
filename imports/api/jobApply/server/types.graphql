@@ -45,7 +45,7 @@ type JobExperience {
 }
 
 type Query {
-    jobsApply(filter: String, limit: Int, jobsApply: JobsInputSearch): [JobApply]
+    jobsApply(filter: String, limit: Int, jobsApply: JobApplyInput): [JobApply]
     jobApply(_id: String): JobApply
     jobApplyCounts(field: String): [Counts]
 }

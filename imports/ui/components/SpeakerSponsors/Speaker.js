@@ -10,6 +10,8 @@ import MaterialIcon from "react-material-iconic-font";
 import LineSeparator from "./LineSeparator";
 import {EMAIL_REGEX, NAME_REGEX} from "../../constants";
 import styled from "styled-components";
+import {FormMainLayout} from "../../components/index"
+
 
 const SErrorMessage = styled.label`
   padding: 5px;
@@ -60,6 +62,7 @@ class Speaker extends React.Component {
             this.props.handleSave();
           }}
         >
+          <FormMainLayout>
           <Container>
             <Layout mdTemplateColumns={2} mdColGap={"20px"} rowGap={"5px"}>
               <Container ml={"1px"}>
@@ -120,6 +123,7 @@ class Speaker extends React.Component {
               </Button>
             </Layout>
           </Container>
+          </FormMainLayout>
         </form>
       </Container>
     );

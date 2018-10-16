@@ -10,6 +10,8 @@ import MaterialIcon from "react-material-iconic-font";
 import LineSeparator from "./LineSeparator";
 import {EMAIL_REGEX, NAME_REGEX} from "../../constants";
 import styled from "styled-components";
+import {FormMainLayout} from "../../components/index"
+
 
 const SErrorMessage = styled.label`
   padding: 5px;
@@ -65,7 +67,8 @@ class Sponsor extends React.Component {
             this.props.handleSave();
           }}
         >
-          <Container>
+            <FormMainLayout>
+            <Container>
             <Layout mdTemplateColumns={2} mdColGap={"20px"}>
               <Container ml={"1px"}>
                 <InputAutoComplete
@@ -123,6 +126,7 @@ class Sponsor extends React.Component {
               <span style={{ paddingLeft: "5px" }}>Save</span>
             </Button>
           </Layout>
+          </FormMainLayout>
         </form>
       </Container>
     );

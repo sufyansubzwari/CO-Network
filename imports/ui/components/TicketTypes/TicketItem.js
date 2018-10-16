@@ -11,6 +11,8 @@ import {
 } from "btech-base-forms-component";
 import LineSeparator from "./LineSeparator";
 import { NAME_REGEX } from "../../constants";
+import {FormMainLayout} from "../../components/index"
+
 
 const SButtonText = styled.span`
   margin-left: 5px;
@@ -64,7 +66,9 @@ class TicketItem extends Component {
             this.props.onSave && this.props.onSave(this.state.ticket);
           }}
         >
-          <STitleText>{this.props.title}</STitleText>
+            <FormMainLayout>
+
+            <STitleText>{this.props.title}</STitleText>
           <Layout rowGap={"5px"}>
             <Container>
               <Layout mdTemplateColumns={2} mdColGap={"20px"} rowGap={"5px"}>
@@ -138,6 +142,7 @@ class TicketItem extends Component {
               </Layout>
             </Container>
           </Layout>
+            </FormMainLayout>
         </form>
       </Container>
     );

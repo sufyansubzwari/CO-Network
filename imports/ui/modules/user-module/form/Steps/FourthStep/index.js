@@ -140,8 +140,6 @@ class ThirdStep extends React.Component {
         <IndustrySector
           tags={
             this.state.user.professional &&
-            this.state.user.professional.industry &&
-            this.state.user.professional.industry.length &&
             this.state.user.professional.industry
           }
           handleTags={obj => this.handleTags(obj)}
