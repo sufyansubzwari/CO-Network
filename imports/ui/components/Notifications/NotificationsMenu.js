@@ -27,7 +27,10 @@ class NotificationsMenu extends React.Component {
 
 export default withTracker(() => {
   const subscription = Meteor.subscribe("notifications.myNotifications");
-  let notifications = NotificationsCollection.find().fetch();
+  let notifications = NotificationsCollection.find(
+    {},
+    {sort: {createdAt: -1}, fields: { updatedAt: 0 } }
+  ).fetch();
   return {
     loading: !subscription.ready(),
     notifications: notifications
