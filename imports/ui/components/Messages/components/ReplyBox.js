@@ -53,7 +53,8 @@ export class ReplyBox extends React.Component {
               link: response.imagePath,
               type: files[0].type
             };
-            this.props.getImage && this.props.getImage(img, files[0].size);
+            if(!response.imagePath.includes("compressed"))
+              this.props.getImage && this.props.getImage(img, files[0].size);
           } else {
             // todo: show notification for error
           }
