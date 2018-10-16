@@ -29,8 +29,7 @@ class LoadMessages extends Component {
       showEmoji: false,
       listFiles: []
     };
-      this.emojiClicked = this.emojiClicked.bind(this)
-
+    this.emojiClicked = this.emojiClicked.bind(this);
   }
 
   componentWillMount() {
@@ -107,15 +106,18 @@ class LoadMessages extends Component {
     let order = this.state.groups;
     messages.forEach(message => {
       let messageDate = new Date(message.createdAt);
-      let [key] = keys.find(([key, date]) => messageDate >= date) || [moment(messageDate).format("dddd, MMMM Do")];
-      !blocks[key] ? blocks[key] = [] : null;
+      let [key] = keys.find(([key, date]) => messageDate >= date) || [
+        moment(messageDate).format("dddd, MMMM Do")
+      ];
+      !blocks[key] ? (blocks[key] = []) : null;
 
       message.canReply = true;
       if (key) {
         blocks[key].unshift(message);
       }
       if (order.indexOf(key) === -1) {
-        order.unshift(key);
+        if (key === "today") order.push(key);
+        else order.unshift(key);
       }
     });
     this.setState({ groups: order });
@@ -129,98 +131,101 @@ class LoadMessages extends Component {
   }
 
   onAttachmentUpload(file, size) {
-      console.log("uploaded the file " + file);
-      let attach = this.state.attachment;
-      attach.push(file);
-      let listFiles = this.state.listFiles;
-      listFiles.push({...file, size: size, isImage: false})
-      this.setState({
-          attachment: attach,
-          listFiles: listFiles
-      });
+    console.log("uploaded the file " + file);
+    let attach = this.state.attachment;
+    attach.push(file);
+    let listFiles = this.state.listFiles;
+    listFiles.push({ ...file, size: size, isImage: false });
+    this.setState({
+      attachment: attach,
+      listFiles: listFiles
+    });
   }
 
   onImageUpload(file, size) {
-      console.log("uploaded the image " + file);
-      let imgs = this.state.images;
-      imgs.push(file);
-      let listFiles = this.state.listFiles;
-      listFiles.push({...file, size: size, isImage: true})
-      this.setState({
-          images: imgs,
-          listFiles: listFiles
-      })
+    console.log("uploaded the image " + file);
+    let imgs = this.state.images;
+    imgs.push(file);
+    let listFiles = this.state.listFiles;
+    listFiles.push({ ...file, size: size, isImage: true });
+    this.setState({
+      images: imgs,
+      listFiles: listFiles
+    });
   }
 
-    handleEmoji(emoji){
-        if(emoji && emoji.native){
-            let message = this.state.textReply;
-            message = message + emoji.native;
-            this.setState({
-                textReply: message
-            })
-        }
+  handleEmoji(emoji) {
+    if (emoji && emoji.native) {
+      let message = this.state.textReply;
+      message = message + emoji.native;
+      this.setState({
+        textReply: message
+      });
     }
+  }
 
-    emojiClicked(){
-        this.setState({
-            showEmoji: !this.state.showEmoji
-        })
+  emojiClicked() {
+    this.setState({
+      showEmoji: !this.state.showEmoji
+    });
+  }
+
+  closeImage(index) {
+    let images = this.state.images;
+    let img = images.splice(index, 1);
+    this.setState({ images: images });
+  }
+
+  closeAttachment(index) {
+    let att = this.state.attachment;
+    let attachmentDeleted = att.splice(index, 1);
+    this.setState({ attachment: att });
+  }
+
+  closeFile(index) {
+    let files = this.state.listFiles;
+    let deleted = files.splice(index, 1);
+
+    if (deleted[0].isImage) {
+      let i = this.state.images.findIndex(
+        item => item.name === deleted[0].name
+      );
+      this.closeImage(i);
+    } else {
+      let i = this.state.attachment.findIndex(
+        item => item.name === deleted[0].name
+      );
+      this.closeAttachment(i);
     }
+    this.setState({
+      listFiles: files
+    });
+  }
 
-    closeImage(index){
-        let images = this.state.images;
-        let img = images.splice(index,1);
-        this.setState({images: images})
-    }
-
-    closeAttachment(index){
-        let att = this.state.attachment;
-        let attachmentDeleted = att.splice(index,1);
-        this.setState({attachment: att})
-    }
-
-    closeFile(index){
-        let files = this.state.listFiles;
-        let deleted = files.splice(index,1);
-
-        if(deleted[0].isImage){
-            let i = this.state.images.findIndex( (item) => item.name === deleted[0].name )
-            this.closeImage(i)
-        }
-        else{
-            let i = this.state.attachment.findIndex( (item) => item.name === deleted[0].name )
-            this.closeAttachment(i);
-        }
-        this.setState({
-            listFiles: files
-        })
-    }
-
-  handleShowReplies(message){
-    if(message.showReplies && message.showReplies >= message.replies.length )
+  handleShowReplies(message) {
+    if (message.showReplies && message.showReplies >= message.replies.length)
       message.showReplies = 3;
     else
       message.showReplies = message.showReplies ? message.showReplies + 10 : 13;
-    this.setState({flag : !this.state.flag});
+    this.setState({ flag: !this.state.flag });
   }
 
   renderMessages(blocks, parent) {
-    return blocks && blocks.length > 0
-      ? <div>
+    return blocks && blocks.length > 0 ? (
+      <div>
         {blocks.map((message, k) => {
           return (
             <Query
               key={k}
               query={userQuery}
-              variables={{id: message.owner}}
+              variables={{ id: message.owner }}
               fetchPolicy={"cache-and-network"}
             >
-              {({loading, error, data}) => {
-                if (error) return <div/>;
+              {({ loading, error, data }) => {
+                if (error) return <div />;
                 const owner = data.user;
                 return (
-                  <Container fullY key={k} style={{height: "auto"}}>
+                  <Container fullY key={k} style={{ height: "auto" }}>
                     <MessageItem
                       owner={owner}
                       isActive={k === this.state.selectMessageItem}
@@ -229,24 +234,29 @@ class LoadMessages extends Component {
                       onReplyAction={item => this.handleReply(item)}
                     />
                     {message._id === this.state.replyMessage ? (
-                      <Container ml={{md: "20px"}} mb={"15px"}>
+                      <Container ml={{ md: "20px" }} mb={"15px"}>
                         <Container fullX>
-                          {
-                            this.state.listFiles.length > 0 ?
-                              this.state.listFiles.map((file, index) => <Attachment hideBorder={true} key={index}
-                                                                                    isImage={file.isImage}
-                                                                                    link={file.link}
-                                                                                    filename={file.name}
-                                                                                    size={file.size} loading={false}
-                                                                                    onClose={() => this.closeFile(index)}/>) : null
-                          }
+                          {this.state.listFiles.length > 0
+                            ? this.state.listFiles.map((file, index) => (
+                                <Attachment
+                                  hideBorder={true}
+                                  key={index}
+                                  isImage={file.isImage}
+                                  link={file.link}
+                                  filename={file.name}
+                                  size={file.size}
+                                  loading={false}
+                                  onClose={() => this.closeFile(index)}
+                                />
+                              ))
+                            : null}
                         </Container>
                         <ReplyBox
                           placeholder={`Type a reply to ${owner &&
-                          owner.profile.name}`}
+                            owner.profile.name}`}
                           name={"textReply"}
                           onTextChange={text =>
-                            this.setState({textReply: text})
+                            this.setState({ textReply: text })
                           }
                           model={this.state}
                           buttonText={"Reply"}
@@ -255,10 +265,14 @@ class LoadMessages extends Component {
                             this.handleMessage(this.state.textReply, message)
                           }
                           showEmojis={this.state.showEmoji}
-                          onEmojiSelect={(emoji) => this.handleEmoji(emoji)}
+                          onEmojiSelect={emoji => this.handleEmoji(emoji)}
                           handleEmojiClicked={this.emojiClicked}
-                          getAttachment={(file, size) => this.onAttachmentUpload(file, size)}
-                          getImage={(file, size) => this.onImageUpload(file, size)}
+                          getAttachment={(file, size) =>
+                            this.onAttachmentUpload(file, size)
+                          }
+                          getImage={(file, size) =>
+                            this.onImageUpload(file, size)
+                          }
                         />
                       </Container>
                     ) : null}
@@ -273,10 +287,11 @@ class LoadMessages extends Component {
                         }}
                       >
                         {this.renderMessages(
-                          message.replies.slice(0, message.showReplies || 3).sort(
-                            (a, b) => a.createdAt - b.createdAt
-                          )
-                          , message)}
+                          message.replies
+                            .slice(0, message.showReplies || 3)
+                            .sort((a, b) => a.createdAt - b.createdAt),
+                          message
+                        )}
                       </Container>
                     ) : null}
                   </Container>
@@ -284,13 +299,17 @@ class LoadMessages extends Component {
               }}
             </Query>
           );
-        })
-        }
-        {parent && parent.replies.length > 3 ?
-          <SShowReplies onClick={() => this.handleShowReplies(parent)}>{(parent.showReplies || 3) > parent.replies.length ? 'Show Less' : `Show More (${parent.replies.length - (parent.showReplies || 3)})`}</SShowReplies>
-          : null}
+        })}
+        {parent && parent.replies.length > 3 ? (
+          <SShowReplies onClick={() => this.handleShowReplies(parent)}>
+            {(parent.showReplies || 3) > parent.replies.length
+              ? "Show Less"
+              : `Show More (${parent.replies.length -
+                  (parent.showReplies || 3)})`}
+          </SShowReplies>
+        ) : null}
       </div>
-      : null;
+    ) : null;
   }
 
   render() {
