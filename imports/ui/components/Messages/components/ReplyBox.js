@@ -30,6 +30,17 @@ const SSpan = styled.span`
   align-items: center;
 `;
 
+const GroupRender = props => {
+  return (
+    <Container>
+      <Container hide mdShow>
+        {props.children}{" "}
+      </Container>
+      <Container mdHide>mobile</Container>
+    </Container>
+  );
+};
+
 export class ReplyBox extends React.Component {
   constructor(props) {
     super(props);
@@ -70,7 +81,7 @@ export class ReplyBox extends React.Component {
         let result = await UploadToS3FromClient.uploadFromClient(files[0]);
         if (result !== -1)
           file = { name: files[0].name, link: result, type: files[0].type };
-        console.log('FileUploaded', result);
+        console.log("FileUploaded", result);
         this.props.getAttachment &&
           this.props.getAttachment(file, files[0].size);
       } else alert("File shouldn't be bigger than 10Mb"); // todo: integrate with the notification alerts
@@ -97,6 +108,67 @@ export class ReplyBox extends React.Component {
     }
   }
 
+  /**
+   * Render the emoji, image and files options
+   */
+  renderMessageOptions() {
+    return (
+      <Layout
+        colGap={"10px"}
+        customTemplateColumns={"auto auto auto 1fr"}
+        style={{ position: "relative" }}
+      >
+        <SSpan onClick={() => this.inputImageRef.click()}>
+          <MaterialIcon type={"image-alt"} />
+          <input
+            ref={ref => {
+              this.inputImageRef = ref;
+            }}
+            onChange={e => this.onUploadImage(e.target.files)}
+            type={"file"}
+            style={{ display: "none" }}
+          />
+        </SSpan>
+        <SSpan onClick={() => this.inputAttachmentRef.click()}>
+          <MaterialIcon type={"attachment"} />
+          <input
+            ref={ref => {
+              this.inputAttachmentRef = ref;
+            }}
+            onChange={e => this.handleUpload(e.target.files)}
+            type={"file"}
+            style={{ display: "none" }}
+          />
+        </SSpan>
+        <Container flex style={{ position: "relative" }}>
+          <SSpan onClick={() => this.emojiClicked()}>
+            <MaterialIcon type={"mood"} />
+          </SSpan>
+          {this.state.showEmoji ? (
+            <OutsideClickHandler onOutsideClick={() => this.emojiClickedOut()}>
+              <Picker
+                showPreview={false}
+                set={"emojione"}
+                emoji={"point_up"}
+                onSelect={emoji => this.handleEmoji(emoji)}
+                style={{
+                  position: "absolute",
+                  maxWidth: "250px",
+                  bottom: "20px",
+                  left: "20px",
+                  zIndex: "2",
+                  fontFamily: "Roboto Mono",
+                  fontSize: "12px"
+                }}
+              />
+            </OutsideClickHandler>
+          ) : null}
+        </Container>
+        <Container />
+      </Layout>
+    );
+  }
+
   render() {
     return (
       <SReplyBox>
@@ -104,61 +176,7 @@ export class ReplyBox extends React.Component {
           customTemplateColumns={"auto 1fr"}
           padding={{ md: "10px 20px" }}
         >
-          <Layout
-            colGap={"10px"}
-            customTemplateColumns={"auto auto auto 1fr"}
-            style={{ position: "relative" }}
-          >
-            <SSpan onClick={() => this.inputImageRef.click()}>
-              <MaterialIcon type={"image-alt"} />
-              <input
-                ref={ref => {
-                  this.inputImageRef = ref;
-                }}
-                onChange={e => this.onUploadImage(e.target.files)}
-                type={"file"}
-                style={{ display: "none" }}
-              />
-            </SSpan>
-            <SSpan onClick={() => this.inputAttachmentRef.click()}>
-              <MaterialIcon type={"attachment"} />
-              <input
-                ref={ref => {
-                  this.inputAttachmentRef = ref;
-                }}
-                onChange={e => this.handleUpload(e.target.files)}
-                type={"file"}
-                style={{ display: "none" }}
-              />
-            </SSpan>
-            <Container flex style={{ position: "relative" }}>
-              <SSpan onClick={() => this.emojiClicked()}>
-                <MaterialIcon type={"mood"} />
-              </SSpan>
-              {this.state.showEmoji ? (
-                <OutsideClickHandler
-                  onOutsideClick={() => this.emojiClickedOut()}
-                >
-                  <Picker
-                    showPreview={false}
-                    set={"emojione"}
-                    emoji={"point_up"}
-                    onSelect={emoji => this.handleEmoji(emoji)}
-                    style={{
-                      position: "absolute",
-                      maxWidth: "250px",
-                      bottom: "20px",
-                      left: "20px",
-                      zIndex: "2",
-                      fontFamily: "Roboto Mono",
-                      fontSize: "12px"
-                    }}
-                  />
-                </OutsideClickHandler>
-              ) : null}
-            </Container>
-            <Container />
-          </Layout>
+          <GroupRender>{this.renderMessageOptions()}</GroupRender>
           <Container relative>
             <TextArea
               placeholderText={this.props.placeholder}

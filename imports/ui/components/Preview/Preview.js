@@ -12,8 +12,6 @@ import ReplyBox from "../Messages/components/ReplyBox";
 import Messages from "../Messages/Messages";
 import Attachment from "../Messages/components/Attachment";
 import { insertMessage } from "../Messages/Service/service";
-import { connect } from "react-redux";
-import { closeChatView, openChatView } from "../../actions/ChatView";
 
 const ResponsiveContainer = styled(Layout)`
   margin-left: -100%;
@@ -448,18 +446,4 @@ Preview.propTypes = {
   showChatView: PropsTypes.bool
 };
 
-const mapStateToProps = () => {
-  return {};
-};
-
-const mapDispatchToProps = dispatch => {
-  return {
-    closeChatView: () => dispatch(closeChatView()),
-    openChatView: () => dispatch(openChatView())
-  };
-};
-
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(Preview);
+export default Preview;

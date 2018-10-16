@@ -3,7 +3,7 @@ import {
   CardItem,
   ItemsList,
   ListLayout,
-  Preview
+  MemberPreview
 } from "../../../ui/components";
 import { compose, graphql, Mutation } from "react-apollo";
 import { withRouter } from "react-router-dom";
@@ -384,7 +384,7 @@ class ListInnovators extends Component {
                         this.props.curUser._id
                       ) > -1;
                     return (
-                      <Preview
+                      <MemberPreview
                         curUser={this.props.curUser}
                         isMobile={this.props.isMobile}
                         showChatView={this.state.showMessages}
@@ -526,7 +526,7 @@ class ListInnovators extends Component {
                             user={this.state.selectedItem.profile}
                           />
                         ) : null}
-                      </Preview>
+                      </MemberPreview>
                     );
                   }}
                 </Mutation>

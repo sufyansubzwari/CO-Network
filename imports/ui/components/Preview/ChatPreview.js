@@ -10,10 +10,9 @@ import Messages from "../Messages/Messages";
 import { insertMessage } from "../Messages/Service/service";
 import { Scrollbars } from "react-custom-scrollbars";
 import { Session } from "meteor/session";
-import PropsTypes from "prop-types";
-import { openChatView, closeChatView } from "../../actions/ChatView";
-import { connect } from "react-redux";
 import Attachment from "../Messages/components/Attachment";
+import { connect } from "react-redux";
+import { closeChatView, openChatView } from "../../actions/ChatView";
 
 const ResponsiveContainer = styled(Layout)`
   margin-left: -100%;
@@ -256,4 +255,28 @@ class ChatPreview extends Preview {
   }
 }
 
-export default ChatPreview;
+ChatPreview.defaultProps = {
+  ...Preview.defaultProps,
+  showAvatar: false,
+  allowChangeImages: false
+};
+
+ChatPreview.propTypes = {
+  ...Preview.propTypes
+};
+
+const mapStateToProps = () => {
+  return {};
+};
+
+const mapDispatchToProps = dispatch => {
+  return {
+    closeChatView: () => dispatch(closeChatView()),
+    openChatView: () => dispatch(openChatView())
+  };
+};
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(ChatPreview);

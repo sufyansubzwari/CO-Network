@@ -5,6 +5,7 @@ import UserNavbarSection from "./Navbar/UserNavbarSection";
 import Create from "./Create/Create";
 import Preview from "./Preview/Preview";
 import ChatPreview from "./Preview/ChatPreview";
+import MemberPreview from "./Preview/MemberPreview";
 import UserPhoto from "./UserPhoto/UserPhoto";
 import CardItem from "./CardItem/CardItem";
 import ClusterIcon from "./ClusterIcon/ClusterIcon";
@@ -65,5 +66,6 @@ export {
   Media,
   Achievements,
   ChatPreview,
-  LoginSidebar
+  LoginSidebar,
+  MemberPreview
 };
