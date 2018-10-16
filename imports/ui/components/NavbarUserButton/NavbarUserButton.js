@@ -47,16 +47,16 @@ class NavbarUserButton extends Component {
       <HButtom
         image={!!user ? user.profile.image : ""}
         size={this.props.size}
-        primary={!user && !isMobile}
+        // primary={!user && !isMobile}
       >
         {!user ? (
-          isMobile ? (
+          // isMobile ? (
             <span style={{ fontSize: 24 }}>
               <MaterialIcon type={"account-o"} />
             </span>
-          ) : (
-            <SStartText>Start</SStartText>
-          )
+          // ) : (
+          //   <SStartText>Start</SStartText>
+          // )
         ) : !user.profile.image ? (
           <SInitialsContainer>{initials}</SInitialsContainer>
         ) : null}

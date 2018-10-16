@@ -27,6 +27,7 @@ import Media from "./Media/Media";
 import Achievements from "./Achievements/Achievements";
 import WorkExperience from "./WorkExperience/WorkExperience";
 import LoginSidebar from "./LoginSidebar/LoginSidebar";
+import OutsideClickHandler from "./OutsideClickHandler/OutsideClickHandler";
 
 // layouts
 import InternalLayout from "../layouts/InternalLayout/InternalLayout";
@@ -67,5 +68,6 @@ export {
   Achievements,
   ChatPreview,
   LoginSidebar,
-  MemberPreview
+  MemberPreview,
+  OutsideClickHandler
 };

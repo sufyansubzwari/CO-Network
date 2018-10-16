@@ -103,6 +103,11 @@ export const SText = styled(Container)`
   ${mixins.media.desktop`
     font-size: 14px;
   `};
+  
+  > span > img {
+    width: 1.5em !important;
+    height: 1.5em !important;
+  }
 `;
 
 export const SReplyButton = styled.span`

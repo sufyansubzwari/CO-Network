@@ -8,6 +8,8 @@ import MaterialIcon from "react-material-iconic-font";
 import styled from "styled-components";
 import AttachedImage from "./Image";
 import AttachedFile from "./AttachedFile";
+import { Emojione } from "react-emoji-render";
+import "emoji-mart/css/emoji-mart.css";
 
 export const SMessageItem = styled(Container)`
   line-height: 15px;
@@ -52,23 +54,25 @@ const MessageItem = function(props) {
             </SReplyButton>
           ) : null}
         </SUser>
-        <SText isActive={props.isActive} mb={"10px"}>
-          {props.message.text}
+        <SText isActive={props.isActive}>
+          <Emojione text={props.message.text} />
         </SText>
-        {props.message &&
-          props.message.attachment &&
-          props.message.attachment.map((attach, index) => (
-            <AttachedFile
-              key={index}
-              link={attach.link}
-              filename={attach.name}
-            />
-          ))}
-        {props.message &&
-          props.message.images &&
-          props.message.images.map((img, index) => (
-            <AttachedImage key={index} link={img.link} filename={img.name} />
-          ))}
+        <Container mt={"10px"}>
+          {props.message &&
+            props.message.attachment &&
+            props.message.attachment.map((attach, index) => (
+              <AttachedFile
+                key={index}
+                link={attach.link}
+                filename={attach.name}
+              />
+            ))}
+          {props.message &&
+            props.message.images &&
+            props.message.images.map((img, index) => (
+              <AttachedImage key={index} link={img.link} filename={img.name} />
+            ))}
+        </Container>
       </SMessageItem>
     </Layout>
   );

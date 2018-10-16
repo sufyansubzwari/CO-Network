@@ -2,13 +2,12 @@ import React from "react";
 import PropTypes from "prop-types";
 import { SReplyBox } from "../components/styledComponents";
 import { Container, Layout } from "btech-layout";
-import { Button, TextArea } from "btech-base-forms-component";
+import { TextArea } from "btech-base-forms-component";
 import "emoji-mart/css/emoji-mart.css";
 import { Picker } from "emoji-mart";
 import styled from "styled-components";
 import MaterialIcon from "react-material-iconic-font";
 import { UploadToS3, UploadToS3FromClient } from "../../../services";
-import OutsideClickHandler from "react-outside-click-handler";
 
 /**
  * @module Data
@@ -97,12 +96,14 @@ export class ReplyBox extends React.Component {
               type: files[0].type
             };
             if (!response.imagePath.includes("compressed"))
-              this.props.getImage && this.props.getImage(img, files[0].size, false);
+              this.props.getImage &&
+                this.props.getImage(img, files[0].size, false);
           } else {
             // todo: show notification for error
           }
         },
-        ({uploading}) => this.props.getLoading && this.props.getLoading(uploading, file, true)
+        ({ uploading }) =>
+          this.props.getLoading && this.props.getLoading(uploading, file, true)
       );
     }
   }
@@ -136,11 +137,12 @@ export class ReplyBox extends React.Component {
   }
 
   handleEmoji(emoji) {
-    if (emoji && emoji.native) {
+    if (emoji && emoji.colons) {
       let message = this.props.model[this.props.name];
-      const newMessage = message + emoji.native;
+      const newMessage = `${message}${emoji.colons}`;
       this.props.onTextChange && this.props.onTextChange(newMessage);
     }
+    this.emojiClickedOut();
   }
 
   /**
@@ -180,23 +182,22 @@ export class ReplyBox extends React.Component {
             <MaterialIcon type={"mood"} />
           </SSpan>
           {this.state.showEmoji ? (
-            <OutsideClickHandler onOutsideClick={() => this.emojiClickedOut()}>
-              <Picker
-                showPreview={false}
-                set={"emojione"}
-                emoji={"point_up"}
-                onSelect={emoji => this.handleEmoji(emoji)}
-                style={{
-                  position: "absolute",
-                  maxWidth: "250px",
-                  bottom: "20px",
-                  left: "20px",
-                  zIndex: "2",
-                  fontFamily: "Roboto Mono",
-                  fontSize: "12px"
-                }}
-              />
-            </OutsideClickHandler>
+            <Picker
+              showPreview={false}
+              set={"emojione"}
+              emoji={"point_up"}
+              onSelect={emoji => this.handleEmoji(emoji)}
+              exclude={["flags"]}
+              style={{
+                position: "absolute",
+                maxWidth: "250px",
+                bottom: "20px",
+                left: "20px",
+                zIndex: "2",
+                fontFamily: "Roboto Mono",
+                fontSize: "12px"
+              }}
+            />
           ) : null}
         </Container>
         <Container />
@@ -238,7 +239,7 @@ export class ReplyBox extends React.Component {
               onClick={event => {
                 event.stopPropagation();
                 event.preventDefault();
-                this.optionsToggle(true)
+                this.optionsToggle(true);
               }}
             />
             <SAddButton

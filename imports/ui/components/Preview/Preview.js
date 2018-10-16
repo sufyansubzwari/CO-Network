@@ -93,7 +93,16 @@ const NavLinks = styled(Layout)`
 `;
 
 const SPreviewContainer = styled(Container)`
+  zoom: 100%;
   padding: ${props => (props.isChatView ? "20px 10px" : "25px 10px")};
+
+  @media (min-width: 62em) {
+    zoom: ${props => (props.isChatView ? "100%" : "80%")};
+  }
+
+  @media (min-width: 86em) {
+    zoom: 100%;
+  }
 
   ${mixins.media.desktop`
     padding: ${props => (props.isChatView ? "15px 25px" : "25px 75px")};
@@ -243,10 +252,9 @@ class Preview extends React.Component {
     attach.push(file);
     let listFiles = this.state.listFiles;
     let index = this.state.listFiles.findIndex(item => item.name === file.name);
-    if(index > -1)
-        listFiles[index] = {...listFiles[index], link: file.link}
+    if (index > -1) listFiles[index] = { ...listFiles[index], link: file.link };
     else
-        listFiles.push({ ...file, size: size, isImage: false, loading: false });
+      listFiles.push({ ...file, size: size, isImage: false, loading: false });
     this.setState({
       attachments: attach,
       listFiles: listFiles
@@ -259,10 +267,8 @@ class Preview extends React.Component {
     imgs.push(file);
     let listFiles = this.state.listFiles;
     let index = this.state.listFiles.findIndex(item => item.name === file.name);
-    if(index > -1)
-      listFiles[index] = {...listFiles[index], link: file.link}
-    else
-      listFiles.push({ ...file, size: size, isImage: true, loading: false });
+    if (index > -1) listFiles[index] = { ...listFiles[index], link: file.link };
+    else listFiles.push({ ...file, size: size, isImage: true, loading: false });
     this.setState({
       images: imgs,
       listFiles: listFiles
@@ -301,21 +307,25 @@ class Preview extends React.Component {
       : [];
   }
 
-    handleLoading(loading, file, isImage){
-        let listFiles = this.state.listFiles;
-        let nfile = { name: file.name, type: file.type ,size: file.size, isImage: isImage, loading: loading };
-        let index = this.state.listFiles.findIndex( item => item.name === file.name );
-        if(index > -1){
-            listFiles[index] = {...listFiles[index], loading: loading}
-        }
-        else{
-          listFiles.push(nfile)
-        }
-        this.setState({
-            listFiles: listFiles
-        })
-
+  handleLoading(loading, file, isImage) {
+    let listFiles = this.state.listFiles;
+    let nfile = {
+      name: file.name,
+      type: file.type,
+      size: file.size,
+      isImage: isImage,
+      loading: loading
+    };
+    let index = this.state.listFiles.findIndex(item => item.name === file.name);
+    if (index > -1) {
+      listFiles[index] = { ...listFiles[index], loading: loading };
+    } else {
+      listFiles.push(nfile);
     }
+    this.setState({
+      listFiles: listFiles
+    });
+  }
 
   render() {
     return (
@@ -433,7 +443,9 @@ class Preview extends React.Component {
                   this.onAttachmentUpload(file, size)
                 }
                 getImage={(file, size) => this.onImageUpload(file, size)}
-                getLoading={(loading, file, isImage) => this.handleLoading(loading, file, isImage)}
+                getLoading={(loading, file, isImage) =>
+                  this.handleLoading(loading, file, isImage)
+                }
               />
             ) : null}
           </Container>
