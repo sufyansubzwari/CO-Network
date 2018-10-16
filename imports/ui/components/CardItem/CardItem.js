@@ -260,7 +260,7 @@ class CardItem extends Component {
     const loading =
       this.props.loading || (this.props.image && this.state.loadingImage);
     const imageElement = loading ? (
-      <PlaceHolder rect loading={loading} height={398} width={395} />
+      <PlaceHolder rect loading={loading} height={280} width={390} />
     ) : (
       <SImage src={this.props.image} />
     );
