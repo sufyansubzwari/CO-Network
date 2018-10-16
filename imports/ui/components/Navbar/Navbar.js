@@ -224,7 +224,14 @@ export default connect(
   withTracker(() => {
     const subscription = Meteor.subscribe("messages.myNewMessages", 0);
     const subscription2 = Meteor.subscribe("notifications.myNotifications");
-    let messages = MessagesCollection.find({ read: false }).fetch();
+    const userId = Meteor.userId();
+    let messages = MessagesCollection.find({
+      $or: [
+        { receptor: userId },
+        { owner: userId, replies: { $exists: true } }
+      ],
+      read: false
+    }).fetch();
     let notifications = NotificationsCollection.find({ viewed: false }).fetch();
     return {
       loading: !subscription.ready() && !subscription2.ready(),
