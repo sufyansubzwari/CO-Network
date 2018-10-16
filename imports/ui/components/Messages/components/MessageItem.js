@@ -8,6 +8,7 @@ import MaterialIcon from "react-material-iconic-font";
 import styled from "styled-components";
 import AttachedImage from "./Image";
 import AttachedFile from "./AttachedFile";
+import LightBox from "react-images";
 import { Emojione } from "react-emoji-render";
 import "emoji-mart/css/emoji-mart.css";
 
@@ -24,7 +25,13 @@ export const SMessageItem = styled(Container)`
  * @category Component
  * @description This component is a wrapper for the MessageItem
  */
-const MessageItem = function(props) {
+class MessageItem extends React.Component {
+  state = {
+    lightBoxIsOpen: false,
+    currentImage: 0,
+  };
+
+  render() {const {props} = this;
   return (
     <Layout
       customTemplateColumns={"auto 1fr"}
@@ -39,8 +46,8 @@ const MessageItem = function(props) {
             {props.owner && props.owner.profile && props.owner.profile.name}
           </span>
           <span id={"time"}>
-            {moment(props.message && props.message.createdAt).format("h:mm a")}
-          </span>
+            {moment(props.message && props.message.createdAt).format("h:mm a"
+          )}</span>
           {props.message && props.message.canReply ? (
             <SReplyButton
               onClick={event => {
@@ -54,29 +61,45 @@ const MessageItem = function(props) {
             </SReplyButton>
           ) : null}
         </SUser>
-        <SText isActive={props.isActive}>
-          <Emojione text={props.message.text} />
+        <SText isActive={props.isActive} >
+          <Emojione text={props.message.text}/>
         </SText>
-        <Container mt={"10px"}>
-          {props.message &&
-            props.message.attachment &&
-            props.message.attachment.map((attach, index) => (
-              <AttachedFile
-                key={index}
-                link={attach.link}
-                filename={attach.name}
+        <Container mt={"10px"}>{props.message &&
+          props.message.attachment &&
+          props.message.attachment.map((attach, index) => (
+            <AttachedFile
+              key={index}
+              link={attach.link}
+              filename={attach.name}
+            />
+          ))}
+        {props.message &&
+          props.message.images &&
+          props.message.images.map((img, index) => (
+            <AttachedImage key={index} link={img.link} filename={img.name}
+          onClick={() => this.setState({ lightBoxIsOpen: true, currentImage: index })}
               />
             ))}
           {props.message &&
-            props.message.images &&
-            props.message.images.map((img, index) => (
-              <AttachedImage key={index} link={img.link} filename={img.name} />
-            ))}
-        </Container>
+          props.message.images &&
+          props.message.images.length ? (
+            <LightBox
+              images={props.message.images.map(item => ({ src: item.link }))}
+              isOpen={this.state.lightBoxIsOpen}
+              currentImage={this.state.currentImage}
+              onClickPrev={() =>
+                this.setState({ currentImage: this.state.currentImage - 1 })
+              }
+              onClickNext={() =>
+                this.setState({ currentImage: this.state.currentImage + 1 })
+              }
+              onClose={() => this.setState({ lightBoxIsOpen: false })}
+            />
+          ) : null}</Container>
       </SMessageItem>
     </Layout>
   );
-};
+}}
 
 MessageItem.propTypes = {
   isActive: PropTypes.bool,
