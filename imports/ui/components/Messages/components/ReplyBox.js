@@ -82,6 +82,17 @@ export class ReplyBox extends React.Component {
     };
     this.inputImageRef = React.createRef();
     this.inputAttachmentRef = React.createRef();
+    this.TextAreaRef = React.createRef();
+  }
+
+  componentDidMount(){
+    setTimeout(() => {
+      this.onFocus()
+    }, 200);
+  }
+
+  onFocus() {
+    this.TextAreaRef && this.TextAreaRef.current && this.TextAreaRef.current.focus();
   }
 
   onUploadImage(files) {
@@ -225,6 +236,7 @@ export class ReplyBox extends React.Component {
           </GroupRender>
           <Container relative>
             <TextArea
+              textAreaRef={this.TextAreaRef}
               placeholderText={this.props.placeholder}
               name={this.props.name}
               fixLabel

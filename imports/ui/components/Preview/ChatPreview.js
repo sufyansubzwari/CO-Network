@@ -121,6 +121,7 @@ class ChatPreview extends Preview {
             images: [],
             listFiles: []
           });
+        this.setScroll();
       }
     );
   }
@@ -168,6 +169,14 @@ class ChatPreview extends Preview {
         </NavLinks>
       </SLayout>
     );
+  }
+
+  setScroll() {
+    let _this = this.scroll;
+    if (this.scroll)
+      setTimeout(() => {
+        _this && _this.scrollToBottom();
+      }, 100);
   }
 
   render() {
@@ -239,6 +248,7 @@ class ChatPreview extends Preview {
               ))
             : null}
         </Container>
+        {this.props.data ?
         <Container hide={!this.props.curUser}>
           <ReplyBox
             name={"textMessage"}
@@ -249,7 +259,7 @@ class ChatPreview extends Preview {
             getAttachment={(file, size) => this.onAttachmentUpload(file, size)}
             getImage={(file, size) => this.onImageUpload(file, size)}
           />
-        </Container>
+        </Container> : null}
       </PreviewContainer>
     );
   }

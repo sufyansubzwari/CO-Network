@@ -201,6 +201,7 @@ class Preview extends React.Component {
             images: [],
             listFiles: []
           });
+        this.setScroll();
       }
     );
   }
@@ -316,6 +317,14 @@ class Preview extends React.Component {
         })
 
     }
+
+  setScroll() {
+    let _this = this.scroll;
+    if (this.scroll)
+      setTimeout(() => {
+        _this && _this.scrollToBottom();
+      }, 100);
+  }
 
   render() {
     return (
