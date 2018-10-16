@@ -223,7 +223,7 @@ export default connect(
     const subscription = Meteor.subscribe("messages.myNewMessages", 0);
     const subscription2 = Meteor.subscribe("notifications.myNotifications");
     let messages = MessagesCollection.find().fetch();
-    let notifications = NotificationsCollection.find().fetch();
+    let notifications = NotificationsCollection.find({ viewed: false }).fetch();
     return {
       loading: !subscription.ready() && !subscription2.ready(),
       messages: messages.length,

@@ -1,5 +1,11 @@
-mutation DeleteNotification($id: String!) {
-  deleteNotification(_id: $id) {
+mutation DeleteNotification($id: String, $all: Boolean) {
+  deleteNotification(_id: $id, all: $all) {
+    _id
+  }
+}
+
+mutation UpdateNotification($notification: NotificationsInput) {
+  notification(notification: $notification) {
     _id
   }
 }

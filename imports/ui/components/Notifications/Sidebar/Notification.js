@@ -67,14 +67,16 @@ const SNotification = styled(Container)`
   background: ${props =>
     props.selected
       ? "#000000"
-      : props.theme
-        ? props.theme.color.innerBackground
-        : "#fbfbf9"};
-  
-  .deleteNotification{
-    opacity: 0
+      : props.viewed
+        ? "white"
+        : props.theme
+          ? props.theme.color.innerBackground
+          : "#fbfbf9"};
+
+  .deleteNotification {
+    opacity: 0;
   }
-  
+
   :hover {
     background: ${props =>
       props.selected
@@ -82,8 +84,8 @@ const SNotification = styled(Container)`
         : props.theme
           ? props.theme.color.background
           : "#dadada"};
-          
-    .deleteNotification{
+
+    .deleteNotification {
       opacity: 1;
       transition: all 200ms ease-out;
     }
@@ -133,6 +135,7 @@ class Notification extends React.Component {
       <SNotification
         onClick={() => this.props.onClick && this.props.onClick()}
         selected={this.props.selected}
+        viewed={this.props.viewed}
       >
         <Layout customTemplateColumns={this.props.hasIcon ? "auto 1fr" : null}>
           {this.props.hasIcon ? (
