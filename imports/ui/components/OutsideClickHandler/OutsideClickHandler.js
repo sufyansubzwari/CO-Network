@@ -13,21 +13,22 @@ class OutsideClickHandler extends Component {
     this.node = React.createRef();
   }
 
-  componentWillMount() {
-    document.addEventListener("mousedown", this.handleClick, false);
+  componentDidMount() {
+    document.addEventListener("mouseup", this.handleClick, false);
   }
 
-  componentWillUnmount() {
-    document.removeEventListener("mousedown", this.handleClick, false);
+  componentDidUnmount() {
+    document.removeEventListener("mouseup", this.handleClick, false);
   }
 
-  handleClick = element => {
+  handleClick = event => {
     if (this.node) {
       const domNode = ReactDOM.findDOMNode(this.node);
-      if (domNode.contains(element.target)) {
+      if (domNode.contains(event.target)) {
+        event.stopPropagation();
         return;
       }
-      this.props.onOutsideClick && this.props.onOutsideClick(element);
+      this.props.onOutsideClick && this.props.onOutsideClick(event);
     }
   };
 

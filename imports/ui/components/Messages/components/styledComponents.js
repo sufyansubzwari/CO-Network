@@ -1,6 +1,6 @@
 import React from "react";
 import styled from "styled-components";
-import { Layout, Container, mixins } from "btech-layout";
+import { Container, Layout, mixins } from "btech-layout";
 
 export const SShowReplies = styled.div`
   color: #2b2b2b;
@@ -115,7 +115,7 @@ export const SText = styled(Container)`
   ${mixins.media.desktop`
     font-size: 14px;
   `};
-  
+
   > span > img {
     width: 1.5em !important;
     height: 1.5em !important;
@@ -126,7 +126,7 @@ export const SReplyButton = styled.span`
   margin-left: auto;
   opacity: 0.5;
   cursor: pointer;
-  
+
   :hover {
     opacity: 1;
     transition: all 200ms ease-out;
@@ -142,31 +142,35 @@ export const SReplyMessage = styled(Container)`
   margin-bottom: 10px;
 `;
 
-
 export const SAttachment = styled(Layout)`
-    border: 1px solid #BFBFBF;
-    background-color: #EDEDED;
-    font-size: 16px;
-    line-height: 14px;
-    font-weight: bold;
-    width: 198px;
-    font-family: Helvetica Neue LT Std;
-`
+  border: 1px solid #bfbfbf;
+  background-color: #ededed;
+  font-size: 16px;
+  line-height: 14px;
+  font-weight: bold;
+  font-family: Helvetica Neue LT Std;
+`;
+
+export const SAttachmentName = styled(Container)`
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+`;
 
 export const Header = styled.span`
-    height: 12px;
-    width: 100px;	
-    opacity: 0.5;	
-    color: #000000;	
-    font-family: Roboto Mono;	
-    font-size: 12px;	
-    line-height: 0;
-`
+  height: 12px;
+  width: 100px;
+  opacity: 0.5;
+  color: #000000;
+  font-family: Roboto Mono;
+  font-size: 12px;
+  line-height: 0;
+`;
 
 export const Link = styled.a`
+  color: #000000;
+  border-left: 1px solid #bfbfbf;
+  :hover {
     color: #000000;
-    border-left: 1px solid #BFBFBF;
-    :hover {
-        color: #000000;
-    }    
-`
+  }
+`;
