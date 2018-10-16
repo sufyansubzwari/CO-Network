@@ -35,7 +35,7 @@ Meteor.methods({
       read: Match.Maybe(Boolean),
       replies: Match.Maybe(Array),
       createdAt: Match.Maybe(Date),
-      updatedAt: Match.Maybe(Date),
+      updatedAt: Match.Maybe(Date)
     });
 
     try {
@@ -48,6 +48,19 @@ Meteor.methods({
       //}
 
       //throw new Meteor.Error('403', 'Sorry. You\'re not allowed to edit this message.');
+    } catch (exception) {
+      handleMethodException(exception);
+    }
+  },
+  "messages.markAsRead": function markAsRead(msg) {
+    check(msg, Array);
+    console.log("markAsRead");
+    try {
+      Messages.update(
+        { _id: { $in: msg } },
+        { $set: { read: true } },
+        { multi: true }
+      );
     } catch (exception) {
       handleMethodException(exception);
     }

@@ -47,9 +47,7 @@ Messages.schema = new SimpleSchema({
   },
   read: {
     type: Boolean,
-    autoValue() {
-      return false;
-    },
+    defaultValue: false,
     optional: true
   },
   replies: {

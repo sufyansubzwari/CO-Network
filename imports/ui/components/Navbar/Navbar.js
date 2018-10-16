@@ -222,7 +222,7 @@ export default connect(
   withTracker(() => {
     const subscription = Meteor.subscribe("messages.myNewMessages", 0);
     const subscription2 = Meteor.subscribe("notifications.myNotifications");
-    let messages = MessagesCollection.find().fetch();
+    let messages = MessagesCollection.find({ read: false }).fetch();
     let notifications = NotificationsCollection.find({ viewed: false }).fetch();
     return {
       loading: !subscription.ready() && !subscription2.ready(),

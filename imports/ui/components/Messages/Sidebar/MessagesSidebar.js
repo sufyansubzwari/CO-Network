@@ -74,7 +74,6 @@ class MessagesSidebar extends React.Component {
       read: "All",
       dropDownOpen: false
     };
-    this.handleClear = this.handleClear.bind(this);
   }
 
   componentWillMount() {}
@@ -88,9 +87,22 @@ class MessagesSidebar extends React.Component {
   }
 
   handleClear() {
-    this.setState({
-      messages: []
-    });
+    Meteor.call(
+      "messages.markAsRead",
+      this.state.messages.map(item => item._id),
+      (error, result) => {
+        if (error) return console.log("ERROR - ", error);
+      }
+    );
+  }
+
+  handleSelect() {
+    let messages = this.state.messages[this.state.selectedItem];
+    if (!messages.read) {
+      Meteor.call("messages.markAsRead", [messages._id], (error, result) => {
+        if (error) return console.log("ERROR - ", error);
+      });
+    }
   }
 
   render() {
@@ -98,7 +110,7 @@ class MessagesSidebar extends React.Component {
       <NotificationContainer
         title={"Messages"}
         onClose={() => this.props.onClose && this.props.onClose()}
-        onClear={this.handleClear}
+        onClear={() => this.handleClear()}
         childrens={this.state.messages.length}
       >
         <Container>
@@ -181,13 +193,18 @@ class MessagesSidebar extends React.Component {
                     <Notification
                       hasIcon={true}
                       key={index}
+                      viewed={message.read}
                       title={owner.profile.name}
                       description={message.text}
                       entity={"ML Society"}
                       time={moment(message.createdAt).format("hh:mm")}
                       image={owner.profile.image}
                       selected={this.state.selectedItem === index}
-                      onClick={() => this.setState({ selectedItem: index })}
+                      onClick={() =>
+                        this.setState({ selectedItem: index === this.state.selectedItem ? -1 : index }, () =>
+                          this.handleSelect()
+                        )
+                      }
                     />
                   );
                 }}
@@ -216,12 +233,18 @@ export default connect(
 )(
   withTracker(() => {
     const limit = 20;
+    const userId = Meteor.userId();
     const subscription = Meteor.subscribe(
       "messages.myNewMessages",
       limit || 20
     );
     let messages = MessagesCollection.find(
-      {},
+      {
+        $or: [
+          { receptor: userId },
+          { owner: userId, replies: { $exists: true } }
+        ]
+      },
       { sort: { createdAt: -1 }, limit: limit || 20 }
     ).fetch();
     return {
