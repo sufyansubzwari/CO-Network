@@ -1,6 +1,6 @@
 
-query GetJobsApply($limit: Int, $filter: String, $jobApply: JobsInputSearch) {
-  jobsApply(limit: $limit, filter: $filter, jobApply: $jobApply) {
+query GetJobApply($limit: Int, $filter: String, $jobsApply: JobApplyInput) {
+  jobsApply(limit: $limit, filter: $filter, jobsApply: $jobsApply) {
       _id
     }
 }

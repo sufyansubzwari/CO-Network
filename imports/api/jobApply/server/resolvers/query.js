@@ -6,10 +6,10 @@ const Query = {};
 Query.jobApply = (root, {_id}, context) => {
   return Service.getJobApply(_id)
 };
-Query.jobsApply = (root, {filter, limit, jobApply}, context) => {
+Query.jobsApply = (root, {filter, limit, jobsApply}, context) => {
   let query = {};
-  if(jobApply){
-    query = wrapOperators(jobApply);
+  if(jobsApply){
+    query = wrapOperators(jobsApply);
   }
   // if(filter){
   //   query = {
