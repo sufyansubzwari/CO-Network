@@ -30,7 +30,7 @@ class NotificationsService {
   /**
    * @name deleteNotification
    * @summary Allow delete an Notification
-   * @param {String} id - Notification id
+   * @param {String || Object} id - Notification id
    * @return {Object} Notification deleted
    */
   static deleteNotification = async id => {

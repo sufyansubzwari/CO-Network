@@ -3,7 +3,10 @@ import Notification from "./Notification";
 import NotificationContainer from "./NotificationContainer";
 import { Container, mixins } from "btech-layout";
 import { List } from "btech-card-list-component";
-import { DeleteNotification } from "../../../apollo-client/notifications";
+import {
+  DeleteNotification,
+  UpdateNotification
+} from "../../../apollo-client/notifications";
 import { Mutation } from "react-apollo";
 import moment from "moment";
 import posed from "react-pose/lib/index";
@@ -31,7 +34,6 @@ class NotificationsSidebar extends React.Component {
       selectedItem: -1,
       isDeleting: false
     };
-    this.handleClear = this.handleClear.bind(this);
     this.renderItem = this.renderItem.bind(this);
   }
 
@@ -75,6 +77,16 @@ class NotificationsSidebar extends React.Component {
     }
   }
 
+  handleSelect(updateNotification) {
+    let notification = this.state.notifications[this.state.selectedItem];
+    if(!notification.viewed) {
+      notification.viewed = true;
+      updateNotification({
+        variables: {notification: notification}
+      });
+    }
+  }
+
   renderItem(not, index) {
     if (!not) return null;
     return (
@@ -88,28 +100,49 @@ class NotificationsSidebar extends React.Component {
         onError={error => console.log("Error: ", error)}
       >
         {deleteNotification => (
-          <Container relative>
-            <NotificationBack />
-            <SDragContainer
-              relative
-              onValueChange={{
-                x: x =>
-                  this.observerDragBoundaries(x, not, index, deleteNotification)
-              }}
-            >
-              <Notification
-                title={not.title}
-                description={not.message}
-                entity={not.entity}
-                time={moment(not.createdAt).format("hh:mm")}
-                selected={this.state.selectedItem === index}
-                onDelete={() =>
-                  this.deleteNotification(not, index, deleteNotification)
-                }
-                onClick={() => this.setState({ selectedItem: index })}
-              />
-            </SDragContainer>
-          </Container>
+          <Mutation
+            key={index}
+            mutation={UpdateNotification}
+            onCompleted={() =>
+              console.log("completed")
+            }
+            onError={error => console.log("Error: ", error)}
+          >
+            {updateNotification => (
+              <Container relative>
+                <NotificationBack />
+                <SDragContainer
+                  relative
+                  onValueChange={{
+                    x: x =>
+                      this.observerDragBoundaries(
+                        x,
+                        not,
+                        index,
+                        deleteNotification
+                      )
+                  }}
+                >
+                  <Notification
+                    title={not.title}
+                    description={not.message}
+                    entity={not.entity}
+                    viewed={not.viewed}
+                    time={moment(not.createdAt).format("hh:mm")}
+                    selected={this.state.selectedItem === index}
+                    onDelete={() =>
+                      this.deleteNotification(not, index, deleteNotification)
+                    }
+                    onClick={() =>
+                      this.setState({ selectedItem: index }, () =>
+                        this.handleSelect(updateNotification)
+                      )
+                    }
+                  />
+                </SDragContainer>
+              </Container>
+            )}
+          </Mutation>
         )}
       </Mutation>
     );
@@ -120,7 +153,7 @@ class NotificationsSidebar extends React.Component {
       <NotificationContainer
         {...this.props}
         onClose={() => this.props.onClose && this.props.onClose()}
-        onClear={this.handleClear}
+        onClear={() => this.handleClear()}
       >
         <List
           renderItem={this.renderItem}

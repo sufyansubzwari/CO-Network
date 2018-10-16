@@ -3,3 +3,9 @@ mutation DeleteNotification($id: String!) {
     _id
   }
 }
+
+mutation UpdateNotification($notification: NotificationsInput) {
+  notification(notification: $notification) {
+    _id
+  }
+}

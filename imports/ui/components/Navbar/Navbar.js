@@ -66,13 +66,6 @@ class Navbar extends Component {
     this.state = { isOpen: false };
   }
 
-  shouldComponentUpdate(nextProps) {
-    return (
-      this.props.notifications !== nextProps.notifications ||
-      this.props.messages !== nextProps.messages
-    );
-  }
-
   openNavbar(isOpen) {
     this.setState({ isOpen });
     this.props.onOpenNavbar && this.props.onOpenNavbar(isOpen);
@@ -223,7 +216,7 @@ export default connect(
     const subscription = Meteor.subscribe("messages.myNewMessages", 0);
     const subscription2 = Meteor.subscribe("notifications.myNotifications");
     let messages = MessagesCollection.find().fetch();
-    let notifications = NotificationsCollection.find().fetch();
+    let notifications = NotificationsCollection.find({ viewed: false }).fetch();
     return {
       loading: !subscription.ready() && !subscription2.ready(),
       messages: messages.length,
