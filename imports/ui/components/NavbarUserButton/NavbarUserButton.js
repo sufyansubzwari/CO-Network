@@ -10,6 +10,11 @@ const SInitialsContainer = styled.span`
   letter-spacing: 1px;
 `;
 
+const SStartText = styled.span`
+  font-family: "Helvetica Neue LT Std";
+  font-size: "14px";
+`;
+
 /**
  * @module Data
  * @category Component
@@ -32,7 +37,7 @@ class NavbarUserButton extends Component {
   }
 
   render() {
-    let { user } = this.props;
+    let { user, isMobile } = this.props;
     const initials = user
       ? this.getUserInitials(
           `${user.profile.name} ${user.profile.lastName}` || user.profile.email
@@ -42,11 +47,16 @@ class NavbarUserButton extends Component {
       <HButtom
         image={!!user ? user.profile.image : ""}
         size={this.props.size}
+        primary={!user && !isMobile}
       >
         {!user ? (
-          <span style={{ fontSize: 24 }}>
-            <MaterialIcon type={"account-o"} />
-          </span>
+          isMobile ? (
+            <span style={{ fontSize: 24 }}>
+              <MaterialIcon type={"account-o"} />
+            </span>
+          ) : (
+            <SStartText>Start</SStartText>
+          )
         ) : !user.profile.image ? (
           <SInitialsContainer>{initials}</SInitialsContainer>
         ) : null}

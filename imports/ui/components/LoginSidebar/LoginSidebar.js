@@ -138,8 +138,9 @@ const SSymbolTitle = styled.span`
 `;
 
 const SLoginText = styled(Container)`
-  font-size: 18px;
+  font-size: 13px;
   font-family: ${props => props.theme.texts.title.fontFamily};
+  margin-bottom: 5px;
 
   ${mixins.media.desktop`
     font-size: 20px;
@@ -153,6 +154,7 @@ class LoginSidebar extends React.Component {
   }
 
   render() {
+    this.props.curUser && this.props.onClose && this.props.onClose();
     return (
       <Layout fullY customTemplateRows={"auto 1fr"}>
         <Header>

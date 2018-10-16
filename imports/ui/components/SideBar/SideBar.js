@@ -74,6 +74,7 @@ class SideBar extends Component {
         />
       ) : (
         <LoginSidebar
+          curUser={this.props.curUser}
           onClose={() =>
             this.props.toggleSideBar && this.props.toggleSideBar(false)
           }

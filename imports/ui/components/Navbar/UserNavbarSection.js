@@ -193,9 +193,15 @@ class UserNavbarSection extends React.Component {
                 </GroupSocial>
                 <Group authenticated={isAuthenticated}>
                   <RenderCondition>
-                    <Container onClick={() => this.onUserToggle()}>
-                      <NavbarUserButton size={this.size} />
-                    </Container>
+                    <HButtom
+                      primary
+                      size={this.size}
+                      onClick={() => this.onAddToggle()}
+                    >
+                      <SAddMaterialIcon>
+                        <MaterialIcon type={"plus"} size={2} />
+                      </SAddMaterialIcon>
+                    </HButtom>
                   </RenderCondition>
                   <RenderCondition>
                     <HNavItem
@@ -229,17 +235,23 @@ class UserNavbarSection extends React.Component {
                       onClick={() => this.onNotificationToggle()}
                     />
                   </RenderCondition>
-                  <RenderCondition>
-                    <HButtom
-                      primary
-                      size={this.size}
-                      onClick={() => this.onAddToggle()}
-                    >
-                      <SAddMaterialIcon>
-                        <MaterialIcon type={"plus"} size={2} />
-                      </SAddMaterialIcon>
-                    </HButtom>
-                  </RenderCondition>
+                  {this.props.isMobile ? (
+                    <RenderCondition>
+                      <Container onClick={() => this.onUserToggle()}>
+                        <NavbarUserButton
+                          size={this.size}
+                          isMobile={this.props.isMobile}
+                        />
+                      </Container>
+                    </RenderCondition>
+                  ) : (
+                    <Container onClick={() => this.onUserToggle()}>
+                      <NavbarUserButton
+                        size={this.size}
+                        isMobile={this.props.isMobile}
+                      />
+                    </Container>
+                  )}
                 </Group>
               </GroupContainer>
             </Layout>

@@ -177,6 +177,7 @@ class Navbar extends Component {
               onNotificationToggle={() => this.onNotificationToggle()}
               onMessageToggle={() => this.onMessageToggle()}
               curUser={this.props.curUser}
+              isMobile={this.props.isMobile}
               notifications={!this.props.loading ? this.props.notifications : 0}
               messages={!this.props.loading ? this.props.messages : 0}
             />
@@ -184,6 +185,7 @@ class Navbar extends Component {
           <UserNavbarSection
             key={"footer"}
             curUser={this.props.curUser}
+            isMobile={this.props.isMobile}
             callback={value => this.openNavbar(value)}
             notifications={this.props.notifications}
             messages={this.props.messages}

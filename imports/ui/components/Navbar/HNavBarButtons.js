@@ -40,14 +40,19 @@ const HNavBarButtons = function(props) {
     <Container paddingX={"15px"}>
       <Layout mdHide colGap={"24px"} templateColumns={5} mdTemplateColumns={1}>
         <SContainerIcon isActive={!witOutUser}>
-          <Container
-            hide={props.isOpen}
-            onClick={() => {
-              if (witOutUser) props.onToggleNavBar && props.onToggleNavBar();
-              else props.onUserToggle && props.onUserToggle();
-            }}
-          >
-            <NavbarUserButton size={size} />
+          <Container hide={props.isOpen}>
+            <HButtom
+              primary={!witOutUser}
+              size={size}
+              onClick={() => {
+                if (witOutUser) props.onToggleNavBar && props.onToggleNavBar();
+                else props.onAddToggle && props.onAddToggle();
+              }}
+            >
+              <SIconContainer>
+                <MaterialIcon type={"plus"} />
+              </SIconContainer>
+            </HButtom>
           </Container>
         </SContainerIcon>
         <SContainerIcon isActive={!witOutUser}>
@@ -98,19 +103,14 @@ const HNavBarButtons = function(props) {
           </Container>
         </SContainerIcon>
         <SContainerIcon isActive={!witOutUser}>
-          <Container hide={props.isOpen}>
-            <HButtom
-              primary={!witOutUser}
-              size={size}
-              onClick={() => {
-                if (witOutUser) props.onToggleNavBar && props.onToggleNavBar();
-                else props.onAddToggle && props.onAddToggle();
-              }}
-            >
-              <SIconContainer>
-                <MaterialIcon type={"plus"} />
-              </SIconContainer>
-            </HButtom>
+          <Container
+            hide={props.isOpen}
+            onClick={() => {
+              if (witOutUser) props.onToggleNavBar && props.onToggleNavBar();
+              else props.onUserToggle && props.onUserToggle();
+            }}
+          >
+            <NavbarUserButton size={size} isMobile={props.isMobile} />
           </Container>
         </SContainerIcon>
       </Layout>
