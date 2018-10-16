@@ -8,8 +8,12 @@ import { Button } from "btech-base-forms-component";
 import TopPreview from "./TopPreview";
 import posed from "react-pose";
 import BackButton from "../BackButton/BackButton";
+import ReplyBox from "../Messages/components/ReplyBox";
+import Messages from "../Messages/Messages";
+import Attachment from "../Messages/components/Attachment";
+import {insertMessage} from "../Messages/Service/service";
 
-const ResponsiveContainer = styled(Container)`
+const ResponsiveContainer = styled(Layout)`
   margin-left: -100%;
   margin-right: 100%;
   ${mixins.media.desktop`
@@ -128,8 +132,14 @@ export default class Preview extends React.Component {
     this.state = {
       selectedLink: 0,
       image: props.image ? props.image : "",
-      backGroundImage: props.backGroundImage ? props.backGroundImage : ""
+      backGroundImage: props.backGroundImage ? props.backGroundImage : "",
+      textMessage: "",
+      attachments: [],
+      images: [],
+      listFiles: []
     };
+    this.scroll = null;
+    this.messagesLength = 0;
     this.handleUploadChange = this.handleUploadChange.bind(this);
   }
 
@@ -163,6 +173,84 @@ export default class Preview extends React.Component {
       ))
     );
   }
+
+  onKeyPress(event) {
+      if (event.key === "Enter" && event.shiftKey === false) {
+          event.preventDefault();
+          if (event.target.value.trim() !== "")
+              this.handleMessage(event.target.value);
+      }
+  }
+
+  handleMessage(text) {
+      insertMessage(
+          {
+              owner: this.props.curUser._id,
+              receptor: this.props.data._id,
+              text: text || this.state.textMessage,
+              type: 'private',
+              attachment: this.state.attachments,
+              images: this.state.images
+          },
+          res => {
+              if (res === "success")
+                  this.setState({ textMessage: "", attachments: [], images: [], listFiles: [] });
+          }
+      );
+  }
+
+    closeImage(index){
+        let images = this.state.images;
+        let img = images.splice(index,1);
+        this.setState({images: images})
+    }
+
+    closeAttachment(index){
+        let att = this.state.attachments;
+        let attachmentDeleted = att.splice(index,1);
+        this.setState({attachments: att})
+    }
+
+    closeFile(index){
+        let files = this.state.listFiles;
+        let deleted = files.splice(index,1);
+
+        if(deleted[0].isImage){
+            let i = this.state.images.findIndex( (item) => item.name === deleted[0].name )
+            this.closeImage(i)
+        }
+        else{
+            let i = this.state.attachments.findIndex( (item) => item.name === deleted[0].name )
+            this.closeAttachment(i);
+        }
+        this.setState({
+            listFiles: files
+        })
+    }
+
+    onAttachmentUpload(file, size) {
+        console.log("uploaded the file " + file);
+        let attach = this.state.attachments;
+        attach.push(file);
+        let listFiles = this.state.listFiles;
+        listFiles.push({...file, size: size, isImage: false})
+        this.setState({
+            attachments: attach,
+            listFiles: listFiles
+        });
+    }
+
+    onImageUpload(file, size) {
+        console.log("uploaded the image " + file);
+        let imgs = this.state.images;
+        imgs.push(file);
+        let listFiles = this.state.listFiles;
+        listFiles.push({...file, size: size, isImage: true})
+        this.setState({
+            images: imgs,
+            listFiles: listFiles
+        })
+    }
 
   getNavOptions() {
     return this.props.navOptions
@@ -202,6 +290,7 @@ export default class Preview extends React.Component {
         fullY
         background={"white"}
         pose={this.props.isOpen ? "openPreview" : "closedPreview"}
+        customTemplateRows={!this.props.summary && this.props.isMembersTab ? "1fr auto" : "1fr"}
       >
         <Scrollbars
           universal
@@ -261,10 +350,43 @@ export default class Preview extends React.Component {
               </NavLinks>
             </SLayout>
             <SPreviewContainer gridArea="content" fullY>
-              {this.props.children}
+              { !this.props.summary && this.props.isMembersTab ? this.props.data ? (
+                  <Messages
+                      scroll={this.scroll}
+                      receptor={this.props.data}
+                      onLoadMessages={list => {
+                          this.messagesLength = list.length;
+                      }}
+                      type={'private'}
+                      {...this.props}
+                  />
+              ) : null : this.props.children}
             </SPreviewContainer>
           </Layout>
         </Scrollbars>
+        <Container>
+            <Container fullX>
+                {
+                    this.state.listFiles.length > 0 ?
+                        this.state.listFiles.map( (file, index) => <Attachment key={index} isImage={file.isImage} link={file.link} filename={file.name} size={file.size} loading={false} onClose={() => this.closeFile(index) } /> ) : null
+                }
+            </Container>
+            <Container>
+            {
+                !this.props.summary && this.props.isMembersTab ?
+            <ReplyBox
+                placeholder={"Type Something"}
+                name={"textMessage"}
+                model={this.state}
+                onTextChange={text => this.setState({ textMessage: text })}
+                onKeyPress={event => this.onKeyPress(event)}
+                onSend={() => this.handleMessage(this.state.textMessage)}
+                getAttachment={(file,size) => this.onAttachmentUpload(file,size)}
+                getImage={(file,size) => this.onImageUpload(file,size)}
+            />
+                : null }
+            </Container>
+        </Container>
       </PreviewContainer>
     );
   }
@@ -287,5 +409,7 @@ Preview.propTypes = {
   image: PropsTypes.string,
   changeProfile: PropsTypes.func,
   onBackgroundChange: PropsTypes.func,
-  onUserPhotoChange: PropsTypes.func
+  onUserPhotoChange: PropsTypes.func,
+  summary: PropsTypes.bool,
+  isMembersTab: PropsTypes.bool
 };

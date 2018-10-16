@@ -12,6 +12,7 @@ import {
   GetOrg,
   UpdateOrgImages
 } from "../../apollo-client/organization";
+import {Layout, Container} from "btech-layout";
 import { DeleteUser, getUsers } from "../../apollo-client/user";
 import OrganizationPreviewBody from "../../components/Preview/entities/OrganizationPreviewBody";
 import UserPreviewBody from "../../components/Preview/entities/UserPreviewBody";
@@ -38,7 +39,8 @@ class ListInnovators extends Component {
       filter: "",
       filterStatus: {},
       navList: INNOVATORS_TYPES,
-      currentTab: INNOVATORS_TYPES[0]
+      currentTab: INNOVATORS_TYPES[0],
+      summary: true
     };
     this.customRenderItem = this.customRenderItem.bind(this);
   }
@@ -158,6 +160,12 @@ class ListInnovators extends Component {
     deleteOrg({ variables: { id: org._id } });
     this.setState({ selectedItem: null }, () => this.reFetchQuery());
   }
+
+    handleMessageSummary(){
+        this.setState({
+            summary: !this.state.summary
+        })
+    }
 
   customRenderItem(item, key, isLoading, viewsUpdate) {
     switch (this.state.currentTab.value) {
@@ -374,6 +382,9 @@ class ListInnovators extends Component {
                       ) > -1;
                     return (
                       <Preview
+                        curUser={this.props.curUser}
+                        isMembersTab={this.state.currentTab.value === "members"}
+                        summary={this.state.summary}
                         isOpen={!!this.state.selectedItem}
                         onClose={() => this.onChangeSelection(null, null)}
                         key={"rightSide"}
@@ -397,6 +408,22 @@ class ListInnovators extends Component {
                               );
                             }
                           },
+                            {
+                                text: this.state.summary ? "Message" : "Summary",
+                                primary: true,
+                                checkVisibility: () => {
+                                    const element = this.state.selectedItem;
+                                    return (
+                                        this.state.currentTab.value === "members" &&
+                                        element &&
+                                        element._id &&
+                                        this.props.curUser &&
+                                        element._id !== this.props.curUser._id
+                                    );
+                                },
+                                onClick: () =>
+                                    this.handleMessageSummary()
+                            },
                           {
                             text: !follow ? "Follow" : "Unfollow",
                             primary: true,
