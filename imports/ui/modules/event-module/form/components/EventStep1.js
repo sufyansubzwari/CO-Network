@@ -13,6 +13,7 @@ import { Query } from "react-apollo";
 import { GetTags as tags } from "../../../../apollo-client/tag";
 import { MLTagsInput, FormMainLayout } from "../../../../../ui/components";
 import moment from "moment";
+import isMobile from "../../../../constants/isMobile";
 
 /**
  * @module Event
@@ -21,14 +22,20 @@ import moment from "moment";
 class EventStep1 extends Component {
   constructor(props) {
     super(props);
-    this.dateFormat = "MM/DD/YYYY HH:mm A";
+    this.isMobile = isMobile;
+    const lowResolution = this.isMobile() || window.document.body.clientWidth <= 1440;
     this.state = {
       event: this.props.data,
-      category: EVENT_TYPE
+      category: EVENT_TYPE,
+      dateFormat: lowResolution ? "MM/DD/YY HH:mm A" : "MM/DD/YYYY HH:mm A"
     };
   }
 
   componentWillMount() {
+    window.addEventListener('resize', () => {
+      const lowResolution = this.isMobile() || window.document.body.clientWidth <= 1440;
+      this.setState({dateFormat: lowResolution ? "MM/DD/YY HH:mm A" : "MM/DD/YYYY HH:mm A"});
+    });
     if (this.props.data && this.props.data.category) {
       let event = this.props.data;
       event.others = this.props.data.category.filter(
@@ -167,7 +174,7 @@ class EventStep1 extends Component {
             placeholderEndDate={"End Date"}
             startDate={this.state.event && this.state.event.startDate}
             endDate={this.state.event && this.state.event.endDate}
-            format={this.dateFormat}
+            format={this.state.dateFormat}
             showTimeSelect
             getValue={(startDate, endDate) =>
               this.onDatesChange(startDate, endDate)
