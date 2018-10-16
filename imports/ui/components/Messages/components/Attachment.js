@@ -27,7 +27,7 @@ const File = styled.span`
 const Icon = styled.span`
   font-size: 18px;
   line-height: 24px;
-  cursor: pointer;
+  cursor: ${props => !props.loading ? 'pointer' : null};
 `;
 
 const Size = styled.span`
@@ -77,6 +77,7 @@ const Attachment = props => {
             onClick={() =>
               props.loading ? null : props.onClose && props.onClose()
             }
+            loading={props.loading}
           >
             <MaterialIcon
               type={props.loading ? "chart-donut" : "close"}

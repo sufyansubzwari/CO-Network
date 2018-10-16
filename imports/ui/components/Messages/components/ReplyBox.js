@@ -54,12 +54,12 @@ export class ReplyBox extends React.Component {
               type: files[0].type
             };
             if(!response.imagePath.includes("compressed"))
-              this.props.getImage && this.props.getImage(img, files[0].size);
+              this.props.getImage && this.props.getImage(img, files[0].size, false);
           } else {
             // todo: show notification for error
           }
         },
-        () => console.log("callback for the imageupload")
+        ({uploading}) => this.props.getLoading && this.props.getLoading(uploading, file, true)
       );
     }
   }
@@ -68,12 +68,14 @@ export class ReplyBox extends React.Component {
     if (files[0]) {
       if (files[0].size <= 10 * 1024 * 1024) {
         let file = {};
+        this.props.getLoading && this.props.getLoading(true, files[0], false);
         let result = await UploadToS3FromClient.uploadFromClient(files[0]);
         if (result !== -1)
           file = { name: files[0].name, link: result, type: files[0].type };
         console.log('FileUploaded', result);
         this.props.getAttachment &&
-          this.props.getAttachment(file, files[0].size);
+          this.props.getAttachment(file, files[0].size, false);
+        this.props.getLoading && this.props.getLoading(false, files[0], false);
       } else alert("File shouldn't be bigger than 10Mb"); // todo: integrate with the notification alerts
     }
   }
@@ -198,7 +200,8 @@ ReplyBox.propTypes = {
   onTextChange: PropTypes.func,
   onEmojiSelect: PropTypes.func,
   getAttachment: PropTypes.func,
-  getImage: PropTypes.func
+  getImage: PropTypes.func,
+  getLoading: PropTypes.func
 };
 
 export default ReplyBox;
