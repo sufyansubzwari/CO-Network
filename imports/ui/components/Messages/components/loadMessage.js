@@ -7,7 +7,7 @@ import { userQuery } from "../../../apollo-client/user";
 import { Query } from "react-apollo";
 import PropTypes from "prop-types";
 import MessageItem from "./MessageItem";
-import { SLineTime } from "./styledComponents";
+import { SLineTime, SShowReplies } from "./styledComponents";
 import Attachment from "./Attachment";
 
 class LoadMessages extends Component {
@@ -27,7 +27,6 @@ class LoadMessages extends Component {
       images: [],
       showEmoji: false,
       listFiles: []
-
     };
       this.emojiClicked = this.emojiClicked.bind(this)
 
@@ -206,21 +205,30 @@ class LoadMessages extends Component {
         })
     }
 
-  renderMessages(blocks) {
+  handleShowReplies(message){
+    if(message.showReplies && message.showReplies >= message.replies.length )
+      message.showReplies = 3;
+    else
+      message.showReplies = message.showReplies ? message.showReplies + 10 : 13;
+    this.setState({flag : !this.state.flag});
+  }
+
+  renderMessages(blocks, parent) {
     return blocks.length > 0
-      ? blocks.map((message, k) => {
+      ? <div>
+        {blocks.map((message, k) => {
           return (
             <Query
               key={k}
               query={userQuery}
-              variables={{ id: message.owner }}
+              variables={{id: message.owner}}
               fetchPolicy={"cache-and-network"}
             >
-              {({ loading, error, data }) => {
-                if (error) return <div />;
+              {({loading, error, data}) => {
+                if (error) return <div/>;
                 const owner = data.user;
                 return (
-                  <Container fullY key={k} style={{ height: "auto" }}>
+                  <Container fullY key={k} style={{height: "auto"}}>
                     <MessageItem
                       owner={owner}
                       isActive={k === this.state.selectMessageItem}
@@ -229,19 +237,24 @@ class LoadMessages extends Component {
                       onReplyAction={item => this.handleReply(item)}
                     />
                     {message._id === this.state.replyMessage ? (
-                      <Container ml={{ md: "20px" }} mb={"15px"}>
+                      <Container ml={{md: "20px"}} mb={"15px"}>
                         <Container fullX>
-                            {
-                                this.state.listFiles.length > 0 ?
-                                    this.state.listFiles.map( (file, index) => <Attachment hideBorder={true} key={index} isImage={file.isImage} link={file.link} filename={file.name} size={file.size} loading={false} onClose={() => this.closeFile(index) } /> ) : null
-                            }
+                          {
+                            this.state.listFiles.length > 0 ?
+                              this.state.listFiles.map((file, index) => <Attachment hideBorder={true} key={index}
+                                                                                    isImage={file.isImage}
+                                                                                    link={file.link}
+                                                                                    filename={file.name}
+                                                                                    size={file.size} loading={false}
+                                                                                    onClose={() => this.closeFile(index)}/>) : null
+                          }
                         </Container>
                         <ReplyBox
                           placeholder={`Type a reply to ${owner &&
-                            owner.profile.name}`}
+                          owner.profile.name}`}
                           name={"textReply"}
                           onTextChange={text =>
-                            this.setState({ textReply: text })
+                            this.setState({textReply: text})
                           }
                           model={this.state}
                           buttonText={"Reply"}
@@ -252,11 +265,12 @@ class LoadMessages extends Component {
                           showEmojis={this.state.showEmoji}
                           onEmojiSelect={(emoji) => this.handleEmoji(emoji)}
                           handleEmojiClicked={this.emojiClicked}
-                          getAttachment={(file,size) => this.onAttachmentUpload(file,size)}
-                          getImage={(file,size) => this.onImageUpload(file,size)}
+                          getAttachment={(file, size) => this.onAttachmentUpload(file, size)}
+                          getImage={(file, size) => this.onImageUpload(file, size)}
                         />
                       </Container>
                     ) : null}
+
                     {message.replies && message.replies.length > 0 ? (
                       <Container
                         mb={"15px"}
@@ -267,10 +281,10 @@ class LoadMessages extends Component {
                         }}
                       >
                         {this.renderMessages(
-                          message.replies.sort(
+                          message.replies.slice(0, message.showReplies || 3).sort(
                             (a, b) => a.createdAt - b.createdAt
                           )
-                        )}
+                          , message)}
                       </Container>
                     ) : null}
                   </Container>
@@ -279,6 +293,11 @@ class LoadMessages extends Component {
             </Query>
           );
         })
+        }
+        {parent && parent.replies.length > 3 ?
+          <SShowReplies onClick={() => this.handleShowReplies(parent)}>{(parent.showReplies || 3) > parent.replies.length ? 'Hide Replies' : `Show More (${parent.replies.length - (parent.showReplies || 3)})`}</SShowReplies>
+          : null}
+      </div>
       : null;
   }
 

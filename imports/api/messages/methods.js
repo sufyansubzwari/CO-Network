@@ -33,6 +33,7 @@ Meteor.methods({
       attachment: Match.Maybe(Array),
       images: Match.Maybe(Array),
       read: Match.Maybe(Boolean),
+      showReplies: Match.Maybe(Number),
       replies: Match.Maybe(Array),
       createdAt: Match.Maybe(Date),
       updatedAt: Match.Maybe(Date)

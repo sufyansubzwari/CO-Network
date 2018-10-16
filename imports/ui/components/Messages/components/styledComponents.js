@@ -2,6 +2,16 @@ import React from "react";
 import styled from "styled-components";
 import { Layout, Container, mixins } from "btech-layout";
 
+export const SShowReplies = styled.div`
+  color: #2b2b2b;
+  font-family: "Roboto Mono";
+  font-size: 14px;
+  font-weight: 300;
+  line-height: 24px;
+  margin-top: -10px;
+  cursor: pointer;
+`;
+
 export const SChat = styled(Container)`
   background-color: ${props => props.backgroundColor || "#FFFFFF"};
   height: ${props => props.height || "100%"};
