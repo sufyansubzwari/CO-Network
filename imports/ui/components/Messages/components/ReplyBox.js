@@ -26,6 +26,8 @@ const SAddButton = styled.span`
 
 const SSpan = styled.span`
   cursor: pointer;
+  display: flex;
+  align-items: center;
 `;
 
 export class ReplyBox extends React.Component {
@@ -68,8 +70,9 @@ export class ReplyBox extends React.Component {
         let result = await UploadToS3FromClient.uploadFromClient(files[0]);
         if (result !== -1)
           file = { name: files[0].name, link: result, type: files[0].type };
-        console.log(result);
-        this.props.getAttachment && this.props.getAttachment(file,files[0].size);
+        console.log('FileUploaded', result);
+        this.props.getAttachment &&
+          this.props.getAttachment(file, files[0].size);
       } else alert("File shouldn't be bigger than 10Mb"); // todo: integrate with the notification alerts
     }
   }
@@ -98,113 +101,82 @@ export class ReplyBox extends React.Component {
     return (
       <SReplyBox>
         <Layout
-          mdCustomTemplateRows={"1fr auto"}
-          customTemplateRows={"auto 1fr"}
-          padding={{ md: "10px" }}
-          layoutAreas={{
-            xs: `'options' 'textBox'`,
-            md: `'textBox' 'options'`
-          }}
+          customTemplateColumns={"auto 1fr"}
+          padding={{ md: "10px 20px" }}
         >
-          <Container gridArea="textBox">
-            <Container hide mdShow>
-              <TextArea
-                placeholderText={this.props.placeholder}
-                name={this.props.name}
-                fixLabel
-                marginTop={"0px"}
-                model={this.props.model}
-                onKeyPress={event =>
-                  this.props.onKeyPress && this.props.onKeyPress(event)
-                }
+          <Layout
+            colGap={"10px"}
+            customTemplateColumns={"auto auto auto 1fr"}
+            style={{ position: "relative" }}
+          >
+            <SSpan onClick={() => this.inputImageRef.click()}>
+              <MaterialIcon type={"image-alt"} />
+              <input
+                ref={ref => {
+                  this.inputImageRef = ref;
+                }}
+                onChange={e => this.onUploadImage(e.target.files)}
+                type={"file"}
+                style={{ display: "none" }}
               />
-            </Container>
-            <Container mdHide relative>
-              <TextArea
-                placeholderText={this.props.placeholder}
-                name={this.props.name}
-                fixLabel
-                height={"35px"}
-                padding={"6px 25px 6px 12px"}
-                marginTop={"0px"}
-                model={this.props.model}
-                onKeyPress={event =>
-                  this.props.onKeyPress && this.props.onKeyPress(event)
-                }
+            </SSpan>
+            <SSpan onClick={() => this.inputAttachmentRef.click()}>
+              <MaterialIcon type={"attachment"} />
+              <input
+                ref={ref => {
+                  this.inputAttachmentRef = ref;
+                }}
+                onChange={e => this.handleUpload(e.target.files)}
+                type={"file"}
+                style={{ display: "none" }}
               />
-              <SAddButton
-                onClick={() => this.props.onSend && this.props.onSend()}
-              >
-                <MaterialIcon type={"arrow-forward"} />
-              </SAddButton>
-            </Container>
-          </Container>
-          <Container gridArea="options">
-            <Layout customTemplateColumns={"1fr auto"} mb={{ md: "20px" }}>
-              <Layout
-                colGap={"10px"}
-                customTemplateColumns={"auto auto auto 1fr"}
-                style={{ position: "relative" }}
-              >
-                <SSpan onClick={() => this.inputImageRef.click()}>
-                  <MaterialIcon type={"image-alt"} />
-                  <input
-                    ref={ref => {
-                      this.inputImageRef = ref;
-                    }}
-                    onChange={e => this.onUploadImage(e.target.files)}
-                    type={"file"}
-                    style={{ display: "none" }}
-                  />
-                </SSpan>
-                <SSpan onClick={() => this.inputAttachmentRef.click()}>
-                  <MaterialIcon type={"attachment"} />
-                  <input
-                    ref={ref => {
-                      this.inputAttachmentRef = ref;
-                    }}
-                    onChange={e => this.handleUpload(e.target.files)}
-                    type={"file"}
-                    style={{ display: "none" }}
-                  />
-                </SSpan>
-                <Container style={{ position: "relative" }}>
-                  <SSpan onClick={() => this.emojiClicked()}>
-                    <MaterialIcon type={"mood"} />
-                  </SSpan>
-                  {this.state.showEmoji ? (
-                    <OutsideClickHandler
-                      onOutsideClick={() => this.emojiClickedOut()}
-                    >
-                      <Picker
-                        showPreview={false}
-                        set={"emojione"}
-                        emoji={"point_up"}
-                        onSelect={emoji => this.handleEmoji(emoji)}
-                        style={{
-                          position: "absolute",
-                          maxWidth: "250px",
-                          bottom: "20px",
-                          left: "20px",
-                          fontFamily: "Roboto Mono",
-                          fontSize: "12px"
-                        }}
-                      />
-                    </OutsideClickHandler>
-                  ) : null}
-                </Container>
-                <div />
-              </Layout>
-              <Container hide mdShow>
-                <Button
-                  width={"62px"}
-                  height={"30px"}
-                  onClick={() => this.props.onSend && this.props.onSend()}
+            </SSpan>
+            <Container flex style={{ position: "relative" }}>
+              <SSpan onClick={() => this.emojiClicked()}>
+                <MaterialIcon type={"mood"} />
+              </SSpan>
+              {this.state.showEmoji ? (
+                <OutsideClickHandler
+                  onOutsideClick={() => this.emojiClickedOut()}
                 >
-                  {this.props.buttonText}
-                </Button>
-              </Container>
-            </Layout>
+                  <Picker
+                    showPreview={false}
+                    set={"emojione"}
+                    emoji={"point_up"}
+                    onSelect={emoji => this.handleEmoji(emoji)}
+                    style={{
+                      position: "absolute",
+                      maxWidth: "250px",
+                      bottom: "20px",
+                      left: "20px",
+                      zIndex: "2",
+                      fontFamily: "Roboto Mono",
+                      fontSize: "12px"
+                    }}
+                  />
+                </OutsideClickHandler>
+              ) : null}
+            </Container>
+            <Container />
+          </Layout>
+          <Container relative>
+            <TextArea
+              placeholderText={this.props.placeholder}
+              name={this.props.name}
+              fixLabel
+              height={"35px"}
+              padding={"6px 25px 6px 12px"}
+              marginTop={"0px"}
+              model={this.props.model}
+              onKeyPress={event =>
+                this.props.onKeyPress && this.props.onKeyPress(event)
+              }
+            />
+            <SAddButton
+              onClick={() => this.props.onSend && this.props.onSend()}
+            >
+              <MaterialIcon type={"arrow-forward"} />
+            </SAddButton>
           </Container>
         </Layout>
       </SReplyBox>
@@ -213,8 +185,7 @@ export class ReplyBox extends React.Component {
 }
 
 ReplyBox.defaultProps = {
-  buttonText: "Send",
-  placeholder: "Type Something"
+  placeholder: "Write Message..."
 };
 
 ReplyBox.propTypes = {

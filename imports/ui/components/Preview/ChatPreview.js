@@ -99,12 +99,9 @@ class ChatPreview extends Preview {
     this.messagesLength = 0;
   }
 
-  onKeyPress(event) {
-    if (event.key === "Enter" && event.shiftKey === false) {
-      event.preventDefault();
-      if (event.target.value.trim() !== "")
-        this.handleMessage(event.target.value);
-    }
+  triggerChatViewStatus(isOpen) {
+    if (this.props.isMobile)
+      isOpen ? this.props.openChatView() : this.props.closeChatView();
   }
 
   handleMessage(text) {
@@ -119,7 +116,12 @@ class ChatPreview extends Preview {
       },
       res => {
         if (res === "success")
-          this.setState({ textMessage: "", attachments: [], images: [], listFiles: [] });
+          this.setState({
+            textMessage: "",
+            attachments: [],
+            images: [],
+            listFiles: []
+          });
       }
     );
   }
@@ -137,30 +139,6 @@ class ChatPreview extends Preview {
     let state = "public";
     if (this.props.data && !this.props.data.isPublic) state = "private";
     return state;
-  }
-
-  onAttachmentUpload(file, size) {
-    console.log("uploaded the file " + file);
-    let attach = this.state.attachments;
-    attach.push(file);
-    let listFiles = this.state.listFiles;
-    listFiles.push({...file, size: size, isImage: false})
-    this.setState({
-      attachments: attach,
-      listFiles: listFiles
-    });
-  }
-
-  onImageUpload(file, size) {
-    console.log("uploaded the image " + file);
-    let imgs = this.state.images;
-    imgs.push(file);
-    let listFiles = this.state.listFiles;
-    listFiles.push({...file, size: size, isImage: true})
-    this.setState({
-        images: imgs,
-        listFiles: listFiles
-    })
   }
 
   renderOptionsNav() {
@@ -191,44 +169,6 @@ class ChatPreview extends Preview {
         </NavLinks>
       </SLayout>
     );
-  }
-
-  triggerChatViewStatus(isOpen) {
-    if (this.props.isMobile)
-      isOpen ? this.props.openChatView() : this.props.closeChatView();
-  }
-
-  componentWillReceiveProps(nextProps) {
-    this.triggerChatViewStatus(nextProps.isOpen);
-  }
-
-  closeImage(index){
-    let images = this.state.images;
-    let img = images.splice(index,1);
-    this.setState({images: images})
-  }
-
-  closeAttachment(index){
-  let att = this.state.attachments;
-  let attachmentDeleted = att.splice(index,1);
-  this.setState({attachments: att})
-}
-
-  closeFile(index){
-   let files = this.state.listFiles;
-   let deleted = files.splice(index,1);
-
-   if(deleted[0].isImage){
-    let i = this.state.images.findIndex( (item) => item.name === deleted[0].name )
-    this.closeImage(i)
-   }
-   else{
-       let i = this.state.attachments.findIndex( (item) => item.name === deleted[0].name )
-       this.closeAttachment(i);
-   }
-   this.setState({
-      listFiles: files
-   })
   }
 
   render() {
@@ -286,21 +226,29 @@ class ChatPreview extends Preview {
           </Layout>
         </Scrollbars>
         <Container fullX>
-            {
-                this.state.listFiles.length > 0 ?
-                  this.state.listFiles.map( (file, index) => <Attachment key={index} isImage={file.isImage} link={file.link} filename={file.name} size={file.size} loading={false} onClose={() => this.closeFile(index) } /> ) : null
-            }
+          {this.state.listFiles.length > 0
+            ? this.state.listFiles.map((file, index) => (
+                <Attachment
+                  key={index}
+                  isImage={file.isImage}
+                  link={file.link}
+                  filename={file.name}
+                  size={file.size}
+                  loading={false}
+                  onClose={() => this.closeFile(index)}
+                />
+              ))
+            : null}
         </Container>
         <Container hide={!this.props.curUser}>
           <ReplyBox
-            placeholder={"Type Something"}
             name={"textMessage"}
             model={this.state}
             onTextChange={text => this.setState({ textMessage: text })}
             onKeyPress={event => this.onKeyPress(event)}
             onSend={() => this.handleMessage(this.state.textMessage)}
-            getAttachment={(file,size) => this.onAttachmentUpload(file,size)}
-            getImage={(file,size) => this.onImageUpload(file,size)}
+            getAttachment={(file, size) => this.onAttachmentUpload(file, size)}
+            getImage={(file, size) => this.onImageUpload(file, size)}
           />
         </Container>
       </PreviewContainer>
@@ -308,30 +256,4 @@ class ChatPreview extends Preview {
   }
 }
 
-ChatPreview.defaultProps = {
-  ...Preview.defaultProps,
-  showAvatar: false,
-  isMobile: false,
-  allowChangeImages: false
-};
-
-ChatPreview.propTypes = {
-  ...Preview.propTypes,
-  isMobile: PropsTypes.bool
-};
-
-const mapStateToProps = () => {
-  return {};
-};
-
-const mapDispatchToProps = dispatch => {
-  return {
-    closeChatView: () => dispatch(closeChatView()),
-    openChatView: () => dispatch(openChatView())
-  };
-};
-
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(ChatPreview);
+export default ChatPreview;
