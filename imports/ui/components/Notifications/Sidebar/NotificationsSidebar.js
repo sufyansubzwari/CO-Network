@@ -125,7 +125,7 @@ class NotificationsSidebar extends React.Component {
                     entity={not.entity}
                     viewed={not.viewed}
                     time={moment(not.createdAt).format("hh:mm")}
-                    selected={this.state.selectedItem === index}
+                    // selected={this.state.selectedItem === index}
                     onDelete={() =>
                       this.deleteNotification(not, index, deleteNotification)
                     }

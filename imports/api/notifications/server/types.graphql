@@ -36,6 +36,7 @@ input NotificationsInput {
     entity: String
     entityId: String
     viewed: Boolean
+    createdAt: Date
 }
 
 type Mutation {
