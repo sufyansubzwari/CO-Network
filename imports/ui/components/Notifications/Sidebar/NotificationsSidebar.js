@@ -45,10 +45,8 @@ class NotificationsSidebar extends React.Component {
     }
   }
 
-  handleClear() {
-    this.setState({
-      notifications: []
-    });
+  handleClear(deleteNotification) {
+    deleteNotification({ variables: { all: true } });
   }
 
   deleteNotification(notification, index, deleteNotification) {
@@ -79,10 +77,10 @@ class NotificationsSidebar extends React.Component {
 
   handleSelect(updateNotification) {
     let notification = this.state.notifications[this.state.selectedItem];
-    if(!notification.viewed) {
+    if (!notification.viewed) {
       notification.viewed = true;
       updateNotification({
-        variables: {notification: notification}
+        variables: { notification: notification }
       });
     }
   }
@@ -103,9 +101,7 @@ class NotificationsSidebar extends React.Component {
           <Mutation
             key={index}
             mutation={UpdateNotification}
-            onCompleted={() =>
-              console.log("completed")
-            }
+            onCompleted={() => console.log("completed")}
             onError={error => console.log("Error: ", error)}
           >
             {updateNotification => (
@@ -150,17 +146,27 @@ class NotificationsSidebar extends React.Component {
 
   render() {
     return (
-      <NotificationContainer
-        {...this.props}
-        onClose={() => this.props.onClose && this.props.onClose()}
-        onClear={() => this.handleClear()}
+      <Mutation
+        mutation={DeleteNotification}
+        onCompleted={() =>
+          console.log("Delete Completed")
+        }
+        onError={error => console.log("Error: ", error)}
       >
-        <List
-          renderItem={this.renderItem}
-          scrollSeparation={"0px"}
-          data={this.state.notifications}
-        />
-      </NotificationContainer>
+        {deleteNotification => (
+          <NotificationContainer
+            {...this.props}
+            onClose={() => this.props.onClose && this.props.onClose()}
+            onClear={() => this.handleClear(deleteNotification)}
+          >
+            <List
+              renderItem={this.renderItem}
+              scrollSeparation={"0px"}
+              data={this.state.notifications}
+            />
+          </NotificationContainer>
+        )}
+      </Mutation>
     );
   }
 }

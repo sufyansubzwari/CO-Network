@@ -40,5 +40,5 @@ input NotificationsInput {
 
 type Mutation {
     notification(notification: NotificationsInput): Notifications
-    deleteNotification(_id: String!): Notifications
+    deleteNotification(_id: String, all: Boolean): Notifications
 }
