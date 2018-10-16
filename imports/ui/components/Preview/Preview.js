@@ -93,18 +93,11 @@ const NavLinks = styled(Layout)`
 `;
 
 const SPreviewContainer = styled(Container)`
-  zoom: 100%;
   padding: ${props => (props.isChatView ? "20px 10px" : "25px 10px")};
 
-  @media (min-width: 62em) {
-    zoom: 80%;
-    padding: ${props => (props.isChatView ? "10px 20px" : "25px 75px")};
-  }
-
-  @media (min-width: 86em) {
-    zoom: 100%;
-    padding: 25px 75px;
-  }
+  ${mixins.media.desktop`
+    padding: ${props => (props.isChatView ? "15px 25px" : "25px 75px")};
+  `};
 `;
 
 const SButtonIcon = styled.span`

@@ -30,13 +30,44 @@ const SSpan = styled.span`
   align-items: center;
 `;
 
+const SOptionToggle = styled.span`
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  padding: 0 10px 0 5px;
+
+  i {
+    font-size: 24px;
+  }
+`;
+
 const GroupRender = props => {
   return (
     <Container>
-      <Container hide mdShow>
-        {props.children}{" "}
+      <Container hide mdShow fullY>
+        <Container fullY flex>
+          {props.children}
+        </Container>
       </Container>
-      <Container mdHide>mobile</Container>
+      <Container mdHide fullY>
+        <Container
+          fullY
+          flex
+          hide={props.showOptions}
+          onClick={event => {
+            event.stopPropagation();
+            event.preventDefault();
+            props.onToggle && props.onToggle();
+          }}
+        >
+          <SOptionToggle>
+            <MaterialIcon type={"plus-circle"} />
+          </SOptionToggle>
+        </Container>
+        <Container fullY flex hide={!props.showOptions}>
+          {props.children}
+        </Container>
+      </Container>
     </Container>
   );
 };
@@ -46,7 +77,8 @@ export class ReplyBox extends React.Component {
     super(props);
 
     this.state = {
-      showEmoji: false
+      showEmoji: false,
+      showOptions: false
     };
     this.inputImageRef = React.createRef();
     this.inputAttachmentRef = React.createRef();
@@ -64,7 +96,7 @@ export class ReplyBox extends React.Component {
               link: response.imagePath,
               type: files[0].type
             };
-            if(!response.imagePath.includes("compressed"))
+            if (!response.imagePath.includes("compressed"))
               this.props.getImage && this.props.getImage(img, files[0].size, false);
           } else {
             // todo: show notification for error
@@ -172,6 +204,12 @@ export class ReplyBox extends React.Component {
     );
   }
 
+  optionsToggle(forceFalse) {
+    this.setState({
+      showOptions: forceFalse ? false : !this.state.showOptions
+    });
+  }
+
   render() {
     return (
       <SReplyBox>
@@ -179,7 +217,12 @@ export class ReplyBox extends React.Component {
           customTemplateColumns={"auto 1fr"}
           padding={{ md: "10px 20px" }}
         >
-          <GroupRender>{this.renderMessageOptions()}</GroupRender>
+          <GroupRender
+            showOptions={this.state.showOptions}
+            onToggle={() => this.optionsToggle()}
+          >
+            {this.renderMessageOptions()}
+          </GroupRender>
           <Container relative>
             <TextArea
               placeholderText={this.props.placeholder}
@@ -192,6 +235,11 @@ export class ReplyBox extends React.Component {
               onKeyPress={event =>
                 this.props.onKeyPress && this.props.onKeyPress(event)
               }
+              onClick={event => {
+                event.stopPropagation();
+                event.preventDefault();
+                this.optionsToggle(true)
+              }}
             />
             <SAddButton
               onClick={() => this.props.onSend && this.props.onSend()}
