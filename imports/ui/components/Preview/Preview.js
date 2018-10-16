@@ -249,7 +249,11 @@ class Preview extends React.Component {
     let attach = this.state.attachments;
     attach.push(file);
     let listFiles = this.state.listFiles;
-    listFiles.push({ ...file, size: size, isImage: false });
+    let index = this.state.listFiles.findIndex(item => item.name === file.name);
+    if(index > -1)
+        listFiles[index] = {...listFiles[index], link: file.link}
+    else
+        listFiles.push({ ...file, size: size, isImage: false, loading: false });
     this.setState({
       attachments: attach,
       listFiles: listFiles
@@ -261,7 +265,11 @@ class Preview extends React.Component {
     let imgs = this.state.images;
     imgs.push(file);
     let listFiles = this.state.listFiles;
-    listFiles.push({ ...file, size: size, isImage: true });
+    let index = this.state.listFiles.findIndex(item => item.name === file.name);
+    if(index > -1)
+      listFiles[index] = {...listFiles[index], link: file.link}
+    else
+      listFiles.push({ ...file, size: size, isImage: true, loading: false });
     this.setState({
       images: imgs,
       listFiles: listFiles
@@ -299,6 +307,22 @@ class Preview extends React.Component {
           )
       : [];
   }
+
+    handleLoading(loading, file, isImage){
+        let listFiles = this.state.listFiles;
+        let nfile = { name: file.name, type: file.type ,size: file.size, isImage: isImage, loading: loading };
+        let index = this.state.listFiles.findIndex( item => item.name === file.name );
+        if(index > -1){
+            listFiles[index] = {...listFiles[index], loading: loading}
+        }
+        else{
+          listFiles.push(nfile)
+        }
+        this.setState({
+            listFiles: listFiles
+        })
+
+    }
 
   render() {
     return (
@@ -398,7 +422,7 @@ class Preview extends React.Component {
                     link={file.link}
                     filename={file.name}
                     size={file.size}
-                    loading={false}
+                    loading={file.loading}
                     onClose={() => this.closeFile(index)}
                   />
                 ))
@@ -416,6 +440,7 @@ class Preview extends React.Component {
                   this.onAttachmentUpload(file, size)
                 }
                 getImage={(file, size) => this.onImageUpload(file, size)}
+                getLoading={(loading, file, isImage) => this.handleLoading(loading, file, isImage)}
               />
             ) : null}
           </Container>
