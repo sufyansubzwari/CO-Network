@@ -105,6 +105,14 @@ class MessagesSidebar extends React.Component {
     }
   }
 
+  setTimeFormat(date) {
+    let today = new Date();
+    today.setHours(0, 0, 0, 0);
+    if (date >= today)
+      return moment(date).fromNow();
+    return moment(date).calendar();
+  }
+
   render() {
     return (
       <NotificationContainer
@@ -197,7 +205,7 @@ class MessagesSidebar extends React.Component {
                       title={owner.profile.name}
                       description={message.text}
                       entity={"ML Society"}
-                      time={moment(message.createdAt).format("hh:mm")}
+                      time={this.setTimeFormat(message.createdAt)}
                       image={owner.profile.image}
                       selected={this.state.selectedItem === index}
                       onClick={() =>

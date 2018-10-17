@@ -66,13 +66,22 @@ class NotificationsSidebar extends React.Component {
     );
   }
 
-  observerDragBoundaries(x, notification, index, deleteNotification) {
+  observerDragBoundaries(
+    x,
+    notification,
+    index,
+    deleteNotification,
+    updateNotification
+  ) {
     let value = 0;
     const type = typeof x;
     if (type === "string") value = Number(x.replace("%", ""));
     if (value >= 85 && this.props.isMobile && !this.state.isDeleting) {
       this.deleteNotification(notification, index, deleteNotification);
     }
+    // if(value === 0 && this.props.isMobile){
+    //   this.setState({ selectedItem:  index}, () => this.handleSelect(updateNotification));
+    // }
   }
 
   handleSelect(updateNotification) {
@@ -83,6 +92,14 @@ class NotificationsSidebar extends React.Component {
         variables: { notification: notification }
       });
     }
+  }
+
+  setTimeFormat(date) {
+    let today = new Date();
+    today.setHours(0, 0, 0, 0);
+    if (date >= today)
+      return moment(date).fromNow();
+    return moment(date).calendar();
   }
 
   renderItem(not, index) {
@@ -105,7 +122,14 @@ class NotificationsSidebar extends React.Component {
             onError={error => console.log("Error: ", error)}
           >
             {updateNotification => (
-              <Container relative>
+              <Container
+                relative
+                onClick={() =>
+                  this.setState({ selectedItem: index }, () =>
+                    this.handleSelect(updateNotification)
+                  )
+                }
+              >
                 <NotificationBack />
                 <SDragContainer
                   relative
@@ -115,16 +139,23 @@ class NotificationsSidebar extends React.Component {
                         x,
                         not,
                         index,
-                        deleteNotification
-                      )
+                        deleteNotification,
+                        updateNotification
+                      ),
+                    preventDefault: true
                   }}
+                  onClick={() =>
+                    this.setState({ selectedItem: index }, () =>
+                      this.handleSelect(updateNotification)
+                    )
+                  }
                 >
                   <Notification
                     title={not.title}
                     description={not.message}
                     entity={not.entity}
                     viewed={not.viewed}
-                    time={moment(not.createdAt).format("hh:mm")}
+                    time={this.setTimeFormat(not.createdAt)}
                     // selected={this.state.selectedItem === index}
                     onDelete={() =>
                       this.deleteNotification(not, index, deleteNotification)
@@ -148,9 +179,7 @@ class NotificationsSidebar extends React.Component {
     return (
       <Mutation
         mutation={DeleteNotification}
-        onCompleted={() =>
-          console.log("Delete Completed")
-        }
+        onCompleted={() => console.log("Delete Completed")}
         onError={error => console.log("Error: ", error)}
       >
         {deleteNotification => (
