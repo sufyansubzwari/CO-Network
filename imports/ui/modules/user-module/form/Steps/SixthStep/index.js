@@ -109,6 +109,8 @@ class SixthStep extends React.Component {
       <FormMainLayout>
         <Container mt={"15px"}>
           <SwitchButton
+            buttonWidth={40}
+            buttonHeight={20}
             onChange={value => {
               const user = this.state.user;
               user.speaker.join = value;
