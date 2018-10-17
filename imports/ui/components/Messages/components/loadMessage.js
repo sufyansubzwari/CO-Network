@@ -211,6 +211,12 @@ class LoadMessages extends Component {
   }
 
   renderMessages(blocks, parent) {
+    const {
+      listFiles,
+      selectMessageItem,
+      replyMessage,
+      showEmoji
+    } = this.state;
     return blocks && blocks.length > 0 ? (
       <div>
         {blocks.map((message, k) => {
@@ -228,16 +234,16 @@ class LoadMessages extends Component {
                   <Container fullY key={k} style={{ height: "auto" }}>
                     <MessageItem
                       owner={owner}
-                      isActive={k === this.state.selectMessageItem}
+                      isActive={k === selectMessageItem}
                       onSelect={() => this.selectMessage(k)}
                       message={message}
                       onReplyAction={item => this.handleReply(item)}
                     />
-                    {message._id === this.state.replyMessage ? (
+                    {message._id === replyMessage ? (
                       <Container ml={{ md: "20px" }} mb={"15px"}>
                         <Container fullX>
-                          {this.state.listFiles.length > 0
-                            ? this.state.listFiles.map((file, index) => (
+                          {listFiles.length > 0
+                            ? listFiles.map((file, index) => (
                                 <Attachment
                                   hideBorder={true}
                                   key={index}
@@ -264,7 +270,7 @@ class LoadMessages extends Component {
                           onSend={() =>
                             this.handleMessage(this.state.textReply, message)
                           }
-                          showEmojis={this.state.showEmoji}
+                          showEmojis={showEmoji}
                           onEmojiSelect={emoji => this.handleEmoji(emoji)}
                           handleEmojiClicked={this.emojiClicked}
                           getAttachment={(file, size) =>
@@ -300,7 +306,7 @@ class LoadMessages extends Component {
             </Query>
           );
         })}
-        {parent && parent.replies.length > 3 ? (
+        {parent && parent.replies && parent.replies.length > 3 ? (
           <SShowReplies onClick={() => this.handleShowReplies(parent)}>
             {(parent.showReplies || 3) > parent.replies.length
               ? "Show Less"

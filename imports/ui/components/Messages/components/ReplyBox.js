@@ -8,6 +8,7 @@ import { Picker } from "emoji-mart";
 import styled from "styled-components";
 import MaterialIcon from "react-material-iconic-font";
 import { UploadToS3, UploadToS3FromClient } from "../../../services";
+import OutsideClickHandler from "../../OutsideClickHandler/OutsideClickHandler";
 
 /**
  * @module Data
@@ -43,30 +44,33 @@ const SOptionToggle = styled.span`
 const GroupRender = props => {
   return (
     <Container>
-      <Container hide mdShow fullY>
-        <Container fullY flex>
-          {props.children}
+      {!props.isMobile ? (
+        <Container hide mdShow fullY>
+          <Container fullY flex>
+            {props.children}
+          </Container>
         </Container>
-      </Container>
-      <Container mdHide fullY>
-        <Container
-          fullY
-          flex
-          hide={props.showOptions}
-          onClick={event => {
-            event.stopPropagation();
-            event.preventDefault();
-            props.onToggle && props.onToggle();
-          }}
-        >
-          <SOptionToggle>
-            <MaterialIcon type={"plus-circle"} />
-          </SOptionToggle>
+      ) : (
+        <Container mdHide fullY>
+          <Container
+            fullY
+            flex
+            hide={props.showOptions}
+            onClick={event => {
+              event.stopPropagation();
+              event.preventDefault();
+              props.onToggle && props.onToggle();
+            }}
+          >
+            <SOptionToggle>
+              <MaterialIcon type={"plus-circle"} />
+            </SOptionToggle>
+          </Container>
+          <Container fullY flex hide={!props.showOptions}>
+            {props.children}
+          </Container>
         </Container>
-        <Container fullY flex hide={!props.showOptions}>
-          {props.children}
-        </Container>
-      </Container>
+      )}
     </Container>
   );
 };
@@ -84,14 +88,16 @@ export class ReplyBox extends React.Component {
     this.TextAreaRef = React.createRef();
   }
 
-  componentDidMount(){
+  componentDidMount() {
     setTimeout(() => {
-      this.onFocus()
+      this.onFocus();
     }, 200);
   }
 
   onFocus() {
-    this.TextAreaRef && this.TextAreaRef.current && this.TextAreaRef.current.focus();
+    this.TextAreaRef &&
+      this.TextAreaRef.current &&
+      this.TextAreaRef.current.focus();
   }
 
   onUploadImage(files) {
@@ -142,9 +148,10 @@ export class ReplyBox extends React.Component {
   }
 
   emojiClickedOut() {
-    this.setState({
-      showEmoji: false
-    });
+    if (this.state.showEmoji)
+      this.setState({
+        showEmoji: false
+      });
   }
 
   handleEmoji(emoji) {
@@ -153,7 +160,6 @@ export class ReplyBox extends React.Component {
       const newMessage = `${message}${emoji.colons}`;
       this.props.onTextChange && this.props.onTextChange(newMessage);
     }
-    this.emojiClickedOut();
   }
 
   /**
@@ -193,22 +199,24 @@ export class ReplyBox extends React.Component {
             <MaterialIcon type={"mood"} />
           </SSpan>
           {this.state.showEmoji ? (
-            <Picker
-              showPreview={false}
-              set={"emojione"}
-              emoji={"point_up"}
-              onSelect={emoji => this.handleEmoji(emoji)}
-              exclude={["flags"]}
-              style={{
-                position: "absolute",
-                maxWidth: "250px",
-                bottom: "20px",
-                left: "20px",
-                zIndex: "2",
-                fontFamily: "Roboto Mono",
-                fontSize: "12px"
-              }}
-            />
+            <OutsideClickHandler onOutsideClick={() => this.emojiClickedOut()}>
+              <Picker
+                showPreview={false}
+                set={"emojione"}
+                emoji={"point_up"}
+                onSelect={emoji => this.handleEmoji(emoji)}
+                exclude={["flags"]}
+                style={{
+                  position: "absolute",
+                  maxWidth: "250px",
+                  bottom: "20px",
+                  left: "20px",
+                  zIndex: "2",
+                  fontFamily: "Roboto Mono",
+                  fontSize: "12px"
+                }}
+              />
+            </OutsideClickHandler>
           ) : null}
         </Container>
         <Container />
@@ -230,6 +238,7 @@ export class ReplyBox extends React.Component {
           padding={{ md: "10px 20px" }}
         >
           <GroupRender
+            isMobile={this.props.isMobile}
             showOptions={this.state.showOptions}
             onToggle={() => this.optionsToggle()}
           >
