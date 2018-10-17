@@ -102,6 +102,12 @@ class NotificationsSidebar extends React.Component {
     return moment(date).calendar();
   }
 
+  handleClick(index,updateNotification){
+    this.setState({ selectedItem: index }, () =>
+      this.handleSelect(updateNotification)
+    )
+  }
+
   renderItem(not, index) {
     if (!not) return null;
     return (
@@ -122,14 +128,7 @@ class NotificationsSidebar extends React.Component {
             onError={error => console.log("Error: ", error)}
           >
             {updateNotification => (
-              <Container
-                relative
-                onClick={() =>
-                  this.setState({ selectedItem: index }, () =>
-                    this.handleSelect(updateNotification)
-                  )
-                }
-              >
+              <Container relative>
                 <NotificationBack />
                 <SDragContainer
                   relative
@@ -142,13 +141,8 @@ class NotificationsSidebar extends React.Component {
                         deleteNotification,
                         updateNotification
                       ),
-                    preventDefault: true
                   }}
-                  onClick={() =>
-                    this.setState({ selectedItem: index }, () =>
-                      this.handleSelect(updateNotification)
-                    )
-                  }
+                  onDragEnd={this.handleClick.bind(this, index, updateNotification)}
                 >
                   <Notification
                     title={not.title}
@@ -157,14 +151,8 @@ class NotificationsSidebar extends React.Component {
                     viewed={not.viewed}
                     time={this.setTimeFormat(not.createdAt)}
                     // selected={this.state.selectedItem === index}
-                    onDelete={() =>
-                      this.deleteNotification(not, index, deleteNotification)
-                    }
-                    onClick={() =>
-                      this.setState({ selectedItem: index }, () =>
-                        this.handleSelect(updateNotification)
-                      )
-                    }
+                    onDelete={this.deleteNotification.bind(this, not, index, deleteNotification)}
+                    onClick={this.handleClick.bind(this, index, updateNotification)}
                   />
                 </SDragContainer>
               </Container>
@@ -186,7 +174,7 @@ class NotificationsSidebar extends React.Component {
           <NotificationContainer
             {...this.props}
             onClose={() => this.props.onClose && this.props.onClose()}
-            onClear={() => this.handleClear(deleteNotification)}
+            onClear={this.handleClear.bind(this, deleteNotification)}
           >
             <List
               renderItem={this.renderItem}
