@@ -11,6 +11,7 @@ import { Mutation } from "react-apollo";
 import moment from "moment";
 import posed from "react-pose/lib/index";
 import styled from "styled-components";
+import {Utils} from "../../../services";
 import NotificationBack from "./NotificationBack";
 
 const SNotificationStyled = styled(Container)`
@@ -67,9 +68,7 @@ class NotificationsSidebar extends React.Component {
   }
 
   observerDragBoundaries(x, notification, index, deleteNotification) {
-    let value = 0;
-    const type = typeof x;
-    if (type === "string") value = Number(x.replace("%", ""));
+    let value = Utils.getNumberFromPose(x);
     if (value >= 85 && this.props.isMobile && !this.state.isDeleting) {
       this.deleteNotification(notification, index, deleteNotification);
     }
