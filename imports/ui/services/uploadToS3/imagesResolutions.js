@@ -71,7 +71,7 @@ class UploadResolutions {
                     });
                     compressor.process(image).then(({ source, result }) => {
                         const { blob, width, height } = result;
-                        if (Meteor.isDevelopment) {
+                        if (!Meteor.isDevelopment) {
                             // compress reader
                             readerCompressed.addEventListener(
                                 "load",

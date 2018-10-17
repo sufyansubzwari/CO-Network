@@ -107,12 +107,14 @@ export class ReplyBox extends React.Component {
         file,
         response => {
           if (!response.error) {
+
+            let id  = response.imagePath['chat'];
+
             let img = {
               name: files[0].name,
-              link: response.imagePath,
+              link: id,
               type: files[0].type
             };
-            if (!response.imagePath.includes("compressed"))
               this.props.getImage &&
                 this.props.getImage(img, files[0].size, false);
           } else {

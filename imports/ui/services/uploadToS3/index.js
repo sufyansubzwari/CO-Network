@@ -47,7 +47,7 @@ class UploadToS3 {
         });
         compressor.process(image).then(({ source, result }) => {
           const { blob, width, height } = result;
-          if (Meteor.isDevelopment) {
+          if (!Meteor.isDevelopment) {
             // regular reader
             reader.addEventListener(
               "load",
