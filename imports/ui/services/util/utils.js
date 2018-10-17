@@ -12,4 +12,10 @@ const formatSize = size => {
   return sizeMb;
 };
 
-export default {formatSize};
+const getImageFromS3 = (id,prefix) => {
+  let bucketPath = "https://s3.amazonaws.com/mlsociety-public";
+  return prefix && prefix !== "" && prefix !== "base" ? `${bucketPath}/resources/${prefix}/${id}` :  `${bucketPath}/resources/${id}`;
+
+}
+
+export default {formatSize, getImageFromS3};

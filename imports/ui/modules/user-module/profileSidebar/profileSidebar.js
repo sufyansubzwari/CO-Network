@@ -12,6 +12,7 @@ import MaterialIcon from "react-material-iconic-font";
 import ProfileItem from "./profileItem";
 import { Meteor } from "meteor/meteor";
 import Text from "../../../components/Preview/components/Text";
+import {Utils} from "../../../services";
 
 const SContainer = styled(Layout)`
   overflow: hidden;
@@ -98,6 +99,13 @@ const SButtons = styled(Container)`
   align-items: center;
 `;
 
+handleImage = image => {
+    return image ? (image.startsWith("http") || image.startsWith("data:") )
+        ? image
+        : Utils.getImageFromS3(image, 'cover') :
+        null;
+}
+
 const ItemsContainer = function(props) {
   return (
     <SContainer
@@ -110,7 +118,7 @@ const ItemsContainer = function(props) {
           props.curUser &&
           props.curUser.profile &&
           props.curUser.profile.cover !== ""
-            ? props.curUser.profile.cover
+            ? handleImage(props.curUser.profile.cover)
             : null
         }
       >

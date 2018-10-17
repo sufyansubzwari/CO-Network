@@ -5,6 +5,7 @@ import UserPhoto from "./../UserPhoto/UserPhoto";
 import { UploadFile } from "./components";
 import PropsTypes from "prop-types";
 import { UploadToS3 } from "../../services";
+import {Utils} from "../../services"
 
 const Photo = styled(Container)`
   background: ${props =>
@@ -93,8 +94,12 @@ class TopPreview extends Component {
         file,
         response => {
           if (!response.error) {
+            console.log(response.imagePath);
+
+            let id = element === "userphoto" ? response.imagePath['photo'] : response.imagePath['cover'];
+
             this.props.handleUpload &&
-              this.props.handleUpload(response.imagePath, element);
+              this.props.handleUpload(id, element);
           } else {
             // todo: show notification for error
           }
@@ -106,13 +111,28 @@ class TopPreview extends Component {
     }
   }
 
+  handleImage = image => {
+      return image ? (image.startsWith("http") || image.startsWith("data:") )
+          ? image
+          : Utils.getImageFromS3(image, 'photo') :
+          null;
+  }
+
+    handleBackground = image => {
+        return image ? (image.startsWith("http") || image.startsWith("data:") )
+            ? image
+            : Utils.getImageFromS3(image, 'cover') :
+            null;
+
+    }
+
   render() {
     return (
       <Photo
         relative
         paddingX={"15px"}
         mdPaddingX={"75px"}
-        image={this.state.backGroundImage}
+        image={this.handleBackground(this.state.backGroundImage)}
         gridArea={this.props.gridArea}
       >
         <SBackground />
@@ -128,7 +148,7 @@ class TopPreview extends Component {
               <SPhotoContainer>
                 <Layout customTemplateColumns={`120px 200px`}>
                   <Container>
-                    <UserPhoto photo={this.state.image} />
+                    <UserPhoto photo={this.handleImage(this.state.image)} />
                   </Container>
                   <Container relative>
                     {this.props.allowChangeImages ? (

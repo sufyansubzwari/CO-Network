@@ -51,6 +51,13 @@ const SImage = styled.div`
   height: 100%;
 `;
 
+handleImage = image => {
+    return image && (image.startsWith("http") || image.startsWith("data:") )
+        ? image
+        : Utils.getImageFromS3(image, 'chat');
+
+}
+
 const Attachment = props => {
   return (
     <Attach hideBorder={props.hideBorder}>
@@ -62,7 +69,7 @@ const Attachment = props => {
       >
         {props.isImage ? (
           <Container>
-            <SImage src={props.link} />
+            <SImage src={this.handleImage(props.link)} />
           </Container>
         ) : null}
         <FlexContainer>

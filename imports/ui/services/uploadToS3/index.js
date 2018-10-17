@@ -1,6 +1,8 @@
 import { Meteor } from "meteor/meteor";
 import { saveResource } from "../../controller/resources/ResourceController";
 import v1 from "uuid/v1";
+import UploadResolution from "./imagesResolutions";
+
 let CanvasCompress = null;
 if (Meteor.isClient) CanvasCompress = require("canvas-compress");
 
@@ -10,6 +12,7 @@ class UploadToS3 {
   }
 
   uploadImage(image, callback, statusCallback) {
+    let res = {}
     if (image.size / 1024 / 1024 > 4) {
       callback({
         error: true,
@@ -44,7 +47,7 @@ class UploadToS3 {
         });
         compressor.process(image).then(({ source, result }) => {
           const { blob, width, height } = result;
-          if (!Meteor.isDevelopment) {
+          if (Meteor.isDevelopment) {
             // regular reader
             reader.addEventListener(
               "load",
@@ -52,12 +55,18 @@ class UploadToS3 {
                 let src = reader.result;
                 saveResource(src, image.type, path, (error, result) => {
                   if (!error) {
-                    callback({
-                      error: error,
-                      result: result,
-                      imagePath: `${this.bucketPath}/${path}`,
-                      type: "success"
-                    });
+                    res['base'] = `${fileName}`
+                    UploadResolution.uploadImgResolutions(image, resol => {
+                        res = {...res, ...resol};
+                        callback({
+                            error: false,
+                            result: src,
+                            imagePath: {...res},
+                            type: "success"
+                        });
+                        },
+                        fileName
+                    );
                     statusCallback({ uploading: false });
                   } else {
                     callback({
@@ -70,36 +79,7 @@ class UploadToS3 {
               },
               false
             );
-            // compress reader
-            readerCompressed.addEventListener(
-              "load",
-              () => {
-                let src = readerCompressed.result;
-                saveResource(
-                  src,
-                  image.type,
-                  pathCompressed,
-                  (error, result) => {
-                    if (!error) {
-                      callback({
-                        error: error,
-                        result: result,
-                        imagePath: `${this.bucketPath}/${pathCompressed}`,
-                        type: "success"
-                      });
-                      statusCallback({ uploading: false });
-                    } else {
-                      callback({
-                        error: error,
-                        message: error.description,
-                        type: "danger"
-                      });
-                    }
-                  }
-                );
-              },
-              false
-            );
+
             readerCompressed.readAsBinaryString(blob);
             reader.readAsBinaryString(image);
           } else {

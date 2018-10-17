@@ -8,6 +8,7 @@ import { TagList } from "btech-base-forms-component";
 import ReportToggle from "./ReportToggle";
 import { PlaceHolder } from "btech-placeholder-component";
 import posed from "react-pose";
+import {Utils} from "../../services"
 
 const TitleCardContainer = Styled.div`
   font-family: Helvetica Neue LT Std;
@@ -182,6 +183,13 @@ class CardItem extends Component {
     );
   }
 
+  handleImage = image => {
+      return image ? (image.startsWith("http") || image.startsWith("data:") )
+          ? image
+          : Utils.getImageFromS3(image, 'card') :
+          null;
+  }
+
   renderLeftSide() {
     const tags = this.props.tags.map(tag => ({ active: true, ...tag }));
     return (
@@ -262,7 +270,7 @@ class CardItem extends Component {
     const imageElement = loading ? (
       <PlaceHolder rect loading={loading} height={280} width={390} />
     ) : (
-      <SImage src={this.props.image} />
+      <SImage src={this.handleImage(this.props.image)} />
     );
     return this.props.image && this.props.image ? (
       <Container relative fullView>

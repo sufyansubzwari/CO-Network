@@ -11,6 +11,7 @@ import AttachedFile from "./AttachedFile";
 import LightBox from "react-images";
 import { Emojione } from "react-emoji-render";
 import "emoji-mart/css/emoji-mart.css";
+import {Utils} from "../../../services";
 
 export const SMessageItem = styled(Container)`
   line-height: 15px;
@@ -30,6 +31,13 @@ class MessageItem extends React.Component {
     lightBoxIsOpen: false,
     currentImage: 0,
   };
+
+  handleImage = image => {
+      return image ? (image.startsWith("http") || image.startsWith("data:") )
+          ? image
+          : Utils.getImageFromS3(image, 'chat') :
+          null;
+  }
 
   render() {const {props} = this;
   return (
@@ -76,7 +84,7 @@ class MessageItem extends React.Component {
         {props.message &&
           props.message.images &&
           props.message.images.map((img, index) => (
-            <AttachedImage key={index} link={img.link} filename={img.name}
+            <AttachedImage key={index} link={this.handleImage(img.link)} filename={img.name}
           onClick={() => this.setState({ lightBoxIsOpen: true, currentImage: index })}
               />
             ))}
