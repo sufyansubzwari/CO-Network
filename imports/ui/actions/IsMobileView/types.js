@@ -1,0 +1,1 @@
+export const CHANGE_MOBILE_VIEW = "CHANGE_MOBILE_VIEW";
