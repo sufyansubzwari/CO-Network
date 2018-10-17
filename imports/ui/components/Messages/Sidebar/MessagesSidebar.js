@@ -98,6 +98,11 @@ class MessagesSidebar extends React.Component {
   }
 
   handleSelect() {
+    this.state.messages = this.state.messages.filter(
+      item =>
+        (this.state.type === "direct" && !item.replies) ||
+        (this.state.type === "related" && item.replies)
+    );
     let messages = this.state.messages && this.state.selectedItem >= 0 && this.state.messages[this.state.selectedItem];
     if (messages && !messages.read) {
       Meteor.call("messages.markAsRead", [messages._id], (error, result) => {
@@ -105,7 +110,10 @@ class MessagesSidebar extends React.Component {
       });
     }
     this.props.closeSideBar();
-    this.props.history.push(messages.type === "private" ? "/innovators" :"/colloquiums", { target: messages.owner, openMsg:true });
+    if(messages.type === "private")
+      this.props.history.push("/innovators", { target: messages.owner, openMsg:true });
+    if(messages.type === "public")
+      this.props.history.push("/colloquiums", { target: messages.receptor, openMsg:true });
     console.log(this.props)
   }
 
