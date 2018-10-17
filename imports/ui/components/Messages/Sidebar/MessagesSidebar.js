@@ -1,6 +1,6 @@
 import React from "react";
 import PropTypes from "prop-types";
-import { cleanFilters, setFilters } from "../../../actions/SideBarActions";
+import {cleanFilters, setFilters, toggleSideBar} from "../../../actions/SideBarActions";
 import { connect } from "react-redux";
 import Notification from "../../Notifications/Sidebar/Notification";
 import NotificationContainer from "../../Notifications/Sidebar/NotificationContainer";
@@ -22,6 +22,7 @@ import { withTracker } from "meteor/react-meteor-data";
 import MessagesCollection from "../../../../api/messages/collection";
 import { userQuery } from "../../../apollo-client/user";
 import moment from "moment/moment";
+import { withRouter } from "react-router-dom";
 
 const SLabel = styled(Label)`
   display: flex;
@@ -97,12 +98,15 @@ class MessagesSidebar extends React.Component {
   }
 
   handleSelect() {
-    let messages = this.state.messages && this.state.selectedItem && this.state.messages[this.state.selectedItem];
+    let messages = this.state.messages && this.state.selectedItem >= 0 && this.state.messages[this.state.selectedItem];
     if (messages && !messages.read) {
       Meteor.call("messages.markAsRead", [messages._id], (error, result) => {
         if (error) return console.log("ERROR - ", error);
       });
     }
+    this.props.closeSideBar();
+    this.props.history.push(messages.type === "private" ? "/innovators" :"/colloquiums", { target: messages.owner, openMsg:true });
+    console.log(this.props)
   }
 
   setTimeFormat(date) {
@@ -231,11 +235,12 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => {
   return {
     setFilters: (type, filters) => dispatch(setFilters(type, filters)),
-    cleanFilters: () => dispatch(cleanFilters())
+    cleanFilters: () => dispatch(cleanFilters()),
+    closeSideBar: () => dispatch(toggleSideBar(false, false, false)),
   };
 };
 
-export default connect(
+export default withRouter(connect(
   mapStateToProps,
   mapDispatchToProps
 )(
@@ -259,5 +264,5 @@ export default connect(
       loading: !subscription.ready(),
       messages: messages
     };
-  })(MessagesSidebar)
+  })(MessagesSidebar))
 );
