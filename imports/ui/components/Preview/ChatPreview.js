@@ -182,7 +182,7 @@ class ChatPreview extends Preview {
   render() {
     return (
       <PreviewContainer
-        customTemplateRows={"68px 1fr auto auto"}
+        customTemplateRows={"68px 1fr auto 60px"}
         mdCustomTemplateRows={"1fr auto auto"}
         fullY
         background={"white"}
