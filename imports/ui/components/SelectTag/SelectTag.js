@@ -69,7 +69,7 @@ class MlSelectTag extends React.Component {
         tags: tags,
         selectoptions: [...this.state.selectoptions]
       },
-      () => (this.props.getTags ? this.props.getTags(tags) : null)
+      () => this.props.getTags ? this.state.tags.length > 0 ? this.props.getTags(tags) : this.props.getTags([]) : null
     );
     this.forceUpdate();
   }

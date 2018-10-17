@@ -2,12 +2,12 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import InternalLayout from "../InternalLayout/InternalLayout";
-import { Container, Layout } from "btech-layout";
+import { Container } from "btech-layout";
 import { toggleSideBar } from "../../actions/SideBarActions";
 import styled from "styled-components";
+import { closeChatView, openChatView } from "../../actions/ChatView";
 
-
-const SFormContainer = styled(Container)` 
+const SFormContainer = styled(Container)`
   zoom: 100%;
 
   @media (min-width: 62em) {
@@ -30,6 +30,16 @@ class PostLayout extends Component {
 
   componentWillMount() {
     this.props.toggleSideBar(false);
+    this.triggerFormViewStatus(true);
+  }
+
+  componentWillUnmount() {
+    this.triggerFormViewStatus(false);
+  }
+
+  triggerFormViewStatus(isOpen) {
+    if (this.props.isMobile)
+      isOpen ? this.props.openChatView() : this.props.closeChatView();
   }
 
   getComponent(key) {
@@ -63,15 +73,18 @@ PostLayout.propTypes = {
 };
 
 const mapStateToProps = state => {
-  const { sideBarStatus } = state;
+  const { sideBarStatus, isMobile } = state;
   return {
-    showSidebar: sideBarStatus ? sideBarStatus.status : false
+    showSidebar: sideBarStatus ? sideBarStatus.status : false,
+    isMobile: isMobile
   };
 };
 
 const mapDispatchToProps = dispatch => {
   return {
-    toggleSideBar: status => dispatch(toggleSideBar(status))
+    toggleSideBar: status => dispatch(toggleSideBar(status)),
+    closeChatView: () => dispatch(closeChatView()),
+    openChatView: () => dispatch(openChatView())
   };
 };
 

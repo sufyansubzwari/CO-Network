@@ -12,4 +12,11 @@ const formatSize = size => {
   return sizeMb;
 };
 
-export default {formatSize};
+const getNumberFromPose = number => {
+  if (!number) return 0;
+  const type = typeof x;
+  if (type === "string") return Number(number.replace("%", ""));
+  return number;
+};
+
+export default { formatSize, getNumberFromPose };

@@ -8,6 +8,7 @@ import { topSearch } from "./reducers/TopSearch";
 import previewData from "./reducers/PreviewActions";
 import loginModal from "./reducers/LoginModal/LoginModal";
 import isChatView from "./reducers/ChatView/ChatView";
+import isMobile from "./reducers/IsMobileView";
 import User from "./user";
 
 const rootReducer = combineReducers({
@@ -18,7 +19,8 @@ const rootReducer = combineReducers({
   sideBarEntity,
   loginModal,
   isChatView,
-  topSearch
+  topSearch,
+  isMobile
 });
 
 export default rootReducer;

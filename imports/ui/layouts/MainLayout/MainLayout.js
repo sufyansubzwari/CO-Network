@@ -14,6 +14,7 @@ import Styled from "styled-components";
 import { Meteor } from "meteor/meteor";
 import { withTracker } from "meteor/react-meteor-data";
 import UserRedux from "../../redux/user";
+import { isMobileView } from "../../actions/IsMobileView";
 
 const MainLayoutStyled = Styled(Layout)`
  position:fixed;
@@ -105,6 +106,7 @@ class MainLayout extends Component {
     let propsProvider = { curUser: props.user, isSignUp, isMobile };
     const contentPose = props.showSidebar ? "leftOpen" : "leftClose";
     this.props.setUser(this.props.user || null);
+    this.props.isMobileView(isMobile);
     return (
       <MainLayoutStyled
         customTemplateColumns={`1fr 1fr`}
@@ -154,7 +156,8 @@ const mapStateToProps = state => {
 };
 
 const mapDispatchToProps = dispatch => ({
-  setUser: status => dispatch(UserRedux.Actions.setUser(status))
+  setUser: status => dispatch(UserRedux.Actions.setUser(status)),
+  isMobileView: status => dispatch(isMobileView(status))
 });
 
 export default withRouter(

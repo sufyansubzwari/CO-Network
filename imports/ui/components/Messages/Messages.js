@@ -52,7 +52,11 @@ class Messages extends React.Component {
     return (
       <SChat fullY>
         {messages.length ? (
-          <LoadMessages messages={messages} users={usersArray} />
+          <LoadMessages
+            messages={messages}
+            isMobile={this.props.isMobile}
+            users={usersArray}
+          />
         ) : null}
       </SChat>
     );

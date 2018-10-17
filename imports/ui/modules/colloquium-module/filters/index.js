@@ -82,6 +82,21 @@ class ColloquiumFilters extends React.Component {
     );
   }
 
+  tagSelection(key) {
+      let tags = this.state.locationTags;
+      tags[key].active = !tags[key].active;
+      this.setState({ locationTags: tags }, () => this.checkFilters());
+  }
+
+  checkFilters() {
+      let actives = this.state.locationTags.filter(item => item.active);
+      let filters = this.state.filters;
+      actives.length > 0 ? (filters.location = actives) : delete filters.location;
+      this.setState({ filters: filters }, () =>
+          this.props.setFilters("colloquiums", filters)
+      );
+  }
+
   render() {
     return (
       <FiltersContainer

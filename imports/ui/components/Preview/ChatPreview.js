@@ -182,7 +182,7 @@ class ChatPreview extends Preview {
   render() {
     return (
       <PreviewContainer
-        customTemplateRows={"68px 1fr auto auto"}
+        customTemplateRows={"68px 1fr auto 60px"}
         mdCustomTemplateRows={"1fr auto auto"}
         fullY
         background={"white"}
@@ -223,6 +223,7 @@ class ChatPreview extends Preview {
                 <Messages
                   scroll={this.scroll}
                   receptor={this.props.data}
+                  isMobile={this.props.isMobile}
                   onLoadMessages={list => {
                     this.messagesLength = list.length;
                   }}
@@ -248,18 +249,22 @@ class ChatPreview extends Preview {
               ))
             : null}
         </Container>
-        {this.props.data ?
-        <Container hide={!this.props.curUser}>
-          <ReplyBox
-            name={"textMessage"}
-            model={this.state}
-            onTextChange={text => this.setState({ textMessage: text })}
-            onKeyPress={event => this.onKeyPress(event)}
-            onSend={() => this.handleMessage(this.state.textMessage)}
-            getAttachment={(file, size) => this.onAttachmentUpload(file, size)}
-            getImage={(file, size) => this.onImageUpload(file, size)}
-          />
-        </Container> : null}
+        {this.props.data ? (
+          <Container hide={!this.props.curUser}>
+            <ReplyBox
+              name={"textMessage"}
+              model={this.state}
+              isMobile={this.props.isMobile}
+              onTextChange={text => this.setState({ textMessage: text })}
+              onKeyPress={event => this.onKeyPress(event)}
+              onSend={() => this.handleMessage(this.state.textMessage)}
+              getAttachment={(file, size) =>
+                this.onAttachmentUpload(file, size)
+              }
+              getImage={(file, size) => this.onImageUpload(file, size)}
+            />
+          </Container>
+        ) : null}
       </PreviewContainer>
     );
   }

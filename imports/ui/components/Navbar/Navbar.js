@@ -13,6 +13,7 @@ import { Meteor } from "meteor/meteor";
 import MessagesCollection from "../../../api/messages/collection";
 import NotificationsCollection from "../../../api/notifications/collection";
 import { withTracker } from "meteor/react-meteor-data";
+import { Utils } from "../../services";
 
 const SNavBarContainerStyled = Styled(Container)`
    z-index: 15;
@@ -65,13 +66,6 @@ class Navbar extends Component {
     super(props);
     this.state = { isOpen: false };
   }
-
-  // shouldComponentUpdate(nextProps) {
-  //   return (
-  //     this.props.notifications !== nextProps.notifications ||
-  //     this.props.messages !== nextProps.messages
-  //   );
-  // }
 
   openNavbar(isOpen) {
     this.setState({ isOpen });
@@ -130,11 +124,12 @@ class Navbar extends Component {
   }
 
   observerDragBoundaries(y) {
-    if (y === "-25%") {
+    const value = Utils.getNumberFromPose(y);
+    if (value >= 35) {
       console.info("Open at", y);
       // this.openNavbar(true);
-    } else if (y === "25%") {
-      console.info("Open at", y);
+    } else if (value <= 35) {
+      console.info("Closet at", y);
       // this.openNavbar(false);
     }
   }
@@ -156,8 +151,7 @@ class Navbar extends Component {
         pose={this.state.isOpen ? "open" : "close"}
       >
         {/*<SDragContainer*/}
-        {/*// onValueChange=*/}
-        {/*{{ y: y => this.observerDragBoundaries(y) }}*/}
+        {/*onValueChange={{ y: y => this.observerDragBoundaries(y) }}*/}
         {/*>*/}
         <HNavbar
           mdRowGap={10}
