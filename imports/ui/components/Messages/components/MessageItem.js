@@ -22,6 +22,19 @@ export const SMessageItem = styled(Container)`
   `};
 `;
 
+const LightBoxTheme = {
+    close: {
+        color: "white",
+        fill: 'white',
+        opacity: 0.6,
+        transition: 'all 200ms',
+        ':hover': {
+            opacity: 1,
+        },
+        ':focus': { outline:'0' }
+},
+}
+
 /**
  * @module Data
  * @category Component
@@ -37,6 +50,13 @@ class MessageItem extends React.Component {
       return image ? (image.startsWith("http") || image.startsWith("data:") )
           ? image
           : Utils.getImageFromS3(image, 'chat') :
+          null;
+  }
+
+  handleFullImage = image => {
+      return image ? (image.startsWith("http") || image.startsWith("data:") )
+          ? image
+          : Utils.getImageFromS3(image, 'base') :
           null;
   }
 
@@ -105,7 +125,7 @@ class MessageItem extends React.Component {
           props.message.images &&
           props.message.images.length ? (
             <LightBox
-              images={props.message.images.map(item => ({ src: item.link }))}
+              images={props.message.images.map(item => ({ src: this.handleFullImage(item.link)}))}
               isOpen={this.state.lightBoxIsOpen}
               currentImage={this.state.currentImage}
               onClickPrev={() =>
@@ -115,6 +135,7 @@ class MessageItem extends React.Component {
                 this.setState({ currentImage: this.state.currentImage + 1 })
               }
               onClose={() => this.setState({ lightBoxIsOpen: false })}
+              theme={LightBoxTheme}
             />
           ) : null}</Container>
       </SMessageItem>
