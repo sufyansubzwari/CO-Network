@@ -135,7 +135,10 @@ class LoadMessages extends Component {
     let attach = this.state.attachment;
     attach.push(file);
     let listFiles = this.state.listFiles;
-    listFiles.push({ ...file, size: size, isImage: false });
+    let index = this.state.listFiles.findIndex(item => item.name === file.name);
+    if (index > -1) listFiles[index] = { ...listFiles[index], link: file.link };
+    else
+        listFiles.push({ ...file, size: size, isImage: false, loading: false });
     this.setState({
       attachment: attach,
       listFiles: listFiles
@@ -147,7 +150,9 @@ class LoadMessages extends Component {
     let imgs = this.state.images;
     imgs.push(file);
     let listFiles = this.state.listFiles;
-    listFiles.push({ ...file, size: size, isImage: true });
+    let index = this.state.listFiles.findIndex(item => item.name === file.name);
+    if (index > -1) listFiles[index] = { ...listFiles[index], link: file.link };
+    else listFiles.push({ ...file, size: size, isImage: true, loading: false });
     this.setState({
       images: imgs,
       listFiles: listFiles
@@ -210,6 +215,26 @@ class LoadMessages extends Component {
     this.setState({ flag: !this.state.flag });
   }
 
+    handleLoading(loading, file, isImage) {
+        let listFiles = this.state.listFiles;
+        let nfile = {
+            name: file.name,
+            type: file.type,
+            size: file.size,
+            isImage: isImage,
+            loading: loading
+        };
+        let index = this.state.listFiles.findIndex(item => item.name === file.name);
+        if (index > -1) {
+            listFiles[index] = { ...listFiles[index], loading: loading };
+        } else {
+            listFiles.push(nfile);
+        }
+        this.setState({
+            listFiles: listFiles
+        });
+    }
+
   renderMessages(blocks, parent) {
     const {
       listFiles,
@@ -251,7 +276,7 @@ class LoadMessages extends Component {
                                   link={file.link}
                                   filename={file.name}
                                   size={file.size}
-                                  loading={false}
+                                  loading={file.loading}
                                   onClose={() => this.closeFile(index)}
                                 />
                               ))
@@ -278,6 +303,9 @@ class LoadMessages extends Component {
                           }
                           getImage={(file, size) =>
                             this.onImageUpload(file, size)
+                          }
+                          getLoading={(loading, file, isImage) =>
+                              this.handleLoading(loading, file, isImage)
                           }
                         />
                       </Container>

@@ -94,12 +94,16 @@ class TopPreview extends Component {
         file,
         response => {
           if (!response.error) {
-            console.log(response.imagePath);
+            // console.log(response.imagePath);
+
 
             let id = element === "userphoto" ? response.imagePath['photo'] : response.imagePath['cover'];
-
+            if(id)
             this.props.handleUpload &&
               this.props.handleUpload(id, element);
+            else
+                this.props.handleUpload &&
+                this.props.handleUpload(response.imagePath, element);
           } else {
             // todo: show notification for error
           }

@@ -243,7 +243,7 @@ class ChatPreview extends Preview {
                   link={file.link}
                   filename={file.name}
                   size={file.size}
-                  loading={false}
+                  loading={file.loading}
                   onClose={() => this.closeFile(index)}
                 />
               ))
@@ -262,6 +262,7 @@ class ChatPreview extends Preview {
                 this.onAttachmentUpload(file, size)
               }
               getImage={(file, size) => this.onImageUpload(file, size)}
+              getLoading={(loading, file, isImage) => this.handleLoading(loading, file, isImage)}
             />
           </Container>
         ) : null}
