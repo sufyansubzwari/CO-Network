@@ -24,7 +24,7 @@ class TopSearcher extends Component {
       added: false
     };
 
-    this.handleClose = this.handleClose.bind(this)
+    this.handleClose = this.handleClose.bind(this);
   }
 
   componentWillReceiveProps(nextProps) {
@@ -41,10 +41,9 @@ class TopSearcher extends Component {
   }
 
   onSearchTags(tag) {
-
     this.setState({
-        added: true
-    })
+      added: true
+    });
 
     let tags = this.state.tags;
     let tagExist = tags.some(item => item.label === tag.label);
@@ -59,24 +58,26 @@ class TopSearcher extends Component {
     }
   }
 
-    handleClose(){
-    let tags = []
-    let value = ""
+  handleClose() {
+    let tags = [];
+    let value = "";
 
-    this.setState({
+    this.setState(
+      {
         tags: tags,
         value: value,
         added: false
-    }, () =>
+      },
+      () =>
         this.props.onSearchAction &&
-        this.props.onSearchAction(value, this.state.tags))
+        this.props.onSearchAction(value, this.state.tags)
+    );
   }
 
   onSearchText(value) {
-
-      this.setState({
-          added: true
-      })
+    this.setState({
+      added: true
+    });
 
     this.setState(
       { value: value },
@@ -116,7 +117,9 @@ class TopSearcher extends Component {
                     autoFocus={!this.props.isMobile}
                     iconClass={"arrow-forward"}
                     inputPlaceholder={"Discover"}
-                    getAddedOptions={value => {this.onSearchTags(value)}}
+                    getAddedOptions={value => {
+                      this.onSearchTags(value);
+                    }}
                     getNewAddedOptions={value => this.onSearchTags(value)}
                     fixLabel
                     onFocusAction={() =>
@@ -142,7 +145,7 @@ class TopSearcher extends Component {
                     showClose={true}
                     newAdded={this.state.added}
                     onClose={this.handleClose}
-                    onTextChange={() => this.setState({added: false})}
+                    onTextChange={() => this.setState({ added: false })}
                   />
                 );
               }}
@@ -168,7 +171,7 @@ class TopSearcher extends Component {
 
 TopSearcher.defaultProps = {
   suggestions: [],
-  tagsLimit: 5
+  tagsLimit: 3
 };
 
 TopSearcher.propTypes = {

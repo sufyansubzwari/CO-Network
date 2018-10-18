@@ -187,7 +187,7 @@ class SecondStep extends React.Component {
         <CheckBoxList
           columns={2}
           checkboxVerticalSeparation={"10px"}
-          placeholderText={"Experience Required"}
+          placeholderText={"Skill Required"}
           options={this.state.jobExperience}
           getValue={actives => this.changeCategory(actives)}
         />

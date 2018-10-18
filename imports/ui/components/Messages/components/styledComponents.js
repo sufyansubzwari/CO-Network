@@ -169,9 +169,15 @@ export const SAttachment = styled(Layout)`
 `;
 
 export const SAttachmentName = styled(Container)`
+  font-size: 12px;
+  line-height: 18px;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+  
+  ${mixins.media.desktop`
+    
+  `}
 `;
 
 export const Header = styled.span`
