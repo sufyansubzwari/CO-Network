@@ -98,7 +98,12 @@ Messages.schema = new SimpleSchema({
   "images.$.link": {
     type: String,
     optional: true
-  }
+  },
+  deleted: {
+    type: Boolean,
+    optional: true,
+    defaultValue: false
+  },
 });
 Messages.attachSchema(Messages.schema);
 

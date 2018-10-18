@@ -36,7 +36,8 @@ Meteor.methods({
       showReplies: Match.Maybe(Number),
       replies: Match.Maybe(Array),
       createdAt: Match.Maybe(Date),
-      updatedAt: Match.Maybe(Date)
+      updatedAt: Match.Maybe(Date),
+      deleted: Match.Maybe(Boolean)
     });
 
     try {
