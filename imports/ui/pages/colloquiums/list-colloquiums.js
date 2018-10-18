@@ -1,5 +1,9 @@
 import React, { Component } from "react";
-import { ChatPreview, ItemsList, ListLayout } from "../../../ui/components";
+import {
+  ColloquiumPreview,
+  ItemsList,
+  ListLayout
+} from "../../../ui/components";
 import { graphql, Mutation } from "react-apollo";
 import { connect } from "react-redux";
 import { PreviewData } from "../../actions/PreviewActions";
@@ -204,7 +208,7 @@ class ListColloquiums extends Component {
               onError={error => this.errorOnBackgroundChange(error)}
             >
               {(updateImage, { colloquium }) => (
-                <ChatPreview
+                <ColloquiumPreview
                   onClose={() => this.onChangeSelection(null, null)}
                   key={"rightSide"}
                   isOpen={!!this.state.selectedItem}

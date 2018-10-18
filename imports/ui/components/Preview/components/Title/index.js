@@ -11,6 +11,7 @@ const STitle = styled.label`
   font-size: ${props =>
     props.size ? props.size : props.theme.preview.title.size};
   line-height: ${props => (props.lineheight ? props.lineheight : "initial")};
+  margin-bottom: ${props => (props.removeMargin ? "0px" : "initial")};
 `;
 
 class Title extends React.Component {
@@ -36,5 +37,6 @@ Title.propTypes = {
   color: PropsTypes.string,
   family: PropsTypes.string,
   size: PropsTypes.string,
+  removeMargin: PropsTypes.bool,
   lineheight: PropsTypes.string
 };

@@ -52,7 +52,7 @@ class PostColloquiums extends Component {
     const isEditMode = this.state.colloquium && this.state.colloquium._id;
     this.setState({
       formChange: false,
-      redirect: !this.state.formChange || !isEditMode
+      redirect: true //!this.state.formChange || !isEditMode // is only one step
     });
     let queryColloquium = Object.assign({}, query);
     //todo: remove when location improvement

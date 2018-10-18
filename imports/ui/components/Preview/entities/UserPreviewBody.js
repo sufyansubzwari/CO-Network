@@ -99,19 +99,27 @@ class UserPreviewBody extends React.Component {
     let lookingfor =
       this.state.user.knowledge &&
       this.state.user.knowledge.lookingFor &&
-      this.state.user.knowledge.lookingFor.map(look => <div>{look.label}</div>);
+      this.state.user.knowledge.lookingFor.map((look, index) => (
+        <div key={index}>{look.label}</div>
+      ));
     let jobtype =
       this.state.user.professional &&
       this.state.user.professional.jobType &&
-      this.state.user.professional.jobType.map(job => <div>{job.label}</div>);
+      this.state.user.professional.jobType.map((job, index) => (
+        <div key={index}>{job.label}</div>
+      ));
     let lookingforS =
       this.state.user.speaker &&
       this.state.user.speaker.lookingFor &&
-      this.state.user.speaker.lookingFor.map(look => <div>{look.label}</div>);
+      this.state.user.speaker.lookingFor.map((look, index) => (
+        <div key={index}>{look.label}</div>
+      ));
     let preferred =
       this.state.user.speaker &&
       this.state.user.speaker.stage &&
-      this.state.user.speaker.stage.map(stage => <div>{stage.label}</div>);
+      this.state.user.speaker.stage.map((stage, index) => (
+        <div key={index}>{stage.label}</div>
+      ));
     let achieve = this.state.user.achievements
       ? this.state.user.achievements.map((ach, index) => {
           let tags =

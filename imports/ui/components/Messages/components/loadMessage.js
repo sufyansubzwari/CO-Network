@@ -218,7 +218,7 @@ class LoadMessages extends Component {
       showEmoji
     } = this.state;
     return blocks && blocks.length > 0 ? (
-      <div>
+      <Container>
         {blocks.map((message, k) => {
           return (
             <Query
@@ -264,6 +264,7 @@ class LoadMessages extends Component {
                           onTextChange={text =>
                             this.setState({ textReply: text })
                           }
+                          isMobile={this.props.isMobile}
                           model={this.state}
                           buttonText={"Reply"}
                           onKeyPress={event => this.onKeyPress(event, message)}
@@ -314,7 +315,7 @@ class LoadMessages extends Component {
                   (parent.showReplies || 3)})`}
           </SShowReplies>
         ) : null}
-      </div>
+      </Container>
     ) : null;
   }
 

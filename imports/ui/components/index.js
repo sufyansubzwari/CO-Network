@@ -4,7 +4,7 @@ import SideBarLink from "./Navbar/SideBarLink";
 import UserNavbarSection from "./Navbar/UserNavbarSection";
 import Create from "./Create/Create";
 import Preview from "./Preview/Preview";
-import ChatPreview from "./Preview/ChatPreview";
+import ColloquiumPreview from "./Preview/ColloquiumPreview";
 import MemberPreview from "./Preview/MemberPreview";
 import UserPhoto from "./UserPhoto/UserPhoto";
 import CardItem from "./CardItem/CardItem";
@@ -66,7 +66,7 @@ export {
   WorkExperience,
   Media,
   Achievements,
-  ChatPreview,
+  ColloquiumPreview,
   LoginSidebar,
   MemberPreview,
   OutsideClickHandler

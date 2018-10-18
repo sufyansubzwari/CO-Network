@@ -257,6 +257,7 @@ export class ReplyBox extends React.Component {
     return (
       <SReplyBox fullY>
         <Layout
+          minH={"50px"}
           fullY
           customTemplateColumns={"auto 1fr"}
           padding={{ md: "10px 20px" }}
