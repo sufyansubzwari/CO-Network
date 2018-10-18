@@ -38,7 +38,7 @@ const SText = styled.div`
       : props.theme.preview.text.textLineHeight};
   font-weight: ${props =>
     props.textWeight ? props.textWeight : props.theme.preview.text.textWeight};
-  display: ${props => (props.inLineView ? "inline-block" : "0")};
+  ${props => (props.inLineView ? "display: inline-block;" : null)}
   margin-bottom: ${props =>
     props.marginBottom
       ? props.marginBottom
