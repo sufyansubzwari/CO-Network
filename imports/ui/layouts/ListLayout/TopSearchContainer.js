@@ -15,6 +15,8 @@ const TopSearchContainer = styled(Container)`
   box-shadow: ${props => "0 1px 0 0 " + props.theme.color.grey};
   padding: 10px;
   zoom: 100%;
+  display: flex;
+  align-items: center;
 
   ${mixins.media.desktop`
     padding: 15px;
