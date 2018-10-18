@@ -36,6 +36,8 @@ const HNavBarButtons = function(props) {
   const size = { width: 38, height: 45 };
   const notSize = { width: 30, height: 34 };
   const witOutUser = !props.curUser;
+  const notificationsCount = props.notifications || 0;
+  const messagesCount = props.messages || 0;
   return (
     <Container paddingX={"15px"}>
       <Layout mdHide colGap={"24px"} templateColumns={5} mdTemplateColumns={1}>
@@ -70,7 +72,7 @@ const HNavBarButtons = function(props) {
               number={{
                 top: "-5px",
                 right: "-5px",
-                value: props.messages || 0,
+                value: messagesCount,
                 primary: true,
                 size: { width: 22, height: 24 }
               }}
@@ -91,11 +93,16 @@ const HNavBarButtons = function(props) {
             <HNavItem
               mt={{ xs: "5px", md: "0" }}
               size={notSize}
-              icon={{ size: 35, src: "/images/nav/notifications.svg" }}
+              icon={{
+                size: 35,
+                src: notificationsCount
+                  ? "/images/nav/notifications.svg"
+                  : "/images/nav/notifications-empty.svg"
+              }}
               number={{
                 top: "-5px",
                 right: "-5px",
-                value: props.notifications || 0,
+                value: notificationsCount,
                 primary: true,
                 size: { width: 22, height: 24 }
               }}

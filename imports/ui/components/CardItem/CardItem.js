@@ -8,7 +8,7 @@ import { TagList } from "btech-base-forms-component";
 import ReportToggle from "./ReportToggle";
 import { PlaceHolder } from "btech-placeholder-component";
 import posed from "react-pose";
-import {Utils} from "../../services"
+import { Utils } from "../../services";
 
 const TitleCardContainer = Styled.div`
   font-family: Helvetica Neue LT Std;
@@ -137,8 +137,11 @@ class CardItem extends Component {
       loadingImage: true,
       topOptions: elements
     };
-    if (props.image) {
-      this.loadImage(props.image);
+  }
+
+  componentDidMount() {
+    if (this.props.image) {
+      this.loadImage(this.props.image);
     }
   }
 
@@ -184,14 +187,19 @@ class CardItem extends Component {
   }
 
   handleImage = image => {
-      return image ? (image.startsWith("http") || image.startsWith("data:") )
-          ? image
-          : Utils.getImageFromS3(image, 'card') :
-          null;
-  }
+    return image
+      ? image.startsWith("http") || image.startsWith("data:")
+        ? image
+        : Utils.getImageFromS3(image, "card")
+      : null;
+  };
 
   renderLeftSide() {
-    const tags = this.props.tags.map(tag => ({ active: true, ...tag }));
+    const tags = this.props.tags
+      .map(tag => ({ active: true, ...tag }))
+      .sort((a, b) => {
+        return a.label.length - b.label.length;
+      });
     return (
       <Layout
         fullY

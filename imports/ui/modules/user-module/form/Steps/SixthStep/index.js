@@ -106,11 +106,11 @@ class SixthStep extends React.Component {
 
   handleSwitchWidth = () => {
     return window.screen.width < 768 ? 40 : undefined;
-  }
+  };
 
   handleSwitchHeight = () => {
-      return window.screen.height < 768 ? 20 : undefined;
-  }
+    return window.screen.height < 768 ? 20 : undefined;
+  };
 
   render() {
     return (
@@ -135,12 +135,11 @@ class SixthStep extends React.Component {
           <FormMainLayout fullY>
             <Container>
               <CheckBoxList
-                placeholderText={"Looking for"}
+                placeholderText={"Talk Style"}
                 options={this.state.lookingfor}
                 checkboxVerticalSeparation={"10px"}
                 checkboxSize={"15px"}
                 getValue={actives => this.changeCategoryEvents(actives)}
-                columns={2}
               />
               <Layout mdCustomTemplateColumns={"1fr 1fr"}>
                 <Container>

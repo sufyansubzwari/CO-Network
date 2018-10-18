@@ -110,7 +110,7 @@ class ItemsList extends Component {
         ) : null}
         {!this.props.loading &&
         (!this.props.data || !this.props.data.length) ? (
-          <EmptyList entityName={this.props.title} />
+          <EmptyList curUser={this.props.curUser} entityName={this.props.title} />
         ) : null}
       </Container>
     );

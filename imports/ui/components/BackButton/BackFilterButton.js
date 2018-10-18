@@ -12,8 +12,8 @@ const Icon = styled.span`
 
 const BackFilterButtonStyled = styled(Button)`
   margin-top: 0px;
-  width: 40px;
-  height: 45px;
+  width: 34px;
+  height: 36px;
 
   ${mixins.media.desktop`
     margin-top: 17px;

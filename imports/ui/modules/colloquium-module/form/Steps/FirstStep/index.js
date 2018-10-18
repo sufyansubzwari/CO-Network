@@ -106,13 +106,13 @@ class FirstStep extends React.Component {
     );
   }
 
-    handleSwitchWidth = () => {
-        return window.screen.width < 768 ? 40 : undefined;
-    }
+  handleSwitchWidth = () => {
+    return window.screen.width < 768 ? 40 : undefined;
+  };
 
-    handleSwitchHeight = () => {
-        return window.screen.height < 768 ? 20 : undefined;
-    }
+  handleSwitchHeight = () => {
+    return window.screen.height < 768 ? 20 : undefined;
+  };
 
   tagsSuggested(tags) {
     if (tags) {

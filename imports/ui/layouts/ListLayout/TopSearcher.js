@@ -24,7 +24,7 @@ class TopSearcher extends Component {
       added: false
     };
 
-    this.handleClose = this.handleClose.bind(this)
+    this.handleClose = this.handleClose.bind(this);
   }
 
   componentWillReceiveProps(nextProps) {
@@ -41,10 +41,9 @@ class TopSearcher extends Component {
   }
 
   onSearchTags(tag) {
-
     this.setState({
-        added: true
-    })
+      added: true
+    });
 
     let tags = this.state.tags;
     let tagExist = tags.some(item => item.label === tag.label);
@@ -59,24 +58,26 @@ class TopSearcher extends Component {
     }
   }
 
-    handleClose(){
-    let tags = []
-    let value = ""
+  handleClose() {
+    let tags = [];
+    let value = "";
 
-    this.setState({
+    this.setState(
+      {
         tags: tags,
         value: value,
         added: false
-    }, () =>
+      },
+      () =>
         this.props.onSearchAction &&
-        this.props.onSearchAction(value, this.state.tags))
+        this.props.onSearchAction(value, this.state.tags)
+    );
   }
 
   onSearchText(value) {
-
-      this.setState({
-          added: true
-      })
+    this.setState({
+      added: true
+    });
 
     this.setState(
       { value: value },
@@ -105,7 +106,7 @@ class TopSearcher extends Component {
         <Layout
           colGap={"10px"}
           customTemplateColumns={"1fr"}
-          mdCustomTemplateColumns={"1fr auto"}
+          mdCustomTemplateColumns={this.props.curUser && this.props.curUser._id ? "1fr auto" : "1fr"}
         >
           <Container>
             <Query query={tags} fetchPolicy={"cache-and-network"}>
@@ -116,7 +117,9 @@ class TopSearcher extends Component {
                     autoFocus={!this.props.isMobile}
                     iconClass={"arrow-forward"}
                     inputPlaceholder={"Discover"}
-                    getAddedOptions={value => {this.onSearchTags(value)}}
+                    getAddedOptions={value => {
+                      this.onSearchTags(value);
+                    }}
                     getNewAddedOptions={value => this.onSearchTags(value)}
                     fixLabel
                     onFocusAction={() =>
@@ -142,24 +145,28 @@ class TopSearcher extends Component {
                     showClose={true}
                     newAdded={this.state.added}
                     onClose={this.handleClose}
-                    onTextChange={() => this.setState({added: false})}
+                    onTextChange={() => this.setState({ added: false })}
                   />
                 );
               }}
             </Query>
           </Container>
-          <Container hide mdShow>
-            <Button
-              width={"35px"}
-              height={"35px"}
-              fontSize={"30px"}
-              onClick={() =>
-                this.props.onCreateAction && this.props.onCreateAction()
-              }
-            >
-              <MaterialIcon type={"plus"} />
-            </Button>
-          </Container>
+            {
+                this.props.curUser && this.props.curUser._id
+                    ? <Container hide mdShow>
+                        <Button
+                            width={"35px"}
+                            height={"35px"}
+                            fontSize={"20px"}
+                            onClick={() =>
+                                this.props.onCreateAction && this.props.onCreateAction()
+                            }
+                        >
+                            <MaterialIcon type={"plus"}/>
+                        </Button>
+                    </Container>
+                    : null
+            }
         </Layout>
       </Container>
     );
@@ -168,7 +175,7 @@ class TopSearcher extends Component {
 
 TopSearcher.defaultProps = {
   suggestions: [],
-  tagsLimit: 5
+  tagsLimit: 3
 };
 
 TopSearcher.propTypes = {

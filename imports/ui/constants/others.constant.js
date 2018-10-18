@@ -855,14 +855,11 @@ export const JOB_TYPE_DEFAULT = [
 ];
 
 export const LOOKING_FOR_DEFAULT_SPEAKER = [
-  { label: "Co-Founders for Startup" },
-  { label: "Competition Teammates" },
-  { label: "Individuals to Mentor" },
-  { label: "Mentorship" },
-  { label: "Teach Project Partners" },
-  { label: "Data Trading" },
-  { label: "Scientific Collaborations" },
-  { label: "Study Group Companions" }
+  { label: "Passionate Educator (K-12)" },
+  { label: "University Level Lecturer" },
+  { label: "Science Communicator" },
+  { label: "Corporate Speaker (Executive)" },
+  { label: "Conference Speaker (Expert)" }
 ];
 
 export const ORGANIZATION_TYPE = [
@@ -1049,16 +1046,16 @@ export const EXPERIENCE_REQUIERED_NUMBER = [
 
 export const COLLOQUIUM_LEVEL = [
   {
-    label: "Advanced",
-    value: "Advanced"
+    label: "Beginner",
+    value: "Beginner"
   },
   {
     label: "Intermediate",
     value: "Intermediate"
   },
   {
-    label: "Beginner",
-    value: "Beginner"
+    label: "Advanced",
+    value: "Advanced"
   }
 ];
 
