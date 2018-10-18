@@ -139,6 +139,17 @@ export const SReplyButton = styled.span`
   }
 `;
 
+export const SDeleteButton = styled.span`
+  margin-left: ${props => props.marginLeft ? "auto" : ""};
+  opacity: 0.5;
+  cursor: pointer;
+
+  :hover {
+    opacity: 1;
+    transition: all 200ms ease-out;
+  }
+`;
+
 export const SReplyMessage = styled(Container)`
   color: #2b2b2b;
   font-family: "Roboto Mono";

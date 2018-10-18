@@ -75,29 +75,36 @@ class ListInnovators extends Component {
         this.reFetchQuery()
       );
     }
-    if (nextProps.location && nextProps.location.state && nextProps.location.state.openMsg && nextProps.location.state.target){
+    if (
+      nextProps.location &&
+      nextProps.location.state &&
+      nextProps.location.state.openMsg &&
+      nextProps.location.state.target
+    ) {
       this.props.history.push({});
-      this.setState({currentTab: INNOVATORS_TYPES[0]}, () => {
-        this.props.users.fetchMore({
-          variables: {
-            limit: 1,
-            filter: "",
-            user: { _id: nextProps.target}
-          },
-          updateQuery: (
-            previousResult,
-            { fetchMoreResult, queryVariables }
-          ) => {
-            return {
-              ...previousResult,
-              users: [...fetchMoreResult["users"], ...previousResult]
-            };
-          }
-        }).then(({data}) => {
-          console.log("onRefetch", data);
-          this.setState({selectedItem: data.users[0], showMessages: true})
-        });
-      })
+      this.setState({ currentTab: INNOVATORS_TYPES[0] }, () => {
+        this.props.users
+          .fetchMore({
+            variables: {
+              limit: 1,
+              filter: "",
+              user: { _id: { in: [nextProps.location.state.target] } }
+            },
+            updateQuery: (
+              previousResult,
+              { fetchMoreResult, queryVariables }
+            ) => {
+              return {
+                ...previousResult,
+                users: [...fetchMoreResult["users"], ...previousResult]
+              };
+            }
+          })
+          .then(({ data }) => {
+            console.log("onRefetch", data);
+            this.setState({ selectedItem: data.users[0], showMessages: true });
+          });
+      });
     }
   }
 

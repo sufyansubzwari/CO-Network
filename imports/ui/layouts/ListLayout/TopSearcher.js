@@ -152,7 +152,7 @@ class TopSearcher extends Component {
             <Button
               width={"35px"}
               height={"35px"}
-              fontSize={"30px"}
+              fontSize={"25px"}
               onClick={() =>
                 this.props.onCreateAction && this.props.onCreateAction()
               }

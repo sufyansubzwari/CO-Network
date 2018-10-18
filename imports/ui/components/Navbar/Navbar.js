@@ -229,7 +229,7 @@ export default connect(
     let notifications = NotificationsCollection.find({ viewed: false }).fetch();
     return {
       loading: !subscription.ready() && !subscription2.ready(),
-      messages: messages.length,
+      messages: messages.filter(item => !item.deleted).length,
       notifications: notifications.length
     };
   })(withRouter(Navbar))

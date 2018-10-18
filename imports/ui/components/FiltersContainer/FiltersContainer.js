@@ -49,6 +49,11 @@ const STagsLabel = styled(Container)`
   font-size: 12px;
 `;
 
+const FlexContainer = styled(Container)`
+  display: flex;
+  align-items: center;
+`
+
 /**
  * @module Data
  * @category Component
@@ -144,10 +149,12 @@ class FiltersContainer extends Component {
           <Container hide mdShow>
             <h6>Filters</h6>
           </Container>
-          <BackFilterButton
-            onClick={() => this.props.onClose && this.props.onClose()}
-          />
-          <Container mdHide>
+          <FlexContainer>
+            <BackFilterButton
+              onClick={() => this.props.onClose && this.props.onClose()}
+            />
+          </FlexContainer>
+          <FlexContainer mdHide>
             <Query query={tags} fetchPolicy={"cache-and-network"}>
               {({ loading, error, data }) => {
                 if (error) return <div>Error</div>;
@@ -172,7 +179,7 @@ class FiltersContainer extends Component {
                 );
               }}
             </Query>
-          </Container>
+          </FlexContainer>
         </STitleLayout>
         <Container>
           <Scrollbars

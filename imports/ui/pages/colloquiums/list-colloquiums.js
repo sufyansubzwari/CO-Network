@@ -79,7 +79,7 @@ class ListColloquiums extends Component {
         variables: {
           limit: 1,
           filter: "",
-          colloquiums: {_id: nextProps.target}
+          colloquiums: {_id: nextProps.location.state.target}
         },
         updateQuery: (previousResult,
                       {fetchMoreResult, queryVariables}) => {
