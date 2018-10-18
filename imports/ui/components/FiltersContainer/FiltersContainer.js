@@ -154,8 +154,8 @@ class FiltersContainer extends Component {
               onClick={() => this.props.onClose && this.props.onClose()}
             />
           </FlexContainer>
-          <Container mdHide>
-            <FlexContainer>
+          <Container fullY mdHide>
+            <FlexContainer fullY>
               <Query query={tags} fetchPolicy={"cache-and-network"}>
                 {({ loading, error, data }) => {
                   if (error) return <div>Error</div>;
