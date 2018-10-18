@@ -200,6 +200,7 @@ class ListColloquiums extends Component {
           {(viewsUpdate, {}) => (
             <ItemsList
               title={"Colloquiums"}
+              curUser={this.props.curUser}
               topOptions={[
                 {
                   key: "isPublic",
