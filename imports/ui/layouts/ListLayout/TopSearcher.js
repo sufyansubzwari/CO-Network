@@ -150,8 +150,8 @@ class TopSearcher extends Component {
           </Container>
           <Container hide mdShow>
             <Button
-              width={"44px"}
-              height={"44px"}
+              width={"35px"}
+              height={"35px"}
               fontSize={"30px"}
               onClick={() =>
                 this.props.onCreateAction && this.props.onCreateAction()

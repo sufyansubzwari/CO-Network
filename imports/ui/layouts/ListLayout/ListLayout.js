@@ -76,6 +76,7 @@ class ListLayout extends Component {
                 background={"white"}
               >
                 <Layout
+                  fullX
                   colGap={"10px"}
                   customTemplateColumns={"1fr"}
                   mdCustomTemplateColumns={
@@ -85,8 +86,8 @@ class ListLayout extends Component {
                   {!this.props.sidebarIsOpen ? (
                     <Container hide mdShow>
                       <Button
-                        width={"44px"}
-                        height={"44px"}
+                        width={"35px"}
+                        height={"35px"}
                         fontSize={"25px"}
                         color={"black"}
                         secondary
