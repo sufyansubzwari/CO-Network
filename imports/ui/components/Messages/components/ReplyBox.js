@@ -17,15 +17,18 @@ import OutsideClickHandler from "../../OutsideClickHandler/OutsideClickHandler";
  */
 
 const SAddButton = styled.span`
+  display: flex;
+  width: 25px;
+  height: 40px;
+  align-items: center;
   position: absolute;
   font-size: 18px;
-  top: 12px;
-  right: 20px;
+  top: 5px;
+  right: 0;
   cursor: pointer;
 
   ${mixins.media.desktop`
-    right: 10px;
-    top: 4px;
+    top: 0;
   `};
 `;
 
@@ -35,7 +38,7 @@ const SSpan = styled.span`
   align-items: center;
 
   i {
-    font-size: 20px;
+    font-size: 24px;
   }
 
   ${mixins.media.desktop`
@@ -127,16 +130,15 @@ export class ReplyBox extends React.Component {
         file,
         response => {
           if (!response.error) {
-
-            let id  = response.imagePath['chat'];
+            let id = response.imagePath["chat"];
 
             let img = {
               name: files[0].name,
               link: id ? id : response.imagePath,
               type: files[0].type
             };
-              this.props.getImage &&
-                this.props.getImage(img, files[0].size, false);
+            this.props.getImage &&
+              this.props.getImage(img, files[0].size, false);
           } else {
             // todo: show notification for error
           }
@@ -192,7 +194,7 @@ export class ReplyBox extends React.Component {
       <Layout
         fullY
         mdColGap={"10px"}
-        colGap={"15px"}
+        colGap={"30px"}
         ml={{ xs: "10px" }}
         customTemplateColumns={"auto auto auto 1fr"}
         style={{ position: "relative" }}
@@ -277,9 +279,10 @@ export class ReplyBox extends React.Component {
               placeholderText={this.props.placeholder}
               name={this.props.name}
               fixLabel
-              height={"35px"}
+              height={"40px"}
               padding={"6px 25px 6px 12px"}
               marginTop={"0px"}
+              style={{ lineHeight: "25px" }}
               model={this.props.model}
               onKeyPress={event =>
                 this.props.onKeyPress && this.props.onKeyPress(event)
