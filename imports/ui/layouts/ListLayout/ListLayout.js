@@ -99,6 +99,7 @@ class ListLayout extends Component {
                   ) : null}
                   <Container>
                     <TopSearcher
+                      curUser={this.props.curUser}
                       isMobile={this.props.isMobile}
                       onSearchAction={(value, tags) =>
                         this.props.onSearchAction &&

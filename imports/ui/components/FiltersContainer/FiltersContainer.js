@@ -154,32 +154,34 @@ class FiltersContainer extends Component {
               onClick={() => this.props.onClose && this.props.onClose()}
             />
           </FlexContainer>
-          <FlexContainer mdHide>
-            <Query query={tags} fetchPolicy={"cache-and-network"}>
-              {({ loading, error, data }) => {
-                if (error) return <div>Error</div>;
-                return (
-                  <MLTagsInput
-                    autoFocus={!this.props.isMobile}
-                    iconClass={"arrow-forward"}
-                    inputPlaceholder={"Discover"}
-                    getAddedOptions={value => this.onSearchTags(value)}
-                    getNewAddedOptions={value => this.onSearchTags(value)}
-                    fixLabel
-                    optionsLimit={9}
-                    noAddNewTagsOnEnter={true}
-                    onSearch={value => this.onSearchText(value)}
-                    options={data.tags}
-                    tags={[]}
-                    showClose={true}
-                    newAdded={this.state.added}
-                    onClose={this.handleClose}
-                    onTextChange={() => this.setState({ added: false })}
-                  />
-                );
-              }}
-            </Query>
-          </FlexContainer>
+          <Container mdHide>
+            <FlexContainer>
+              <Query query={tags} fetchPolicy={"cache-and-network"}>
+                {({ loading, error, data }) => {
+                  if (error) return <div>Error</div>;
+                  return (
+                    <MLTagsInput
+                      autoFocus={!this.props.isMobile}
+                      iconClass={"arrow-forward"}
+                      inputPlaceholder={"Discover"}
+                      getAddedOptions={value => this.onSearchTags(value)}
+                      getNewAddedOptions={value => this.onSearchTags(value)}
+                      fixLabel
+                      optionsLimit={9}
+                      noAddNewTagsOnEnter={true}
+                      onSearch={value => this.onSearchText(value)}
+                      options={data.tags}
+                      tags={[]}
+                      showClose={true}
+                      newAdded={this.state.added}
+                      onClose={this.handleClose}
+                      onTextChange={() => this.setState({ added: false })}
+                    />
+                  );
+                }}
+              </Query>
+            </FlexContainer>
+          </Container>
         </STitleLayout>
         <Container>
           <Scrollbars

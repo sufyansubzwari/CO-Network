@@ -380,6 +380,7 @@ class ListInnovators extends Component {
         <Mutation key={"listComponent"} mutation={ViewsCountUpdate}>
           {(viewsUpdate, {}) => (
             <ItemsList
+              curUser={this.props.curUser}
               key={"listComponent"}
               title={this.state.currentTab.title}
               navList={this.state.navList}

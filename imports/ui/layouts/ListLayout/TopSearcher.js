@@ -105,7 +105,7 @@ class TopSearcher extends Component {
         <Layout
           colGap={"10px"}
           customTemplateColumns={"1fr"}
-          mdCustomTemplateColumns={"1fr auto"}
+          mdCustomTemplateColumns={this.props.curUser && this.props.curUser._id ? "1fr auto" : "1fr"}
         >
           <Container>
             <Query query={tags} fetchPolicy={"cache-and-network"}>
@@ -148,18 +148,22 @@ class TopSearcher extends Component {
               }}
             </Query>
           </Container>
-          <Container hide mdShow>
-            <Button
-              width={"35px"}
-              height={"35px"}
-              fontSize={"25px"}
-              onClick={() =>
-                this.props.onCreateAction && this.props.onCreateAction()
-              }
-            >
-              <MaterialIcon type={"plus"} />
-            </Button>
-          </Container>
+            {
+                this.props.curUser && this.props.curUser._id
+                    ? <Container hide mdShow>
+                        <Button
+                            width={"35px"}
+                            height={"35px"}
+                            fontSize={"20px"}
+                            onClick={() =>
+                                this.props.onCreateAction && this.props.onCreateAction()
+                            }
+                        >
+                            <MaterialIcon type={"plus"}/>
+                        </Button>
+                    </Container>
+                    : null
+            }
         </Layout>
       </Container>
     );
