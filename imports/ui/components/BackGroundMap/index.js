@@ -46,6 +46,15 @@ class MapBackGround extends Component {
 
   componentWillMount() {
     this.reFetchQuery();
+
+  }
+
+  componentDidMount() {
+      this.map = this.mapInstance.leafletElement;
+      if(this.props.isMobile) {
+          this.map.flyTo([40, -100], this.props.zoomMap);
+      }
+
   }
 
   reFetchQuery() {
@@ -69,14 +78,13 @@ class MapBackGround extends Component {
   }
 
   render() {
-    const position = this.props.isMobile
-      ? [37.0902, 95.7129]
-      : [this.state.lat, this.state.lng];
     return (
-      <SMapContainer
+      <Map
+        style={{position: 'absolute', zIndex: '1', top: '0', bottom: '0', left: '0', right: '0'}}
+        ref={e => { this.mapInstance = e }}
         zoomControl={false}
         attributionControl={false}
-        center={position}
+        center={[this.state.lat, this.state.lng]}
         detectRetina
         minZoom={this.state.minZoom}
         maxZoom={this.state.maxZoom}
@@ -99,7 +107,7 @@ class MapBackGround extends Component {
         >
           {this.renderPlaces()}
         </MarkerClusterGroup>
-      </SMapContainer>
+      </Map>
     );
   }
 }
