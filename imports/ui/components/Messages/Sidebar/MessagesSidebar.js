@@ -72,9 +72,11 @@ class MessagesSidebar extends React.Component {
       messages: [],
       selectedItem: -1,
       type: "direct",
-      read: "All",
+      read: "Unread",
       dropDownOpen: false
     };
+
+    this.deleteMessage = this.deleteMessage.bind(this);
   }
 
   componentWillMount() {}
@@ -100,8 +102,8 @@ class MessagesSidebar extends React.Component {
   handleSelect() {
     this.state.messages = this.state.messages.filter(
       item =>
-        (this.state.type === "direct" && !item.replies) ||
-        (this.state.type === "related" && item.replies)
+        (this.state.type === "direct" && !item.replies && (this.state.read === "All" ? true : this.state.read === "Read" ? item.read : !item.read )) ||
+        (this.state.type === "related" && item.replies && (this.state.read === "All" ? true : this.state.read === "Read" ? item.read : !item.read ))
     );
     let messages = this.state.messages && this.state.selectedItem >= 0 && this.state.messages[this.state.selectedItem];
     if (messages && !messages.read) {
@@ -123,6 +125,19 @@ class MessagesSidebar extends React.Component {
     if (date >= today)
       return moment(date).fromNow();
     return moment(date).calendar();
+  }
+
+  deleteMessage(msg, index){
+    // this.state.messages = this.state.messages.filter(
+    //   item =>
+    //     (this.state.type === "direct" && !item.replies && (this.state.read === "All" ? true : this.state.read === "Read" ? item.read : !item.read )) ||
+    //     (this.state.type === "related" && item.replies && (this.state.read === "All" ? true : this.state.read === "Read" ? item.read : !item.read ))
+    // );
+    let messages = msg;
+    messages.deleted = true;
+    Meteor.call("messages.update", messages, (error, result) => {
+      if (error) return console.log("ERROR - ", error);
+    });
   }
 
   render() {
@@ -195,8 +210,8 @@ class MessagesSidebar extends React.Component {
           this.state.messages
             .filter(
               item =>
-                (this.state.type === "direct" && !item.replies) ||
-                (this.state.type === "related" && item.replies)
+                (this.state.type === "direct" && !item.replies && (this.state.read === "All" ? true : this.state.read === "Read" ? item.read : !item.read )) ||
+                (this.state.type === "related" && item.replies && (this.state.read === "All" ? true : this.state.read === "Read" ? item.read : !item.read ))
             )
             .map((message, index) => (
               <Query
@@ -216,7 +231,7 @@ class MessagesSidebar extends React.Component {
                       viewed={message.read}
                       title={owner.profile.name}
                       description={message.text}
-                      entity={"ML Society"}
+                      // entity={"ML Society"}
                       time={this.setTimeFormat(message.createdAt)}
                       image={owner.profile.image}
                       selected={this.state.selectedItem === index}
@@ -225,6 +240,7 @@ class MessagesSidebar extends React.Component {
                           this.handleSelect()
                         )
                       }
+                      onDelete={this.deleteMessage.bind(this, message, index)}
                     />
                   );
                 }}
@@ -270,7 +286,7 @@ export default withRouter(connect(
     ).fetch();
     return {
       loading: !subscription.ready(),
-      messages: messages
+      messages: messages.filter(item => !item.deleted)
     };
   })(MessagesSidebar))
 );
