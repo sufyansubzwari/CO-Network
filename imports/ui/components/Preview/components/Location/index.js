@@ -14,6 +14,7 @@ const STitle = styled.label`
     props.lineHeight
       ? props.lineHeight
       : props.theme.preview.locations.lineHeight};
+  margin-bottom: ${props => (props.removeMargin ? "0px" : "initial")};
 `;
 
 class Location extends React.Component {
@@ -50,6 +51,7 @@ export default Location;
 Location.propTypes = {
   location: PropsTypes.object,
   color: PropsTypes.string,
+  removeMargin: PropsTypes.bool,
   family: PropsTypes.string,
   size: PropsTypes.string,
   lineHeight: PropsTypes.string

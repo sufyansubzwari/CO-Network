@@ -43,6 +43,17 @@ const SText = styled.div`
     props.marginBottom
       ? props.marginBottom
       : props.theme.preview.text.marginBottom};
+  ${props =>
+    props.cutText
+      ? `
+    overflow: hidden;
+    white-space: normal;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: ${props.cutLines};
+    -webkit-box-orient: vertical;
+  `
+      : null};
 `;
 
 const SContainer = styled(Container)`
@@ -72,7 +83,9 @@ class Text extends React.Component {
   render() {
     return (
       <Container>
-        <STitle {...this.props}>{this.props.header}</STitle>
+        {this.props.header ? (
+          <STitle {...this.props}>{this.props.header}</STitle>
+        ) : null}
         {this.props.text ? (
           <SText {...this.props}>{this.props.text}</SText>
         ) : this.props.children ? (
@@ -84,7 +97,9 @@ class Text extends React.Component {
 }
 
 Text.defaultProps = {
-  inLineView: false
+  inLineView: false,
+  cutText: false,
+  cutLines: 3
 };
 
 Text.propTypes = {
@@ -101,7 +116,9 @@ Text.propTypes = {
   marginBottom: PropsTypes.string,
   inLineView: PropsTypes.bool,
   textLineHeight: PropsTypes.string,
-  textWeight: PropsTypes.string
+  textWeight: PropsTypes.string,
+  cutText: PropsTypes.bool,
+  cutLines: PropsTypes.number
 };
 
 export default Text;

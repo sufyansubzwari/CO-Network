@@ -49,11 +49,11 @@ export const SLineTime = styled(Container)`
   text-transform: capitalize;
   margin-bottom: 10px;
   > p {
-    font-size: 14px;
+    font-size: 12px;
     font-weight: bold;
     line-height: 20px;
     width: auto;
-    margin: 0 8px;
+    margin: 0 8px 0 0;
     white-space: nowrap;
   }
   > hr {
@@ -61,6 +61,12 @@ export const SLineTime = styled(Container)`
     border-top: solid 1px #f9f9fb;
     margin-top: 10px;
   }
+
+  ${mixins.media.desktop`
+    > p {
+      font-size: 14px;
+    }
+  `};
 `;
 
 export const SImage = styled.img`

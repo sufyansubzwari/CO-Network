@@ -7,6 +7,7 @@ import UploadFile from "./UploadFile";
 import Dates from "./Dates";
 import ProductService from "./Product-Service";
 import Media from "./Media"
+import HeaderInformation from "./HeaderInformation"
 
 export {
   Title,
@@ -17,5 +18,6 @@ export {
   UploadFile,
   Dates,
   ProductService,
-  Media
+  Media,
+  HeaderInformation
 };

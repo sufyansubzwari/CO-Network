@@ -475,6 +475,7 @@ Preview.propTypes = {
   backGroundImage: PropsTypes.string,
   navlinks: PropsTypes.array,
   showAvatar: PropsTypes.bool,
+  data: PropsTypes.object,
   isOpen: PropsTypes.bool,
   navClicked: PropsTypes.func,
   navOptions: PropsTypes.array,

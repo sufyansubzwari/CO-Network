@@ -5,6 +5,7 @@ import TopPreview from "./TopPreview";
 import posed from "react-pose";
 import BackButton from "../BackButton/BackButton";
 import Preview from "./Preview";
+import { HeaderInformation } from "../Preview/components";
 import ReplyBox from "../Messages/components/ReplyBox";
 import Messages from "../Messages/Messages";
 import { insertMessage } from "../Messages/Service/service";
@@ -84,7 +85,7 @@ const NavLinks = styled(Layout)`
   }
 `;
 
-class ChatPreview extends Preview {
+class ColloquiumPreview extends Preview {
   constructor(props) {
     super(props);
     this.state = {
@@ -135,6 +136,23 @@ class ChatPreview extends Preview {
     }
   }
 
+  getNavOptions() {
+    let informationItems = [];
+    let menuItems = [];
+    const elements = this.props.navOptions
+      ? this.props.navOptions.filter((element, index) => {
+          return element.checkVisibility
+            ? element.checkVisibility(element, index)
+            : true;
+        })
+      : [];
+    if (elements.length) {
+      informationItems = elements.filter(e => e.type === "text");
+      menuItems = elements.filter(e => e.type !== "text");
+    }
+    return { informationItems, menuItems };
+  }
+
   getState() {
     let state = "public";
     if (this.props.data && !this.props.data.isPublic) state = "private";
@@ -158,15 +176,6 @@ class ChatPreview extends Preview {
             />
           </Container>
         </Container>
-        <NavLinks
-          style={{
-            display: "flex",
-            flexDirection: "row",
-            justifyContent: "center"
-          }}
-        >
-          {this.getNavOptions()}
-        </NavLinks>
       </SLayout>
     );
   }
@@ -180,6 +189,7 @@ class ChatPreview extends Preview {
   }
 
   render() {
+    const { informationItems, menuItems } = this.getNavOptions();
     return (
       <PreviewContainer
         customTemplateRows={"68px 1fr auto 60px"}
@@ -195,11 +205,11 @@ class ChatPreview extends Preview {
           ref={scroll => (this.scroll = scroll)}
         >
           <Layout
-            customTemplateRows={"90px 1fr"}
-            mdCustomTemplateRows={"65px 68px 1fr"}
+            customTemplateRows={"90px auto 1fr"}
+            mdCustomTemplateRows={"65px auto 1fr"}
             layoutAreas={{
-              xs: `'picture' 'content'`,
-              md: `'picture' 'options' 'content'`
+              xs: `'picture' 'information' 'content'`,
+              md: `'picture' 'information' 'content'`
             }}
             fullY
           >
@@ -211,9 +221,12 @@ class ChatPreview extends Preview {
               allowChangeImages={this.props.allowChangeImages}
               gridArea="picture"
             />
-            <Container hide mdShow>
-              {this.renderOptionsNav()}
-            </Container>
+            <HeaderInformation
+              gridArea="information"
+              {...this.props.data}
+              informationItems={informationItems}
+              menuOperations={menuItems}
+            />
             <Container
               padding={{ md: "15px 25px", xs: "10px" }}
               fullY
@@ -271,13 +284,13 @@ class ChatPreview extends Preview {
   }
 }
 
-ChatPreview.defaultProps = {
+ColloquiumPreview.defaultProps = {
   ...Preview.defaultProps,
   showAvatar: false,
   allowChangeImages: false
 };
 
-ChatPreview.propTypes = {
+ColloquiumPreview.propTypes = {
   ...Preview.propTypes
 };
 
@@ -295,4 +308,4 @@ const mapDispatchToProps = dispatch => {
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(ChatPreview);
+)(ColloquiumPreview);
