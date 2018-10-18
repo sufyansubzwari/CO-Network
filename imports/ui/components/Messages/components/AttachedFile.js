@@ -9,7 +9,7 @@ export default (AttachedFile = props => {
     <Container>
       <SAttachment customTemplateColumns={"1fr auto"} fullX>
         <Layout
-          padding={"15px"}
+          padding={{ md: "15px", xs: "5px 15px" }}
           customTemplateColumns={"auto 1fr"}
           colGap={"10px"}
         >
@@ -21,7 +21,10 @@ export default (AttachedFile = props => {
           </SAttachmentName>
         </Layout>
         <Link download={props.filename} target="_blank" href={props.link}>
-          <Container style={{ cursor: "pointer" }} padding={"15px"}>
+          <Container
+            style={{ cursor: "pointer" }}
+            padding={{ md: "15px", xs: "5px 15px" }}
+          >
             <MaterialIcon type={"download"} />
           </Container>
         </Link>

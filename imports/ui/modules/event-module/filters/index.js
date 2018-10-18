@@ -8,7 +8,11 @@ import {
   MLCheckBoxList,
   Separator
 } from "./../../../components";
-import { DatePickerRange, SalaryRange, CheckBoxList } from "btech-base-forms-component";
+import {
+  CheckBoxList,
+  DatePickerRange,
+  SalaryRange
+} from "btech-base-forms-component";
 import PropsTypes from "prop-types";
 import { connect } from "react-redux";
 import { cleanFilters, setFilters } from "../../../actions/SideBarActions";
@@ -16,6 +20,7 @@ import { GetTags } from "../../../apollo-client/tag";
 import { Query } from "react-apollo";
 import { Meteor } from "meteor/meteor";
 import { GetMyEvents } from "../../../apollo-client/event";
+import { EVENT_TYPE } from "../../../constants";
 
 class EventsFilters extends React.Component {
   constructor(props) {
@@ -29,7 +34,7 @@ class EventsFilters extends React.Component {
       locationTags: [],
       industry: "",
       filters: {},
-      category: [],
+      category: EVENT_TYPE,
       limit: 4,
       eventsFilters: [
         {
@@ -42,22 +47,12 @@ class EventsFilters extends React.Component {
         }
       ]
     };
+    this.eventTypes = EVENT_TYPE;
   }
 
   componentWillMount() {
     this.props.cleanFilters();
   }
-
-  // componentWillReceiveProps(nextProps) {
-  //   if (nextProps.data && !nextProps.data.loading && nextProps.data.tags) {
-  //     let category = JSON.parse(JSON.stringify(nextProps.data.tags));
-  //     this.setState({
-  //       category: category
-  //         .filter(item => !!item.used)
-  //         .sort((a, b) => b.used - a.used)
-  //     });
-  //   }
-  // }
 
   addFilters(type, actives, options) {
     const obj = JSON.parse(JSON.stringify(options));
@@ -238,23 +233,31 @@ class EventsFilters extends React.Component {
             fetchPolicy={"cache-and-network"}
           >
             {({ loading, error, data }) => {
+              if (data && data.tags) console.log(data.tags);
               if (loading) return <div />;
               if (error) return <div>Error</div>;
               return (
                 <MLCheckBoxList
                   showMore
                   limit={this.state.limit}
-                  title={"Event Category"}
+                  title={"Community Event Categories"}
                   sizeList={this.state.category.length}
                   options={
                     data &&
-                    data.tags.slice(0, this.state.limit).map((item, key) => ({
-                      ...item,
-                      number: item.used || 0,
-                      active:
-                        this.state.category[key] &&
-                        this.state.category[key].active
-                    }))
+                    data.tags
+                      .slice(0, this.state.limit)
+                      .map((item, key) => ({
+                        ...item,
+                        number: item.used || 0,
+                        active:
+                          this.state.category[key] &&
+                          this.state.category[key].active
+                      }))
+                      .filter(item => {
+                        return this.eventTypes.some(e => {
+                          return item.label === e.label;
+                        });
+                      })
                   }
                   onSelect={selected =>
                     this.addFilters("category", selected, data.tags)
