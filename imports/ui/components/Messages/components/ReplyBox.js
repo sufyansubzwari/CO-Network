@@ -1,7 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
 import { SReplyBox } from "../components/styledComponents";
-import { Container, Layout } from "btech-layout";
+import { Container, Layout, mixins } from "btech-layout";
 import { TextArea } from "btech-base-forms-component";
 import "emoji-mart/css/emoji-mart.css";
 import { Picker } from "emoji-mart";
@@ -19,13 +19,33 @@ import OutsideClickHandler from "../../OutsideClickHandler/OutsideClickHandler";
 const SAddButton = styled.span`
   position: absolute;
   font-size: 18px;
-  top: 4px;
-  right: 10px;
+  top: 12px;
+  right: 20px;
   cursor: pointer;
+
+  ${mixins.media.desktop`
+    right: 10px;
+    top: 4px;
+  `};
 `;
 
 const SSpan = styled.span`
   cursor: pointer;
+  display: flex;
+  align-items: center;
+
+  i {
+    font-size: 20px;
+  }
+
+  ${mixins.media.desktop`
+    i {
+      font-size: initial;
+    }
+  `};
+`;
+
+const STextAreaContainer = styled(Container)`
   display: flex;
   align-items: center;
 `;
@@ -170,7 +190,10 @@ export class ReplyBox extends React.Component {
   renderMessageOptions() {
     return (
       <Layout
-        colGap={"10px"}
+        fullY
+        mdColGap={"10px"}
+        colGap={"15px"}
+        ml={{ xs: "10px" }}
         customTemplateColumns={"auto auto auto 1fr"}
         style={{ position: "relative" }}
       >
@@ -234,8 +257,9 @@ export class ReplyBox extends React.Component {
 
   render() {
     return (
-      <SReplyBox>
+      <SReplyBox fullY>
         <Layout
+          fullY
           customTemplateColumns={"auto 1fr"}
           padding={{ md: "10px 20px" }}
         >
@@ -246,7 +270,7 @@ export class ReplyBox extends React.Component {
           >
             {this.renderMessageOptions()}
           </GroupRender>
-          <Container relative>
+          <STextAreaContainer relative fullY>
             <TextArea
               textAreaRef={this.TextAreaRef}
               placeholderText={this.props.placeholder}
@@ -270,7 +294,7 @@ export class ReplyBox extends React.Component {
             >
               <MaterialIcon type={"arrow-forward"} />
             </SAddButton>
-          </Container>
+          </STextAreaContainer>
         </Layout>
       </SReplyBox>
     );

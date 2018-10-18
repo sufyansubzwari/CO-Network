@@ -1,6 +1,6 @@
 import React from "react";
 import PropTypes from "prop-types";
-import { cleanFilters, setFilters } from "../../../actions/SideBarActions";
+import {cleanFilters, setFilters, toggleSideBar} from "../../../actions/SideBarActions";
 import { connect } from "react-redux";
 import Notification from "../../Notifications/Sidebar/Notification";
 import NotificationContainer from "../../Notifications/Sidebar/NotificationContainer";
@@ -22,6 +22,7 @@ import { withTracker } from "meteor/react-meteor-data";
 import MessagesCollection from "../../../../api/messages/collection";
 import { userQuery } from "../../../apollo-client/user";
 import moment from "moment/moment";
+import { withRouter } from "react-router-dom";
 
 const SLabel = styled(Label)`
   display: flex;
@@ -97,12 +98,31 @@ class MessagesSidebar extends React.Component {
   }
 
   handleSelect() {
-    let messages = this.state.messages && this.state.selectedItem && this.state.messages[this.state.selectedItem];
+    this.state.messages = this.state.messages.filter(
+      item =>
+        (this.state.type === "direct" && !item.replies) ||
+        (this.state.type === "related" && item.replies)
+    );
+    let messages = this.state.messages && this.state.selectedItem >= 0 && this.state.messages[this.state.selectedItem];
     if (messages && !messages.read) {
       Meteor.call("messages.markAsRead", [messages._id], (error, result) => {
         if (error) return console.log("ERROR - ", error);
       });
     }
+    this.props.closeSideBar();
+    if(messages.type === "private")
+      this.props.history.push("/innovators", { target: messages.owner, openMsg:true });
+    if(messages.type === "public")
+      this.props.history.push("/colloquiums", { target: messages.receptor, openMsg:true });
+    console.log(this.props)
+  }
+
+  setTimeFormat(date) {
+    let today = new Date();
+    today.setHours(0, 0, 0, 0);
+    if (date >= today)
+      return moment(date).fromNow();
+    return moment(date).calendar();
   }
 
   render() {
@@ -197,7 +217,7 @@ class MessagesSidebar extends React.Component {
                       title={owner.profile.name}
                       description={message.text}
                       entity={"ML Society"}
-                      time={moment(message.createdAt).format("hh:mm")}
+                      time={this.setTimeFormat(message.createdAt)}
                       image={owner.profile.image}
                       selected={this.state.selectedItem === index}
                       onClick={() =>
@@ -223,11 +243,12 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => {
   return {
     setFilters: (type, filters) => dispatch(setFilters(type, filters)),
-    cleanFilters: () => dispatch(cleanFilters())
+    cleanFilters: () => dispatch(cleanFilters()),
+    closeSideBar: () => dispatch(toggleSideBar(false, false, false)),
   };
 };
 
-export default connect(
+export default withRouter(connect(
   mapStateToProps,
   mapDispatchToProps
 )(
@@ -251,5 +272,5 @@ export default connect(
       loading: !subscription.ready(),
       messages: messages
     };
-  })(MessagesSidebar)
+  })(MessagesSidebar))
 );

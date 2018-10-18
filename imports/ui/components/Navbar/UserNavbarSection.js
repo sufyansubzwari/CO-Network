@@ -150,6 +150,8 @@ class UserNavbarSection extends React.Component {
 
   render() {
     const isAuthenticated = this.props.curUser;
+    const notificationsCount = this.props.notifications || 0;
+    const messagesCount = this.props.messages || 0;
     return (
       <Container mdMinH={"170px"}>
         <Layout
@@ -211,7 +213,7 @@ class UserNavbarSection extends React.Component {
                       number={{
                         top: "-5px",
                         right: "-5px",
-                        value: this.props.messages || 0,
+                        value: messagesCount,
                         primary: true,
                         size: { width: 22, height: 24 }
                       }}
@@ -223,11 +225,16 @@ class UserNavbarSection extends React.Component {
                     <HNavItem
                       mt={{ xs: "5px", md: "0" }}
                       size={this.notSize}
-                      icon={{ size: 35, src: "/images/nav/notifications.svg" }}
+                      icon={{
+                        size: 35,
+                        src: notificationsCount
+                          ? "/images/nav/notifications.svg"
+                          : "/images/nav/notifications-empty.svg"
+                      }}
                       number={{
                         top: "-5px",
                         right: "-5px",
-                        value: this.props.notifications || 0,
+                        value: notificationsCount,
                         primary: true,
                         size: { width: 22, height: 24 }
                       }}

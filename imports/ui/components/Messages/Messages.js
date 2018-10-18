@@ -94,7 +94,7 @@ export default withTracker(props => {
         }
       : { receptor: props.receptor._id };
   let messages = MessagesCollection.find(
-    { ...query },
+    { ...query, type: props.type },
     { sort: { createdAt: -1 }, limit: limit || 10 }
   ).fetch();
   return {

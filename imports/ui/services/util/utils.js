@@ -16,6 +16,13 @@ const getImageFromS3 = (id,prefix) => {
   let bucketPath = "https://s3.amazonaws.com/mlsociety-public";
   return prefix && prefix !== "" && prefix !== "base" ? `${bucketPath}/resources/${prefix}/${id}` :  `${bucketPath}/resources/${id}`;
 
-}
+};
 
-export default {formatSize, getImageFromS3};
+const getNumberFromPose = number => {
+  if (!number) return 0;
+  const type = typeof x;
+  if (type === "string") return Number(number.replace("%", ""));
+  return number;
+};
+
+export default { formatSize, getNumberFromPose, getImageFromS3 };

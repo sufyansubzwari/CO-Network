@@ -445,6 +445,7 @@ class Preview extends React.Component {
               <ReplyBox
                 name={"textMessage"}
                 model={this.state}
+                isMobile={this.props.isMobile}
                 onTextChange={text => this.setState({ textMessage: text })}
                 onKeyPress={event => this.onKeyPress(event)}
                 onSend={() => this.handleMessage(this.state.textMessage)}
