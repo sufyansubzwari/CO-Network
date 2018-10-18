@@ -231,7 +231,7 @@ class MessagesSidebar extends React.Component {
                       viewed={message.read}
                       title={owner.profile.name}
                       description={message.text}
-                      entity={"ML Society"}
+                      // entity={"ML Society"}
                       time={this.setTimeFormat(message.createdAt)}
                       image={owner.profile.image}
                       selected={this.state.selectedItem === index}
