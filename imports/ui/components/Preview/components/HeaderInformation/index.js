@@ -1,10 +1,14 @@
 import React from "react";
 import PropTypes from "prop-types";
 import { Container, Layout } from "btech-layout";
-import { HeaderMainLayout, ZoomContainer, MenuOption } from "./assets";
-import Location from "../Location";
-import Text from "../Text";
-import Title from "../Title";
+import {
+  HeaderDescription,
+  HeaderLocation,
+  HeaderMainLayout,
+  HeaderTitle,
+  MenuOption,
+  ZoomContainer
+} from "./assets";
 import { TagList } from "btech-base-forms-component";
 import ButtonMenu from "../../../ButtonMenu/ButtonMenu";
 import MaterialIcon from "react-material-iconic-font";
@@ -27,11 +31,15 @@ const HeaderInformation = function(props) {
   // todo: put the information items
   return (
     <ZoomContainer fullY>
-      <HeaderMainLayout fullY padding={{ md: "15px 25px", xs: "10px" }}>
+      <HeaderMainLayout
+        rowGap={"5px"}
+        mdfullY
+        padding={{ md: "15px 25px", xs: "10px" }}
+      >
         <Container>
           <Layout customTemplateColumns={"1fr auto auto"}>
             <Container>
-              <Title removeMargin text={props.title} />
+              <HeaderTitle removeMargin text={props.title} />
             </Container>
             <Container />
             <Container>
@@ -49,10 +57,10 @@ const HeaderInformation = function(props) {
           </Layout>
         </Container>
         <Container>
-          <Location removeMargin location={props.place} />
+          <HeaderLocation removeMargin location={props.place} />
         </Container>
         <Container>
-          <Text
+          <HeaderDescription
             color={"#2b2b2bb3"}
             cutText
             cutLines={2}
