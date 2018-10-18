@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import moment from "moment/moment";
 import { Container, Layout, mixins } from "btech-layout";
 import ChatUserInfo from "./ChatUserInfo";
-import { SReplyButton, SText, SUser } from "./styledComponents";
+import { SReplyButton,SDeleteButton, SText, SUser } from "./styledComponents";
 import MaterialIcon from "react-material-iconic-font";
 import styled from "styled-components";
 import AttachedImage from "./Image";
@@ -12,6 +12,7 @@ import LightBox from "react-images";
 import { Emojione } from "react-emoji-render";
 import "emoji-mart/css/emoji-mart.css";
 import {Utils} from "../../../services";
+import {Meteor} from 'meteor/meteor';
 
 export const SMessageItem = styled(Container)`
   line-height: 15px;
@@ -39,6 +40,18 @@ class MessageItem extends React.Component {
           null;
   }
 
+  handleReply(props){
+    event.stopPropagation();
+    event.preventDefault();
+    props.onReplyAction && props.onReplyAction(props.message);
+  }
+
+  handleDelete(props){
+    event.stopPropagation();
+    event.preventDefault();
+    props.onDeleteAction && props.onDeleteAction(props.message);
+  }
+
   render() {const {props} = this;
   return (
     <Layout
@@ -57,16 +70,16 @@ class MessageItem extends React.Component {
             {moment(props.message && props.message.createdAt).format("h:mm a"
           )}</span>
           {props.message && props.message.canReply ? (
-            <SReplyButton
-              onClick={event => {
-                event.stopPropagation();
-                event.preventDefault();
-                props.onReplyAction && props.onReplyAction(props.message);
-              }}
-            >
+            <SReplyButton onClick={this.handleReply.bind(this, props)}>
               <MaterialIcon type={"mail-reply"} />
               <span style={{ marginLeft: "5px" }}>Reply</span>
             </SReplyButton>
+          ) : null}
+          {props.message && props.owner && props.message.owner === Meteor.userId() ? (
+            <SDeleteButton marginLeft={!props.message && !props.message.canReply} onClick={this.handleDelete.bind(this, props)}>
+              <MaterialIcon type={"delete"} />
+              <span style={{ marginLeft: "5px" }}>Delete</span>
+            </SDeleteButton>
           ) : null}
         </SUser>
         <SText isActive={props.isActive} >
@@ -112,7 +125,8 @@ class MessageItem extends React.Component {
 MessageItem.propTypes = {
   isActive: PropTypes.bool,
   onSelect: PropTypes.func,
-  onReplyAction: PropTypes.func
+  onReplyAction: PropTypes.func,
+  onDeleteAction: PropTypes.func
 };
 
 export default MessageItem;

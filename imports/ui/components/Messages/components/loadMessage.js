@@ -86,6 +86,14 @@ class LoadMessages extends Component {
     else this.setState({ replyMessage: item._id });
   }
 
+  handleDelete(item) {
+    if (item && item._id) {
+      Meteor.call("messages.remove", item._id, (error, result) => {
+        if (error) return console.log("ERROR - ", error);
+      });
+    }
+  }
+
   handleMessageBlocks = messages => {
     let blocks = {
       today: [],
@@ -138,7 +146,7 @@ class LoadMessages extends Component {
     let index = this.state.listFiles.findIndex(item => item.name === file.name);
     if (index > -1) listFiles[index] = { ...listFiles[index], link: file.link };
     else
-        listFiles.push({ ...file, size: size, isImage: false, loading: false });
+      listFiles.push({ ...file, size: size, isImage: false, loading: false });
     this.setState({
       attachment: attach,
       listFiles: listFiles
@@ -215,25 +223,25 @@ class LoadMessages extends Component {
     this.setState({ flag: !this.state.flag });
   }
 
-    handleLoading(loading, file, isImage) {
-        let listFiles = this.state.listFiles;
-        let nfile = {
-            name: file.name,
-            type: file.type,
-            size: file.size,
-            isImage: isImage,
-            loading: loading
-        };
-        let index = this.state.listFiles.findIndex(item => item.name === file.name);
-        if (index > -1) {
-            listFiles[index] = { ...listFiles[index], loading: loading };
-        } else {
-            listFiles.push(nfile);
-        }
-        this.setState({
-            listFiles: listFiles
-        });
+  handleLoading(loading, file, isImage) {
+    let listFiles = this.state.listFiles;
+    let nfile = {
+      name: file.name,
+      type: file.type,
+      size: file.size,
+      isImage: isImage,
+      loading: loading
+    };
+    let index = this.state.listFiles.findIndex(item => item.name === file.name);
+    if (index > -1) {
+      listFiles[index] = { ...listFiles[index], loading: loading };
+    } else {
+      listFiles.push(nfile);
     }
+    this.setState({
+      listFiles: listFiles
+    });
+  }
 
   renderMessages(blocks, parent) {
     const {
@@ -260,9 +268,10 @@ class LoadMessages extends Component {
                     <MessageItem
                       owner={owner}
                       isActive={k === selectMessageItem}
-                      onSelect={() => this.selectMessage(k)}
+                      onSelect={this.selectMessage.bind(this, k)}
                       message={message}
-                      onReplyAction={item => this.handleReply(item)}
+                      onReplyAction={this.handleReply.bind(this)}
+                      onDeleteAction={this.handleDelete.bind(this)}
                     />
                     {message._id === replyMessage ? (
                       <Container ml={{ md: "20px" }} mb={"15px"}>
@@ -306,7 +315,7 @@ class LoadMessages extends Component {
                             this.onImageUpload(file, size)
                           }
                           getLoading={(loading, file, isImage) =>
-                              this.handleLoading(loading, file, isImage)
+                            this.handleLoading(loading, file, isImage)
                           }
                         />
                       </Container>
@@ -353,10 +362,12 @@ class LoadMessages extends Component {
       ? groups.map((item, key) => {
           return (
             <Container key={key}>
-              <SLineTime>
-                <p>{item}</p>
-                <hr />
-              </SLineTime>
+              {blocks[item].length ? (
+                <SLineTime>
+                  <p>{item}</p>
+                  <hr />
+                </SLineTime>
+              ) : null}
               {this.renderMessages(blocks[item])}
             </Container>
           );
