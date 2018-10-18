@@ -106,6 +106,14 @@ class FirstStep extends React.Component {
     );
   }
 
+    handleSwitchWidth = () => {
+        return window.screen.width < 768 ? 40 : undefined;
+    }
+
+    handleSwitchHeight = () => {
+        return window.screen.height < 768 ? 20 : undefined;
+    }
+
   tagsSuggested(tags) {
     if (tags) {
       let sug = tags.map(element => {
@@ -209,6 +217,8 @@ class FirstStep extends React.Component {
         <Container>
           <SCommingSoon>Coming Soon</SCommingSoon>
           <SwitchButton
+            buttonWidth={this.handleSwitchWidth()}
+            buttonHeight={this.handleSwitchHeight()}
             checked={!this.state.colloquium.isPublic}
             disabled
             text={"Make Private this Colloquium"}

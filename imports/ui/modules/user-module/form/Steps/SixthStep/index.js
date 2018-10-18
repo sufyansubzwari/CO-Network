@@ -104,13 +104,21 @@ class SixthStep extends React.Component {
     this.setState({ user: this.state.user }, () => this.notifyParent());
   }
 
+  handleSwitchWidth = () => {
+    return window.screen.width < 768 ? 40 : undefined;
+  }
+
+  handleSwitchHeight = () => {
+      return window.screen.height < 768 ? 20 : undefined;
+  }
+
   render() {
     return (
       <FormMainLayout>
         <Container mt={"15px"}>
           <SwitchButton
-            buttonWidth={40}
-            buttonHeight={20}
+            buttonWidth={this.handleSwitchWidth()}
+            buttonHeight={this.handleSwitchHeight()}
             onChange={value => {
               const user = this.state.user;
               user.speaker.join = value;
