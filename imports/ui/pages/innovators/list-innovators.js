@@ -82,7 +82,7 @@ class ListInnovators extends Component {
           variables: {
             limit: 1,
             filter: "",
-            user: { _id: nextProps.target}
+            user: { _id: nextProps.location.state.target}
           },
           updateQuery: (
             previousResult,
