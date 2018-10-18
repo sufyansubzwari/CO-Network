@@ -92,6 +92,7 @@ class SideBar extends Component {
     } else if (this.props.isMessagesAction) {
       return (
         <MessagesSideBar
+          {...this.props}
           onClose={() =>
             this.props.toggleSideBar && this.props.toggleSideBar(false)
           }

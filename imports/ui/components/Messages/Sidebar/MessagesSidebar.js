@@ -1,28 +1,31 @@
 import React from "react";
 import PropTypes from "prop-types";
 import {cleanFilters, setFilters, toggleSideBar} from "../../../actions/SideBarActions";
-import { connect } from "react-redux";
+import {connect} from "react-redux";
 import Notification from "../../Notifications/Sidebar/Notification";
+import NotificationBack from "../../Notifications/Sidebar/NotificationBack";
 import NotificationContainer from "../../Notifications/Sidebar/NotificationContainer";
-import { Layout, Container } from "btech-layout";
-import { Separator, Label } from "../../../components";
+import {Layout, Container, mixins} from "btech-layout";
+import {Separator, Label} from "../../../components";
 import MaterialIcon from "react-material-iconic-font";
 import styled from "styled-components";
 import {
-  DropdownItem,
-  DropdownMenu,
-  DropdownToggle,
-  Dropdown
+    DropdownItem,
+    DropdownMenu,
+    DropdownToggle,
+    Dropdown
 } from "reactstrap";
-import { theme } from "../../../theme";
-import { MESSAGES_SIDEBAR_OPTIONS } from "../../../constants";
-import { Query } from "react-apollo";
-import { Meteor } from "meteor/meteor";
-import { withTracker } from "meteor/react-meteor-data";
+import {theme} from "../../../theme";
+import {MESSAGES_SIDEBAR_OPTIONS} from "../../../constants";
+import {Query} from "react-apollo";
+import {Meteor} from "meteor/meteor";
+import {withTracker} from "meteor/react-meteor-data";
 import MessagesCollection from "../../../../api/messages/collection";
-import { userQuery } from "../../../apollo-client/user";
+import {userQuery} from "../../../apollo-client/user";
 import moment from "moment/moment";
-import { withRouter } from "react-router-dom";
+import {withRouter} from "react-router-dom";
+import posed from "react-pose/lib/index";
+import {Utils} from "../../../services";
 
 const SLabel = styled(Label)`
   display: flex;
@@ -45,7 +48,7 @@ const SDropdownItem = styled(DropdownItem)`
 
   :hover {
     background-color: ${props =>
-      props.optionBackColor
+    props.optionBackColor
         ? props.optionBackColor
         : theme.color.dropDownHover} !important;
     outline: none;
@@ -64,229 +67,278 @@ const RLayout = styled(Layout)`
   }
 `;
 
+const SMessageStyled = styled(Container)`
+  ${mixins.media.desktop`
+    transform:none !important;
+  `};
+`;
+
+const SDragContainer = posed(SMessageStyled)({
+    hoverable: true,
+    draggable: "x",
+    dragBounds: {left: "0%", right: "100%"},
+    dragEnd: {transition: "spring"}
+});
+
+
 class MessagesSidebar extends React.Component {
-  constructor(props) {
-    super(props);
+    constructor(props) {
+        super(props);
 
-    this.state = {
-      messages: [],
-      selectedItem: -1,
-      type: "direct",
-      read: "Unread",
-      dropDownOpen: false
-    };
+        this.state = {
+            messages: [],
+            selectedItem: -1,
+            type: "direct",
+            read: "Unread",
+            dropDownOpen: false,
+            isDeleting: false
+        };
 
-    this.deleteMessage = this.deleteMessage.bind(this);
-  }
-
-  componentWillMount() {}
-
-  componentWillReceiveProps(nextProps) {
-    if (nextProps.messages) {
-      this.setState({
-        messages: nextProps.messages
-      });
+        this.deleteMessage = this.deleteMessage.bind(this);
     }
-  }
 
-  handleClear() {
-    Meteor.call(
-      "messages.markAsRead",
-      this.state.messages.map(item => item._id),
-      (error, result) => {
-        if (error) return console.log("ERROR - ", error);
-      }
-    );
-  }
-
-  handleSelect() {
-    this.state.messages = this.state.messages.filter(
-      item =>
-        (this.state.type === "direct" && !item.replies && (this.state.read === "All" ? true : this.state.read === "Read" ? item.read : !item.read )) ||
-        (this.state.type === "related" && item.replies && (this.state.read === "All" ? true : this.state.read === "Read" ? item.read : !item.read ))
-    );
-    let messages = this.state.messages && this.state.selectedItem >= 0 && this.state.messages[this.state.selectedItem];
-    if (messages && !messages.read) {
-      Meteor.call("messages.markAsRead", [messages._id], (error, result) => {
-        if (error) return console.log("ERROR - ", error);
-      });
+    componentWillMount() {
     }
-    this.props.closeSideBar();
-    if(messages.type === "private")
-      this.props.history.push("/innovators", { target: messages.owner, openMsg:true });
-    if(messages.type === "public")
-      this.props.history.push("/colloquiums", { target: messages.receptor, openMsg:true });
-    console.log(this.props)
-  }
 
-  setTimeFormat(date) {
-    let today = new Date();
-    today.setHours(0, 0, 0, 0);
-    if (date >= today)
-      return moment(date).fromNow();
-    return moment(date).calendar();
-  }
+    componentWillReceiveProps(nextProps) {
+        if (nextProps.messages) {
+            this.setState({
+                messages: nextProps.messages
+            });
+        }
+    }
 
-  deleteMessage(msg, index){
-    // this.state.messages = this.state.messages.filter(
-    //   item =>
-    //     (this.state.type === "direct" && !item.replies && (this.state.read === "All" ? true : this.state.read === "Read" ? item.read : !item.read )) ||
-    //     (this.state.type === "related" && item.replies && (this.state.read === "All" ? true : this.state.read === "Read" ? item.read : !item.read ))
-    // );
-    let messages = msg;
-    messages.deleted = true;
-    Meteor.call("messages.update", messages, (error, result) => {
-      if (error) return console.log("ERROR - ", error);
-    });
-  }
+    handleClear() {
+        Meteor.call(
+            "messages.markAsRead",
+            this.state.messages.map(item => item._id),
+            (error, result) => {
+                if (error) return console.log("ERROR - ", error);
+            }
+        );
+    }
 
-  render() {
-    return (
-      <NotificationContainer
-        title={"Messages"}
-        onClose={() => this.props.onClose && this.props.onClose()}
-        onClear={() => this.handleClear()}
-        childrens={this.state.messages.length}
-      >
-        <Container>
-          <RLayout padding={"10px 20px"} customTemplateColumns={"1fr auto"}>
-            <Layout customTemplateColumns={"auto auto 1fr"} colGap={"20px"}>
-              <SLabel
-                active={this.state.type === "direct"}
-                text={"Direct"}
-                onClick={() =>
-                  this.setState({ type: "direct", selectedItem: -1 })
-                }
-              />
-              <SLabel
-                active={this.state.type === "related"}
-                text={"Related"}
-                onClick={() =>
-                  this.setState({ type: "related", selectedItem: -1 })
-                }
-              />
-              <div />
-            </Layout>
-            <Container>
-              <Dropdown
-                isOpen={this.state.dropDownOpen}
-                toggle={() =>
-                  this.setState({ dropDownOpen: !this.state.dropDownOpen })
-                }
-              >
-                <DropdownToggle
-                  size="sm"
-                  style={{
-                    padding: this.props.padding
-                      ? this.props.padding
-                      : "initial",
-                    color: "black",
-                    border: "none",
-                    boxShadow: "none",
-                    backgroundColor: "transparent"
-                  }}
-                >
-                  <Span>{this.state.read}</Span>
-                  <MaterialIcon type={"chevron-down"} />
-                </DropdownToggle>
-                <DropdownMenu>
-                  {MESSAGES_SIDEBAR_OPTIONS.map((option, index) => (
-                    <SDropdownItem
-                      key={index}
-                      onClick={() => this.setState({ read: option })}
-                    >
-                      {option}
-                    </SDropdownItem>
-                  ))}
-                </DropdownMenu>
-              </Dropdown>
-            </Container>
-          </RLayout>
-          <Separator />
-        </Container>
+    handleSelect() {
+        this.state.messages = this.state.messages.filter(
+            item =>
+                (this.state.type === "direct" && !item.replies && (this.state.read === "All" ? true : this.state.read === "Read" ? item.read : !item.read)) ||
+                (this.state.type === "related" && item.replies && (this.state.read === "All" ? true : this.state.read === "Read" ? item.read : !item.read))
+        );
+        let messages = this.state.messages && this.state.selectedItem >= 0 && this.state.messages[this.state.selectedItem];
+        if (messages && !messages.read) {
+            Meteor.call("messages.markAsRead", [messages._id], (error, result) => {
+                if (error) return console.log("ERROR - ", error);
+            });
+        }
+        this.props.closeSideBar();
+        if (messages.type === "private")
+            this.props.history.push("/innovators", {target: messages.owner, openMsg: true});
+        if (messages.type === "public")
+            this.props.history.push("/colloquiums", {target: messages.receptor, openMsg: true});
+        console.log(this.props)
+    }
 
-        {this.state.messages &&
-          this.state.messages.length > 0 &&
-          this.state.messages
-            .filter(
-              item =>
-                (this.state.type === "direct" && !item.replies && (this.state.read === "All" ? true : this.state.read === "Read" ? item.read : !item.read )) ||
-                (this.state.type === "related" && item.replies && (this.state.read === "All" ? true : this.state.read === "Read" ? item.read : !item.read ))
-            )
-            .map((message, index) => (
-              <Query
-                key={index}
-                query={userQuery}
-                variables={{ id: message.owner }}
-                fetchPolicy={"cache-and-network"}
-              >
-                {({ loading, error, data }) => {
-                  if (loading) return <div />;
-                  if (error) return <div />;
-                  const owner = data.user;
-                  return (
-                    <Notification
-                      hasIcon={true}
-                      key={index}
-                      viewed={message.read}
-                      title={owner.profile.name}
-                      description={message.text}
-                      // entity={"ML Society"}
-                      time={this.setTimeFormat(message.createdAt)}
-                      image={owner.profile.image}
-                      selected={this.state.selectedItem === index}
-                      onClick={() =>
-                        this.setState({ selectedItem: index === this.state.selectedItem ? -1 : index }, () =>
-                          this.handleSelect()
-                        )
-                      }
-                      onDelete={this.deleteMessage.bind(this, message, index)}
-                    />
-                  );
-                }}
-              </Query>
-            ))}
-      </NotificationContainer>
-    );
-  }
+    setTimeFormat(date) {
+        let today = new Date();
+        today.setHours(0, 0, 0, 0);
+        if (date >= today)
+            return moment(date).fromNow();
+        return moment(date).calendar();
+    }
+
+    deleteMessage(msg, index) {
+        // this.state.messages = this.state.messages.filter(
+        //   item =>
+        //     (this.state.type === "direct" && !item.replies && (this.state.read === "All" ? true : this.state.read === "Read" ? item.read : !item.read )) ||
+        //     (this.state.type === "related" && item.replies && (this.state.read === "All" ? true : this.state.read === "Read" ? item.read : !item.read ))
+        // );
+        this.setState(
+            {
+                isDeleting: true
+            }, () => {
+                let messages = msg;
+                messages.deleted = true;
+                Meteor.call("messages.update", messages, (error, result) => {
+                    if (error) return console.log("ERROR - ", error);
+                })
+                setTimeout(() => {
+                    this.setState({isDeleting: false});
+                }, 1000);
+            })
+
+    }
+
+    observerDragBoundaries(x,
+                           index,
+                           message,) {
+        let value = Utils.getNumberFromPose(x);
+        if (value >= 85 && this.props.isMobile && !this.state.isDeleting) {
+            this.deleteMessage(message, index)
+        }
+    }
+
+    render() {
+        return (
+            <NotificationContainer
+                title={"Messages"}
+                onClose={() => this.props.onClose && this.props.onClose()}
+                onClear={() => this.handleClear()}
+                childrens={this.state.messages.length}
+            >
+                <Container>
+                    <RLayout padding={"10px 20px"} customTemplateColumns={"1fr auto"}>
+                        <Layout customTemplateColumns={"auto auto 1fr"} colGap={"20px"}>
+                            <SLabel
+                                active={this.state.type === "direct"}
+                                text={"Direct"}
+                                onClick={() =>
+                                    this.setState({type: "direct", selectedItem: -1})
+                                }
+                            />
+                            <SLabel
+                                active={this.state.type === "related"}
+                                text={"Related"}
+                                onClick={() =>
+                                    this.setState({type: "related", selectedItem: -1})
+                                }
+                            />
+                            <div/>
+                        </Layout>
+                        <Container>
+                            <Dropdown
+                                isOpen={this.state.dropDownOpen}
+                                toggle={() =>
+                                    this.setState({dropDownOpen: !this.state.dropDownOpen})
+                                }
+                            >
+                                <DropdownToggle
+                                    size="sm"
+                                    style={{
+                                        padding: this.props.padding
+                                            ? this.props.padding
+                                            : "initial",
+                                        color: "black",
+                                        border: "none",
+                                        boxShadow: "none",
+                                        backgroundColor: "transparent"
+                                    }}
+                                >
+                                    <Span>{this.state.read}</Span>
+                                    <MaterialIcon type={"chevron-down"}/>
+                                </DropdownToggle>
+                                <DropdownMenu>
+                                    {MESSAGES_SIDEBAR_OPTIONS.map((option, index) => (
+                                        <SDropdownItem
+                                            key={index}
+                                            onClick={() => this.setState({read: option})}
+                                        >
+                                            {option}
+                                        </SDropdownItem>
+                                    ))}
+                                </DropdownMenu>
+                            </Dropdown>
+                        </Container>
+                    </RLayout>
+                    <Separator/>
+                </Container>
+
+                {this.state.messages &&
+                this.state.messages.length > 0 &&
+                this.state.messages
+                    .filter(
+                        item =>
+                            (this.state.type === "direct" && !item.replies && (this.state.read === "All" ? true : this.state.read === "Read" ? item.read : !item.read)) ||
+                            (this.state.type === "related" && item.replies && (this.state.read === "All" ? true : this.state.read === "Read" ? item.read : !item.read))
+                    )
+                    .map((message, index) => (
+                        <Query
+                            key={index}
+                            query={userQuery}
+                            variables={{id: message.owner}}
+                            fetchPolicy={"cache-and-network"}
+                        >
+                            {({loading, error, data}) => {
+                                if (loading) return <div/>;
+                                if (error) return <div/>;
+                                const owner = data.user;
+                                return (
+                                    <Container relative>
+                                        <NotificationBack/>
+                                        <SDragContainer
+                                            relative
+                                            onValueChange={{
+                                                x: x =>
+                                                    this.observerDragBoundaries(
+                                                        x,
+                                                        index,
+                                                        message
+                                                    ),
+                                            }}
+                                        >
+                                            <Notification
+                                                hasIcon={true}
+                                                key={index}
+                                                viewed={message.read}
+                                                title={owner.profile.name}
+                                                description={message.text}
+                                                // entity={"ML Society"}
+                                                time={this.setTimeFormat(message.createdAt)}
+                                                image={owner.profile.image}
+                                                selected={this.state.selectedItem === index}
+                                                onClick={() =>
+                                                    this.setState({selectedItem: index === this.state.selectedItem ? -1 : index}, () =>
+                                                        this.handleSelect()
+                                                    )
+                                                }
+                                                onDelete={this.deleteMessage.bind(this, message, index)}
+                                            />
+                                        </SDragContainer>
+                                    </Container>
+                                );
+                            }}
+                        </Query>
+                    ))}
+            </NotificationContainer>
+        );
+    }
 }
 
 const mapStateToProps = state => {
-  const {} = state;
-  return {};
+    const {} = state;
+    return {};
 };
 
 const mapDispatchToProps = dispatch => {
-  return {
-    setFilters: (type, filters) => dispatch(setFilters(type, filters)),
-    cleanFilters: () => dispatch(cleanFilters()),
-    closeSideBar: () => dispatch(toggleSideBar(false, false, false)),
-  };
+    return {
+        setFilters: (type, filters) => dispatch(setFilters(type, filters)),
+        cleanFilters: () => dispatch(cleanFilters()),
+        closeSideBar: () => dispatch(toggleSideBar(false, false, false)),
+    };
 };
 
 export default withRouter(connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(
-  withTracker(() => {
-    const limit = 20;
-    const userId = Meteor.userId();
-    const subscription = Meteor.subscribe(
-      "messages.myNewMessages",
-      limit || 20
-    );
-    let messages = MessagesCollection.find(
-      {
-        $or: [
-          { receptor: userId },
-          { owner: userId, replies: { $exists: true } }
-        ]
-      },
-      { sort: { createdAt: -1 }, limit: limit || 20 }
-    ).fetch();
-    return {
-      loading: !subscription.ready(),
-      messages: messages.filter(item => !item.deleted)
-    };
-  })(MessagesSidebar))
+    mapStateToProps,
+    mapDispatchToProps
+    )(
+    withTracker(() => {
+        const limit = 20;
+        const userId = Meteor.userId();
+        const subscription = Meteor.subscribe(
+            "messages.myNewMessages",
+            limit || 20
+        );
+        let messages = MessagesCollection.find(
+            {
+                $or: [
+                    {receptor: userId},
+                    {owner: userId, replies: {$exists: true}}
+                ]
+            },
+            {sort: {createdAt: -1}, limit: limit || 20}
+        ).fetch();
+        return {
+            loading: !subscription.ready(),
+            messages: messages.filter(item => !item.deleted)
+        };
+    })(MessagesSidebar))
 );
