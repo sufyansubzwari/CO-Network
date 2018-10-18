@@ -194,7 +194,6 @@ export default class MLTagsInput extends Component {
         <InputGroup style={{ height: "auto", padding: "0 8px" }}>
           <InputGroupAddon addonType="prepend">
             <TagList
-              tagStyle={{fontSize: '13px', lineHeight: '20px'}}
               useIcon={this.props.useIcon}
               onCategoryChange={this.props.onCategoryChange}
               style={{ marginTop: "5px" }}
