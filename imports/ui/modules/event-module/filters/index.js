@@ -233,7 +233,6 @@ class EventsFilters extends React.Component {
             fetchPolicy={"cache-and-network"}
           >
             {({ loading, error, data }) => {
-              if (data && data.tags) console.log(data.tags);
               if (loading) return <div />;
               if (error) return <div>Error</div>;
               return (
