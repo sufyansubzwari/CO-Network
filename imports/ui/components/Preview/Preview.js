@@ -349,6 +349,7 @@ class Preview extends React.Component {
           autoHide
           autoHideDuration={200}
           style={{ height: "100%" }}
+          ref={scroll => (this.scroll = scroll)}
         >
           <Layout
             fullY
