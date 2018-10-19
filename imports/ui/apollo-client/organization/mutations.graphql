@@ -16,3 +16,17 @@ mutation UpdateOrgImages($id: String!, $image: String, $cover: String) {
     _id
   }
 }
+
+mutation UpdateIdentitiesOrg($id: String!, $identities: [SocialIdentityInput]!) {
+    updateIdentitiesOrg(_id: $id, identities: $identities) {
+        _id
+        identities {
+            provider
+            user_id
+            profileData {
+                name
+                email
+            }
+       }
+    }
+}

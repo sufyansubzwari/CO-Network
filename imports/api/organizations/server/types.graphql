@@ -21,6 +21,7 @@ type Organizations {
     place: Places
     products: [Products]
     media: [Media]
+    identities: [SocialIdentity]
 }
 
 type Tech {
@@ -118,6 +119,7 @@ input OrganizationsInput {
     place: PlacesInput
     products: [ProductsInput]
     media: [MediaInput]
+    identities: [SocialIdentityInput]
 }
 
 input ProductsInput {
@@ -179,4 +181,5 @@ type Mutation {
     updateImage(_id: String!, image: String, cover: String): Organizations
     deleteOrganization(_id: String!): Organizations
     updateOrgImage(_id: String!, image: String, cover: String): Organizations
+    updateIdentitiesOrg(_id: String!, identities: [SocialIdentityInput]!): Organizations
 }

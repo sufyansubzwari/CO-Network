@@ -80,6 +80,13 @@ class OrganizationsService {
       .find(query, { ...limit, sort: { createdAt: -1 } })
       .fetch();
   };
+
+  static updateIdentitiesOrg = async (id, identities) => {
+      await Organizations.collection.update(id, {
+          $set: { "identities": identities }
+      });
+      return Organizations.collection.findOne(id);
+  };
 }
 
 export default OrganizationsService;
