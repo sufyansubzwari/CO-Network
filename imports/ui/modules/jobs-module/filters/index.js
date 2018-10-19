@@ -58,9 +58,11 @@ class JobsFilters extends React.Component {
     this.props.cleanFilters();
   }
 
-  addFilters(type, actives) {
-    const selected = this.state[type].map((category, index) => {
+  addFilters(type, actives, options) {
+    const opt = JSON.parse(JSON.stringify(options));
+    const selected = opt.map((category, index) => {
       category["active"] = actives[index];
+      category["label"] = category["_id"];
       return category;
     });
     const activeSelected = selected.filter(element => element.active);
@@ -207,7 +209,7 @@ class JobsFilters extends React.Component {
                     active:
                       this.state.jobType[key] && this.state.jobType[key].active
                   }))}
-                  getValue={selected => this.addFilters("jobType", selected)}
+                  getValue={selected => this.addFilters("jobType", selected, data.jobCounts)}
                 />
               );
             }}
@@ -232,7 +234,7 @@ class JobsFilters extends React.Component {
                       this.state.jobExperience[key].active
                   }))}
                   getValue={selected =>
-                    this.addFilters("jobExperience", selected)
+                    this.addFilters("jobExperience", selected, data.jobCounts)
                   }
                 />
               );
