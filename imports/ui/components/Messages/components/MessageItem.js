@@ -32,7 +32,17 @@ const LightBoxTheme = {
             opacity: 1,
         },
         ':focus': { outline:'0' }
-},
+    },
+    arrow: {
+        color: "white",
+        fill: 'white',
+        opacity: 0.6,
+        transition: 'all 200ms',
+        ':hover': {
+            opacity: 1,
+        },
+        ':focus': { outline:'0' }
+    }
 }
 
 /**
