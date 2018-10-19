@@ -362,7 +362,7 @@ class LoadMessages extends Component {
       ? groups.map((item, key) => {
           return (
             <Container key={key}>
-              {blocks[item].length ? (
+              {blocks[item] && blocks[item].length ? (
                 <SLineTime>
                   <p>{item}</p>
                   <hr />
