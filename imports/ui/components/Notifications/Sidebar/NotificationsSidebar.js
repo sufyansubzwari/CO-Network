@@ -11,7 +11,7 @@ import { Mutation } from "react-apollo";
 import moment from "moment";
 import posed from "react-pose/lib/index";
 import styled from "styled-components";
-import {Utils} from "../../../services";
+import { Utils } from "../../../services";
 import NotificationBack from "./NotificationBack";
 
 const SNotificationStyled = styled(Container)`
@@ -67,20 +67,11 @@ class NotificationsSidebar extends React.Component {
     );
   }
 
-  observerDragBoundaries(
-    x,
-    notification,
-    index,
-    deleteNotification,
-    updateNotification
-  ) {
-    let value = Utils.getNumberFromPose(x);
-    if (value >= 85 && this.props.isMobile && !this.state.isDeleting) {
+  observerDragBoundaries(x, notification, index, deleteNotification) {
+    let value = Utils.getPercentOfDrag(x);
+    if (value >= 65 && this.props.isMobile && !this.state.isDeleting) {
       this.deleteNotification(notification, index, deleteNotification);
     }
-    // if(value === 0 && this.props.isMobile){
-    //   this.setState({ selectedItem:  index}, () => this.handleSelect(updateNotification));
-    // }
   }
 
   handleSelect(updateNotification) {
@@ -96,15 +87,14 @@ class NotificationsSidebar extends React.Component {
   setTimeFormat(date) {
     let today = new Date();
     today.setHours(0, 0, 0, 0);
-    if (date >= today)
-      return moment(date).fromNow();
+    if (date >= today) return moment(date).fromNow();
     return moment(date).calendar();
   }
 
-  handleClick(index,updateNotification){
+  handleClick(index, updateNotification) {
     this.setState({ selectedItem: index }, () =>
       this.handleSelect(updateNotification)
-    )
+    );
   }
 
   renderItem(not, index) {
@@ -139,9 +129,13 @@ class NotificationsSidebar extends React.Component {
                         index,
                         deleteNotification,
                         updateNotification
-                      ),
+                      )
                   }}
-                  onDragEnd={this.handleClick.bind(this, index, updateNotification)}
+                  onDragEnd={this.handleClick.bind(
+                    this,
+                    index,
+                    updateNotification
+                  )}
                 >
                   <Notification
                     title={not.title}
@@ -150,8 +144,17 @@ class NotificationsSidebar extends React.Component {
                     viewed={not.viewed}
                     time={this.setTimeFormat(not.createdAt)}
                     // selected={this.state.selectedItem === index}
-                    onDelete={this.deleteNotification.bind(this, not, index, deleteNotification)}
-                    onClick={this.handleClick.bind(this, index, updateNotification)}
+                    onDelete={this.deleteNotification.bind(
+                      this,
+                      not,
+                      index,
+                      deleteNotification
+                    )}
+                    onClick={this.handleClick.bind(
+                      this,
+                      index,
+                      updateNotification
+                    )}
                   />
                 </SDragContainer>
               </Container>

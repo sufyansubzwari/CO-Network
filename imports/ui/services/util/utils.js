@@ -12,17 +12,30 @@ const formatSize = size => {
   return sizeMb;
 };
 
-const getImageFromS3 = (id,prefix) => {
+const getImageFromS3 = (id, prefix) => {
   let bucketPath = "https://s3.amazonaws.com/mlsociety-public";
-  return prefix && prefix !== "" && prefix !== "base" ? `${bucketPath}/resources/${prefix}/${id}` :  `${bucketPath}/resources/${id}`;
-
+  return prefix && prefix !== "" && prefix !== "base"
+    ? `${bucketPath}/resources/${prefix}/${id}`
+    : `${bucketPath}/resources/${id}`;
 };
 
 const getNumberFromPose = number => {
-  if (!number) return 0;
-  const type = typeof x;
+  const type = typeof number;
   if (type === "string") return Number(number.replace("%", ""));
+  if (!number) return 0;
   return number;
 };
 
-export default { formatSize, getNumberFromPose, getImageFromS3 };
+const getPercentOfDrag = number => {
+  let value = getNumberFromPose(number);
+  const windowSize = window.document.body.clientWidth;
+  if (!value) return 0;
+  return (value * 100) / windowSize;
+};
+
+export default {
+  formatSize,
+  getNumberFromPose,
+  getImageFromS3,
+  getPercentOfDrag
+};
