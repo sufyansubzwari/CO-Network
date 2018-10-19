@@ -54,8 +54,8 @@ class PlacesService {
     return Places.collection.find(query, limit).fetch();
   };
   static matchLocations = (locations, distance) => {
-    console.log(JSON.stringify({"$or": locations.map(item => ({"location.location": {$geoWithin: {$centerSphere:[[Number(item.location.lat),Number(item.location.lng)], distance || 0.1]}}}))}))
-    return Places.service.places({"$or": locations.map(item => ({"location.location": {$geoWithin: {$centerSphere:[[Number(item.location.lat),Number(item.location.lng)], distance || 0.1]}}}))});
+    console.log(JSON.stringify({"$or": locations.map(item => ({"location.location.coordinates": {$geoWithin: {$centerSphere:[[Number(item.location.lng),Number(item.location.lat)], distance || 0.05]}}}))}))
+    return Places.service.places({"$or": locations.map(item => ({"location.location.coordinates": {$geoWithin: {$centerSphere:[[Number(item.location.lng),Number(item.location.lat)], distance || 0.05]}}}))});
   }
 }
 
