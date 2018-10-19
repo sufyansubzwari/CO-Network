@@ -3,14 +3,13 @@ import styled from "styled-components";
 import MaterialIcon from "react-material-iconic-font";
 import PropsTypes from "prop-types";
 import {
-  InputGroup,
-  InputGroupButtonDropdown,
-  DropdownToggle,
-  DropdownMenu,
   DropdownItem,
-  InputGroupAddon
+  DropdownMenu,
+  DropdownToggle,
+  InputGroupButtonDropdown
 } from "reactstrap";
-import { TagList, SLabel } from "btech-base-forms-component";
+import { SLabel, TagList } from "btech-base-forms-component";
+import { Container, Layout } from "btech-layout";
 
 const SDropDownMenu = styled(DropdownMenu)`
   font-size: ${props => props.fontSize || "12px"} !important;
@@ -102,7 +101,10 @@ export default class MLTagsInput extends Component {
         item.label.toLowerCase().indexOf(e.target.value.toLowerCase()) > -1
       );
     });
-    this.setState({ dropDownOpen: filters.length > 0, options: filters }, () => this.props.onTextChange && this.props.onTextChange());
+    this.setState(
+      { dropDownOpen: filters.length > 0, options: filters },
+      () => this.props.onTextChange && this.props.onTextChange()
+    );
   }
 
   onFocus() {
@@ -166,11 +168,13 @@ export default class MLTagsInput extends Component {
     }
   }
 
-  handleClose(){
-    this.setState({
+  handleClose() {
+    this.setState(
+      {
         value: ""
-    }, () => this.props.onClose && this.props.onClose())
-
+      },
+      () => this.props.onClose && this.props.onClose()
+    );
   }
 
   render() {
@@ -191,8 +195,8 @@ export default class MLTagsInput extends Component {
             {this.props.required ? <SRequiredLabel>*</SRequiredLabel> : null}
           </SLabel>
         ) : null}
-        <InputGroup style={{ height: "auto", padding: "0 8px" }}>
-          <InputGroupAddon addonType="prepend">
+        <Layout padding={"0 8px"} customTemplateColumns={"auto 1fr auto"}>
+          <Container>
             <TagList
               useIcon={this.props.useIcon}
               onCategoryChange={this.props.onCategoryChange}
@@ -201,11 +205,10 @@ export default class MLTagsInput extends Component {
               closeable={true}
               tags={this.state.tags}
               onClose={(e, tag, index) => {
-                this.props.onCloseTags && this.props.onCloseTags(e, tag, index)
-              }
-              }
+                this.props.onCloseTags && this.props.onCloseTags(e, tag, index);
+              }}
             />
-          </InputGroupAddon>
+          </Container>
           <InputGroupButtonDropdown
             addonType="append"
             isOpen={this.state.dropDownOpen}
@@ -278,11 +281,25 @@ export default class MLTagsInput extends Component {
           </InputGroupButtonDropdown>
           <SAddButton
             inactive={!this.state.active}
-            onClick={ this.props.showClose ? this.props.newAdded ? () => this.handleClose() : () => this.onAddNewOption()  : () => this.onAddNewOption()}
+            onClick={
+              this.props.showClose
+                ? this.props.newAdded
+                  ? () => this.handleClose()
+                  : () => this.onAddNewOption()
+                : () => this.onAddNewOption()
+            }
           >
-            <MaterialIcon type={ this.props.showClose ? this.props.newAdded ? 'close' : this.props.iconClass : this.props.iconClass } />
+            <MaterialIcon
+              type={
+                this.props.showClose
+                  ? this.props.newAdded
+                    ? "close"
+                    : this.props.iconClass
+                  : this.props.iconClass
+              }
+            />
           </SAddButton>
-        </InputGroup>
+        </Layout>
       </SContainer>
     );
   }
