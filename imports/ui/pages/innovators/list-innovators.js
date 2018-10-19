@@ -432,7 +432,7 @@ class ListInnovators extends Component {
                               this.state.selectedItem &&
                               this.state.selectedItem.followerList
                                 ? this.state.selectedItem.followerList.length +
-                                  (this.props.isMobile ? " Followers" : "")
+                                  (!this.props.isMobile ? " Followers" : "")
                                 : null,
                             checkVisibility: () => {
                               const element = this.state.selectedItem;
