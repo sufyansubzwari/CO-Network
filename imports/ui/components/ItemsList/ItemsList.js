@@ -18,7 +18,7 @@ const SListTitle = styled(Container)`
   ${mixins.media.desktop`
     font-size: ${props => props.size || "18px"};
     line-height: ${props => props.lineHeight || "26px"};
-    margin-bottom: 5px;
+    margin-bottom: 15px;
   `} @media (min-width: 62em) {
     zoom: 80%;
   }
@@ -104,6 +104,10 @@ class ItemsList extends Component {
             scrollSeparation={{
               xs: theme.lists.mobileScrollSeparation,
               md: theme.lists.scrollSeparation
+            }}
+            listSeparationBottom={{
+              xs: theme.lists.mobileMarginBottom,
+              md: theme.lists.marginBottom
             }}
             data={this.props.loading ? this.state.mockData : this.props.data}
           />

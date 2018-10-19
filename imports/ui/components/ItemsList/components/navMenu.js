@@ -11,7 +11,7 @@ const SNav = styled.nav`
   ${mixins.media.desktop`
     font-size: ${props => props.size || "18px"};
     line-height: ${props => props.lineHeight || "26px"};
-    margin-bottom: 5px;
+    margin-bottom: 15px;
   `};
 `;
 
