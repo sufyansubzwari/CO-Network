@@ -4,8 +4,6 @@ import { Container, mixins } from "btech-layout";
 import styled from "styled-components";
 import { toggleSideBar } from "../../actions/SideBarActions";
 import { connect } from "react-redux";
-import { Meteor } from "meteor/meteor";
-import { Link } from "react-router-dom";
 
 const SMainContainer = styled.div`
   height: 75%;
@@ -55,45 +53,42 @@ const EmptyList = function(props) {
   };
 
   const onUserToggle = () => {
-      props.toggleSideBar(
-          !props.profileSideBarIsOpen,
-          false,
-          !props.profileSideBarIsOpen
-      );
-  }
+    props.toggleSideBar(
+      !props.profileSideBarIsOpen,
+      false,
+      !props.profileSideBarIsOpen
+    );
+  };
 
   const handleText = () => {
-      if(props.curUser && props.curUser._id)
-        return (
-            <Container textCenter>
-                <STitle>No {props.entityName}</STitle>
-                <STitle>To Show</STitle>
-                <SSubTitle mt={{ md: "10px" }}>
-                    Feel free to{" "}
-                    <STitleAction onClick={() => onAddToggle()}>create</STitleAction> your
-                </SSubTitle>
-                <SSubTitle>first one...</SSubTitle>
-            </Container>
-        );
-      else
-        return (
-            <Container textCenter>
-                <STitle>No {props.entityName}</STitle>
-                <STitle>To Show</STitle>
-                <SSubTitle>Sorry you're not logged in yet</SSubTitle>
-                <SSubTitle mt={{ md: "10px" }}>
-                    Want to fix it?, Just click{" "}
-                    <STitleAction onClick={() => onUserToggle()}>here</STitleAction>
-                </SSubTitle>
-            </Container>
-        )
-  }
+    if (props.curUser && props.curUser._id)
+      return (
+        <Container textCenter>
+          <STitle>No {props.entityName}</STitle>
+          <STitle>To Show</STitle>
+          <SSubTitle mt={{ md: "10px" }}>
+            Feel free to{" "}
+            <STitleAction onClick={() => onAddToggle()}>create</STitleAction>{" "}
+            your
+          </SSubTitle>
+          <SSubTitle>first one...</SSubTitle>
+        </Container>
+      );
+    else
+      return (
+        <Container textCenter>
+          <STitle>No {props.entityName}</STitle>
+          <STitle>To Show</STitle>
+          <SSubTitle>Sorry you're not logged in.</SSubTitle>
+          <SSubTitle mt={{ md: "10px" }}>
+            Want to fix it?, Just click{" "}
+            <STitleAction onClick={() => onUserToggle()}>here</STitleAction>
+          </SSubTitle>
+        </Container>
+      );
+  };
 
-  return (
-    <SMainContainer>
-        {handleText()}
-    </SMainContainer>
-  );
+  return <SMainContainer>{handleText()}</SMainContainer>;
 };
 
 EmptyList.defaultProps = {};
@@ -106,13 +101,14 @@ const mapStateToProps = state => {
   const { sideBarStatus } = state;
   return {
     addSidebarIsOpen: sideBarStatus.status && sideBarStatus.isAdd,
-    profileSideBarIsOpen: sideBarStatus.status && sideBarStatus.profile,
+    profileSideBarIsOpen: sideBarStatus.status && sideBarStatus.profile
   };
 };
 
 const mapDispatchToProps = dispatch => {
   return {
-    toggleSideBar: (status, isAdd, profile, notifications, messages) => dispatch(toggleSideBar(status, isAdd, profile, notifications, messages))
+    toggleSideBar: (status, isAdd, profile, notifications, messages) =>
+      dispatch(toggleSideBar(status, isAdd, profile, notifications, messages))
   };
 };
 
