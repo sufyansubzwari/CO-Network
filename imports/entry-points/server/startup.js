@@ -1,5 +1,7 @@
 import { Meteor } from 'meteor/meteor';
 import { WebApp } from 'meteor/webapp';
+import CreateIndex from '../../api/create-index';
+import Places from '../../api/places/server/collection';
 
 Meteor.startup(() => {
   console.log('[server] startup');
@@ -14,6 +16,9 @@ Meteor.startup(() => {
   // Setup default users if any
   import './fixtures';
   import './databaseConstants';
+
+  //creating indexes for Place Search
+  CreateIndex(Places, {"location.location.coordinates": "2d"})
 
   // Run schema migrations if any.
 
