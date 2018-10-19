@@ -94,6 +94,14 @@ query GetOrg($limit: Int, $filter: String, $organizations: OrganizationSearchInp
                 link
             }
         }
+        identities {
+            provider
+            user_id
+            profileData {
+                name
+                email
+            }
+        }
     }
 }
 

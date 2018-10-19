@@ -57,6 +57,35 @@ Organizations.schema = new SimpleSchema({
   "actively": { type: Array, optional: true },
   "actively.$": { type: Object, optional: true },
   "actively.$.label": { type: String, optional: true },
+    "identities": {
+        type: Array,
+        optional: true
+    },
+    "identities.$": {
+        type: Object,
+        optional: true
+    },
+    "identities.$.provider": {
+        type: String,
+        optional: true
+    },
+    "identities.$.user_id": {
+        type: String,
+        optional: true
+    },
+    "identities.$.connection": {
+        type: String,
+        optional: true
+    },
+    "identities.$.isSocial": {
+        type: Boolean,
+        optional: true
+    },
+    "identities.$.profileData": {
+        type: Object,
+        blackbox: true,
+        optional: true
+    },
   social: { type: Object, optional: true },
   "social.github": { type: String, optional: true },
   "social.linkedin": { type: String, optional: true },
