@@ -83,6 +83,7 @@ class MessageItem extends React.Component {
   }
 
   render() {const {props} = this;
+  const userId = Meteor.userId();
   return (
     <Layout
       customTemplateColumns={"auto 1fr"}
@@ -99,13 +100,13 @@ class MessageItem extends React.Component {
           <span id={"time"}>
             {moment(props.message && props.message.createdAt).format("h:mm a"
           )}</span>
-          {props.message && props.message.canReply ? (
+          {props.message && props.message.canReply && userId ? (
             <SReplyButton onClick={this.handleReply.bind(this, props)}>
               <MaterialIcon type={"mail-reply"} />
               <span style={{ marginLeft: "5px" }}>Reply</span>
             </SReplyButton>
           ) : null}
-          {props.message && props.owner && props.message.owner === Meteor.userId() ? (
+          {props.message && props.owner && props.message.owner === userId ? (
             <SDeleteButton marginLeft={!props.message && !props.message.canReply} onClick={this.handleDelete.bind(this, props)}>
               <MaterialIcon type={"delete"} />
               <span style={{ marginLeft: "5px" }}>Delete</span>
