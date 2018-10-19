@@ -236,8 +236,8 @@ export class ReplyBox extends React.Component {
                 style={{
                   position: "absolute",
                   maxWidth: "250px",
-                  bottom: "20px",
-                  left: "20px",
+                  bottom: this.props.isMobile ? "50px" : "20px",
+                  left: this.props.isMobile ? "-20px" : "20px",
                   zIndex: "2",
                   fontFamily: "Roboto Mono",
                   fontSize: "12px"
