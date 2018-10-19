@@ -71,11 +71,11 @@ Places.schema = new SimpleSchema({
   'location.location': {
     type: Object,
   },
-  'location.location.lat': {
-    type: String,
-  },
   'location.location.lng': {
-    type: String,
+    type: Number,
+  },
+  'location.location.lat': {
+    type: Number,
   },
   entity: {
     type: String,

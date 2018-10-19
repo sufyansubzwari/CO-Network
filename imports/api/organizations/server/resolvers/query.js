@@ -11,7 +11,7 @@ Query.organizations = (root, { filter, limit, organizations }, context) => {
   let query = {};
   if(organizations){
     if (organizations.location) {
-      let loc = Places.service.places({'location.address': {"$in": organizations.location.map(item => item.address)}});
+      let loc = Places.service.matchLocations(organizations.location, 0.10);
       organizations["_id"] = {"$in": loc.map(item => item.owner)};
       delete organizations.location;
     }
