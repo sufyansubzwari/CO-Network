@@ -48,4 +48,8 @@ Mutation.deleteOrganization = async (root, { _id }, context) => {
   return Service.deleteOrganization(_id);
 };
 
+Mutation.updateIdentitiesOrg = (root, { _id, identities }, context) => {
+    return Service.updateIdentitiesOrg(_id, identities);
+};
+
 export default Mutation;
