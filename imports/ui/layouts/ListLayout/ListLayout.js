@@ -78,13 +78,13 @@ class ListLayout extends Component {
                 <Layout
                   fullX
                   colGap={"10px"}
-                  customTemplateColumns={"1fr"}
+                  customTemplateColumns={"auto 1fr"}
                   mdCustomTemplateColumns={
                     !this.props.sidebarIsOpen ? "auto 1fr" : "1fr"
                   }
                 >
                   {!this.props.sidebarIsOpen ? (
-                    <Container hide mdShow>
+                    <Container>
                       <Button
                         width={"35px"}
                         height={"35px"}
