@@ -94,7 +94,7 @@ class ListColloquiums extends List {
                 <ColloquiumPreview
                   onClose={() => this.onChangeSelection(null, null)}
                   key={"rightSide"}
-                  isOpen={!!this.state.selectedItem}
+                  isOpen={this.activePreview()}
                   navOptions={[
                     {
                       text: "Edit",

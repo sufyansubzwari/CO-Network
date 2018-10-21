@@ -106,7 +106,7 @@ class ListJobs extends List {
                       if (error) return <div>Error</div>;
                       return (
                         <Preview
-                          isOpen={!!this.state.selectedItem}
+                          isOpen={this.activePreview()}
                           onClose={() => this.onChangeSelection(null, null)}
                           key={"rightSide"}
                           navClicked={index => console.log(index)}
