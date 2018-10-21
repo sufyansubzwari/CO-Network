@@ -3,7 +3,7 @@ import OrganizationForm from "../../modules/organization-module/form";
 import { PostLayout, Preview } from "../../../ui/components";
 import OrganizationPreviewBody from "../../components/Preview/entities/OrganizationPreviewBody";
 import { withRouter } from "react-router-dom";
-import { CreateOrg } from "../../apollo-client/organization";
+import { CreateOrg, DeleteOrg } from "../../apollo-client/organization";
 import { Mutation } from "react-apollo";
 
 /**
@@ -122,6 +122,11 @@ class PostOrganization extends Component {
     }
   }
 
+  removeOrg(deleteOrg, org) {
+    deleteOrg({ variables: { id: org._id } });
+    this.onCancel();
+  }
+
   render() {
     return (
       <PostLayout>
@@ -153,36 +158,41 @@ class PostOrganization extends Component {
             />
           )}
         </Mutation>
-        <Preview
-          isOpen={this.state.openPreview}
-          onClose={() => this.setState({ openPreview: false })}
-          key={"rightSide"}
-          navClicked={index => console.log(index)}
-          navOptions={[
-            {
-              text: "Remove",
-              icon: "delete",
-              checkVisibility: () => {
-                return this.state.selectedItem && this.state.selectedItem.id;
-              },
-              onClick: () => {
-                console.log("Remove");
+        <Mutation key={"rightSide"} mutation={DeleteOrg}>
+          {(deleteOrg, { orgDeleted }) => (
+            <Preview
+              isOpen={this.state.openPreview}
+              onClose={() => this.setState({ openPreview: false })}
+              key={"rightSide"}
+              navClicked={index => console.log(index)}
+              navOptions={[
+                {
+                  text: "Remove",
+                  icon: "delete",
+                  checkVisibility: () => {
+                    return (
+                      this.state.organization && this.state.organization._id
+                    );
+                  },
+                  onClick: () => {
+                    this.removeOrg(deleteOrg, this.state.organization);
+                  }
+                }
+              ]}
+              data={this.state.organization}
+              showAvatar={true}
+              allowChangeImages
+              image={this.state.organization && this.state.organization.image}
+              backGroundImage={
+                this.state.organization && this.state.organization.cover
               }
-            }
-          ]}
-          index={this.state.selectedIndex}
-          data={this.state.selectedItem}
-          showAvatar={true}
-          allowChangeImages
-          image={this.state.organization && this.state.organization.image}
-          backGroundImage={
-            this.state.organization && this.state.organization.cover
-          }
-          onBackgroundChange={this.handleBackgroundChange}
-          onUserPhotoChange={this.handleUserPhotoChange}
-        >
-          <OrganizationPreviewBody organization={this.state.organization} />
-        </Preview>
+              onBackgroundChange={this.handleBackgroundChange}
+              onUserPhotoChange={this.handleUserPhotoChange}
+            >
+              <OrganizationPreviewBody organization={this.state.organization} />
+            </Preview>
+          )}
+        </Mutation>
       </PostLayout>
     );
   }
