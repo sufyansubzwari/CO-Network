@@ -49,6 +49,13 @@ const Routes = props => (
       />
       <RouteWithProps
         exact
+        name="Events"
+        path="/events/preview"
+        component={ListEvents}
+        {...props}
+      />
+      <RouteWithProps
+        exact
         name="Post a Event"
         path="/post-event"
         component={PostEvent}
@@ -74,6 +81,13 @@ const Routes = props => (
         exact
         name="Jobs"
         path="/jobs"
+        component={ListJobs}
+        {...props}
+      />
+      <RouteWithProps
+        exact
+        name="Jobs"
+        path="/jobs/preview"
         component={ListJobs}
         {...props}
       />
@@ -109,6 +123,13 @@ const Routes = props => (
         exact
         name="Colloquiums"
         path="/colloquiums"
+        component={ListColloquiums}
+        {...props}
+      />
+      <RouteWithProps
+        exact
+        name="Colloquiums"
+        path="/colloquiums/preview"
         component={ListColloquiums}
         {...props}
       />

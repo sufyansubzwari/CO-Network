@@ -515,7 +515,6 @@ class ListInnovators extends Component {
                           }
                         ]}
                         showAvatar
-                        index={this.state.selectedIndex}
                         data={this.state.selectedItem}
                         allowChangeImages={
                           this.state.selectedItem &&

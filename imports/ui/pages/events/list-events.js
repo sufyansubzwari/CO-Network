@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React from "react";
 import { ItemsList, ListLayout, Preview } from "../../../ui/components";
 import { graphql, Mutation } from "react-apollo";
 import { connect } from "react-redux";
@@ -13,23 +13,16 @@ import { FollowAction } from "../../apollo-client/follow";
 import { ViewsCountUpdate } from "../../apollo-client/viewCount";
 import { withRouter } from "react-router-dom";
 import { cleanSearch, onSearchTags } from "../../actions/TopSearchActions";
+import { List } from "../general";
 
 /**
  * @module Events
  * @category list
  */
-class ListEvents extends Component {
+class ListEvents extends List {
   constructor(props) {
     super(props);
-    this.state = {
-      openFilters: true,
-      selectedItem: null,
-      selectedIndex: null,
-      limit: 10,
-      filter: "",
-      flag: true,
-      filterStatus: {}
-    };
+    this.entityName = "events";
   }
 
   componentWillMount() {
@@ -43,86 +36,6 @@ class ListEvents extends Component {
     }
   }
 
-  reFetchQuery() {
-    return this.props.data.refetch({
-      limit: this.state.limit,
-      filter: this.state.filter || "",
-      events: this.state.filterStatus || {}
-    });
-  }
-
-  componentWillReceiveProps(nextProps) {
-    if (
-      nextProps.filterStatus &&
-      nextProps.filterStatus.filters &&
-      JSON.stringify(this.state.filterStatus) !==
-        JSON.stringify(nextProps.filterStatus.filters)
-    ) {
-      const filters = Object.assign({}, nextProps.filterStatus.filters);
-      this.setState({ filterStatus: filters }, () => this.reFetchQuery());
-    }
-    if (
-      nextProps.filterStatus &&
-      nextProps.filterStatus.text &&
-      nextProps.filterStatus.text !== this.state.filter
-    ) {
-      this.setState({ filter: nextProps.filterStatus.text }, () =>
-        this.reFetchQuery()
-      );
-    }
-  }
-
-  onChangeSelection(item, key, viewsUpdate) {
-    if (item) {
-      const view = {
-        user: this.props.curUser ? this.props.curUser._id : null,
-        entityViewed: item._id,
-        entityType: item.entity,
-        actualDate: new Date()
-      };
-      if (view.user && view.user !== item.owner._id)
-        viewsUpdate({ variables: { view: view } }).then(result => {
-          this.setState(
-            { selectedItem: item, selectedIndex: key },
-            () => result.data.viewUpdate && this.reFetchQuery()
-          );
-        });
-      else this.setState({ selectedItem: item, selectedIndex: key });
-    } else this.setState({ selectedItem: item, selectedIndex: key });
-  }
-
-  fetchMoreSelection(isLoading) {
-    if (!isLoading && this.state.limit <= this.props.data.events.length)
-      this.setState(
-        {
-          limit: this.state.limit + 10
-        },
-        () => {
-          this.props.data.fetchMore({
-            variables: {
-              limit: this.state.limit,
-              filter: this.state.filter || "",
-              events: this.state.filterStatus || {}
-            },
-            updateQuery: (
-              previousResult,
-              { fetchMoreResult, queryVariables }
-            ) => {
-              return {
-                ...previousResult,
-                events: [...fetchMoreResult.events]
-              };
-            }
-          });
-        }
-      );
-  }
-
-  removeEvent(deleteEvent, event) {
-    deleteEvent({ variables: { id: event._id } });
-    this.setState({ selectedItem: null }, () => this.reFetchQuery());
-  }
-
   editEvent() {
     let event = JSON.parse(JSON.stringify(this.state.selectedItem));
     delete event.entity;
@@ -132,66 +45,17 @@ class ListEvents extends Component {
     });
   }
 
-  handleBackgroundChange(updateEventImage, src) {
-    updateEventImage({
-      variables: { id: this.state.selectedItem._id, image: src }
-    }).then(result => {
-      const event = { ...this.state.selectedItem };
-      if (src) event.image = src;
-      this.setState({ selectedItem: event }, () => this.reFetchQuery());
-    });
-  }
-
-  errorOnBackgroundChange(e) {
-    // todo: handle error notification
-    console.log("Error to change the image");
-  }
-
-  onSearch(value, tags) {
-    let tagsFilters = {};
-    tags.length
-      ? (tagsFilters.category = { in: tags.map(item => item._id) })
-      : null;
-    this.setState({ filter: value, filterStatus: tagsFilters }, () =>
-      this.reFetchQuery()
-    );
-  }
-
-  handleFollow(followAction, follow) {
-    let follower = {
-      entityId: this.state.selectedItem._id,
-      entity: this.state.selectedItem.entity
-    };
-    followAction({
-      variables: {
-        follower: follower,
-        id: this.state.selectedItem._id,
-        follow: follow
-      }
-    }).then(() => {
-      this.reFetchQuery().then(() => {
-        let selected = this.props.data.events.find(
-          item => item._id === this.state.selectedItem._id
-        );
-        this.setState({ selectedItem: selected });
-      });
-    });
-  }
-
-  onSelectTag(tag) {
-    this.props.onSearchTags(tag);
-  }
-
   render() {
     //Todo: handle graphQL errors
     const isLoading =
       this.props.data.loading &&
-      (!this.props.data.events || !this.props.data.events.length);
+      (!this.props.data[this.entityName] ||
+        !this.props.data[this.entityName].length);
     return (
       <ListLayout
         {...this.props}
-        entityType={"events"}
-        onSearchAction={(text, tags) => this.onSearch(text, tags)}
+        entityType={this.entityName}
+        onSearchAction={(text, tags) => this.onSearch(text, tags, "category")}
       >
         <Mutation key={"listComponent"} mutation={ViewsCountUpdate}>
           {(viewsUpdate, {}) => (
@@ -199,7 +63,7 @@ class ListEvents extends Component {
               curUser={this.props.curUser}
               key={"listComponent"}
               title={"Events"}
-              data={this.props.data.events}
+              data={this.props.data[this.entityName]}
               loading={isLoading}
               onFetchData={() => this.fetchMoreSelection(isLoading)}
               onSelectCard={(item, key) =>
@@ -237,7 +101,7 @@ class ListEvents extends Component {
                       <Preview
                         key={"rightSide"}
                         onClose={() => this.onChangeSelection(null, null)}
-                        isOpen={!!this.state.selectedItem}
+                        isOpen={this.activePreview()}
                         navClicked={index => console.log(index)}
                         navOptions={[
                           {
@@ -297,14 +161,13 @@ class ListEvents extends Component {
                               );
                             },
                             onClick: () => {
-                              this.removeEvent(
+                              this.removeEntity(
                                 deleteEvent,
                                 this.state.selectedItem
                               );
                             }
                           }
                         ]}
-                        index={this.state.selectedIndex}
                         data={this.state.selectedItem}
                         allowChangeImages={
                           this.state.selectedItem &&
@@ -365,14 +228,14 @@ export default withRouter(
         return {
           variables: {
             limit: 10,
-            events:
+            [this.entityName]:
               (props.filterStatus &&
-                props.filterStatus.entityType === "events" &&
+                props.filterStatus.entityType === this.entityName &&
                 props.filterStatus.filters) ||
               {},
             filter:
               (props.filterStatus &&
-                props.filterStatus.entityType === "events" &&
+                props.filterStatus.entityType === this.entityName &&
                 props.filterStatus.text) ||
               ""
           },

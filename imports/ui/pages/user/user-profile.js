@@ -171,7 +171,6 @@ class UserProfile extends Component {
           onClose={() => this.setState({ openPreview: false })}
           showAvatar
           key={"rightSide"}
-          index={this.state.selectedIndex}
           data={this.state.selectedItem}
           image={this.state.user && this.state.user.image}
           backGroundImage={this.state.user && this.state.user.cover}

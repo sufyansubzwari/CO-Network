@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React from "react";
 import { ItemsList, ListLayout, Preview } from "../../../ui/components";
 import { graphql, Mutation, Query } from "react-apollo";
 import { connect } from "react-redux";
@@ -14,22 +14,16 @@ import { withRouter } from "react-router-dom";
 import { ViewsCountUpdate } from "../../apollo-client/viewCount";
 import { cleanSearch, onSearchTags } from "../../actions/TopSearchActions";
 import { GetJobApply } from "../../apollo-client/jobApply";
+import { List } from "../general";
 
 /**
  * @module Jobs
  * @category list
  */
-class ListJobs extends Component {
+class ListJobs extends List {
   constructor(props) {
     super(props);
-    this.state = {
-      openFilters: true,
-      selectedItem: null,
-      selectedIndex: null,
-      limit: 10,
-      filter: "",
-      filterStatus: {}
-    };
+    this.entityName = "jobs";
   }
 
   componentWillMount() {
@@ -41,88 +35,6 @@ class ListJobs extends Component {
       this.reFetchQuery();
       this.props.history.replace({ state: {} });
     }
-  }
-
-  componentWillReceiveProps(nextProps) {
-    if (
-      nextProps.filterStatus &&
-      nextProps.filterStatus.filters &&
-      JSON.stringify(this.state.filterStatus) !==
-        JSON.stringify(nextProps.filterStatus.filters)
-    ) {
-      const filters = Object.assign({}, nextProps.filterStatus.filters);
-      this.setState({ filterStatus: filters }, () => this.reFetchQuery());
-    }
-    if (
-      nextProps.filterStatus &&
-      nextProps.filterStatus.text &&
-      nextProps.filterStatus.text !== this.state.filter
-    ) {
-      this.setState({ filter: nextProps.filterStatus.text }, () =>
-        this.reFetchQuery()
-      );
-    }
-  }
-
-  reFetchQuery() {
-    this.props.data.refetch({
-      limit: this.state.limit,
-      filter: this.state.filter || "",
-      jobs: this.state.filterStatus || {}
-    });
-  }
-
-  onChangeSelection(item, key, viewsUpdate) {
-    if (item) {
-      const view = {
-        user: this.props.curUser ? this.props.curUser._id : null,
-        entityViewed: item._id,
-        entityType: item.entity,
-        actualDate: new Date()
-      };
-      if (view.user && view.user !== item.owner._id)
-        viewsUpdate({ variables: { view: view } }).then(() => {
-          viewsUpdate({ variables: { view: view } }).then(result => {
-            this.setState(
-              { selectedItem: item, selectedIndex: key },
-              () => result.data.viewUpdate && this.reFetchQuery()
-            );
-          });
-        });
-      else this.setState({ selectedItem: item, selectedIndex: key });
-    } else this.setState({ selectedItem: item, selectedIndex: key });
-  }
-
-  fetchMoreSelection(isLoading) {
-    if (!isLoading && this.state.limit <= this.props.data.jobs.length)
-      this.setState(
-        {
-          limit: this.state.limit + 10
-        },
-        () => {
-          this.props.data.fetchMore({
-            variables: {
-              limit: this.state.limit,
-              filter: this.state.filter || "",
-              jobs: this.state.filterStatus || {}
-            },
-            updateQuery: (
-              previousResult,
-              { fetchMoreResult, queryVariables }
-            ) => {
-              return {
-                ...previousResult,
-                jobs: [...fetchMoreResult.jobs]
-              };
-            }
-          });
-        }
-      );
-  }
-
-  removeJob(deleteJob, job) {
-    deleteJob({ variables: { id: job._id } });
-    this.setState({ selectedItem: null }, () => this.reFetchQuery());
   }
 
   editJob() {
@@ -143,35 +55,6 @@ class ListJobs extends Component {
     });
   }
 
-  handleBackgroundChange(updateJobsImage, src) {
-    updateJobsImage({
-      variables: { id: this.state.selectedItem._id, image: src }
-    }).then(result => {
-      const event = { ...this.state.selectedItem };
-      if (src) event.image = src;
-      this.setState({ selectedItem: event }, () => this.reFetchQuery());
-    });
-  }
-
-  errorOnBackgroundChange(e) {
-    // todo: handle error notification
-    console.log("Error to change the image");
-  }
-
-  onSelectTag(tag) {
-    this.props.onSearchTags(tag);
-  }
-
-  onSearch(value, tags) {
-    let tagsFilters = {};
-    tags.length
-      ? (tagsFilters.positionTags = { in: tags.map(item => item._id) })
-      : null;
-    this.setState({ filter: value, filterStatus: tagsFilters }, () =>
-      this.reFetchQuery()
-    );
-  }
-
   render() {
     const isLoading =
       this.props.data.loading &&
@@ -179,7 +62,9 @@ class ListJobs extends Component {
     return (
       <ListLayout
         entityType={"jobs"}
-        onSearchAction={(text, tags) => this.onSearch(text, tags)}
+        onSearchAction={(text, tags) =>
+          this.onSearch(text, tags, "positionTags")
+        }
         {...this.props}
       >
         <Mutation key={"listComponent"} mutation={ViewsCountUpdate}>
@@ -276,14 +161,13 @@ class ListJobs extends Component {
                                 );
                               },
                               onClick: () => {
-                                this.removeJob(
+                                this.removeEntity(
                                   deleteJob,
                                   this.state.selectedItem
                                 );
                               }
                             }
                           ]}
-                          index={this.state.selectedIndex}
                           data={this.state.selectedItem}
                           allowChangeImages={
                             this.state.selectedItem &&
