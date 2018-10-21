@@ -3,7 +3,7 @@ import EventForm from "../../modules/event-module/form";
 import { PostLayout, Preview } from "../../../ui/components";
 import EventPreviewBody from "../../components/Preview/entities/EventPreviewBody";
 import { withRouter } from "react-router-dom";
-import { CreateEvent } from "../../apollo-client/event";
+import { CreateEvent, DeleteEvent } from "../../apollo-client/event";
 import { Mutation } from "react-apollo";
 import _ from "lodash";
 
@@ -87,13 +87,18 @@ class PostEvent extends Component {
     }
   }
 
+  removeEvent(deleteEvent, event) {
+    deleteEvent({ variables: { id: event._id } });
+    this.onCancel();
+  }
+
   render() {
     return (
       <PostLayout>
         <Mutation
           key={"leftSide"}
           mutation={CreateEvent}
-          refetchQueries={['GetMyEvents']}
+          refetchQueries={["GetMyEvents"]}
           onCompleted={() =>
             this.state.redirect &&
             this.props.history.push("/events", { postEvent: true })
@@ -116,31 +121,37 @@ class PostEvent extends Component {
             />
           )}
         </Mutation>
-        <Preview
-          isOpen={this.state.openPreview}
+        <Mutation
+          refetchQueries={["GetMyEvents"]}
           key={"rightSide"}
-          navClicked={index => console.log(index)}
-          navOptions={[
-            {
-              text: "Remove",
-              icon: "delete",
-              checkVisibility: () => {
-                return this.state.selectedItem && this.state.selectedItem.id;
-              },
-              onClick: function() {
-                console.log("Remove");
-              }
-            }
-          ]}
-          index={this.state.selectedIndex}
-          data={this.state.selectedItem}
-          allowChangeImages
-          backGroundImage={this.state.event && this.state.event.image}
-          onBackgroundChange={this.handleBackgroundChange}
-          onUserPhotoChange={this.handleUserPhotoChange}
+          mutation={DeleteEvent}
         >
-          <EventPreviewBody event={this.state.event} />
-        </Preview>
+          {(deleteEvent, { eventDeleted }) => (
+            <Preview
+              isOpen={this.state.openPreview}
+              navClicked={index => console.log(index)}
+              navOptions={[
+                {
+                  text: "Remove",
+                  icon: "delete",
+                  checkVisibility: () => {
+                    return this.state.event && this.state.event._id;
+                  },
+                  onClick: () => {
+                    this.removeEvent(deleteEvent, this.state.event);
+                  }
+                }
+              ]}
+              data={this.state.event}
+              allowChangeImages
+              backGroundImage={this.state.event && this.state.event.image}
+              onBackgroundChange={this.handleBackgroundChange}
+              onUserPhotoChange={this.handleUserPhotoChange}
+            >
+              <EventPreviewBody event={this.state.event} />
+            </Preview>
+          )}
+        </Mutation>
       </PostLayout>
     );
   }

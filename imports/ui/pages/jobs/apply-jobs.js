@@ -140,31 +140,6 @@ class ApplyJob extends Component {
             />
           )}
         </Mutation>
-        {/*<Preview*/}
-          {/*isOpen={this.state.openPreview}*/}
-          {/*onClose={() => this.setState({ openPreview: false })}*/}
-          {/*key={"rightSide"}*/}
-          {/*navClicked={index => console.log(index)}*/}
-          {/*navOptions={[*/}
-            {/*{*/}
-              {/*text: "Remove",*/}
-              {/*icon: "delete",*/}
-              {/*checkVisibility: () => {*/}
-                {/*return this.state.selectedItem && this.state.selectedItem.id;*/}
-              {/*},*/}
-              {/*onClick: function() {*/}
-                {/*console.log("Remove");*/}
-              {/*}*/}
-            {/*}*/}
-          {/*]}*/}
-          {/*index={this.state.selectedIndex}*/}
-          {/*data={this.state.selectedItem}*/}
-          {/*allowChangeImages*/}
-          {/*backGroundImage={this.state.job && this.state.job.image}*/}
-          {/*onBackgroundChange={imageSrc => this.handleBackgroundChange(imageSrc)}*/}
-        {/*>*/}
-          {/*<div>Here goes the preview for apply job</div>*/}
-        {/*</Preview>*/}
       </PostLayout>
     );
   }

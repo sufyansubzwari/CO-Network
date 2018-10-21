@@ -121,7 +121,7 @@ class PostJob extends Component {
               checkVisibility: () => {
                 return this.state.selectedItem && this.state.selectedItem.id;
               },
-              onClick: function() {
+              onClick: () => {
                 console.log("Remove");
               }
             }

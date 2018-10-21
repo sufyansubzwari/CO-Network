@@ -119,7 +119,8 @@ class MessagesSidebar extends React.Component {
     );
   }
 
-  handleSelect() {
+  handleSelect(index) {
+    const selectIndex = index >= 0 ? index : this.state.selectedItem;
     this.state.messages = this.state.messages.filter(
       item =>
         (this.state.type === "direct" &&
@@ -137,27 +138,23 @@ class MessagesSidebar extends React.Component {
               ? item.read
               : !item.read))
     );
-    let messages =
-      this.state.messages &&
-      this.state.selectedItem >= 0 &&
-      this.state.messages[this.state.selectedItem];
-    if (messages && !messages.read) {
-      Meteor.call("messages.markAsRead", [messages._id], (error, result) => {
+    let message = this.state.messages && this.state.messages[selectIndex];
+    if (message && !message.read) {
+      Meteor.call("messages.markAsRead", [message._id], error => {
         if (error) return console.log("ERROR - ", error);
       });
     }
     this.props.closeSideBar();
-    if (messages.type === "private")
+    if (message && message.type === "private")
       this.props.history.push("/innovators", {
-        target: messages.owner,
+        target: message.owner,
         openMsg: true
       });
-    if (messages.type === "public")
+    if (message && message.type === "public")
       this.props.history.push("/colloquiums", {
-        target: messages.receptor,
+        target: message.receptor,
         openMsg: true
       });
-    console.log(this.props);
   }
 
   setTimeFormat(date) {
@@ -256,7 +253,6 @@ class MessagesSidebar extends React.Component {
           </RLayout>
           <Separator />
         </Container>
-
         {this.state.messages &&
           this.state.messages.length > 0 &&
           this.state.messages
@@ -296,6 +292,7 @@ class MessagesSidebar extends React.Component {
                         onValueChange={{
                           x: x => this.observerDragBoundaries(x, index, message)
                         }}
+                        onDragEnd={this.handleSelect.bind(this, index)}
                       >
                         <Notification
                           hasIcon={true}

@@ -3,7 +3,6 @@ import { Meteor } from "meteor/meteor";
 export const insertMessage = (message, callBack) => {
   if (checkLoggedUser()) {
     Meteor.call("messages.insert", message, error => {
-      console.log(message)
       if (error) {
         return callBack(error);
       } else {

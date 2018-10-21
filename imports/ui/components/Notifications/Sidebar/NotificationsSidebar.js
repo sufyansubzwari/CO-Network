@@ -127,8 +127,7 @@ class NotificationsSidebar extends React.Component {
                         x,
                         not,
                         index,
-                        deleteNotification,
-                        updateNotification
+                        deleteNotification
                       )
                   }}
                   onDragEnd={this.handleClick.bind(

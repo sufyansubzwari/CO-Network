@@ -15,7 +15,7 @@ import {
 import { withRouter } from "react-router-dom";
 import { ViewsCountUpdate } from "../../apollo-client/viewCount";
 import { cleanSearch, onSearchTags } from "../../actions/TopSearchActions";
-import {INNOVATORS_TYPES} from "../../constants";
+import { INNOVATORS_TYPES } from "../../constants";
 
 /**
  * @module Colloquiums
@@ -73,25 +73,36 @@ class ListColloquiums extends Component {
         this.reFetchQuery()
       );
     }
-    if (nextProps.location && nextProps.location.state && nextProps.location.state.openMsg && nextProps.location.state.target) {
+    if (
+      nextProps.location &&
+      nextProps.location.state &&
+      nextProps.location.state.openMsg &&
+      nextProps.location.state.target
+    ) {
       this.props.history.push({});
-      this.props.data.fetchMore({
-        variables: {
-          limit: 1,
-          filter: "",
-          colloquiums: {_id: nextProps.location.state.target}
-        },
-        updateQuery: (previousResult,
-                      {fetchMoreResult, queryVariables}) => {
-          return {
-            ...previousResult,
-            colloquiums: [...fetchMoreResult["colloquiums"], ...previousResult]
-          };
-        }
-      }).then(({data}) => {
-        console.log("onRefetch", data);
-        this.setState({selectedItem: data.colloquiums[0]})
-      });
+      this.props.data
+        .fetchMore({
+          variables: {
+            limit: 1,
+            filter: "",
+            colloquiums: { _id: nextProps.location.state.target }
+          },
+          updateQuery: (
+            previousResult,
+            { fetchMoreResult, queryVariables }
+          ) => {
+            return {
+              ...previousResult["colloquiums"],
+              colloquiums: [
+                ...fetchMoreResult["colloquiums"],
+                ...previousResult["colloquiums"]
+              ]
+            };
+          }
+        })
+        .then(({ data }) => {
+          this.setState({ selectedItem: data.colloquiums[0] });
+        });
     }
   }
 
