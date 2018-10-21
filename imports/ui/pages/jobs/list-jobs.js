@@ -13,7 +13,7 @@ import {
 import { withRouter } from "react-router-dom";
 import { ViewsCountUpdate } from "../../apollo-client/viewCount";
 import { cleanSearch, onSearchTags } from "../../actions/TopSearchActions";
-import {GetJobApply} from "../../apollo-client/jobApply"
+import { GetJobApply } from "../../apollo-client/jobApply";
 
 /**
  * @module Jobs
@@ -55,8 +55,12 @@ class ListJobs extends Component {
     }
     if (
       nextProps.filterStatus &&
-      nextProps.filterStatus.text && nextProps.filterStatus.text !== this.state.filter){
-      this.setState({filter: nextProps.filterStatus.text}, () => this.reFetchQuery());
+      nextProps.filterStatus.text &&
+      nextProps.filterStatus.text !== this.state.filter
+    ) {
+      this.setState({ filter: nextProps.filterStatus.text }, () =>
+        this.reFetchQuery()
+      );
     }
   }
 
@@ -200,94 +204,113 @@ class ListJobs extends Component {
               mutation={UpdateJobsImage}
               onError={error => this.errorOnBackgroundChange(error)}
             >
-              {(updateJobsImage, { job }) => (
-                  this.state.selectedItem ?
-                  <Query fetchPolicy={'cache-and-network'} query={GetJobApply} variables={{jobsApply:  {owner: Meteor.userId(), job: this.state.selectedItem._id }}} >
-                      {({loading ,error, data}) => {
-                        if(loading) return <div></div>;
-                        if(error) return <div>Error</div>;
-                        return (
-                            <Preview
-                                isOpen={!!this.state.selectedItem}
-                                onClose={() => this.onChangeSelection(null, null)}
-                                key={"rightSide"}
-                                navClicked={index => console.log(index)}
-                                navOptions={[
-                                    {
-                                        text: "Apply",
-                                        checkVisibility: () => {
-                                            // todo: check if the user apply before for this job
-                                            const element = this.state.selectedItem;
-                                            return (
-                                                element &&
-                                                element._id &&
-                                                element.owner &&
-                                                this.props.curUser &&
-                                                element.owner._id !== this.props.curUser._id &&
-                                                !data.jobsApply || !data.jobsApply.length
-                                            );
-                                        },
-                                        onClick: () => {
-                                            this.applyJob();
-                                        }
-                                    },
-                                    {
-                                        text: "Edit",
-                                        checkVisibility: () => {
-                                            const element = this.state.selectedItem;
-                                            return (
-                                                element &&
-                                                element._id &&
-                                                element.owner &&
-                                                this.props.curUser &&
-                                                element.owner._id === this.props.curUser._id
-                                            );
-                                        },
-                                        onClick: () => {
-                                            this.editJob();
-                                        }
-                                    },
-                                    {
-                                        text: "Remove",
-                                        icon: "delete",
-                                        checkVisibility: () => {
-                                            const element = this.state.selectedItem;
-                                            return (
-                                                element &&
-                                                element._id &&
-                                                element.owner &&
-                                                this.props.curUser &&
-                                                element.owner._id === this.props.curUser._id
-                                            );
-                                        },
-                                        onClick: () => {
-                                            this.removeJob(deleteJob, this.state.selectedItem);
-                                        }
-                                    }
-                                ]}
-                                index={this.state.selectedIndex}
-                                data={this.state.selectedItem}
-                                allowChangeImages={
-                                    this.state.selectedItem &&
-                                    this.state.selectedItem.owner &&
+              {(updateJobsImage, { job }) =>
+                this.state.selectedItem ? (
+                  <Query
+                    fetchPolicy={"cache-and-network"}
+                    query={GetJobApply}
+                    variables={{
+                      jobsApply: {
+                        owner: Meteor.userId(),
+                        job: this.state.selectedItem._id
+                      }
+                    }}
+                  >
+                    {({ loading, error, data }) => {
+                      if (loading) return <div />;
+                      if (error) return <div>Error</div>;
+                      return (
+                        <Preview
+                          isOpen={!!this.state.selectedItem}
+                          onClose={() => this.onChangeSelection(null, null)}
+                          key={"rightSide"}
+                          navClicked={index => console.log(index)}
+                          navOptions={[
+                            {
+                              text: "Apply",
+                              checkVisibility: () => {
+                                // todo: check if the user apply before for this job
+                                const element = this.state.selectedItem;
+                                return (
+                                  (element &&
+                                    element._id &&
+                                    element.owner &&
                                     this.props.curUser &&
-                                    this.state.selectedItem.owner._id === this.props.curUser._id
-                                }
-                                backGroundImage={
-                                    this.state.selectedItem
-                                        ? this.state.selectedItem.image
-                                        : null
-                                }
-                                onBackgroundChange={imageSrc =>
-                                    this.handleBackgroundChange(updateJobsImage, imageSrc)
-                                }
-                            >
-                                <JobPreviewBody job={this.state.selectedItem} />
-                            </Preview>
-                        );
-                      }}
-                  </Query> : null
-              )}
+                                    element.owner._id !==
+                                      this.props.curUser._id &&
+                                    !data.jobsApply) ||
+                                  !data.jobsApply.length
+                                );
+                              },
+                              onClick: () => {
+                                this.applyJob();
+                              }
+                            },
+                            {
+                              text: "Edit",
+                              checkVisibility: () => {
+                                const element = this.state.selectedItem;
+                                return (
+                                  element &&
+                                  element._id &&
+                                  element.owner &&
+                                  this.props.curUser &&
+                                  element.owner._id === this.props.curUser._id
+                                );
+                              },
+                              onClick: () => {
+                                this.editJob();
+                              }
+                            },
+                            {
+                              text: "Remove",
+                              icon: "delete",
+                              checkVisibility: () => {
+                                const element = this.state.selectedItem;
+                                return (
+                                  element &&
+                                  element._id &&
+                                  element.owner &&
+                                  this.props.curUser &&
+                                  element.owner._id === this.props.curUser._id
+                                );
+                              },
+                              onClick: () => {
+                                this.removeJob(
+                                  deleteJob,
+                                  this.state.selectedItem
+                                );
+                              }
+                            }
+                          ]}
+                          index={this.state.selectedIndex}
+                          data={this.state.selectedItem}
+                          allowChangeImages={
+                            this.state.selectedItem &&
+                            this.state.selectedItem.owner &&
+                            this.props.curUser &&
+                            this.state.selectedItem.owner._id ===
+                              this.props.curUser._id
+                          }
+                          backGroundImage={
+                            this.state.selectedItem
+                              ? this.state.selectedItem.image
+                              : null
+                          }
+                          onBackgroundChange={imageSrc =>
+                            this.handleBackgroundChange(
+                              updateJobsImage,
+                              imageSrc
+                            )
+                          }
+                        >
+                          <JobPreviewBody job={this.state.selectedItem} />
+                        </Preview>
+                      );
+                    }}
+                  </Query>
+                ) : null
+              }
             </Mutation>
           )}
         </Mutation>
@@ -327,7 +350,11 @@ export default withRouter(
                 props.filterStatus.entityType === "jobs" &&
                 props.filterStatus.filters) ||
               {},
-            filter: (props.filterStatus && props.filterStatus.entityType === "jobs" && props.filterStatus.text) || "",
+            filter:
+              (props.filterStatus &&
+                props.filterStatus.entityType === "jobs" &&
+                props.filterStatus.text) ||
+              ""
           },
           fetchPolicy: "cache-and-network",
           errorPolicy: "all"
