@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import JobForm from "../../modules/jobs-module/form";
 import { PostLayout, Preview } from "../../../ui/components";
-import JobPreviewBody from "../../components/Preview/entities/JobPreviewBody";
+import JobPreviewBody from "../../modules/jobs-module/preview/JobPreviewBody";
 import { withRouter } from "react-router-dom";
 import { CreateJob, DeleteJob } from "../../apollo-client/job";
 import { Mutation } from "react-apollo";
@@ -140,7 +140,7 @@ class PostJob extends Component {
                 this.handleBackgroundChange(imageSrc)
               }
             >
-              <JobPreviewBody job={this.state.job} />
+              <JobPreviewBody job={this.state.job} isPost={true} />
             </Preview>
           )}
         </Mutation>

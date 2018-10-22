@@ -1,13 +1,13 @@
 import React from "react";
 import {Layout, Container} from "btech-layout";
-import {Location, TagsAdd, Text, Title, PreviewSection, SalaryRangePreview} from "../components/index";
-import Separator from "../../FiltersContainer/Separator";
-import ApplicantsCard from "../../../modules/jobs-module/preview/applicants";
-import {GetJobApply} from "../../../apollo-client/jobApply";
-import {userQuery} from "../../../apollo-client/user";
+import {Location, TagsAdd, Text, Title, PreviewSection, SalaryRangePreview} from "../../../components/Preview/components/index";
+import Separator from "../../../components/FiltersContainer/Separator";
+import ApplicantsCard from "./applicants";
+import {GetJobApply} from "../../../apollo-client/jobApply/index";
+import {userQuery} from "../../../apollo-client/user/index";
 import {Query, Mutation} from "react-apollo";
 import {Meteor} from "meteor/meteor";
-import {FollowAction} from "../../../apollo-client/follow";
+import {FollowAction} from "../../../apollo-client/follow/index";
 
 
 class JobPreviewBody extends React.Component {
@@ -121,8 +121,8 @@ class JobPreviewBody extends React.Component {
     }
 
     renderApplicantsSection = () => {
-        return (
-            <Query fetchPolicy={'cache-and-network'} query={GetJobApply}
+        return this.props.isPost ? null : (
+             <Query fetchPolicy={'cache-and-network'} query={GetJobApply}
                    variables={{jobsApply: {job: this.state.job._id}}}>
                 {({loading, error, data}) => {
                     if (loading) return <div></div>;
