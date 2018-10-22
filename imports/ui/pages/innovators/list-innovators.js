@@ -227,9 +227,8 @@ class ListInnovators extends List {
             lgCustomTemplateColumns={"195px 1fr"}
             onSelect={() => this.onChangeSelection(item, key, viewsUpdate)}
             isActive={
-              this.state.selectedIndex !== null
-                ? this.state.selectedIndex === key
-                : false
+              this.state.selectedItem &&
+              this.state.selectedItem._id === item._id
             }
             data={item}
             loading={isLoading}
@@ -248,9 +247,8 @@ class ListInnovators extends List {
             lgCustomTemplateColumns={"195px 1fr"}
             onSelect={() => this.onChangeSelection(item, key, viewsUpdate)}
             isActive={
-              this.state.selectedIndex !== null
-                ? this.state.selectedIndex === key
-                : false
+              this.state.selectedItem &&
+              this.state.selectedItem._id === item._id
             }
             data={item}
             loading={isLoading}
