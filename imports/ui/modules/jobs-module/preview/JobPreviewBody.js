@@ -49,25 +49,27 @@ class JobPreviewBody extends React.Component {
                 active: true
             }))
             : [];
-        return (
+        let min = this.state.job && this.state.job.salaryRange && this.state.job.salaryRange.min !== "";
+        let max = this.state.job && this.state.job.salaryRange && this.state.job.salaryRange.max !== "";
+        return this.state.job.title || this.state.job.place || jobType.length || this.state.job.description || min || max ?  (
             <PreviewSection>
-                <Title text={this.state.job.title}/>
-                <Location location={this.state.job.place}/>
+                {this.state.job && this.state.job.title ? <Title text={this.state.job.title}/> : null}
+                {this.state.job.place ? <Location location={this.state.job.place}/> : null}
                 {jobType && jobType.length ?
                     <TagsAdd hideBorder={true} activeColor={"white"} backgroundTagColor={"#202225"}
                              tags={jobType}/> : null}
                 <Separator/>
                 <Container>
                     <SalaryRangePreview
-                        min={this.state.job && this.state.job.salaryRange && this.state.job.salaryRange.min !== "" ? this.state.job.salaryRange.min : null}
-                        max={this.state.job && this.state.job.salaryRange && this.state.job.salaryRange.max !== "" ? this.state.job.salaryRange.max : null}/>
+                        min={ min ? this.state.job.salaryRange.min : null}
+                        max={ max ? this.state.job.salaryRange.max : null}/>
                 </Container>
                 {position && position.length ? <TagsAdd header={'Position Tags'} tags={position}/> : null}
                 {this.state.job.description ? (
                     <Text header={"Job Description"} cutText={true} text={this.state.job.description}/>
                 ) : null}
             </PreviewSection>
-        )
+        ) : null
     }
 
     renderRequirementsSection = () => {
@@ -81,7 +83,7 @@ class JobPreviewBody extends React.Component {
                 active: true
             }))
             : [];
-        return (
+        return languages.length || this.state.job.jobResponsibility || experience.length ? (
             <PreviewSection title={"Job Requirements"}>
                 {experience && experience.length ?
                     <TagsAdd hideBorder={true} activeColor={"white"} backgroundTagColor={"#202225"}
@@ -91,11 +93,11 @@ class JobPreviewBody extends React.Component {
                 {languages && languages.length ?
                     <TagsAdd header={'Technical Requirements | Language & Libraries'} tags={languages}/> : null}
             </PreviewSection>
-        )
+        ) : null
     }
 
     renderCultureSection = () => {
-        return (
+        return this.state.job.culture || this.state.job.aboutUsTeam || this.state.job.candidateQuestions ? (
             <PreviewSection title={"Employer Culture"}>
                 {this.state.job.culture ? (
                     <Text
@@ -116,7 +118,7 @@ class JobPreviewBody extends React.Component {
                     />
                 ) : null}
             </PreviewSection>
-        )
+        ) : null
     }
 
     renderApplicantsSection = () => {

@@ -31,7 +31,7 @@ const Number = styled.span`
 `
 
 PreviewSection = (props) => {
-    return (
+    return  (
         <PreviewSectionContainer rowGap={'20px'}>
             <Container>
                 <STitle>{props.title}</STitle>
