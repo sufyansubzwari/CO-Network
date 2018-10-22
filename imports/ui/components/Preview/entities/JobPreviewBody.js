@@ -129,7 +129,7 @@ class JobPreviewBody extends React.Component {
                     if (error) return <div>Error</div>;
                     return (
                         <PreviewSection title={"Jobs Applicants"} number={data.jobsApply.length}>
-                            <Layout colGap={'20px'} customTemplateColumns={`1fr 1fr`}>
+                            <Layout colGap={'20px'} customTemplateColumns={`1fr`} mdCustomTemplateColumns={"1fr 1fr"}>
                                 {
                                     data.jobsApply && data.jobsApply.length > 0 && data.jobsApply.map((jobApply, index) =>
                                         (
