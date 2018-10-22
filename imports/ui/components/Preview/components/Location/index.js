@@ -15,6 +15,10 @@ const STitle = styled.label`
       ? props.lineHeight
       : props.theme.preview.locations.lineHeight};
   margin-bottom: ${props => (props.removeMargin ? "0px" : "initial")};
+  
+  overflow: ${props => props.cut ? "hidden" : null};
+  text-overflow: ellipsis;
+  white-space: ${props => props.cut ? "nowrap" : null};
 `;
 
 class Location extends React.Component {
@@ -36,7 +40,7 @@ class Location extends React.Component {
   render() {
     return this.props.location ? (
       <ThemeProvider theme={theme}>
-        <STitle {...this.props}>
+        <STitle cut={this.props.cut} {...this.props}>
           {this.props.location
             ? this.getTextToRender(this.props.location)
             : this.props.children}
@@ -54,5 +58,6 @@ Location.propTypes = {
   removeMargin: PropsTypes.bool,
   family: PropsTypes.string,
   size: PropsTypes.string,
-  lineHeight: PropsTypes.string
+  lineHeight: PropsTypes.string,
+  cut: PropsTypes.bool
 };

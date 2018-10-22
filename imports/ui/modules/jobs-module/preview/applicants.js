@@ -21,9 +21,7 @@ const SCardContainer = Styled(Container)`
 
   @media (min-width: 86em) {
     zoom: 100%;
-  }  
-    
-  ${mixins.media.desktop`margin-left: 15px;`}
+  }
 `;
 
 const TitleCardContainer = Styled.div`
@@ -78,6 +76,7 @@ class AppplicantsCard extends CardItem {
                 <Layout
                     fullY
                     customTemplateRows={"auto auto auto"}
+                    minH={"90px"}
                 >
                     <Container>
                         <Layout customTemplateRows={"1fr"}>
@@ -88,11 +87,11 @@ class AppplicantsCard extends CardItem {
                     </Container>
                     <Container>
                         <Layout customTemplateRows={"1fr"}>
-                            <Location location={this.props.location || "Location" }/>
+                            <Location cut={true} location={this.props.location || "Location" }/>
                         </Layout>
                     </Container>
                     <Container>
-                        <Button secondary={true} onClick={this.props.onFollowClick && this.props.onFollowClick()} >Follow</Button>
+                        { this.props.hideButton ? null : <Button secondary={true} onClick={() => this.props.onFollowClick && this.props.onFollowClick()} >{this.props.following ? "Unfollow" : "Follow"}</Button> }
                     </Container>
                 </Layout>
         );
@@ -138,8 +137,9 @@ class AppplicantsCard extends CardItem {
 export default AppplicantsCard
 
 AppplicantsCard.propTypes = {
-    ...CardItem.props,
-    onFollowClick: PropsTypes.func
+    ...CardItem.propTypes,
+    onFollowClick: PropsTypes.func,
+    hideButton: PropsTypes.bool
 }
 
 

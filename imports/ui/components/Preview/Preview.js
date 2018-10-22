@@ -94,7 +94,7 @@ const NavLinks = styled(Layout)`
 
 const SPreviewContainer = styled(Container)`
   zoom: 100%;
-  padding: ${props => (props.isChatView ? "20px 10px" : "25px 0")};
+  padding: ${props => (props.isChatView ? "20px 10px" : "0 0")};
 
   @media (min-width: 62em) {
     zoom: ${props => (props.isChatView ? "100%" : "80%")};
@@ -105,7 +105,7 @@ const SPreviewContainer = styled(Container)`
   }
 
   ${mixins.media.desktop`
-    padding: ${props => (props.isChatView ? "15px 25px" : "25px 0")};
+    padding: ${props => (props.isChatView ? "15px 25px" : "0 0")};
   `};
 `;
 

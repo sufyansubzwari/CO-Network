@@ -135,8 +135,8 @@ class TopPreview extends Component {
     return (
       <Photo
         relative
-        paddingX={"15px"}
-        mdPaddingX={"75px"}
+        paddingX={"10px"}
+        mdPaddingX={"40px"}
         image={this.handleBackground(this.state.backGroundImage)}
         gridArea={this.props.gridArea}
       >

@@ -32,7 +32,7 @@ const Number = styled.span`
 
 PreviewSection = (props) => {
     return (
-        <PreviewSectionContainer rowGap={'15px'}>
+        <PreviewSectionContainer rowGap={'20px'}>
             <Container>
                 <STitle>{props.title}</STitle>
                 {props.number ? <Number>({props.number})</Number> : null}

@@ -9,6 +9,7 @@ import ProductService from "./Product-Service";
 import Media from "./Media"
 import HeaderInformation from "./HeaderInformation"
 import PreviewSection from "./PreviewSection/PreviewSection"
+import SalaryRangePreview from "./SalaryRange/SalaryRange"
 
 export {
   Title,
@@ -21,5 +22,6 @@ export {
   ProductService,
   Media,
   HeaderInformation,
-  PreviewSection
+  PreviewSection,
+  SalaryRangePreview
 };

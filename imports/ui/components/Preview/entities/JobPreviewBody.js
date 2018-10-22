@@ -1,123 +1,183 @@
 import React from "react";
-import { Layout } from "btech-layout";
-import { Location, TagsAdd, Text, Title, PreviewSection } from "../components/index";
+import {Layout, Container} from "btech-layout";
+import {Location, TagsAdd, Text, Title, PreviewSection, SalaryRangePreview} from "../components/index";
+import Separator from "../../FiltersContainer/Separator";
 import ApplicantsCard from "../../../modules/jobs-module/preview/applicants";
+import {GetJobApply} from "../../../apollo-client/jobApply";
+import {userQuery} from "../../../apollo-client/user";
+import {Query, Mutation} from "react-apollo";
+import {Meteor} from "meteor/meteor";
+import {FollowAction} from "../../../apollo-client/follow";
+
 
 class JobPreviewBody extends React.Component {
-  constructor(props) {
-    super(props);
+    constructor(props) {
+        super(props);
 
-    this.state = {
-      job: props.job ? props.job : {}
-    };
-  }
-
-  componentWillReceiveProps(nextProps) {
-    if (nextProps.job) {
-      this.setState({
-        job: nextProps.job
-      });
+        this.state = {
+            job: props.job ? props.job : {}
+        };
     }
-  }
 
-  render() {
-    //tags
-    let position = this.state.job.positionTags
-      ? this.state.job.positionTags.map(posi => ({
-          ...posi,
-          active: true
+    componentWillReceiveProps(nextProps) {
+        if (nextProps.job) {
+            this.setState({
+                job: nextProps.job
+            });
+        }
+    }
+
+    handleFollow = (followAction, follow, id) => {
+        let follower = {
+            entityId: id,
+            entity: "USER"
+        };
+        followAction({
+            variables: {
+                follower: follower,
+                id: id,
+                follow: follow
+            }
+        })
+    }
+
+    renderTitleSection = () => {
+        let jobType = this.state.job.jobType && this.state.job.jobType.map(type => ({...type, active: true}))
+        let position = this.state.job.positionTags
+            ? this.state.job.positionTags.map(posi => ({
+                ...posi,
+                active: true
+            }))
+            : [];
+        return (
+            <PreviewSection>
+                <Title text={this.state.job.title}/>
+                <Location location={this.state.job.place}/>
+                {jobType && jobType.length ?
+                    <TagsAdd hideBorder={true} activeColor={"white"} backgroundTagColor={"#202225"}
+                             tags={jobType}/> : null}
+                <Separator/>
+                <Container>
+                    <SalaryRangePreview
+                        min={this.state.job && this.state.job.salaryRange && this.state.job.salaryRange.min !== "" ? this.state.job.salaryRange.min : null}
+                        max={this.state.job && this.state.job.salaryRange && this.state.job.salaryRange.max !== "" ? this.state.job.salaryRange.max : null}/>
+                </Container>
+                {position && position.length ? <TagsAdd header={'Position Tags'} tags={position}/> : null}
+                {this.state.job.description ? (
+                    <Text header={"Job Description"} text={this.state.job.description}/>
+                ) : null}
+            </PreviewSection>
+        )
+    }
+
+    renderRequirementsSection = () => {
+        let experience = this.state.job.jobExperience && this.state.job.jobExperience.map(exp => ({
+            ...exp,
+            active: true
         }))
-      : [];
-    let languages = this.state.job.languages
-      ? this.state.job.languages.map(lang => ({
-          ...lang.tag,
-          active: true
-        }))
-      : [];
+        let languages = this.state.job.languages
+            ? this.state.job.languages.map(lang => ({
+                ...lang.tag,
+                active: true
+            }))
+            : [];
+        return (
+            <PreviewSection title={"Job Requirements"}>
+                {experience && experience.length ?
+                    <TagsAdd hideBorder={true} activeColor={"white"} backgroundTagColor={"#202225"}
+                             borderColor={"#202225"} header={'Experience Required'} tags={experience}/> : null}
+                {this.state.job.jobResponsibility ? (
+                    <Text header={"Responsibilities"} text={this.state.job.jobResponsibility} cutText={true}
+                          cutLines={3}/>) : null}
+                {languages && languages.length ?
+                    <TagsAdd header={'Technical Requirements | Language & Libraries'} tags={languages}/> : null}
+            </PreviewSection>
+        )
+    }
 
-    //checkboxes
-    let jobtype =
-      this.state.job.jobType &&
-      this.state.job.jobType.map((job,index) => <div key={index}>{job.label}</div>);
-    let jobExperience =
-      this.state.job.jobExperience &&
-      this.state.job.jobExperience.map((exp,index) => <div key={index}>{exp.label}</div>);
+    renderCultureSection = () => {
+        return (
+            <PreviewSection title={"Employer Culture"}>
+                {this.state.job.culture ? (
+                    <Text
+                        header={"What make your culture unique"}
+                        text={this.state.job.culture}
+                    />
+                ) : null}
+                {this.state.job.aboutUsTeam ? (
+                    <Text
+                        header={"Tell us about the team"}
+                        text={this.state.job.aboutUsTeam}
+                    />
+                ) : null}
+                {this.state.job.candidateQuestions ? (
+                    <Text
+                        header={"Questions for the candidate"}
+                        text={this.state.job.candidateQuestions}
+                    />
+                ) : null}
+            </PreviewSection>
+        )
+    }
 
-    let experience = this.state.job.jobExperience && this.state.job.jobExperience.map( exp => ({...exp,active: true}) )
+    renderApplicantsSection = () => {
+        return (
+            <Query fetchPolicy={'cache-and-network'} query={GetJobApply}
+                   variables={{jobsApply: {job: this.state.job._id}}}>
+                {({loading, error, data}) => {
+                    if (loading) return <div></div>;
+                    if (error) return <div>Error</div>;
+                    return (
+                        <PreviewSection title={"Jobs Applicants"} number={data.jobsApply.length}>
+                            <Layout colGap={'20px'} customTemplateColumns={`1fr 1fr`}>
+                                {
+                                    data.jobsApply && data.jobsApply.length > 0 && data.jobsApply.map((jobApply, index) =>
+                                        (
+                                            <Mutation
+                                            mutation={FollowAction}
+                                            onError={error => console.log(error)}
+                                            refetchQueries={['GetJobApply']}
+                                        >
+                                            {(followAction, { followResult }) => {
+                                        const follow =
+                                            jobApply &&
+                                            jobApply.owner &&
+                                            jobApply.owner.followerList &&
+                                            jobApply.owner.followerList.indexOf(
+                                                Meteor.userId()
+                                                    ) > -1;
+                                         return (<ApplicantsCard key={index}
+                                                        location={jobApply.owner.profile.place.location.address}
+                                                        name={`${jobApply.name} ${jobApply.lastName}`}
+                                                        image={jobApply.image}
+                                                        lgCustomTemplateColumns={"130px 1fr"}
+                                                        hideButton={ jobApply.owner._id === Meteor.userId() }
+                                                        onFollowClick={() => this.handleFollow(followAction,follow, jobApply.owner._id )}
+                                                        following={ follow }
 
-    return (
-      <Layout mdRowGap={"15px"}>
-        <Title text={this.state.job.title} />
-        <PreviewSection title={"Job Requirements"}>
-            <TagsAdd hideBorder={true} activeColor={"white"} backgroundTagColor={"#202225"} borderColor={"#202225"} header={'Experience Required'} tags={experience} />
-            <Text header={"Responsabilities"} text={this.state.job.jobResponsibility} cutText={true} cutLines={3} />
-            <TagsAdd header={'Technical Requirements | Language & Libraries'} tags={languages} />
-            <Layout templateColumns={2} colGap={"20px"}>
-                <ApplicantsCard lgCustomTemplateColumns={"120px 1fr"} onFollowClick={() => console.log("following")} />
-                <ApplicantsCard lgCustomTemplateColumns={"120px 1fr"} onFollowClick={() => console.log("following")} />
+                                        />)
+                                            }}
+                                    </Mutation>
+                                        ))}
+                            </Layout>
+                        </PreviewSection>
+                    )
+                }}
+            </Query>
+        )
+    }
+
+    render() {
+
+        return (
+            <Layout mdRowGap={"20px"}>
+                {this.renderTitleSection()}
+                {this.renderRequirementsSection()}
+                {this.renderCultureSection()}
+                {this.renderApplicantsSection()}
             </Layout>
-        </PreviewSection>
-        <Location location={this.state.job.place} />
-        {this.state.job.description !== "" ? (
-          <Text header={"Job Description"} text={this.state.job.description} />
-        ) : null}
-        <Layout mdRowGap={"15px"} mdTemplateColumns={2}>
-          {jobtype && jobtype.length ? (
-            <Text header={"Job Type"}>{jobtype}</Text>
-          ) : null}
-          {this.state.job.salaryRange &&
-          (this.state.job.salaryRange.min !== "" ||
-            this.state.job.salaryRange.max !== "") ? (
-            <Text
-              header={"Salary Range"}
-              text={`${
-                this.state.job.salaryRange.min !== ""
-                  ? this.state.job.salaryRange.min
-                  : null
-              } - ${
-                this.state.job.salaryRange.max !== ""
-                  ? this.state.job.salaryRange.max
-                  : null
-              }`}
-            />
-          ) : null}
-        </Layout>
-        {position && position.length ? (
-          <TagsAdd header={"Position Tags"} tags={position} />
-        ) : null}
-        {this.state.job.jobResponsibility !== "" ? (
-          <Text
-            header={"Job Responsibility"}
-            text={this.state.job.jobResponsibility}
-          />
-        ) : null}
-        {languages && languages.length ? (
-          <TagsAdd header={"Languages | Libraries"} tags={languages} />
-        ) : null}
-        {jobExperience && jobExperience.length ? (
-          <Text header={"Experience Requiered"}>{jobExperience}</Text>
-        ) : null}
-        {this.state.job.culture !== "" ? (
-          <Text
-            header={"What make your culture unique"}
-            text={this.state.job.culture}
-          />
-        ) : null}
-        {this.state.job.aboutUsTeam !== "" ? (
-          <Text
-            header={"Tell us about the team"}
-            text={this.state.job.aboutUsTeam}
-          />
-        ) : null}
-        {this.state.job.candidateQuestions !== "" ? (
-          <Text
-            header={"Questions for the candidate"}
-            text={this.state.job.candidateQuestions}
-          />
-        ) : null}
-      </Layout>
-    );
-  }
+        );
+    }
 }
 
 export default JobPreviewBody;

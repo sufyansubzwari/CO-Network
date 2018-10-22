@@ -25,9 +25,11 @@ class TagsAdd extends React.Component {
         return (
             <ThemeProvider theme={theme}>
                 <Container>
-                    <STitle {...this.props} >
+                    { this.props.header ? <STitle {...this.props} >
                         {this.props.header}
                     </STitle>
+                    : null
+                    }
                     <Container flex style={{flexDirection: 'row'}}>
                         <TagList {...this.props} borderColor={this.props.borderColor} activeColor={this.props.activeColor} backgroundTagColor={this.props.backgroundTagColor} tags={this.props.tags} style={{display: "inline-block"}}  />
                         {/*<Tag style={{ marginBottom: '2px'}} active={true} color={"#000000"} data={{name: '+'}} onSelect={this.props.onAdd} />*/}
