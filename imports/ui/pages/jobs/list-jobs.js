@@ -90,93 +90,114 @@ class ListJobs extends List {
               onError={error => this.errorOnBackgroundChange(error)}
             >
               {(updateJobsImage, { job }) =>
-                  this.state.selectedItem ?(
-                  <Query fetchPolicy={"cache-and-network"} query={GetJobApply} variables={{jobsApply:  {owner: Meteor.userId(), job: this.state.selectedItem._id }}} >
-                      {({loading ,error, data}) => {
-                        if(loading) return <div/>;
-                        if(error) return <div>Error</div>;
-                        return (
-                            <Preview
-                                entity={this.props.name}
-                                showAvatarisOpen={this.activePreview()}
-                                onClose={() => this.onChangeSelection(null, null)}
-                                key={"rightSide"}
-                                navClicked={index => console.log(index)}
-                                navOptions={[
-                                    {
-                                        text: "Apply",
-                                        checkVisibility: () => {
-                                            // todo: check if the user apply before for this job
-                                            const element = this.state.selectedItem;
-                                            return (
-                                                (element &&
-                                                element._id &&
-                                                element.owner &&
-                                                this.props.curUser &&
-                                                element.owner._id !== this.props.curUser._id &&
-                                                !data.jobsApply) || !data.jobsApply.length
-                                            );
-                                        },
-                                        onClick: () => {
-                                            this.applyJob();
-                                        }
-                                    },
-                                    {
-                                        text: "Edit",
-                                        checkVisibility: () => {
-                                            const element = this.state.selectedItem;
-                                            return (
-                                                element &&
-                                                element._id &&
-                                                element.owner &&
-                                                this.props.curUser &&
-                                                element.owner._id === this.props.curUser._id
-                                            );
-                                        },
-                                        onClick: () => {
-                                            this.editJob();
-                                        }
-                                    },
-                                    {
-                                        text: "Remove",
-                                        icon: "delete",
-                                        checkVisibility: () => {
-                                            const element = this.state.selectedItem;
-                                            return (
-                                                element &&
-                                                element._id &&
-                                                element.owner &&
-                                                this.props.curUser &&
-                                                element.owner._id === this.props.curUser._id
-                                            );
-                                        },
-                                        onClick: () => {
-                                            this.removeEntity(deleteJob, this.state.selectedItem
-                                        );
-                                    }
-                                }
-                                ]}
-                                data={this.state.selectedItem}
-                                allowChangeImages={
-                                    this.state.selectedItem &&
-                                    this.state.selectedItem.owner &&
+                this.state.selectedItem ? (
+                  <Query
+                    fetchPolicy={"cache-and-network"}
+                    query={GetJobApply}
+                    variables={{
+                      jobsApply: {
+                        owner: Meteor.userId(),
+                        job: this.state.selectedItem._id
+                      }
+                    }}
+                  >
+                    {({ loading, error, data }) => {
+                      if (loading) return <div />;
+                      if (error) return <div>Error</div>;
+                      return (
+                        <Preview
+                          showAvatar
+                          isOpen={!!this.state.selectedItem}
+                          entity={this.props.name}
+                          showAvatarisOpen={this.activePreview()}
+                          onClose={() => this.onChangeSelection(null, null)}
+                          key={"rightSide"}
+                          navClicked={index => console.log(index)}
+                          navOptions={[
+                            {
+                              text: "Apply",
+                              checkVisibility: () => {
+                                // todo: check if the user apply before for this job
+                                const element = this.state.selectedItem;
+                                return (
+                                  (element &&
+                                    element._id &&
+                                    element.owner &&
                                     this.props.curUser &&
-                                    this.state.selectedItem.owner._id === this.props.curUser._id
-                                }
-                                backGroundImage={
-                                    this.state.selectedItem
-                                        ? this.state.selectedItem.image
-                                        : null
-                                }
-                                onBackgroundChange={imageSrc =>
-                                    this.handleBackgroundChange(updateJobsImage, imageSrc
-                                )
+                                    element.owner._id !==
+                                      this.props.curUser._id &&
+                                    !data.jobsApply) ||
+                                  !data.jobsApply.length
+                                );
+                              },
+                              onClick: () => {
+                                this.applyJob();
+                              }
+                            },
+                            {
+                              text: "Edit",
+                              checkVisibility: () => {
+                                const element = this.state.selectedItem;
+                                return (
+                                  element &&
+                                  element._id &&
+                                  element.owner &&
+                                  this.props.curUser &&
+                                  element.owner._id === this.props.curUser._id
+                                );
+                              },
+                              onClick: () => {
+                                this.editJob();
+                              }
+                            },
+                            {
+                              text: "Remove",
+                              icon: "delete",
+                              checkVisibility: () => {
+                                const element = this.state.selectedItem;
+                                return (
+                                  element &&
+                                  element._id &&
+                                  element.owner &&
+                                  this.props.curUser &&
+                                  element.owner._id === this.props.curUser._id
+                                );
+                              },
+                              onClick: () => {
+                                this.removeEntity(
+                                  deleteJob,
+                                  this.state.selectedItem
+                                );
+                              }
                             }
-                        >        <JobPreviewBody job={this.state.selectedItem} />
-                            </Preview>
-                        );
-                      }}
-                  </Query>) : null
+                          ]}
+                          data={this.state.selectedItem}
+                          allowChangeImages={
+                            this.state.selectedItem &&
+                            this.state.selectedItem.owner &&
+                            this.props.curUser &&
+                            this.state.selectedItem.owner._id ===
+                              this.props.curUser._id
+                          }
+                          backGroundImage={
+                            this.state.selectedItem
+                              ? this.state.selectedItem.image
+                              : null
+                          }
+                          onBackgroundChange={imageSrc =>
+                            this.handleBackgroundChange(
+                              updateJobsImage,
+                              imageSrc
+                            )
+                          }
+                        >
+                          {" "}
+                          <JobPreviewBody job={this.state.selectedItem} />
+                        </Preview>
+                      );
+                    }}
+                  </Query>
+                ) : null
               }
             </Mutation>
           )}
