@@ -13,13 +13,11 @@ class HookProps extends React.PureComponent {
     if (cb) { cb(); }
   }
 
-  handleClientError = (err) => { // eslint-disable-line no-unused-vars
-    // console.log(err);
+  handleClientError = () => { // eslint-disable-line no-unused-vars
     this.props.disabledProps.enableBtn();
   }
 
   handleServerError = (err) => {
-    // console.log(err);
     this.props.messageProps.setErrorMessage(err.reason || err.message || 'Unexpected error');
     this.props.disabledProps.enableBtn();
   }

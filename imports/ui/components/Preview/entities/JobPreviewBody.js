@@ -37,10 +37,14 @@ class JobPreviewBody extends React.Component {
     //checkboxes
     let jobtype =
       this.state.job.jobType &&
-      this.state.job.jobType.map(job => <div>{job.label}</div>);
+      this.state.job.jobType.map((job, index) => (
+        <div key={index}>{job.label}</div>
+      ));
     let jobExperience =
       this.state.job.jobExperience &&
-      this.state.job.jobExperience.map(exp => <div>{exp.label}</div>);
+      this.state.job.jobExperience.map((exp, index) => (
+        <div key={index}>{exp.label}</div>
+      ));
 
     return (
       <Layout mdRowGap={"15px"}>

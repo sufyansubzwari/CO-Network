@@ -153,7 +153,11 @@ class Notification extends React.Component {
           <NotificationItem>
             <SItemContainer>
               <Layout customTemplateColumns={"1fr auto"}>
-                <Title selected={this.props.selected}>{this.state.title}</Title>
+                <Container>
+                  <Title selected={this.props.selected}>
+                    {this.state.title}
+                  </Title>
+                </Container>
                 <Container mdHide>
                   <SubTitle selected={this.props.selected}>
                     {this.state.time}

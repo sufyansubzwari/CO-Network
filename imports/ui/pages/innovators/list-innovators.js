@@ -22,12 +22,13 @@ import { ViewsCountUpdate } from "../../apollo-client/viewCount";
 import { FollowAction } from "../../apollo-client/follow";
 import { INNOVATORS_TYPES } from "../../constants";
 import { cleanSearch, onSearchTags } from "../../actions/TopSearchActions";
+import { List } from "../general";
 
 /**
  * @module Events
  * @category list
  */
-class ListInnovators extends Component {
+class ListInnovators extends List {
   constructor(props) {
     super(props);
     this.state = {
@@ -43,6 +44,7 @@ class ListInnovators extends Component {
       summary: true
     };
     this.customRenderItem = this.customRenderItem.bind(this);
+    this.entityName = "innovators";
   }
 
   componentWillMount() {
@@ -57,24 +59,7 @@ class ListInnovators extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    if (
-      nextProps.filterStatus &&
-      nextProps.filterStatus.filters &&
-      JSON.stringify(this.state.filterStatus) !==
-        JSON.stringify(nextProps.filterStatus.filters)
-    ) {
-      let filters = Object.assign({}, nextProps.filterStatus.filters);
-      this.setState({ filterStatus: filters }, () => this.reFetchQuery());
-    }
-    if (
-      nextProps.filterStatus &&
-      nextProps.filterStatus.text &&
-      nextProps.filterStatus.text !== this.state.filter
-    ) {
-      this.setState({ filter: nextProps.filterStatus.text }, () =>
-        this.reFetchQuery()
-      );
-    }
+    super.componentWillReceiveProps(nextProps);
     if (
       nextProps.location &&
       nextProps.location.state &&
@@ -90,13 +75,10 @@ class ListInnovators extends Component {
               filter: "",
               user: { _id: { in: [nextProps.location.state.target] } }
             },
-            updateQuery: (
-              previousResult,
-              { fetchMoreResult, queryVariables }
-            ) => {
+            updateQuery: (previousResult, { fetchMoreResult }) => {
               return {
-                ...previousResult,
-                users: [...fetchMoreResult["users"], ...previousResult]
+                ...previousResult["users"],
+                users: [...fetchMoreResult["users"], ...previousResult["users"]]
               };
             }
           })
@@ -125,28 +107,6 @@ class ListInnovators extends Component {
             ? { _id: { ne: this.props.curUser._id } }
             : {}
       });
-  }
-
-  onChangeSelection(item, key, viewsUpdate) {
-    if (item) {
-      const view = {
-        user: this.props.curUser ? this.props.curUser._id : null,
-        entityViewed: item._id,
-        entityType: item.entity,
-        actualDate: new Date()
-      };
-      if (
-        view.user &&
-        ((item.owner && view.user !== item.owner._id) || view.user !== item._id)
-      )
-        viewsUpdate({ variables: { view: view } }).then(result => {
-          this.setState(
-            { selectedItem: item, selectedIndex: key },
-            () => result.data.viewUpdate && this.reFetchQuery()
-          );
-        });
-      else this.setState({ selectedItem: item, selectedIndex: key });
-    } else this.setState({ selectedItem: item, selectedIndex: key });
   }
 
   fetchMoreSelection(isLoading) {
@@ -187,77 +147,10 @@ class ListInnovators extends Component {
       );
   }
 
-  removeOrg(deleteOrg, org) {
-    deleteOrg({ variables: { id: org._id } });
-    this.setState({ selectedItem: null }, () => this.reFetchQuery());
-  }
-
   handleMessageSummary() {
     this.setState({
       showMessages: !this.state.showMessages
     });
-  }
-
-  customRenderItem(item, key, isLoading, viewsUpdate) {
-    switch (this.state.currentTab.value) {
-      case "corporations":
-        return (
-          <CardItem
-            lgCustomTemplateColumns={"195px 1fr"}
-            onSelect={() => this.onChangeSelection(item, key, viewsUpdate)}
-            isActive={
-              this.state.selectedIndex !== null
-                ? this.state.selectedIndex === key
-                : false
-            }
-            data={item}
-            loading={isLoading}
-            title={item.name}
-            subTitle={item.reason ? item.reason.bio : ""}
-            image={item.image || null}
-            tags={item.description || []}
-            views={item.views}
-            key={key}
-            onSelectTag={(tag, index) => this.onSelectTag(tag, index)}
-          />
-        );
-      case "members":
-        return (
-          <CardItem
-            lgCustomTemplateColumns={"195px 1fr"}
-            onSelect={() => this.onChangeSelection(item, key, viewsUpdate)}
-            isActive={
-              this.state.selectedIndex !== null
-                ? this.state.selectedIndex === key
-                : false
-            }
-            data={item}
-            loading={isLoading}
-            title={
-              item.profile && item.profile.name + " " + item.profile.lastName
-            }
-            subTitle={
-              (item.profile &&
-                item.profile.aboutMe &&
-                item.profile.aboutMe.yourPassion) ||
-              ""
-            }
-            image={(item.profile && item.profile.image) || null}
-            tags={
-              (item.profile &&
-                item.profile.knowledge &&
-                item.profile.knowledge.languages &&
-                item.profile.knowledge.languages.map(item => item.tag)) ||
-              []
-            }
-            views={item.views}
-            key={key}
-            onSelectTag={(tag, index) => this.onSelectTag(tag, index)}
-          />
-        );
-      default:
-        return null;
-    }
   }
 
   editOrg() {
@@ -289,17 +182,12 @@ class ListInnovators extends Component {
     }
   }
 
-  errorOnBackgroundChange(e) {
-    // todo: handle error notification
-    console.log("Error to change the image");
-  }
-
-  handleNavActive(active) {
+  handleNavActive(activeTab) {
     const isChatActive =
-      this.state.showMessages && this.state.currentTab.value === "members";
+      this.state.showMessages && activeTab.value === "members";
     this.setState(
       {
-        currentTab: active,
+        currentTab: activeTab,
         selectedItem: null,
         selectedIndex: null,
         filter: "",
@@ -311,28 +199,7 @@ class ListInnovators extends Component {
   }
 
   handleFollow(followAction, follow) {
-    let follower = {
-      entityId: this.state.selectedItem._id,
-      entity: this.state.selectedItem.entity
-    };
-    followAction({
-      variables: {
-        follower: follower,
-        id: this.state.selectedItem._id,
-        follow: follow
-      }
-    }).then(() => {
-      this.reFetchQuery().then(() => {
-        let selected = this.props.users.users.find(
-          item => item._id === this.state.selectedItem._id
-        );
-        this.setState({ selectedItem: selected });
-      });
-    });
-  }
-
-  onSelectTag(tag) {
-    this.props.onSearchTags(tag);
+    super.handleFollow(followAction, follow, "users");
   }
 
   onSearch(value, tags) {
@@ -350,6 +217,66 @@ class ListInnovators extends Component {
     this.setState({ filter: value, filterStatus: tagsFilters }, () =>
       this.reFetchQuery()
     );
+  }
+
+  customRenderItem(item, key, isLoading, viewsUpdate) {
+    switch (this.state.currentTab.value) {
+      case "corporations":
+        return (
+          <CardItem
+            lgCustomTemplateColumns={"195px 1fr"}
+            onSelect={() => this.onChangeSelection(item, key, viewsUpdate)}
+            isActive={
+              this.state.selectedItem &&
+              this.state.selectedItem._id === item._id
+            }
+            data={item}
+            loading={isLoading}
+            title={item.name}
+            subTitle={item.reason ? item.reason.bio : ""}
+            image={item.image || null}
+            tags={item.description || []}
+            views={item.views}
+            key={key}
+            onSelectTag={(tag, index) => this.onSelectTag(tag, index)}
+          />
+        );
+      case "members":
+        return (
+          <CardItem
+            lgCustomTemplateColumns={"195px 1fr"}
+            onSelect={() => this.onChangeSelection(item, key, viewsUpdate)}
+            isActive={
+              this.state.selectedItem &&
+              this.state.selectedItem._id === item._id
+            }
+            data={item}
+            loading={isLoading}
+            title={
+              item.profile && item.profile.name + " " + item.profile.lastName
+            }
+            subTitle={
+              (item.profile &&
+                item.profile.aboutMe &&
+                item.profile.aboutMe.yourPassion) ||
+              ""
+            }
+            image={(item.profile && item.profile.image) || null}
+            tags={
+              (item.profile &&
+                item.profile.knowledge &&
+                item.profile.knowledge.languages &&
+                item.profile.knowledge.languages.map(item => item.tag)) ||
+              []
+            }
+            views={item.views}
+            key={key}
+            onSelectTag={(tag, index) => this.onSelectTag(tag, index)}
+          />
+        );
+      default:
+        return null;
+    }
   }
 
   render() {
@@ -420,7 +347,7 @@ class ListInnovators extends Component {
                         curUser={this.props.curUser}
                         isMobile={this.props.isMobile}
                         showChatView={this.state.showMessages}
-                        isOpen={!!this.state.selectedItem}
+                        isOpen={this.activePreview()}
                         onClose={() => this.onChangeSelection(null, null)}
                         key={"rightSide"}
                         navClicked={index => console.log(index)}
@@ -507,7 +434,7 @@ class ListInnovators extends Component {
                               );
                             },
                             onClick: () => {
-                              this.removeOrg(
+                              this.removeEntity(
                                 deleteOrg,
                                 this.state.selectedItem
                               );
@@ -515,7 +442,6 @@ class ListInnovators extends Component {
                           }
                         ]}
                         showAvatar
-                        index={this.state.selectedIndex}
                         data={this.state.selectedItem}
                         allowChangeImages={
                           this.state.selectedItem &&

@@ -3,7 +3,7 @@ import JobForm from "../../modules/jobs-module/form";
 import { PostLayout, Preview } from "../../../ui/components";
 import JobPreviewBody from "../../components/Preview/entities/JobPreviewBody";
 import { withRouter } from "react-router-dom";
-import { CreateJob } from "../../apollo-client/job";
+import { CreateJob, DeleteJob } from "../../apollo-client/job";
 import { Mutation } from "react-apollo";
 
 /**
@@ -81,6 +81,11 @@ class PostJob extends Component {
     }
   }
 
+  removeJob(deleteJob, job) {
+    deleteJob({ variables: { id: job._id } });
+    this.onCancel();
+  }
+
   render() {
     return (
       <PostLayout>
@@ -109,31 +114,36 @@ class PostJob extends Component {
             />
           )}
         </Mutation>
-        <Preview
-          isOpen={this.state.openPreview}
-          onClose={() => this.setState({ openPreview: false })}
-          key={"rightSide"}
-          navClicked={index => console.log(index)}
-          navOptions={[
-            {
-              text: "Remove",
-              icon: "delete",
-              checkVisibility: () => {
-                return this.state.selectedItem && this.state.selectedItem.id;
-              },
-              onClick: function() {
-                console.log("Remove");
+        <Mutation key={"rightSide"} mutation={DeleteJob}>
+          {(deleteJob, { jobDeleted }) => (
+            <Preview
+              isOpen={this.state.openPreview}
+              onClose={() => this.setState({ openPreview: false })}
+              key={"rightSide"}
+              navClicked={index => console.log(index)}
+              navOptions={[
+                {
+                  text: "Remove",
+                  icon: "delete",
+                  checkVisibility: () => {
+                    return this.state.job && this.state.job._id;
+                  },
+                  onClick: () => {
+                    this.removeJob(deleteJob, this.state.job);
+                  }
+                }
+              ]}
+              data={this.state.job}
+              allowChangeImages
+              backGroundImage={this.state.job && this.state.job.image}
+              onBackgroundChange={imageSrc =>
+                this.handleBackgroundChange(imageSrc)
               }
-            }
-          ]}
-          index={this.state.selectedIndex}
-          data={this.state.selectedItem}
-          allowChangeImages
-          backGroundImage={this.state.job && this.state.job.image}
-          onBackgroundChange={imageSrc => this.handleBackgroundChange(imageSrc)}
-        >
-          <JobPreviewBody job={this.state.job} />
-        </Preview>
+            >
+              <JobPreviewBody job={this.state.job} />
+            </Preview>
+          )}
+        </Mutation>
       </PostLayout>
     );
   }
