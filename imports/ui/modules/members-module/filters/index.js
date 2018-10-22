@@ -217,31 +217,34 @@ class MembersFilters extends React.Component {
             }
           />
         </FilterItem>
-        <Query query={GetFollowFollowers} fetchPolicy={"cache-and-network"}>
-          {({ loading, error, data }) => {
-            if (loading) return <div />;
-            if (error) return <div>Error</div>;
-            return (
-              <CheckBoxList
-                placeholderText={"My Follows"}
-                options={this.state.usersFilters.map((item, key) => ({
-                  ...item,
-                  number:
-                    key === 0
-                      ? data.followFollowers.myFollowings.length
-                      : data.followFollowers.myFollowers.length
-                }))}
-                getValue={selected =>
-                  this.userFollowFilters(
-                    selected,
-                    data.followFollowers.myFollowings,
-                    data.followFollowers.myFollowers
-                  )
-                }
-              />
-            );
-          }}
-        </Query>
+        <Separator />
+        <FilterItem>
+          <Query query={GetFollowFollowers} fetchPolicy={"cache-and-network"}>
+            {({ loading, error, data }) => {
+              if (loading) return <div />;
+              if (error) return <div>Error</div>;
+              return (
+                <CheckBoxList
+                  placeholderText={"My Follows"}
+                  options={this.state.usersFilters.map((item, key) => ({
+                    ...item,
+                    number:
+                      key === 0
+                        ? data.followFollowers.myFollowings.length
+                        : data.followFollowers.myFollowers.length
+                  }))}
+                  getValue={selected =>
+                    this.userFollowFilters(
+                      selected,
+                      data.followFollowers.myFollowings,
+                      data.followFollowers.myFollowers
+                    )
+                  }
+                />
+              );
+            }}
+          </Query>
+        </FilterItem>
       </FiltersContainer>
     );
   }

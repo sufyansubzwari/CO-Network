@@ -267,6 +267,7 @@ class EventsFilters extends React.Component {
             }}
           </Query>
         </FilterItem>
+        <Separator />
         <FilterItem>
           <Query
             query={GetMyEvents}
