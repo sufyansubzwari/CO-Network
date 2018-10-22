@@ -8,7 +8,7 @@ const base = {
     size: { width: 22, height: 24 }
   },
   size: { width: 52, height: 58 },
-  icon: { size: 30, src: "/images/nav/event.svg" }
+  icon: { size: 30, src: "/images/nav/events.svg" }
 };
 let event = Object.assign({}, base, {
   link: "/events",
@@ -54,7 +54,7 @@ dataStory.number = {
 let colloquium = Object.assign({}, base, {
   link: "/colloquiums",
   label: "Colloquium",
-  icon: { size: 34, src: "/images/nav/colloquium.svg" }
+  icon: { size: 34, src: "/images/nav/colloquiums.svg" }
 });
 colloquium.number = {
   value: 0,

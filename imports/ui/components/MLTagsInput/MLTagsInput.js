@@ -3,13 +3,14 @@ import styled from "styled-components";
 import MaterialIcon from "react-material-iconic-font";
 import PropsTypes from "prop-types";
 import {
-  DropdownItem,
-  DropdownMenu,
+  InputGroup,
+  InputGroupButtonDropdown,
   DropdownToggle,
-  InputGroupButtonDropdown
+  DropdownMenu,
+  DropdownItem,
+  InputGroupAddon
 } from "reactstrap";
-import { SLabel, TagList } from "btech-base-forms-component";
-import { Container, Layout } from "btech-layout";
+import { TagList, SLabel } from "btech-base-forms-component";
 
 const SDropDownMenu = styled(DropdownMenu)`
   font-size: ${props => props.fontSize || "12px"} !important;
@@ -195,8 +196,8 @@ export default class MLTagsInput extends Component {
             {this.props.required ? <SRequiredLabel>*</SRequiredLabel> : null}
           </SLabel>
         ) : null}
-        <Layout padding={"0 8px"} customTemplateColumns={"auto 1fr auto"}>
-          <Container>
+        <InputGroup style={{ height: "auto", padding: "0 8px" }}>
+          <InputGroupAddon addonType="prepend">
             <TagList
               useIcon={this.props.useIcon}
               onCategoryChange={this.props.onCategoryChange}
@@ -208,7 +209,7 @@ export default class MLTagsInput extends Component {
                 this.props.onCloseTags && this.props.onCloseTags(e, tag, index);
               }}
             />
-          </Container>
+          </InputGroupAddon>
           <InputGroupButtonDropdown
             addonType="append"
             isOpen={this.state.dropDownOpen}
@@ -299,7 +300,7 @@ export default class MLTagsInput extends Component {
               }
             />
           </SAddButton>
-        </Layout>
+        </InputGroup>
       </SContainer>
     );
   }
