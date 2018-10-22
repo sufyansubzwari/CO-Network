@@ -40,6 +40,8 @@ class UserPhotoList extends  React.Component {
         return (
             <PhotoListContainer flex>
                 {
+                    !this.props.photos ? <UserPhoto photo={`/images/nav/${this.props.entity.toLowerCase()}.svg`} /> :
+                    typeof this.props.photos === "string" ? <UserPhoto photo={this.handleImage(this.props.photos)} /> :
                     this.props.photos && this.props.photos.length > 0 && this.props.photos.map((photo, index) =>
                         <PhotoContainer relative key={index} index={index} len={this.props.photos.length} style={{left: `${index * -45}px`}}>
                             <UserPhoto photo={this.handleImage(photo)} />

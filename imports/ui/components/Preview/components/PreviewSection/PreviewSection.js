@@ -5,7 +5,13 @@ import PropsTypes from "prop-types";
 
 
 const PreviewSectionContainer = styled(Layout)`
-    padding: 20px 40px;
+
+    padding: 20px 10px;    
+    
+    @media(min-width: 62em){
+        padding: 20px 40px;
+    }   
+
     background: ${props => props.theme ? props.theme.preview.background : "white"};
     border-top: ${props => props.theme ? `1px solid ${props.theme.preview.borderColor}` : null};
     border-bottom: ${props => props.theme ? `1px solid ${props.theme.preview.borderColor}` : null};    

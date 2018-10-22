@@ -417,6 +417,7 @@ class ListInnovators extends Component {
                       ) > -1;
                     return (
                       <MemberPreview
+                        entity={this.props.name}
                         curUser={this.props.curUser}
                         isMobile={this.props.isMobile}
                         showChatView={this.state.showMessages}

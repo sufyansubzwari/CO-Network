@@ -1,6 +1,7 @@
 import React from "react";
 import { Layout } from "btech-layout";
 import { Location, TagsAdd, Text, Title, PreviewSection } from "../components/index";
+import ApplicantsCard from "../../../modules/jobs-module/preview/applicants";
 
 class JobPreviewBody extends React.Component {
   constructor(props) {
@@ -51,6 +52,10 @@ class JobPreviewBody extends React.Component {
             <TagsAdd hideBorder={true} activeColor={"white"} backgroundTagColor={"#202225"} borderColor={"#202225"} header={'Experience Required'} tags={experience} />
             <Text header={"Responsabilities"} text={this.state.job.jobResponsibility} cutText={true} cutLines={3} />
             <TagsAdd header={'Technical Requirements | Language & Libraries'} tags={languages} />
+            <Layout templateColumns={2} colGap={"20px"}>
+                <ApplicantsCard lgCustomTemplateColumns={"120px 1fr"} onFollowClick={() => console.log("following")} />
+                <ApplicantsCard lgCustomTemplateColumns={"120px 1fr"} onFollowClick={() => console.log("following")} />
+            </Layout>
         </PreviewSection>
         <Location location={this.state.job.place} />
         {this.state.job.description !== "" ? (

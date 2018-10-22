@@ -24,7 +24,7 @@ class Location extends React.Component {
 
   getTextToRender(place) {
     let locationString = "";
-    if (typeof place === "string") locationString = place;
+    if (typeof place === "string") locationString = place.toUpperCase();
     else {
       const location = place.location;
       if (location && location.address)

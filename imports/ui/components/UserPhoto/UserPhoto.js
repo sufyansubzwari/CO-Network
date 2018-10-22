@@ -3,6 +3,7 @@ import { Container } from "btech-layout";
 import styled from "styled-components";
 import PropsTypes from "prop-types";
 import { PlaceHolder } from "btech-placeholder-component";
+import ReactSvg from "react-svg";
 
 const Photo = styled(Container)`
   width: ${props =>
@@ -34,7 +35,21 @@ const Label = styled.label`
 
 const SImage = styled.img`
   border-radius: 50px;
+  border: 2px solid white;
 `;
+
+const FContainer = styled(Container)`
+  justify-content: center;
+  align-items: center;
+  border-radius: 50px;
+  border: 2px solid white;
+  background-color: ${props =>
+    !props.photo
+        ? props.theme
+        ? props.theme.preview.photo.bottomcolor
+        : "black"
+        : "white"};
+`
 
 class UserPhoto extends React.Component {
   constructor(props) {
@@ -80,7 +95,13 @@ class UserPhoto extends React.Component {
     return loading ? (
       <PlaceHolder rect loading={loading} width={350} height={325} />
     ) : (
-      <Photo photo={this.props.photo}>{photo}</Photo>
+        this.props.photo && this.props.photo.endsWith("svg") ?
+          <FContainer flex width={'75px'} height={'75px'}><ReactSvg src={this.props.photo} svgStyle={{fill: "#ffffff", width: "40px"}} /></FContainer>
+            :
+        <SImage
+            src={this.props.photo}
+            style={{ width: "74px", height: "74px" }}
+        />
     );
   }
 }

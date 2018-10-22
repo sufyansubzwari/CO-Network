@@ -208,6 +208,8 @@ class ListJobs extends Component {
                         if(error) return <div>Error</div>;
                         return (
                             <Preview
+                                entity={this.props.name}
+                                showAvatar
                                 isOpen={!!this.state.selectedItem}
                                 onClose={() => this.onChangeSelection(null, null)}
                                 key={"rightSide"}

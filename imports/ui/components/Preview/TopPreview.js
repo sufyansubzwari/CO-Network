@@ -151,8 +151,8 @@ class TopPreview extends Component {
           {this.props.showAvatar ? (
             <Container>
               <SPhotoContainer>
-                <Layout customTemplateColumns={`${this.state.image && this.state.image.length ? (75 + 30*this.state.image.length-1) : 75}px 200px`}>
-                  <UserPhotoList photos={this.state.image} />
+                <Layout customTemplateColumns={`${!this.state.image || typeof  this.state.image === "string" ? "75" : this.state.image.length ? (75 + 30*(this.state.image.length-1)) : 75}px 200px`}>
+                  <UserPhotoList entity={this.props.entity} photos={this.state.image} />
                   {/*<Container>*/}
                     {/*<UserPhoto photo={this.handleImage(this.state.image)} />*/}
                   {/*</Container>*/}

@@ -94,7 +94,7 @@ const NavLinks = styled(Layout)`
 
 const SPreviewContainer = styled(Container)`
   zoom: 100%;
-  padding: ${props => (props.isChatView ? "20px 10px" : "25px 10px")};
+  padding: ${props => (props.isChatView ? "20px 10px" : "25px 0")};
 
   @media (min-width: 62em) {
     zoom: ${props => (props.isChatView ? "100%" : "80%")};
@@ -361,6 +361,7 @@ class Preview extends React.Component {
             }}
           >
             <TopPreview
+              entity={this.props.entity}
               handleUpload={this.handleUploadChange}
               image={this.state.image}
               backGroundImage={this.state.backGroundImage}
