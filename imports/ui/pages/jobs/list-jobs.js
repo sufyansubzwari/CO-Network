@@ -55,6 +55,19 @@ class ListJobs extends List {
     });
   }
 
+  userCanApply(queryResult) {
+    const element = this.state.selectedItem;
+    const alreadyApply =
+      queryResult && queryResult.jobsApply && queryResult.jobsApply.length;
+    return (
+      this.props.curUser &&
+      element &&
+      element._id &&
+      element.owner &&
+      element.owner._id !== this.props.curUser._id &&
+      !alreadyApply
+    );
+  }
   render() {
     const isLoading =
       this.props.data.loading &&
@@ -102,7 +115,6 @@ class ListJobs extends List {
                     }}
                   >
                     {({ loading, error, data }) => {
-                      if (loading) return <div />;
                       if (error) return <div>Error</div>;
                       return (
                         <Preview
@@ -116,20 +128,7 @@ class ListJobs extends List {
                           navOptions={[
                             {
                               text: "Apply",
-                              checkVisibility: () => {
-                                // todo: check if the user apply before for this job
-                                const element = this.state.selectedItem;
-                                return (
-                                  (element &&
-                                    element._id &&
-                                    element.owner &&
-                                    this.props.curUser &&
-                                    element.owner._id !==
-                                      this.props.curUser._id &&
-                                    !data.jobsApply) ||
-                                  !data.jobsApply.length
-                                );
-                              },
+                              checkVisibility: () => this.userCanApply(data),
                               onClick: () => {
                                 this.applyJob();
                               }
