@@ -24,7 +24,7 @@ const Photo = styled(Container)`
   border-radius: 45px;
   display: flex;
   align-items: center;
-  justify-content: center
+  justify-content: center;
 `;
 
 const Label = styled.label`
@@ -45,11 +45,11 @@ const FContainer = styled(Container)`
   border: 2px solid white;
   background-color: ${props =>
     !props.photo
-        ? props.theme
+      ? props.theme
         ? props.theme.preview.photo.bottomcolor
         : "black"
-        : "white"};
-`
+      : "white"};
+`;
 
 class UserPhoto extends React.Component {
   constructor(props) {
@@ -84,24 +84,20 @@ class UserPhoto extends React.Component {
   render() {
     const loading =
       this.props.loading || (this.props.photo && this.state.loadingImage);
-    let photo = this.props.photo ? (
-      <SImage
-        src={this.props.photo}
-        style={{ width: "99%", height: "99%" }}
-      />
-    ) : (
-      <Label>{this.props.noPhotoText}</Label>
-    );
     return loading ? (
       <PlaceHolder rect loading={loading} width={350} height={325} />
-    ) : (
-        this.props.photo && this.props.photo.endsWith("svg") ?
-          <FContainer flex width={'75px'} height={'75px'}><ReactSvg src={this.props.photo} svgStyle={{fill: "#ffffff", width: "40px"}} /></FContainer>
-            :
-        <SImage
-            src={this.props.photo}
-            style={{ width: "74px", height: "74px" }}
+    ) : this.props.photo && this.props.photo.endsWith("svg") ? (
+      <FContainer flex width={"75px"} height={"75px"}>
+        <ReactSvg
+          src={this.props.photo}
+          svgStyle={{ fill: "#ffffff", stroke: "#ffffff", width: "40px" }}
         />
+      </FContainer>
+    ) : (
+      <SImage
+        src={this.props.photo}
+        style={{ width: "74px", height: "74px" }}
+      />
     );
   }
 }

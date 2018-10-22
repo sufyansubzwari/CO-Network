@@ -74,7 +74,7 @@ class ListJobs extends List {
       (!this.props.data.jobs || !this.props.data.jobs.length);
     return (
       <ListLayout
-        entityType={"jobs"}
+        entityType={this.entityName}
         onSearchAction={(text, tags) =>
           this.onSearch(text, tags, "positionTags")
         }
@@ -118,10 +118,9 @@ class ListJobs extends List {
                       if (error) return <div>Error</div>;
                       return (
                         <Preview
+                          entity={this.entityName}
                           showAvatar
-                          isOpen={!!this.state.selectedItem}
-                          entity={this.props.name}
-                          showAvatarisOpen={this.activePreview()}
+                          isOpen={this.activePreview()}
                           onClose={() => this.onChangeSelection(null, null)}
                           key={"rightSide"}
                           navClicked={index => console.log(index)}

@@ -88,7 +88,7 @@ class ListEvents extends List {
                   mutation={FollowAction}
                   onError={error => this.errorOnBackgroundChange(error)}
                 >
-                  {(followAction, { followResult }) => {
+                  {(followAction) => {
                     const follow =
                       this.props.curUser &&
                       this.props.curUser._id &&
@@ -100,6 +100,8 @@ class ListEvents extends List {
                     return (
                       <Preview
                         key={"rightSide"}
+                        entity={this.entityName}
+                        showAvatar
                         onClose={() => this.onChangeSelection(null, null)}
                         isOpen={this.activePreview()}
                         navClicked={index => console.log(index)}
