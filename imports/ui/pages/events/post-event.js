@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import EventForm from "../../modules/event-module/form";
 import { PostLayout, Preview } from "../../../ui/components";
-import EventPreviewBody from "../../components/Preview/entities/EventPreviewBody";
+import EventPreviewBody from "../../modules/event-module/preview/EventPreviewBody";
 import { withRouter } from "react-router-dom";
 import { CreateEvent, DeleteEvent } from "../../apollo-client/event";
 import { Mutation } from "react-apollo";

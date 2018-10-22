@@ -7,7 +7,7 @@ import {
   Text,
   TagsAdd,
   Dates
-} from "../components/index";
+} from "../../../components/Preview/components/index";
 import _ from 'lodash';
 
 class EventPreviewBody extends React.Component {

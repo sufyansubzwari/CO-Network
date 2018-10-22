@@ -3,7 +3,7 @@ import { ItemsList, ListLayout, Preview } from "../../../ui/components";
 import { graphql, Mutation } from "react-apollo";
 import { connect } from "react-redux";
 import { PreviewData } from "../../actions/PreviewActions";
-import EventPreviewBody from "../../components/Preview/entities/EventPreviewBody";
+import EventPreviewBody from "../../modules/event-module/preview/EventPreviewBody";
 import {
   DeleteEvent,
   GetEvents,

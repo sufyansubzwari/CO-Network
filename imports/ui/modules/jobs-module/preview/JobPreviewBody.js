@@ -64,7 +64,7 @@ class JobPreviewBody extends React.Component {
                 </Container>
                 {position && position.length ? <TagsAdd header={'Position Tags'} tags={position}/> : null}
                 {this.state.job.description ? (
-                    <Text header={"Job Description"} text={this.state.job.description}/>
+                    <Text header={"Job Description"} cutText={true} text={this.state.job.description}/>
                 ) : null}
             </PreviewSection>
         )
@@ -87,8 +87,7 @@ class JobPreviewBody extends React.Component {
                     <TagsAdd hideBorder={true} activeColor={"white"} backgroundTagColor={"#202225"}
                              borderColor={"#202225"} header={'Experience Required'} tags={experience}/> : null}
                 {this.state.job.jobResponsibility ? (
-                    <Text header={"Responsibilities"} text={this.state.job.jobResponsibility} cutText={true}
-                          cutLines={3}/>) : null}
+                    <Text header={"Responsibilities"} text={this.state.job.jobResponsibility} cutLines={4} cutText={true} />) : null}
                 {languages && languages.length ?
                     <TagsAdd header={'Technical Requirements | Language & Libraries'} tags={languages}/> : null}
             </PreviewSection>
