@@ -22,12 +22,13 @@ import { ViewsCountUpdate } from "../../apollo-client/viewCount";
 import { FollowAction } from "../../apollo-client/follow";
 import { INNOVATORS_TYPES } from "../../constants";
 import { cleanSearch, onSearchTags } from "../../actions/TopSearchActions";
+import { List } from "../general";
 
 /**
  * @module Events
  * @category list
  */
-class ListInnovators extends Component {
+class ListInnovators extends List {
   constructor(props) {
     super(props);
     this.state = {
@@ -43,6 +44,7 @@ class ListInnovators extends Component {
       summary: true
     };
     this.customRenderItem = this.customRenderItem.bind(this);
+    this.entityName = "innovators";
   }
 
   componentWillMount() {
@@ -57,24 +59,7 @@ class ListInnovators extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    if (
-      nextProps.filterStatus &&
-      nextProps.filterStatus.filters &&
-      JSON.stringify(this.state.filterStatus) !==
-        JSON.stringify(nextProps.filterStatus.filters)
-    ) {
-      let filters = Object.assign({}, nextProps.filterStatus.filters);
-      this.setState({ filterStatus: filters }, () => this.reFetchQuery());
-    }
-    if (
-      nextProps.filterStatus &&
-      nextProps.filterStatus.text &&
-      nextProps.filterStatus.text !== this.state.filter
-    ) {
-      this.setState({ filter: nextProps.filterStatus.text }, () =>
-        this.reFetchQuery()
-      );
-    }
+    super.componentWillReceiveProps(nextProps);
     if (
       nextProps.location &&
       nextProps.location.state &&
@@ -90,13 +75,10 @@ class ListInnovators extends Component {
               filter: "",
               user: { _id: { in: [nextProps.location.state.target] } }
             },
-            updateQuery: (
-              previousResult,
-              { fetchMoreResult, queryVariables }
-            ) => {
+            updateQuery: (previousResult, { fetchMoreResult }) => {
               return {
-                ...previousResult,
-                users: [...fetchMoreResult["users"], ...previousResult]
+                ...previousResult["users"],
+                users: [...fetchMoreResult["users"], ...previousResult["users"]]
               };
             }
           })
@@ -125,28 +107,6 @@ class ListInnovators extends Component {
             ? { _id: { ne: this.props.curUser._id } }
             : {}
       });
-  }
-
-  onChangeSelection(item, key, viewsUpdate) {
-    if (item) {
-      const view = {
-        user: this.props.curUser ? this.props.curUser._id : null,
-        entityViewed: item._id,
-        entityType: item.entity,
-        actualDate: new Date()
-      };
-      if (
-        view.user &&
-        ((item.owner && view.user !== item.owner._id) || view.user !== item._id)
-      )
-        viewsUpdate({ variables: { view: view } }).then(result => {
-          this.setState(
-            { selectedItem: item, selectedIndex: key },
-            () => result.data.viewUpdate && this.reFetchQuery()
-          );
-        });
-      else this.setState({ selectedItem: item, selectedIndex: key });
-    } else this.setState({ selectedItem: item, selectedIndex: key });
   }
 
   fetchMoreSelection(isLoading) {
@@ -187,15 +147,76 @@ class ListInnovators extends Component {
       );
   }
 
-  removeOrg(deleteOrg, org) {
-    deleteOrg({ variables: { id: org._id } });
-    this.setState({ selectedItem: null }, () => this.reFetchQuery());
-  }
-
   handleMessageSummary() {
     this.setState({
       showMessages: !this.state.showMessages
     });
+  }
+
+  editOrg() {
+    let org = JSON.parse(JSON.stringify(this.state.selectedItem));
+    delete org.entity;
+    delete org.views;
+    this.props.history.push("/post-organization", {
+      organization: org
+    });
+  }
+
+  handleBackgroundChange(updateOrgImages, src) {
+    updateOrgImages({
+      variables: { id: this.state.selectedItem._id, cover: src, image: null }
+    }).then(() => this.afterChangeImage(src, "cover"));
+  }
+
+  handlePhotoChange(updateOrgImages, src) {
+    updateOrgImages({
+      variables: { id: this.state.selectedItem._id, image: src, cover: null }
+    }).then(() => this.afterChangeImage(src, "image"));
+  }
+
+  afterChangeImage(src, place) {
+    const entity = { ...this.state.selectedItem };
+    if (entity) {
+      if (src && place) entity[place] = src;
+      this.setState({ selectedItem: entity }, () => this.reFetchQuery());
+    }
+  }
+
+  handleNavActive(activeTab) {
+    const isChatActive =
+      this.state.showMessages && activeTab.value === "members";
+    this.setState(
+      {
+        currentTab: activeTab,
+        selectedItem: null,
+        selectedIndex: null,
+        filter: "",
+        showMessages: isChatActive,
+        filterStatus: {}
+      },
+      () => this.reFetchQuery()
+    );
+  }
+
+  handleFollow(followAction, follow) {
+    super.handleFollow(followAction, follow, "users");
+  }
+
+  onSearch(value, tags) {
+    let tagsFilters = {};
+    if (this.state.currentTab.value === "corporations")
+      tags.length
+        ? (tagsFilters.description = { in: tags.map(item => item._id) })
+        : null;
+    if (this.state.currentTab.value === "members")
+      tags.length
+        ? (tagsFilters.profile_DOT_knowledge_DOT_languages_DOT_tag = {
+            in: tags.map(item => item._id)
+          })
+        : null;
+    this.setState({ filter: value, filterStatus: tagsFilters }, () =>
+      this.reFetchQuery()
+    );
   }
 
   customRenderItem(item, key, isLoading, viewsUpdate) {
@@ -258,98 +279,6 @@ class ListInnovators extends Component {
       default:
         return null;
     }
-  }
-
-  editOrg() {
-    let org = JSON.parse(JSON.stringify(this.state.selectedItem));
-    delete org.entity;
-    delete org.views;
-    this.props.history.push("/post-organization", {
-      organization: org
-    });
-  }
-
-  handleBackgroundChange(updateOrgImages, src) {
-    updateOrgImages({
-      variables: { id: this.state.selectedItem._id, cover: src, image: null }
-    }).then(() => this.afterChangeImage(src, "cover"));
-  }
-
-  handlePhotoChange(updateOrgImages, src) {
-    updateOrgImages({
-      variables: { id: this.state.selectedItem._id, image: src, cover: null }
-    }).then(() => this.afterChangeImage(src, "image"));
-  }
-
-  afterChangeImage(src, place) {
-    const entity = { ...this.state.selectedItem };
-    if (entity) {
-      if (src && place) entity[place] = src;
-      this.setState({ selectedItem: entity }, () => this.reFetchQuery());
-    }
-  }
-
-  errorOnBackgroundChange(e) {
-    // todo: handle error notification
-    console.log("Error to change the image");
-  }
-
-  handleNavActive(active) {
-    const isChatActive =
-      this.state.showMessages && this.state.currentTab.value === "members";
-    this.setState(
-      {
-        currentTab: active,
-        selectedItem: null,
-        selectedIndex: null,
-        filter: "",
-        showMessages: isChatActive,
-        filterStatus: {}
-      },
-      () => this.reFetchQuery()
-    );
-  }
-
-  handleFollow(followAction, follow) {
-    let follower = {
-      entityId: this.state.selectedItem._id,
-      entity: this.state.selectedItem.entity
-    };
-    followAction({
-      variables: {
-        follower: follower,
-        id: this.state.selectedItem._id,
-        follow: follow
-      }
-    }).then(() => {
-      this.reFetchQuery().then(() => {
-        let selected = this.props.users.users.find(
-          item => item._id === this.state.selectedItem._id
-        );
-        this.setState({ selectedItem: selected });
-      });
-    });
-  }
-
-  onSelectTag(tag) {
-    this.props.onSearchTags(tag);
-  }
-
-  onSearch(value, tags) {
-    let tagsFilters = {};
-    if (this.state.currentTab.value === "corporations")
-      tags.length
-        ? (tagsFilters.description = { in: tags.map(item => item._id) })
-        : null;
-    if (this.state.currentTab.value === "members")
-      tags.length
-        ? (tagsFilters.profile_DOT_knowledge_DOT_languages_DOT_tag = {
-            in: tags.map(item => item._id)
-          })
-        : null;
-    this.setState({ filter: value, filterStatus: tagsFilters }, () =>
-      this.reFetchQuery()
-    );
   }
 
   render() {
@@ -420,7 +349,7 @@ class ListInnovators extends Component {
                         curUser={this.props.curUser}
                         isMobile={this.props.isMobile}
                         showChatView={this.state.showMessages}
-                        isOpen={!!this.state.selectedItem}
+                        isOpen={this.activePreview()}
                         onClose={() => this.onChangeSelection(null, null)}
                         key={"rightSide"}
                         navClicked={index => console.log(index)}
@@ -507,7 +436,7 @@ class ListInnovators extends Component {
                               );
                             },
                             onClick: () => {
-                              this.removeOrg(
+                              this.removeEntity(
                                 deleteOrg,
                                 this.state.selectedItem
                               );

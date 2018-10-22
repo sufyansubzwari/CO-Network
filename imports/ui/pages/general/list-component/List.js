@@ -56,7 +56,10 @@ class List extends Component {
         entityType: item.entity,
         actualDate: new Date()
       };
-      if (view.user && view.user !== item.owner._id)
+      if (
+        view.user &&
+        ((item.owner && view.user !== item.owner._id) || view.user !== item._id)
+      )
         viewsUpdate({ variables: { view: view } }).then(result => {
           this._selectedItem(
             item,
@@ -125,7 +128,7 @@ class List extends Component {
     this.props.onSearchTags && this.props.onSearchTags(tag);
   }
 
-  handleFollow(followAction, follow) {
+  handleFollow(followAction, follow, customEntityName) {
     let follower = {
       entityId: this.state.selectedItem._id,
       entity: this.state.selectedItem.entity
@@ -138,9 +141,9 @@ class List extends Component {
       }
     }).then(() => {
       this.reFetchQuery().then(() => {
-        let selected = this.props.data[this.entityName].find(
-          item => item._id === this.state.selectedItem._id
-        );
+        let selected = this.props.data[
+          customEntityName || this.entityName
+        ].find(item => item._id === this.state.selectedItem._id);
         this.setState({ selectedItem: selected });
       });
     });

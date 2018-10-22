@@ -114,6 +114,13 @@ const Routes = props => (
       />
       <RouteWithProps
         exact
+        name="Innovators"
+        path="/innovators/preview"
+        component={ListInnovators}
+        {...props}
+      />
+      <RouteWithProps
+        exact
         name="Post a Organization"
         path="/post-organization"
         component={PostOrganization}

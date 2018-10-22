@@ -146,12 +146,12 @@ class MessagesSidebar extends React.Component {
     }
     this.props.closeSideBar();
     if (message && message.type === "private")
-      this.props.history.push("/innovators", {
+      this.props.history.push("/innovators/preview", {
         target: message.owner,
         openMsg: true
       });
     if (message && message.type === "public")
-      this.props.history.push("/colloquiums", {
+      this.props.history.push("/colloquiums/preview", {
         target: message.receptor,
         openMsg: true
       });

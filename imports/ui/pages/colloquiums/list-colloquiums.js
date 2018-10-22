@@ -47,6 +47,41 @@ class ListColloquiums extends List {
     });
   }
 
+  componentWillReceiveProps(nextProps) {
+    super.componentWillReceiveProps(nextProps);
+    if (
+      nextProps.location &&
+      nextProps.location.state &&
+      nextProps.location.state.openMsg &&
+      nextProps.location.state.target
+    ) {
+      this.props.history.push({});
+      this.props.data
+        .fetchMore({
+          variables: {
+            limit: 1,
+            filter: "",
+            colloquiums: { _id: nextProps.location.state.target }
+          },
+          updateQuery: (
+            previousResult,
+            { fetchMoreResult }
+          ) => {
+            return {
+              ...previousResult["colloquiums"],
+              colloquiums: [
+                ...fetchMoreResult["colloquiums"],
+                ...previousResult["colloquiums"]
+              ]
+            };
+          }
+        })
+        .then(({ data }) => {
+          this.setState({ selectedItem: data.colloquiums[0] });
+        });
+    }
+  }
+
   render() {
     const isLoading =
       this.props.data.loading &&
