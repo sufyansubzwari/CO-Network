@@ -29,7 +29,7 @@ class TagsAdd extends React.Component {
                         {this.props.header}
                     </STitle>
                     <Container flex style={{flexDirection: 'row'}}>
-                        <TagList tags={this.props.tags} style={{display: "inline-block"}}  />
+                        <TagList {...this.props} borderColor={this.props.borderColor} activeColor={this.props.activeColor} backgroundTagColor={this.props.backgroundTagColor} tags={this.props.tags} style={{display: "inline-block"}}  />
                         {/*<Tag style={{ marginBottom: '2px'}} active={true} color={"#000000"} data={{name: '+'}} onSelect={this.props.onAdd} />*/}
                     </Container>
                 </Container>
@@ -48,5 +48,8 @@ Text.propTypes = {
     titleLineHeight: PropsTypes.string,
     titleWeight: PropsTypes.string,
     onAdd: PropsTypes.func,
-    tags: PropsTypes.array
+    tags: PropsTypes.array,
+    backgroundTagColor: PropsTypes.string,
+    activeColor: PropsTypes.string,
+    borderColor: PropsTypes.string
 };

@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import styled from "styled-components";
 import { Layout, Container, mixins } from "btech-layout";
 import UserPhoto from "./../UserPhoto/UserPhoto";
+import UserPhotoList from "./../UserPhoto/UserPhotoList";
 import { UploadFile } from "./components";
 import PropsTypes from "prop-types";
 import { UploadToS3 } from "../../services";
@@ -150,10 +151,11 @@ class TopPreview extends Component {
           {this.props.showAvatar ? (
             <Container>
               <SPhotoContainer>
-                <Layout customTemplateColumns={`120px 200px`}>
-                  <Container>
-                    <UserPhoto photo={this.handleImage(this.state.image)} />
-                  </Container>
+                <Layout customTemplateColumns={`${this.state.image && this.state.image.length ? (75 + 30*this.state.image.length-1) : 75}px 200px`}>
+                  <UserPhotoList photos={this.state.image} />
+                  {/*<Container>*/}
+                    {/*<UserPhoto photo={this.handleImage(this.state.image)} />*/}
+                  {/*</Container>*/}
                   <Container relative>
                     {this.props.allowChangeImages ? (
                       <SPhotoLabelContainer>

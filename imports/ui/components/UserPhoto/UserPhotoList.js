@@ -1,0 +1,61 @@
+import React from "react";
+import {Layout, Container} from "btech-layout";
+import styled from "styled-components";
+import UserPhoto from "./UserPhoto";
+import PropsTypes from 'prop-types';
+import {Utils} from "../../services";
+
+const PhotoListContainer = styled(Container)`
+    justify-content: flex-start;
+`
+
+const PhotoContainer = styled(Container)`
+
+    z-index: ${props => props.len - props.index};    
+    :hover {
+        z-index: 100;
+    }
+`
+
+
+class UserPhotoList extends  React.Component {
+
+    constructor(props){
+        super(props)
+
+        this.state = {
+
+        }
+    }
+
+    handleImage = image => {
+        return image ? (image.startsWith("http") || image.startsWith("data:") )
+            ? image
+            : Utils.getImageFromS3(image, 'photo') :
+            null;
+    }
+
+    render(){
+
+        return (
+            <PhotoListContainer flex>
+                {
+                    this.props.photos && this.props.photos.length > 0 && this.props.photos.map((photo, index) =>
+                        <PhotoContainer relative key={index} index={index} len={this.props.photos.length} style={{left: `${index * -45}px`}}>
+                            <UserPhoto photo={this.handleImage(photo)} />
+                        </PhotoContainer>
+                    )
+                }
+            </PhotoListContainer>
+        )
+    }
+
+}
+
+export default UserPhotoList
+
+
+UserPhotoList.propTypes = {
+    photos : PropsTypes.array
+}
+

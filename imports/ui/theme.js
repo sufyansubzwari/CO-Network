@@ -82,13 +82,14 @@ const preview = {
     height: "187px",
     fontsize: "14px",
     fontcolor: "#C6C6C9",
-    fontfamily: "Roboto Mono"
+    fontfamily: "Roboto Mono",
+    borderSectionColor: "#dbdbdb"
   },
   userphoto: {
-    height: "110px",
-    width: "120px",
+    height: "75px",
+    width: "75px",
     background: "#32363D",
-    borderColor: "#DBDBDB",
+    borderColor: "#ffffff",
     family: "Helvetica Neue LT Std",
     fontcolor: "#D2DDE2",
     fontsize: "18px",
@@ -135,8 +136,12 @@ const preview = {
     marginBottom: "0.5rem",
     marginRight: "5px"
   },
+  section: {
+    titleFamily: "Helvetica Neue LT Std",
+    titleColor: "#000000",
+  },
+  borderColor: "#DBDBDB",
   background: "#F9F9FB",
-  borderColor: "#DBDBDB"
 };
 
 const filter = {

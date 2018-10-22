@@ -8,6 +8,7 @@ import Dates from "./Dates";
 import ProductService from "./Product-Service";
 import Media from "./Media"
 import HeaderInformation from "./HeaderInformation"
+import PreviewSection from "./PreviewSection/PreviewSection"
 
 export {
   Title,
@@ -19,5 +20,6 @@ export {
   Dates,
   ProductService,
   Media,
-  HeaderInformation
+  HeaderInformation,
+  PreviewSection
 };

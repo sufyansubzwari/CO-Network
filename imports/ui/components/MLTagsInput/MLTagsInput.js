@@ -207,6 +207,7 @@ export default class MLTagsInput extends Component {
               onClose={(e, tag, index) => {
                 this.props.onCloseTags && this.props.onCloseTags(e, tag, index);
               }}
+              defaultLevel={this.props.defaultLevel}
             />
           </Container>
           <InputGroupButtonDropdown
@@ -334,5 +335,6 @@ MLTagsInput.propTypes = {
   newAdded: PropsTypes.bool,
   showClose: PropsTypes.bool,
   onTextChange: PropsTypes.func,
-  onClose: PropsTypes.func
+  onClose: PropsTypes.func,
+  defaultLevel: PropsTypes.object
 };

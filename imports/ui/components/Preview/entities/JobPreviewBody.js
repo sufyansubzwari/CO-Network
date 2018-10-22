@@ -1,6 +1,6 @@
 import React from "react";
 import { Layout } from "btech-layout";
-import { Location, TagsAdd, Text, Title } from "../components/index";
+import { Location, TagsAdd, Text, Title, PreviewSection } from "../components/index";
 
 class JobPreviewBody extends React.Component {
   constructor(props) {
@@ -37,14 +37,21 @@ class JobPreviewBody extends React.Component {
     //checkboxes
     let jobtype =
       this.state.job.jobType &&
-      this.state.job.jobType.map(job => <div>{job.label}</div>);
+      this.state.job.jobType.map((job,index) => <div key={index}>{job.label}</div>);
     let jobExperience =
       this.state.job.jobExperience &&
-      this.state.job.jobExperience.map(exp => <div>{exp.label}</div>);
+      this.state.job.jobExperience.map((exp,index) => <div key={index}>{exp.label}</div>);
+
+    let experience = this.state.job.jobExperience && this.state.job.jobExperience.map( exp => ({...exp,active: true}) )
 
     return (
       <Layout mdRowGap={"15px"}>
         <Title text={this.state.job.title} />
+        <PreviewSection title={"Job Requirements"}>
+            <TagsAdd hideBorder={true} activeColor={"white"} backgroundTagColor={"#202225"} borderColor={"#202225"} header={'Experience Required'} tags={experience} />
+            <Text header={"Responsabilities"} text={this.state.job.jobResponsibility} cutText={true} cutLines={3} />
+            <TagsAdd header={'Technical Requirements | Language & Libraries'} tags={languages} />
+        </PreviewSection>
         <Location location={this.state.job.place} />
         {this.state.job.description !== "" ? (
           <Text header={"Job Description"} text={this.state.job.description} />

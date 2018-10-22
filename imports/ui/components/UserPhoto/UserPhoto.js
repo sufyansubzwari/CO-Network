@@ -20,7 +20,10 @@ const Photo = styled(Container)`
       ? "1px solid " + props.theme.preview.userphoto.borderColor
       : "1px solid transparent"};
   padding: ${props => (props.photo ? "0" : "20px")};
-  border-radius: 3px;
+  border-radius: 45px;
+  display: flex;
+  align-items: center;
+  justify-content: center
 `;
 
 const Label = styled.label`
@@ -30,7 +33,7 @@ const Label = styled.label`
 `;
 
 const SImage = styled.img`
-  border-radius: 3px;
+  border-radius: 50px;
 `;
 
 class UserPhoto extends React.Component {
@@ -69,7 +72,7 @@ class UserPhoto extends React.Component {
     let photo = this.props.photo ? (
       <SImage
         src={this.props.photo}
-        style={{ width: "100%", height: "100%" }}
+        style={{ width: "99%", height: "99%" }}
       />
     ) : (
       <Label>{this.props.noPhotoText}</Label>
