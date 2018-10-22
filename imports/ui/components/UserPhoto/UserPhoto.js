@@ -3,6 +3,7 @@ import { Container } from "btech-layout";
 import styled from "styled-components";
 import PropsTypes from "prop-types";
 import { PlaceHolder } from "btech-placeholder-component";
+import ReactSvg from "react-svg";
 
 const Photo = styled(Container)`
   width: ${props =>
@@ -20,7 +21,10 @@ const Photo = styled(Container)`
       ? "1px solid " + props.theme.preview.userphoto.borderColor
       : "1px solid transparent"};
   padding: ${props => (props.photo ? "0" : "20px")};
-  border-radius: 3px;
+  border-radius: 45px;
+  display: flex;
+  align-items: center;
+  justify-content: center
 `;
 
 const Label = styled.label`
@@ -30,8 +34,22 @@ const Label = styled.label`
 `;
 
 const SImage = styled.img`
-  border-radius: 3px;
+  border-radius: 50px;
+  border: 2px solid white;
 `;
+
+const FContainer = styled(Container)`
+  justify-content: center;
+  align-items: center;
+  border-radius: 50px;
+  border: 2px solid white;
+  background-color: ${props =>
+    !props.photo
+        ? props.theme
+        ? props.theme.preview.photo.bottomcolor
+        : "black"
+        : "white"};
+`
 
 class UserPhoto extends React.Component {
   constructor(props) {
@@ -69,7 +87,7 @@ class UserPhoto extends React.Component {
     let photo = this.props.photo ? (
       <SImage
         src={this.props.photo}
-        style={{ width: "100%", height: "100%" }}
+        style={{ width: "99%", height: "99%" }}
       />
     ) : (
       <Label>{this.props.noPhotoText}</Label>
@@ -77,7 +95,13 @@ class UserPhoto extends React.Component {
     return loading ? (
       <PlaceHolder rect loading={loading} width={350} height={325} />
     ) : (
-      <Photo photo={this.props.photo}>{photo}</Photo>
+        this.props.photo && this.props.photo.endsWith("svg") ?
+          <FContainer flex width={'75px'} height={'75px'}><ReactSvg src={this.props.photo} svgStyle={{fill: "#ffffff", width: "40px"}} /></FContainer>
+            :
+        <SImage
+            src={this.props.photo}
+            style={{ width: "74px", height: "74px" }}
+        />
     );
   }
 }

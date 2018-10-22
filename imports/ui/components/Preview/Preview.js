@@ -60,11 +60,11 @@ const SLayout = styled(Layout)`
   `};
 
   @media (min-width: 62em) {
-    padding: 0 60px;
+    padding: 0 0;
   }
 
   @media (min-width: 86em) {
-    padding: 0 75px;
+    padding: 0 0;
   }
 `;
 
@@ -94,7 +94,7 @@ const NavLinks = styled(Layout)`
 
 const SPreviewContainer = styled(Container)`
   zoom: 100%;
-  padding: ${props => (props.isChatView ? "20px 10px" : "25px 10px")};
+  padding: ${props => (props.isChatView ? "20px 10px" : "0 0")};
 
   @media (min-width: 62em) {
     zoom: ${props => (props.isChatView ? "100%" : "80%")};
@@ -105,7 +105,7 @@ const SPreviewContainer = styled(Container)`
   }
 
   ${mixins.media.desktop`
-    padding: ${props => (props.isChatView ? "15px 25px" : "25px 75px")};
+    padding: ${props => (props.isChatView ? "15px 25px" : "0 0")};
   `};
 `;
 
@@ -361,6 +361,7 @@ class Preview extends React.Component {
             }}
           >
             <TopPreview
+              entity={this.props.entity}
               handleUpload={this.handleUploadChange}
               image={this.state.image}
               backGroundImage={this.state.backGroundImage}
