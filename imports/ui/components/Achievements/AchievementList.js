@@ -45,6 +45,8 @@ class AchievementsList extends React.Component {
     this.state = {
       achievements:
         this.props.data && this.props.data.length ? this.props.data : [],
+      achievementsCopy:
+        this.props.data && this.props.data.length ? this.props.data : [],
       isEditable: false
     };
 
@@ -57,10 +59,31 @@ class AchievementsList extends React.Component {
     if (nextProps.data) {
       this.setState({
         achievements:
-          nextProps.data && nextProps.data.length ? nextProps.data : []
+          nextProps.data && nextProps.data.length ? nextProps.data : [],
+        achievementsCopy:
+          nextProps.data && nextProps.data.length
+            ? JSON.parse(JSON.stringify(nextProps.data))
+            : []
       });
     }
   }
+
+  handleCancel = index => {
+    let ach = this.state.achievementsCopy;
+    Object.keys(ach[index]).forEach(
+      key => !ach[index][key] && delete ach[index][key]
+    );
+    Object.keys(ach[index]).filter(item => item !== "type" && item !== "edit")
+      .length === 0
+      ? ach.splice(index, 1)
+      : (ach[index] = { ...ach[index], edit: false });
+    this.setState(
+      {
+        achievements: ach
+      },
+      () => this.notifyParent()
+    );
+  };
 
   handleRemove(index) {
     let sta = this.state.achievements;
@@ -102,17 +125,13 @@ class AchievementsList extends React.Component {
       let newTag = { ...tag, type: this.props.type };
       tags.push(newTag);
       this.state.achievements[index].category = tags;
-      this.setState({ achievements: this.state.achievements }, () =>
-        this.notifyParent()
-      );
+      this.setState({ achievements: this.state.achievements });
     }
   }
 
   onCloseTags(e, tag, i, index) {
     this.state.achievements[index].category.splice(i, 1);
-    this.setState({ achievements: this.state.achievements }, () =>
-      this.notifyParent()
-    );
+    this.setState({ achievements: this.state.achievements });
   }
 
   notifyParent() {
@@ -145,12 +164,14 @@ class AchievementsList extends React.Component {
                         key={index}
                         model={this.state.achievements[index]}
                         handleSave={() => this.handleSave(index)}
+                        handleCancel={() => this.handleCancel(index)}
                       />
                     ) : item.type === "Professional Experience" ? (
                       <ProfessionalExperience
                         key={index}
                         model={this.state.achievements[index]}
                         handleSave={() => this.handleSave(index)}
+                        handleCancel={() => this.handleCancel(index)}
                       />
                     ) : item.type === "Audited Courses" ? (
                       <AuditedCourse
@@ -162,6 +183,7 @@ class AchievementsList extends React.Component {
                           this.onCloseTags(e, tag, i, index)
                         }
                         options={[]}
+                        handleCancel={() => this.handleCancel(index)}
                       />
                     ) : item.type === "Publications" ? (
                       <Publications
@@ -173,6 +195,7 @@ class AchievementsList extends React.Component {
                           this.onCloseTags(e, tag, i, index)
                         }
                         options={[]}
+                        handleCancel={() => this.handleCancel(index)}
                       />
                     ) : item.type === "Patents" ? (
                       <Patents
@@ -184,6 +207,7 @@ class AchievementsList extends React.Component {
                           this.onCloseTags(e, tag, i, index)
                         }
                         options={[]}
+                        handleCancel={() => this.handleCancel(index)}
                       />
                     ) : null
                   ) : (
