@@ -36,7 +36,12 @@ pipeline {
 	            rm -rf ../compiled
 	            mkdir ../compiled
 	            cp /home/ubuntu/.npmrc ./DockerImage/myfilenpmrc
-	            meteor npm install
+	            '''
+	        withNPM(npmrcConfig:'Btech-Nexus-Repository') {
+                echo "Performing npm build..."
+                sh 'meteor npm install'
+                }
+	            sh'''
 	            meteor build ../compiled --architecture os.linux.x86_64
 	            mv ../compiled/*.tar.gz ./DockerImage/file.tar.gz
 	            mv ./Dockerfile ./DockerImage
