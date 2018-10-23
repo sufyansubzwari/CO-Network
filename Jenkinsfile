@@ -37,7 +37,7 @@ pipeline {
 	            mkdir ../compiled
 	            cp /home/ubuntu/.npmrc ./DockerImage/myfilenpmrc
 	            '''
-	        withNPM(npmrcConfig:'Btech-Nexus-Repository') {
+	        withNPM(npmrcConfig:'db130c51-add1-4bfc-8d3f-f90a9811dbaf') {
                 echo "Performing npm build..."
                 sh 'meteor npm install'
                 }
