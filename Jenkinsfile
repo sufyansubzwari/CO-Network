@@ -40,10 +40,10 @@ pipeline {
 	            mkdir ../compiled
 	            cp /home/ubuntu/.npmrc ./DockerImage/myfilenpmrc
 	            '''
-	        withNPM(npmrcConfig:'db130c51-add1-4bfc-8d3f-f90a9811dbaf') {
-                echo "Performing npm build..."
-                sh 'meteor npm install'
-                }
+	            withNPM(npmrcConfig:'db130c51-add1-4bfc-8d3f-f90a9811dbaf') {
+	                echo "Performing npm build..."
+	                sh 'meteor npm install'
+	            }
 	            sh'''
 	            meteor build ../compiled --architecture os.linux.x86_64
 	            mv ../compiled/*.tar.gz ./DockerImage/file.tar.gz
