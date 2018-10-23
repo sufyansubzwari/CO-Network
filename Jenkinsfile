@@ -33,7 +33,7 @@ pipeline {
 				steps {
 				    sh '''
                     #!/bin/bash
-                    echo Deploying in dev....
+                    echo Deploying in feature/jenkinsfile....
                     aws ssm get-parameter --name "/secrets/cdt/mlsociety-new-design" --region us-east-1 --query 'Parameter.{V:Value}' --output text > settings
                     rm -rf DockerImage
                     mkdir DockerImage
