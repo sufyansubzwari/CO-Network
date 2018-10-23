@@ -43,6 +43,8 @@ class ProductList extends React.Component {
 
     this.state = {
       products:
+        this.props.data && this.props.data.length ? this.props.data : [],
+      productsCopy:
         this.props.data && this.props.data.length ? this.props.data : []
     };
 
@@ -58,7 +60,11 @@ class ProductList extends React.Component {
   componentWillReceiveProps(nextProps) {
     if (nextProps.data) {
       this.setState({
-        products: nextProps.data && nextProps.data.length ? nextProps.data : []
+        products: nextProps.data && nextProps.data.length ? nextProps.data : [],
+        productsCopy:
+          nextProps.data && nextProps.data.length
+            ? JSON.parse(JSON.stringify(nextProps.data))
+            : []
       });
     }
   }
@@ -114,6 +120,24 @@ class ProductList extends React.Component {
     this.setState({ products: prod }, () => this.notifyParent());
   }
 
+  handleCancel = index => {
+    let prod = this.state.productsCopy;
+    Object.keys(prod[index]).forEach(
+      key => !prod[index][key] && delete prod[index][key]
+    );
+    Object.keys(prod[index]).filter(item => item !== "type" && item !== "edit")
+      .length === 0
+      ? prod.splice(index, 1)
+      : (prod[index] = { ...prod[index], edit: false });
+    this.setState(
+      {
+        products: prod,
+        editingChild: false
+      },
+      () => this.notifyParent()
+    );
+  };
+
   handleChange(index) {
     let prod = this.state.products;
     prod[index] = { ...prod[index], edit: true };
@@ -146,7 +170,7 @@ class ProductList extends React.Component {
             <SLabel>{this.props.type}</SLabel>
           </Layout>
         ) : null}
-        <SItemContainer paddingX={"10px"} background={this.props.background}>
+        <SItemContainer background={this.props.background}>
           <Container>
             {this.state.products.map(
               (item, index) =>
@@ -159,6 +183,7 @@ class ProductList extends React.Component {
                         handleSave={() => this.handleSave(index)}
                         handleUpload={file => this.handleUpload(file, index)}
                         onClose={pos => this.handleClose(index, pos)}
+                        handleCancel={() => this.handleCancel(index)}
                       />
                     ) : item.type === "Service" ? (
                       <Service
@@ -167,6 +192,7 @@ class ProductList extends React.Component {
                         handleSave={() => this.handleSave(index)}
                         handleUpload={file => this.handleUpload(file, index)}
                         onClose={pos => this.handleClose(index, pos)}
+                        handleCancel={() => this.handleCancel(index)}
                       />
                     ) : null
                   ) : (

@@ -36,6 +36,8 @@ class WorkList extends React.Component {
     this.state = {
       experience:
         this.props.data && this.props.data.length ? this.props.data : [],
+      experienceCopy:
+        this.props.data && this.props.data.length ? this.props.data : [],
       isEditable: false
     };
 
@@ -50,7 +52,11 @@ class WorkList extends React.Component {
     if (nextProps.data) {
       this.setState({
         experience:
-          nextProps.data && nextProps.data.length ? nextProps.data : []
+          nextProps.data && nextProps.data.length ? nextProps.data : [],
+        experienceCopy:
+          nextProps.data && nextProps.data.length
+            ? JSON.parse(JSON.stringify(nextProps.data))
+            : []
       });
     }
   }
@@ -89,6 +95,23 @@ class WorkList extends React.Component {
       () => this.notifyParent()
     );
   }
+
+  handleCancel = index => {
+    let xp = this.state.experienceCopy;
+    Object.keys(xp[index]).forEach(
+      key => !xp[index][key] && delete xp[index][key]
+    );
+    Object.keys(xp[index]).filter(item => item !== "type" && item !== "edit")
+      .length === 0
+      ? xp.splice(index, 1)
+      : (xp[index] = { ...xp[index], edit: false });
+    this.setState(
+      {
+        experience: xp
+      },
+      () => this.notifyParent()
+    );
+  };
 
   handleChange(index) {
     let exp = this.state.experience;
@@ -131,7 +154,7 @@ class WorkList extends React.Component {
                   <WorkItem
                     model={this.state.experience[index]}
                     handleSave={() => this.handleSave(index)}
-                    handleRemove={() => this.handleRemove(index)}
+                    handleCancel={() => this.handleCancel(index)}
                   />
                 ) : (
                   <SWorkItem
