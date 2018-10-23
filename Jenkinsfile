@@ -1,5 +1,8 @@
 pipeline {
 	agent {label 'NodeJS-Java-Agent'}
+	tools {
+	    nodejs 'node_v8.12'
+	}
 	stages {
 	    stage('Deploy Dev') {
 	        when {expression { env.BRANCH_NAME == 'dev' }}
