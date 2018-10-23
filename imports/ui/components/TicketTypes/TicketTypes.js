@@ -16,10 +16,28 @@ class TicketTypes extends Component {
     super(props);
     this.state = {
       tickets: this.props.tickets,
+      ticketsCopy: this.props.tickets,
       editIndex: -1,
       menuOptions: ticketsTypes
     };
   }
+
+  handleCancel = index => {
+    let tics = this.state.ticketsCopy;
+    Object.keys(tics[index]).forEach(
+      key => !tics[index][key] && delete tics[index][key]
+    );
+    Object.keys(tics[index]).filter(item => item !== "type" && item !== "edit")
+      .length === 0
+      ? tics.splice(index, 1)
+      : (tics[index] = { ...tics[index], edit: false });
+    this.setState(
+      {
+        tickets: tics, editIndex: -1
+      },
+      () => this.notifyParent()
+    );
+  };
 
   notifyParent() {
     this.props.onChange && this.props.onChange(this.state.tickets);
@@ -69,6 +87,7 @@ class TicketTypes extends Component {
                     isPaid={isPaid}
                     data={this.state.editIndex === index ? { ...ticket } : {}}
                     onSave={event => this.processSaveAction(event, index)}
+                    handleCancel={() => this.handleCancel(index)}
                   />
                 ) : (
                   <TicketsList
@@ -77,6 +96,7 @@ class TicketTypes extends Component {
                     showPriceFields={isPaid}
                     onEdit={() => this.setState({ editIndex: index })}
                     onDelete={() => this.onDeleteAction(ticket, index)}
+                    handleCancel={() => this.handleCancel(index)}
                   />
                 )}
               </Container>

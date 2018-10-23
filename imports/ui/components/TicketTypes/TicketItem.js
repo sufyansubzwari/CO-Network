@@ -121,8 +121,23 @@ class TicketItem extends Component {
               </Layout>
             ) : null}
             <Container>
-              <Layout customTemplateColumns={"1fr auto"}>
+              <Layout customTemplateColumns={"1fr auto auto"}>
                 <LineSeparator />
+                <Button
+                  type={"button"}
+                  secondary
+                  height={"auto"}
+                  color={"black"}
+                  opacity={"0.5"}
+                  border={"none"}
+                  hoverBackground={"transparent"}
+                  hoverColor={"initial"}
+                  onClick={this.props.handleCancel}
+                  style={{ fontSize: "14px" }}
+                >
+                  <MaterialIcon type={"block"} />
+                  <span style={{ paddingLeft: "5px" }}>Cancel</span>
+                </Button>
                 <Button
                   secondary
                   type={"submit"}
@@ -158,7 +173,8 @@ TicketItem.propTypes = {
   data: PropTypes.object,
   isPaid: PropTypes.bool,
   title: PropTypes.string,
-  onSave: PropTypes.func
+  onSave: PropTypes.func,
+  handleCancel: PropTypes.func
 };
 
 export default TicketItem;
