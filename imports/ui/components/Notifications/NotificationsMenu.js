@@ -11,7 +11,7 @@ class NotificationsMenu extends React.Component {
   }
 
   shouldComponentUpdate(nextProps) {
-    return !_.isEqual(this.props.notifications, nextProps.notifications);
+    return !_.isEqual(this.props.notifications, nextProps.notifications) || this.props.loading !== nextProps.loading;
   }
 
   render() {

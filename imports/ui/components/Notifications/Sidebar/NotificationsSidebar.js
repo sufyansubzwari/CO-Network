@@ -13,6 +13,7 @@ import posed from "react-pose/lib/index";
 import styled from "styled-components";
 import { Utils } from "../../../services";
 import NotificationBack from "./NotificationBack";
+import { PlaceHolder } from "btech-placeholder-component";
 
 const SNotificationStyled = styled(Container)`
   ${mixins.media.desktop`
@@ -43,6 +44,9 @@ class NotificationsSidebar extends React.Component {
       this.setState({
         notifications: nextProps.notifications
       });
+    }
+    if (nextProps.loading !== this.props.loading) {
+      this.forceUpdate();
     }
   }
 
@@ -99,7 +103,16 @@ class NotificationsSidebar extends React.Component {
 
   renderItem(not, index) {
     if (!not) return null;
-    return (
+    return this.props.loading ? (
+      <div style={{padding: '15px'}}>
+        <PlaceHolder
+          facebook
+          loading={this.props.loading}
+          height={280}
+          width={390}
+        />
+      </div>
+    ) : (
       <Mutation
         key={index}
         mutation={DeleteNotification}

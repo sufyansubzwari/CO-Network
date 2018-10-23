@@ -29,6 +29,7 @@ import moment from "moment/moment";
 import { withRouter } from "react-router-dom";
 import posed from "react-pose/lib/index";
 import { Utils } from "../../../services";
+import { PlaceHolder } from "btech-placeholder-component";
 
 const SLabel = styled(Label)`
   display: flex;
@@ -106,6 +107,9 @@ class MessagesSidebar extends React.Component {
       this.setState({
         messages: nextProps.messages
       });
+    }
+    if (nextProps.loading !== this.props.loading) {
+      this.forceUpdate();
     }
   }
 
@@ -281,10 +285,19 @@ class MessagesSidebar extends React.Component {
                 fetchPolicy={"cache-and-network"}
               >
                 {({ loading, error, data }) => {
-                  if (loading) return <div />;
                   if (error) return <div />;
                   const owner = data.user;
                   return (
+                    this.props.loading || loading ? (
+                      <div style={{padding: '15px'}}>
+                        <PlaceHolder
+                          facebook
+                          loading={this.props.loading || loading}
+                          height={280}
+                          width={390}
+                        />
+                      </div>
+                    ) : (
                     <Container relative>
                       <NotificationBack />
                       <SDragContainer
@@ -321,6 +334,7 @@ class MessagesSidebar extends React.Component {
                         />
                       </SDragContainer>
                     </Container>
+                    )
                   );
                 }}
               </Query>
