@@ -4,8 +4,8 @@ pipeline {
           nodejs 'node'
       }
 	stages {
-		stage('Deploy Dev') {
-		    when {expression { env.BRANCH_NAME == 'dev' }}
+	    stage('Deploy Dev') {
+	        when {expression { env.BRANCH_NAME == 'dev' }}
 				steps {
 				sh '''
                     #!/bin/bash
