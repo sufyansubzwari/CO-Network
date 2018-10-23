@@ -45,14 +45,14 @@ const SInput = styled.input`
   box-sizing: border-box;
   border: 0px;
   width: ${props => props.width || "auto"};
-  height: ${props => props.height || "34px"};
+  height: ${props => props.height || "32px"};
   color: ${props => (props.inactive ? "rgba(0,0,0,0.5)" : "#2B2B2B")};
   background: ${props =>
     props.valid ? (props.inactive ? "#EDEDED" : "#ffffff") : "#FEEBEB"};
   padding: 0 10px;
   border-radius: 3px;
   box-shadow: none;
-
+  margin: 1px 0px;
   font-size: ${props => (props.fontSize ? props.fontSize : "12px")};
   font-family: ${props =>
     props.fontFamily ? props.fontFamily : "Roboto Mono"};
