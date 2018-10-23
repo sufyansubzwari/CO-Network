@@ -6,9 +6,16 @@ import {
   Social,
   Text,
   TagsAdd,
-  Dates
+  Dates,
+  PreviewSection
 } from "../../../components/Preview/components/index";
+import Separator from "../../../components/FiltersContainer/Separator";
+import { Map, Marker, Popup, TileLayer } from 'react-leaflet'
 import _ from 'lodash';
+import {GetJobApply} from "../../../apollo-client/jobApply";
+import {FollowAction} from "../../../apollo-client/follow";
+import {Mutation} from "react-apollo";
+import SpeakerCard from "./components/speaker";
 
 class EventPreviewBody extends React.Component {
   constructor(props) {
@@ -25,6 +32,109 @@ class EventPreviewBody extends React.Component {
       });
     }
   }
+
+    renderTitleSection = () => {
+        let others =
+            (this.state.event.others &&
+                this.state.event.others.map(other => ({ ...other, active: true }))) || [];
+
+        let category = this.state.event.category || [];
+        category = _.uniqBy(category.concat(others), 'label');
+        category = category.map( item => ({...item, active: true}));
+
+        return this.state.event.title || this.state.event.startDate || this.state.event.endDate || this.state.event.description ?  (
+            <PreviewSection>
+                { this.state.event.title ? <Title text={this.state.event.title}/> : null}
+                { this.state.event.startDate || this.state.event.endDate ?
+                    <Dates startDate={this.state.event.startDate}
+                           endDate={this.state.event.endDate}
+                /> : null}
+                <Separator/>
+                {category && category.length ? <TagsAdd header={'Event Category'} tags={category}/> : null}
+                {this.state.event.description ? (
+                    <Text header={"Description"} text={this.state.event.description} />
+                ) : null}
+            </PreviewSection>
+        ) : null
+    }
+
+    renderApplicantsSection = () => {
+
+      let speakers = this.state.event.sponsors && this.state.event.sponsors.filter( item => item.type === "Speaker" );
+
+        return this.props.isPost ? null : (
+                        <PreviewSection title={"Speakers"} number={speakers.length}>
+                            <Layout colGap={'20px'} customTemplateColumns={`1fr`} mdCustomTemplateColumns={"1fr 1fr"}>
+                                {
+                                    data.jobsApply && data.jobsApply.length > 0 && data.jobsApply.map((jobApply, index) =>
+                                        (
+                                            <Mutation
+                                                mutation={FollowAction}
+                                                onError={error => console.log(error)}
+                                                refetchQueries={['GetJobApply']}
+                                            >
+                                                {(followAction, { followResult }) => {
+                                                    const follow =
+                                                        jobApply &&
+                                                        jobApply.owner &&
+                                                        jobApply.owner.followerList &&
+                                                        jobApply.owner.followerList.indexOf(
+                                                            Meteor.userId()
+                                                        ) > -1;
+                                                    return (<SpeakerCard key={index}
+                                                                            location={jobApply.owner.profile.place.location.address}
+                                                                            name={`${jobApply.name} ${jobApply.lastName}`}
+                                                                            image={jobApply.image}
+                                                                            lgCustomTemplateColumns={"130px 1fr"}
+                                                                            hideButton={ jobApply.owner._id === Meteor.userId() }
+                                                                            onFollowClick={() => this.handleFollow(followAction,follow, jobApply.owner._id )}
+                                                                            following={ follow }
+
+                                                    />)
+                                                }}
+                                            </Mutation>
+                                        ))}
+                            </Layout>
+                        </PreviewSection>
+                    )
+    }
+
+    renderVenueSection = () => {
+
+        let address = this.state.event.place && this.state.event.place.location && this.state.event.place.location.address;
+        const position = this.state.event.place && this.state.event.place.location && this.state.event.place.location.location
+        return this.state.event.venueName || this.state.event.venueEmail || address ? (
+            <PreviewSection title={"Venue"}>
+                <Container>
+                    {this.state.event.venueName ? <Location location={this.state.event.venueName}/> : null}
+                    {this.state.event.venueEmail ? <Container><span style={{color: "rgba(0,0,0,0.5)", fontSize: "11px", fontFamily: "Roboto Mono" }}>{this.state.event.venueEmail}</span></Container> : null}
+                    { address ? <TagsAdd hideBorder={true} activeColor={"white"} backgroundTagColor={"#202225"}
+                                 tags={[{label: address, active: true}]}/> : null}
+                </Container>
+                <Container height={"320px"}>
+                    <Map
+                        style={{height: "100%"}}
+                        center={position}
+                        zoom={15}
+                        zoomControl={false}
+                        attributionControl={false}
+                        detectRetina
+                    >
+                        <TileLayer
+                            detectRetina
+                            attribution="&copy; <a href=&quot;http://www.openstreetmap.org/copyright&quot;>OpenStreetMap</a> &copy; <a href=&quot;http://cartodb.com/attributions&quot;>CartoDB</a>"
+                            subdomains="abcd"
+                            maxZoom={18}
+                            url="https://cartodb-basemaps-{s}.global.ssl.fastly.net/dark_all/{z}/{x}/{y}{r}.png"
+                        />
+                        <Marker position={position}>
+                            <Popup>A pretty CSS3 popup.<br />Easily customizable.</Popup>
+                        </Marker>
+                    </Map>
+                </Container>
+            </PreviewSection>
+        ) : null
+    }
 
   render() {
     let others =
@@ -66,16 +176,17 @@ class EventPreviewBody extends React.Component {
       : [];
 
     return (
-      <Layout mdRowGap={"15px"}>
+      <Layout mdRowGap={"20px"}>
+          {this.renderTitleSection()}
+          {this.renderVenueSection()}
+
+
         <Title text={this.state.event.title} />
         <Dates
           startDate={this.state.event.startDate}
           endDate={this.state.event.endDate}
         />
         <Location location={this.state.event.place} />
-        {this.state.event.description !== "" ? (
-          <Text header={"Summary"} text={this.state.event.description} />
-        ) : null}
         <Layout mdRowGap={"15px"} mdTemplateColumns={2}>
           {categories && categories.length ? (
             <Text header={"Community Event Categories"}>{categories}</Text>
