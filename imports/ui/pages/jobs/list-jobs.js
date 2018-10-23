@@ -55,13 +55,26 @@ class ListJobs extends List {
     });
   }
 
+  userCanApply(queryResult) {
+    const element = this.state.selectedItem;
+    const alreadyApply =
+      queryResult && queryResult.jobsApply && queryResult.jobsApply.length;
+    return (
+      this.props.curUser &&
+      element &&
+      element._id &&
+      element.owner &&
+      element.owner._id !== this.props.curUser._id &&
+      !alreadyApply
+    );
+  }
   render() {
     const isLoading =
       this.props.data.loading &&
       (!this.props.data.jobs || !this.props.data.jobs.length);
     return (
       <ListLayout
-        entityType={"jobs"}
+        entityType={this.entityName}
         onSearchAction={(text, tags) =>
           this.onSearch(text, tags, "positionTags")
         }
@@ -102,34 +115,19 @@ class ListJobs extends List {
                     }}
                   >
                     {({ loading, error, data }) => {
-                      if (loading) return <div />;
                       if (error) return <div>Error</div>;
                       return (
                         <Preview
+                          entity={this.entityName}
                           showAvatar
-                          isOpen={!!this.state.selectedItem}
-                          entity={this.props.name}
-                          showAvatarisOpen={this.activePreview()}
+                          isOpen={this.activePreview()}
                           onClose={() => this.onChangeSelection(null, null)}
                           key={"rightSide"}
                           navClicked={index => console.log(index)}
                           navOptions={[
                             {
                               text: "Apply",
-                              checkVisibility: () => {
-                                // todo: check if the user apply before for this job
-                                const element = this.state.selectedItem;
-                                return (
-                                  (element &&
-                                    element._id &&
-                                    element.owner &&
-                                    this.props.curUser &&
-                                    element.owner._id !==
-                                      this.props.curUser._id &&
-                                    !data.jobsApply) ||
-                                  !data.jobsApply.length
-                                );
-                              },
+                              checkVisibility: () => this.userCanApply(data),
                               onClick: () => {
                                 this.applyJob();
                               }

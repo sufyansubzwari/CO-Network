@@ -72,6 +72,7 @@ class UserProfile extends Component {
     };
     this.handleBackgroundChange = this.handleBackgroundChange.bind(this);
     this.handleUserPhotoChange = this.handleUserPhotoChange.bind(this);
+    this.entityName = "innovators";
   }
 
   componentDidMount() {
@@ -170,6 +171,7 @@ class UserProfile extends Component {
           isOpen={this.state.openPreview}
           onClose={() => this.setState({ openPreview: false })}
           showAvatar
+          entity={this.entityName}
           key={"rightSide"}
           data={this.state.selectedItem}
           image={this.state.user && this.state.user.image}

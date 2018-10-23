@@ -130,24 +130,22 @@ export const SText = styled(Container)`
 
 export const SReplyButton = styled.span`
   margin-left: auto;
-  opacity: 0.5;
+  opacity: 1;
   cursor: pointer;
 
-  :hover {
-    opacity: 1;
-    transition: all 200ms ease-out;
-  }
+  ${mixins.media.desktop`
+    opacity: 0;
+  `};
 `;
 
 export const SDeleteButton = styled.span`
-  margin-left: ${props => props.marginLeft ? "auto" : ""};
-  opacity: 0.5;
+  margin-left: ${props => (props.marginLeft ? "auto" : "")};
+  opacity: 1;
   cursor: pointer;
 
-  :hover {
-    opacity: 1;
-    transition: all 200ms ease-out;
-  }
+  ${mixins.media.desktop`
+    opacity: 0;
+  `};
 `;
 
 export const SReplyMessage = styled(Container)`
@@ -174,10 +172,10 @@ export const SAttachmentName = styled(Container)`
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-  
+
   ${mixins.media.desktop`
     
-  `}
+  `};
 `;
 
 export const Header = styled.span`

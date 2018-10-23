@@ -153,9 +153,6 @@ class TopPreview extends Component {
               <SPhotoContainer>
                 <Layout customTemplateColumns={`${!this.state.image || typeof  this.state.image === "string" ? "75" : this.state.image.length ? (75 + 30*(this.state.image.length-1)) : 75}px 200px`}>
                   <UserPhotoList entity={this.props.entity} photos={this.state.image} />
-                  {/*<Container>*/}
-                    {/*<UserPhoto photo={this.handleImage(this.state.image)} />*/}
-                  {/*</Container>*/}
                   <Container relative>
                     {this.props.allowChangeImages ? (
                       <SPhotoLabelContainer>

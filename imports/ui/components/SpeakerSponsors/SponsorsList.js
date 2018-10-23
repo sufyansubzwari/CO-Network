@@ -47,6 +47,8 @@ class SponsorsList extends React.Component {
     this.state = {
       sponsors:
         this.props.data && this.props.data.length ? this.props.data : [],
+      sponsorsCopy:
+        this.props.data && this.props.data.length ? this.props.data : [],
       isEditable: false,
       editingChild: false
     };
@@ -60,7 +62,11 @@ class SponsorsList extends React.Component {
   componentWillReceiveProps(nextProps) {
     if (nextProps.data) {
       this.setState({
-        sponsors: nextProps.data && nextProps.data.length ? nextProps.data : []
+        sponsors: nextProps.data && nextProps.data.length ? nextProps.data : [],
+        sponsorsCopy:
+          nextProps.data && nextProps.data.length
+            ? JSON.parse(JSON.stringify(nextProps.data))
+            : []
       });
     }
   }
@@ -84,6 +90,25 @@ class SponsorsList extends React.Component {
     );
   }
 
+  handleCancel = index => {
+    let sponsors = this.state.sponsorsCopy;
+    Object.keys(sponsors[index]).forEach(
+      key => !sponsors[index][key] && delete sponsors[index][key]
+    );
+    Object.keys(sponsors[index]).filter(
+      item => item !== "type" && item !== "edit"
+    ).length === 0
+      ? sponsors.splice(index, 1)
+      : (sponsors[index] = { ...sponsors[index], edit: false });
+    this.setState(
+      {
+        sponsors: sponsors,
+        editingChild: false
+      },
+      () => this.notifyParent()
+    );
+  };
+
   handleChange(index) {
     let spo = this.state.sponsors;
     spo[index] = { ...spo[index], edit: true };
@@ -106,9 +131,7 @@ class SponsorsList extends React.Component {
     if (label) {
       let spo = this.state.sponsors;
       spo[index][name] = label;
-      this.setState({ sponsors: spo, editingChild: false }, () =>
-        this.notifyParent()
-      );
+      this.setState({ sponsors: spo, editingChild: false });
     }
   }
 
@@ -145,6 +168,7 @@ class SponsorsList extends React.Component {
                         model={this.state.sponsors[index]}
                         handleSave={() => this.handleSave(index)}
                         onAdd={(label, name) => this.onAdd(index, label, name)}
+                        handleCancel={() => this.handleCancel(index)}
                       />
                     ) : item.type === "Sponsors" ? (
                       <Sponsor
@@ -153,6 +177,7 @@ class SponsorsList extends React.Component {
                         model={this.state.sponsors[index]}
                         handleSave={() => this.handleSave(index)}
                         onAdd={(label, name) => this.onAdd(index, label, name)}
+                        handleCancel={() => this.handleCancel(index)}
                       />
                     ) : null
                   ) : (

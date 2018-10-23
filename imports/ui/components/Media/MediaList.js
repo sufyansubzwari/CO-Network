@@ -35,7 +35,8 @@ class MediaList extends React.Component {
     super(props);
 
     this.state = {
-      media: this.props.data && this.props.data.length ? this.props.data : []
+      media: this.props.data && this.props.data.length ? this.props.data : [],
+      mediaCopy: this.props.data && this.props.data.length ? this.props.data : []
     };
 
     this.handleSave = this.handleSave.bind(this);
@@ -50,7 +51,8 @@ class MediaList extends React.Component {
   componentWillReceiveProps(nextProps) {
     if (nextProps.data) {
       this.setState({
-        media: nextProps.data && nextProps.data.length ? nextProps.data : []
+        media: nextProps.data && nextProps.data.length ? nextProps.data : [],
+        mediaCopy: nextProps.data && nextProps.data.length ? JSON.parse(JSON.stringify(nextProps.data)) : []
       });
     }
   }
@@ -108,6 +110,25 @@ class MediaList extends React.Component {
     );
   }
 
+  handleCancel = index => {
+    let med = this.state.mediaCopy;
+    Object.keys(med[index]).forEach(
+      key => !med[index][key] && delete med[index][key]
+    );
+    Object.keys(med[index]).filter(
+      item => item !== "type" && item !== "edit"
+    ).length === 0
+      ? med.splice(index, 1)
+      : (med[index] = { ...med[index], edit: false });
+    this.setState(
+      {
+        media: med,
+        editingChild: false
+      },
+      () => this.notifyParent()
+    );
+  };
+
   handleChange(index) {
     let med = this.state.media;
     med[index] = { ...med[index], edit: true };
@@ -136,16 +157,18 @@ class MediaList extends React.Component {
       <Container
         style={{ display: this.state.media.length ? "block" : "none" }}
       >
-        <SItemContainer paddingX={"10px"} background={this.props.background}>
+        <SItemContainer background={this.props.background}>
           <Container>
             {this.state.media.map(
               (item, index) =>
                 item.edit ? (
                   <MediaItem
+                    key={index}
                     model={this.state.media[index]}
                     handleSave={() => this.handleSave(index)}
                     handleUpload={file => this.handleUpload(file, index)}
                     onClose={() => this.handleClose(index)}
+                    handleCancel={() => this.handleCancel(index)}
                   />
                 ) : (
                   <SMediaItem
