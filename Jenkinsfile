@@ -54,7 +54,7 @@ pipeline {
 	        }
 	    }
 	    stage('Deploy Others') {
-	        when {expression { env.BRANCH_NAME ==~ /^(hotfix|bugfix|feature|release)(.*)?/ }}
+	        when {expression { env.BRANCH_NAME ==~ /^(hotfix|bugfix|release)(.*)?/ }}
 	        steps {
 	            sh '''
 	            #!/bin/bash
