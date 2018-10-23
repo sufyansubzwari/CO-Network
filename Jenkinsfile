@@ -6,8 +6,8 @@ pipeline {
 	stages {
 	    stage('Deploy Dev') {
 	        when {expression { env.BRANCH_NAME == 'dev' }}
-				steps {
-				sh '''
+	        steps {
+	            sh '''
                     #!/bin/bash
                     echo Deploying in dev....
                     rm -rf DockerImage
