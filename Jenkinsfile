@@ -56,6 +56,7 @@ pipeline {
 	                npm cache clean --force
 	                npm config get registry
 	                meteor npm install
+	                meteor npm install --save @babel/runtime@7.0.0-beta.55
 	                meteor build ../compiled --architecture os.linux.x86_64
 	                '''
 	            }
