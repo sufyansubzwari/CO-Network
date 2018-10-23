@@ -32,5 +32,5 @@ input SponsorsInput {
 
 type Mutation {
     sponsor(sponsors: SponsorsInput!): Sponsors
-    deleteSponsor(_id: String!): Sponsors
+    delSponsor(_id: String!): Sponsors
 }

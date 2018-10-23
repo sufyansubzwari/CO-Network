@@ -2,6 +2,7 @@ import Service from "../service";
 import Tags from '../../../tags';
 import Places from '../../../places';
 import Sponsors from "../../../sponsors";
+import Achievement from "../../../archivements/server/service";
 
 const Mutation = {};
 
@@ -25,19 +26,19 @@ Mutation.event = async (root, {events}, context) => {
   }
 
   await Sponsors.service.deleteSponsor({owner: eventInserted._id })
+
   if(sponsors && sponsors.length){
-    for(let i = 0; i < sponsors.length; i++){
-        let sponsor = sponsors[i];
-        // if(!sponsor._id){
-          sponsor.owner = eventInserted._id;
-          sponsor.external = !sponsor.user;
-        // }
-        console.log(sponsor)
-        Sponsors.service.sponsor(sponsor)
-      }
-    }
+      sponsors.forEach(async spon => {
+          if (spon._id) {
+              delete spon._id;
+          }
+          spon.owner = eventInserted._id;
+          spon.external = !spon.user;
+          await Sponsors.service.sponsor(spon);
+      })}
 
   return eventInserted;
+
 };
 
 Mutation.updateEventImage = async (root, {_id, image}, context) => {

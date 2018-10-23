@@ -20,7 +20,6 @@ Events.place = entity => {
 };
 
 Events.sponsors = entity => {
-  console.log(Sponsors.service.getSponsorsByOwner(entity._id))
   return Sponsors.service.getSponsorsByOwner(entity._id)
 }
 

@@ -10,8 +10,8 @@ Mutation.sponsor = async (root, {sponsors}, context) => {
   return sponsorInserted;
 };
 
-Mutation.deleteSponsor = async (root, {_id}, context) => {
-  return Service.deleteSponsor(_id);
+Mutation.delSponsor = async (root, {_id}, context) => {
+  return await Service.deleteSponsor(_id);
 };
 
 export default Mutation;

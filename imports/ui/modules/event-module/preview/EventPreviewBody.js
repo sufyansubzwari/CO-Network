@@ -1,102 +1,127 @@
 import React from "react";
-import { Layout, Container } from "btech-layout";
+import {Layout, Container} from "btech-layout";
 import {
-  Title,
-  Location,
-  Social,
-  Text,
-  TagsAdd,
-  Dates,
-  PreviewSection
+    Title,
+    Location,
+    Social,
+    Text,
+    TagsAdd,
+    Dates,
+    PreviewSection
 } from "../../../components/Preview/components/index";
 import Separator from "../../../components/FiltersContainer/Separator";
-import { Map, Marker, Popup, TileLayer } from 'react-leaflet'
+import {Map, Marker, Popup, TileLayer} from 'react-leaflet'
 import _ from 'lodash';
-import {GetJobApply} from "../../../apollo-client/jobApply";
 import {FollowAction} from "../../../apollo-client/follow";
-import {Mutation} from "react-apollo";
+import {Mutation, Query} from "react-apollo";
+import {userQuery} from "../../../apollo-client/user"
 import SpeakerCard from "./components/speaker";
 
 class EventPreviewBody extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      event: props.event ? props.event : {}
-    };
-  }
-
-  componentWillReceiveProps(nextProps) {
-    if (nextProps.event) {
-      this.setState({
-        event: nextProps.event
-      });
+    constructor(props) {
+        super(props);
+        this.state = {
+            event: props.event ? props.event : {}
+        };
     }
-  }
+
+    componentWillReceiveProps(nextProps) {
+        if (nextProps.event) {
+            this.setState({
+                event: nextProps.event
+            });
+        }
+    }
+
+    handleFollow = (followAction, follow, id) => {
+        let follower = {
+            entityId: id,
+            entity: "USER"
+        };
+        followAction({
+            variables: {
+                follower: follower,
+                id: id,
+                follow: follow
+            }
+        })
+    }
 
     renderTitleSection = () => {
         let others =
             (this.state.event.others &&
-                this.state.event.others.map(other => ({ ...other, active: true }))) || [];
+                this.state.event.others.map(other => ({...other, active: true}))) || [];
 
         let category = this.state.event.category || [];
         category = _.uniqBy(category.concat(others), 'label');
-        category = category.map( item => ({...item, active: true}));
+        category = category.map(item => ({...item, active: true}));
 
-        return this.state.event.title || this.state.event.startDate || this.state.event.endDate || this.state.event.description ?  (
+        return this.state.event.title || this.state.event.startDate || this.state.event.endDate || this.state.event.description ? (
             <PreviewSection>
-                { this.state.event.title ? <Title text={this.state.event.title}/> : null}
-                { this.state.event.startDate || this.state.event.endDate ?
+                {this.state.event.title ? <Title text={this.state.event.title}/> : null}
+                {this.state.event.startDate || this.state.event.endDate ?
                     <Dates startDate={this.state.event.startDate}
                            endDate={this.state.event.endDate}
-                /> : null}
+                    /> : null}
                 <Separator/>
                 {category && category.length ? <TagsAdd header={'Event Category'} tags={category}/> : null}
                 {this.state.event.description ? (
-                    <Text header={"Description"} text={this.state.event.description} />
+                    <Text header={"Description"} text={this.state.event.description}/>
                 ) : null}
             </PreviewSection>
         ) : null
     }
+    renderSpeakerSection = (type) => {
 
-    renderApplicantsSection = () => {
+        let speakers = this.state.event.sponsors && this.state.event.sponsors.filter(item => item.type === type);
 
-      let speakers = this.state.event.sponsors && this.state.event.sponsors.filter( item => item.type === "Speaker" );
+        return speakers && speakers.length > 0 ? (
+            <PreviewSection title={type} number={speakers.length}>
+                <Layout colGap={'20px'} customTemplateColumns={`1fr`} mdCustomTemplateColumns={"1fr 1fr"}>
+                    {
+                        speakers && speakers.length > 0 && speakers.map((speaker, index) =>
+                            (
+                                !speaker.user ? (<SpeakerCard key={index}
+                                                              name={speaker.name}
+                                                              lgCustomTemplateColumns={"130px 1fr"}
+                                                              hideButton={true}
 
-        return this.props.isPost ? null : (
-                        <PreviewSection title={"Speakers"} number={speakers.length}>
-                            <Layout colGap={'20px'} customTemplateColumns={`1fr`} mdCustomTemplateColumns={"1fr 1fr"}>
-                                {
-                                    data.jobsApply && data.jobsApply.length > 0 && data.jobsApply.map((jobApply, index) =>
-                                        (
-                                            <Mutation
-                                                mutation={FollowAction}
-                                                onError={error => console.log(error)}
-                                                refetchQueries={['GetJobApply']}
-                                            >
-                                                {(followAction, { followResult }) => {
-                                                    const follow =
-                                                        jobApply &&
-                                                        jobApply.owner &&
-                                                        jobApply.owner.followerList &&
-                                                        jobApply.owner.followerList.indexOf(
-                                                            Meteor.userId()
-                                                        ) > -1;
-                                                    return (<SpeakerCard key={index}
-                                                                            location={jobApply.owner.profile.place.location.address}
-                                                                            name={`${jobApply.name} ${jobApply.lastName}`}
-                                                                            image={jobApply.image}
-                                                                            lgCustomTemplateColumns={"130px 1fr"}
-                                                                            hideButton={ jobApply.owner._id === Meteor.userId() }
-                                                                            onFollowClick={() => this.handleFollow(followAction,follow, jobApply.owner._id )}
-                                                                            following={ follow }
+                                    />) :
+                                    <Query fetchPolicy={"cache-and-network"} query={userQuery} variables={{id: speaker.user}}>
+                                        {({loading, error, data}) => {
+                                            if (loading) return <div></div>;
+                                            if (error) return <div></div>;
+                                            return (
+                                                <Mutation
+                                                    mutation={FollowAction}
+                                                    onError={error => console.log(error)}
+                                                    refetchQueries={['userQuery']}
+                                                >
+                                                    {(followAction, {followResult}) => {
+                                                        const follow =
+                                                            data.user.followerList &&
+                                                            data.user.followerList.indexOf(
+                                                                Meteor.userId()
+                                                            ) > -1;
+                                                        return (<SpeakerCard key={index}
+                                                                             location={data.user.profile.place.location.address}
+                                                                             name={speaker.name}
+                                                                             image={data.user.profile.image}
+                                                                             lgCustomTemplateColumns={"130px 1fr"}
+                                                                             hideButton={data.user._id === Meteor.userId()}
+                                                                             onFollowClick={() => this.handleFollow(followAction, follow, data.user._id)}
+                                                                             following={follow}
 
-                                                    />)
-                                                }}
-                                            </Mutation>
-                                        ))}
-                            </Layout>
-                        </PreviewSection>
-                    )
+                                                        />)
+                                                    }}
+                                                </Mutation>
+                                            )
+                                        }}
+                                    </Query>
+                            ))}
+                </Layout>
+            </PreviewSection>
+        ) : null
     }
 
     renderVenueSection = () => {
@@ -107,9 +132,13 @@ class EventPreviewBody extends React.Component {
             <PreviewSection title={"Venue"}>
                 <Container>
                     {this.state.event.venueName ? <Location location={this.state.event.venueName}/> : null}
-                    {this.state.event.venueEmail ? <Container><span style={{color: "rgba(0,0,0,0.5)", fontSize: "11px", fontFamily: "Roboto Mono" }}>{this.state.event.venueEmail}</span></Container> : null}
-                    { address ? <TagsAdd hideBorder={true} activeColor={"white"} backgroundTagColor={"#202225"}
-                                 tags={[{label: address, active: true}]}/> : null}
+                    {this.state.event.venueEmail ? <Container><span style={{
+                        color: "rgba(0,0,0,0.5)",
+                        fontSize: "11px",
+                        fontFamily: "Roboto Mono"
+                    }}>{this.state.event.venueEmail}</span></Container> : null}
+                    {address ? <TagsAdd hideBorder={true} activeColor={"white"} backgroundTagColor={"#202225"}
+                                        tags={[{label: address, active: true}]}/> : null}
                 </Container>
                 <Container height={"320px"}>
                     <Map
@@ -128,7 +157,7 @@ class EventPreviewBody extends React.Component {
                             url="https://cartodb-basemaps-{s}.global.ssl.fastly.net/dark_all/{z}/{x}/{y}{r}.png"
                         />
                         <Marker position={position}>
-                            <Popup>A pretty CSS3 popup.<br />Easily customizable.</Popup>
+                            <Popup>A pretty CSS3 popup.<br/>Easily customizable.</Popup>
                         </Marker>
                     </Map>
                 </Container>
@@ -136,94 +165,96 @@ class EventPreviewBody extends React.Component {
         ) : null
     }
 
-  render() {
-    let others =
-      (this.state.event.others &&
-      this.state.event.others.map(other => ({ ...other, active: true }))) || [];
+    render() {
+        let others =
+            (this.state.event.others &&
+                this.state.event.others.map(other => ({...other, active: true}))) || [];
 
-    let category = this.state.event.category || [];
-    category = _.uniqBy(category.concat(others), 'label');
-    let categories = category && category.map((comm, index) => (
-        <div key={index}>{comm.label}</div>
-      ));
+        let category = this.state.event.category || [];
+        category = _.uniqBy(category.concat(others), 'label');
+        let categories = category && category.map((comm, index) => (
+            <div key={index}>{comm.label}</div>
+        ));
 
-    //tickets
-    let tickets = this.state.event.tickets
-      ? this.state.event.tickets.map((ticket, index) => {
-          return ticket.type === "paid" ? (
-            <Container key={index}>
-              <Layout templateColumns={3}>
-                <Text header={"Ticket Name"} text={ticket.name} />
-                <Text header={"Available"} text={`${ticket.available || 0}`} />
-                <Text
-                  header={"Price Range"}
-                  text={`${ticket.min} - ${ticket.max}`}
-                />
-              </Layout>
-              {ticket.description ? <Text header={"Ticket Description"} text={ticket.description} /> :null}
-            </Container>
-          ) : (
-            <Container key={index}>
-              <Layout templateColumns={3}>
-                <Text header={"Ticket Name"} text={ticket.name} />
-                <Text header={"Available"} text={`${ticket.available || 0}`} />
-                <div/>
-              </Layout>
-              {ticket.description ? <Text header={"Ticket Description"} text={ticket.description} /> :null}
-            </Container>
-          );
-        })
-      : [];
+        //tickets
+        let tickets = this.state.event.tickets
+            ? this.state.event.tickets.map((ticket, index) => {
+                return ticket.type === "paid" ? (
+                    <Container key={index}>
+                        <Layout templateColumns={3}>
+                            <Text header={"Ticket Name"} text={ticket.name}/>
+                            <Text header={"Available"} text={`${ticket.available || 0}`}/>
+                            <Text
+                                header={"Price Range"}
+                                text={`${ticket.min} - ${ticket.max}`}
+                            />
+                        </Layout>
+                        {ticket.description ? <Text header={"Ticket Description"} text={ticket.description}/> : null}
+                    </Container>
+                ) : (
+                    <Container key={index}>
+                        <Layout templateColumns={3}>
+                            <Text header={"Ticket Name"} text={ticket.name}/>
+                            <Text header={"Available"} text={`${ticket.available || 0}`}/>
+                            <div/>
+                        </Layout>
+                        {ticket.description ? <Text header={"Ticket Description"} text={ticket.description}/> : null}
+                    </Container>
+                );
+            })
+            : [];
 
-    return (
-      <Layout mdRowGap={"20px"}>
-          {this.renderTitleSection()}
-          {this.renderVenueSection()}
+        return (
+            <Layout mdRowGap={"20px"}>
+                {this.renderTitleSection()}
+                {this.renderVenueSection()}
+                {this.renderSpeakerSection("Speakers")}
+                {this.renderSpeakerSection("Sponsors")}
 
 
-        <Title text={this.state.event.title} />
-        <Dates
-          startDate={this.state.event.startDate}
-          endDate={this.state.event.endDate}
-        />
-        <Location location={this.state.event.place} />
-        <Layout mdRowGap={"15px"} mdTemplateColumns={2}>
-          {categories && categories.length ? (
-            <Text header={"Community Event Categories"}>{categories}</Text>
-          ) : null}
-        </Layout>
-        <Layout mdRowGap={"15px"} mdTemplateColumns={3}>
-          {this.state.event.venueName !== "" ? (
-            <Text header={"Venue Name"} text={this.state.event.venueName} />
-          ) : null}
-          {this.state.event.venueEmail !== "" ? (
-            <Text
-              header={"Venue Contact Email"}
-              text={this.state.event.venueEmail}
-            />
-          ) : null}
-          {(this.state.event.attenders &&
-            this.state.event.attenders.min !== null) ||
-          (this.state.event.attenders &&
-            this.state.event.attenders.max !== null) ? (
-            <Text
-              header={"Expected Attenders"}
-              text={`${
-                this.state.event.attenders.min !== null
-                  ? this.state.event.attenders.min
-                  : null
-                } - ${
-                this.state.event.attenders.max !== null
-                  ? this.state.event.attenders.max
-                  : null
-                }`}
-            />
-          ) : null}
-        </Layout>
-        {tickets && tickets.length ? tickets : null}
-      </Layout>
-    );
-  }
+                {/*<Title text={this.state.event.title}/>*/}
+                {/*<Dates*/}
+                    {/*startDate={this.state.event.startDate}*/}
+                    {/*endDate={this.state.event.endDate}*/}
+                {/*/>*/}
+                {/*<Location location={this.state.event.place}/>*/}
+                {/*<Layout mdRowGap={"15px"} mdTemplateColumns={2}>*/}
+                    {/*{categories && categories.length ? (*/}
+                        {/*<Text header={"Community Event Categories"}>{categories}</Text>*/}
+                    {/*) : null}*/}
+                {/*</Layout>*/}
+                {/*<Layout mdRowGap={"15px"} mdTemplateColumns={3}>*/}
+                    {/*{this.state.event.venueName !== "" ? (*/}
+                        {/*<Text header={"Venue Name"} text={this.state.event.venueName}/>*/}
+                    {/*) : null}*/}
+                    {/*{this.state.event.venueEmail !== "" ? (*/}
+                        {/*<Text*/}
+                            {/*header={"Venue Contact Email"}*/}
+                            {/*text={this.state.event.venueEmail}*/}
+                        {/*/>*/}
+                    {/*) : null}*/}
+                    {/*{(this.state.event.attenders &&*/}
+                        {/*this.state.event.attenders.min !== null) ||*/}
+                    {/*(this.state.event.attenders &&*/}
+                        {/*this.state.event.attenders.max !== null) ? (*/}
+                        {/*<Text*/}
+                            {/*header={"Expected Attenders"}*/}
+                            {/*text={`${*/}
+                                {/*this.state.event.attenders.min !== null*/}
+                                    {/*? this.state.event.attenders.min*/}
+                                    {/*: null*/}
+                                {/*} - ${*/}
+                                {/*this.state.event.attenders.max !== null*/}
+                                    {/*? this.state.event.attenders.max*/}
+                                    {/*: null*/}
+                                {/*}`}*/}
+                        {/*/>*/}
+                    {/*) : null}*/}
+                {/*</Layout>*/}
+                {/*{tickets && tickets.length ? tickets : null}*/}
+            </Layout>
+        );
+    }
 }
 
 export default EventPreviewBody;
