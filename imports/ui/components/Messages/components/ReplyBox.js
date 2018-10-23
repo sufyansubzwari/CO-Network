@@ -130,11 +130,9 @@ export class ReplyBox extends React.Component {
         file,
         response => {
           if (!response.error) {
-            let id = response.imagePath["chat"];
-
             let img = {
               name: files[0].name,
-              link: id ? id : response.imagePath,
+              link: response.result,
               type: files[0].type
             };
             this.props.getImage &&

@@ -63,19 +63,11 @@ class MessageItem extends React.Component {
     currentImage: 0
   };
 
-  handleImage = image => {
+  handleImage = (image, type) => {
     return image
       ? image.startsWith("http") || image.startsWith("data:")
         ? image
-        : Utils.getImageFromS3(image, "chat")
-      : null;
-  };
-
-  handleFullImage = image => {
-    return image
-      ? image.startsWith("http") || image.startsWith("data:")
-        ? image
-        : Utils.getImageFromS3(image, "base")
+        : Utils.getImageFromS3(image, type)
       : null;
   };
 
@@ -150,7 +142,7 @@ class MessageItem extends React.Component {
               props.message.images.map((img, index) => (
                 <AttachedImage
                   key={index}
-                  link={this.handleImage(img.link)}
+                  link={this.handleImage(img.link, "chat")}
                   filename={img.name}
                   onClick={() =>
                     this.setState({ lightBoxIsOpen: true, currentImage: index })
@@ -162,7 +154,7 @@ class MessageItem extends React.Component {
             props.message.images.length ? (
               <LightBox
                 images={props.message.images.map(item => ({
-                  src: this.handleFullImage(item.link)
+                  src: this.handleImage(item.link, "base")
                 }))}
                 isOpen={this.state.lightBoxIsOpen}
                 currentImage={this.state.currentImage}

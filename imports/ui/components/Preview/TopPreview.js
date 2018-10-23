@@ -1,17 +1,15 @@
 import React, { Component } from "react";
 import styled from "styled-components";
-import { Layout, Container, mixins } from "btech-layout";
-import UserPhoto from "./../UserPhoto/UserPhoto";
+import { Container, Layout, mixins } from "btech-layout";
 import UserPhotoList from "./../UserPhoto/UserPhotoList";
 import { UploadFile } from "./components";
 import PropsTypes from "prop-types";
-import { UploadToS3 } from "../../services";
-import {Utils} from "../../services"
+import { UploadToS3, Utils } from "../../services";
 
 const Photo = styled(Container)`
   background: ${props =>
     props.image
-      ? "url(" + props.image + ") no-repeat center"
+      ? "url(" + props.image + ") no-repeat center;"
       : props.theme
         ? "linear-gradient(180deg, " +
           props.theme.preview.photo.topcolor +
@@ -43,7 +41,7 @@ const SBackground = styled(Container)`
 const SPhotoContainer = styled(Container)`
   position: absolute;
   bottom: -20px;
-  
+
   ${mixins.media.desktop`
     z-index: 2;
   `};
@@ -95,16 +93,8 @@ class TopPreview extends Component {
         file,
         response => {
           if (!response.error) {
-            // console.log(response.imagePath);
-
-
-            let id = element === "userphoto" ? response.imagePath['photo'] : response.imagePath['cover'];
-            if(id)
             this.props.handleUpload &&
-              this.props.handleUpload(id, element);
-            else
-                this.props.handleUpload &&
-                this.props.handleUpload(response.imagePath, element);
+              this.props.handleUpload(response.result, element);
           } else {
             // todo: show notification for error
           }
@@ -116,20 +106,13 @@ class TopPreview extends Component {
     }
   }
 
-  handleImage = image => {
-      return image ? (image.startsWith("http") || image.startsWith("data:") )
-          ? image
-          : Utils.getImageFromS3(image, 'photo') :
-          null;
-  }
-
-    handleBackground = image => {
-        return image ? (image.startsWith("http") || image.startsWith("data:") )
-            ? image
-            : Utils.getImageFromS3(image, 'cover') :
-            null;
-
-    }
+  handleImage = (image, type) => {
+    return image
+      ? image.startsWith("http") || image.startsWith("data:")
+        ? image
+        : Utils.getImageFromS3(image, type)
+      : null;
+  };
 
   render() {
     return (
@@ -137,7 +120,7 @@ class TopPreview extends Component {
         relative
         paddingX={"10px"}
         mdPaddingX={"40px"}
-        image={this.handleBackground(this.state.backGroundImage)}
+        image={this.handleImage(this.state.backGroundImage, "cover")}
         gridArea={this.props.gridArea}
       >
         <SBackground />
@@ -151,16 +134,28 @@ class TopPreview extends Component {
           {this.props.showAvatar ? (
             <Container>
               <SPhotoContainer>
-                <Layout customTemplateColumns={`${!this.state.image || typeof  this.state.image === "string" ? "75" : this.state.image.length ? (75 + 30*(this.state.image.length-1)) : 75}px 200px`}>
-                  <UserPhotoList entity={this.props.entity} photos={this.state.image} />
+                <Layout
+                  customTemplateColumns={`${
+                    !this.state.image || typeof this.state.image === "string"
+                      ? "75"
+                      : this.state.image.length
+                        ? 75 + 30 * (this.state.image.length - 1)
+                        : 75
+                  }px 200px`}
+                >
+                  <UserPhotoList
+                    entity={this.props.entity}
+                    photos={this.state.image}
+                  />
                   <Container relative>
-                    {this.props.allowChangeImages ? (
+                    {this.props.allowChangeImages &&
+                    this.props.allowChangeAvatar ? (
                       <SPhotoLabelContainer>
                         <UploadFile
                           iconClass={"landscape"}
                           text={"profile"}
                           onSelect={files =>
-                            this.onUploadRequest(files, "userphoto")
+                            this.onUploadRequest(files, "userPhoto")
                           }
                         />
                       </SPhotoLabelContainer>
@@ -192,6 +187,7 @@ TopPreview.propTypes = {
   backGroundImage: PropsTypes.string,
   gridArea: PropsTypes.string,
   showAvatar: PropsTypes.bool,
+  allowChangeAvatar: PropsTypes.bool,
   allowChangeImages: PropsTypes.bool,
   image: PropsTypes.string,
   changeProfile: PropsTypes.func,

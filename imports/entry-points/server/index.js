@@ -2,6 +2,8 @@
 import "./apollo-server";
 import "./configs";
 import "./startup";
+import "./uploader";
+import "./uploader/croper-image";
 
 // Import methods
 import "../../api/users/methods";
@@ -9,13 +11,13 @@ import "../../api/utils/server/methods";
 import "../../api/utils/server/filesToS3";
 
 // Import Messages methods and subscription
-import '../../api/messages/server/indexes';
-import '../../api/messages/server/publications';
-import '../../api/messages/methods';
+import "../../api/messages/server/indexes";
+import "../../api/messages/server/publications";
+import "../../api/messages/methods";
 
 // Import Notifications methods and subscription
-import '../../api/notifications/server/publications/indexes';
-import '../../api/notifications/server/publications/publications';
+import "../../api/notifications/server/publications/indexes";
+import "../../api/notifications/server/publications/publications";
 
 // Import all your server-side collections
 // import '../../api/installers/collection';

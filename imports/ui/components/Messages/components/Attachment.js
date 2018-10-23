@@ -27,7 +27,7 @@ const File = styled.span`
 const Icon = styled.span`
   font-size: 18px;
   line-height: 24px;
-  cursor: ${props => !props.loading ? 'pointer' : null};
+  cursor: ${props => (!props.loading ? "pointer" : null)};
 `;
 
 const Size = styled.span`
@@ -52,11 +52,12 @@ const SImage = styled.div`
 `;
 
 handleImage = image => {
-    return image && (image.startsWith("http") || image.startsWith("data:") )
-        ? image
-        : Utils.getImageFromS3(image, 'chat');
-
-}
+  return image
+    ? image.startsWith("http") || image.startsWith("data:")
+      ? image
+      : Utils.getImageFromS3(image, "chat")
+    : null;
+};
 
 const Attachment = props => {
   return (

@@ -14,7 +14,7 @@ const formatSize = size => {
 
 const getImageFromS3 = (id, prefix) => {
   let bucketPath = "https://s3.amazonaws.com/mlsociety-public";
-  return prefix && prefix !== "" && prefix !== "base"
+  return prefix && prefix !== "base"
     ? `${bucketPath}/resources/${prefix}/${id}`
     : `${bucketPath}/resources/${id}`;
 };

@@ -12,7 +12,7 @@ import MaterialIcon from "react-material-iconic-font";
 import ProfileItem from "./profileItem";
 import { Meteor } from "meteor/meteor";
 import Text from "../../../components/Preview/components/Text";
-import {Utils} from "../../../services";
+import { Utils } from "../../../services";
 
 const SContainer = styled(Layout)`
   overflow: hidden;
@@ -100,11 +100,12 @@ const SButtons = styled(Container)`
 `;
 
 handleImage = image => {
-    return image ? (image.startsWith("http") || image.startsWith("data:") )
-        ? image
-        : Utils.getImageFromS3(image, 'cover') :
-        null;
-}
+  return image
+    ? image.startsWith("http") || image.startsWith("data:")
+      ? image
+      : Utils.getImageFromS3(image, "cover")
+    : null;
+};
 
 const ItemsContainer = function(props) {
   return (

@@ -171,6 +171,7 @@ class ListEvents extends List {
                           }
                         ]}
                         data={this.state.selectedItem}
+                        allowChangeAvatar={false}
                         allowChangeImages={
                           this.state.selectedItem &&
                           this.state.selectedItem.owner &&
