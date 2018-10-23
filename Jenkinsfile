@@ -55,7 +55,7 @@ pipeline {
 	                sh '''
 	                npm cache clean --force
 	                npm config get registry
-	                npm install
+	                meteor npm install
 	                meteor build ../compiled --architecture os.linux.x86_64
 	                '''
 	            }
