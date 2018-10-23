@@ -53,6 +53,7 @@ pipeline {
 	            withNPM(npmrcConfig:'db130c51-add1-4bfc-8d3f-f90a9811dbaf') {
 	                echo "Performing npm build..."
 	                sh '''
+	                npm config get registry
 	                npm install
 	                meteor build ../compiled --architecture os.linux.x86_64
 	                '''
