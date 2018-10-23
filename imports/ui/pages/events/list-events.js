@@ -74,7 +74,7 @@ class ListEvents extends List {
           )}
         </Mutation>
         <Mutation
-          refetchQueries={["GetMyEvents"]}
+          refetchQueries={["GetEvents", "GetMyEvents"]}
           key={"rightSide"}
           mutation={DeleteEvent}
         >

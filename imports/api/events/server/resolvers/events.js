@@ -3,6 +3,7 @@ import Users from "../../../users";
 import Tags from "../../../tags";
 import Places from "../../../places";
 import Followers from "../../../followers";
+import Sponsors from "../../../sponsors";
 
 const Events = {};
 
@@ -17,6 +18,11 @@ Events.category = entity => {
 Events.place = entity => {
   return Places.service.getPlaceByOwner(entity._id);
 };
+
+Events.sponsors = entity => {
+  console.log(Sponsors.service.getSponsorsByOwner(entity._id))
+  return Sponsors.service.getSponsorsByOwner(entity._id)
+}
 
 Events.followerList = entity => {
   const followers = Followers.service.getFollower({ entityId: entity._id, entity: entity.entity });

@@ -98,7 +98,7 @@ class PostEvent extends Component {
         <Mutation
           key={"leftSide"}
           mutation={CreateEvent}
-          refetchQueries={["GetMyEvents"]}
+          refetchQueries={["GetEvents", "GetMyEvents"]}
           onCompleted={() =>
             this.state.redirect &&
             this.props.history.push("/events", { postEvent: true })
@@ -122,7 +122,7 @@ class PostEvent extends Component {
           )}
         </Mutation>
         <Mutation
-          refetchQueries={["GetMyEvents"]}
+          refetchQueries={["GetEvents", "GetMyEvents"]}
           key={"rightSide"}
           mutation={DeleteEvent}
         >

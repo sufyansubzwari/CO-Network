@@ -36,13 +36,6 @@ type ObjectType {
     active: String
 }
 
-type Sponsors {
-    type: String
-    name: String
-    email: String
-    prepare: String
-    details: String
-}
 
 type Query {
     events(filter: String, limit: Int, events: EventsInputSearch): [Events]
@@ -110,14 +103,6 @@ input TableDateFilterInput{
     lt: Date
     gte: Date
     gt: Date
-}
-input SponsorsInput {
-    type: String
-    name: String
-    email: String
-    prepare: String
-    details: String
-    edit: Boolean
 }
 
 input EventsInput {
