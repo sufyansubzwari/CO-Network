@@ -15,6 +15,15 @@ pipeline {
 	            rm -rf ../compiled
 	            mkdir ../compiled
 	            cp /home/ubuntu/.npmrc ./DockerImage/myfilenpmrc
+	            '''
+	            withNPM(npmrcConfig:'db130c51-add1-4bfc-8d3f-f90a9811dbaf') {
+	                echo "Performing npm build..."
+	                sh '''
+	                npm install
+	                meteor build ../compiled --architecture os.linux.x86_64
+	                '''
+	            }
+	            sh'''
 	            meteor npm install
 	            meteor build ../compiled --architecture os.linux.x86_64
 	            mv ../compiled/*.tar.gz ./DockerImage/file.tar.gz
@@ -42,10 +51,12 @@ pipeline {
 	            '''
 	            withNPM(npmrcConfig:'db130c51-add1-4bfc-8d3f-f90a9811dbaf') {
 	                echo "Performing npm build..."
-	                sh 'meteor npm install'
+	                sh '''
+	                npm install
+	                meteor build ../compiled --architecture os.linux.x86_64
+	                '''
 	            }
 	            sh'''
-	            meteor build ../compiled --architecture os.linux.x86_64
 	            mv ../compiled/*.tar.gz ./DockerImage/file.tar.gz
 	            mv ./Dockerfile ./DockerImage
 	            sudo $(aws ecr get-login --no-include-email --region us-east-1)
@@ -64,8 +75,15 @@ pipeline {
 	            echo Deploying....
 	            rm -rf ../compiled
 	            mkdir ../compiled
-	            meteor npm install
-	            meteor build ../compiled --architecture os.linux.x86_64
+	            '''
+	            withNPM(npmrcConfig:'db130c51-add1-4bfc-8d3f-f90a9811dbaf') {
+	                echo "Performing npm build..."
+	                sh '''
+	                npm install
+	                meteor build ../compiled --architecture os.linux.x86_64
+	                '''
+	            }
+	            sh'''
 	            echo Compiled Succesfully
 	            '''
 	        }
