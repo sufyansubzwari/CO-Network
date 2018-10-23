@@ -12,6 +12,7 @@ type Colloquiums {
     image: String
     place: Places
     competences: [ObjectType]
+    followerList: [String]
 }
 
 type Query {

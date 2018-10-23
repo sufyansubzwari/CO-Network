@@ -33,5 +33,6 @@ query GetColloquiums($limit: Int, $filter: String, $colloquiums: ColloquiumSearc
     }
     entity
     views
+    followerList
   }
 }

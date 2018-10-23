@@ -3,6 +3,7 @@ import Tags from "../../../tags";
 import Places from "../../../places";
 import Service from "../service";
 import Mutation from "../../../jobs/server/resolvers/mutation";
+import Followers from "../../../followers";
 
 const Colloquiums = {};
 
@@ -20,6 +21,11 @@ Colloquiums.tags = entity => {
 
 Mutation.updateImage = async (root, { _id, image }, context) => {
   return Service.updateImage(_id, image);
+};
+
+Colloquiums.followerList = entity => {
+  const followers = Followers.service.getFollower({ entityId: entity._id, entity: entity.entity });
+  return (followers && followers.followers) || [];
 };
 
 export default Colloquiums;

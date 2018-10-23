@@ -16,6 +16,7 @@ import { withRouter } from "react-router-dom";
 import { ViewsCountUpdate } from "../../apollo-client/viewCount";
 import { cleanSearch, onSearchTags } from "../../actions/TopSearchActions";
 import { List } from "../general";
+import {FollowAction} from "../../apollo-client/follow";
 
 /**
  * @module Colloquiums
@@ -126,11 +127,51 @@ class ListColloquiums extends List {
               onError={error => this.errorOnBackgroundChange(error)}
             >
               {(updateImage, { colloquium }) => (
+                <Mutation
+                  mutation={FollowAction}
+                  onError={error => this.errorOnBackgroundChange(error)}
+                >
+                  {(followAction) => {
+                    const follow =
+                      this.props.curUser &&
+                      this.props.curUser._id &&
+                      this.state.selectedItem &&
+                      this.state.selectedItem.followerList &&
+                      this.state.selectedItem.followerList.indexOf(
+                        this.props.curUser._id
+                      ) > -1;
+                    return (
                 <ColloquiumPreview
                   onClose={() => this.onChangeSelection(null, null)}
                   key={"rightSide"}
                   isOpen={this.activePreview()}
                   navOptions={[
+                    {
+                      type: "text",
+                      icon: "mail-reply",
+                      text:
+                        this.state.selectedItem &&
+                        this.state.selectedItem.followerList
+                          ? this.state.selectedItem.followerList.length +
+                          " Followers"
+                          : null
+                    },
+                    {
+                      text: !follow ? "Follow" : "Unfollow",
+                      primary: true,
+                      checkVisibility: () => {
+                        const element = this.state.selectedItem;
+                        return (
+                          element &&
+                          element._id &&
+                          element.owner &&
+                          this.props.curUser &&
+                          element.owner._id !== this.props.curUser._id
+                        );
+                      },
+                      onClick: () =>
+                        this.handleFollow(followAction, follow)
+                    },
                     {
                       text: "Edit",
                       icon: "edit",
@@ -188,6 +229,9 @@ class ListColloquiums extends List {
                   curUser={this.props.curUser}
                   isMobile={this.props.isMobile}
                 />
+                    );
+                  }}
+                </Mutation>
               )}
             </Mutation>
           )}
