@@ -61,5 +61,5 @@ class UserPhotoList extends React.Component {
 export default UserPhotoList;
 
 UserPhotoList.propTypes = {
-  photos: PropsTypes.array
+  photos: PropsTypes.any
 };

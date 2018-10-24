@@ -175,7 +175,6 @@ class EventStep1 extends Component {
             startDate={this.state.event && this.state.event.startDate}
             endDate={this.state.event && this.state.event.endDate}
             format={this.state.dateFormat}
-            showTimeSelect
             getValue={(startDate, endDate) =>
               this.onDatesChange(startDate, endDate)
             }
