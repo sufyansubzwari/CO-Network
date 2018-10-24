@@ -85,39 +85,30 @@ class EventPreviewBody extends React.Component {
                                                               name={speaker.name}
                                                               lgCustomTemplateColumns={"130px 1fr"}
                                                               hideButton={true}
-
                                     />) :
-                                    <Query fetchPolicy={"cache-and-network"} query={userQuery} variables={{id: speaker.user}}>
-                                        {({loading, error, data}) => {
-                                            if (loading) return <div></div>;
-                                            if (error) return <div></div>;
-                                            return (
-                                                <Mutation
-                                                    mutation={FollowAction}
-                                                    onError={error => console.log(error)}
-                                                    refetchQueries={['userQuery']}
-                                                >
-                                                    {(followAction, {followResult}) => {
-                                                        const follow =
-                                                            data.user.followerList &&
-                                                            data.user.followerList.indexOf(
-                                                                Meteor.userId()
-                                                            ) > -1;
-                                                        return (<SpeakerCard key={index}
-                                                                             location={data.user.profile.place.location.address}
-                                                                             name={speaker.name}
-                                                                             image={data.user.profile.image}
-                                                                             lgCustomTemplateColumns={"130px 1fr"}
-                                                                             hideButton={data.user._id === Meteor.userId()}
-                                                                             onFollowClick={() => this.handleFollow(followAction, follow, data.user._id)}
-                                                                             following={follow}
+                                        <Mutation
+                                            mutation={FollowAction}
+                                            onError={error => console.log(error)}
+                                            refetchQueries={['GetEvents']}
+                                        >
+                                            {(followAction, {followResult}) => {
+                                                const follow =
+                                                    speaker.user.followerList &&
+                                                    speaker.user.followerList.indexOf(
+                                                        Meteor.userId()
+                                                    ) > -1;
+                                                return (<SpeakerCard key={index}
+                                                                     location={speaker.user.profile && speaker.user.profile.place && speaker.user.profile.place.location && speaker.user.profile.place.location.address}
+                                                                     name={speaker.name}
+                                                                     image={speaker.user.profile && speaker.user.profile.image}
+                                                                     lgCustomTemplateColumns={"130px 1fr"}
+                                                                     hideButton={speaker.user._id === Meteor.userId()}
+                                                                     onFollowClick={() => this.handleFollow(followAction, follow, speaker.user._id)}
+                                                                     following={follow}
 
-                                                        />)
-                                                    }}
-                                                </Mutation>
-                                            )
-                                        }}
-                                    </Query>
+                                                />)
+                                            }}
+                                        </Mutation>
                             ))}
                 </Layout>
             </PreviewSection>

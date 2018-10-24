@@ -76,6 +76,10 @@ class PostEvent extends Component {
     queryEvent.place.location.fullLocation
       ? delete queryEvent.place.location.fullLocation
       : null;
+
+    let sponsors = queryEvent && queryEvent.sponsors && queryEvent.sponsors.length > 0 &&  queryEvent.sponsors.map( item => ({...item, user: !item.user ? null : item.user._id ? item.user._id : item.user}));
+    queryEvent.sponsors = sponsors;
+
     if (queryEvent.followerList) delete queryEvent.followerList;
     let event = { ...queryEvent };
     if (this.props.curUser) {

@@ -36,7 +36,25 @@ query GetEvents($limit: Int, $filter: String, $events: EventsInputSearch) {
         _id
         type
         owner
-        user
+        user{
+            _id
+            profile{
+                name
+                lastName
+                image
+                place{
+                    location{
+                            address
+                            location{
+                              lat
+                              lng
+                            }
+                          }
+              }
+
+            }
+            followerList
+        }
         name
         email
         description
