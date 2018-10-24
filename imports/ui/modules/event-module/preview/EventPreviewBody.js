@@ -122,19 +122,15 @@ class EventPreviewBody extends React.Component {
                                                                                          onFollowClick={() => this.handleFollow(followAction, follow, data.user._id)}
                                                                                          following={follow}
 
-                                                                    />)
-                                                                }}
-                                                            </Mutation>
-                                                        )
+                                                        />)
                                                     }}
-                                                </Query>
-                                        ))}
-                            </Layout>
-                        </PreviewSection>
-                    )
-                }}
-            </Query>
-            : null
+                                                </Mutation>
+                                            ))}
+
+                </Layout>
+            </PreviewSection>
+        )}}
+            </Query> : null
     }
 
     renderVenueSection = () => {

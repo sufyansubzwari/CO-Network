@@ -5,7 +5,7 @@ type Sponsors {
     owner: String
     type: String
     external: Boolean
-    user: String
+    user: User
     name: String
     email: String
     description: String
