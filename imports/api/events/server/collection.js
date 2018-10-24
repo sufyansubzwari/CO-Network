@@ -136,47 +136,8 @@ const schema = new SimpleSchema({
     optional: true,
   },
   'sponsors.$': {
-    type: Object,
-  },
-    'sponsors.$.type': {
-        type: String,
-        label: 'Speaker or sponsor type.',
-        optional: true,
-    },
-  'sponsors.$.name': {
     type: String,
-    label: 'Name of the speaker or sponsor.',
-    optional: true,
-  },
-  'sponsors.$.email': {
-    type: String,
-    label: 'External email of sponsor not in our system.',
-    optional: true,
-  },
-    'sponsors.$.prepare': {
-        type: String,
-        label: 'What the speaker should prepare.',
-        optional: true,
-    },
-    'sponsors.$.details': {
-        type: String,
-        label: 'Sponsorship details.',
-        optional: true,
-    },
-  'sponsors.$.logo': {
-    type: Object,
-    label: 'External logo of sponsor not in our system.',
-    optional: true,
-  },
-  'sponsors.$.logo.imgSrc': {
-    type: String,
-    label: 'External logo of sponsor not in our system.',
-    optional: true,
-  },
-  'sponsors.$.logo.imgFile': {
-    type: Object,
-    label: 'External logo of sponsor not in our system.',
-    optional: true,
+    label: 'The sponsor id'
   },
   category: {
     type: Array,

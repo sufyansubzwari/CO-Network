@@ -87,10 +87,10 @@ class UserPhoto extends React.Component {
     return loading ? (
       <PlaceHolder rect loading={loading} width={350} height={325} />
     ) : this.props.photo && this.props.photo.endsWith("svg") ? (
-      <FContainer flex width={"75px"} height={"75px"}>
+      <FContainer flex width={"71px"} height={"71px"}>
         <ReactSvg
           src={this.props.photo}
-          svgStyle={{ fill: "#ffffff", stroke: "#ffffff", width: "40px" }}
+          svgStyle={{ fill: "#ffffff", stroke: "#ffffff", width: "38px" }}
         />
       </FContainer>
     ) : (

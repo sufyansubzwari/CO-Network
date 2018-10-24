@@ -1,0 +1,36 @@
+# types for Sponsors namespace
+
+type Sponsors {
+    _id: String
+    owner: String
+    type: String
+    external: Boolean
+    user: User
+    name: String
+    email: String
+    description: String
+}
+
+
+type Query {
+    sponsors(filter: String, limit: Int, sponsors: SponsorsInput): [Sponsors]
+    sponsor(_id: String): Sponsors
+}
+
+input SponsorsInput {
+    _id: String
+    owner: String
+    external: Boolean
+    type: String
+    user: String
+    name: String
+    email: String
+    description: String
+    edit: Boolean
+}
+
+
+type Mutation {
+    sponsor(sponsors: SponsorsInput!): Sponsors
+    delSponsor(_id: String!): Sponsors
+}

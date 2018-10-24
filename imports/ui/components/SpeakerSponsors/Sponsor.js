@@ -43,6 +43,7 @@ class Sponsor extends React.Component {
     });
     props.onAdd(obj.label, "name");
     props.onAdd(obj.email, "email");
+    props.onAdd(obj.user, "user");
   }
 
   onAddNew(props, obj) {
@@ -78,7 +79,8 @@ class Sponsor extends React.Component {
                   options={this.props.users.map(user => ({
                     label: `${user.profile.name} ${user.profile.lastName}`,
                     value: user.profile.name,
-                    email: user.profile.email
+                    email: user.profile.email,
+                    user: user._id
                   }))}
                   validate={NAME_REGEX}
                   getAddedOptions={obj => this.onAdd(this.props, obj)}
@@ -106,7 +108,7 @@ class Sponsor extends React.Component {
           </Container>
           <TextArea
             placeholderText={"Sponsorship Details"}
-            name={"details"}
+            name={"description"}
             model={this.props.model}
           />
           <Layout customTemplateColumns={"1fr auto auto"}>

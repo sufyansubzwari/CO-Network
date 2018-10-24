@@ -3,7 +3,7 @@ import TopPreview from "./TopPreview";
 import ColloquiumPreview from "./ColloquiumPreview";
 import MemberPreview from "./MemberPreview";
 import ApplyJobPreviewBody from "./entities/ApplyJobPreviewBody";
-import EventPreviewBody from "./entities/EventPreviewBody";
+import EventPreviewBody from "../../modules/event-module/preview/EventPreviewBody";
 import JobPreviewBody from "../../modules/jobs-module/preview/JobPreviewBody";
 import OrganizationPreviewBody from "./entities/OrganizationPreviewBody";
 import UserPreviewBody from "./entities/UserPreviewBody";

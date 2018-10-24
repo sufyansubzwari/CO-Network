@@ -50,7 +50,7 @@ const SText = styled.div`
     white-space: normal;
     text-overflow: ellipsis;
     display: -webkit-box;
-    -webkit-line-clamp: ${props.cutLines};
+    -webkit-line-clamp: ${props.lines};
     -webkit-box-orient: vertical;
   `
         : null};  
@@ -98,8 +98,11 @@ class Text extends React.Component {
     constructor(props) {
         super(props);
 
+        this.textRef = React.createRef();
+
         this.state = {
-            showMore: true
+            showMore: true,
+            lines: 100
         }
     }
 
@@ -109,6 +112,19 @@ class Text extends React.Component {
         })
     }
 
+    handleRef = (ref) => {
+        this.textRef = ref;
+
+        if(this.state.lines === 100)
+        if(this.textRef && Math.floor(this.textRef.clientHeight / 22) > this.props.cutLines) {
+            let line = Math.floor(this.textRef.clientHeight / 22)
+            this.setState({
+                lines: this.props.cutLines,
+                renderMore: true
+            })
+        }
+    }
+
     render() {
         return (
             <Container>
@@ -116,7 +132,8 @@ class Text extends React.Component {
                     <STitle {...this.props}>{this.props.header}</STitle>
                 ) : null}
                 {this.props.text ? (
-                    <Container><SText showMore={this.state.showMore} {...this.props}>{this.props.text}</SText>{this.props.cutText ? this.state.showMore ?
+                    <Container>
+                        <SText lines={this.state.lines} innerRef={ ref => this.handleRef(ref) } showMore={this.state.showMore} {...this.props}>{this.props.text}</SText>{this.props.cutText && this.state.renderMore ? this.state.showMore ?
                         <SSpan onClick={this.handleMore}>More...</SSpan> :
                         <SSpan onClick={this.handleMore}>Less...</SSpan> : null}</Container>
                 ) : this.props.children ? (
