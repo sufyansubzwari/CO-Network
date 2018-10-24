@@ -1,0 +1,13 @@
+query GetSponsors($limit: Int, $filter: String, $sponsors: SponsorsInput) {
+  sponsors(limit: $limit, filter: $filter, sponsors: $sponsors) {
+      _id
+      owner
+      user
+      type
+      name
+      description
+      external
+      email    
+    }
+}
+
