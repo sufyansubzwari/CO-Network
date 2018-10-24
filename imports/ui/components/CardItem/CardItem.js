@@ -9,6 +9,7 @@ import ReportToggle from "./ReportToggle";
 import { PlaceHolder } from "btech-placeholder-component";
 import posed from "react-pose";
 import { Utils } from "../../services";
+import isMobile from "../../constants/isMobile";
 
 const TitleCardContainer = Styled.div`
   font-family: Helvetica Neue LT Std;
@@ -167,8 +168,11 @@ class CardItem extends Component {
     );
     this.state = {
       loadingImage: true,
-      topOptions: elements
+      topOptions: elements,
+      showPreview: false
     };
+
+    this.handlePreviewCard = this.handlePreviewCard.bind(this);
   }
 
   componentDidMount() {
@@ -225,6 +229,10 @@ class CardItem extends Component {
         : Utils.getImageFromS3(image, "card")
       : null;
   };
+
+  handlePreviewCard() {
+    this.setState({ showPreview: !this.state.showPreview });
+  }
 
   renderLeftSide() {
     const tags = this.props.tags
@@ -310,16 +318,24 @@ class CardItem extends Component {
             )}
           </Container>
         </Layout>
-        {this.props.isActive ? (
-          <SShowMore>
+        {this.props.isActive && !isMobile() ? (
+          <SShowMore onClick={this.handlePreviewCard}>
             <span>
-              <span>{"Show More "}</span>
-              <MaterialIcon type={"caret-up"} />
+              <span>
+                {this.state.showPreview ? "Show Less " : "Show More "}
+              </span>
+              <MaterialIcon
+                type={this.state.showPreview ? "caret-down" : "caret-up"}
+              />
             </span>
           </SShowMore>
         ) : null}
       </Layout>
     );
+  }
+
+  getRenderPreview(){
+
   }
 
   getRightSide() {
@@ -344,7 +360,6 @@ class CardItem extends Component {
       </Container>
     );
   }
-
 
   render() {
     return (
