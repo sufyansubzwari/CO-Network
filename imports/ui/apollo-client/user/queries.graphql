@@ -5,6 +5,7 @@ query userQuery($id: String){
     _id
     createdAt
     services
+    followerList
     profile {
       name
       lastName

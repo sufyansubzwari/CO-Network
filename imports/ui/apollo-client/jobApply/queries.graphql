@@ -24,6 +24,36 @@ query GetJobApply($limit: Int, $filter: String, $jobsApply: JobApplyInput) {
     }
 }
 
+query GetSponsors($limit: Int, $filter: String, $sponsors: SponsorsInput) {
+  sponsors(limit: $limit, filter: $filter, sponsors: $sponsors) {
+      _id
+      owner
+      user{
+        _id
+        profile{
+        name
+	    image
+            place{
+                location{
+                        address
+                        location{
+                          lat
+                          lng
+                        }
+                      }
+          }
+
+        }
+        followerList
+      }
+      type
+      name
+      description
+      external
+      email
+    }
+}
+
 query JobApplyCounts($field: String){
     jobApplyCounts(field: $field){
         _id

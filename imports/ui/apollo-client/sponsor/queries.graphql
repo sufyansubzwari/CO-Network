@@ -1,0 +1,61 @@
+query GetSponsors($limit: Int, $filter: String, $sponsors: SponsorsInput) {
+  sponsors(limit: $limit, filter: $filter, sponsors: $sponsors) {
+      _id
+      type
+      owner
+      user{
+          _id
+          profile{
+              name
+              lastName
+              image
+              place{
+                  location{
+                          address
+                          location{
+                            lat
+                            lng
+                          }
+                        }
+            }
+
+          }
+          followerList
+      }
+      name
+      email
+      description
+    }
+}
+
+query GetSpeakers($limit: Int, $filter: String, $sponsors: SponsorsInput) {
+  sponsors(limit: $limit, filter: $filter, sponsors: $sponsors) {
+      _id
+      type
+      owner
+      user{
+          _id
+          profile{
+              name
+              lastName
+              image
+              place{
+                  location{
+                          address
+                          location{
+                            lat
+                            lng
+                          }
+                        }
+            }
+
+          }
+          followerList
+      }
+      name
+      email
+      description
+    }
+}
+
+

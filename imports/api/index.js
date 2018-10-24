@@ -22,3 +22,4 @@ export { default as Notifications } from './notifications';
 export { default as Utils } from './utils';
 export { default as Constants } from './constants';
 export { default as ErrorHandling } from './error-handling';
+export { default as Sponsors } from "./sponsors";

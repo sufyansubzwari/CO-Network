@@ -1,10 +1,14 @@
 import Service from "../service";
 import Tags from '../../../tags';
 import Places from '../../../places';
+import Sponsors from "../../../sponsors";
+import Achievement from "../../../archivements/server/service";
 
 const Mutation = {};
 
 Mutation.event = async (root, {events}, context) => {
+  let sponsors = events.sponsors;
+  delete events.sponsors;
   let entity = Object.assign({}, events);
   const oldEvent = events._id ? Service.getEvent(events._id) : null
   if (events.category)
@@ -20,7 +24,21 @@ Mutation.event = async (root, {events}, context) => {
     delete place.location.fullLocation;
     await Places.service.place(place);
   }
+
+  await Sponsors.service.deleteSponsor({owner: eventInserted._id })
+
+  if(sponsors && sponsors.length){
+      sponsors.forEach(async spon => {
+          if (spon._id) {
+              delete spon._id;
+          }
+          spon.owner = eventInserted._id;
+          spon.external = !spon.user;
+          await Sponsors.service.sponsor(spon);
+      })}
+
   return eventInserted;
+
 };
 
 Mutation.updateEventImage = async (root, {_id, image}, context) => {

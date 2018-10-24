@@ -1,11 +1,12 @@
 import React, { Component } from "react";
 import EventForm from "../../modules/event-module/form";
 import { PostLayout, Preview } from "../../../ui/components";
-import EventPreviewBody from "../../components/Preview/entities/EventPreviewBody";
+import EventPreviewBody from "../../modules/event-module/preview/EventPreviewBody";
 import { withRouter } from "react-router-dom";
 import { CreateEvent, DeleteEvent } from "../../apollo-client/event";
 import { Mutation } from "react-apollo";
 import _ from "lodash";
+import {GetSponsors} from "../../apollo-client/sponsor";
 
 /**
  * @module Events
@@ -76,6 +77,10 @@ class PostEvent extends Component {
     queryEvent.place.location.fullLocation
       ? delete queryEvent.place.location.fullLocation
       : null;
+
+    let sponsors = queryEvent && queryEvent.sponsors && queryEvent.sponsors.length > 0 &&  queryEvent.sponsors.map( item => ({...item, user: !item.user ? null : item.user._id ? item.user._id : item.user}));
+    queryEvent.sponsors = sponsors;
+
     if (queryEvent.followerList) delete queryEvent.followerList;
     let event = { ...queryEvent };
     if (this.props.curUser) {
@@ -98,7 +103,7 @@ class PostEvent extends Component {
         <Mutation
           key={"leftSide"}
           mutation={CreateEvent}
-          refetchQueries={["GetMyEvents"]}
+          refetchQueries={["GetEvents", "GetMyEvents", "GetSponsors"]}
           onCompleted={() =>
             this.state.redirect &&
             this.props.history.push("/events", { postEvent: true })
@@ -122,7 +127,7 @@ class PostEvent extends Component {
           )}
         </Mutation>
         <Mutation
-          refetchQueries={["GetMyEvents"]}
+          refetchQueries={["GetEvents", "GetMyEvents", "GetSponsors"]}
           key={"rightSide"}
           mutation={DeleteEvent}
         >
