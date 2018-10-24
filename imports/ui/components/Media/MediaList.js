@@ -5,7 +5,7 @@ import styled from "styled-components";
 import { Button } from "btech-base-forms-component";
 import MaterialIcon from "react-material-iconic-font";
 import MediaItem from "./MediaItem";
-import { UploadToS3FromClient } from "../../services";
+import { UploadToS3, UploadToS3FromClient } from "../../services";
 
 const SMediaItem = styled(Layout)`
   .buttons {
@@ -45,7 +45,6 @@ class MediaList extends React.Component {
     this.handleRemove = this.handleRemove.bind(this);
     this.handleDelete = this.handleDelete.bind(this);
     this.handleChange = this.handleChange.bind(this);
-    this.handleUpload = this.handleUpload.bind(this);
     this.handleClose = this.handleClose.bind(this);
   }
 
@@ -81,14 +80,32 @@ class MediaList extends React.Component {
     });
   }
 
-  async handleUpload(files, index) {
-    if (files) {
+  async handleUpload(file, index) {
+    if (file) {
       let media = this.state.media;
-      let result = await UploadToS3FromClient.uploadFromClient(files);
-      if (result !== -1)
-        media[index]["files"] = { name: files.name, link: result };
-      this.setState({ media: media }, () => this.notifyParent());
-    } else alert("File shouldn't be bigger than 10Mb"); // todo: integrate with the notification alerts
+      media[index]["files"] = {
+        name: file.name,
+        type: file.type,
+        loading: true
+      };
+      this.setState({ media: media });
+      UploadToS3.uploadFile(
+        file,
+        response => {
+          if (!response.error) {
+            media[index]["files"]["link"] = response.result;
+            delete media[index]["files"]["loading"];
+            this.setState({ media: media }, () => this.notifyParent());
+          } else {
+            // todo: show notification for error
+          }
+        },
+        ({ uploading }) => {
+          media[index]["files"]["loading"] = uploading;
+          this.setState({ media: media });
+        }
+      );
+    }
   }
 
   handleDelete() {
@@ -173,7 +190,7 @@ class MediaList extends React.Component {
                   />
                 ) : (
                   <SMediaItem
-                    paddingY={"10px"}
+                    padding={"10px"}
                     customTemplateColumns={"1fr auto"}
                   >
                     <Container>{item.title}</Container>

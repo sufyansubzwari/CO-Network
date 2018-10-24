@@ -54,6 +54,7 @@ export default (MediaItem = function(props) {
                 props.model.files &&
                 props.model.files.name ? (
                   <AttachedFile
+                    dataLoading={props.model.files.loading}
                     file={{ name: props.model.files.name }}
                     onClose={() => props.onClose()}
                   />

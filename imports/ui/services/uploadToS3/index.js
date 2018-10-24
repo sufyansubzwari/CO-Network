@@ -1,7 +1,4 @@
 import { Meteor } from "meteor/meteor";
-import { saveResource } from "../../controller/resources/ResourceController";
-import v1 from "uuid/v1";
-import UploadResolution from "./imagesResolutions";
 import Axios from "axios";
 
 let CanvasCompress = null;
@@ -27,7 +24,7 @@ class UploadToS3 {
       });
       return;
     }
-    statusCallback({ uploading: true });
+    statusCallback && statusCallback({ uploading: true });
     try {
       const url = "/upload";
       const formData = new FormData();
@@ -37,21 +34,21 @@ class UploadToS3 {
           "content-type": "multipart/form-data"
         }
       };
-      if (!Meteor.isDevelopment) {
-        Axios.post(url, formData, config).then(response => {
-          const data = response.data;
-          statusCallback({ uploading: false });
-          callback({
-            error: data.error,
-            result: data.path
-          });
+      // if (!Meteor.isDevelopment) {
+      Axios.post(url, formData, config).then(response => {
+        const data = response.data;
+        statusCallback && statusCallback({ uploading: false });
+        callback({
+          error: data.error,
+          result: data.path
         });
-      } else {
-        // to avoid upload the image and save the base64
-        this.handleOnDevelopmentMode(image, callback, statusCallback);
-      }
+      });
+      // } else {
+      // to avoid upload the image and save the base64
+      // this.handleOnDevelopmentMode(image, callback, statusCallback);
+      // }
     } catch (e) {
-      statusCallback({ uploading: false });
+      statusCallback && statusCallback({ uploading: false });
       callback({
         error: e,
         message: e.description
@@ -60,7 +57,7 @@ class UploadToS3 {
   }
 
   uploadFile(file, callback, statusCallback) {
-    statusCallback({ uploading: true });
+    statusCallback && statusCallback({ uploading: true });
     try {
       const url = "/upload-file";
       const formData = new FormData();
@@ -72,14 +69,14 @@ class UploadToS3 {
       };
       Axios.post(url, formData, config).then(response => {
         const data = response.data;
-        statusCallback({ uploading: false });
+        statusCallback && statusCallback({ uploading: false });
         callback({
           error: data.error,
           result: data.path
         });
       });
     } catch (e) {
-      statusCallback({ uploading: false });
+      statusCallback && statusCallback({ uploading: false });
       callback({
         error: e,
         message: e.description
@@ -99,7 +96,7 @@ class UploadToS3 {
           imagePath: src,
           type: "success"
         });
-        statusCallback({ uploading: false });
+        statusCallback && statusCallback({ uploading: false });
       },
       false
     );

@@ -1,8 +1,9 @@
 import React from "react";
-import { Layout, Container } from "btech-layout";
+import { Container } from "btech-layout";
 import PropTypes from "prop-types";
 import Text from "../Text";
 import File from "../File";
+import { Utils } from "../../../../services";
 
 /**
  * @module Data
@@ -31,7 +32,13 @@ const ProductService = function(props) {
             if (typeof element === "string")
               file = { name: element, link: element };
             else file = element;
-            return <File key={index} name={file.name} link={file.link} />;
+            return (
+              <File
+                key={index}
+                name={file.name}
+                link={Utils.getFromS3(file && file.link)}
+              />
+            );
           })}
       </Text>
       <Text header={`Explain`} text={props.data.explain} marginBottom={"5px"} />

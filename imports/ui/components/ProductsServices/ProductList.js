@@ -6,7 +6,7 @@ import { Button } from "btech-base-forms-component";
 import MaterialIcon from "react-material-iconic-font";
 import Product from "./Product";
 import Service from "./Service";
-import { UploadToS3FromClient } from "../../services";
+import { UploadToS3, UploadToS3FromClient } from "../../services";
 
 const SLabel = styled.div`
   font-size: 12px;
@@ -53,7 +53,6 @@ class ProductList extends React.Component {
     this.handleRemove = this.handleRemove.bind(this);
     this.handleDelete = this.handleDelete.bind(this);
     this.handleChange = this.handleChange.bind(this);
-    this.handleUpload = this.handleUpload.bind(this);
     this.handleClose = this.handleClose.bind(this);
   }
 
@@ -82,30 +81,30 @@ class ProductList extends React.Component {
   }
 
   async handleUpload(files, index) {
-    if (files && files[0]) {
-      if (files[0].size <= 10 * 1024 * 1024) {
-        let products = this.state.products;
-        let filesProd = this.state.products[index].files
-          ? this.state.products[index].files
-          : [];
-        for (let i = 0; i < files.length; i++) {
-          const file = files.item(i);
-          let result = await UploadToS3FromClient.uploadFromClient(file);
-
-          if (result !== -1) filesProd.push({ name: file.name, link: result });
+    const file = files[0];
+    if (file) {
+      let products = this.state.products;
+      let filesProd = products[index].files ? products[index].files : [];
+      UploadToS3.uploadFile(file, response => {
+        if (!response.error) {
+          filesProd.push({
+            name: file.name,
+            link: response.result,
+            type: file.type
+          });
+          const cache = {};
+          products[index]["files"] = filesProd.filter(file => {
+            if (!cache[file.name]) {
+              cache[file.name] = true;
+              return true;
+            }
+            return false;
+          });
+          this.setState({ products: products }, () => this.notifyParent());
+        } else {
+          // todo: show notification for error
         }
-        const cache = {};
-        products[index]["files"] = filesProd.filter(file => {
-          if (!cache[file.name]) {
-            cache[file.name] = true;
-            return true;
-          }
-          return false;
-        });
-        this.setState({ products: products }, () => this.notifyParent());
-      }
-    } else {
-      alert("File shouldn't be bigger than 10Mb");
+      });
     }
   }
 
@@ -198,7 +197,7 @@ class ProductList extends React.Component {
                   ) : (
                     <SItem
                       key={index}
-                      paddingY={"10px"}
+                      padding={"10px"}
                       customTemplateColumns={"1fr auto"}
                     >
                       <Container>{item.name}</Container>

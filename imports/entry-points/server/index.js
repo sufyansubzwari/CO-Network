@@ -7,8 +7,6 @@ import "./uploader/croper-image";
 
 // Import methods
 import "../../api/users/methods";
-import "../../api/utils/server/methods";
-import "../../api/utils/server/filesToS3";
 
 // Import Messages methods and subscription
 import "../../api/messages/server/indexes";
