@@ -157,6 +157,7 @@ class EventPreviewBody extends React.Component {
                               <SpeakerCard
                                 key={index}
                                 location={
+                                  speaker.user &&
                                   speaker.user.profile &&
                                   speaker.user.profile.place &&
                                   speaker.user.profile.place.location &&
@@ -164,11 +165,13 @@ class EventPreviewBody extends React.Component {
                                 }
                                 name={speaker.name}
                                 image={
+                                  speaker.user &&
                                   speaker.user.profile &&
                                   speaker.user.profile.image
                                 }
                                 lgCustomTemplateColumns={"130px 1fr"}
                                 hideButton={
+                                  speaker.user &&
                                   speaker.user._id === Meteor.userId()
                                 }
                                 onFollowClick={() =>
@@ -192,7 +195,7 @@ class EventPreviewBody extends React.Component {
       </Query>
     ) : speakers && speakers.length > 0 ? (
       <PreviewSection
-        title={"Sponsors"}
+        title={"Speakers"}
         number={speakers.length}
         lineSeparation={"0px"}
       >
@@ -218,7 +221,7 @@ class EventPreviewBody extends React.Component {
                 >
                   {({ loading, error, data }) => {
                     if (error) return <div />;
-                    const profile = data.user.profile || null;
+                    const profile = data.user ? data.user.profile : null;
                     return (
                       <SpeakerCard
                         key={index}
@@ -394,7 +397,7 @@ class EventPreviewBody extends React.Component {
 
     return canRender ? (
       <PreviewSection title={"Venue"}>
-        <Container>
+        <Layout rowGap={"3px"}>
           <PlaceHolder
             loading={!event.venueName && !event._id}
             height={35}
@@ -427,8 +430,8 @@ class EventPreviewBody extends React.Component {
               tags={[{ label: address, active: true }]}
             />
           </PlaceHolder>
-        </Container>
-        {position ? (
+        </Layout>
+        {address && position ? (
           <Container height={"320px"}>
             <MapSection locations={[position]} centerAt={position} />
           </Container>
