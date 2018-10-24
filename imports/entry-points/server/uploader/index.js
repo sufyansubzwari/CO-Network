@@ -90,6 +90,28 @@ export function setupApi() {
     });
   });
 
+  app.post("/upload-file", (req, res) => {
+    if (Object.keys(req.files).length === 0) {
+      return res.status(400).send("No files were uploaded.");
+    }
+    let file = req.files.file;
+    const name = file.name.replace(/ /g, "-");
+    let extension = name.split(".").pop();
+    const fileName = `${v1()}.${extension}`;
+
+    // uploading the original picture
+    uploadFile(file, fileName).then(error => {
+      if (error)
+        return res.status(500).send({
+          error: true
+        });
+      res.send({
+        error: false,
+        path: fileName
+      });
+    });
+  });
+
   WebApp.connectHandlers.use(app);
 }
 setupApi();

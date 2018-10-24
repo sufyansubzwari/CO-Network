@@ -37,6 +37,39 @@ class UploadToS3 {
           "content-type": "multipart/form-data"
         }
       };
+      if (!Meteor.isDevelopment) {
+        Axios.post(url, formData, config).then(response => {
+          const data = response.data;
+          statusCallback({ uploading: false });
+          callback({
+            error: data.error,
+            result: data.path
+          });
+        });
+      } else {
+        // to avoid upload the image and save the base64
+        this.handleOnDevelopmentMode(image, callback, statusCallback);
+      }
+    } catch (e) {
+      statusCallback({ uploading: false });
+      callback({
+        error: e,
+        message: e.description
+      });
+    }
+  }
+
+  uploadFile(file, callback, statusCallback) {
+    statusCallback({ uploading: true });
+    try {
+      const url = "/upload-file";
+      const formData = new FormData();
+      formData.append("file", file);
+      const config = {
+        headers: {
+          "content-type": "multipart/form-data"
+        }
+      };
       Axios.post(url, formData, config).then(response => {
         const data = response.data;
         statusCallback({ uploading: false });
@@ -45,11 +78,6 @@ class UploadToS3 {
           result: data.path
         });
       });
-      // if (!Meteor.isDevelopment) {
-      // } else {
-      // to avoid upload the image and save the base64
-      // this.handleOnDevelopmentMode(image, callback, statusCallback);
-      // }
     } catch (e) {
       statusCallback({ uploading: false });
       callback({

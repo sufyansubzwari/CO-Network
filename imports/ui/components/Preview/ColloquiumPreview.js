@@ -14,6 +14,7 @@ import { Session } from "meteor/session";
 import Attachment from "../Messages/components/Attachment";
 import { connect } from "react-redux";
 import { closeChatView, openChatView } from "../../actions/ChatView";
+import { Utils } from "../../services";
 
 const ResponsiveContainer = styled(Layout)`
   margin-left: -100%;
@@ -253,7 +254,7 @@ class ColloquiumPreview extends Preview {
                 <Attachment
                   key={index}
                   isImage={file.isImage}
-                  link={file.link}
+                  link={Utils.getFromS3(file.link)}
                   filename={file.name}
                   size={file.size}
                   loading={file.loading}
@@ -275,7 +276,9 @@ class ColloquiumPreview extends Preview {
                 this.onAttachmentUpload(file, size)
               }
               getImage={(file, size) => this.onImageUpload(file, size)}
-              getLoading={(loading, file, isImage) => this.handleLoading(loading, file, isImage)}
+              getLoading={(loading, file, isImage) =>
+                this.handleLoading(loading, file, isImage)
+              }
             />
           </Container>
         ) : null}

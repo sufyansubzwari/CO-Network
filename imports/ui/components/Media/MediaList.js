@@ -36,7 +36,8 @@ class MediaList extends React.Component {
 
     this.state = {
       media: this.props.data && this.props.data.length ? this.props.data : [],
-      mediaCopy: this.props.data && this.props.data.length ? this.props.data : []
+      mediaCopy:
+        this.props.data && this.props.data.length ? this.props.data : []
     };
 
     this.handleSave = this.handleSave.bind(this);
@@ -52,7 +53,10 @@ class MediaList extends React.Component {
     if (nextProps.data) {
       this.setState({
         media: nextProps.data && nextProps.data.length ? nextProps.data : [],
-        mediaCopy: nextProps.data && nextProps.data.length ? JSON.parse(JSON.stringify(nextProps.data)) : []
+        mediaCopy:
+          nextProps.data && nextProps.data.length
+            ? JSON.parse(JSON.stringify(nextProps.data))
+            : []
       });
     }
   }
@@ -79,14 +83,12 @@ class MediaList extends React.Component {
 
   async handleUpload(files, index) {
     if (files) {
-      if (files.size <= 10 * 1024 * 1024) {
-        let media = this.state.media;
-        let result = await UploadToS3FromClient.uploadFromClient(files);
-        if (result !== -1)
-          media[index]["files"] = { name: files.name, link: result };
-        this.setState({ media: media }, () => this.notifyParent());
-      } else alert("File shouldn't be bigger than 10Mb"); // todo: integrate with the notification alerts
-    }
+      let media = this.state.media;
+      let result = await UploadToS3FromClient.uploadFromClient(files);
+      if (result !== -1)
+        media[index]["files"] = { name: files.name, link: result };
+      this.setState({ media: media }, () => this.notifyParent());
+    } else alert("File shouldn't be bigger than 10Mb"); // todo: integrate with the notification alerts
   }
 
   handleDelete() {
@@ -115,9 +117,8 @@ class MediaList extends React.Component {
     Object.keys(med[index]).forEach(
       key => !med[index][key] && delete med[index][key]
     );
-    Object.keys(med[index]).filter(
-      item => item !== "type" && item !== "edit"
-    ).length === 0
+    Object.keys(med[index]).filter(item => item !== "type" && item !== "edit")
+      .length === 0
       ? med.splice(index, 1)
       : (med[index] = { ...med[index], edit: false });
     this.setState(

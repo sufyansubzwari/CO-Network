@@ -133,7 +133,7 @@ class MessageItem extends React.Component {
               props.message.attachment.map((attach, index) => (
                 <AttachedFile
                   key={index}
-                  link={attach.link}
+                  link={Utils.getFromS3(attach.link)}
                   filename={attach.name}
                 />
               ))}
