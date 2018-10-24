@@ -201,7 +201,8 @@ export default class MLTagsInput extends Component {
             <TagList
               useIcon={this.props.useIcon}
               onCategoryChange={this.props.onCategoryChange}
-              style={{ marginTop: "5px" }}
+              marginTop={'3px'}
+              marginBottom={'3px'}
               levelOptions={this.props.levelOptions}
               closeable={true}
               tags={this.state.tags}
