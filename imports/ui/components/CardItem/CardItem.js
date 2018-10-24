@@ -105,6 +105,38 @@ const SCardContainer = Styled(Container)`
   ${mixins.media.desktop`margin-left: 15px;`}
 `;
 
+const SShowMore = Styled.div`
+  width: 142px;
+  height: 32px;
+  margin-top: 40px;
+  margin-left: -40px;
+  background-color: #373737;
+  box-shadow: 0 13px 30px rgba(34,66,76,0.15);
+  color: #A8A8A8;
+  font-family: "Roboto Mono";
+  font-size: 12px;
+  text-align: center;
+  padding: 5px;
+  border-bottom-left-radius: 5px;
+  border-bottom-right-radius: 5px;
+  cursor: pointer;
+  
+  /* Safari */
+  -webkit-transform: rotate(-90deg);
+
+  /* Firefox */
+  -moz-transform: rotate(-90deg);
+  
+  /* IE */
+  -ms-transform: rotate(-90deg);
+  
+  /* Opera */
+  -o-transform: rotate(-90deg);
+  
+  /* Internet Explorer */
+  filter: progid:DXImageTransform.Microsoft.BasicImage(rotation=3);
+`;
+
 //TODO review the blur when the scale is triggered
 const PSCardContainer = posed(SCardContainer)({
   hoverable: true,
@@ -205,69 +237,87 @@ class CardItem extends Component {
         fullY
         minH={"initial"}
         mdMinH={"100px"}
-        customTemplateRows={"1fr"}
-        mdRowGap={"8px"}
-        mdCustomTemplateRows={"1fr 27px"}
+        customTemplateColumns={"1fr 32px"}
+        mdColGap={"5px"}
       >
         <Layout
           fullY
-          customTemplateRows={"auto auto auto"}
-          mdRowGap={"10px"}
-          rowGap={"8px"}
+          minH={"initial"}
+          mdMinH={"100px"}
+          customTemplateRows={"1fr"}
+          mdRowGap={"8px"}
+          mdCustomTemplateRows={"1fr 27px"}
         >
-          <Container mdMinH={"25px"}>
-            <Layout
-              customTemplateColumns={"1fr"}
-              mdCustomTemplateColumns={this.props.showMenu ? "1fr auto" : "1f"}
-            >
-              <Container style={{ lineHeight: 1 }}>
-                {this.state.topOptions.map((element, index) =>
-                  this.renderTopOptionItem(element, index)
-                )}
-              </Container>
-              {this.props.showMenu ? (
-                <Container hide mdShow>
-                  <SViewsContainer>
-                    <ReportToggle onSelect={(item, key) => alert(key)} />
-                  </SViewsContainer>
+          <Layout
+            fullY
+            customTemplateRows={"auto auto auto"}
+            mdRowGap={"10px"}
+            rowGap={"8px"}
+          >
+            <Container mdMinH={"25px"}>
+              <Layout
+                customTemplateColumns={"1fr"}
+                mdCustomTemplateColumns={
+                  this.props.showMenu ? "1fr auto" : "1f"
+                }
+              >
+                <Container style={{ lineHeight: 1 }}>
+                  {this.state.topOptions.map((element, index) =>
+                    this.renderTopOptionItem(element, index)
+                  )}
                 </Container>
-              ) : null}
-            </Layout>
-          </Container>
-          <Container>
-            <Layout customTemplateRows={"1fr"}>
-              <TitleCardContainer isActive={this.props.isActive}>
-                {this.props.title || "No title"}
-              </TitleCardContainer>
-            </Layout>
-          </Container>
-          <Container>
-            <Layout customTemplateRows={"1fr"}>
-              <SubTitleCardContainer isActive={this.props.isActive}>
-                {this.props.subTitle || "No description"}
-              </SubTitleCardContainer>
-            </Layout>
+                {this.props.showMenu ? (
+                  <Container hide mdShow>
+                    <SViewsContainer>
+                      <ReportToggle onSelect={(item, key) => alert(key)} />
+                    </SViewsContainer>
+                  </Container>
+                ) : null}
+              </Layout>
+            </Container>
+            <Container>
+              <Layout customTemplateRows={"1fr"}>
+                <TitleCardContainer isActive={this.props.isActive}>
+                  {this.props.title || "No title"}
+                </TitleCardContainer>
+              </Layout>
+            </Container>
+            <Container>
+              <Layout customTemplateRows={"1fr"}>
+                <SubTitleCardContainer isActive={this.props.isActive}>
+                  {this.props.subTitle || "No description"}
+                </SubTitleCardContainer>
+              </Layout>
+            </Container>
+          </Layout>
+          <Container hide mdShow ref={this.tagRef}>
+            {tags.length ? (
+              <TagList
+                containerRef={this.tagcontainer}
+                cut={true}
+                tags={tags}
+                onSelect={(event, tag, index) => {
+                  event.stopPropagation();
+                  event.preventDefault();
+                  this.props.onSelectTag && this.props.onSelectTag(tag, index);
+                }}
+                backgroundTagColor={this.props.isActive ? "#000000" : null}
+                borderColor={"#F92672"}
+                activeColor={this.props.isActive ? "white" : "black"}
+              />
+            ) : (
+              <EmptyTagsContainer />
+            )}
           </Container>
         </Layout>
-        <Container hide mdShow ref={this.tagRef}>
-          {tags.length ? (
-            <TagList
-              containerRef={this.tagcontainer}
-              cut={true}
-              tags={tags}
-              onSelect={(event, tag, index) => {
-                event.stopPropagation();
-                event.preventDefault();
-                this.props.onSelectTag && this.props.onSelectTag(tag, index);
-              }}
-              backgroundTagColor={this.props.isActive ? "#000000" : null}
-              borderColor={"#F92672"}
-              activeColor={this.props.isActive ? "white" : "black"}
-            />
-          ) : (
-            <EmptyTagsContainer />
-          )}
-        </Container>
+        {this.props.isActive ? (
+          <SShowMore>
+            <span>
+              <span>{"Show More "}</span>
+              <MaterialIcon type={"caret-up"} />
+            </span>
+          </SShowMore>
+        ) : null}
       </Layout>
     );
   }
@@ -294,6 +344,7 @@ class CardItem extends Component {
       </Container>
     );
   }
+
 
   render() {
     return (
