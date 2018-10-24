@@ -130,11 +130,9 @@ export class ReplyBox extends React.Component {
         file,
         response => {
           if (!response.error) {
-            let id = response.imagePath["chat"];
-
             let img = {
               name: files[0].name,
-              link: id ? id : response.imagePath,
+              link: response.result,
               type: files[0].type
             };
             this.props.getImage &&
@@ -150,18 +148,27 @@ export class ReplyBox extends React.Component {
   }
 
   async handleUpload(files) {
-    if (files[0]) {
-      if (files[0].size <= 10 * 1024 * 1024) {
-        let file = {};
-        this.props.getLoading && this.props.getLoading(true, files[0], false);
-        let result = await UploadToS3FromClient.uploadFromClient(files[0]);
-        if (result !== -1)
-          file = { name: files[0].name, link: result, type: files[0].type };
-        console.log("FileUploaded", result);
-        this.props.getAttachment &&
-          this.props.getAttachment(file, files[0].size, false);
-        this.props.getLoading && this.props.getLoading(false, files[0], false);
-      } else alert("File shouldn't be bigger than 10Mb"); // todo: integrate with the notification alerts
+    const file = files[0];
+    if (file) {
+      let response = {};
+      UploadToS3.uploadFile(
+        file,
+        response => {
+          if (!response.error) {
+            response = {
+              name: files[0].name,
+              link: response.result,
+              type: files[0].type
+            };
+            this.props.getAttachment &&
+              this.props.getAttachment(response, files[0].size, false);
+          } else {
+            // todo: show notification for error
+          }
+        },
+        ({ uploading }) =>
+          this.props.getLoading && this.props.getLoading(uploading, file, false)
+      );
     }
   }
 

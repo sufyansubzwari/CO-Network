@@ -33,7 +33,7 @@ const MainLayoutStyled = Styled(Layout)`
  `}
 `;
 
-const leftWidth = 250;
+const leftWidth = 290;
 
 const ContentStyled = Styled(Layout)`
   //hack for pose animation in movile view

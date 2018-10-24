@@ -7,6 +7,7 @@ import { userQuery } from "../../../apollo-client/user";
 import { Query } from "react-apollo";
 import PropTypes from "prop-types";
 import MessageItem from "./MessageItem";
+import { Utils } from "../../../services";
 import { SLineTime, SShowReplies } from "./styledComponents";
 import Attachment from "./Attachment";
 import moment from "moment";

@@ -133,6 +133,7 @@ input ProductsInput {
 
 input UploadedFileInput {
     name: String
+    type: String
     link: String
 }
 

@@ -364,6 +364,7 @@ class Preview extends React.Component {
               entity={this.props.entity}
               handleUpload={this.handleUploadChange}
               image={this.state.image}
+              allowChangeAvatar={this.props.allowChangeAvatar}
               backGroundImage={this.state.backGroundImage}
               showAvatar={this.props.showAvatar}
               allowChangeImages={this.props.allowChangeImages}
@@ -470,7 +471,8 @@ class Preview extends React.Component {
 Preview.defaultProps = {
   showAvatar: false,
   allowChangeImages: false,
-  isOpen: false
+  isOpen: false,
+  allowChangeAvatar: true
 };
 
 Preview.propTypes = {
@@ -482,6 +484,7 @@ Preview.propTypes = {
   navClicked: PropsTypes.func,
   navOptions: PropsTypes.array,
   allowChangeImages: PropsTypes.bool,
+  allowChangeAvatar: PropsTypes.bool,
   image: PropsTypes.string,
   changeProfile: PropsTypes.func,
   onBackgroundChange: PropsTypes.func,

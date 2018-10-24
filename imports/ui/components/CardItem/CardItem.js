@@ -163,7 +163,7 @@ class CardItem extends Component {
       image.onerror = (data, error) => {
         this.setState({ loadingImage: false, imageError: true });
       };
-      image.src = imageSrc;
+      image.src = this.handleImage(imageSrc);
     }
   }
 
