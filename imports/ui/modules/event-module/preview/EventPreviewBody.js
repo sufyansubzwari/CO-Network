@@ -141,6 +141,7 @@ class EventPreviewBody extends React.Component {
                         />
                       ) : (
                         <Mutation
+                          key={index}
                           mutation={FollowAction}
                           onError={error => console.log(error)}
                           refetchQueries={["GetSponsors", "GetSpeakers"]}
@@ -274,6 +275,7 @@ class EventPreviewBody extends React.Component {
                         />
                       ) : (
                         <Mutation
+                          key={index}
                           mutation={FollowAction}
                           onError={error => console.log(error)}
                           refetchQueries={["GetSponsors", "GetSpeakers"]}
@@ -374,7 +376,8 @@ class EventPreviewBody extends React.Component {
     const event = this.state.event;
     const place = event ? event.place : null;
     let address = place && place.location && place.location.address;
-    const position = place && place.location && place.location.location;
+    const position = place && place.location && {...place.location.location};
+    if (address) position.address = address;
 
     const canRender =
       !event._id || event.venueName || event.venueEmail || address;
@@ -417,7 +420,7 @@ class EventPreviewBody extends React.Component {
         </Container>
         {position ? (
           <Container height={"320px"}>
-            <MapSection locations={[position]} centerAt={position}/>
+            <MapSection locations={[position]} centerAt={position} />
           </Container>
         ) : null}
       </PreviewSection>

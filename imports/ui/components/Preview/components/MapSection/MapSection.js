@@ -1,6 +1,6 @@
 import React from "react";
 import PropTypes from "prop-types";
-import { Map, Marker, TileLayer } from "react-leaflet";
+import { Map, Marker, Popup, TileLayer } from "react-leaflet";
 import L from "leaflet";
 import ReactDOMServer from "react-dom/server";
 import ClusterIcon from "../../../ClusterIcon/ClusterIcon";
@@ -27,11 +27,7 @@ const MapSection = function(props) {
       ? props.locations.map((element, index) => {
           return element ? (
             <Marker key={index} position={element}>
-              {element.address ? (
-                <Tooltip>
-                  <span>{element.address}</span>
-                </Tooltip>
-              ) : null}
+              {element.address ? <Popup>{element.address}</Popup> : null}
             </Marker>
           ) : null;
         })
