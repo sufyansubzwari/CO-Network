@@ -163,6 +163,11 @@ class SignUp extends React.Component {
                 autoHide
                 autoHideDuration={200}
                 style={{ height: "100%"}}
+                renderThumbVertical={({ style, ...props }) =>
+                  <div {...props} style={{...style, width: '7px', borderRadius: '0px', backgroundColor: '#ACACAC', cursor: 'pointer'}} />}
+                renderThumbHorizontal={({ style, ...props }) =>
+                  <div {...props} style={{...style, height: '7px', borderRadius: '0px', backgroundColor: '#ACACAC', cursor: 'pointer'}} />}
+
             >
               <ZContainer id={'inscroll'}>
               <Container mr={'10px'}>

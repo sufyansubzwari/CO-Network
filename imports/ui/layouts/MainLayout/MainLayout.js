@@ -132,7 +132,12 @@ class MainLayout extends Component {
         <LoginModal />
         <SideBar {...propsProvider} isOpen={props.showSidebar} />
         <ContentContainerPose pose={contentPose} fullY gridArea="content">
-          <Scrollbars>
+          <Scrollbars
+            renderThumbVertical={({ style, ...props }) =>
+              <div {...props} style={{...style, width: '7px', borderRadius: '0px', backgroundColor: '#ACACAC', cursor: 'pointer'}} />}
+            renderThumbHorizontal={({ style, ...props }) =>
+              <div {...props} style={{...style, height: '7px', borderRadius: '0px', backgroundColor: '#ACACAC', cursor: 'pointer'}} />}
+          >
             <Routes {...propsProvider} />
           </Scrollbars>
         </ContentContainerPose>

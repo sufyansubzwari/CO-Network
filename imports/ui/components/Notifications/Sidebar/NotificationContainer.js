@@ -101,6 +101,11 @@ const ItemsContainer = function(props) {
           autoHide
           autoHideDuration={props.autoHideDuration}
           style={{ height: "100%", overflow: "display" }}
+          renderThumbVertical={({ style, ...props }) =>
+            <div {...props} style={{...style, width: '7px', borderRadius: '0px', backgroundColor: '#ACACAC', cursor: 'pointer'}} />}
+          renderThumbHorizontal={({ style, ...props }) =>
+            <div {...props} style={{...style, height: '7px', borderRadius: '0px', backgroundColor: '#ACACAC', cursor: 'pointer'}} />}
+
         >
           {props.children}
         </Scrollbars>
