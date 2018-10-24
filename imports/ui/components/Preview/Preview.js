@@ -158,7 +158,7 @@ class Preview extends React.Component {
   handleUploadChange(src, element) {
     if (element === "background")
       this.props.onBackgroundChange && this.props.onBackgroundChange(src);
-    if (element === "userphoto")
+    if (element === "userPhoto")
       this.props.onUserPhotoChange && this.props.onUserPhotoChange(src);
   }
 

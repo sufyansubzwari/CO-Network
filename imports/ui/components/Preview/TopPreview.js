@@ -99,8 +99,8 @@ class TopPreview extends Component {
             // todo: show notification for error
           }
         },
-        status => {
-          this.uploadingStatus(status.uploading);
+        ({ uploading }) => {
+          this.uploadingStatus(uploading);
         }
       );
     }
@@ -187,6 +187,7 @@ TopPreview.propTypes = {
   backGroundImage: PropsTypes.string,
   gridArea: PropsTypes.string,
   showAvatar: PropsTypes.bool,
+  renderOptions: PropsTypes.func,
   allowChangeAvatar: PropsTypes.bool,
   allowChangeImages: PropsTypes.bool,
   image: PropsTypes.string,

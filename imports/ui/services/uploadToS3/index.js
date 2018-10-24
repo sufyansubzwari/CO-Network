@@ -34,19 +34,19 @@ class UploadToS3 {
           "content-type": "multipart/form-data"
         }
       };
-      // if (!Meteor.isDevelopment) {
-      Axios.post(url, formData, config).then(response => {
-        const data = response.data;
-        statusCallback && statusCallback({ uploading: false });
-        callback({
-          error: data.error,
-          result: data.path
+      if (!Meteor.isDevelopment) {
+        Axios.post(url, formData, config).then(response => {
+          const data = response.data;
+          statusCallback && statusCallback({ uploading: false });
+          callback({
+            error: data.error,
+            result: data.path
+          });
         });
-      });
-      // } else {
-      // to avoid upload the image and save the base64
-      // this.handleOnDevelopmentMode(image, callback, statusCallback);
-      // }
+      } else {
+        // to avoid upload the image and save the base64
+        this.handleOnDevelopmentMode(image, callback, statusCallback);
+      }
     } catch (e) {
       statusCallback && statusCallback({ uploading: false });
       callback({
