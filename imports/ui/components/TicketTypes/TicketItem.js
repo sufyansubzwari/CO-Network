@@ -7,6 +7,7 @@ import {
   Button,
   Input,
   SalaryRange,
+  SalaryInput,
   TextArea
 } from "btech-base-forms-component";
 import LineSeparator from "./LineSeparator";
@@ -103,17 +104,13 @@ class TicketItem extends Component {
             </Container>
             {this.props.isPaid ? (
               <Layout mdCustomTemplateColumns={"1fr 1fr"}>
-                <SalaryRange
+                <SalaryInput
                   required={true}
                   labelText={"Ticket Price"}
-                  placeholder={"000"}
-                  min={Number(this.state.ticket.min) || 0}
-                  max={Number(this.state.ticket.max) || 0}
-                  getValue={data => {
-                    const { min, max } = data;
+                  value={Number(this.state.ticket.price) || 0}
+                  getValue={price => {
                     const ticket = this.state.ticket;
-                    ticket.min = min;
-                    ticket.max = max;
+                    ticket.price = price;
                     this.setState({ ticket: ticket });
                   }}
                 />

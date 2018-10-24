@@ -110,11 +110,7 @@ const schema = new SimpleSchema({
     type: Number,
     optional: true
   },
-  'tickets.$.min': {
-    type: Number,
-    optional: true
-  },
-  'tickets.$.max': {
+  'tickets.$.price': {
     type: Number,
     optional: true
   },

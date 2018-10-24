@@ -53,8 +53,7 @@ type TicketsType{
     description: String
     type: String
     available: Int
-    min: Float
-    max: Float
+    price: Float
 }
 
 input EventsInputSearch {
@@ -78,8 +77,7 @@ input TicketsInputSearch{
     description: TableStringFilterInput
     type: TableStringFilterInput
     available: TableStringFilterInput
-    min: TableStringFilterInput
-    max: TableStringFilterInput
+    price: TableStringFilterInput
 }
 
 input TableStringFilterInput{
@@ -145,8 +143,7 @@ input TicketsTypeInput{
     description: String
     type: String
     available: Int
-    min: Float
-    max: Float
+    price: Float
 }
 
 type Mutation {

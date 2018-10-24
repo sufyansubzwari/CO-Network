@@ -25,10 +25,9 @@ const SListTitleContainer = styled(Container)`
  * @category TicketsList
  */
 const TicketsList = function(props) {
-  const prices = props.data[props.minField]
-    ? `(${props.moneySymbol}${props.data[props.minField]} - 
-  ${props.moneySymbol}${props.data[props.maxField]})`
-    : `-  ${props.moneySymbol}${props.data[props.maxField]}`;
+  const prices = props.data['price']
+    ? `(${props.moneySymbol}${props.data['price']})` : null;
+
   return (
     <Layout rowGap={"5px"}>
       <Container>
