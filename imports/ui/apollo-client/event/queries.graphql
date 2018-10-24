@@ -27,8 +27,7 @@ query GetEvents($limit: Int, $filter: String, $events: EventsInputSearch) {
       description
       available
       type
-      max
-      min
+      price
     }
     entity
     views
