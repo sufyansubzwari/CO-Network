@@ -250,7 +250,7 @@ class EventPreviewBody extends React.Component {
 
         let address = this.state.event.place && this.state.event.place.location && this.state.event.place.location.address;
         const position = this.state.event.place && this.state.event.place.location && this.state.event.place.location.location
-        return this.state.event.venueName && this.state.event.venueName !== "" || this.state.event.venueEmail && this.state.event.venueEmail !== "" || address && address !== "" || position && position !== "" ? (
+        return this.state.event.venueName && this.state.event.venueName !== "" || this.state.event.venueEmail && this.state.event.venueEmail !== "" || address && address !== "" ? (
             <PreviewSection title={"Venue"}>
                 <Container>
                     {this.state.event.venueName ? <Location location={this.state.event.venueName}/> : null}
