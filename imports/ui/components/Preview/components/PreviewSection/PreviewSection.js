@@ -36,7 +36,7 @@ const Number = styled.span`
 
 PreviewSection = props => {
   return (
-    <PreviewSectionContainer rowGap={"10px"}>
+    <PreviewSectionContainer rowGap={props.lineSeparation || "10px"}>
       <Container>
         <STitle>{props.title}</STitle>
         {props.number ? <Number>({props.number})</Number> : null}
@@ -50,5 +50,6 @@ export default PreviewSection;
 
 PreviewSection.propTypes = {
   title: PropsTypes.string,
+  lineSeparation: PropsTypes.string,
   number: PropsTypes.number
 };

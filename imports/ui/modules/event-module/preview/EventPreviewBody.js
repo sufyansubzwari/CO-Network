@@ -102,17 +102,18 @@ class EventPreviewBody extends React.Component {
   };
 
   renderSpeakerSection = () => {
+    const event = this.state.event;
     let speakers =
-      this.state.event.sponsors &&
-      this.state.event.sponsors.length > 0 &&
-      this.state.event.sponsors.filter(item => item.type === "Speakers");
-    return this.state.event._id && speakers.length ? (
+      event.sponsors &&
+      event.sponsors.length > 0 &&
+      event.sponsors.filter(item => item.type === "Speakers");
+    return event._id && speakers.length ? (
       <Query
         fetchPolicy={"network-only"}
         query={GetSpeakers}
         variables={{
           sponsors: {
-            owner: this.state.event._id,
+            owner: event._id,
             type: "Speakers"
           }
         }}
@@ -190,7 +191,11 @@ class EventPreviewBody extends React.Component {
         }}
       </Query>
     ) : speakers && speakers.length > 0 ? (
-      <PreviewSection title={"Sponsors"} number={speakers.length}>
+      <PreviewSection
+        title={"Sponsors"}
+        number={speakers.length}
+        lineSeparation={"0px"}
+      >
         <Layout
           colGap={"20px"}
           customTemplateColumns={`1fr`}
@@ -212,19 +217,19 @@ class EventPreviewBody extends React.Component {
                   variables={{ id: speaker.user }}
                 >
                   {({ loading, error, data }) => {
-                    if (loading) return <div />;
                     if (error) return <div />;
+                    const profile = data.user.profile || null;
                     return (
                       <SpeakerCard
                         key={index}
                         location={
-                          data.user.profile &&
-                          data.user.profile.place &&
-                          data.user.profile.place.location &&
-                          data.user.profile.place.location.address
+                          profile &&
+                          profile.place &&
+                          profile.place.location &&
+                          profile.place.location.address
                         }
                         name={speaker.name}
-                        image={data.user.profile && data.user.profile.image}
+                        image={profile && profile.image}
                         lgCustomTemplateColumns={"130px 1fr"}
                         hideButton={true}
                       />
@@ -239,16 +244,17 @@ class EventPreviewBody extends React.Component {
   };
 
   renderSponsorsSection = () => {
+    const event = this.state.event;
     let sponsor =
-      this.state.event.sponsors &&
-      this.state.event.sponsors.length > 0 &&
-      this.state.event.sponsors.filter(item => item.type === "Sponsors");
-    return this.state.event._id && sponsor.length ? (
+      event.sponsors &&
+      event.sponsors.length > 0 &&
+      event.sponsors.filter(item => item.type === "Sponsors");
+    return event._id && sponsor.length ? (
       <Query
         fetchPolicy={"network-only"}
         query={GetSponsors}
         variables={{
-          sponsors: { owner: this.state.event._id, type: "Sponsors" }
+          sponsors: { owner: event._id, type: "Sponsors" }
         }}
       >
         {({ loading, error, data }) => {
@@ -324,7 +330,11 @@ class EventPreviewBody extends React.Component {
         }}
       </Query>
     ) : sponsor && sponsor.length > 0 ? (
-      <PreviewSection title={"Sponsors"} number={sponsor.length}>
+      <PreviewSection
+        title={"Sponsors"}
+        number={sponsor.length}
+        lineSeparation={"0px"}
+      >
         <Layout
           colGap={"20px"}
           customTemplateColumns={`1fr`}
@@ -376,7 +386,7 @@ class EventPreviewBody extends React.Component {
     const event = this.state.event;
     const place = event ? event.place : null;
     let address = place && place.location && place.location.address;
-    const position = place && place.location && {...place.location.location};
+    const position = place && place.location && { ...place.location.location };
     if (address) position.address = address;
 
     const canRender =
@@ -459,7 +469,7 @@ class EventPreviewBody extends React.Component {
         })
       : [];
     return (
-      <Layout mdRowGap={"20px"}>
+      <Layout mdRowGap={"20px"} rowGap={"10px"}>
         {this.renderSummarySection()}
         {this.renderVenueSection()}
         {this.renderSpeakerSection()}

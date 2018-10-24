@@ -1,13 +1,12 @@
 import React from "react";
-import {Container, Layout, mixins} from "btech-layout";
-import {Button} from "btech-base-forms-component";
+import { Container, Layout, mixins } from "btech-layout";
+import { Button } from "btech-base-forms-component";
 import { Card } from "btech-card-list-component";
 import Styled from "styled-components";
 import PropsTypes from "prop-types";
-import {CardItem} from "../../../../components/index";
+import { CardItem } from "../../../../components/index";
 import { PlaceHolder } from "btech-placeholder-component";
-import {Location} from "../../../../components/Preview/components/index"
-
+import { Location } from "../../../../components/Preview/components/index";
 
 const SCardContainer = Styled(Container)`
   zoom: 100%;
@@ -59,88 +58,83 @@ const SImage = Styled.div`
   height: 100%;
 `;
 
-
 class SpeakerCard extends CardItem {
+  constructor(props) {
+    super(props);
 
-    constructor(props){
-        super(props)
+    this.state = {};
+  }
 
-        this.state = {
-
-        }
-    }
-
-
-    renderLeftSide() {
-        return (
-            <Layout
-                fullY
-                customTemplateRows={"auto auto auto"}
-                minH={"90px"}
+  renderLeftSide() {
+    return (
+      <Layout fullY customTemplateRows={"auto auto auto"} minH={"90px"}>
+        <Container>
+          <Layout customTemplateRows={"1fr"}>
+            <TitleCardContainer isActive={this.props.isActive}>
+              {this.props.name || "No Speaker"}
+            </TitleCardContainer>
+          </Layout>
+        </Container>
+        <Container>
+          <Layout customTemplateRows={"1fr"}>
+            <Location cut={true} location={this.props.location || "Location"} />
+          </Layout>
+        </Container>
+        <Container>
+          {this.props.hideButton ? null : (
+            <Button
+              secondary={true}
+              onClick={() =>
+                this.props.onFollowClick && this.props.onFollowClick()
+              }
             >
-                <Container>
-                    <Layout customTemplateRows={"1fr"}>
-                        <TitleCardContainer isActive={this.props.isActive}>
-                            {this.props.name || "No Speaker"}
-                        </TitleCardContainer>
-                    </Layout>
-                </Container>
-                <Container>
-                    <Layout customTemplateRows={"1fr"}>
-                        <Location cut={true} location={this.props.location || "Location" }/>
-                    </Layout>
-                </Container>
-                <Container>
-                    { this.props.hideButton ? null : <Button secondary={true} onClick={() => this.props.onFollowClick && this.props.onFollowClick()} >{this.props.following ? "Unfollow" : "Follow"}</Button> }
-                </Container>
-            </Layout>
-        );
-    }
+              {this.props.following ? "Unfollow" : "Follow"}
+            </Button>
+          )}
+        </Container>
+      </Layout>
+    );
+  }
 
+  getRightSide() {
+    const loading =
+      this.props.loading || (this.props.image && this.state.loadingImage);
+    const imageElement = loading ? (
+      <PlaceHolder rect loading={loading} height={280} width={240} />
+    ) : (
+      <SImage src={this.handleImage(this.props.image)} />
+    );
+    return this.props.image && this.props.image ? (
+      <Container relative fullView>
+        {imageElement}
+      </Container>
+    ) : null;
+  }
 
-    getRightSide() {
-        const loading =
-            this.props.loading || (this.props.image && this.state.loadingImage);
-        const imageElement = loading ? (
-            <PlaceHolder rect loading={loading} height={280} width={240} />
-        ) : (
-            <SImage src={this.handleImage(this.props.image)} />
-        );
-        return this.props.image && this.props.image ? (
-            <Container relative fullView>
-                {imageElement}
-            </Container>
-        ) : null
-    }
-
-    render() {
-        return (
-            <SCardContainer>
-                <Card
-                    className={"card"}
-                    onSelect={() =>
-                        this.props.onSelect && this.props.onSelect({ ...this.props.data })
-                    }
-                    isActive={this.props.isActive}
-                    loading={this.props.loading}
-                    {...this.props}
-                    {...this.props.data}
-                    renderRightSide={this.getRightSide.bind(this)}
-                    renderLeftSide={this.renderLeftSide.bind(this)}
-                />
-            </SCardContainer>
-        )
-    }
-
+  render() {
+    return (
+      <SCardContainer>
+        <Card
+          className={"card"}
+          onSelect={() =>
+            this.props.onSelect && this.props.onSelect({ ...this.props.data })
+          }
+          isActive={this.props.isActive}
+          loading={this.props.loading}
+          {...this.props}
+          {...this.props.data}
+          renderRightSide={this.getRightSide.bind(this)}
+          renderLeftSide={this.renderLeftSide.bind(this)}
+        />
+      </SCardContainer>
+    );
+  }
 }
 
-export default SpeakerCard
+export default SpeakerCard;
 
 SpeakerCard.propTypes = {
-    ...CardItem.propTypes,
-    onFollowClick: PropsTypes.func,
-    hideButton: PropsTypes.bool
-}
-
-
-
+  ...CardItem.propTypes,
+  onFollowClick: PropsTypes.func,
+  hideButton: PropsTypes.bool
+};

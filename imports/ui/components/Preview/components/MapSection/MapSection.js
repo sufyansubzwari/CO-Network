@@ -36,7 +36,7 @@ const MapSection = function(props) {
 
   return (
     <Map
-      style={{ height: "100%" }}
+      style={{ height: "100%", zIndex: 0 }}
       center={props.centerAt || []}
       zoom={props.zoom}
       maxZoom={props.maxZoom}
