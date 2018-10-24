@@ -94,13 +94,17 @@ class MessagesSidebar extends React.Component {
       type: "direct",
       read: "Unread",
       dropDownOpen: false,
-      isDeleting: false
+      isDeleting: false,
+      deleteAction: false,
+      dragValue: null
     };
 
     this.deleteMessage = this.deleteMessage.bind(this);
   }
 
-  componentWillMount() {}
+  shouldComponentUpdate(nextProps, nextState) {
+    return this.state.dragValue === nextState.dragValue;
+  }
 
   componentWillReceiveProps(nextProps) {
     if (nextProps.messages) {
@@ -189,8 +193,10 @@ class MessagesSidebar extends React.Component {
   observerDragBoundaries(x, index, message) {
     let value = Utils.getPercentOfDrag(x);
     if (value >= 65 && this.props.isMobile && !this.state.isDeleting) {
+      this.setState({ deleteAction: true });
       this.deleteMessage(message, index);
     }
+    this.setState({ dragValue: value });
   }
 
   render() {
@@ -287,17 +293,16 @@ class MessagesSidebar extends React.Component {
                 {({ loading, error, data }) => {
                   if (error) return <div />;
                   const owner = data.user;
-                  return (
-                    this.props.loading || loading ? (
-                      <div style={{padding: '15px'}}>
-                        <PlaceHolder
-                          facebook
-                          loading={this.props.loading || loading}
-                          height={280}
-                          width={390}
-                        />
-                      </div>
-                    ) : (
+                  return this.props.loading || loading ? (
+                    <div style={{ padding: "15px" }}>
+                      <PlaceHolder
+                        facebook
+                        loading={this.props.loading || loading}
+                        height={280}
+                        width={390}
+                      />
+                    </div>
+                  ) : (
                     <Container relative>
                       <NotificationBack />
                       <SDragContainer
@@ -305,7 +310,15 @@ class MessagesSidebar extends React.Component {
                         onValueChange={{
                           x: x => this.observerDragBoundaries(x, index, message)
                         }}
-                        onDragEnd={this.handleSelect.bind(this, index)}
+                        onDragEnd={() => {
+                          if (
+                            this.props.isMobile &&
+                            !this.state.deleteAction &&
+                            this.state.dragValue === 0
+                          )
+                            this.handleSelect(index);
+                          this.setState({ deleteAction: false });
+                        }}
                       >
                         <Notification
                           hasIcon={true}
@@ -317,15 +330,7 @@ class MessagesSidebar extends React.Component {
                           time={this.setTimeFormat(message.createdAt)}
                           image={owner.profile.image}
                           selected={this.state.selectedItem === index}
-                          onClick={() =>
-                            this.setState(
-                              {
-                                selectedItem:
-                                  index === this.state.selectedItem ? -1 : index
-                              },
-                              () => this.handleSelect()
-                            )
-                          }
+                          onSelect={this.handleSelect.bind(this, index)}
                           onDelete={this.deleteMessage.bind(
                             this,
                             message,
@@ -334,7 +339,6 @@ class MessagesSidebar extends React.Component {
                         />
                       </SDragContainer>
                     </Container>
-                    )
                   );
                 }}
               </Query>

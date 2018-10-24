@@ -23,6 +23,7 @@ import { FollowAction } from "../../apollo-client/follow";
 import { INNOVATORS_TYPES } from "../../constants";
 import { cleanSearch, onSearchTags } from "../../actions/TopSearchActions";
 import { List } from "../general";
+import _ from "lodash";
 
 /**
  * @module Events
@@ -78,7 +79,10 @@ class ListInnovators extends List {
             updateQuery: (previousResult, { fetchMoreResult }) => {
               return {
                 ...previousResult["users"],
-                users: [...fetchMoreResult["users"], ...previousResult["users"]]
+                users: _.uniqBy(
+                  previousResult["users"].concat(...fetchMoreResult["users"]),
+                  "_id"
+                )
               };
             }
           })

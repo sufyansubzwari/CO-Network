@@ -16,7 +16,8 @@ import { withRouter } from "react-router-dom";
 import { ViewsCountUpdate } from "../../apollo-client/viewCount";
 import { cleanSearch, onSearchTags } from "../../actions/TopSearchActions";
 import { List } from "../general";
-import {FollowAction} from "../../apollo-client/follow";
+import { FollowAction } from "../../apollo-client/follow";
+import _ from "lodash";
 
 /**
  * @module Colloquiums
@@ -64,16 +65,15 @@ class ListColloquiums extends List {
             filter: "",
             colloquiums: { _id: nextProps.location.state.target }
           },
-          updateQuery: (
-            previousResult,
-            { fetchMoreResult }
-          ) => {
+          updateQuery: (previousResult, { fetchMoreResult }) => {
             return {
               ...previousResult["colloquiums"],
-              colloquiums: [
-                ...fetchMoreResult["colloquiums"],
-                ...previousResult["colloquiums"]
-              ]
+              colloquiums: _.uniqBy(
+                previousResult["colloquiums"].concat(
+                  ...fetchMoreResult["colloquiums"]
+                ),
+                "_id"
+              )
             };
           }
         })
@@ -131,7 +131,7 @@ class ListColloquiums extends List {
                   mutation={FollowAction}
                   onError={error => this.errorOnBackgroundChange(error)}
                 >
-                  {(followAction) => {
+                  {followAction => {
                     const follow =
                       this.props.curUser &&
                       this.props.curUser._id &&
@@ -141,94 +141,95 @@ class ListColloquiums extends List {
                         this.props.curUser._id
                       ) > -1;
                     return (
-                <ColloquiumPreview
-                  onClose={() => this.onChangeSelection(null, null)}
-                  key={"rightSide"}
-                  isOpen={this.activePreview()}
-                  navOptions={[
-                    {
-                      type: "text",
-                      icon: "mail-reply",
-                      text:
-                        this.state.selectedItem &&
-                        this.state.selectedItem.followerList
-                          ? this.state.selectedItem.followerList.length +
-                          " Followers"
-                          : null
-                    },
-                    {
-                      text: !follow ? "Follow" : "Unfollow",
-                      primary: true,
-                      checkVisibility: () => {
-                        const element = this.state.selectedItem;
-                        return (
-                          element &&
-                          element._id &&
-                          element.owner &&
+                      <ColloquiumPreview
+                        onClose={() => this.onChangeSelection(null, null)}
+                        key={"rightSide"}
+                        isOpen={this.activePreview()}
+                        navOptions={[
+                          {
+                            type: "text",
+                            icon: "mail-reply",
+                            text:
+                              this.state.selectedItem &&
+                              this.state.selectedItem.followerList
+                                ? this.state.selectedItem.followerList.length +
+                                  " Followers"
+                                : null
+                          },
+                          {
+                            text: !follow ? "Follow" : "Unfollow",
+                            primary: true,
+                            checkVisibility: () => {
+                              const element = this.state.selectedItem;
+                              return (
+                                element &&
+                                element._id &&
+                                element.owner &&
+                                this.props.curUser &&
+                                element.owner._id !== this.props.curUser._id
+                              );
+                            },
+                            onClick: () =>
+                              this.handleFollow(followAction, follow)
+                          },
+                          {
+                            text: "Edit",
+                            icon: "edit",
+                            checkVisibility: () => {
+                              const element = this.state.selectedItem;
+                              return (
+                                element &&
+                                element._id &&
+                                element.owner &&
+                                this.props.curUser &&
+                                element.owner._id === this.props.curUser._id
+                              );
+                            },
+                            onClick: () => {
+                              this.editColloquium();
+                            }
+                          },
+                          {
+                            text: "Remove",
+                            icon: "delete",
+                            checkVisibility: () => {
+                              const element = this.state.selectedItem;
+                              return (
+                                element &&
+                                element._id &&
+                                element.owner &&
+                                this.props.curUser &&
+                                element.owner._id === this.props.curUser._id
+                              );
+                            },
+                            onClick: () => {
+                              this.removeEntity(
+                                deleteColloquium,
+                                this.state.selectedItem
+                              );
+                            }
+                          }
+                        ]}
+                        data={this.state.selectedItem}
+                        isColloquium
+                        allowChangeImages={
+                          this.state.selectedItem &&
+                          this.state.selectedItem.owner &&
                           this.props.curUser &&
-                          element.owner._id !== this.props.curUser._id
-                        );
-                      },
-                      onClick: () =>
-                        this.handleFollow(followAction, follow)
-                    },
-                    {
-                      text: "Edit",
-                      icon: "edit",
-                      checkVisibility: () => {
-                        const element = this.state.selectedItem;
-                        return (
-                          element &&
-                          element._id &&
-                          element.owner &&
-                          this.props.curUser &&
-                          element.owner._id === this.props.curUser._id
-                        );
-                      },
-                      onClick: () => {
-                        this.editColloquium();
-                      }
-                    },
-                    {
-                      text: "Remove",
-                      icon: "delete",
-                      checkVisibility: () => {
-                        const element = this.state.selectedItem;
-                        return (
-                          element &&
-                          element._id &&
-                          element.owner &&
-                          this.props.curUser &&
-                          element.owner._id === this.props.curUser._id
-                        );
-                      },
-                      onClick: () => {
-                        this.removeEntity(
-                          deleteColloquium,
+                          this.state.selectedItem.owner._id ===
+                            this.props.curUser._id
+                        }
+                        backGroundImage={
                           this.state.selectedItem
-                        );
-                      }
-                    }
-                  ]}
-                  data={this.state.selectedItem}
-                  isColloquium
-                  allowChangeImages={
-                    this.state.selectedItem &&
-                    this.state.selectedItem.owner &&
-                    this.props.curUser &&
-                    this.state.selectedItem.owner._id === this.props.curUser._id
-                  }
-                  backGroundImage={
-                    this.state.selectedItem
-                      ? this.state.selectedItem.image
-                      : null
-                  }
-                  onBackgroundChange={imageSrc =>
-                    this.handleBackgroundChange(updateImage, imageSrc)
-                  }
-                  curUser={this.props.curUser}
-                  isMobile={this.props.isMobile}
-                />
+                            ? this.state.selectedItem.image
+                            : null
+                        }
+                        onBackgroundChange={imageSrc =>
+                          this.handleBackgroundChange(updateImage, imageSrc)
+                        }
+                        curUser={this.props.curUser}
+                        isMobile={this.props.isMobile}
+                      />
                     );
                   }}
                 </Mutation>

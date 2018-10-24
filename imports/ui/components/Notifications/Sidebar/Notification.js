@@ -133,7 +133,11 @@ class Notification extends React.Component {
   render() {
     return (
       <SNotification
-        onClick={() => this.props.onClick && this.props.onClick()}
+        onClick={(event) => {
+          event.stopPropagation();
+          event.preventDefault();
+          this.props.onSelect && this.props.onSelect()
+        }}
         selected={this.props.selected}
         viewed={this.props.viewed}
       >
@@ -211,7 +215,7 @@ Notification.propTypes = {
   description: PropTypes.string,
   entity: PropTypes.string,
   time: PropTypes.string,
-  onClick: PropTypes.func,
+  onSelect: PropTypes.func,
   hasIcon: PropTypes.bool,
   image: PropTypes.string,
   selected: PropTypes.bool,
