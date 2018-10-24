@@ -6,6 +6,7 @@ import { withRouter } from "react-router-dom";
 import { CreateEvent, DeleteEvent } from "../../apollo-client/event";
 import { Mutation } from "react-apollo";
 import _ from "lodash";
+import {GetSponsors} from "../../apollo-client/sponsor";
 
 /**
  * @module Events
@@ -102,7 +103,7 @@ class PostEvent extends Component {
         <Mutation
           key={"leftSide"}
           mutation={CreateEvent}
-          refetchQueries={["GetEvents", "GetMyEvents"]}
+          refetchQueries={["GetEvents", "GetMyEvents", "GetSponsors"]}
           onCompleted={() =>
             this.state.redirect &&
             this.props.history.push("/events", { postEvent: true })
@@ -126,7 +127,7 @@ class PostEvent extends Component {
           )}
         </Mutation>
         <Mutation
-          refetchQueries={["GetEvents", "GetMyEvents"]}
+          refetchQueries={["GetEvents", "GetMyEvents", "GetSponsors"]}
           key={"rightSide"}
           mutation={DeleteEvent}
         >

@@ -1,1 +1,1 @@
-export { default as GetSponsors } from "./queries.graphql";
+export { GetSponsors, GetSpeakers } from "./queries.graphql";
