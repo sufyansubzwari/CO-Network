@@ -21,7 +21,7 @@ const Min = styled.span`
   font-size: 12px;
 
   ${mixins.media.desktop`
-    font-size: 14px;
+    font-size: 13px;
     line-height: 22px;
   `};
 `;

@@ -109,7 +109,8 @@ class Text extends React.Component {
     handleMore = () => {
         this.setState({
             showMore: !this.state.showMore
-        })
+        },
+            () => this.props.moreClicked && this.props.moreClicked() )
     }
 
     handleRef = (ref) => {
@@ -133,7 +134,10 @@ class Text extends React.Component {
                 ) : null}
                 {this.props.text ? (
                     <Container>
-                        <SText lines={this.state.lines} innerRef={ ref => this.handleRef(ref) } showMore={this.state.showMore} {...this.props}>{this.props.text}</SText>{this.props.cutText && this.state.renderMore ? this.state.showMore ?
+                        <SText lines={this.state.lines} innerRef={ ref => this.handleRef(ref) } showMore={this.state.showMore} {...this.props}>{this.props.text}
+                        </SText>
+                        {!this.state.showMore && this.props.extraTexts && this.props.extraTexts.map( (item,index) => <SText key={index}>{item}</SText>  )}
+                        { (this.props.cutText && this.state.renderMore) || this.props.showMore ? this.state.showMore  ?
                         <SSpan onClick={this.handleMore}>More...</SSpan> :
                         <SSpan onClick={this.handleMore}>Less...</SSpan> : null}</Container>
                 ) : this.props.children ? (
@@ -166,7 +170,9 @@ Text.propTypes = {
     textLineHeight: PropsTypes.string,
     textWeight: PropsTypes.string,
     cutText: PropsTypes.bool,
-    cutLines: PropsTypes.number
+    cutLines: PropsTypes.number,
+    showMore: PropsTypes.bool,
+    extraTexts: PropsTypes.array
 };
 
 export default Text;

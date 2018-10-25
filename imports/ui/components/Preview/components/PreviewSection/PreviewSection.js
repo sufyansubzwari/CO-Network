@@ -34,17 +34,17 @@ const Number = styled.span`
   color: rgba(0, 0, 0, 0.5);
 `;
 
-PreviewSection = props => {
-  return (
-    <PreviewSectionContainer rowGap={props.lineSeparation || "10px"}>
-      <Container>
-        <STitle>{props.title}</STitle>
-        {props.number ? <Number>({props.number})</Number> : null}
-      </Container>
-      {props.children}
-    </PreviewSectionContainer>
-  );
-};
+PreviewSection = (props) => {
+    return (
+        <PreviewSectionContainer rowGap={props.lineSeparation || "10px"}>
+            {props.title || props.number ? <Container>
+                {props.title ? <STitle>{props.title}</STitle> : null}
+                {props.number ? <Number>({props.number})</Number> : null}
+            </Container> : null}
+            {props.children}
+        </PreviewSectionContainer>
+    )
+}
 
 export default PreviewSection;
 

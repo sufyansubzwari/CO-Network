@@ -98,6 +98,7 @@ input OrganizationSearchInput{
     startDate: TableDateFilterInput
     endDate: TableDateFilterInput
     location: [LocationInput]
+    owner: String
 }
 
 input OrganizationsInput {

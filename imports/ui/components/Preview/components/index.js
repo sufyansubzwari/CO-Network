@@ -11,6 +11,8 @@ import HeaderInformation from "./HeaderInformation";
 import PreviewSection from "./PreviewSection/PreviewSection";
 import SalaryRangePreview from "./SalaryRange/SalaryRange";
 import MapSection from "./MapSection/MapSection";
+import CollapseList from "./CollapseList/CollapseList"
+import ItemList from "./ItemList/ItemList"
 
 export {
   Title,
@@ -25,5 +27,7 @@ export {
   HeaderInformation,
   PreviewSection,
   MapSection,
-  SalaryRangePreview
+  SalaryRangePreview,
+  CollapseList,
+  ItemList
 };
