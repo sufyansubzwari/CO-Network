@@ -64,21 +64,35 @@ class TicketsList extends Component {
 
     return (
       <Container>
-        {this.state.showOptions ? (
-          <Container position={"relative"}>
-            <ButtonList />
-          </Container>
-        ) : null}
         <SItemContainer
           padding={"15px 15px 5px"}
           background={props.background}
           onMouseEnter={this.onMouseEnter}
           onMouseLeave={this.onMouseLeave}
+          position={"relative"}
         >
+          {this.state.showOptions ? (
+            <ButtonList
+              options={[
+                {
+                  action: () =>
+                    this.props.onEdit && this.props.onEdit(props.data),
+                  text: "Edit",
+                  icon: "edit"
+                },
+                {
+                  action: () =>
+                    this.props.onDelete && this.props.onDelete(props.data),
+                  text: "Delete",
+                  icon: "delete"
+                }
+              ]}
+            />
+          ) : null}
           <Layout
             rowGap={"5px"}
             customTemplateColumns={
-              props.hasQuantity ? "1fr 1fr auto auto" : "1fr 1fr auto"
+              props.hasQuantity ? "1fr 1fr 70px auto" : "1fr 1fr 70px"
             }
           >
             <Container>
