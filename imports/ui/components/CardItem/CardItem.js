@@ -10,6 +10,7 @@ import { PlaceHolder } from "btech-placeholder-component";
 import posed from "react-pose";
 import { Utils } from "../../services";
 import isMobile from "../../constants/isMobile";
+import CardPreview from "./CardPreview";
 
 const TitleCardContainer = Styled.div`
   font-family: Helvetica Neue LT Std;
@@ -334,8 +335,29 @@ class CardItem extends Component {
     );
   }
 
-  getRenderPreview(){
-
+  renderPreview() {
+    return (
+      <Layout
+        fullY
+        minH={"initial"}
+        mdMinH={"112px"}
+        customTemplateColumns={"1fr 32px"}
+        mdColGap={"5px"}
+      >
+        <CardPreview
+          title={this.props.previewTitle}
+          options={this.props.previewOptions}
+        />
+        <SShowMore onClick={this.handlePreviewCard}>
+          <span>
+            <span>{this.state.showPreview ? "Show Less " : "Show More "}</span>
+            <MaterialIcon
+              type={this.state.showPreview ? "caret-down" : "caret-up"}
+            />
+          </span>
+        </SShowMore>
+      </Layout>
+    );
   }
 
   getRightSide() {
@@ -374,8 +396,15 @@ class CardItem extends Component {
           loading={this.props.loading}
           {...this.props}
           {...this.props.data}
-          renderRightSide={this.getRightSide.bind(this)}
-          renderLeftSide={this.renderLeftSide.bind(this)}
+          isCardPreview={this.state.showPreview}
+          renderRightSide={
+            !this.state.showPreview ? this.getRightSide.bind(this) : null
+          }
+          renderLeftSide={
+            !this.state.showPreview
+              ? this.renderLeftSide.bind(this)
+              : this.renderPreview.bind(this)
+          }
         />
       </SCardContainer>
     );
@@ -389,7 +418,17 @@ CardItem.defaultProps = {
   views: 0,
   showMenu: false,
   image: null,
-  iconClass: "eye"
+  iconClass: "eye",
+  previewTitle: "Summary",
+  //example todo: delete this on integration
+  previewOptions: [
+    { label: "Organizations", action: () => console.log("action1") },
+    { label: "Jobs", action: () => console.log("action2") },
+    { label: "Events", action: () => console.log("action3") },
+    { label: "Events1", action: () => console.log("action31") },
+    { label: "Events2", action: () => console.log("action32") },
+    { label: "Events3", action: () => console.log("action33") }
+  ]
 };
 
 CardItem.propTypes = {
@@ -403,7 +442,9 @@ CardItem.propTypes = {
   topOptions: PropTypes.array,
   onSelectTag: PropTypes.func,
   tags: PropTypes.array,
-  views: PropTypes.number
+  views: PropTypes.number,
+  previewOptions: PropTypes.object,
+  previewTitle: PropTypes.string
 };
 
 export default CardItem;
