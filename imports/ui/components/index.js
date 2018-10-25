@@ -30,6 +30,7 @@ import WorkExperience from "./WorkExperience/WorkExperience";
 import LoginSidebar from "./LoginSidebar/LoginSidebar";
 import OutsideClickHandler from "./OutsideClickHandler/OutsideClickHandler";
 import ButtonArea from "./ButtonArea/ButtonArea";
+import InternalForm from "./InternalForm/InternalForm";
 
 // layouts
 import InternalLayout from "../layouts/InternalLayout/InternalLayout";
@@ -73,5 +74,6 @@ export {
   LoginSidebar,
   MemberPreview,
   OutsideClickHandler,
-  ButtonArea
+  ButtonArea,
+  InternalForm
 };
