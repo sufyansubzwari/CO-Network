@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import { TicketTypes } from "../../../../components";
+import { Tickets } from "../../../../components";
 
 /**
  * @module Event
@@ -31,7 +31,7 @@ class EventStep4 extends Component {
 
   render() {
     const tickets = (this.state.event && this.state.event.tickets) || [];
-    return <TicketTypes tickets={tickets} onChange={this.onChangeTickets} />;
+    return <Tickets tickets={tickets} onChange={this.onChangeTickets} />;
   }
 }
 
