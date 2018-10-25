@@ -10,7 +10,7 @@ const SContainer = styled(Container)`
   flex-direction: row;
   -webkit-box-shadow: 0px 0px 20px -2px rgba(0, 0, 0, 0.5);
   -moz-box-shadow: 0px 0px 20px -2px rgba(0, 0, 0, 0.5);
-  box-shadow: 0px 0px 20px -2px rgba(0, 0, 0, 0.5);
+  box-shadow: 0px 0px 15px -2px rgba(0, 0, 0, 0.5);
   width: fit-content;
   float: right;
   border: 1px solid rgba(0,0,0,0.5);
@@ -18,14 +18,14 @@ const SContainer = styled(Container)`
   font-size: 18px;
   position: absolute;
   background-color: #FFFFFF;
-  top: -3px;
-  right: -7px;
+  top: ${props => props.topPos || '-10px'};
+  right: ${props => props.rightPos || '-7px'};
   color: rgba(0,0,0,0.5);
 `;
 
 const SOptions = styled.div`
-  width: 40px;
-  height: 30px;
+  width: ${props => !props.initial ? '35px' : '34px'};
+  height: 25px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -41,13 +41,16 @@ class ButtonList extends Component {
 
   render() {
     return (
-      <SContainer>
+      <SContainer
+        rightPos={this.props.rightPos}
+        topPos={this.props.topPos}
+      >
         {this.props.options &&
           this.props.options.map((op, key) => (
             <div key={key}>
               <SOptions
                 initial={key === 0}
-                onClick={op.action()}
+                onClick={op.action}
                 id={op.text}
               >
                 <MaterialIcon type={op.icon} />
@@ -67,7 +70,7 @@ ButtonList.defaultProps = {
     {
       action: () => console.log("op1"),
       text: "op1",
-      icon: "plus"
+      icon: "edit"
     },
     {
       action: () => console.log("op2"),
@@ -78,7 +81,9 @@ ButtonList.defaultProps = {
 };
 
 ButtonList.propTypes = {
-  options: PropTypes.array
+  options: PropTypes.array,
+  topPos: PropTypes.string,
+  rightPos: PropTypes.string
 };
 
 export default ButtonList;
