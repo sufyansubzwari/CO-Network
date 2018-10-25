@@ -31,12 +31,12 @@ const Number = styled.span`
 `
 
 PreviewSection = (props) => {
-    return  (
-        <PreviewSectionContainer rowGap={'20px'}>
-            <Container>
-                <STitle>{props.title}</STitle>
+    return (
+        <PreviewSectionContainer rowGap={'18px'}>
+            {props.title || props.number ? <Container>
+                {props.title ? <STitle>{props.title}</STitle> : null}
                 {props.number ? <Number>({props.number})</Number> : null}
-            </Container>
+            </Container> : null}
             {props.children}
         </PreviewSectionContainer>
     )

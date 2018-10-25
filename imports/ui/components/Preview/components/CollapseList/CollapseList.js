@@ -53,11 +53,11 @@ class CollapseList extends React.Component {
         const childs = this.props.children
         return (
             <Layout {...this.props} >
-                <Title>{this.props.title}</Title>
+                {this.props.title ? <Title>{this.props.title}</Title> : null}
                 <Layout rowGap={this.props.elementsGap} mdRowGap={this.props.mdElementsGap}>
-                    { childs && childs.length && this.props.children.filter((item,index) => index < this.state.elements ) }
+                    { childs && childs.length > 0 && this.props.children.filter((item,index) => index < this.state.elements ) }
                 </Layout>
-                { childs && childs.length > this.props.cutElements ? <View onClick={this.handleViewMore} >{this.state.elements === 1000 ? "View Less" : "View all"}<MaterialIcon type={this.state.elements === 1000 ? "chevron-up" :"chevron-down"} /></View> : null}
+                { childs && childs.length > 0 > this.props.cutElements ? <View onClick={this.handleViewMore} >{this.state.elements === 1000 ? "View Less" : "View all"}<MaterialIcon type={this.state.elements === 1000 ? "chevron-up" :"chevron-down"} /></View> : null}
             </Layout>
         )
     }

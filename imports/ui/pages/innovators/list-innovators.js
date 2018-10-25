@@ -483,6 +483,7 @@ class ListInnovators extends List {
                         this.state.selectedItem ? (
                           <UserPreviewBody
                             user={this.state.selectedItem.profile}
+                            id={this.state.selectedItem._id}
                           />
                         ) : null}
                       </MemberPreview>

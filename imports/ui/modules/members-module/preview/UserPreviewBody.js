@@ -1,6 +1,16 @@
 import React from "react";
 import {Container, Layout} from "btech-layout";
-import {Location, Social, TagsAdd, Text, Title, PreviewSection, SalaryRangePreview, CollapseList} from "../../../components/Preview/components/index";
+import {
+    Location,
+    Social,
+    TagsAdd,
+    Text,
+    Title,
+    PreviewSection,
+    SalaryRangePreview,
+    CollapseList,
+    Dates
+} from "../../../components/Preview/components/index";
 import services from "../../../components/LoginModal/service.constant";
 import Separator from "../../../components/FiltersContainer/Separator";
 import CheckedLabel from "./components/CheckedLabel"
@@ -8,6 +18,16 @@ import ProfessionalExperiencePreview from "./components/PExperiencePreview";
 import PatentPreview from "./components/PatentPreview";
 import AcademicBackgroundPreview from "./components/AcademicBackgroundPreview";
 import PublicationsPreview from "./components/PublicationsPreview";
+import NavMenu from "../../../components/ItemsList/components/navMenu"
+import {GetOrg} from "../../../apollo-client/organization/index";
+import {GetEvents} from "../../../apollo-client/event/index";
+import {GetJobs} from "../../../apollo-client/job/index";
+import {Query, Mutation} from "react-apollo";
+import OrganizationCard from "./components/organizationCard";
+import CreateButton from "./components/CreateButton";
+import JobCard from "./components/jobCard";
+import {FollowAction} from "../../../apollo-client/follow";
+import {GetJobApply} from "../../../apollo-client/jobApply";
 
 class UserPreviewBody extends React.Component {
     constructor(props) {
@@ -30,6 +50,20 @@ class UserPreviewBody extends React.Component {
     handleMoreAbout = () => {
         this.setState({
             showMoreAbout: !this.state.showMoreAbout
+        })
+    }
+
+    handleFollow = (followAction, follow, id) => {
+        let follower = {
+            entityId: id,
+            entity: "EVENT"
+        };
+        followAction({
+            variables: {
+                follower: follower,
+                id: id,
+                follow: follow
+            }
         })
     }
 
@@ -139,20 +173,22 @@ class UserPreviewBody extends React.Component {
                 active: true
             }));
 
-        const profesionalexp = achievements && achievements.length && achievements.filter(item => item.type === "Professional Experience");
-        const patents = achievements && achievements.length && achievements.filter(item => item.type === "Patents");
-        const render = jobType && jobType.length || industry && industry.length || min || max || patents && patents.length || profesionalexp && profesionalexp.length;
+        const jobVal = (jobType && jobType.length || min || max) && professional.seeking;
+
+        const profesionalexp = achievements && achievements.length > 0 && achievements.filter(item => item.type === "Professional Experience");
+        const patents = achievements && achievements.length > 0 && achievements.filter(item => item.type === "Patents");
+        const render = industry && industry.length || jobVal || patents && patents.length || profesionalexp && profesionalexp.length;
 
         return render ? (
             <PreviewSection title={"Professional"}>
-                <CheckedLabel seeking={professional.seeking} />
+                <CheckedLabel seeking={professional.seeking}/>
                 {
                     professional.seeking && (min || max) ?
-                    <Container>
-                    <SalaryRangePreview
-                            min={ min ? professional.salaryRange.min : null}
-                            max={ max ? professional.salaryRange.max : null}/>
-                    </Container> : null
+                        <Container>
+                            <SalaryRangePreview
+                                min={min ? professional.salaryRange.min : null}
+                                max={max ? professional.salaryRange.max : null}/>
+                        </Container> : null
                 }
                 {jobType && professional.seeking && jobType.length ?
                     <TagsAdd hideBorder={true} activeColor={"white"} backgroundTagColor={"#202225"}
@@ -160,16 +196,23 @@ class UserPreviewBody extends React.Component {
                 {industry && industry.length ? (
                     <TagsAdd header={"Industry | Sector"} tags={industry}/>
                 ) : null}
-                <CollapseList cutElements={3} title={"Professional Experience"} >
-                    {profesionalexp && profesionalexp.length && profesionalexp.map((item, index) =>
-                        <ProfessionalExperiencePreview key={index} position={item.position} organization={item.name} level={item.level && item.level.label} description={item.help} />
+                {profesionalexp && profesionalexp.length > 0 ?
+                    <CollapseList cutElements={3} title={"Professional Experience"}>
+                        {profesionalexp.map((item, index) =>
+                            <ProfessionalExperiencePreview key={index} position={item.position} organization={item.name}
+                                                           level={item.level && item.level.label}
+                                                           description={item.help}/>
+                        )}
+                    </CollapseList> : null}
+                {patents && patents.length > 0 ? <CollapseList cutElements={3} title={"Patents"}>
+                    {patents.map((item, index) =>
+                        <PatentPreview key={index} name={item.name} id={item.id} link={item.link}
+                                       tags={item.category && item.category.length > 0 && item.category.map((tag) => ({
+                                           ...tag,
+                                           active: true
+                                       }))}/>
                     )}
-                </CollapseList>
-                <CollapseList cutElements={3} title={"Patents"} >
-                    {patents && patents.length && patents.map((item, index) =>
-                        <PatentPreview key={index} name={item.name} id={item.id} link={item.link} tags={item.category && item.category.length > 0 && item.category.map((tag) => ({...tag, active: true}))} />
-                    )}
-                </CollapseList>
+                </CollapseList> : null}
             </PreviewSection>
         ) : null
     }
@@ -178,23 +221,173 @@ class UserPreviewBody extends React.Component {
         let user = this.state.user;
         let achievements = user.achievements
 
-        const academic = achievements && achievements.length && achievements.filter(item => item.type === "Academic Background");
-        const publications = achievements && achievements.length && achievements.filter(item => item.type === "Publications");
-        const render =  academic && academic.length || publications && publications.length;
+        const academic = achievements && achievements.length > 0 && achievements.filter(item => item.type === "Academic Background");
+        const publications = achievements && achievements.length > 0 && achievements.filter(item => item.type === "Publications");
+        const render = academic && academic.length > 0 || publications && publications.length;
 
         return render ? (
             <PreviewSection title={"Academic"}>
-                <CollapseList cutElements={3} title={"Academic Background"} >
-                    {academic && academic.length && academic.map((item, index) =>
-                        <AcademicBackgroundPreview key={index} name={item.name} study={item.study} level={item.degree && item.degree.label} description={item.story} />
+                {academic && academic.length ? <CollapseList cutElements={3} title={"Academic Background"}>
+                    {academic && academic.length > 0 && academic.map((item, index) =>
+                        <AcademicBackgroundPreview key={index} name={item.name} study={item.study}
+                                                   level={item.degree && item.degree.label} description={item.story}/>
                     )}
-                </CollapseList>
-                <CollapseList cutElements={3} title={"Publications"} >
-                    {publications && publications.length && publications.map((item, index) =>
-                        <PublicationsPreview key={index} name={item.name} year={item.year} link={item.link} details={item.explain} tags={item.category && item.category.length > 0 && item.category.map((tag) => ({...tag, active: true}))} />
+                </CollapseList> : null}
+                {publications && publications.length ? <CollapseList cutElements={3} title={"Publications"}>
+                    {publications.map((item, index) =>
+                        <PublicationsPreview key={index} name={item.name} year={item.year} link={item.link}
+                                             details={item.explain}
+                                             tags={item.category && item.category.length > 0 && item.category.map((tag) => ({
+                                                 ...tag,
+                                                 active: true
+                                             }))}/>
                     )}
-                </CollapseList>
+                </CollapseList> : null}
             </PreviewSection>
+        ) : null
+    }
+
+    renderOrganizationsSection = () => {
+        const render = true
+        return render ? (
+            <Query fetchPolicy={'network-only'} query={GetOrg}
+                   variables={{
+                       organizations: {
+                           owner: this.props.id
+                       }
+                   }}>
+                {({loading, error, data}) => {
+                    if (loading) return <div></div>;
+                    if (error) return <div></div>;
+                    let organizations = data.organizations;
+                    return organizations && organizations.length > 0 ? (
+                        <PreviewSection>
+                            <Layout customTemplateColumns={"1fr auto"}>
+                                <NavMenu noMarginRight={true} noMarginLeft={true} options={[{
+                                    value: "Organizations",
+                                    title: "Organizations",
+                                    number: organizations.length
+                                }]}/>
+                                <CreateButton text={"Create Org"} route={'/post-organization'}/>
+                            </Layout>
+                            <Layout colGap={'20px'} customTemplateColumns={`1fr`} mdCustomTemplateColumns={"1fr 1fr"}>
+                                {organizations && organizations.length > 0 && organizations.map((org, index) =>
+                                    <OrganizationCard key={index}
+                                                      name={org.name}
+                                                      image={org.image}
+                                                      lgCustomTemplateColumns={"130px 1fr"}
+                                                      hideButton={true}
+                                        // onFollowClick={() => this.handleFollow(followAction, follow, speaker.user._id)}
+                                        // following={follow}
+
+                                    />
+                                )}
+                            </Layout>
+                        </PreviewSection>) : null
+                }}
+            </Query>
+        ) : null
+    }
+
+    renderEventsSection = () => {
+        const render = true
+        return render ? (
+            <Query fetchPolicy={'network-only'} query={GetEvents}
+                   variables={{
+                       events: {
+                           owner: this.props.id
+                       }
+                   }}>
+                {({loading, error, data}) => {
+                    if (loading) return <div></div>;
+                    if (error) return <div></div>;
+                    let events = data.events;
+                    return events && events.length > 0 ? (
+                        <PreviewSection>
+                            <Layout customTemplateColumns={"1fr auto"}>
+                                <NavMenu noMarginBottom={true} noMarginRight={true} noMarginLeft={true}
+                                         options={[{value: "Events", title: "Events", number: events.length}]}/>
+                                <CreateButton text={"Create Event"} route={'/post-event'}/>
+                            </Layout>
+                            <Layout colGap={'20px'} customTemplateColumns={`1fr`} mdCustomTemplateColumns={"1fr 1fr"}>
+                                {events && events.length > 0 && events.map((event, index) =>
+                                    <Mutation
+                                        mutation={FollowAction}
+                                        onError={error => console.log(error)}
+                                        refetchQueries={['GetEvents']}
+                                    >
+                                        {(followAction, {followResult}) => {
+                                            const follow =
+                                                event.followerList &&
+                                                event.followerList.indexOf(
+                                                    Meteor.userId()
+                                                ) > -1;
+                                            return <OrganizationCard key={index}
+                                                                     isEventCard={true}
+                                                                     name={event.title}
+                                                                     image={event.image}
+                                                                     startDate={event.startDate}
+                                                                     endDate={event.endDate}
+                                                                     lgCustomTemplateColumns={"130px 1fr"}
+                                                                     hideButton={event.owner === Meteor.userId()}
+                                                                     onFollowClick={() => this.handleFollow(followAction, follow, event._id)}
+                                                                     following={follow}
+
+                                            />
+                                        }}
+                                    </Mutation>
+                                )}
+                            </Layout>
+                        </PreviewSection>) : null
+                }}
+            </Query>
+        ) : null
+    }
+
+    renderJobsSection = () => {
+        const render = true
+        return render ? (
+            <Query fetchPolicy={'network-only'} query={GetJobs}
+                   variables={{
+                       jobs: {
+                           owner: this.props.id
+                       }
+                   }}>
+                {({loading, error, data}) => {
+                    if (loading) return <div></div>;
+                    if (error) return <div></div>;
+                    let jobs = data.jobs;
+                    return jobs && jobs.length > 0 ? (
+                        <PreviewSection title={"Jobs"} number={jobs.length}>
+                            <Layout colGap={'20px'} customTemplateColumns={`1fr`} mdCustomTemplateColumns={"1fr 1fr"}>
+                                {
+                                    jobs.map((job, index) => {
+                                        return (
+                                            <Query fetchPolicy={'cache-and-network'} query={GetJobApply}
+                                                   variables={{jobsApply: {job: job._id}}}>
+                                                {({loading, error, data}) => {
+                                                    if (loading) return <div></div>;
+                                                    if (error) return <div>Error</div>;
+
+                                                    let applyJobs = data.jobsApply
+                                                    let apply = applyJobs && applyJobs.length > 0 && applyJobs.some(item => item.owner && item.owner._id === Meteor.userId())
+                                                    return (
+                                                        <JobCard
+                                                            key={index}
+                                                            name={job.title}
+                                                            image={job.image}
+                                                            location={job.place}
+                                                            lgCustomTemplateColumns={"130px 1fr"}
+                                                            hideButton={apply}
+                                                        />)
+                                                }}
+                                            </Query>)
+                                    })
+                                }
+                            </Layout>
+                        </PreviewSection>) : null
+                }}
+            </Query>
         ) : null
     }
 
@@ -218,199 +411,16 @@ class UserPreviewBody extends React.Component {
     }
 
     render() {
-        let socials = [];
-        if (this.state.user && this.state.user.identities) {
-            socials =
-                this.state.user.identities &&
-                this.state.user.identities.length &&
-                this.state.user.identities.map(iden => ({
-                    element: iden.provider === "google-oauth2" ? "google" : iden.provider,
-                    link: this.getLinkForSocial(iden)
-                }));
-        }
-        let website = this.state.user &&
-            this.state.user.website && [
-                {website: this.state.user.website, link: this.state.user.website}
-            ];
 
-        //tags
-        let languages =
-            this.state.user.knowledge &&
-            this.state.user.knowledge.languages &&
-            this.state.user.knowledge.languages.map(lang => ({
-                ...lang.tag,
-                active: true
-            }));
-        let curious =
-            this.state.user.knowledge &&
-            this.state.user.knowledge.curiosity &&
-            this.state.user.knowledge.curiosity.map(cur => ({
-                ...cur.tag,
-                active: true
-            }));
-        let industry =
-            this.state.user.professional &&
-            this.state.user.professional.industry &&
-            this.state.user.professional.industry.map(ind => ({
-                ...ind,
-                active: true
-            }));
-        let otherlook =
-            this.state.user.speaker &&
-            this.state.user.speaker.otherlooking &&
-            this.state.user.speaker.otherlooking.map(look => ({
-                ...look,
-                active: true
-            }));
-        let otherpre =
-            this.state.user.speaker &&
-            this.state.user.speaker.otherpreferred &&
-            this.state.user.speaker.otherpreferred.map(pre => ({
-                ...pre,
-                active: true
-            }));
-        let topics =
-            this.state.user.speaker &&
-            this.state.user.speaker.topic &&
-            this.state.user.speaker.topic.map(top => ({...top, active: true}));
-        //checkboxes
-        let lookingfor =
-            this.state.user.knowledge &&
-            this.state.user.knowledge.lookingFor &&
-            this.state.user.knowledge.lookingFor.map((look, index) => (
-                <div key={index}>{look.label}</div>
-            ));
-        let jobtype =
-            this.state.user.professional &&
-            this.state.user.professional.jobType &&
-            this.state.user.professional.jobType.map((job, index) => (
-                <div key={index}>{job.label}</div>
-            ));
-        let lookingforS =
-            this.state.user.speaker &&
-            this.state.user.speaker.lookingFor &&
-            this.state.user.speaker.lookingFor.map((look, index) => (
-                <div key={index}>{look.label}</div>
-            ));
-        let preferred =
-            this.state.user.speaker &&
-            this.state.user.speaker.stage &&
-            this.state.user.speaker.stage.map((stage, index) => (
-                <div key={index}>{stage.label}</div>
-            ));
         return (
             <Layout mdRowGap={"20px"}>
                 {this.renderSummarySection()}
                 {this.renderKnowledgeSection()}
                 {this.renderProfessionalSection()}
                 {this.renderAcademicSection()}
-
-
-
-                <Title text={this.state.user.name + " " + this.state.user.lastName}/>
-                <Location location={this.state.user.place}/>
-                {<Social socials={socials} links={website}/>}
-                {(languages && languages.length) ||
-                (industry && industry.length) ||
-                (curious && curious.length) ? (
-                    <Container>
-                        <Layout mdTemplateColumns={2} mdRowGap={"15px"}>
-                            {languages && languages.length ? (
-                                <TagsAdd header={"Languages"} tags={languages}/>
-                            ) : null}
-                            {industry && industry.length ? (
-                                <TagsAdd header={"Industry | Sector"} tags={industry}/>
-                            ) : null}
-                        </Layout>
-                        {curious && curious.length ? (
-                            <TagsAdd header={"Curiosity"} tags={curious}/>
-                        ) : null}
-                    </Container>
-                ) : null}
-                {this.state.user.aboutMe && this.state.user.aboutMe.yourPassion ? (
-                    <Text
-                        header={"About Me | Passion"}
-                        text={
-                            this.state.user.aboutMe && this.state.user.aboutMe.yourPassion
-                        }
-                    />
-                ) : null}
-                {this.state.user.aboutMe && this.state.user.aboutMe.existingProblem ? (
-                    <Text
-                        header={"What is the most exciting problem you want to solve?"}
-                        text={
-                            this.state.user.aboutMe && this.state.user.aboutMe.existingProblem
-                        }
-                    />
-                ) : null}
-                {this.state.user.aboutMe && this.state.user.aboutMe.steps ? (
-                    <Text
-                        header={
-                            "What steps have you already taken towards achieving this mission?"
-                        }
-                        text={this.state.user.aboutMe && this.state.user.aboutMe.steps}
-                    />
-                ) : null}
-                {lookingfor && lookingfor.length ? (
-                    <Text header={"Looking For"}>{lookingfor}</Text>
-                ) : null}
-                <Layout mdRowGap={"15px"} mdTemplateColumns={3}>
-                    {this.state.user.professional &&
-                    this.state.user.professional.seeking !== undefined ? (
-                        <Text
-                            header={"Seeking Employment"}
-                            text={this.state.user.professional.seeking ? "Yes" : "No"}
-                        />
-                    ) : null}
-                    {(this.state.user.professional &&
-                        this.state.user.professional.salaryRange &&
-                        this.state.user.professional.salaryRange.min !== null) ||
-                    (this.state.user.professional &&
-                        this.state.user.professional.salaryRange &&
-                        this.state.user.professional.salaryRange.max !== null) ? (
-                        <Text
-                            header={"Salary Range"}
-                            text={`${
-                                this.state.user.professional.salaryRange.min !== null
-                                    ? this.state.user.professional.salaryRange.min
-                                    : null
-                                } - ${
-                                this.state.user.professional.salaryRange.max !== null
-                                    ? this.state.user.professional.salaryRange.max
-                                    : null
-                                }`}
-                        />
-                    ) : null}
-                    {jobtype && jobtype.length ? (
-                        <Text header={"Job Type"}>{jobtype}</Text>
-                    ) : null}
-                </Layout>
-                {this.state.user.speaker &&
-                this.state.user.speaker.join !== undefined ? (
-                    <Text
-                        header={"Join the Speaker Directory"}
-                        text={this.state.user.speaker.join ? "Yes" : "No"}
-                    />
-                ) : null}
-                <Layout mdRowGap={"15px"} mdTemplateColumns={2}>
-                    {lookingforS && lookingforS.length ? (
-                        <Text header={"Looking For"}>{lookingforS}</Text>
-                    ) : null}
-                    {otherlook && otherlook.length ? (
-                        <TagsAdd header={"Other"} tags={otherlook}/>
-                    ) : null}
-                </Layout>
-                {topics && topics.length ? (
-                    <TagsAdd header={"Topics you speak about"} tags={topics}/>
-                ) : null}
-                <Layout mdRowGap={"15px"} mdTemplateColumns={2}>
-                    {preferred && preferred.length ? (
-                        <Text header={"Preferred Stage"}>{preferred}</Text>
-                    ) : null}
-                    {otherpre && otherpre.length ? (
-                        <TagsAdd header={"Other"} tags={otherpre}/>
-                    ) : null}
-                </Layout>
+                {this.renderOrganizationsSection()}
+                {this.renderEventsSection()}
+                {this.renderJobsSection()}
             </Layout>
         );
     }

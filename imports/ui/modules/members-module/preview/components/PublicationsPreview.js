@@ -88,7 +88,7 @@ PublicationsPreview.defaultProps = {}
 PublicationsPreview.propTypes = {
     details: PropsTypes.string,
     year: PropsTypes.string,
-    tags: PropsTypes.string,
+    tags: PropsTypes.array,
     link: PropsTypes.string,
     name: PropsTypes.string,
 }
