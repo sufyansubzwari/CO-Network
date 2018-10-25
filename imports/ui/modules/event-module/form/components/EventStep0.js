@@ -9,6 +9,7 @@ import MaterialIcon from "react-material-iconic-font";
 import { graphql } from "react-apollo";
 import { GetOrg } from "../../../../apollo-client/organization";
 import { InfoChatBox } from "../../../../components";
+import SimpleOrgCreateForm from "./components/SimpleOrgCreateForm";
 
 const SYesNoOption = styled.span`
   margin-right: 5px;
@@ -76,6 +77,10 @@ class EventStep0 extends Component {
       { isFormOpen: value, orgSelected: null, event: event },
       () => this.props.onChange && this.props.onChange(this.state.event)
     );
+  }
+
+  onNewOrgCreation(data) {
+    console.log(data);
   }
 
   render() {
@@ -154,24 +159,6 @@ class EventStep0 extends Component {
                 );
               })}
           </Layout>
-          <Layout mt={"10px"} mdTemplateColumns={2}>
-            <TextAreaButton
-              isExpanded={this.state.isFormOpen}
-              borderType={"dashed"}
-              pointer
-              onClick={() => this.onCreationButtonClick(!this.state.isFormOpen)}
-            >
-              <Container hide={this.state.isFormOpen}>
-                <SPlusICon>
-                  <MaterialIcon type={"plus"} />
-                </SPlusICon>
-                {event.organizer ? "Create Organization" : "Add Organizer Info"}
-              </Container>
-              <Container hide={!this.state.isFormOpen}>
-                Form Component
-              </Container>
-            </TextAreaButton>
-          </Layout>
           <Container
             mt={"10px"}
             hide={!orgSelected || orgSelected.checkStatus === "approved"}
@@ -188,6 +175,29 @@ class EventStep0 extends Component {
             </InfoChatBox>
           </Container>
         </Container>
+        <Layout mt={"10px"} mdTemplateColumns={2}>
+          <TextAreaButton
+            isExpanded={this.state.isFormOpen}
+            borderType={"dashed"}
+            pointer
+            onClick={() =>
+              !this.state.isFormOpen && this.onCreationButtonClick(true)
+            }
+          >
+            <Container hide={this.state.isFormOpen}>
+              <SPlusICon>
+                <MaterialIcon type={"plus"} />
+              </SPlusICon>
+              {event.organizer ? "Create Organization" : "Add Organizer Info"}
+            </Container>
+            <Container hide={!this.state.isFormOpen}>
+              <SimpleOrgCreateForm
+                handleCancel={() => this.onCreationButtonClick(false)}
+                onSave={data => this.onNewOrgCreation(data)}
+              />
+            </Container>
+          </TextAreaButton>
+        </Layout>
       </FormMainLayout>
     );
   }

@@ -16,7 +16,7 @@ const STitleText = styled.div`
 `;
 
 const SContainer = styled(Container)`
-  border: 1px dashed #bebebe;
+  border: ${props => props.border};
   background-color: #ffffff;
   padding: 20px;
 `;
@@ -28,7 +28,7 @@ const SContainer = styled(Container)`
 class InternalForm extends Component {
   render() {
     return (
-      <SContainer padding={"5px"}>
+      <SContainer padding={"5px"} border={this.props.border}>
         <form
           onSubmit={e => {
             e.preventDefault();
@@ -81,14 +81,15 @@ class InternalForm extends Component {
 }
 
 InternalForm.defaultProps = {
-  title: "No Title"
+  title: "No Title",
+  border: "1px dashed #bebebe"
 };
 
 InternalForm.propTypes = {
+  border: PropTypes.string,
   title: PropTypes.string,
   onSave: PropTypes.func,
-  handleCancel: PropTypes.func,
-  children: PropTypes.element
+  handleCancel: PropTypes.func
 };
 
 export default InternalForm;

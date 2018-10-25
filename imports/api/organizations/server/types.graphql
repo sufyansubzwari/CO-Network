@@ -66,6 +66,7 @@ type Social {
 type Contact {
     email: String!
     phone: String
+    name: String
 }
 
 type Services {
@@ -159,6 +160,7 @@ input SocialInput {
 input ContactInput {
     email: String
     phone: String
+    name: String
 }
 
 input ServicesInput {

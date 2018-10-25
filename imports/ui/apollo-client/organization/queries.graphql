@@ -43,6 +43,7 @@ query GetOrg($limit: Int, $filter: String, $organizations: OrganizationSearchInp
         contact{
             email
             phone
+            name
         }
         reason{
             bio

@@ -101,6 +101,7 @@ Organizations.schema = new SimpleSchema({
   "social.google": { type: String, optional: true },
   contact: { type: Object, optional: true },
   "contact.email": { type: String, optional: true },
+  "contact.name": { type: String, optional: true },
   "contact.phone": { type: String, optional: true },
   services: { type: Object, optional: true },
   "services.relocated": { type: Boolean, optional: true },
