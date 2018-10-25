@@ -10,6 +10,8 @@ import Media from "./Media"
 import HeaderInformation from "./HeaderInformation"
 import PreviewSection from "./PreviewSection/PreviewSection"
 import SalaryRangePreview from "./SalaryRange/SalaryRange"
+import CollapseList from "./CollapseList/CollapseList"
+import ItemList from "./ItemList/ItemList"
 
 export {
   Title,
@@ -23,5 +25,7 @@ export {
   Media,
   HeaderInformation,
   PreviewSection,
-  SalaryRangePreview
+  SalaryRangePreview,
+  CollapseList,
+  ItemList
 };

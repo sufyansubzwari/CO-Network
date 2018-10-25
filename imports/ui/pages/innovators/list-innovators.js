@@ -15,7 +15,7 @@ import {
 import { Layout, Container } from "btech-layout";
 import { DeleteUser, getUsers } from "../../apollo-client/user";
 import OrganizationPreviewBody from "../../components/Preview/entities/OrganizationPreviewBody";
-import UserPreviewBody from "../../components/Preview/entities/UserPreviewBody";
+import UserPreviewBody from "../../modules/members-module/preview/UserPreviewBody";
 import { connect } from "react-redux";
 import { PreviewData } from "../../actions/PreviewActions";
 import { ViewsCountUpdate } from "../../apollo-client/viewCount";

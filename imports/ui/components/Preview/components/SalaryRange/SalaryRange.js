@@ -17,7 +17,7 @@ const Icon = styled.span`
 `;
 
 const Min = styled.span`
-    font-size: 14px;
+    font-size: 13px;
     line-height: 22px;
 `
 
