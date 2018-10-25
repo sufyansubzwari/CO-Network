@@ -31,6 +31,7 @@ import LoginSidebar from "./LoginSidebar/LoginSidebar";
 import OutsideClickHandler from "./OutsideClickHandler/OutsideClickHandler";
 import ButtonArea from "./ButtonArea/ButtonArea";
 import InternalForm from "./InternalForm/InternalForm";
+import ButtonList from "./ButtonList/ButtonList";
 
 // layouts
 import InternalLayout from "../layouts/InternalLayout/InternalLayout";
@@ -75,5 +76,6 @@ export {
   MemberPreview,
   OutsideClickHandler,
   ButtonArea,
-  InternalForm
+  InternalForm,
+  ButtonList
 };
