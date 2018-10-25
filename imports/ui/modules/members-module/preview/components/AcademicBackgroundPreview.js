@@ -97,9 +97,9 @@ class AcademicBackgroundPreview extends React.Component {
         return (
             <Layout rowGap={'10px'}>
                 <Container>
-                    <STitle>{this.props.position}</STitle>
+                    <STitle>{this.props.name}</STitle>
                     <SOrganization customTemplateColumns={"auto auto 1fr"}>
-                        {this.props.organization && this.props.organization.toUpperCase()}
+                        {this.props.study && this.props.study.toUpperCase()}
                         {this.props.checkedOrganization ? <MaterialIcon type={'shield-check'}/> : null}
                         <div></div>
                     </SOrganization>
@@ -132,8 +132,8 @@ AcademicBackgroundPreview.defaultProps = {
 AcademicBackgroundPreview.propTypes = {
     description: PropsTypes.string,
     level: PropsTypes.string,
-    organization: PropsTypes.string,
-    position: PropsTypes.string,
+    study: PropsTypes.string,
+    name: PropsTypes.string,
     checkedOrganization: PropsTypes.bool,
     image: PropsTypes.string
 }

@@ -7,6 +7,7 @@ import CheckedLabel from "./components/CheckedLabel"
 import ProfessionalExperiencePreview from "./components/PExperiencePreview";
 import PatentPreview from "./components/PatentPreview";
 import AcademicBackgroundPreview from "./components/AcademicBackgroundPreview";
+import PublicationsPreview from "./components/PublicationsPreview";
 
 class UserPreviewBody extends React.Component {
     constructor(props) {
@@ -178,17 +179,20 @@ class UserPreviewBody extends React.Component {
         let achievements = user.achievements
 
         const academic = achievements && achievements.length && achievements.filter(item => item.type === "Academic Background");
-        const patents = achievements && achievements.length && achievements.filter(item => item.type === "Patents");
-        const render =  academic && academic.length;
+        const publications = achievements && achievements.length && achievements.filter(item => item.type === "Publications");
+        const render =  academic && academic.length || publications && publications.length;
 
         return render ? (
             <PreviewSection title={"Academic"}>
                 <CollapseList cutElements={3} title={"Academic Background"} >
                     {academic && academic.length && academic.map((item, index) =>
-                        <AcademicBackgroundPreview key={index} position={item.position} organization={item.name} level={item.level && item.level.label} description={item.help} />
+                        <AcademicBackgroundPreview key={index} name={item.name} study={item.study} level={item.degree && item.degree.label} description={item.story} />
                     )}
                 </CollapseList>
-                <CollapseList cutElements={3} title={"Patents"} >
+                <CollapseList cutElements={3} title={"Publications"} >
+                    {publications && publications.length && publications.map((item, index) =>
+                        <PublicationsPreview key={index} name={item.name} year={item.year} link={item.link} details={item.explain} tags={item.category && item.category.length > 0 && item.category.map((tag) => ({...tag, active: true}))} />
+                    )}
                 </CollapseList>
             </PreviewSection>
         ) : null
@@ -381,7 +385,6 @@ class UserPreviewBody extends React.Component {
                         <Text header={"Job Type"}>{jobtype}</Text>
                     ) : null}
                 </Layout>
-                {achieve && achieve.length ? achieve : null}
                 {this.state.user.speaker &&
                 this.state.user.speaker.join !== undefined ? (
                     <Text

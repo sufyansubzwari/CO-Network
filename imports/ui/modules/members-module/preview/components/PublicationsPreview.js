@@ -35,7 +35,7 @@ const Text = styled.span`
 
 
 
-class PatentPreview extends React.Component {
+class PublicationsPreview extends React.Component {
 
     constructor(props) {
         super(props)
@@ -52,17 +52,22 @@ class PatentPreview extends React.Component {
 
     renderRightSide = () => {
         return (
-            <Layout>
-                <Layout customTemplateColumns={"auto auto 1fr"} colGap={'5px'}>
-                    <STitle>{this.props.name}</STitle>
+            <Layout rowGap={'10px'} mdRowGap={'15px'}>
+                <Container>
+                    <Layout customTemplateColumns={"auto auto 1fr"} colGap={'5px'}>
+                        <STitle>{this.props.name}</STitle>
+                        <SText>
+                            {this.props.year && this.props.year.toUpperCase()}
+                        </SText>
+                        <div></div>
+                    </Layout>
                     <SText>
-                        {this.props.id && this.props.id.toUpperCase()}
+                        {this.props.link && this.props.link}
                     </SText>
-                    <div></div>
-                </Layout>
-                <SText>
-                    {this.props.link && this.props.link}
-                </SText>
+                </Container>
+                <Text>
+                    {this.props.details}
+                </Text>
                 <TagsAdd tags={this.props.tags}/>
             </Layout>
         )
@@ -76,13 +81,14 @@ class PatentPreview extends React.Component {
     }
 }
 
-export default PatentPreview;
+export default PublicationsPreview;
 
-PatentPreview.defaultProps = {}
+PublicationsPreview.defaultProps = {}
 
-PatentPreview.propTypes = {
-    id: PropsTypes.string,
+PublicationsPreview.propTypes = {
+    details: PropsTypes.string,
+    year: PropsTypes.string,
+    tags: PropsTypes.string,
     link: PropsTypes.string,
-    tags: PropsTypes.array,
     name: PropsTypes.string,
 }
