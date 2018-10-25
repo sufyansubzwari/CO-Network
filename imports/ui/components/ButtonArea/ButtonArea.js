@@ -5,18 +5,28 @@ import styled from "styled-components";
 import { Container, Layout } from "btech-layout";
 
 const SButtonArea = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
   cursor: pointer;
-  border: 1px black dashed;
-  padding: 15px;
+  border: 1px dashed #bebebe;
+  padding: 10px;
   width: 50%;
+  height: 67px;
   border-radius: 3px;
   background-color: #ffffff;
+  color: #242424;
+  opacity: ${props => (props.disabled ? "0.5" : "0.8")};
+  text-align: center;
 `;
 
 const SButtonTicket = styled.div`
-  background-color: lightgrey;
+  background-color: #ededed;
   padding: 5px;
   border-radius: 3px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 `;
 
 const STitle = styled.span`
@@ -38,20 +48,33 @@ class ButtonMenu extends Component {
     this.addTicketType = this.addTicketType.bind(this);
   }
 
+  shouldComponentUpdate(nextProps, nextState) {
+    return (
+      nextState.isOpen !== this.state.isOpen ||
+      nextProps.disabled !== this.props.disabled
+    );
+  }
+
+  componentDidUpdate(prevProps) {
+    if (this.state.isOpen && this.props.disabled !== prevProps.disabled) {
+      this.setState({ isOpen: false });
+    }
+  }
+
   addTicketType() {
-    this.setState({ isOpen: true });
+    !this.props.disabled ? this.setState({ isOpen: true }) : null;
   }
 
   handleCreateTicket(type) {
     this.props.addTicket && this.props.addTicket(type);
-    this.setState({isOpen: false})
+    this.setState({ isOpen: false });
   }
 
   render() {
     return (
-      <SButtonArea onClick={this.addTicketType}>
-        {this.state.isOpen ? (
-          <Layout customTemplateColumns={"auto auto"} colGap={"10px"}>
+      <SButtonArea disabled={this.props.disabled} onClick={this.addTicketType}>
+        {this.state.isOpen && !this.props.disabled ? (
+          <Layout style={{width: '100%', height: '100%'}} customTemplateColumns={"auto auto"} colGap={"10px"}>
             <SButtonTicket onClick={this.handleCreateTicket.bind(this, "free")}>
               <MaterialIcon type={"money-off"} />
               <STitle>{"Free"}</STitle>
@@ -88,7 +111,8 @@ ButtonMenu.propTypes = {
   // optionTextColor: PropTypes.string,
   // options: PropTypes.array,
   // onSelect: PropTypes.func,
-  addTicket: PropTypes.func
+  addTicket: PropTypes.func,
+  disabled: PropTypes.bool
 };
 
 export default ButtonMenu;

@@ -2,27 +2,13 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { Container, Layout } from "btech-layout";
 import styled from "styled-components";
-import MaterialIcon from "react-material-iconic-font";
 import {
-  Button,
   Input,
-  SalaryRange,
   SalaryInput,
   TextArea
 } from "btech-base-forms-component";
-import LineSeparator from "./LineSeparator";
 import { NAME_REGEX } from "../../constants";
-import {FormMainLayout} from "../../components/index"
-
-
-const SButtonText = styled.span`
-  margin-left: 5px;
-`;
-const STitleText = styled.div`
-  font-size: 12px;
-  font-family: Roboto Mono, serif;
-  font-weight: bold;
-`;
+import { InternalForm } from "../../components";
 
 const SInput = styled(Container)`
   input::-webkit-outer-spin-button,
@@ -59,104 +45,56 @@ class TicketItem extends Component {
 
   render() {
     return (
-      <Container padding={"5px"}>
-        <form
-          onSubmit={e => {
-            e.preventDefault();
-            e.stopPropagation();
-            this.props.onSave && this.props.onSave(this.state.ticket);
-          }}
-        >
-            <FormMainLayout>
-
-            <STitleText>{this.props.title}</STitleText>
-          <Layout rowGap={"5px"}>
-            <Container>
-              <Layout mdTemplateColumns={2} mdColGap={"20px"} rowGap={"5px"}>
-                <Container>
-                  <Input
-                    placeholderText={"Ticket Name"}
-                    name={"name"}
-                    getValue={this.notifyParent.bind(this)}
-                    model={this.state.ticket}
-                    required={true}
-                    validate={NAME_REGEX}
-                  />
-                </Container>
-                <SInput>
-                  <Input
-                    placeholderText={"# Available"}
-                    type={"number"}
-                    name={"available"}
-                    getValue={this.notifyParent.bind(this)}
-                    model={this.state.ticket}
-                  />
-                </SInput>
-              </Layout>
-            </Container>
-            <Container>
-              <TextArea
-                model={this.state.ticket}
-                name={"description"}
-                placeholderText={"Describe Ticket"}
-                getValue={this.notifyParent.bind(this)}
-              />
-            </Container>
-            {this.props.isPaid ? (
-              <Layout mdCustomTemplateColumns={"1fr 1fr"}>
-                <SalaryInput
+      <InternalForm title={this.props.title} handleCancel={this.props.handleCancel} onSave={() => this.props.onSave && this.props.onSave(this.state.ticket)}>
+        <Container>
+          <Container>
+            <Layout mdTemplateColumns={2} mdColGap={"20px"} rowGap={"5px"}>
+              <Container>
+                <Input
+                  placeholderText={"Ticket Name"}
+                  name={"name"}
+                  getValue={this.notifyParent.bind(this)}
+                  model={this.state.ticket}
                   required={true}
-                  labelText={"Ticket Price"}
-                  value={Number(this.state.ticket.price) || 0}
-                  getValue={price => {
-                    const ticket = this.state.ticket;
-                    ticket.price = price;
-                    this.setState({ ticket: ticket });
-                  }}
+                  validate={NAME_REGEX}
                 />
-                <div />
-              </Layout>
-            ) : null}
-            <Container>
-              <Layout customTemplateColumns={"1fr auto auto"}>
-                <LineSeparator />
-                <Button
-                  type={"button"}
-                  secondary
-                  height={"auto"}
-                  color={"black"}
-                  opacity={"0.5"}
-                  border={"none"}
-                  hoverBackground={"transparent"}
-                  hoverColor={"initial"}
-                  onClick={this.props.handleCancel}
-                  style={{ fontSize: "14px" }}
-                >
-                  <MaterialIcon type={"block"} />
-                  <span style={{ paddingLeft: "5px" }}>Cancel</span>
-                </Button>
-                <Button
-                  secondary
-                  type={"submit"}
-                  role={"button"}
-                  color={"black"}
-                  opacity={"0.5"}
-                  border={"none"}
-                  hoverBackground={"transparent"}
-                  hoverColor={"initial"}
-                  // onClick={() =>
-                  //   this.props.onSave && this.props.onSave(this.state.ticket)
-                  // }
-                >
-                  <MaterialIcon type={"save"} />
-                  <SButtonText>Save</SButtonText>
-                </Button>
-              </Layout>
-            </Container>
-          </Layout>
-            </FormMainLayout>
-        </form>
-      </Container>
+              </Container>
+              <SInput>
+                <Input
+                  placeholderText={"# Available"}
+                  type={"number"}
+                  name={"available"}
+                  getValue={this.notifyParent.bind(this)}
+                  model={this.state.ticket}
+                />
+              </SInput>
+            </Layout>
+          </Container>
+          <Container>
+            <TextArea
+              model={this.state.ticket}
+              name={"description"}
+              placeholderText={"Describe Ticket"}
+              getValue={this.notifyParent.bind(this)}
+            />
+          </Container>
+          {this.props.isPaid ? (
+            <Layout mdCustomTemplateColumns={"1fr 1fr"}>
+              <SalaryInput
+                required={true}
+                labelText={"Ticket Price"}
+                value={Number(this.state.ticket.price) || 0}
+                getValue={price => {
+                  const ticket = this.state.ticket;
+                  ticket.price = price;
+                  this.setState({ ticket: ticket });
+                }}
+              />
+              <div />
+            </Layout>
+          ) : null}
+        </Container>
+      </InternalForm>
     );
   }
 }

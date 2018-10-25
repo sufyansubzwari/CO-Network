@@ -5,7 +5,6 @@ import TicketItem from "./TicketItem";
 import TicketsList from "./TicketsList";
 import { ButtonArea } from "../../components";
 import { ticketsTypes } from "./options.constant";
-import LineSeparator from "./LineSeparator";
 import { CheckBox } from "btech-base-forms-component";
 import styled from "styled-components";
 
@@ -17,13 +16,19 @@ import styled from "styled-components";
 const STitle = styled.div`
   font-family: "Roboto Mono";
   font-size: 12px;
+  padding-bottom: 5px;
 `;
 
 const SCheckBox = styled.div`
-  padding: 15px;
+  padding: 20px;
   border-radius: 3px;
-  background-color: lightgrey;
+  background-color: #ededed;
   margin-bottom: 10px;
+  color: #32363d;
+  border-top-right-radius: 20px;
+  ${props =>
+    props.radiusBR ? "border-bottom-right-radius: 20px;" : ""} ${props =>
+    props.radiusBL ? "border-bottom-left-radius: 20px;" : ""};
 `;
 
 class TicketTypes extends Component {
@@ -34,11 +39,11 @@ class TicketTypes extends Component {
       ticketsCopy: this.props.tickets,
       editIndex: -1,
       menuOptions: ticketsTypes,
-      acceptFee: false
+      acceptFee: this.props.tickets && this.props.tickets.length > 0
     };
 
     this.handleFee = this.handleFee.bind(this);
-    this.addTicket = this.addTicket.bind(this);
+    this.onSelectToAdd = this.onSelectToAdd.bind(this);
   }
 
   handleCancel = index => {
@@ -74,16 +79,13 @@ class TicketTypes extends Component {
     list.splice(index, 1);
     this.setState({ tickets: list }, () => this.notifyParent());
   }
-  addTicket(type){
-
-  }
 
   onSelectToAdd(ticketType) {
-    // const list = this.state.tickets;
-    // list.push({
-    //   type: ticketType.type
-    // });
-    // this.setState({ tickets: list, editIndex: list.length - 1 });
+    const list = this.state.tickets;
+    list.push({
+      type: ticketType
+    });
+    this.setState({ tickets: list, editIndex: list.length - 1 });
   }
 
   handleFee() {
@@ -96,7 +98,10 @@ class TicketTypes extends Component {
         <Layout rowGap={"10px"}>
           <Container mt={"10px"}>
             <STitle>Selling Tickets</STitle>
-            <SCheckBox>
+            <SCheckBox
+              radiusBL={!this.state.acceptFee && !this.state.tickets.length > 0}
+              radiusBR={!this.state.tickets.length > 0}
+            >
               <CheckBox
                 active={this.state.acceptFee}
                 onSelected={this.handleFee}
@@ -105,34 +110,36 @@ class TicketTypes extends Component {
                 }
               />
             </SCheckBox>
-              {this.state.tickets.map((ticket, index) => {
-                  const isPaid = ticket.type === "paid";
-                  return (
-                      <Container key={index}>
-                          {this.state.editIndex === index ? (
-                              <TicketItem
-                                  title={isPaid ? "Paid Ticket" : "Free Ticket"}
-                                  isPaid={isPaid}
-                                  data={this.state.editIndex === index ? { ...ticket } : {}}
-                                  onSave={event => this.processSaveAction(event, index)}
-                                  handleCancel={() => this.handleCancel(index)}
-                              />
-                          ) : (
-                              <TicketsList
-                                  data={ticket}
-                                  title={isPaid ? "Paid Tickets" : "Free Tickets"}
-                                  showPriceFields={isPaid}
-                                  onEdit={() => this.setState({ editIndex: index })}
-                                  onDelete={() => this.onDeleteAction(ticket, index)}
-                                  handleCancel={() => this.handleCancel(index)}
-                              />
-                          )}
-                      </Container>
-                  );
-              })}
+            {this.state.tickets.map((ticket, index) => {
+              const isPaid = ticket.type === "paid";
+              return (
+                <Container key={index} mb={10}>
+                  {this.state.editIndex === index ? (
+                    <TicketItem
+
+                      title={isPaid ? "Paid Ticket" : "Free Ticket"}
+                      isPaid={isPaid}
+                      data={this.state.editIndex === index ? { ...ticket } : {}}
+                      onSave={event => this.processSaveAction(event, index)}
+                      handleCancel={() => this.handleCancel(index)}
+                    />
+                  ) : (
+                    <TicketsList
+                      data={ticket}
+                      title={isPaid ? "Paid Tickets" : "Free Tickets"}
+                      showPriceFields={isPaid}
+                      onEdit={() => this.setState({ editIndex: index })}
+                      onDelete={() => this.onDeleteAction(ticket, index)}
+                      handleCancel={() => this.handleCancel(index)}
+                    />
+                  )}
+                </Container>
+              );
+            })}
             <ButtonArea
               title={"Add Tickets"}
-              addTicket={this.addTicket}
+              addTicket={this.onSelectToAdd}
+              disabled={!this.state.acceptFee}
             />
           </Container>
         </Layout>
