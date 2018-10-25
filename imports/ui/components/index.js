@@ -28,6 +28,9 @@ import Achievements from "./Achievements/Achievements";
 import WorkExperience from "./WorkExperience/WorkExperience";
 import LoginSidebar from "./LoginSidebar/LoginSidebar";
 import OutsideClickHandler from "./OutsideClickHandler/OutsideClickHandler";
+import InfoChatBox from "./InfoChatBox/InfoChatBox";
+import SelectionMarker from "./SelectionMarker/SelectionMarker";
+import OrgStatusIcon from "./OrgStatusIcon/OrgStatusIcon";
 
 // layouts
 import InternalLayout from "../layouts/InternalLayout/InternalLayout";
@@ -69,5 +72,8 @@ export {
   ColloquiumPreview,
   LoginSidebar,
   MemberPreview,
-  OutsideClickHandler
+  OutsideClickHandler,
+  InfoChatBox,
+  SelectionMarker,
+  OrgStatusIcon
 };

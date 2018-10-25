@@ -4,6 +4,8 @@ type Organizations {
     _id: ID
     owner: User!
     entity: String
+    checkStatus: String
+    enable: Boolean
     views: Int
     name: String
     description: [Tags]
@@ -98,6 +100,7 @@ input OrganizationSearchInput{
     startDate: TableDateFilterInput
     endDate: TableDateFilterInput
     location: [LocationInput]
+    owner: String
 }
 
 input OrganizationsInput {

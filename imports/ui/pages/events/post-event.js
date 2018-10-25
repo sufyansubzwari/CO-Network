@@ -35,6 +35,8 @@ class PostEvent extends Component {
           min: 1,
           max: 50
         },
+        organization: null,
+        organizer: true,
         sponsors: [],
         tickets: []
       },

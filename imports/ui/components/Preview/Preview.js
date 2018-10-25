@@ -56,6 +56,7 @@ const SLayout = styled(Layout)`
 
   ${mixins.media.desktop`
     position: sticky;
+    border-bottom: none;
     height: 66px;
   `};
 

@@ -5,6 +5,8 @@ query GetOrg($limit: Int, $filter: String, $organizations: OrganizationSearchInp
             _id
         }
         entity
+        checkStatus
+        enable
         views
         name
         description {
