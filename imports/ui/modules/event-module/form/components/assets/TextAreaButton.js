@@ -1,6 +1,6 @@
 import React from "react";
 import styled from "styled-components";
-import { Container } from "btech-layout";
+import { Container, mixins } from "btech-layout";
 import PropTypes from "prop-types";
 
 /**
@@ -13,7 +13,7 @@ import PropTypes from "prop-types";
  */
 
 const TextAreaButton = styled(Container)`
-  height: ${props => (props.height ? props.height : "67px")};
+  min-height: ${props => (props.height ? props.height : "67px")};
   background-color: ${props =>
     props.isActive ? props.backgroudActiveColor : props.backgroudColor};
   color: ${props => (props.isActive ? props.textActiveColor : props.textColor)};
@@ -33,6 +33,19 @@ const TextAreaButton = styled(Container)`
   border: ${props => `1px ${props.borderType} ${props.borderColor}`};
   border-radius: ${props => props.borderRadius};
   cursor: ${props => (props.pointer ? "pointer" : "default")};
+  transition: all 300ms;
+  width: 100%;
+  height: ${props =>
+    props.isExpanded
+      ? `calc(${props.heightToExpand} + ${props.gapToExpand})`
+      : "100%"};
+      
+  ${mixins.media.desktop`
+    width: ${props =>
+      props.isExpanded
+        ? `calc(${props.widthToExpand} + ${props.gapToExpand})`
+        : "100%"};
+  `}
 `;
 
 TextAreaButton.defaultProps = {
@@ -42,6 +55,10 @@ TextAreaButton.defaultProps = {
   borderType: "solid",
   borderRadius: "3px",
   center: true,
+  gapToExpand: "0px",
+  widthToExpand: "200%",
+  heightToExpand: "auto",
+  isExpanded: false,
   textColor: "#000",
   textActiveColor: "#FFF",
   backgroudActiveColor: "#32363d"
@@ -50,9 +67,12 @@ TextAreaButton.defaultProps = {
 TextAreaButton.propTypes = {
   height: PropTypes.string,
   boxShadow: PropTypes.bool,
+  isExpanded: PropTypes.bool,
+  widthToExpand: PropTypes.string,
   pointer: PropTypes.bool,
   center: PropTypes.bool,
   backgroudColor: PropTypes.string,
+  gapToExpand: PropTypes.string,
   borderRadius: PropTypes.string,
   borderColor: PropTypes.string,
   borderType: PropTypes.string,

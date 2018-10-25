@@ -40,7 +40,8 @@ class EventStep0 extends Component {
     super(props);
     this.state = {
       event: this.props.data,
-      orgSelected: null
+      orgSelected: null,
+      isFormOpen: false
     };
   }
 
@@ -63,8 +64,17 @@ class EventStep0 extends Component {
   }
 
   onSelectOrganization(name, value, element) {
-    this.setState({ orgSelected: element }, () =>
+    this.setState({ orgSelected: element, isFormOpen: false }, () =>
       this.notifyParent(name, value)
+    );
+  }
+
+  onCreationButtonClick(value) {
+    let event = this.state.event;
+    event["organization"] = null;
+    this.setState(
+      { isFormOpen: value, orgSelected: null, event: event },
+      () => this.props.onChange && this.props.onChange(this.state.event)
     );
   }
 
@@ -78,7 +88,6 @@ class EventStep0 extends Component {
           <Layout mdTemplateColumns={2} mdColGap={"10px"} rowGap={"10px"}>
             <TextAreaButton
               pointer
-              minH={"67px"}
               isActive={event.organizer}
               onClick={() => {
                 this.notifyParent("organizer", !event.organizer);
@@ -91,11 +100,10 @@ class EventStep0 extends Component {
             </TextAreaButton>
             <TextAreaButton
               pointer
-              minH={"67px"}
               isActive={!event.organizer}
-              onClick={() => {
-                this.notifyParent("organizer", !event.organizer);
-              }}
+              onClick={() =>
+                this.onSelectOrganization("organizer", !event.organizer, null)
+              }
             >
               <div>
                 <div>
@@ -133,7 +141,6 @@ class EventStep0 extends Component {
                     pointer
                     key={index}
                     isSelected={event.organization === element._id}
-                    minH={"67px"}
                     onSelect={() =>
                       this.onSelectOrganization(
                         "organization",
@@ -146,11 +153,23 @@ class EventStep0 extends Component {
                   </OrganizationItem>
                 );
               })}
-            <TextAreaButton borderType={"dashed"} minH={"67px"} pointer>
-              <SPlusICon>
-                <MaterialIcon type={"plus"} />
-              </SPlusICon>
-              {event.organizer ? "Create Organization" : "Add Organizer Info"}
+          </Layout>
+          <Layout mt={"10px"} mdTemplateColumns={2}>
+            <TextAreaButton
+              isExpanded={this.state.isFormOpen}
+              borderType={"dashed"}
+              pointer
+              onClick={() => this.onCreationButtonClick(!this.state.isFormOpen)}
+            >
+              <Container hide={this.state.isFormOpen}>
+                <SPlusICon>
+                  <MaterialIcon type={"plus"} />
+                </SPlusICon>
+                {event.organizer ? "Create Organization" : "Add Organizer Info"}
+              </Container>
+              <Container hide={!this.state.isFormOpen}>
+                Form Component
+              </Container>
             </TextAreaButton>
           </Layout>
           <Container
