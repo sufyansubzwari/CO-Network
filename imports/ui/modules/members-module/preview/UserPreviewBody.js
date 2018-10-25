@@ -12,6 +12,7 @@ import {
     Dates
 } from "../../../components/Preview/components/index";
 import services from "../../../components/LoginModal/service.constant";
+import styled from "styled-components";
 import Separator from "../../../components/FiltersContainer/Separator";
 import CheckedLabel from "./components/CheckedLabel"
 import ProfessionalExperiencePreview from "./components/PExperiencePreview";
@@ -19,15 +20,20 @@ import PatentPreview from "./components/PatentPreview";
 import AcademicBackgroundPreview from "./components/AcademicBackgroundPreview";
 import PublicationsPreview from "./components/PublicationsPreview";
 import NavMenu from "../../../components/ItemsList/components/navMenu"
-import {GetOrg} from "../../../apollo-client/organization/index";
-import {GetEvents} from "../../../apollo-client/event/index";
-import {GetJobs} from "../../../apollo-client/job/index";
 import {Query, Mutation} from "react-apollo";
 import OrganizationCard from "./components/organizationCard";
 import CreateButton from "./components/CreateButton";
 import JobCard from "./components/jobCard";
+import {GetOrg} from "../../../apollo-client/organization/index";
+import {GetEvents} from "../../../apollo-client/event/index";
+import {GetJobs} from "../../../apollo-client/job/index";
 import {FollowAction} from "../../../apollo-client/follow";
 import {GetJobApply} from "../../../apollo-client/jobApply";
+import {PlaceHolder} from "btech-placeholder-component";
+
+const SText = styled(Container)`
+    font-size: 12px;
+`
 
 class UserPreviewBody extends React.Component {
     constructor(props) {
@@ -86,13 +92,33 @@ class UserPreviewBody extends React.Component {
         }
         const render = name || name !== " " || user.place || socials.length || website || user.aboutMe || user.aboutMe.yourPassion;
         const aboutMe = user.aboutMe;
-        return render ? (
+        return (
             <PreviewSection>
-                {name && name !== " " ? <Title text={name}/> : null}
-                {user.place ? <Location location={user.place}/> : null}
-                {socials.length || website ? <Social socials={socials} links={website}/> : null}
-                <Separator/>
-                {user.aboutMe && user.aboutMe.yourPassion ? (
+                <PlaceHolder
+                    loading={!user.name && !user.lastName && !this.props.id}
+                    height={35}
+                    width={300}
+                >
+                    <Title text={name}/>
+                </PlaceHolder>
+                <PlaceHolder
+                    loading={!user.place && !this.props.id}
+                    height={35}
+                    width={300}
+                >
+                    <Location location={user.place}/>
+                </PlaceHolder>
+                <PlaceHolder
+                    loading={!website && !socials.length && !this.props.id}
+                    height={35}
+                    width={300}>
+                    <Social socials={socials} links={website}/>
+                    <Separator/>
+                </PlaceHolder>
+                <PlaceHolder
+                    loading={!user.aboutMe.yourPassion && !this.props.id}
+                    height={35}
+                    width={300}>
                     <Container>
                         <Text
                             header={"About"}
@@ -102,9 +128,9 @@ class UserPreviewBody extends React.Component {
                             moreClicked={this.handleMoreAbout}
                         />
                     </Container>
-                ) : null}
+                </PlaceHolder>
             </PreviewSection>
-        ) : null
+        )
     }
 
     renderKnowledgeSection = () => {
@@ -114,6 +140,7 @@ class UserPreviewBody extends React.Component {
         let languages =
             knowledge &&
             knowledge.languages &&
+            knowledge.languages.length &&
             knowledge.languages.map(lang => ({
                 ...lang.tag,
                 active: true
@@ -121,6 +148,7 @@ class UserPreviewBody extends React.Component {
         let curious =
             knowledge &&
             knowledge.curiosity &&
+            knowledge.curiosity.length &&
             knowledge.curiosity.map(cur => ({
                 ...cur.tag,
                 active: true
@@ -128,6 +156,7 @@ class UserPreviewBody extends React.Component {
         let lookingfor =
             knowledge &&
             knowledge.lookingFor &&
+            knowledge.lookingFor.length &&
             knowledge.lookingFor.map((look, index) => ({
                 ...look,
                 active: true
@@ -135,19 +164,32 @@ class UserPreviewBody extends React.Component {
 
         const render = languages && languages.length || curious && curious.length || lookingfor && lookingfor.length;
 
-        return render ? (
+        return (
             <PreviewSection title={"Knowledge | Community"}>
-                {languages && languages.length ? (
+                <PlaceHolder
+                    loading={!languages || !languages.length  && !this.props.id}
+                    height={35}
+                    width={300}
+                >
                     <TagsAdd header={"Domain Expertise | Languages"} tags={languages}/>
-                ) : null}
-                {curious && curious.length ? (
+                </PlaceHolder>
+                <PlaceHolder
+                    loading={!curious || !curious.length  && !this.props.id}
+                    height={35}
+                    width={300}
+                >
                     <TagsAdd header={"Intellectually Curious About"} tags={curious}/>
-                ) : null}
-                {lookingfor && lookingfor.length ?
+                </PlaceHolder>
+                <PlaceHolder
+                    loading={!lookingfor || !lookingfor.length  && !this.props.id}
+                    height={35}
+                    width={300}
+                >
                     <TagsAdd hideBorder={true} activeColor={"white"} backgroundTagColor={"#202225"}
-                             borderColor={"#202225"} header={'Looking For'} tags={lookingfor}/> : null}
+                             borderColor={"#202225"} header={'Looking For'} tags={lookingfor}/>
+                </PlaceHolder>
             </PreviewSection>
-        ) : null
+        )
     }
 
     renderProfessionalSection = () => {
@@ -161,6 +203,7 @@ class UserPreviewBody extends React.Component {
         let jobType =
             professional &&
             professional.jobType &&
+            professional.jobType.length &&
             professional.jobType.map((job) => ({
                 ...job,
                 active: true
@@ -168,6 +211,7 @@ class UserPreviewBody extends React.Component {
         let industry =
             professional &&
             professional.industry &&
+            professional.industry.length &&
             professional.industry.map(ind => ({
                 ...ind,
                 active: true
@@ -179,42 +223,69 @@ class UserPreviewBody extends React.Component {
         const patents = achievements && achievements.length > 0 && achievements.filter(item => item.type === "Patents");
         const render = industry && industry.length || jobVal || patents && patents.length || profesionalexp && profesionalexp.length;
 
-        return render ? (
+        return (
             <PreviewSection title={"Professional"}>
-                <CheckedLabel seeking={professional.seeking}/>
-                {
-                    professional.seeking && (min || max) ?
-                        <Container>
-                            <SalaryRangePreview
-                                min={min ? professional.salaryRange.min : null}
-                                max={max ? professional.salaryRange.max : null}/>
-                        </Container> : null
-                }
-                {jobType && professional.seeking && jobType.length ?
+                <PlaceHolder
+                    loading={!professional.seeking && !this.props.id}
+                    height={35}
+                    width={300}
+                >
+                    <CheckedLabel seeking={professional.seeking}/>
+                    {
+                        professional.seeking && (min || max) ?
+                            <Container mt={"20px"}>
+                                <SText mb={"5px"}>{"Expected Salary"}</SText>
+                                <SalaryRangePreview
+                                    min={min ? professional.salaryRange.min : null}
+                                    max={max ? professional.salaryRange.max : null}/>
+                            </Container> : null
+                    }
+                </PlaceHolder>
+                <PlaceHolder
+                    loading={!jobType || !jobType.length  && !this.props.id}
+                    height={35}
+                    width={300}
+                >
                     <TagsAdd hideBorder={true} activeColor={"white"} backgroundTagColor={"#202225"}
-                             borderColor={"#202225"} header={'Job Type'} tags={jobType}/> : null}
-                {industry && industry.length ? (
+                             borderColor={"#202225"} header={'Job Type'} tags={jobType}/>
+                </PlaceHolder>
+                <PlaceHolder
+                    loading={!industry || !industry.length && !this.props.id}
+                    height={35}
+                    width={300}
+                >
                     <TagsAdd header={"Industry | Sector"} tags={industry}/>
-                ) : null}
-                {profesionalexp && profesionalexp.length > 0 ?
+                </PlaceHolder>
+                <PlaceHolder
+                    loading={!profesionalexp || !profesionalexp.length && !this.props.id}
+                    height={35}
+                    width={300}
+                >
                     <CollapseList cutElements={3} title={"Professional Experience"}>
-                        {profesionalexp.map((item, index) =>
+                        {profesionalexp && profesionalexp.length > 0 && profesionalexp.map((item, index) =>
                             <ProfessionalExperiencePreview key={index} position={item.position} organization={item.name}
                                                            level={item.level && item.level.label}
                                                            description={item.help}/>
                         )}
-                    </CollapseList> : null}
-                {patents && patents.length > 0 ? <CollapseList cutElements={3} title={"Patents"}>
-                    {patents.map((item, index) =>
-                        <PatentPreview key={index} name={item.name} id={item.id} link={item.link}
-                                       tags={item.category && item.category.length > 0 && item.category.map((tag) => ({
-                                           ...tag,
-                                           active: true
-                                       }))}/>
-                    )}
-                </CollapseList> : null}
+                    </CollapseList>
+                </PlaceHolder>
+                <PlaceHolder
+                    loading={!patents || !patents.length && !this.props.id}
+                    height={35}
+                    width={300}
+                >
+                    <CollapseList cutElements={3} title={"Patents"}>
+                        {patents && patents.length > 0 && patents.map((item, index) =>
+                            <PatentPreview key={index} name={item.name} id={item.id} link={item.link}
+                                           tags={item.category && item.category.length > 0 && item.category.map((tag) => ({
+                                               ...tag,
+                                               active: true
+                                           }))}/>
+                        )}
+                    </CollapseList>
+                </PlaceHolder>
             </PreviewSection>
-        ) : null
+        )
     }
 
     renderAcademicSection = () => {
@@ -225,30 +296,43 @@ class UserPreviewBody extends React.Component {
         const publications = achievements && achievements.length > 0 && achievements.filter(item => item.type === "Publications");
         const render = academic && academic.length > 0 || publications && publications.length;
 
-        return render ? (
+        return (
             <PreviewSection title={"Academic"}>
-                {academic && academic.length ? <CollapseList cutElements={3} title={"Academic Background"}>
-                    {academic && academic.length > 0 && academic.map((item, index) =>
-                        <AcademicBackgroundPreview key={index} name={item.name} study={item.study}
-                                                   level={item.degree && item.degree.label} description={item.story}/>
-                    )}
-                </CollapseList> : null}
-                {publications && publications.length ? <CollapseList cutElements={3} title={"Publications"}>
-                    {publications.map((item, index) =>
-                        <PublicationsPreview key={index} name={item.name} year={item.year} link={item.link}
-                                             details={item.explain}
-                                             tags={item.category && item.category.length > 0 && item.category.map((tag) => ({
-                                                 ...tag,
-                                                 active: true
-                                             }))}/>
-                    )}
-                </CollapseList> : null}
+                <PlaceHolder
+                    loading={!academic || !academic.length  && !this.props.id}
+                    height={35}
+                    width={300}
+                >
+                    <CollapseList cutElements={3} title={"Academic Background"}>
+                        {academic && academic.length > 0 && academic.map((item, index) =>
+                            <AcademicBackgroundPreview key={index} name={item.name} study={item.study}
+                                                       level={item.degree && item.degree.label}
+                                                       description={item.story}/>
+                        )}
+                    </CollapseList>
+                </PlaceHolder>
+                <PlaceHolder
+                    loading={!publications || !publications.length  && !this.props.id}
+                    height={35}
+                    width={300}
+                >
+                    <CollapseList cutElements={3} title={"Publications"}>
+                        {publications &&  publications.length > 0 && publications.map((item, index) =>
+                            <PublicationsPreview key={index} name={item.name} year={item.year} link={item.link}
+                                                 details={item.explain}
+                                                 tags={item.category && item.category.length > 0 && item.category.map((tag) => ({
+                                                     ...tag,
+                                                     active: true
+                                                 }))}/>
+                        )}
+                    </CollapseList>
+                </PlaceHolder>
             </PreviewSection>
-        ) : null
+        )
     }
 
     renderOrganizationsSection = () => {
-        const render = true
+        const render = this.props.id
         return render ? (
             <Query fetchPolicy={'network-only'} query={GetOrg}
                    variables={{
@@ -290,7 +374,7 @@ class UserPreviewBody extends React.Component {
     }
 
     renderEventsSection = () => {
-        const render = true
+        const render = this.props.id
         return render ? (
             <Query fetchPolicy={'network-only'} query={GetEvents}
                    variables={{
@@ -345,7 +429,7 @@ class UserPreviewBody extends React.Component {
     }
 
     renderJobsSection = () => {
-        const render = true
+        const render = this.props.id
         return render ? (
             <Query fetchPolicy={'network-only'} query={GetJobs}
                    variables={{
