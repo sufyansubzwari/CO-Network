@@ -22,8 +22,6 @@ const MainLayoutStyled = Styled(Layout)`
  left :0;
  right :0;
  bottom :0;
- bottom :0;
- min-height: initial;
  
  ${mixins.media.desktop`
      background-image: url("/images/map-background-gtmetrix.png");

@@ -156,6 +156,29 @@ const filter = {
   }
 };
 
+const lightBoxTheme = {
+    close: {
+        color: "white",
+        fill: "white",
+        opacity: 0.6,
+        transition: "all 200ms",
+        ":hover": {
+            opacity: 1
+        },
+        ":focus": { outline: "0" }
+    },
+    arrow: {
+        color: "white",
+        fill: "white",
+        opacity: 0.6,
+        transition: "all 200ms",
+        ":hover": {
+            opacity: 1
+        },
+        ":focus": { outline: "0" }
+    }
+};
+
 const bigtag = {
   color: {
     primary: "#F92672",
@@ -228,5 +251,6 @@ export const theme = {
   font,
   forms,
   labels,
+  lightBoxTheme,
   borderColor: color.grey
 };

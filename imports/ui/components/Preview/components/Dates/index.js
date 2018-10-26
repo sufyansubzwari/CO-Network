@@ -14,6 +14,10 @@ const STitle = styled.div`
     props.lineHeight
       ? props.lineHeight
       : props.theme.preview.locations.lineheight};
+      
+  overflow: ${props => props.cut ? "hidden" : null};
+  text-overflow: ellipsis;
+  white-space: ${props => props.cut ? "nowrap" : null};
 `;
 
 const Dates = function(props) {
@@ -45,7 +49,8 @@ Dates.propTypes = {
   color: PropsTypes.string,
   family: PropsTypes.string,
   size: PropsTypes.string,
-  lineHeight: PropsTypes.string
+  lineHeight: PropsTypes.string,
+  cut: PropsTypes.bool
 };
 
 export default Dates;

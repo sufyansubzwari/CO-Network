@@ -216,64 +216,158 @@ query getUsers($limit: Int, $filter: String, $user: UsersInputSearch){
     users(limit: $limit, filter: $filter, user: $user){
             _id
             profile {
-                isSignUp
-                name
-                user_id
-                lastName
-                nickName
-                loginCount
-                identities {
-                    provider
-                    user_id
-                    profileData {
-                        name
-                        email
+                  name
+                  lastName
+                  nickName
+                  loginCount
+                  image
+                  cover
+                  gender
+                  website
+                  phone
+                  isSignUp
+                  professional{
+                    industry{
+                      _id
+                      name
+                      label
+                      value
+                      type
                     }
-                }
-                email
-                image
-                cover
-                gender
-                website
-                phone
-                aboutMe{
+                    salaryRange{
+                      min
+                      max
+                    }
+                    jobType{
+                      label
+                      value
+                      name
+                      active
+                    }
+                    seeking
+                  }
+                  social{
+                    facebook
+                    twitter
+                    github
+                    linkedin
+                    google
+                  }
+                  aboutMe{
                     yourPassion
-                }
-                knowledge{
-                  languages{
-                    tag{
-                      _id
+                    existingProblem
+                    steps
+                  }
+                  knowledge{
+                    languages{
+                      tag{
+                        _id
+                        name
+                        label
+                        value
+                        type
+                        used
+                      }
+                      level
+                      levelColor
+                      icon
+                    }
+                    curiosity{
+                      tag{
+                        _id
+                        name
+                        label
+                        value
+                        type
+                        used
+                      }
+                      level
+                      levelColor
+                      icon
+                    }
+                    lookingFor{
+                      label
+                      value
+                      name
+                      active
+                    }
+                  }
+                  speaker{
+                    join
+                    lookingFor{
+                      name
+                      label
+                      value
+                      active
+                    }
+                      topic{
                       name
                       label
                       value
                       type
-                      used
                     }
-                    level
-                    levelColor
-                    icon
-                  }
-                  curiosity{
-                    tag{
-                      _id
+                    stage{
+                      name
+                      label
+                      value
+                      active
+                    }
+                    otherlooking{
                       name
                       label
                       value
                       type
-                      used
                     }
-                    level
-                    levelColor
-                    icon
+                    otherpreferred{
+                      name
+                      label
+                      value
+                      type
+                    }
                   }
-                  lookingFor{
-                    label
-                    value
+                  place{
+                    _id
+                    owner
+                    entity
+                    location{
+                      address
+                      location{
+                        lat
+                        lng
+                      }
+                    }
+                  }
+                  achievements{
+                    study
+                    type
+                    institution
+                    story
+                    degree{
+                      label
+                      type
+                    }
+                    organization
+                    position
+                    help
+                    experience
                     name
-                    active
+                    link
+                    level{
+                      label
+                      type
+                    }
+                    category{
+                      name
+                      label
+                      value
+                      type
+                    }
+                    id
+                    year
+                    explain
+                    _id
                   }
                 }
-            }
             views
       entity
       followerList
