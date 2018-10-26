@@ -14,7 +14,7 @@ import PropTypes from "prop-types";
 
 const InfoChatBox = styled(Container)`
   min-height: ${props => (props.height ? props.height : "65px")};
-  background-color: ${props =>
+  background: ${props =>
     props.isActive ? props.backgroudActiveColor : props.backgroudColor};
   color: ${props => (props.isActive ? props.textActiveColor : props.textColor)};
   display: flex;
@@ -39,7 +39,7 @@ InfoChatBox.defaultProps = {
   borderTopLeftRadius: "3px",
   textColor: "#000",
   textActiveColor: "#FFF",
-  backgroudActiveColor: "#32363d"
+  backgroudActiveColor: "linear-gradient(90deg, #E826F9 0%, #F92672 100%)"
 };
 
 InfoChatBox.propTypes = {

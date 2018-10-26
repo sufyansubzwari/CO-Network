@@ -93,10 +93,12 @@ class EventStep0 extends Component {
     let organization = { ...orgQuery };
     if (this.props.curUser) {
       organization.owner = this.props.curUser._id;
-      if (!organization.enable)
-        this.setState({ temporalData: organization }, () =>
-          createOrg({ variables: { entity: organization } })
-        );
+      this.setState(
+        { temporalData: !organization.enable ? organization : null },
+        () => {
+          createOrg({ variables: { entity: organization } });
+        }
+      );
     } else {
       // todo login the user and then create the event or notify the user must login
       alert("You must be logged");
@@ -104,15 +106,12 @@ class EventStep0 extends Component {
   }
 
   onCreationCallback(result) {
-    const { organization } = result;
+    let { organization } = result;
     if (organization && organization._id) {
       if (this.state.temporalData)
-        this.state.temporalData._id = organization._id;
-      this.onSelectOrganization(
-        "organization",
-        !this.state.temporalData ? organization : this.state.temporalData,
-        !this.state.temporalData ? organization : this.state.temporalData
-      );
+        organization = Object.assign(this.state.temporalData, organization);
+      organization.isNew = !this.state.temporalData;
+      this.onSelectOrganization("organization", organization, organization);
       this.props.organizations.refetch();
     }
   }
@@ -257,6 +256,18 @@ class EventStep0 extends Component {
               </Container>
             </InfoChatBox>
           </Container>
+        </Container>
+        <Container
+          mt={"10px"}
+          hide
+          // hide={!orgSelected || !orgSelected.isNew}
+        >
+          <InfoChatBox isActive>
+            <Container>
+              <SLabel>Congratulations</SLabel>
+              <Container>{texts.orgOnProgress}</Container>
+            </Container>
+          </InfoChatBox>
         </Container>
       </FormMainLayout>
     );

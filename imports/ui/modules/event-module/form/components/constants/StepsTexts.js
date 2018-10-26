@@ -6,5 +6,7 @@ export const STEP_TEXTS = {
   orgNeedVerification:
     "Until this organization is verified, this Event will be available to the public but ticket sales or RSVP will not be activated.",
   organizerNeedVerification:
-    "Until Organizer creates profile, this Event will be available to the public but ticket sales or RSVP will not be activated."
+    "Until Organizer creates profile, this Event will be available to the public but ticket sales or RSVP will not be activated.",
+  orgOnProgress:
+    "Your verification process is underway. Please select a good time to walk through creating a (free) CO Network - Organization profile."
 };
