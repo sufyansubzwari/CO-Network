@@ -91,6 +91,8 @@ class PostEvent extends Component {
     if (sponsors) queryEvent.sponsors = sponsors;
 
     if (queryEvent.followerList) delete queryEvent.followerList;
+    queryEvent.organization =
+      queryEvent.organization && queryEvent.organization._id;
     let event = { ...queryEvent };
     if (this.props.curUser) {
       event.owner = this.props.curUser._id;
@@ -140,31 +142,46 @@ class PostEvent extends Component {
           key={"rightSide"}
           mutation={DeleteEvent}
         >
-          {(deleteEvent, { eventDeleted }) => (
-            <Preview
-              isOpen={this.state.openPreview}
-              navClicked={index => console.log(index)}
-              navOptions={[
-                {
-                  text: "Remove",
-                  icon: "delete",
-                  checkVisibility: () => {
-                    return this.state.event && this.state.event._id;
-                  },
-                  onClick: () => {
-                    this.removeEvent(deleteEvent, this.state.event);
+          {(deleteEvent, { eventDeleted }) => {
+            let eventImages = null;
+            if (
+              this.state.event &&
+              this.state.event.organization &&
+              this.state.event.organization.image
+            ) {
+              eventImages = [];
+              eventImages.push(null);
+              eventImages.push(this.state.event.organization.image);
+            }
+            return (
+              <Preview
+                isOpen={this.state.openPreview}
+                navClicked={index => console.log(index)}
+                navOptions={[
+                  {
+                    text: "Remove",
+                    icon: "delete",
+                    checkVisibility: () => {
+                      return this.state.event && this.state.event._id;
+                    },
+                    onClick: () => {
+                      this.removeEvent(deleteEvent, this.state.event);
+                    }
                   }
-                }
-              ]}
-              data={this.state.event}
-              allowChangeImages
-              backGroundImage={this.state.event && this.state.event.image}
-              onBackgroundChange={this.handleBackgroundChange}
-              onUserPhotoChange={this.handleUserPhotoChange}
-            >
-              <EventPreviewBody event={this.state.event} />
-            </Preview>
-          )}
+                ]}
+                data={this.state.event}
+                allowChangeImages
+                showAvatar
+                entity={"events"}
+                image={eventImages}
+                backGroundImage={this.state.event && this.state.event.image}
+                onBackgroundChange={this.handleBackgroundChange}
+                onUserPhotoChange={this.handleUserPhotoChange}
+              >
+                <EventPreviewBody event={this.state.event} />
+              </Preview>
+            );
+          }}
         </Mutation>
       </PostLayout>
     );

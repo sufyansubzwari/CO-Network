@@ -53,7 +53,7 @@ const SName = styled(SCutContainer)`
  * @description This component is a wrapper for the OrganizationItem
  */
 const OrganizationItem = function(props) {
-  const { image, name, checkStatus, contact } = props.data;
+  const { image, name, checkStatus, contact } = props.data || {};
   return (
     <STextAreaButton
       boxShadow

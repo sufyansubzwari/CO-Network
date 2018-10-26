@@ -48,7 +48,7 @@ Organizations.schema = new SimpleSchema({
   checkStatus: {
     type: String,
     allowedValues: Constants.ORGANIZATION_CHECK_STATUS,
-    defaultValue: "pending"
+    defaultValue: "approved"
   },
   cover: { type: String, optional: true },
   name: { type: String, optional: true },

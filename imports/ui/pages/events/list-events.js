@@ -100,7 +100,8 @@ class ListEvents extends List {
                     let eventImages = null;
                     if (
                       this.state.selectedItem &&
-                      this.state.selectedItem.organization
+                      this.state.selectedItem.organization &&
+                      this.state.selectedItem.organization.image
                     ) {
                       eventImages = [];
                       eventImages.push(null);

@@ -6,11 +6,10 @@ import TextAreaButton from "./assets/TextAreaButton";
 import OrganizationItem from "./components/OrganizationItem";
 import styled from "styled-components";
 import MaterialIcon from "react-material-iconic-font";
-import { graphql } from "react-apollo";
+import { graphql, Mutation } from "react-apollo";
 import { CreateOrg, GetOrg } from "../../../../apollo-client/organization";
 import { InfoChatBox } from "../../../../components";
 import { STEP_TEXTS } from "./constants/StepsTexts";
-import { Mutation } from "react-apollo";
 import SimpleOrgCreateForm from "./components/SimpleOrgCreateForm";
 
 const SYesNoOption = styled.span`
@@ -45,7 +44,8 @@ class EventStep0 extends Component {
     this.state = {
       event: this.props.data,
       texts: STEP_TEXTS,
-      orgSelected: null,
+      orgSelected: this.props.data && this.props.data.organization,
+      temporalData: null,
       isFormOpen: false
     };
   }
@@ -69,8 +69,11 @@ class EventStep0 extends Component {
   }
 
   onSelectOrganization(name, value, element) {
-    this.setState({ orgSelected: element, isFormOpen: false }, () =>
-      this.notifyParent(name, value)
+    let event = this.state.event;
+    event["organization"] = element;
+    this.setState(
+      { orgSelected: element, event: event, isFormOpen: false },
+      () => this.notifyParent(name, value)
     );
   }
 
@@ -78,8 +81,8 @@ class EventStep0 extends Component {
     let event = this.state.event;
     event["organization"] = null;
     this.setState(
-      { isFormOpen: value, orgSelected: null, event: event },
-      () => this.props.onChange && this.props.onChange(this.state.event)
+      { isFormOpen: value, event: event, orgSelected: null },
+      () => this.props.onChange && this.props.onChange(event)
     );
   }
 
@@ -90,7 +93,10 @@ class EventStep0 extends Component {
     let organization = { ...orgQuery };
     if (this.props.curUser) {
       organization.owner = this.props.curUser._id;
-      createOrg({ variables: { entity: organization } });
+      if (!organization.enable)
+        this.setState({ temporalData: organization }, () =>
+          createOrg({ variables: { entity: organization } })
+        );
     } else {
       // todo login the user and then create the event or notify the user must login
       alert("You must be logged");
@@ -100,7 +106,13 @@ class EventStep0 extends Component {
   onCreationCallback(result) {
     const { organization } = result;
     if (organization && organization._id) {
-      this.onSelectOrganization("organization", organization._id, organization);
+      if (this.state.temporalData)
+        this.state.temporalData._id = organization._id;
+      this.onSelectOrganization(
+        "organization",
+        !this.state.temporalData ? organization : this.state.temporalData,
+        !this.state.temporalData ? organization : this.state.temporalData
+      );
       this.props.organizations.refetch();
     }
   }
@@ -161,17 +173,18 @@ class EventStep0 extends Component {
                     data={element}
                     pointer
                     key={index}
-                    isSelected={event.organization === element._id}
+                    isSelected={
+                      event.organization &&
+                      event.organization._id === element._id
+                    }
                     onSelect={() =>
                       this.onSelectOrganization(
                         "organization",
-                        element._id,
+                        element,
                         element
                       )
                     }
-                  >
-                    Create Organization
-                  </OrganizationItem>
+                  />
                 );
               })}
           </Layout>
@@ -187,41 +200,64 @@ class EventStep0 extends Component {
             </InfoChatBox>
           </Container>
         </Container>
-        <Layout mt={"10px"} mdTemplateColumns={2}>
-          <TextAreaButton
-            isExpanded={this.state.isFormOpen}
-            center={!this.state.isFormOpen}
-            borderType={"dashed"}
-            pointer
-            onClick={() =>
-              !this.state.isFormOpen && this.onCreationButtonClick(true)
-            }
-          >
-            <Container hide={this.state.isFormOpen}>
-              <SPlusICon>
-                <MaterialIcon type={"plus"} />
-              </SPlusICon>
-              {event.organizer ? "Create Organization" : "Add Organizer Info"}
-            </Container>
-            <Container hide={!this.state.isFormOpen}>
-              <Mutation
-                mutation={CreateOrg}
-                onCompleted={organization =>
-                  this.onCreationCallback(organization)
-                }
-                onError={error => console.log("Error: ", error)}
-              >
-                {createOrg => (
-                  <SimpleOrgCreateForm
-                    allowUpload={event.organizer}
-                    handleCancel={() => this.onCreationButtonClick(false)}
-                    onSave={data => this.onNewOrgCreation(data, createOrg)}
-                  />
-                )}
-              </Mutation>
-            </Container>
-          </TextAreaButton>
-        </Layout>
+        <Container hide={!event.organizer && orgSelected}>
+          <Layout mt={"10px"} mdTemplateColumns={2}>
+            <TextAreaButton
+              isExpanded={this.state.isFormOpen}
+              center={!this.state.isFormOpen}
+              borderType={"dashed"}
+              pointer
+              onClick={() =>
+                !this.state.isFormOpen && this.onCreationButtonClick(true)
+              }
+            >
+              <Container hide={this.state.isFormOpen}>
+                <SPlusICon>
+                  <MaterialIcon type={"plus"} />
+                </SPlusICon>
+                {event.organizer ? "Create Organization" : "Add Organizer Info"}
+              </Container>
+              <Container hide={!this.state.isFormOpen}>
+                <Mutation
+                  mutation={CreateOrg}
+                  onCompleted={organization =>
+                    this.onCreationCallback(organization)
+                  }
+                  onError={error => console.log("Error: ", error)}
+                >
+                  {createOrg => (
+                    <SimpleOrgCreateForm
+                      allowUpload={event.organizer}
+                      handleCancel={() => this.onCreationButtonClick(false)}
+                      onSave={data => this.onNewOrgCreation(data, createOrg)}
+                    />
+                  )}
+                </Mutation>
+              </Container>
+            </TextAreaButton>
+          </Layout>
+        </Container>
+        <Container hide={event.organizer || !orgSelected}>
+          <Layout mdTemplateColumns={2} mdColGap={"10px"} rowGap={"10px"}>
+            <OrganizationItem
+              data={orgSelected}
+              pointer
+              isSelected={
+                event.organization &&
+                orgSelected &&
+                event.organization._id === orgSelected._id
+              }
+            />
+          </Layout>
+          <Container mt={"10px"}>
+            <InfoChatBox>
+              <Container>
+                <SLabel>Note</SLabel>
+                <Container>{texts.organizerNeedVerification}</Container>
+              </Container>
+            </InfoChatBox>
+          </Container>
+        </Container>
       </FormMainLayout>
     );
   }
