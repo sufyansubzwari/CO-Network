@@ -136,7 +136,7 @@ class OrganizationPreviewBody extends React.Component {
                 >
                     <Title>
                         {name}
-                        {organization.checked || true ? <Span><MaterialIcon type={'shield-check'} /></Span> : null}
+                        {organization.checked ? <Span><MaterialIcon type={'shield-check'} /></Span> : null}
                     </Title>
                 </PlaceHolder>
                 <PlaceHolder
