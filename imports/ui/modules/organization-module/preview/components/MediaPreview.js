@@ -62,11 +62,11 @@ class ProductPreview extends React.Component {
 
     renderLeftSide = () => {
         return (
-            <a href={this.handleImage(this.props.file, "base")} target="_blank">
+            <a href={this.handleImage(this.props.file && this.props.file.link, "base")} target="_blank">
                 <SVideo>
-                    <source src={this.handleImage(this.props.file, "base")} type="video/mp4" />
-                    <source src={this.handleImage(this.props.file, "base")} type="video/ogg" />
-                    <source src={this.handleImage(this.props.file, "base")} type="video/webm" />
+                    <source src={this.handleImage(this.props.file && this.props.file.link, "base")} type="video/mp4" />
+                    <source src={this.handleImage(this.props.file && this.props.file.link, "base")} type="video/ogg" />
+                    <source src={this.handleImage(this.props.file && this.props.file.link, "base")} type="video/webm" />
                 </SVideo>
             </a>
         )
@@ -107,7 +107,7 @@ ProductPreview.defaultProps = {
 }
 
 ProductPreview.propTypes = {
-    link: PropsTypes.string,
+    link: PropsTypes.object,
     explain: PropsTypes.string,
     name: PropsTypes.string,
     file: PropsTypes.array

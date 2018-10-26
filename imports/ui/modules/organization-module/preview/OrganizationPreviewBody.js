@@ -287,7 +287,7 @@ class OrganizationPreviewBody extends React.Component {
                     <CollapseList cutElements={3}>
                         {media && media.length > 0 && media.map((item, index) =>
                             <MediaPreview key={index} name={item.name} link={item.link}
-                                            file={item.file}
+                                            file={item.files}
                                             explain={item.explain}/>
                         )}
                     </CollapseList>
