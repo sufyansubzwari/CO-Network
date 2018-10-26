@@ -1,11 +1,16 @@
 import React from "react";
 import { Container, Layout } from "btech-layout";
-import { Button, Input, TextArea } from "btech-base-forms-component";
+import { Button, Input, TextArea, SalaryInput } from "btech-base-forms-component";
 import MaterialIcon from "react-material-iconic-font";
 import LineSeparator from "./LineSeparator";
 import { MLTagsInput, FormMainLayout } from "../../components";
 
 export default (Publications = function(props) {
+
+  handleValue = (value) => {
+    props.model['year'] = value;
+  }
+
   return (
     <Container marginX={"-10px"} style={{ background: "#f6f6f6" }}>
       <form
@@ -30,10 +35,11 @@ export default (Publications = function(props) {
           />
         </Layout>
         <Layout mdTemplateColumns={2}>
-          <Input
-            placeholderText={"Year Published"}
-            model={props.model}
-            name={"year"}
+          <SalaryInput
+            labelText={"Year Published"}
+            getValue={(value) => handleValue(value) }
+            value={Number(props.model['year'])}
+            addChar={""}
           />
           <div />
         </Layout>

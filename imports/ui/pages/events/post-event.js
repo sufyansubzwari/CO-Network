@@ -6,7 +6,7 @@ import { withRouter } from "react-router-dom";
 import { CreateEvent, DeleteEvent } from "../../apollo-client/event";
 import { Mutation } from "react-apollo";
 import _ from "lodash";
-import {GetSponsors} from "../../apollo-client/sponsor";
+import { GetSponsors } from "../../apollo-client/sponsor";
 
 /**
  * @module Events
@@ -78,8 +78,15 @@ class PostEvent extends Component {
       ? delete queryEvent.place.location.fullLocation
       : null;
 
-    let sponsors = queryEvent && queryEvent.sponsors && queryEvent.sponsors.length > 0 &&  queryEvent.sponsors.map( item => ({...item, user: !item.user ? null : item.user._id ? item.user._id : item.user}));
-    queryEvent.sponsors = sponsors;
+    let sponsors =
+      queryEvent &&
+      queryEvent.sponsors &&
+      queryEvent.sponsors.length > 0 &&
+      queryEvent.sponsors.map(item => ({
+        ...item,
+        user: !item.user ? null : item.user._id ? item.user._id : item.user
+      }));
+    if (sponsors) queryEvent.sponsors = sponsors;
 
     if (queryEvent.followerList) delete queryEvent.followerList;
     let event = { ...queryEvent };

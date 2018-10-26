@@ -6,10 +6,13 @@ import TagsAdd from "./TagsAdd";
 import UploadFile from "./UploadFile";
 import Dates from "./Dates";
 import ProductService from "./Product-Service";
-import Media from "./Media"
-import HeaderInformation from "./HeaderInformation"
-import PreviewSection from "./PreviewSection/PreviewSection"
-import SalaryRangePreview from "./SalaryRange/SalaryRange"
+import Media from "./Media";
+import HeaderInformation from "./HeaderInformation";
+import PreviewSection from "./PreviewSection/PreviewSection";
+import SalaryRangePreview from "./SalaryRange/SalaryRange";
+import MapSection from "./MapSection/MapSection";
+import CollapseList from "./CollapseList/CollapseList"
+import ItemList from "./ItemList/ItemList"
 
 export {
   Title,
@@ -23,5 +26,8 @@ export {
   Media,
   HeaderInformation,
   PreviewSection,
-  SalaryRangePreview
+  MapSection,
+  SalaryRangePreview,
+  CollapseList,
+  ItemList
 };
