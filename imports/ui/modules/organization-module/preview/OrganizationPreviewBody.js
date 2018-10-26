@@ -7,8 +7,15 @@ import {
   Location,
   Title,
   Social,
-  Media
-} from "../components/index";
+  Media,
+  PreviewSection,
+  SalaryRangePreview,
+  CollapseList
+} from "../../../components/Preview/components/index";
+import {PlaceHolder} from "btech-placeholder-component";
+import Separator from "../../../components/FiltersContainer/Separator";
+
+
 
 class OrganizationPreviewBody extends React.Component {
   constructor(props) {
@@ -22,7 +29,8 @@ class OrganizationPreviewBody extends React.Component {
   componentWillReceiveProps(nextProps) {
     if (nextProps.organization) {
       this.setState({
-        organization: nextProps.organization
+        organization: nextProps.organization,
+        showMoreVision: false
       });
     }
   }
@@ -99,6 +107,77 @@ class OrganizationPreviewBody extends React.Component {
     if (this.state.organization) elements = this.state.organization.orgType;
     return elements;
   }
+
+    handleMoreAbout = () => {
+        this.setState({
+            showMoreVision: !this.state.showMoreVision
+        })
+    }
+
+    renderSummarySection = () => {
+
+        let organization = this.state.organization;
+        let name = `${organization.name}`;
+        let orgType = this.handleOrgType();
+        orgType =
+            orgType &&
+            orgType.length &&
+            orgType.map(org => ({
+                ...org.tag,
+                active: true
+            }));
+        let description = this.handleDescriptionTags();
+        const reason = organization.reason;
+
+        return (
+            <PreviewSection>
+                <PlaceHolder
+                    loading={!organization.name && !organization._id}
+                    height={35}
+                    width={300}
+                >
+                    <Title text={name}/>
+                </PlaceHolder>
+                <PlaceHolder
+                    loading={!organization.place && !organization._id}
+                    height={35}
+                    width={300}
+                >
+                    <Location location={organization.place}/>
+                </PlaceHolder>
+                <PlaceHolder
+                    loading={!orgType || !orgType.length  && !organization._id}
+                    height={35}
+                    width={300}
+                >
+                    <TagsAdd hideBorder={true} activeColor={"white"} backgroundTagColor={"#202225"}
+                             borderColor={"#202225"} tags={orgType}/>
+                    <Separator/>
+                </PlaceHolder>
+                <PlaceHolder
+                    loading={!description || !description.length  && !organization._id}
+                    height={35}
+                    width={300}
+                >
+                    <TagsAdd header={"Description"} tags={description}/>
+                </PlaceHolder>
+                <PlaceHolder
+                    loading={(!reason || !reason.vision) && !organization._id}
+                    height={35}
+                    width={300}>
+                    <Container>
+                        <Text
+                            header={"Vision"}
+                            text={reason && reason.vision}
+                            showMore={true}
+                            extraTexts={[reason && reason.bio, reason && reason.orgDefine]}
+                            moreClicked={this.handleMoreAbout}
+                        />
+                    </Container>
+                </PlaceHolder>
+            </PreviewSection>
+        )
+    }
 
   render() {
     // social information
