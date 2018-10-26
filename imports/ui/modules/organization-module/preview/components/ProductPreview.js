@@ -73,7 +73,7 @@ class   ProductPreview extends React.Component {
 
         })
         return (
-            <SImage onClick={() => this.setState({lightBoxIsOpen: true})} src={this.handleImage(filteredFiles[0] && filteredFiles[0].link, "base")}>
+            <SImage onClick={() => this.setState({lightBoxIsOpen: true})} src={this.handleImage(filteredFiles && filteredFiles[0] && filteredFiles[0].link, "base")}>
                 { filteredFiles && filteredFiles.length > 0 ?
                     <LightBox
                         images={ filteredFiles && filteredFiles.length > 0 && filteredFiles.map( item => ({src: this.handleImage(item.link, "base")}))}
