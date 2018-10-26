@@ -43,7 +43,7 @@ const Text = styled.span`
     line-height: 20px;
 `
 
-class   ProductPreview extends React.Component {
+class ProductPreview extends React.Component {
 
     constructor(props) {
         super(props)
@@ -62,11 +62,13 @@ class   ProductPreview extends React.Component {
 
     renderLeftSide = () => {
         return (
-            <SVideo>
-                <source src={this.props.file} type="video/mp4" />
-                <source src={this.props.file} type="video/ogg" />
-                <source src={this.props.file} type="video/webm" />
-            </SVideo>
+            <a href={this.handleImage(this.props.file, "base")} target="_blank">
+                <SVideo>
+                    <source src={this.handleImage(this.props.file, "base")} type="video/mp4" />
+                    <source src={this.handleImage(this.props.file, "base")} type="video/ogg" />
+                    <source src={this.handleImage(this.props.file, "base")} type="video/webm" />
+                </SVideo>
+            </a>
         )
     }
     renderRightSide = () => {

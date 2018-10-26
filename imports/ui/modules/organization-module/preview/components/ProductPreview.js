@@ -51,6 +51,7 @@ class   ProductPreview extends React.Component {
         super(props)
         this.state = {
             lightBoxIsOpen: false,
+            currentImage: 0
         }
     }
 
@@ -78,8 +79,15 @@ class   ProductPreview extends React.Component {
                     <LightBox
                         images={ filteredFiles && filteredFiles.length > 0 && filteredFiles.map( item => ({src: this.handleImage(item.link, "base")}))}
                         isOpen={this.state.lightBoxIsOpen}
+                        currentImage={this.state.currentImage}
                         onClose={() => this.setState({ lightBoxIsOpen: false })}
                         theme={theme.theme.lightBoxTheme}
+                        onClickPrev={() =>
+                            this.setState({ currentImage: this.state.currentImage - 1 })
+                        }
+                        onClickNext={() =>
+                            this.setState({ currentImage: this.state.currentImage + 1 })
+                        }
                     /> : null}
             </SImage>
         )
