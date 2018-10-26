@@ -22,6 +22,8 @@ import styled from "styled-components";
 
 const Span = styled.span`
     color: ${props => props.theme ? props.theme.color.primary : null};
+    margin-left: 8px;
+    font-size: 20px;
 `
 
 
@@ -134,7 +136,7 @@ class OrganizationPreviewBody extends React.Component {
                 >
                     <Title>
                         {name}
-                        {organization.checked ? <Span><MaterialIcon type={'shield-check'} /></Span> : null}
+                        {organization.checked || true ? <Span><MaterialIcon type={'shield-check'} /></Span> : null}
                     </Title>
                 </PlaceHolder>
                 <PlaceHolder
