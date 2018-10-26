@@ -11,7 +11,7 @@ import theme from "../../../../theme"
 
 
 const SImage = styled(Container)`
-    background: ${props => props.src ? `url(${props.src})` : "#32363D"};
+    background: ${props => props.src ? `url("${props.src}")` : "#32363D"};
     background-size: cover;
     border-radius: 3px;
     height: 57px;

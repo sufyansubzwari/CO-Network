@@ -16,7 +16,15 @@ import {PlaceHolder} from "btech-placeholder-component";
 import Separator from "../../../components/FiltersContainer/Separator";
 import ProductPreview from "./components/ProductPreview";
 import MediaPreview from "./components/MediaPreview";
+import MaterialIcon from "react-material-iconic-font";
+import styled from "styled-components";
 
+
+const Span = styled.span`
+    color: ${props => props.theme ? props.theme.color.primary : null};
+    margin-left: 8px;
+    font-size: 20px;
+`
 
 
 class OrganizationPreviewBody extends React.Component {
@@ -126,7 +134,10 @@ class OrganizationPreviewBody extends React.Component {
                     height={35}
                     width={300}
                 >
-                    <Title text={name}/>
+                    <Title>
+                        {name}
+                        {organization.checked || true ? <Span><MaterialIcon type={'shield-check'} /></Span> : null}
+                    </Title>
                 </PlaceHolder>
                 <PlaceHolder
                     loading={!organization.place && !organization._id}
