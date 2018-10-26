@@ -217,7 +217,7 @@ class UserPreviewBody extends React.Component {
                 active: true
             }));
 
-        const jobVal = (jobType && jobType.length || min || max) && professional.seeking;
+        const jobVal = (jobType && jobType.length || min || max) && professional && professional.seeking;
 
         const profesionalexp = achievements && achievements.length > 0 && achievements.filter(item => item.type === "Professional Experience");
         const patents = achievements && achievements.length > 0 && achievements.filter(item => item.type === "Patents");
@@ -230,7 +230,7 @@ class UserPreviewBody extends React.Component {
                     height={35}
                     width={300}
                 >
-                    <CheckedLabel seeking={professional.seeking}/>
+                    <CheckedLabel seeking={professional && professional.seeking}/>
                     {
                         professional && professional.seeking && (min || max) ?
                             <Container mt={"20px"}>
