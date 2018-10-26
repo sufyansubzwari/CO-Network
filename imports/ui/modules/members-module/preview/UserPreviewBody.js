@@ -226,13 +226,13 @@ class UserPreviewBody extends React.Component {
         return (
             <PreviewSection title={"Professional"}>
                 <PlaceHolder
-                    loading={!professional.seeking && !this.props.id}
+                    loading={!professional || !professional.seeking && !this.props.id}
                     height={35}
                     width={300}
                 >
                     <CheckedLabel seeking={professional.seeking}/>
                     {
-                        professional.seeking && (min || max) ?
+                        professional && professional.seeking && (min || max) ?
                             <Container mt={"20px"}>
                                 <SText mb={"5px"}>{"Expected Salary"}</SText>
                                 <SalaryRangePreview
