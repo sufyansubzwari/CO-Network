@@ -6,6 +6,11 @@ import LineSeparator from "./LineSeparator";
 import { MLTagsInput, FormMainLayout } from "../../components";
 
 export default (Publications = function(props) {
+
+  handleValue = (value) => {
+    props.model['year'] = value;
+  }
+
   return (
     <Container marginX={"-10px"} style={{ background: "#f6f6f6" }}>
       <form
@@ -32,8 +37,8 @@ export default (Publications = function(props) {
         <Layout mdTemplateColumns={2}>
           <SalaryInput
             labelText={"Year Published"}
-            getValue={ (value) => props.model['year'] = value }
-            value={props.model['year']}
+            getValue={(value) => handleValue(value) }
+            value={Number(props.model['year'])}
             addChar={""}
           />
           <div />
