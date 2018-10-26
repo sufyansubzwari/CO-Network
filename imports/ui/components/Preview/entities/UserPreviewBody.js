@@ -240,8 +240,7 @@ class UserPreviewBody extends React.Component {
           <Text header={"Looking For"}>{lookingfor}</Text>
         ) : null}
         <Layout mdRowGap={"15px"} mdTemplateColumns={3}>
-          {this.state.user.professional &&
-          this.state.user.professional.seeking !== undefined ? (
+          {this.state.user.professional ? (
             <Text
               header={"Seeking Employment"}
               text={this.state.user.professional.seeking ? "Yes" : "No"}

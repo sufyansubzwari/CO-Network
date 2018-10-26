@@ -17,7 +17,7 @@ Mutation.organization = async (root, { organizations }, context) => {
       organizations.tech.stack,
       oldOrg && oldOrg.tech && oldOrg.tech.stack && oldOrg.tech.stack.length ? oldOrg.tech.stack : []
     );
-  if (organizations.tech.industry && organizations.tech.industry)
+  if (organizations.tech && organizations.tech.industry)
     entity.tech.industry = await Tags.service.normalizeTags(
       organizations.tech.industry,
       oldOrg ? oldOrg.tech.industry : []

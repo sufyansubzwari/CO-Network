@@ -35,7 +35,13 @@ const SImage = styled(Container)`
   }
 `;
 
-const SName = styled(Container)`
+const SCutContainer = styled(Container)`
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+`;
+
+const SName = styled(SCutContainer)`
   font-family: "Helvetica Neue LT Std";
   font-size: 14px;
   line-height: 26px;
@@ -70,15 +76,18 @@ const OrganizationItem = function(props) {
             centerSize={22}
           />
         </SImage>
-        <Container>
-          <SName>
+        <SCutContainer>
+          <SName title={name || "name"}>
             {name || "name"}
             <OrgStatusIcon status={checkStatus} />
           </SName>
-          <Container mt={"5px"}>
+          <SCutContainer
+            mt={"5px"}
+            title={contact ? contact.email || contact.phone : ""}
+          >
             {contact ? contact.email || contact.phone : ""}
-          </Container>
-        </Container>
+          </SCutContainer>
+        </SCutContainer>
       </Layout>
       <SMarker isActive={props.isSelected} />
     </STextAreaButton>

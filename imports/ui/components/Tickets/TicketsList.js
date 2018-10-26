@@ -78,7 +78,9 @@ class TicketsList extends Component {
           <Layout
             rowGap={"5px"}
             customTemplateColumns={
-              props.hasQuantity ? "1fr 1fr auto auto" : "1fr 1fr auto"
+              props.hasQuantity
+                ? "minmax(100px, max-content) 1fr auto auto"
+                : "1fr 1fr auto"
             }
           >
             <Container>

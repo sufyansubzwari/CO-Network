@@ -7,8 +7,9 @@ import OrganizationItem from "./components/OrganizationItem";
 import styled from "styled-components";
 import MaterialIcon from "react-material-iconic-font";
 import { graphql } from "react-apollo";
-import { GetOrg } from "../../../../apollo-client/organization";
+import { CreateOrg, GetOrg } from "../../../../apollo-client/organization";
 import { InfoChatBox } from "../../../../components";
+import { Mutation } from "react-apollo";
 import SimpleOrgCreateForm from "./components/SimpleOrgCreateForm";
 
 const SYesNoOption = styled.span`
@@ -79,8 +80,24 @@ class EventStep0 extends Component {
     );
   }
 
-  onNewOrgCreation(data) {
-    console.log(data);
+  onNewOrgCreation(data, createOrg) {
+    let orgQuery = Object.assign({}, data);
+    let organization = { ...orgQuery };
+    if (this.props.curUser) {
+      organization.owner = this.props.curUser._id;
+      createOrg({ variables: { entity: organization } });
+    } else {
+      // todo login the user and then create the event or notify the user must login
+      alert("You must be logged");
+    }
+  }
+
+  onCreationCallback(result) {
+    const { organization } = result;
+    if (organization && organization._id) {
+      this.onSelectOrganization("organization", organization._id, organization);
+      this.props.organizations.refetch();
+    }
   }
 
   render() {
@@ -178,6 +195,7 @@ class EventStep0 extends Component {
         <Layout mt={"10px"} mdTemplateColumns={2}>
           <TextAreaButton
             isExpanded={this.state.isFormOpen}
+            center={!this.state.isFormOpen}
             borderType={"dashed"}
             pointer
             onClick={() =>
@@ -191,10 +209,20 @@ class EventStep0 extends Component {
               {event.organizer ? "Create Organization" : "Add Organizer Info"}
             </Container>
             <Container hide={!this.state.isFormOpen}>
-              <SimpleOrgCreateForm
-                handleCancel={() => this.onCreationButtonClick(false)}
-                onSave={data => this.onNewOrgCreation(data)}
-              />
+              <Mutation
+                mutation={CreateOrg}
+                onCompleted={organization =>
+                  this.onCreationCallback(organization)
+                }
+                onError={error => console.log("Error: ", error)}
+              >
+                {createOrg => (
+                  <SimpleOrgCreateForm
+                    handleCancel={() => this.onCreationButtonClick(false)}
+                    onSave={data => this.onNewOrgCreation(data, createOrg)}
+                  />
+                )}
+              </Mutation>
             </Container>
           </TextAreaButton>
         </Layout>
