@@ -88,7 +88,7 @@ class ListEvents extends List {
                   mutation={FollowAction}
                   onError={error => this.errorOnBackgroundChange(error)}
                 >
-                  {(followAction) => {
+                  {followAction => {
                     const follow =
                       this.props.curUser &&
                       this.props.curUser._id &&
@@ -97,6 +97,17 @@ class ListEvents extends List {
                       this.state.selectedItem.followerList.indexOf(
                         this.props.curUser._id
                       ) > -1;
+                    let eventImages = null;
+                    if (
+                      this.state.selectedItem &&
+                      this.state.selectedItem.organization
+                    ) {
+                      eventImages = [];
+                      eventImages.push(null);
+                      eventImages.push(
+                        this.state.selectedItem.organization.image
+                      );
+                    }
                     return (
                       <Preview
                         key={"rightSide"}
@@ -171,6 +182,7 @@ class ListEvents extends List {
                           }
                         ]}
                         data={this.state.selectedItem}
+                        image={eventImages}
                         allowChangeAvatar={false}
                         allowChangeImages={
                           this.state.selectedItem &&

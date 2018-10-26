@@ -133,33 +133,42 @@ class SimpleOrgCreateForm extends React.Component {
             />
           </Container>
         </Layout>
-        <Layout
-          mt={{ md: "20px" }}
-          customTemplateColumns={"125px 1fr"}
-          mdColGap={"20px"}
-          rowGap={"5px"}
-        >
-          <Container>
-            <UploadFileButton
-              marginRight={"10px"}
-              placeholderText={"Upload Logo"}
-              getValue={this.handleUpload}
-            />
-          </Container>
-          <Container>
-            {file && file.name ? (
-              <AttachedFile file={file} onClose={() => this.onCloseFile()} />
-            ) : null}
-          </Container>
-        </Layout>
+        {this.props.allowUpload ? (
+          <Layout
+            mt={"20px"}
+            customTemplateColumns={"125px 1fr"}
+            mdColGap={"20px"}
+            rowGap={"5px"}
+          >
+            <Container>
+              <UploadFileButton
+                marginRight={"10px"}
+                placeholderText={"Upload Logo"}
+                getValue={this.handleUpload}
+              />
+            </Container>
+            <Container>
+              {file && file.name ? (
+                <AttachedFile file={file} onClose={() => this.onCloseFile()} />
+              ) : null}
+            </Container>
+          </Layout>
+        ) : null}
       </InternalForm>
     );
   }
 }
 
+SimpleOrgCreateForm.defaultProps = {
+  allowUpload: true,
+  allowEdit: false
+};
+
 SimpleOrgCreateForm.propTypes = {
   handleCancel: PropTypes.func,
-  onSave: PropTypes.func
+  onSave: PropTypes.func,
+  allowUpload: PropTypes.bool,
+  allowEdit: PropTypes.bool
 };
 
 export default SimpleOrgCreateForm;

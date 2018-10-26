@@ -511,7 +511,7 @@ Preview.propTypes = {
   navOptions: PropsTypes.array,
   allowChangeImages: PropsTypes.bool,
   allowChangeAvatar: PropsTypes.bool,
-  image: PropsTypes.string,
+  image: PropsTypes.any,
   changeProfile: PropsTypes.func,
   onBackgroundChange: PropsTypes.func,
   onUserPhotoChange: PropsTypes.func,

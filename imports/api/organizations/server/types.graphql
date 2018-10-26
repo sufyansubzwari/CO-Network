@@ -102,12 +102,16 @@ input OrganizationSearchInput{
     endDate: TableDateFilterInput
     location: [LocationInput]
     owner: String
+    enable: Boolean
+    checkStatus: String
 }
 
 input OrganizationsInput {
     _id: ID
     owner: String!
     name: String
+    checkStatus: String
+    enable: Boolean
     description: [TagsInput]
     image: String
     cover: String

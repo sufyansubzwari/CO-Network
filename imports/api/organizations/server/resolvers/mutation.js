@@ -52,4 +52,8 @@ Mutation.updateIdentitiesOrg = (root, { _id, identities }, context) => {
     return Service.updateIdentitiesOrg(_id, identities);
 };
 
+Mutation.updateOrgImage = async (root, { _id, image, cover }, context) => {
+  return Service.updateImage(_id, image, cover);
+};
+
 export default Mutation;

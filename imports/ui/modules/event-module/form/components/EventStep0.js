@@ -9,6 +9,7 @@ import MaterialIcon from "react-material-iconic-font";
 import { graphql } from "react-apollo";
 import { CreateOrg, GetOrg } from "../../../../apollo-client/organization";
 import { InfoChatBox } from "../../../../components";
+import { STEP_TEXTS } from "./constants/StepsTexts";
 import { Mutation } from "react-apollo";
 import SimpleOrgCreateForm from "./components/SimpleOrgCreateForm";
 
@@ -40,8 +41,10 @@ const SLabel = styled.label`
 class EventStep0 extends Component {
   constructor(props) {
     super(props);
+
     this.state = {
       event: this.props.data,
+      texts: STEP_TEXTS,
       orgSelected: null,
       isFormOpen: false
     };
@@ -81,7 +84,9 @@ class EventStep0 extends Component {
   }
 
   onNewOrgCreation(data, createOrg) {
+    const { event } = this.state;
     let orgQuery = Object.assign({}, data);
+    orgQuery.enable = event.organizer;
     let organization = { ...orgQuery };
     if (this.props.curUser) {
       organization.owner = this.props.curUser._id;
@@ -101,7 +106,7 @@ class EventStep0 extends Component {
   }
 
   render() {
-    const { event, orgSelected } = this.state;
+    const { event, orgSelected, texts } = this.state;
     const { organizations } = this.props.organizations || {};
     return (
       <FormMainLayout>
@@ -140,18 +145,12 @@ class EventStep0 extends Component {
           </Layout>
           <Container hide={event.organizer}>
             <Layout mt={"10px"} rowGap={"10px"}>
-              <InfoChatBox>
-                To ensure event quality and control, we ask event organizers to
-                establish a (Free) Organization Profile.
-              </InfoChatBox>
-              <InfoChatBox>
-                If you have the event organizers contact information. Please add
-                any details and we will reach out to them (Optional)
-              </InfoChatBox>
+              <InfoChatBox>{texts.ensureQuality}</InfoChatBox>
+              <InfoChatBox>{texts.giveMoreInfo}</InfoChatBox>
             </Layout>
           </Container>
         </Container>
-        <Container>
+        <Container hide={!event.organizer}>
           <Container mb={"5px"}>Please select your Organization</Container>
           <Layout mdTemplateColumns={2} mdColGap={"10px"} rowGap={"10px"}>
             {organizations &&
@@ -183,11 +182,7 @@ class EventStep0 extends Component {
             <InfoChatBox>
               <Container>
                 <SLabel>Note</SLabel>
-                <Container>
-                  Until this organization is verified, this Event will be
-                  available to the public but ticket sales or RSVP will not be
-                  activated.
-                </Container>
+                <Container>{texts.orgNeedVerification}</Container>
               </Container>
             </InfoChatBox>
           </Container>
@@ -218,6 +213,7 @@ class EventStep0 extends Component {
               >
                 {createOrg => (
                   <SimpleOrgCreateForm
+                    allowUpload={event.organizer}
                     handleCancel={() => this.onCreationButtonClick(false)}
                     onSave={data => this.onNewOrgCreation(data, createOrg)}
                   />
@@ -245,7 +241,10 @@ export default graphql(GetOrg, {
   options: props => {
     return {
       variables: {
-        organizations: { owner: props.curUser ? props.curUser._id : "" }
+        organizations: {
+          owner: props.curUser ? props.curUser._id : "",
+          enable: true
+        }
       },
       fetchPolicy: "cache-and-network",
       errorPolicy: "all"

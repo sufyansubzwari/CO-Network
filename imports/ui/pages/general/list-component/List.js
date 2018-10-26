@@ -174,7 +174,7 @@ class List extends Component {
       variables: { id: this.state.selectedItem._id, image: src }
     }).then(result => {
       const entity = { ...this.state.selectedItem };
-      if (src) entity.image = src;
+      if (src && result) entity.image = src;
       this.setState({ selectedItem: entity }, () => this.reFetchQuery());
     });
   }

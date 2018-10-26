@@ -36,8 +36,8 @@ class InternalForm extends Component {
             this.props.onSave && this.props.onSave();
           }}
         >
+          <STitleText>{this.props.title}</STitleText>
           <FormMainLayout>
-            <STitleText>{this.props.title}</STitleText>
             <Layout rowGap={"5px"}>
               {this.props.children}
               <Container>
