@@ -116,7 +116,7 @@ class UserPreviewBody extends React.Component {
                     <Separator/>
                 </PlaceHolder>
                 <PlaceHolder
-                    loading={!user.aboutMe.yourPassion && !this.props.id}
+                    loading={(!aboutMe || !aboutMe.yourPassion) && !this.props.id}
                     height={35}
                     width={300}>
                     <Container>
@@ -124,7 +124,7 @@ class UserPreviewBody extends React.Component {
                             header={"About"}
                             text={aboutMe && aboutMe.yourPassion}
                             showMore={true}
-                            extraTexts={[aboutMe.existingProblem, aboutMe.steps]}
+                            extraTexts={[aboutMe && aboutMe.existingProblem, aboutMe && aboutMe.steps]}
                             moreClicked={this.handleMoreAbout}
                         />
                     </Container>
