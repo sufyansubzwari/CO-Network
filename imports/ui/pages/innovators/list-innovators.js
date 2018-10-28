@@ -42,10 +42,30 @@ class ListInnovators extends List {
       filterStatus: {},
       navList: INNOVATORS_TYPES,
       currentTab: INNOVATORS_TYPES[0],
-      summary: true
+      summary: true,
+      previewMembersOptions: [
+        { label: "Summary", action: () => this.scrollToSection("Summary") },
+        { label: "Knowledge | Community", action: () => this.scrollToSection("Knowledge") },
+        { label: "Professional", action: () => this.scrollToSection("Professional") },
+        { label: "Academic", action: () => this.scrollToSection("Academic") },
+        { label: "Organization", action: () => this.scrollToSection("Organization") },
+        { label: "Event", action: () => this.scrollToSection("Event") },
+        { label: "Job", action: () => this.scrollToSection("Job") }
+      ],
+      previewOrgOptions: [
+        { label: "Summary", action: () => this.scrollToSection("Summary") },
+        { label: "Technical Recruitment", action: () => this.scrollToSection("Recruitment") },
+        { label: "Product & Service", action: () => this.scrollToSection("Product") },
+        { label: "Media", action: () => this.scrollToSection("Media") }
+      ],
+      activePreview: null,
     };
     this.customRenderItem = this.customRenderItem.bind(this);
     this.entityName = "innovators";
+  }
+
+  scrollToSection(link){
+    this.setState({activePreview: link});
   }
 
   componentWillMount() {
@@ -243,6 +263,8 @@ class ListInnovators extends List {
             views={item.views}
             key={key}
             onSelectTag={(tag, index) => this.onSelectTag(tag, index)}
+            activeOptionPreview={this.state.activePreview}
+            previewOptions={this.state.previewOrgOptions}
           />
         );
       case "members":
@@ -276,6 +298,8 @@ class ListInnovators extends List {
             views={item.views}
             key={key}
             onSelectTag={(tag, index) => this.onSelectTag(tag, index)}
+            activeOptionPreview={this.state.activePreview}
+            previewOptions={this.state.previewMembersOptions}
           />
         );
       default:
@@ -482,12 +506,14 @@ class ListInnovators extends List {
                         this.state.selectedItem ? (
                           <OrganizationPreviewBody
                             organization={this.state.selectedItem}
+                            activePreview={this.state.activePreview}
                           />
                         ) : this.state.currentTab.value === "members" &&
                         this.state.selectedItem ? (
                           <UserPreviewBody
                             user={this.state.selectedItem.profile}
                             id={this.state.selectedItem._id}
+                            activePreview={this.state.activePreview}
                           />
                         ) : null}
                       </MemberPreview>

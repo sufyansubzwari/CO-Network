@@ -34,6 +34,11 @@ class OrganizationPreviewBody extends React.Component {
         this.state = {
             organization: props.organization ? props.organization : null
         };
+
+      this.SummarySection = React.createRef();
+      this.RecruitmentSection = React.createRef();
+      this.ProductSection = React.createRef();
+      this.MediaSection = React.createRef();
     }
 
     componentWillReceiveProps(nextProps) {
@@ -43,7 +48,33 @@ class OrganizationPreviewBody extends React.Component {
                 showMoreVision: false
             });
         }
+      if (nextProps.activePreview !== this.props.activePreview) {
+        this.setState({ activePreview: nextProps.activePreview }, () => {
+          this.scrollToDomRef();
+        });
+      }
     }
+
+  scrollToDomRef = () => {
+    const currentRef = this.getRef(this.state.activePreview);
+    // this.props.scrollRef.scrollToTop();
+    currentRef && currentRef.scrollIntoView();
+    // const myDomNode = ReactDOM.findDOMNode(currentRef);
+    // myDomNode.scrollTo(0, myDomNode.offsetTop);
+  };
+
+  getRef(link) {
+    switch (link) {
+      case "Summary":
+        return this.SummarySection.current;
+      case "Recruitment":
+        return this.RecruitmentSection.current;
+      case "Product":
+        return this.ProductSection.current;
+      case "Media":
+        return this.MediaSection.current;
+    }
+  }
 
     handleProducts() {
         // let products = [];
@@ -128,7 +159,7 @@ class OrganizationPreviewBody extends React.Component {
         const reason = organization.reason;
 
         return (
-            <PreviewSection>
+            <PreviewSection previewRef={this.SummarySection}>
                 <PlaceHolder
                     loading={!organization.name && !organization._id}
                     height={35}
@@ -194,7 +225,7 @@ class OrganizationPreviewBody extends React.Component {
         let stacks = this.handleTechElements("stack");
 
         return (
-            <PreviewSection title={"Technical Recruitment"} lineSeparation={"30px"}>
+            <PreviewSection title={"Technical Recruitment"} lineSeparation={"30px"} previewRef={this.RecruitmentSection}>
                 <PlaceHolder
                     loading={!organization.name && !organization._id}
                     height={35}
@@ -242,7 +273,7 @@ class OrganizationPreviewBody extends React.Component {
         const service = products && products.length > 0 && products.filter(item => item.type === "Service");
 
         return (
-            <PreviewSection title={"Products & Services"}>
+            <PreviewSection title={"Products & Services"} previewRef={this.ProductSection}>
                 <PlaceHolder
                     loading={!product || !product.length  && !organization._id}
                     height={35}
@@ -278,7 +309,7 @@ class OrganizationPreviewBody extends React.Component {
         let media = organization.media;
 
         return (
-            <PreviewSection title={"Media"}>
+            <PreviewSection title={"Media"} previewRef={this.MediaSection}>
                 <PlaceHolder
                     loading={!media || !media.length  && !organization._id}
                     height={35}
