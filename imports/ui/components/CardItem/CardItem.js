@@ -183,11 +183,15 @@ class CardItem extends Component {
   }
 
   componentWillReceiveProps(newProps) {
+    if (newProps.isActive !== this.props.isActive) {
+      this.setState({ showPreview: false });
+    }
     setTimeout(() => {
       this.setState({ loadingImage: this.state.loadingImage });
     }, 500);
     if (!newProps.image) return;
     if (newProps.image !== this.props.image) this.loadImage(newProps.image);
+
   }
 
   loadImage(imageSrc) {
@@ -347,6 +351,7 @@ class CardItem extends Component {
         <CardPreview
           title={this.props.previewTitle}
           options={this.props.previewOptions}
+          active={this.props.activeOptionPreview}
         />
         <SShowMore onClick={this.handlePreviewCard}>
           <span>
@@ -388,7 +393,7 @@ class CardItem extends Component {
       <SCardContainer>
         <SMLCard
           className={"card"}
-          background={this.props.isActive ? "#000000" : "white"}
+          background={this.props.isActive ? this.state.showPreview ? "#2E2E2E" : "#000000" : "white"}
           onSelect={() =>
             this.props.onSelect && this.props.onSelect({ ...this.props.data })
           }
@@ -443,8 +448,9 @@ CardItem.propTypes = {
   onSelectTag: PropTypes.func,
   tags: PropTypes.array,
   views: PropTypes.number,
-  previewOptions: PropTypes.object,
-  previewTitle: PropTypes.string
+  previewOptions: PropTypes.array,
+  previewTitle: PropTypes.string,
+  activeOptionPreview: PropTypes.number
 };
 
 export default CardItem;

@@ -8,6 +8,7 @@ import { Container, mixins } from "btech-layout";
 import styled from "styled-components";
 import { LOADINGDATA } from "./mockData";
 import NavMenu from "./components/navMenu";
+import _ from "lodash";
 
 const SListTitle = styled(Container)`
   font-family: ${props =>
@@ -42,7 +43,14 @@ class ItemsList extends Component {
     this.renderItem = this.renderItem.bind(this);
   }
 
-  componentWillMount() {}
+  componentWillReceiveProps(nextProps) {
+    if(nextProps.activePreview !== this.props.activePreview){
+      this.forceUpdate();
+    }
+    if(!_.isEqual(nextProps.previewOptions, this.props.previewOptions)){
+      this.forceUpdate();
+    }
+  }
 
   onChangeSelection(item, key) {
     this.setState(
@@ -76,6 +84,8 @@ class ItemsList extends Component {
         key={key}
         data={item || 0}
         onSelectTag={this.props.onSelectTag}
+        previewOptions={this.props.previewOptions}
+        activeOptionPreview={this.props.activePreview}
       />
     );
   }
@@ -131,7 +141,9 @@ ItemsList.propTypes = {
   onSelectCard: PropTypes.func,
   navList: PropTypes.array,
   getNavActive: PropTypes.func,
-  onSelectTag: PropTypes.func
+  onSelectTag: PropTypes.func,
+  activePreview: PropTypes.string,
+  previewOptions: PropTypes.array
 };
 
 export default ItemsList;
