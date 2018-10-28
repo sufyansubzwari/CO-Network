@@ -24,6 +24,11 @@ class JobPreviewBody extends React.Component {
     this.state = {
       job: props.job ? props.job : {}
     };
+
+    this.SummarySection = React.createRef();
+    this.RequirementsSection = React.createRef();
+    this.ApplicantsSection = React.createRef();
+    this.EmployerSection = React.createRef();
   }
 
   componentWillReceiveProps(nextProps) {
@@ -31,6 +36,32 @@ class JobPreviewBody extends React.Component {
       this.setState({
         job: nextProps.job
       });
+    }
+    if (nextProps.activePreview !== this.props.activePreview) {
+      this.setState({ activePreview: nextProps.activePreview }, () => {
+        this.scrollToDomRef();
+      });
+    }
+  }
+
+  scrollToDomRef = () => {
+    const currentRef = this.getRef(this.state.activePreview);
+    // this.props.scrollRef.scrollToTop();
+    currentRef && currentRef.scrollIntoView();
+    // const myDomNode = ReactDOM.findDOMNode(currentRef);
+    // myDomNode.scrollTo(0, myDomNode.offsetTop);
+  };
+
+  getRef(link) {
+    switch (link) {
+      case "Summary":
+        return this.SummarySection.current;
+      case "Requirements":
+        return this.RequirementsSection.current;
+      case "Applicants":
+        return this.ApplicantsSection.current;
+      case "Employer":
+        return this.EmployerSection.current;
     }
   }
 
@@ -74,7 +105,7 @@ class JobPreviewBody extends React.Component {
       max;
 
     return canRender ? (
-      <PreviewSection>
+      <PreviewSection previewRef={this.SummarySection}>
         <PlaceHolder loading={!job.title && !job._id} height={35} width={300}>
           <Title text={job.title} />
         </PlaceHolder>
@@ -134,7 +165,7 @@ class JobPreviewBody extends React.Component {
     return languages.length ||
       this.state.job.jobResponsibility ||
       experience.length ? (
-      <PreviewSection title={"Requirements"}>
+      <PreviewSection title={"Requirements"} previewRef={this.RequirementsSection}>
         {experience && experience.length ? (
           <TagsAdd
             hideBorder={true}
@@ -167,7 +198,7 @@ class JobPreviewBody extends React.Component {
     return this.state.job.culture ||
       this.state.job.aboutUsTeam ||
       this.state.job.candidateQuestions ? (
-      <PreviewSection title={"Employer Culture"}>
+      <PreviewSection title={"Employer Culture"} previewRef={this.EmployerSection}>
         {this.state.job.culture ? (
           <Text
             header={"What make your culture unique"}
@@ -201,7 +232,7 @@ class JobPreviewBody extends React.Component {
           if (loading) return <div />;
           if (error) return <div>Error</div>;
           return data && data.jobsApply && data.jobsApply.length ? (
-            <PreviewSection title={"Applicants"} number={data.jobsApply.length}>
+            <PreviewSection title={"Applicants"} number={data.jobsApply.length} previewRef={this.ApplicantsSection}>
               <Layout
                 colGap={"20px"}
                 customTemplateColumns={`1fr`}

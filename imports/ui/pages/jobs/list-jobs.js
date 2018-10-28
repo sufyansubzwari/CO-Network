@@ -24,6 +24,19 @@ class ListJobs extends List {
   constructor(props) {
     super(props);
     this.entityName = "jobs";
+    this.state = {
+      previewOptions: [
+        { label: "Summary", action: () => this.scrollToSection("Summary") },
+        { label: "Requirements", action: () => this.scrollToSection("Requirements") },
+        { label: "Applicants", action: () => this.scrollToSection("Applicants") },
+        { label: "Employer", action: () => this.scrollToSection("Employer") }
+      ],
+      activePreview: null,
+    }
+  }
+
+  scrollToSection(link){
+    this.setState({activePreview: link});
   }
 
   componentWillMount() {
@@ -93,6 +106,8 @@ class ListJobs extends List {
                 this.onChangeSelection(item, key, viewsUpdate)
               }
               onSelectTag={(tag, index) => this.onSelectTag(tag, index)}
+              activePreview={this.state.activePreview}
+              previewOptions={this.state.previewOptions}
             />
           )}
         </Mutation>
@@ -191,7 +206,7 @@ class ListJobs extends List {
                           }
                         >
                           {" "}
-                          <JobPreviewBody job={this.state.selectedItem} />
+                          <JobPreviewBody job={this.state.selectedItem} activePreview={this.state.activePreview}/>
                         </Preview>
                       );
                     }}
