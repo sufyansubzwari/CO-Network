@@ -621,10 +621,19 @@ class UserPreviewBody extends React.Component {
                     let jobs = data.jobs;
                     return jobs && jobs.length > 0 ? (
                         <PreviewSection
-                            title={"Jobs"}
-                            number={jobs.length}
                             previewRef={this.JobSection}
                         >
+                            <Layout customTemplateColumns={"1fr auto"}>
+                                <NavMenu
+                                    noMarginBottom={true}
+                                    noMarginRight={true}
+                                    noMarginLeft={true}
+                                    options={[
+                                        {value: "Jobs", title: "Jobs", number: jobs.length}
+                                    ]}
+                                />
+                                <CreateButton text={"Create Job"} route={"/post-job"}/>
+                            </Layout>
                             <Layout
                                 colGap={"20px"}
                                 customTemplateColumns={`1fr`}
