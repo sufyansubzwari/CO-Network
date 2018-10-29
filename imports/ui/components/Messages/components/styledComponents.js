@@ -191,6 +191,7 @@ export const Header = styled.span`
 export const Link = styled.a`
   color: #000000;
   border-left: 1px solid #bfbfbf;
+  transition: color 0.3s ease-out;
   :hover {
     color: #000000;
   }

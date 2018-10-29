@@ -21,6 +21,7 @@ const Span = styled.span`
 
 const SLink = styled(Link)`
         color: #2b2b2b;
+        transition: color 0.3s ease-out;
     :hover{
         color: #2b2b2b;
         text-decoration: none;
