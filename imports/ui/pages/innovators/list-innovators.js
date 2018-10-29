@@ -506,6 +506,7 @@ class ListInnovators extends List {
                         this.state.selectedItem ? (
                           <OrganizationPreviewBody
                             organization={this.state.selectedItem}
+                            onSelectTag={(tag, index) => this.onSelectTag(tag, index)}
                             activePreview={this.state.activePreview}
                           />
                         ) : this.state.currentTab.value === "members" &&
@@ -513,6 +514,7 @@ class ListInnovators extends List {
                           <UserPreviewBody
                             user={this.state.selectedItem.profile}
                             id={this.state.selectedItem._id}
+                            onSelectTag={(tag, index) => this.onSelectTag(tag, index)}
                             activePreview={this.state.activePreview}
                           />
                         ) : null}

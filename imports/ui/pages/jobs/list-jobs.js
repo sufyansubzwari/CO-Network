@@ -206,7 +206,7 @@ class ListJobs extends List {
                           }
                         >
                           {" "}
-                          <JobPreviewBody job={this.state.selectedItem} activePreview={this.state.activePreview}/>
+                          <JobPreviewBody job={this.state.selectedItem} onSelectTag={(tag, index) => this.onSelectTag(tag, index)} activePreview={this.state.activePreview}/>
                         </Preview>
                       );
                     }}

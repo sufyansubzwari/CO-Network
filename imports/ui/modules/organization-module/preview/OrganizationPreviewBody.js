@@ -35,10 +35,10 @@ class OrganizationPreviewBody extends React.Component {
             organization: props.organization ? props.organization : null
         };
 
-      this.SummarySection = React.createRef();
-      this.RecruitmentSection = React.createRef();
-      this.ProductSection = React.createRef();
-      this.MediaSection = React.createRef();
+        this.SummarySection = React.createRef();
+        this.RecruitmentSection = React.createRef();
+        this.ProductSection = React.createRef();
+        this.MediaSection = React.createRef();
     }
 
     componentWillReceiveProps(nextProps) {
@@ -48,33 +48,33 @@ class OrganizationPreviewBody extends React.Component {
                 showMoreVision: false
             });
         }
-      if (nextProps.activePreview !== this.props.activePreview) {
-        this.setState({ activePreview: nextProps.activePreview }, () => {
-          this.scrollToDomRef();
-        });
-      }
+        if (nextProps.activePreview !== this.props.activePreview) {
+            this.setState({activePreview: nextProps.activePreview}, () => {
+                this.scrollToDomRef();
+            });
+        }
     }
 
-  scrollToDomRef = () => {
-    const currentRef = this.getRef(this.state.activePreview);
-    // this.props.scrollRef.scrollToTop();
-    currentRef && currentRef.scrollIntoView();
-    // const myDomNode = ReactDOM.findDOMNode(currentRef);
-    // myDomNode.scrollTo(0, myDomNode.offsetTop);
-  };
+    scrollToDomRef = () => {
+        const currentRef = this.getRef(this.state.activePreview);
+        // this.props.scrollRef.scrollToTop();
+        currentRef && currentRef.scrollIntoView();
+        // const myDomNode = ReactDOM.findDOMNode(currentRef);
+        // myDomNode.scrollTo(0, myDomNode.offsetTop);
+    };
 
-  getRef(link) {
-    switch (link) {
-      case "Summary":
-        return this.SummarySection.current;
-      case "Recruitment":
-        return this.RecruitmentSection.current;
-      case "Product":
-        return this.ProductSection.current;
-      case "Media":
-        return this.MediaSection.current;
+    getRef(link) {
+        switch (link) {
+            case "Summary":
+                return this.SummarySection.current;
+            case "Recruitment":
+                return this.RecruitmentSection.current;
+            case "Product":
+                return this.ProductSection.current;
+            case "Media":
+                return this.MediaSection.current;
+        }
     }
-  }
 
     handleProducts() {
         // let products = [];
@@ -167,7 +167,7 @@ class OrganizationPreviewBody extends React.Component {
                 >
                     <Title>
                         {name}
-                        {organization.checked ? <Span><MaterialIcon type={'shield-check'} /></Span> : null}
+                        {organization.checked ? <Span><MaterialIcon type={'shield-check'}/></Span> : null}
                     </Title>
                 </PlaceHolder>
                 <PlaceHolder
@@ -178,7 +178,7 @@ class OrganizationPreviewBody extends React.Component {
                     {organization.place ? <Location location={organization.place}/> : null}
                 </PlaceHolder>
                 <PlaceHolder
-                    loading={!orgType || !orgType.length && !organization._id}
+                    loading={(!orgType || !orgType.length) && !organization._id}
                     height={35}
                     width={300}
                 >
@@ -188,7 +188,7 @@ class OrganizationPreviewBody extends React.Component {
                     <Separator/>
                 </PlaceHolder>
                 <PlaceHolder
-                    loading={!description || !description.length && !organization._id}
+                    loading={(!description || !description.length) && !organization._id}
                     height={35}
                     width={300}
                 >
@@ -224,20 +224,23 @@ class OrganizationPreviewBody extends React.Component {
         let industry = this.handleTechElements("industry");
         let stacks = this.handleTechElements("stack");
 
-        return (
-            <PreviewSection title={"Technical Recruitment"} lineSeparation={"30px"} previewRef={this.RecruitmentSection}>
+        const render = organization.name || (min || max) || jobType || (stacks && stacks.length) || (industry && industry.length) || !organization._id
+
+        return render ? (
+            <PreviewSection title={"Technical Recruitment"} lineSeparation={"30px"}
+                            previewRef={this.RecruitmentSection}>
                 <PlaceHolder
                     loading={!organization.name && !organization._id}
                     height={35}
                     width={300}
                 >
-                    <SalaryRangePreview
+                    { (min || max) ? <SalaryRangePreview
                         label={"Salary Range"}
                         min={min ? tech.salaryRange.min : null}
-                        max={max ? tech.salaryRange.max : null}/>
+                        max={max ? tech.salaryRange.max : null}/> : null }
                 </PlaceHolder>
                 <PlaceHolder
-                    loading={!jobType || !jobType.length && !organization._id}
+                    loading={(!jobType || !jobType.length) && !organization._id}
                     height={35}
                     width={300}
                 >
@@ -247,22 +250,22 @@ class OrganizationPreviewBody extends React.Component {
                     <Separator/>
                 </PlaceHolder>
                 <PlaceHolder
-                    loading={!stacks || !stacks.length && !organization._id}
+                    loading={(!stacks || !stacks.length) && !organization._id}
                     height={35}
                     width={300}
                 >
                     {stacks && stacks.length ?
-                        <TagsAdd header={"Languages, Libraries, Skills"} tags={stacks}/> : null}
+                        <TagsAdd onSelectTag={this.props.onSelectTag} header={"Languages, Libraries, Skills"} tags={stacks}/> : null}
                 </PlaceHolder>
                 <PlaceHolder
-                    loading={!industry || !industry.length && !organization._id}
+                    loading={(!industry || !industry.length) && !organization._id}
                     height={35}
                     width={300}
                 >
-                    {industry && industry.length ? <TagsAdd header={"Industry | Sector"} tags={industry}/> : null}
+                    {industry && industry.length ? <TagsAdd onSelectTag={this.props.onSelectTag} header={"Industry | Sector"} tags={industry}/> : null}
                 </PlaceHolder>
             </PreviewSection>
-        )
+        ): null
     }
 
     renderProductsServicesSection = () => {
@@ -272,59 +275,63 @@ class OrganizationPreviewBody extends React.Component {
         const product = products && products.length > 0 && products.filter(item => item.type === "Product");
         const service = products && products.length > 0 && products.filter(item => item.type === "Service");
 
-        return (
+        const render = (products && products.length > 0) || (service && service.length > 0) || !organization._id
+
+        return render ? (
             <PreviewSection title={"Products & Services"} previewRef={this.ProductSection}>
                 <PlaceHolder
-                    loading={!product || !product.length  && !organization._id}
+                    loading={(!product || !product.length) && !organization._id}
                     height={35}
                     width={300}
                 >
-                    <CollapseList cutElements={3} title={"Products"}>
-                        {product && product.length > 0 && product.map((item, index) =>
-                            <ProductPreview key={index} name={item.name} link={item.link}
-                                                       files={item.files}
-                                                       explain={item.explain}/>
-                        )}
-                    </CollapseList>
-                </PlaceHolder>
-                <PlaceHolder
-                    loading={!service || !service.length  && !organization._id}
-                    height={35}
-                    width={300}
-                >
-                    <CollapseList cutElements={3} title={"Services"}>
-                        {service &&  service.length > 0 && service.map((item, index) =>
+                    {product && product.length > 0 ? <CollapseList cutElements={3} title={"Products"}>
+                        {product.map((item, index) =>
                             <ProductPreview key={index} name={item.name} link={item.link}
                                             files={item.files}
                                             explain={item.explain}/>
                         )}
-                    </CollapseList>
+                    </CollapseList> : null}
+                </PlaceHolder>
+                <PlaceHolder
+                    loading={(!service || !service.length) && !organization._id}
+                    height={35}
+                    width={300}
+                >
+                    {service && service.length > 0 ? <CollapseList cutElements={3} title={"Services"}>
+                        {service.map((item, index) =>
+                            <ProductPreview key={index} name={item.name} link={item.link}
+                                            files={item.files}
+                                            explain={item.explain}/>
+                        )}
+                    </CollapseList> : null}
                 </PlaceHolder>
             </PreviewSection>
-        )
+        ) : null
     }
 
     renderMediaSection = () => {
         let organization = this.state.organization;
         let media = organization.media;
 
-        return (
+        const render = media && media.length > 0 || !organization._id
+
+        return render ? (
             <PreviewSection title={"Media"} previewRef={this.MediaSection}>
                 <PlaceHolder
-                    loading={!media || !media.length  && !organization._id}
+                    loading={!media || !media.length && !organization._id}
                     height={35}
                     width={300}
                 >
-                    <CollapseList cutElements={3}>
-                        {media && media.length > 0 && media.map((item, index) =>
+                    {media && media.length > 0 ? <CollapseList cutElements={3}>
+                        { media.map((item, index) =>
                             <MediaPreview key={index} name={item.name} link={item.link}
-                                            file={item.files}
-                                            explain={item.explain}/>
+                                          file={item.files}
+                                          explain={item.explain}/>
                         )}
-                    </CollapseList>
+                    </CollapseList> : null}
                 </PlaceHolder>
             </PreviewSection>
-        )
+        ) : null
     }
 
     render() {
