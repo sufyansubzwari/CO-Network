@@ -9,6 +9,8 @@ import ReportToggle from "./ReportToggle";
 import { PlaceHolder } from "btech-placeholder-component";
 import posed from "react-pose";
 import { Utils } from "../../services";
+import isMobile from "../../constants/isMobile";
+import CardPreview from "./CardPreview";
 
 const TitleCardContainer = Styled.div`
   font-family: Helvetica Neue LT Std;
@@ -105,6 +107,38 @@ const SCardContainer = Styled(Container)`
   ${mixins.media.desktop`margin-left: 15px;`}
 `;
 
+const SShowMore = Styled.div`
+  width: 142px;
+  height: 32px;
+  margin-top: 40px;
+  margin-left: -40px;
+  background-color: #373737;
+  box-shadow: 0 13px 30px rgba(34,66,76,0.15);
+  color: #A8A8A8;
+  font-family: "Roboto Mono";
+  font-size: 12px;
+  text-align: center;
+  padding: 5px;
+  border-bottom-left-radius: 5px;
+  border-bottom-right-radius: 5px;
+  cursor: pointer;
+  
+  /* Safari */
+  -webkit-transform: rotate(-90deg);
+
+  /* Firefox */
+  -moz-transform: rotate(-90deg);
+  
+  /* IE */
+  -ms-transform: rotate(-90deg);
+  
+  /* Opera */
+  -o-transform: rotate(-90deg);
+  
+  /* Internet Explorer */
+  filter: progid:DXImageTransform.Microsoft.BasicImage(rotation=3);
+`;
+
 //TODO review the blur when the scale is triggered
 const PSCardContainer = posed(SCardContainer)({
   hoverable: true,
@@ -135,8 +169,11 @@ class CardItem extends Component {
     );
     this.state = {
       loadingImage: true,
-      topOptions: elements
+      topOptions: elements,
+      showPreview: false
     };
+
+    this.handlePreviewCard = this.handlePreviewCard.bind(this);
   }
 
   componentDidMount() {
@@ -146,11 +183,15 @@ class CardItem extends Component {
   }
 
   componentWillReceiveProps(newProps) {
+    if (newProps.isActive !== this.props.isActive) {
+      this.setState({ showPreview: false });
+    }
     setTimeout(() => {
       this.setState({ loadingImage: this.state.loadingImage });
     }, 500);
     if (!newProps.image) return;
     if (newProps.image !== this.props.image) this.loadImage(newProps.image);
+
   }
 
   loadImage(imageSrc) {
@@ -194,6 +235,10 @@ class CardItem extends Component {
       : null;
   };
 
+  handlePreviewCard() {
+    this.setState({ showPreview: !this.state.showPreview });
+  }
+
   renderLeftSide() {
     const tags = this.props.tags
       .map(tag => ({ active: true, ...tag }))
@@ -205,69 +250,117 @@ class CardItem extends Component {
         fullY
         minH={"initial"}
         mdMinH={"100px"}
-        customTemplateRows={"1fr"}
-        mdRowGap={"8px"}
-        mdCustomTemplateRows={"1fr 27px"}
+        customTemplateColumns={"1fr 32px"}
+        mdColGap={"5px"}
       >
         <Layout
           fullY
-          customTemplateRows={"auto auto auto"}
-          mdRowGap={"10px"}
-          rowGap={"8px"}
+          minH={"initial"}
+          mdMinH={"100px"}
+          customTemplateRows={"1fr"}
+          mdRowGap={"8px"}
+          mdCustomTemplateRows={"1fr 27px"}
         >
-          <Container mdMinH={"25px"}>
-            <Layout
-              customTemplateColumns={"1fr"}
-              mdCustomTemplateColumns={this.props.showMenu ? "1fr auto" : "1f"}
-            >
-              <Container style={{ lineHeight: 1 }}>
-                {this.state.topOptions.map((element, index) =>
-                  this.renderTopOptionItem(element, index)
-                )}
-              </Container>
-              {this.props.showMenu ? (
-                <Container hide mdShow>
-                  <SViewsContainer>
-                    <ReportToggle onSelect={(item, key) => alert(key)} />
-                  </SViewsContainer>
+          <Layout
+            fullY
+            customTemplateRows={"auto auto auto"}
+            mdRowGap={"10px"}
+            rowGap={"8px"}
+          >
+            <Container mdMinH={"25px"}>
+              <Layout
+                customTemplateColumns={"1fr"}
+                mdCustomTemplateColumns={
+                  this.props.showMenu ? "1fr auto" : "1f"
+                }
+              >
+                <Container style={{ lineHeight: 1 }}>
+                  {this.state.topOptions.map((element, index) =>
+                    this.renderTopOptionItem(element, index)
+                  )}
                 </Container>
-              ) : null}
-            </Layout>
-          </Container>
-          <Container>
-            <Layout customTemplateRows={"1fr"}>
-              <TitleCardContainer isActive={this.props.isActive}>
-                {this.props.title || "No title"}
-              </TitleCardContainer>
-            </Layout>
-          </Container>
-          <Container>
-            <Layout customTemplateRows={"1fr"}>
-              <SubTitleCardContainer isActive={this.props.isActive}>
-                {this.props.subTitle || "No description"}
-              </SubTitleCardContainer>
-            </Layout>
+                {this.props.showMenu ? (
+                  <Container hide mdShow>
+                    <SViewsContainer>
+                      <ReportToggle onSelect={(item, key) => alert(key)} />
+                    </SViewsContainer>
+                  </Container>
+                ) : null}
+              </Layout>
+            </Container>
+            <Container>
+              <Layout customTemplateRows={"1fr"}>
+                <TitleCardContainer isActive={this.props.isActive}>
+                  {this.props.title || "No title"}
+                </TitleCardContainer>
+              </Layout>
+            </Container>
+            <Container>
+              <Layout customTemplateRows={"1fr"}>
+                <SubTitleCardContainer isActive={this.props.isActive}>
+                  {this.props.subTitle || "No description"}
+                </SubTitleCardContainer>
+              </Layout>
+            </Container>
+          </Layout>
+          <Container hide mdShow ref={this.tagRef}>
+            {tags.length ? (
+              <TagList
+                containerRef={this.tagcontainer}
+                cut={true}
+                tags={tags}
+                onSelect={(event, tag, index) => {
+                  event.stopPropagation();
+                  event.preventDefault();
+                  this.props.onSelectTag && this.props.onSelectTag(tag, index);
+                }}
+                backgroundTagColor={this.props.isActive ? "#000000" : null}
+                borderColor={"#F92672"}
+                activeColor={this.props.isActive ? "white" : "black"}
+              />
+            ) : (
+              <EmptyTagsContainer />
+            )}
           </Container>
         </Layout>
-        <Container hide mdShow ref={this.tagRef}>
-          {tags.length ? (
-            <TagList
-              containerRef={this.tagcontainer}
-              cut={true}
-              tags={tags}
-              onSelect={(event, tag, index) => {
-                event.stopPropagation();
-                event.preventDefault();
-                this.props.onSelectTag && this.props.onSelectTag(tag, index);
-              }}
-              backgroundTagColor={this.props.isActive ? "#000000" : null}
-              borderColor={"#F92672"}
-              activeColor={this.props.isActive ? "white" : "black"}
+        {this.props.isActive && !isMobile() ? (
+          <SShowMore onClick={this.handlePreviewCard}>
+            <span>
+              <span>
+                {this.state.showPreview ? "Show Less " : "Show More "}
+              </span>
+              <MaterialIcon
+                type={this.state.showPreview ? "caret-down" : "caret-up"}
+              />
+            </span>
+          </SShowMore>
+        ) : null}
+      </Layout>
+    );
+  }
+
+  renderPreview() {
+    return (
+      <Layout
+        fullY
+        minH={"initial"}
+        mdMinH={"112px"}
+        customTemplateColumns={"1fr 32px"}
+        mdColGap={"5px"}
+      >
+        <CardPreview
+          title={this.props.previewTitle}
+          options={this.props.previewOptions}
+          active={this.props.activeOptionPreview}
+        />
+        <SShowMore onClick={this.handlePreviewCard}>
+          <span>
+            <span>{this.state.showPreview ? "Show Less " : "Show More "}</span>
+            <MaterialIcon
+              type={this.state.showPreview ? "caret-down" : "caret-up"}
             />
-          ) : (
-            <EmptyTagsContainer />
-          )}
-        </Container>
+          </span>
+        </SShowMore>
       </Layout>
     );
   }
@@ -300,7 +393,7 @@ class CardItem extends Component {
       <SCardContainer>
         <SMLCard
           className={"card"}
-          background={this.props.isActive ? "#000000" : "white"}
+          background={this.props.isActive ? this.state.showPreview ? "#2E2E2E" : "#000000" : "white"}
           onSelect={() =>
             this.props.onSelect && this.props.onSelect({ ...this.props.data })
           }
@@ -308,8 +401,15 @@ class CardItem extends Component {
           loading={this.props.loading}
           {...this.props}
           {...this.props.data}
-          renderRightSide={this.getRightSide.bind(this)}
-          renderLeftSide={this.renderLeftSide.bind(this)}
+          isCardPreview={this.state.showPreview}
+          renderRightSide={
+            !this.state.showPreview ? this.getRightSide.bind(this) : null
+          }
+          renderLeftSide={
+            !this.state.showPreview
+              ? this.renderLeftSide.bind(this)
+              : this.renderPreview.bind(this)
+          }
         />
       </SCardContainer>
     );
@@ -323,7 +423,17 @@ CardItem.defaultProps = {
   views: 0,
   showMenu: false,
   image: null,
-  iconClass: "eye"
+  iconClass: "eye",
+  previewTitle: "Summary",
+  //example todo: delete this on integration
+  previewOptions: [
+    { label: "Organizations", action: () => console.log("action1") },
+    { label: "Jobs", action: () => console.log("action2") },
+    { label: "Events", action: () => console.log("action3") },
+    { label: "Events1", action: () => console.log("action31") },
+    { label: "Events2", action: () => console.log("action32") },
+    { label: "Events3", action: () => console.log("action33") }
+  ]
 };
 
 CardItem.propTypes = {
@@ -337,7 +447,10 @@ CardItem.propTypes = {
   topOptions: PropTypes.array,
   onSelectTag: PropTypes.func,
   tags: PropTypes.array,
-  views: PropTypes.number
+  views: PropTypes.number,
+  previewOptions: PropTypes.array,
+  previewTitle: PropTypes.string,
+  activeOptionPreview: PropTypes.number
 };
 
 export default CardItem;

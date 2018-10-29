@@ -23,6 +23,19 @@ class ListEvents extends List {
   constructor(props) {
     super(props);
     this.entityName = "events";
+    this.state = {
+      previewOptions: [
+        { label: "Summary", action: () => this.scrollToSection("Summary") },
+        { label: "Venue", action: () => this.scrollToSection("Venue") },
+        { label: "Speaker", action: () => this.scrollToSection("Speaker") },
+        { label: "Sponsor", action: () => this.scrollToSection("Sponsor") }
+      ],
+      activePreview: null,
+    }
+  }
+
+  scrollToSection(link){
+    this.setState({activePreview: link});
   }
 
   componentWillMount() {
@@ -70,6 +83,8 @@ class ListEvents extends List {
                 this.onChangeSelection(item, key, viewsUpdate)
               }
               onSelectTag={(tag, index) => this.onSelectTag(tag, index)}
+              activePreview={this.state.activePreview}
+              previewOptions={this.state.previewOptions}
             />
           )}
         </Mutation>
@@ -191,7 +206,7 @@ class ListEvents extends List {
                           )
                         }
                       >
-                        <EventPreviewBody event={this.state.selectedItem} />
+                        <EventPreviewBody event={this.state.selectedItem} activePreview={this.state.activePreview}/>
                       </Preview>
                     );
                   }}

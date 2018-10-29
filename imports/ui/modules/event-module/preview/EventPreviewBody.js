@@ -1,4 +1,5 @@
 import React from "react";
+import ReactDOM from "react-dom";
 import { Container, Layout } from "btech-layout";
 import {
   Dates,
@@ -22,8 +23,14 @@ class EventPreviewBody extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      event: props.event ? props.event : {}
+      event: props.event ? props.event : {},
+      activePreview: null
     };
+
+    this.SummarySection = React.createRef();
+    this.VenueSection = React.createRef();
+    this.SponsorSection = React.createRef();
+    this.SpeakerSection = React.createRef();
   }
 
   componentWillReceiveProps(nextProps) {
@@ -31,6 +38,32 @@ class EventPreviewBody extends React.Component {
       this.setState({
         event: nextProps.event
       });
+    }
+    if (nextProps.activePreview !== this.props.activePreview) {
+      this.setState({ activePreview: nextProps.activePreview }, () => {
+        this.scrollToDomRef();
+      });
+    }
+  }
+
+  scrollToDomRef = () => {
+    const currentRef = this.getRef(this.state.activePreview);
+    // this.props.scrollRef.scrollToTop();
+    currentRef && currentRef.scrollIntoView();
+    // const myDomNode = ReactDOM.findDOMNode(currentRef);
+    // myDomNode.scrollTo(0, myDomNode.offsetTop);
+  };
+
+  getRef(link) {
+    switch (link) {
+      case "Summary":
+        return this.SummarySection.current;
+      case "Sponsor":
+        return this.SponsorSection.current;
+      case "Speaker":
+        return this.SpeakerSection.current;
+      case "Venue":
+        return this.VenueSection.current;
     }
   }
 
@@ -67,7 +100,7 @@ class EventPreviewBody extends React.Component {
       event.description;
 
     return canRender ? (
-      <PreviewSection>
+      <PreviewSection previewRef={this.SummarySection}>
         <PlaceHolder
           loading={!event.title && !event._id}
           height={35}
@@ -109,7 +142,7 @@ class EventPreviewBody extends React.Component {
       event.sponsors.filter(item => item.type === "Speakers");
     return event._id && speakers.length ? (
       <Query
-        fetchPolicy={"network-only"}
+        fetchPolicy={"cache-and-network"}
         query={GetSpeakers}
         variables={{
           sponsors: {
@@ -123,7 +156,11 @@ class EventPreviewBody extends React.Component {
           if (error) return <div />;
           let sponsors = data.sponsors;
           return (
-            <PreviewSection title={"Speakers"} number={sponsors.length}>
+            <PreviewSection
+              previewRef={this.SpeakerSection}
+              title={"Speakers"}
+              number={sponsors.length}
+            >
               <Layout
                 colGap={"20px"}
                 customTemplateColumns={`1fr`}
@@ -195,6 +232,7 @@ class EventPreviewBody extends React.Component {
       </Query>
     ) : speakers && speakers.length > 0 ? (
       <PreviewSection
+        previewRef={this.SpeakerSection}
         title={"Speakers"}
         number={speakers.length}
         lineSeparation={"0px"}
@@ -254,7 +292,7 @@ class EventPreviewBody extends React.Component {
       event.sponsors.filter(item => item.type === "Sponsors");
     return event._id && sponsor.length ? (
       <Query
-        fetchPolicy={"network-only"}
+        fetchPolicy={"cache-and-network"}
         query={GetSponsors}
         variables={{
           sponsors: { owner: event._id, type: "Sponsors" }
@@ -265,7 +303,11 @@ class EventPreviewBody extends React.Component {
           if (error) return <div />;
           let sponsors = data.sponsors;
           return (
-            <PreviewSection title={"Sponsors"} number={sponsors.length}>
+            <PreviewSection
+              previewRef={this.SponsorSection}
+              title={"Sponsors"}
+              number={sponsors.length}
+            >
               <Layout
                 colGap={"20px"}
                 customTemplateColumns={`1fr`}
@@ -337,6 +379,7 @@ class EventPreviewBody extends React.Component {
         title={"Sponsors"}
         number={sponsor.length}
         lineSeparation={"0px"}
+        previewRef={this.SponsorSection}
       >
         <Layout
           colGap={"20px"}
@@ -396,7 +439,7 @@ class EventPreviewBody extends React.Component {
       !event._id || event.venueName || event.venueEmail || address;
 
     return canRender ? (
-      <PreviewSection title={"Venue"}>
+      <PreviewSection title={"Venue"} previewRef={this.VenueSection}>
         <Layout rowGap={"3px"}>
           <PlaceHolder
             loading={!event.venueName && !event._id}

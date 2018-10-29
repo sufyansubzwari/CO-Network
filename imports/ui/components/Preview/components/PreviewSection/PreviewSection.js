@@ -34,16 +34,36 @@ const Number = styled.span`
   color: rgba(0, 0, 0, 0.5);
 `;
 
-PreviewSection = (props) => {
+class PreviewSection extends React.Component{
+
+
+
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.activePreview !== this.props.activePreview) {
+        this.scrollToDomRef();
+    }
+  }
+
+  scrollToDomRef = () => {
+    const currentRef = this.getRef(this.props.activePreview);
+    // this.props.scrollRef.scrollToTop();
+    currentRef.scrollIntoView();
+    // const myDomNode = ReactDOM.findDOMNode(currentRef);
+    // myDomNode.scrollTo(0, myDomNode.offsetTop);
+  };
+
+  render() {
+    const {props} = this;
     return (
-        <PreviewSectionContainer rowGap={props.lineSeparation || "10px"}>
-            {props.title || props.number ? <Container>
-                {props.title ? <STitle>{props.title}</STitle> : null}
-                {props.number ? <Number>({props.number})</Number> : null}
-            </Container> : null}
-            {props.children}
-        </PreviewSectionContainer>
+      <PreviewSectionContainer innerRef={props.previewRef} rowGap={props.lineSeparation || "10px"}>
+        {props.title || props.number ? <Container>
+          {props.title ? <STitle>{props.title}</STitle> : null}
+          {props.number ? <Number>({props.number})</Number> : null}
+        </Container> : null}
+        {props.children}
+      </PreviewSectionContainer>
     )
+  }
 }
 
 export default PreviewSection;
@@ -51,5 +71,6 @@ export default PreviewSection;
 PreviewSection.propTypes = {
   title: PropsTypes.string,
   lineSeparation: PropsTypes.string,
-  number: PropsTypes.number
+  number: PropsTypes.number,
+  previewRef: PropsTypes.any
 };
