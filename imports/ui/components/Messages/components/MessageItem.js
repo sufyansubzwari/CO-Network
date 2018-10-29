@@ -3,8 +3,7 @@ import PropTypes from "prop-types";
 import moment from "moment/moment";
 import { Container, Layout, mixins } from "btech-layout";
 import ChatUserInfo from "./ChatUserInfo";
-import { SDeleteButton, SReplyButton, SText, SUser } from "./styledComponents";
-import MaterialIcon from "react-material-iconic-font";
+import { SText, SUser } from "./styledComponents";
 import styled from "styled-components";
 import AttachedImage from "./Image";
 import AttachedFile from "./AttachedFile";
@@ -14,6 +13,8 @@ import "emoji-mart/css/emoji-mart.css";
 import { Utils } from "../../../services";
 import { Meteor } from "meteor/meteor";
 import ButtonList from "../../ButtonList/ButtonList";
+import copy from "copy-to-clipboard";
+import { ConfirmPopup } from "../../../services";
 
 export const SMessageItem = styled(Container)`
   line-height: 15px;
@@ -80,16 +81,35 @@ class MessageItem extends React.Component {
       : null;
   };
 
-  handleReply(props) {
+  handleReply(event, props) {
     event.stopPropagation();
     event.preventDefault();
     props.onReplyAction && props.onReplyAction(props.message);
   }
 
-  handleDelete(props) {
+  handleDelete(event, props) {
     event.stopPropagation();
     event.preventDefault();
-    props.onDeleteAction && props.onDeleteAction(props.message);
+    ConfirmPopup.confirmPopup(
+      () => {
+        props.onDeleteAction && props.onDeleteAction(props.message);
+      },
+      null,
+      {
+        title: "Remove this message",
+        message: "Are you sure to want delete this message."
+      }
+    );
+  }
+
+  handleCopy(event, props) {
+    event.stopPropagation();
+    event.preventDefault();
+    if (props && props.message) {
+      const wasCopy = copy(props.message.text);
+      if (wasCopy) console.log("COPIED");
+      // todo: integrate with the toast notifications
+    }
   }
 
   render() {
@@ -120,14 +140,23 @@ class MessageItem extends React.Component {
               topPos={"-5px"}
               options={[
                 {
-                  action: () => this.handleReply && this.handleReply(props),
+                  action: event =>
+                    this.handleCopy && this.handleCopy(event, props),
+                  checkVisibility: () => props.message && props.message.text,
+                  text: "Copy",
+                  icon: "copy"
+                },
+                {
+                  action: event =>
+                    this.handleReply && this.handleReply(event, props),
                   checkVisibility: () =>
                     props.message && props.message.canReply && userId,
                   text: "Reply",
                   icon: "mail-reply"
                 },
                 {
-                  action: () => this.handleDelete && this.handleDelete(props),
+                  action: event =>
+                    this.handleDelete && this.handleDelete(event, props),
                   checkVisibility: () =>
                     props.message &&
                     props.owner &&

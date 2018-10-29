@@ -65,7 +65,6 @@ class PostOrganization extends Component {
         }
         //plan: 0
       },
-
       formChange: false
     };
     this.handleBackgroundChange = this.handleBackgroundChange.bind(this);
