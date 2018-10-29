@@ -121,7 +121,7 @@ class EventPreviewBody extends React.Component {
           height={35}
           width={300}
         >
-          <TagsAdd header={"Event Category"} tags={category} />
+          <TagsAdd onSelectTag={this.props.onSelectTag} header={"Event Category"} tags={category} />
         </PlaceHolder>
         <PlaceHolder
           loading={!event.description && !event._id}

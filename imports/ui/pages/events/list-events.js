@@ -209,7 +209,7 @@ class ListEvents extends List {
                           )
                         }
                       >
-                        <EventPreviewBody event={this.state.selectedItem} activePreview={this.state.activePreview}/>
+                        <EventPreviewBody event={this.state.selectedItem} onSelectTag={(tag, index) => this.onSelectTag(tag, index)} activePreview={this.state.activePreview}/>
                       </Preview>
                     );
                   }}

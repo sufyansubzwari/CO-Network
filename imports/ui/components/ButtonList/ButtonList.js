@@ -29,9 +29,8 @@ const SOptions = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  border-left: ${props =>
-    !props.initial ? "solid 1px rgba(0, 0, 0, 0.5)" : "none"};
-
+  border-left: ${props => !props.initial ? "solid 1px rgba(0, 0, 0, 0.5)" : "none"}; 
+  transition: color 0.3s ease-out;
   :hover {
     color: rgba(0, 0, 0, 1);
   }
