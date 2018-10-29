@@ -23,8 +23,7 @@ class EventPreviewBody extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      event: props.event ? props.event : {},
-      activePreview: null
+      event: props.event ? props.event : {}
     };
 
     this.SummarySection = React.createRef();
@@ -40,16 +39,18 @@ class EventPreviewBody extends React.Component {
       });
     }
     if (nextProps.activePreview !== this.props.activePreview) {
-      this.setState({ activePreview: nextProps.activePreview }, () => {
-        this.scrollToDomRef();
-      });
+      this.scrollToDomRef(nextProps.activePreview);
     }
   }
 
-  scrollToDomRef = () => {
-    const currentRef = this.getRef(this.state.activePreview);
-    // this.props.scrollRef.scrollToTop();
-    currentRef && currentRef.scrollIntoView();
+  scrollToDomRef = activePreview => {
+    const currentRef = this.getRef(activePreview);
+    currentRef &&
+      this.props.onScroll &&
+      this.props.onScroll(currentRef.offsetTop);
+    // let scroll = document.getElementById("previewScrollBar");
+    // currentRef && scroll && scroll.scrollTop(currentRef.offsetHeight);
+    // currentRef && currentRef.scrollIntoView();
     // const myDomNode = ReactDOM.findDOMNode(currentRef);
     // myDomNode.scrollTo(0, myDomNode.offsetTop);
   };

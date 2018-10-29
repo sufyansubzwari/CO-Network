@@ -12,6 +12,7 @@ import ReplyBox from "../Messages/components/ReplyBox";
 import Messages from "../Messages/Messages";
 import Attachment from "../Messages/components/Attachment";
 import { insertMessage } from "../Messages/Service/service";
+import { SpringSystem, MathUtil } from 'rebound';
 
 const ResponsiveContainer = styled(Layout)`
   margin-left: -100%;
@@ -140,9 +141,9 @@ class Preview extends React.Component {
       images: [],
       listFiles: []
     };
-    this.scroll = null;
     this.messagesLength = 0;
     this.handleUploadChange = this.handleUploadChange.bind(this);
+    this.handleSpringUpdate = this.handleSpringUpdate.bind(this);
   }
 
   componentWillReceiveProps(nextProps) {
@@ -153,6 +154,46 @@ class Preview extends React.Component {
         : null
     });
     this.triggerChatViewStatus(nextProps.isOpen, nextProps.showChatView);
+  }
+
+  componentDidMount() {
+    this.springSystem = new SpringSystem();
+    this.spring = this.springSystem.createSpring();
+    this.spring.addListener({ onSpringUpdate: this.handleSpringUpdate });
+  }
+
+  componentWillUnmount() {
+    this.springSystem.deregisterSpring(this.spring);
+    this.springSystem.removeAllListeners();
+    this.springSystem = undefined;
+    this.spring.destroy();
+    this.spring = undefined;
+  }
+
+  getScrollTop() {
+    return this.scroll.getScrollTop();
+  }
+
+  getScrollHeight() {
+    return this.scroll.getScrollHeight();
+  }
+
+  getHeight() {
+    return this.scroll.getHeight();
+  }
+
+  scrollTop(top) {
+    const scrollTop = this.scroll && this.scroll.getScrollTop();
+    // const scrollHeight = this.scroll && this.scroll.getScrollHeight();
+    // const val = MathUtil.mapValueInRange(top, 0, scrollHeight, scrollHeight * 0.2, scrollHeight * 0.8);
+    this.spring.setCurrentValue(scrollTop).setAtRest();
+    this.spring.setEndValue(top - 65);
+  }
+
+  handleSpringUpdate(spring) {
+    const { scroll } = this;
+    const val = spring.getCurrentValue();
+    scroll.scrollTop(val);
   }
 
   handleUploadChange(src, element) {
@@ -345,6 +386,7 @@ class Preview extends React.Component {
         customTemplateRows={!this.props.showChatView ? "1fr auto" : "1fr"}
       >
         <Scrollbars
+          id={"previewScrollBar"}
           universal
           autoHide
           autoHideDuration={200}
@@ -427,7 +469,9 @@ class Preview extends React.Component {
                   />
                 ) : null
               ) : (
-                this.props.children
+                React.Children.map(this.props.children, child =>
+                  React.cloneElement(child, { onScroll: (value) => this.scrollTop(value) })
+                )
               )}
             </SPreviewContainer>
           </Layout>
