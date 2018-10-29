@@ -13,7 +13,7 @@ const SVideo = styled.video`
     border-radius: 3px;
     height: 57px;
     width: 100%;
-    cursor: pointer;
+    cursor: ${props => props.src ? "pointer" : "default"};
 `
 
 const STitle = styled.label`
@@ -61,12 +61,13 @@ class ProductPreview extends React.Component {
     };
 
     renderLeftSide = () => {
+        const url = this.handleImage(this.props.file && this.props.file.link, "base")
         return (
-            <a href={this.handleImage(this.props.file && this.props.file.link, "base")} target="_blank">
-                <SVideo>
-                    <source src={this.handleImage(this.props.file && this.props.file.link, "base")} type="video/mp4" />
-                    <source src={this.handleImage(this.props.file && this.props.file.link, "base")} type="video/ogg" />
-                    <source src={this.handleImage(this.props.file && this.props.file.link, "base")} type="video/webm" />
+            <a href={url} target="_blank">
+                <SVideo src={url && (url.endsWith("mp4") || url.endsWith("ogg") || url.endsWith("webm") ) ? url : null }>
+                    <source src={url} type="video/mp4" />
+                    <source src={url} type="video/ogg" />
+                    <source src={url} type="video/webm" />
                 </SVideo>
             </a>
         )
