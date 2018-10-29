@@ -106,12 +106,13 @@ class TopSearcher extends Component {
         <Layout
           colGap={"10px"}
           customTemplateColumns={"1fr"}
-          mdCustomTemplateColumns={this.props.curUser && this.props.curUser._id ? "1fr auto" : "1fr"}
+          mdCustomTemplateColumns={
+            this.props.curUser && this.props.curUser._id ? "1fr auto" : "1fr"
+          }
         >
           <Container>
             <Query query={tags} fetchPolicy={"cache-and-network"}>
               {({ loading, error, data }) => {
-                if (error) return <div>Error</div>;
                 return (
                   <MLTagsInput
                     autoFocus={!this.props.isMobile}
@@ -133,7 +134,7 @@ class TopSearcher extends Component {
                       this.onCloseTags(e, tag, index);
                     }}
                     onSearch={value => this.onSearchText(value)}
-                    options={data.tags}
+                    options={data ? data.tags : []}
                     tags={
                       this.state.tags && this.state.tags.length
                         ? this.state.tags.map(item => ({
@@ -151,22 +152,20 @@ class TopSearcher extends Component {
               }}
             </Query>
           </Container>
-            {
-                this.props.curUser && this.props.curUser._id
-                    ? <Container hide mdShow>
-                        <Button
-                            width={"35px"}
-                            height={"35px"}
-                            fontSize={"20px"}
-                            onClick={() =>
-                                this.props.onCreateAction && this.props.onCreateAction()
-                            }
-                        >
-                            <MaterialIcon type={"plus"}/>
-                        </Button>
-                    </Container>
-                    : null
-            }
+          {this.props.curUser && this.props.curUser._id ? (
+            <Container hide mdShow>
+              <Button
+                width={"35px"}
+                height={"35px"}
+                fontSize={"20px"}
+                onClick={() =>
+                  this.props.onCreateAction && this.props.onCreateAction()
+                }
+              >
+                <MaterialIcon type={"plus"} />
+              </Button>
+            </Container>
+          ) : null}
         </Layout>
       </Container>
     );
