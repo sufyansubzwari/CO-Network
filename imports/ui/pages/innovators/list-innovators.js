@@ -24,6 +24,7 @@ import { INNOVATORS_TYPES } from "../../constants";
 import { cleanSearch, onSearchTags } from "../../actions/TopSearchActions";
 import { List } from "../general";
 import _ from "lodash";
+import { ConfirmPopup } from "../../services";
 
 /**
  * @module Events
@@ -439,10 +440,12 @@ class ListInnovators extends List {
                               );
                             },
                             onClick: () => {
-                              this.removeEntity(
-                                deleteOrg,
-                                this.state.selectedItem
-                              );
+                              ConfirmPopup.confirmPopup(() => {
+                                this.removeEntity(
+                                  deleteOrg,
+                                  this.state.selectedItem
+                                );
+                              });
                             }
                           }
                         ]}

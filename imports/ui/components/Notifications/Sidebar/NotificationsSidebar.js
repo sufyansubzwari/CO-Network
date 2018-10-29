@@ -11,7 +11,7 @@ import { Mutation } from "react-apollo";
 import moment from "moment";
 import posed from "react-pose/lib/index";
 import styled from "styled-components";
-import { Utils } from "../../../services";
+import { ConfirmPopup, Utils } from "../../../services";
 import NotificationBack from "./NotificationBack";
 import { PlaceHolder } from "btech-placeholder-component";
 
@@ -55,18 +55,27 @@ class NotificationsSidebar extends React.Component {
   }
 
   deleteNotification(notification, index, deleteNotification) {
-    this.setState(
-      {
-        isDeleting: true
-      },
+    ConfirmPopup.confirmPopup(
       () => {
-        deleteNotification({ variables: { id: notification._id } }).then(() => {
-          const notifications = this.state.notifications;
-          const temporal = notifications.splice(index, 1);
-          setTimeout(() => {
-            this.setState({ notifications: notifications, isDeleting: false });
-          }, 1000);
+        this.setState({ isDeleting: true }, () => {
+          deleteNotification({ variables: { id: notification._id } }).then(
+            () => {
+              const notifications = this.state.notifications;
+              const temporal = notifications.splice(index, 1);
+              setTimeout(() => {
+                this.setState({
+                  notifications: notifications,
+                  isDeleting: false
+                });
+              }, 1000);
+            }
+          );
         });
+      },
+      null,
+      {
+        title: "Remove this notification",
+        message: "Are you sure to want delete this notification."
       }
     );
   }
@@ -104,7 +113,7 @@ class NotificationsSidebar extends React.Component {
   renderItem(not, index) {
     if (!not) return null;
     return this.props.loading ? (
-      <div style={{padding: '15px'}}>
+      <div style={{ padding: "15px" }}>
         <PlaceHolder
           facebook
           loading={this.props.loading}
@@ -156,12 +165,9 @@ class NotificationsSidebar extends React.Component {
                     viewed={not.viewed}
                     time={this.setTimeFormat(not.createdAt)}
                     // selected={this.state.selectedItem === index}
-                    onDelete={this.deleteNotification.bind(
-                      this,
-                      not,
-                      index,
-                      deleteNotification
-                    )}
+                    onDelete={() =>
+                      this.deleteNotification(not, index, deleteNotification)
+                    }
                     onClick={this.handleClick.bind(
                       this,
                       index,

@@ -5,6 +5,7 @@ import JobPreviewBody from "../../modules/jobs-module/preview/JobPreviewBody";
 import { withRouter } from "react-router-dom";
 import { CreateJob, DeleteJob } from "../../apollo-client/job";
 import { Mutation } from "react-apollo";
+import { ConfirmPopup } from "../../services";
 
 /**
  * @module Jobs
@@ -129,7 +130,9 @@ class PostJob extends Component {
                     return this.state.job && this.state.job._id;
                   },
                   onClick: () => {
-                    this.removeJob(deleteJob, this.state.job);
+                    ConfirmPopup.confirmPopup(() => {
+                      this.removeJob(deleteJob, this.state.job);
+                    });
                   }
                 }
               ]}
