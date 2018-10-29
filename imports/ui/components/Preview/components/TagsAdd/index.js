@@ -44,6 +44,11 @@ class TagsAdd extends React.Component {
               backgroundTagColor={this.props.backgroundTagColor}
               tags={this.props.tags}
               style={{ display: "inline-block" }}
+              onSelect={(event, tag, index) => {
+                  event.stopPropagation();
+                  event.preventDefault();
+                  this.props.onSelectTag && this.props.onSelectTag(tag, index);
+              }}
             />
             {/*<Tag style={{ marginBottom: '2px'}} active={true} color={"#000000"} data={{name: '+'}} onSelect={this.props.onAdd} />*/}
           </Container>
