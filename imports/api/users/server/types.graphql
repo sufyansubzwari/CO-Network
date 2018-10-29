@@ -120,6 +120,7 @@ input UsersInputSearch {
     profile_DOT_knowledge_DOT_lookingFor: JobTypeElemMatch
     profile_DOT_knowledge_DOT_languages_DOT_tag: TableStringFilterInput
     location: [LocationInput]
+    locationRange: Float
 }
 
 input UserInput {

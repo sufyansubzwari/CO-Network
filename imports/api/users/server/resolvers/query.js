@@ -15,11 +15,12 @@ Query.users = (root, { user, filter, limit }, context) => {
 
   if (user) {
     if (user.location) {
-      let loc = Places.service.matchLocations(user.location, 0.05);
+      let loc = Places.service.matchLocations(user.location, user.locationRange);
       user["_id"] = Object.assign({}, user["_id"], {
         in: loc.map(item => item.owner).filter(item => item !== context.userId)
       });
       delete user.location;
+      delete user.locationRange;
     }
     query = wrapOperators(user);
   }

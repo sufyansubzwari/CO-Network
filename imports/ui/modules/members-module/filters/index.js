@@ -8,7 +8,10 @@ import {
   Separator
 } from "./../../../components";
 import { Query } from "react-apollo";
-import { LOOKING_FOR_DEFAULT } from "../../../constants";
+import {
+  LOCATION_RANGE_OPTIONS,
+  LOOKING_FOR_DEFAULT
+} from "../../../constants";
 import { CheckBoxList } from "btech-base-forms-component";
 import { UsersFieldCounts } from "../../../apollo-client/user";
 import { cleanFilters, setFilters } from "../../../actions/SideBarActions";
@@ -39,15 +42,13 @@ class MembersFilters extends React.Component {
           label: "Following Me",
           active: false
         }
-      ]
+      ],
+      locationOptions: LOCATION_RANGE_OPTIONS,
+      activeOption: LOCATION_RANGE_OPTIONS[0]
     };
-    this.handleScroll = this.handleScroll(this);
-    this.handleClose = this.handleClose(this);
+
+    this.handleLocationMiles = this.handleLocationMiles.bind(this);
   }
-
-  handleScroll() {}
-
-  handleClose() {}
 
   addFilters(type, actives, options) {
     const obj = JSON.parse(JSON.stringify(options));
@@ -89,7 +90,13 @@ class MembersFilters extends React.Component {
   checkFilters() {
     let actives = this.state.locationTags.filter(item => item.active);
     let filters = this.state.filters;
-    actives.length > 0 ? (filters.location = actives) : delete filters.location;
+    if (actives.length > 0) {
+      filters.location = actives;
+      filters.locationRange = this.state.activeOption.value;
+    } else {
+      delete filters.location;
+      delete filters.locationRange;
+    }
     this.setState({ filters: filters }, () =>
       this.props.setFilters("members", filters)
     );
@@ -126,6 +133,10 @@ class MembersFilters extends React.Component {
     );
   }
 
+  handleLocationMiles(selected) {
+    this.setState({ activeOption: selected });
+  }
+
   render() {
     return (
       <FiltersContainer
@@ -140,6 +151,10 @@ class MembersFilters extends React.Component {
             model={this.state}
             placeholder={"Location"}
             onChange={this.notifyParentLocation.bind(this)}
+            options={this.state.locationOptions}
+            activeOption={this.state.activeOption}
+            showDropDown={true}
+            onSelect={this.handleLocationMiles}
           />
           <Layout
             mt={"10px"}

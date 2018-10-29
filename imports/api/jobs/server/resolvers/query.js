@@ -12,9 +12,10 @@ Query.jobs = (root, { filter, limit, jobs }, context) => {
   let query = {};
   if (jobs) {
     if (jobs.location) {
-      let loc = Places.service.matchLocations(jobs.location, 0.05);
+      let loc = Places.service.matchLocations(jobs.location, jobs.locationRange);
       jobs["_id"] = { $in: loc.map(item => item.owner) };
       delete jobs.location;
+      delete jobs.locationRange;
     }
     query = wrapOperators(jobs);
   }

@@ -59,6 +59,7 @@ input JobsInputSearch {
     endDate: TableDateFilterInput
     owner: String
     location: [LocationInput]
+    locationRange: Float
 }
 
 input JobTypeElemMatch{

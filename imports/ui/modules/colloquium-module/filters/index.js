@@ -11,7 +11,7 @@ import { CheckBoxList } from "btech-base-forms-component";
 import PropsTypes from "prop-types";
 import { cleanFilters, setFilters } from "../../../actions/SideBarActions";
 import { connect } from "react-redux";
-import { COLLOQUIUM_LEVEL } from "../../../constants";
+import { COLLOQUIUM_LEVEL, LOCATION_RANGE_OPTIONS } from "../../../constants";
 
 class ColloquiumFilters extends React.Component {
   constructor(props) {
@@ -25,8 +25,12 @@ class ColloquiumFilters extends React.Component {
       locationTags: [],
       privacy: false,
       competences: [],
-      filters: {}
+      filters: {},
+      locationOptions: LOCATION_RANGE_OPTIONS,
+      activeOption: LOCATION_RANGE_OPTIONS[0]
     };
+
+    this.handleLocationMiles = this.handleLocationMiles.bind(this);
   }
 
   componentWillMount() {
@@ -83,18 +87,28 @@ class ColloquiumFilters extends React.Component {
   }
 
   tagSelection(key) {
-      let tags = this.state.locationTags;
-      tags[key].active = !tags[key].active;
-      this.setState({ locationTags: tags }, () => this.checkFilters());
+    let tags = this.state.locationTags;
+    tags[key].active = !tags[key].active;
+    this.setState({ locationTags: tags }, () => this.checkFilters());
   }
 
   checkFilters() {
-      let actives = this.state.locationTags.filter(item => item.active);
-      let filters = this.state.filters;
-      actives.length > 0 ? (filters.location = actives) : delete filters.location;
-      this.setState({ filters: filters }, () =>
-          this.props.setFilters("colloquiums", filters)
-      );
+    let actives = this.state.locationTags.filter(item => item.active);
+    let filters = this.state.filters;
+    if (actives.length > 0) {
+      filters.location = actives;
+      filters.locationRange = this.state.activeOption.value;
+    } else {
+      delete filters.location;
+      delete filters.locationRange;
+    }
+    this.setState({ filters: filters }, () =>
+      this.props.setFilters("colloquiums", filters)
+    );
+  }
+
+  handleLocationMiles(selected) {
+    this.setState({ activeOption: selected });
   }
 
   render() {
@@ -111,6 +125,10 @@ class ColloquiumFilters extends React.Component {
             model={this.state}
             placeholder={"Location"}
             onChange={this.notifyParentLocation.bind(this)}
+            options={this.state.locationOptions}
+            activeOption={this.state.activeOption}
+            showDropDown={true}
+            onSelect={this.handleLocationMiles}
           />
           <Layout
             mt={"10px"}
@@ -166,7 +184,8 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
   return {
-    setFilters: (type, filters, text) => dispatch(setFilters(type, filters,text)),
+    setFilters: (type, filters, text) =>
+      dispatch(setFilters(type, filters, text)),
     cleanFilters: () => dispatch(cleanFilters())
   };
 };

@@ -10,7 +10,8 @@ import {
 import { CheckBoxList, SalaryRange } from "btech-base-forms-component";
 import {
   EXPERIENCE_REQUIERED_NUMBER,
-  JOB_TYPE_NUMBER
+  JOB_TYPE_NUMBER,
+  LOCATION_RANGE_OPTIONS
 } from "../../../constants";
 import PropsTypes from "prop-types";
 import { cleanFilters, setFilters } from "../../../actions/SideBarActions";
@@ -50,8 +51,12 @@ class JobsFilters extends React.Component {
           label: "My Jobs Applied",
           active: false
         }
-      ]
+      ],
+      locationOptions: LOCATION_RANGE_OPTIONS,
+      activeOption: LOCATION_RANGE_OPTIONS[0]
     };
+
+    this.handleLocationMiles = this.handleLocationMiles.bind(this);
   }
 
   componentWillMount() {
@@ -117,7 +122,13 @@ class JobsFilters extends React.Component {
   checkFilters() {
     let actives = this.state.locationTags.filter(item => item.active);
     let filters = this.state.filters;
-    actives.length > 0 ? (filters.location = actives) : delete filters.location;
+    if (actives.length > 0) {
+      filters.location = actives;
+      filters.locationRange = this.state.activeOption.value;
+    } else {
+      delete filters.location;
+      delete filters.locationRange;
+    }
     this.setState({ filters: filters }, () =>
       this.props.setFilters("events", filters)
     );
@@ -131,6 +142,10 @@ class JobsFilters extends React.Component {
     this.setState({ filters: filters }, () =>
       this.props.setFilters("jobs", filters, value)
     );
+  }
+
+  handleLocationMiles(selected) {
+    this.setState({ activeOption: selected });
   }
 
   render() {
@@ -147,6 +162,10 @@ class JobsFilters extends React.Component {
             model={this.state}
             placeholder={"Location"}
             onChange={this.notifyParentLocation.bind(this)}
+            options={this.state.locationOptions}
+            activeOption={this.state.activeOption}
+            showDropDown={true}
+            onSelect={this.handleLocationMiles}
           />
           <Layout
             mt={"10px"}
@@ -209,7 +228,9 @@ class JobsFilters extends React.Component {
                     active:
                       this.state.jobType[key] && this.state.jobType[key].active
                   }))}
-                  getValue={selected => this.addFilters("jobType", selected, data.jobCounts)}
+                  getValue={selected =>
+                    this.addFilters("jobType", selected, data.jobCounts)
+                  }
                 />
               );
             }}
@@ -285,7 +306,8 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
   return {
-    setFilters: (type, filters, text) => dispatch(setFilters(type, filters, text)),
+    setFilters: (type, filters, text) =>
+      dispatch(setFilters(type, filters, text)),
     cleanFilters: () => dispatch(cleanFilters())
   };
 };
