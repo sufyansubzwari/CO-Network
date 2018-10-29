@@ -120,7 +120,7 @@ const Name = styled.label`
   text-align: center;
   width: 100%;
   cursor: pointer;
-
+  transition: color 0.3s ease-out;
   :hover {
     color: #f92672;
   }

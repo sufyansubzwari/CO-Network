@@ -13,7 +13,7 @@ const SAddMaterialIcon = styled.span`
   > i {
     line-height: 30px;
     font-size: 1.6em;
-
+    transition: color 0.3s ease-out;
     &:hover {
       color: ${props => props.theme.color.primary};
     }

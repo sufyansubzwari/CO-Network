@@ -62,7 +62,7 @@ const ViewContainer = Styled(Container)`
 
 const SMLCard = Styled(Card)`
   line-height: inherit;
-  
+  transition: background 0.3s ease-out;
   :hover {
     background: red;
   }
