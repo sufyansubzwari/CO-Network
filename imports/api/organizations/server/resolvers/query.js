@@ -11,9 +11,10 @@ Query.organizations = (root, { filter, limit, organizations }, context) => {
   let query = {};
   if(organizations){
     if (organizations.location) {
-      let loc = Places.service.matchLocations(organizations.location, 0.05);
+      let loc = Places.service.matchLocations(organizations.location, organizations.locationRange);
       organizations["_id"] = {"$in": loc.map(item => item.owner)};
       delete organizations.location;
+      delete organizations.locationRange;
     }
     query = wrapOperators(organizations);
   }

@@ -1073,3 +1073,9 @@ export const INNOVATORS_TYPES = [
   //   value: "communities"
   // }
 ];
+
+export const LOCATION_RANGE_OPTIONS = [
+  { label: "5 miles radius", value: 0.05 },
+  { label: "10 miles radius", value: 0.10 },
+  { label: "20 miles radius", value: 0.20 }
+];

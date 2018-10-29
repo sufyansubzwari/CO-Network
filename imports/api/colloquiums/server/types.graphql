@@ -28,6 +28,7 @@ input ColloquiumSearchInput{
     competences: JobTypeElemMatch
     isPublic: Boolean
     location: [LocationInput]
+    locationRange: Float
 }
 
 input ColloquiumsInput {

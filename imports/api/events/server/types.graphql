@@ -67,6 +67,7 @@ input EventsInputSearch {
     venueName: TableStringFilterInput
     tickets: ticketsElemMatch
     location: [LocationInput]
+    locationRange: Float
 }
 input ticketsElemMatch{
     elemMatch: TicketsInputSearch

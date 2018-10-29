@@ -2,7 +2,7 @@ import React from "react";
 import { Container, Layout } from "btech-layout";
 import { GeoInputLocation } from "btech-location";
 import { CheckBoxList, TagList } from "btech-base-forms-component";
-import { ORG_TYPE_NUMBER } from "../../../constants";
+import { LOCATION_RANGE_OPTIONS, ORG_TYPE_NUMBER } from "../../../constants";
 import PropsTypes from "prop-types";
 import {
   BigTag,
@@ -44,8 +44,12 @@ class OrganizationFilters extends React.Component {
           active: false
         },
         { label: "Hosting Events", active: false }
-      ]
+      ],
+      locationOptions: LOCATION_RANGE_OPTIONS,
+      activeOption: LOCATION_RANGE_OPTIONS[0]
     };
+
+    this.handleLocationMiles = this.handleLocationMiles.bind(this);
   }
 
   componentWillMount() {
@@ -120,7 +124,13 @@ class OrganizationFilters extends React.Component {
   checkFilters() {
     let actives = this.state.locationTags.filter(item => item.active);
     let filters = this.state.filters;
-    actives.length > 0 ? (filters.location = actives) : delete filters.location;
+    if (actives.length > 0) {
+      filters.location = actives;
+      filters.locationRange = this.state.activeOption.value;
+    } else {
+      delete filters.location;
+      delete filters.locationRange;
+    }
     this.setState({ filters: filters }, () =>
       this.props.setFilters("organizations", filters)
     );
@@ -182,6 +192,10 @@ class OrganizationFilters extends React.Component {
     );
   }
 
+  handleLocationMiles(selected) {
+    this.setState({ activeOption: selected });
+  }
+
   render() {
     return (
       <FiltersContainer
@@ -197,6 +211,10 @@ class OrganizationFilters extends React.Component {
             model={this.state}
             placeholder={"Location"}
             onChange={this.notifyParentLocation.bind(this)}
+            options={this.state.locationOptions}
+            activeOption={this.state.activeOption}
+            showDropDown={true}
+            onSelect={this.handleLocationMiles}
           />
           <Layout
             mt={"10px"}
@@ -353,7 +371,11 @@ class OrganizationFilters extends React.Component {
         </FilterItem>
         <Separator />
         <FilterItem>
-          <Query query={GetOrgFilters} variables={{ owner: Meteor.userId() }} fetchPolicy={"cache-and-network"}>
+          <Query
+            query={GetOrgFilters}
+            variables={{ owner: Meteor.userId() }}
+            fetchPolicy={"cache-and-network"}
+          >
             {({ loading, error, data }) => {
               if (loading) return <div />;
               if (error) return <div>Error</div>;

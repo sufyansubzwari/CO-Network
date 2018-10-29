@@ -20,7 +20,7 @@ import { GetTags } from "../../../apollo-client/tag";
 import { Query } from "react-apollo";
 import { Meteor } from "meteor/meteor";
 import { GetMyEvents } from "../../../apollo-client/event";
-import { EVENT_TYPE } from "../../../constants";
+import { EVENT_TYPE,LOCATION_RANGE_OPTIONS } from "../../../constants";
 
 class EventsFilters extends React.Component {
   constructor(props) {
@@ -45,9 +45,13 @@ class EventsFilters extends React.Component {
           label: "My Followings",
           active: false
         }
-      ]
+      ],
+      locationOptions:LOCATION_RANGE_OPTIONS,
+      activeOption:LOCATION_RANGE_OPTIONS[0],
     };
     this.eventTypes = EVENT_TYPE;
+
+    this.handleLocationMiles = this.handleLocationMiles.bind(this);
   }
 
   componentWillMount() {
@@ -91,7 +95,13 @@ class EventsFilters extends React.Component {
   checkFilters() {
     let actives = this.state.locationTags.filter(item => item.active);
     let filters = this.state.filters;
-    actives.length > 0 ? (filters.location = actives) : delete filters.location;
+    if (actives.length > 0) {
+      filters.location = actives;
+      filters.locationRange = this.state.activeOption.value;
+    } else {
+      delete filters.location;
+      delete filters.locationRange;
+    }
     this.setState({ filters: filters }, () =>
       this.props.setFilters("events", filters)
     );
@@ -141,6 +151,10 @@ class EventsFilters extends React.Component {
     );
   }
 
+  handleLocationMiles(selected){
+    this.setState({activeOption: selected});
+  }
+
   render() {
     return (
       <FiltersContainer
@@ -155,6 +169,10 @@ class EventsFilters extends React.Component {
             model={this.state}
             placeholder={"Location"}
             onChange={this.notifyParentLocation.bind(this)}
+            options={this.state.locationOptions}
+            activeOption={this.state.activeOption}
+            showDropDown={true}
+            onSelect={this.handleLocationMiles}
           />
           <Layout
             mt={"10px"}

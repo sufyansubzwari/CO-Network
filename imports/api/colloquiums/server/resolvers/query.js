@@ -12,9 +12,10 @@ Query.colloquiums = (root, { filter, limit, colloquiums }, context) => {
   let query = {};
   if (colloquiums) {
     if (colloquiums.location) {
-      let loc = Places.service.matchLocations(colloquiums.location, 0.05);
+      let loc = Places.service.matchLocations(colloquiums.location, colloquiums.locationRange);
       colloquiums["_id"] = { $in: loc.map(item => item.owner) };
       delete colloquiums.location;
+      delete colloquiums.locationRange;
     }
     query = wrapOperators(colloquiums);
   }
