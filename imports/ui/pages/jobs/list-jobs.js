@@ -150,6 +150,7 @@ class ListJobs extends List {
                             },
                             {
                               text: "Edit",
+                              icon: "edit",
                               checkVisibility: () => {
                                 const element = this.state.selectedItem;
                                 return (

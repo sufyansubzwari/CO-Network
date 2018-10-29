@@ -161,6 +161,7 @@ class TopSearcher extends Component {
                 onClick={() =>
                   this.props.onCreateAction && this.props.onCreateAction()
                 }
+                title={"Create"}
               >
                 <MaterialIcon type={"plus"} />
               </Button>

@@ -128,6 +128,7 @@ const ItemsContainer = function(props) {
           secondary={true}
           onClick={() => props.onClose && props.onClose()}
           color={"black"}
+          title={"Back"}
         >
           <MaterialIcon type={"chevron-left"} />
         </CButton>
