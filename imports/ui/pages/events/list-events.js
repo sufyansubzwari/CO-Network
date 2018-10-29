@@ -14,6 +14,7 @@ import { ViewsCountUpdate } from "../../apollo-client/viewCount";
 import { withRouter } from "react-router-dom";
 import { cleanSearch, onSearchTags } from "../../actions/TopSearchActions";
 import { List } from "../general";
+import { ConfirmPopup } from "../../services";
 
 /**
  * @module Events
@@ -103,7 +104,7 @@ class ListEvents extends List {
                   mutation={FollowAction}
                   onError={error => this.errorOnBackgroundChange(error)}
                 >
-                  {(followAction) => {
+                  {followAction => {
                     const follow =
                       this.props.curUser &&
                       this.props.curUser._id &&
@@ -178,10 +179,12 @@ class ListEvents extends List {
                               );
                             },
                             onClick: () => {
-                              this.removeEntity(
-                                deleteEvent,
-                                this.state.selectedItem
-                              );
+                              ConfirmPopup.confirmPopup(() => {
+                                this.removeEntity(
+                                  deleteEvent,
+                                  this.state.selectedItem
+                                );
+                              });
                             }
                           }
                         ]}

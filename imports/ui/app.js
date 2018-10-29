@@ -10,7 +10,9 @@ import store from "./redux/store.js";
 import { theme } from "./theme";
 
 import "bootstrap/dist/css/bootstrap.min.css";
+import "react-confirm-alert/src/react-confirm-alert.css";
 import "react-leaflet-markercluster/dist/styles.min.css";
+
 // To get started, create an ApolloClient instance and point it at your GraphQL
 // server (handled in our case by meteor-apollo). By default, this client will
 // send queries to the '/graphql' endpoint on the same host.
@@ -38,7 +40,7 @@ const App = ({ component }) => (
     <Router history={history}>
       <Provider store={store}>
         <ApolloProvider client={client}>
-          {React.createElement(component )}
+          {React.createElement(component)}
         </ApolloProvider>
       </Provider>
     </Router>

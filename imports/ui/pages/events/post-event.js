@@ -7,6 +7,7 @@ import { CreateEvent, DeleteEvent } from "../../apollo-client/event";
 import { Mutation } from "react-apollo";
 import _ from "lodash";
 import { GetSponsors } from "../../apollo-client/sponsor";
+import { ConfirmPopup } from "../../services";
 
 /**
  * @module Events
@@ -150,7 +151,12 @@ class PostEvent extends Component {
                     return this.state.event && this.state.event._id;
                   },
                   onClick: () => {
-                    this.removeEvent(deleteEvent, this.state.event);
+                    ConfirmPopup.confirmPopup(() => {
+                      this.removeEntity(
+                        deleteEvent,
+                        this.state.event
+                      );
+                    });
                   }
                 }
               ]}

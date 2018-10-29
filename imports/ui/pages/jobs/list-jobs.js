@@ -15,6 +15,7 @@ import { ViewsCountUpdate } from "../../apollo-client/viewCount";
 import { cleanSearch, onSearchTags } from "../../actions/TopSearchActions";
 import { GetJobApply } from "../../apollo-client/jobApply";
 import { List } from "../general";
+import { ConfirmPopup } from "../../services";
 
 /**
  * @module Jobs
@@ -177,10 +178,12 @@ class ListJobs extends List {
                                 );
                               },
                               onClick: () => {
-                                this.removeEntity(
-                                  deleteJob,
-                                  this.state.selectedItem
-                                );
+                                ConfirmPopup.confirmPopup(() => {
+                                  this.removeEntity(
+                                    deleteJob,
+                                    this.state.selectedItem
+                                  );
+                                });
                               }
                             }
                           ]}
