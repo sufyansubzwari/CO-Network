@@ -390,6 +390,7 @@ class UserPreviewBody extends React.Component {
                                             active: true
                                         }))
                                     }
+                                    onSelectTag={this.props.onSelectTag}
                                 />
                             ))}
                     </CollapseList> : null}
@@ -458,6 +459,7 @@ class UserPreviewBody extends React.Component {
                                             active: true
                                         }))
                                     }
+                                    onSelectTag={this.props.onSelectTag}
                                 />
                             ))}
                     </CollapseList> : null}
