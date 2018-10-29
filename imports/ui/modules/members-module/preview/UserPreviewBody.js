@@ -229,7 +229,8 @@ class UserPreviewBody extends React.Component {
                     width={300}
                 >
                     {languages && languages.length > 0 ?
-                        <TagsAdd onSelectTag={this.props.onSelectTag} header={"Domain Expertise | Languages"} tags={languages}/> : null}
+                        <TagsAdd onSelectTag={this.props.onSelectTag} header={"Domain Expertise | Languages"}
+                                 tags={languages}/> : null}
                 </PlaceHolder>
                 <PlaceHolder
                     loading={(!curious || !curious.length) && !this.props.id}
@@ -237,7 +238,8 @@ class UserPreviewBody extends React.Component {
                     width={300}
                 >
                     {curious && curious.length ?
-                        <TagsAdd onSelectTag={this.props.onSelectTag} header={"Intellectually Curious About"} tags={curious}/> : null}
+                        <TagsAdd onSelectTag={this.props.onSelectTag} header={"Intellectually Curious About"}
+                                 tags={curious}/> : null}
                 </PlaceHolder>
                 <PlaceHolder
                     loading={(!lookingfor || !lookingfor.length) && !this.props.id}
@@ -305,6 +307,7 @@ class UserPreviewBody extends React.Component {
             (industry && industry.length) ||
             (professional && professional.seeking && (min || max)) ||
             (patents && patents.length) ||
+            (jobType && jobType.length) ||
             (profesionalexp && profesionalexp.length) || !this.props.id;
 
         return render ? (
@@ -333,21 +336,23 @@ class UserPreviewBody extends React.Component {
                     height={35}
                     width={300}
                 >
-                    <TagsAdd
+                    {jobType && jobType.length ? <TagsAdd
                         hideBorder={true}
                         activeColor={"white"}
                         backgroundTagColor={"#202225"}
                         borderColor={"#202225"}
                         header={"Job Type"}
                         tags={jobType}
-                    />
+                    /> : null}
                 </PlaceHolder>
                 <PlaceHolder
                     loading={(!industry || !industry.length) && !this.props.id}
                     height={35}
                     width={300}
                 >
-                    <TagsAdd onSelectTag={this.props.onSelectTag} header={"Industry | Sector"} tags={industry}/>
+                    {industry && industry.length ?
+                        <TagsAdd onSelectTag={this.props.onSelectTag} header={"Industry | Sector"}
+                                 tags={industry}/> : null}
                 </PlaceHolder>
                 <PlaceHolder
                     loading={
