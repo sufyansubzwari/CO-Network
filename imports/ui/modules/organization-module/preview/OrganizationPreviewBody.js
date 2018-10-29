@@ -192,7 +192,7 @@ class OrganizationPreviewBody extends React.Component {
                     height={35}
                     width={300}
                 >
-                    {description && description.length ? <TagsAdd header={"Description"} tags={description}/> : null}
+                    {description && description.length ? <TagsAdd onSelectTag={this.props.onSelectTag} header={"Description"} tags={description}/> : null}
                 </PlaceHolder>
                 <PlaceHolder
                     loading={(!reason || !reason.vision) && !organization._id}
@@ -217,8 +217,8 @@ class OrganizationPreviewBody extends React.Component {
         let organization = this.state.organization;
         let tech = organization.tech;
 
-        let min = tech && tech.salaryRange && tech.salaryRange.min !== "";
-        let max = tech && tech.salaryRange && tech.salaryRange.max !== "";
+        let min = tech && tech.salaryRange && tech.salaryRange.min;
+        let max = tech && tech.salaryRange && tech.salaryRange.max;
 
         let jobType = this.handleTechElements("jobType");
         let industry = this.handleTechElements("industry");
@@ -240,29 +240,28 @@ class OrganizationPreviewBody extends React.Component {
                         max={max ? tech.salaryRange.max : null}/> : null }
                 </PlaceHolder>
                 <PlaceHolder
-                    loading={(!jobType || !jobType.length) && !organization._id}
+                    loading={(!jobType || !jobType.length > 0) && !organization._id}
                     height={35}
                     width={300}
                 >
-                    {jobType && jobType.length ?
+                    {jobType && jobType.length > 0 ?
                         <TagsAdd hideBorder={true} activeColor={"white"} backgroundTagColor={"#202225"}
                                  borderColor={"#202225"} header={"Job Type"} tags={jobType}/> : null}
-                    <Separator/>
                 </PlaceHolder>
                 <PlaceHolder
-                    loading={(!stacks || !stacks.length) && !organization._id}
+                    loading={(!stacks || !stacks.length > 0) && !organization._id}
                     height={35}
                     width={300}
                 >
-                    {stacks && stacks.length ?
+                    {stacks && stacks.length > 0 ?
                         <TagsAdd onSelectTag={this.props.onSelectTag} header={"Languages, Libraries, Skills"} tags={stacks}/> : null}
                 </PlaceHolder>
                 <PlaceHolder
-                    loading={(!industry || !industry.length) && !organization._id}
+                    loading={(!industry || !industry.length > 0) && !organization._id}
                     height={35}
                     width={300}
                 >
-                    {industry && industry.length ? <TagsAdd onSelectTag={this.props.onSelectTag} header={"Industry | Sector"} tags={industry}/> : null}
+                    {industry && industry.length > 0 ? <TagsAdd onSelectTag={this.props.onSelectTag} header={"Industry | Sector"} tags={industry}/> : null}
                 </PlaceHolder>
             </PreviewSection>
         ): null
