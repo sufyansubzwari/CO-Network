@@ -46,27 +46,42 @@ class ListInnovators extends List {
       summary: true,
       previewMembersOptions: [
         { label: "Summary", action: () => this.scrollToSection("Summary") },
-        { label: "Knowledge | Community", action: () => this.scrollToSection("Knowledge") },
-        { label: "Professional", action: () => this.scrollToSection("Professional") },
+        {
+          label: "Knowledge | Community",
+          action: () => this.scrollToSection("Knowledge")
+        },
+        {
+          label: "Professional",
+          action: () => this.scrollToSection("Professional")
+        },
         { label: "Academic", action: () => this.scrollToSection("Academic") },
-        { label: "Organization", action: () => this.scrollToSection("Organization") },
+        {
+          label: "Organization",
+          action: () => this.scrollToSection("Organization")
+        },
         { label: "Event", action: () => this.scrollToSection("Event") },
         { label: "Job", action: () => this.scrollToSection("Job") }
       ],
       previewOrgOptions: [
         { label: "Summary", action: () => this.scrollToSection("Summary") },
-        { label: "Technical Recruitment", action: () => this.scrollToSection("Recruitment") },
-        { label: "Product & Service", action: () => this.scrollToSection("Product") },
+        {
+          label: "Technical Recruitment",
+          action: () => this.scrollToSection("Recruitment")
+        },
+        {
+          label: "Product & Service",
+          action: () => this.scrollToSection("Product")
+        },
         { label: "Media", action: () => this.scrollToSection("Media") }
       ],
-      activePreview: null,
+      activePreview: null
     };
     this.customRenderItem = this.customRenderItem.bind(this);
     this.entityName = "innovators";
   }
 
-  scrollToSection(link){
-    this.setState({activePreview: link});
+  scrollToSection(link) {
+    this.setState({ activePreview: link });
   }
 
   componentWillMount() {
@@ -109,7 +124,10 @@ class ListInnovators extends List {
           })
           .then(({ data }) => {
             console.log("onRefetch", data);
-            this.setState({ selectedItem: data.users[0], showMessages: true });
+            this.setState({
+              selectedItem: data && data.users && data.users[0],
+              showMessages: true
+            });
           });
       });
     }
@@ -142,7 +160,10 @@ class ListInnovators extends List {
       entity = "organizations";
     }
     if (this.state.currentTab.value === "members") {
-      count = this.state.users.users.length;
+      count =
+        this.state.users &&
+        this.state.users.users &&
+        this.state.users.users.length;
       entity = "users";
     }
     if (!isLoading && this.state.limit <= count)
@@ -509,7 +530,9 @@ class ListInnovators extends List {
                         this.state.selectedItem ? (
                           <OrganizationPreviewBody
                             organization={this.state.selectedItem}
-                            onSelectTag={(tag, index) => this.onSelectTag(tag, index)}
+                            onSelectTag={(tag, index) =>
+                              this.onSelectTag(tag, index)
+                            }
                             activePreview={this.state.activePreview}
                           />
                         ) : this.state.currentTab.value === "members" &&
@@ -517,7 +540,9 @@ class ListInnovators extends List {
                           <UserPreviewBody
                             user={this.state.selectedItem.profile}
                             id={this.state.selectedItem._id}
-                            onSelectTag={(tag, index) => this.onSelectTag(tag, index)}
+                            onSelectTag={(tag, index) =>
+                              this.onSelectTag(tag, index)
+                            }
                             activePreview={this.state.activePreview}
                           />
                         ) : null}
