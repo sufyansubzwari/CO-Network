@@ -3,8 +3,6 @@ import PropsTypes from "prop-types";
 import {Layout, Container} from "btech-layout";
 import styled from "styled-components";
 import {ItemList} from "../../../../components/Preview/components"
-import MaterialIcon from "react-material-iconic-font";
-import ReactSVG from "react-svg";
 import LightBox from "react-images";
 import {Utils} from "../../../../services";
 import theme from "../../../../theme"
@@ -15,7 +13,7 @@ const SImage = styled(Container)`
     background-size: cover;
     border-radius: 3px;
     height: 57px;
-    cursor: pointer;
+    cursor: ${props => props.src ? "pointer" : "default"};
 `
 
 const STitle = styled.label`

@@ -11,7 +11,7 @@ const SVideo = styled.video`
   border-radius: 3px;
   height: 57px;
   width: 100%;
-  cursor: pointer;
+  cursor: ${props => props.src ? "pointer" : "default"};
 `;
 
 const STitle = styled.label`
@@ -57,54 +57,35 @@ class ProductPreview extends React.Component {
       : null;
   };
 
-  renderLeftSide = () => {
-    return (
-      <a
-        href={this.handleImage(this.props.file && this.props.file.link, "base")}
-        target="_blank"
-      >
-        <SVideo>
-          <source
-            src={this.handleImage(
-              this.props.file && this.props.file.link,
-              "base"
-            )}
-            type="video/mp4"
-          />
-          <source
-            src={this.handleImage(
-              this.props.file && this.props.file.link,
-              "base"
-            )}
-            type="video/ogg"
-          />
-          <source
-            src={this.handleImage(
-              this.props.file && this.props.file.link,
-              "base"
-            )}
-            type="video/webm"
-          />
-        </SVideo>
-      </a>
-    );
-  };
-  renderRightSide = () => {
-    return (
-      <Layout rowGap={"10px"}>
-        <Container>
-          <STitle>{this.props.name}</STitle>
-          <SSubtitle customTemplateColumns={"auto 1fr"}>
-            {this.props.link}
-            <div />
-          </SSubtitle>
-        </Container>
-        <Container>
-          <Text>{this.props.explain}</Text>
-        </Container>
-      </Layout>
-    );
-  };
+    renderLeftSide = () => {
+        const url=this.handleImage(this.props.file && this.props.file.link, "base")return (
+            <a href={url} target="_blank">
+                <SVideosrc={url && (url.endsWith("mp4") || url.endsWith("ogg") || url.endsWith("webm") ) ? url : null }>
+                    <source src={url} type="video/mp4" />
+                    <source src={url} type="video/ogg" />
+                    <source src={url} type="video/webm" />
+                </SVideo>
+            </a>
+        );
+    };
+    renderRightSide = () => {
+        return (
+            <Layout rowGap={"10px"}>
+                <Container>
+                    <STitle>{this.props.name}</STitle>
+                    <SSubtitle customTemplateColumns={"auto 1fr"}>
+                        {this.props.link}
+                        <div/>
+                    </SSubtitle>
+                </Container>
+                <Container>
+                    <Text>
+                        {this.props.explain}
+                    </Text>
+                </Container>
+            </Layout>
+        );
+    };
 
   render() {
     return (

@@ -15,7 +15,7 @@ const SImage = styled(Container)`
     background-size: cover;
     border-radius: 3px;
     height: 57px;
-    cursor: pointer;
+    cursor: ${props => props.src ? "pointer" : "default"};
 `
 
 const STitle = styled.label`
