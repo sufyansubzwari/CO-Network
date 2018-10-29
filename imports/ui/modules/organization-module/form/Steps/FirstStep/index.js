@@ -218,6 +218,7 @@ class FirstStep extends React.Component {
                         placeholderText={"Contact Number"}
                         getValue={this.notifyParent.bind(this, "contact")}
                         validate={PHONE_REGEX}
+                        title={"Example: +01 1234 5678"}
                     />
                 </Layout>
                 <Mutation

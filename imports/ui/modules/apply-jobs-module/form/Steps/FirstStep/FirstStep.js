@@ -108,6 +108,7 @@ class FirstStep extends React.Component {
             placeholderText={"Phone number"}
             validate={PHONE_REGEX}
             getValue={this.notifyParent.bind(this)}
+            title={"Example: +01 1234 5678"}
           />
         </Layout>
         <Layout mdTemplateColumns={2}>
