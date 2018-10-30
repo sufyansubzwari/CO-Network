@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import {NotificationToast} from "../../../services";
 
 /**
  * @module Data
@@ -165,8 +166,7 @@ class List extends Component {
   }
 
   errorOnBackgroundChange(e) {
-    // todo: handle error notification
-    console.log("Error to change the image");
+    NotificationToast.notify("error", "Error to change the image");
   }
 
   handleBackgroundChange(updateImageMutation, src) {
