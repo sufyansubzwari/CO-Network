@@ -236,6 +236,7 @@ class AchievementsList extends React.Component {
                             this.handleChange(index);
                           }}
                           style={{ fontSize: "14px" }}
+                          title={"Edit"}
                         >
                           <MaterialIcon type={"edit"} />
                         </Button>
@@ -250,6 +251,7 @@ class AchievementsList extends React.Component {
                           hoverColor={"initial"}
                           onClick={() => this.handleRemove(index)}
                           style={{ fontSize: "14px" }}
+                          title={"Delete"}
                         >
                           <MaterialIcon type={"delete"} />
                         </Button>

@@ -6,6 +6,8 @@ import { graphql, Mutation } from "react-apollo";
 import { CreateJobApply, GetJobApply } from "../../apollo-client/jobApply";
 import { Meteor } from "meteor/meteor";
 import { userQuery } from "../../apollo-client/user";
+import {ConfirmPopup} from "../../services";
+import ApplyJobPreviewBody from "../../modules/apply-jobs-module/preview/ApplyJobPreviewBody";
 
 /**
  * @module Jobs
@@ -140,6 +142,16 @@ class ApplyJob extends Component {
             />
           )}
         </Mutation>
+          <Preview
+              isOpen={this.state.openPreview}
+              onClose={() => this.setState({ openPreview: false })}
+              key={"rightSide"}
+              navClicked={index => console.log(index)}
+              data={this.state.apply}
+          >
+              <ApplyJobPreviewBody apply={this.state.apply} isPost={true} />
+          </Preview>
+
       </PostLayout>
     );
   }

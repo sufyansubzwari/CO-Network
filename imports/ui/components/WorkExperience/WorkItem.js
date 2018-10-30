@@ -8,7 +8,7 @@ import { FormMainLayout } from "../../components";
 
 export default (WorkItem = function(props) {
   return (
-    <Container style={{ background: "#f6f6f6" }}>
+    <Container marginX={"-10px"} style={{ background: "#f6f6f6" }}>
       <form
         onSubmit={e => {
           e.preventDefault();

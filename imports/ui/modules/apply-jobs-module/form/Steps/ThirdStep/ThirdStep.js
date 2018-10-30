@@ -239,6 +239,7 @@ class ThirdStep extends React.Component {
             model={this.state.apply.professional}
             name={"degree"}
             options={DEGREE}
+            getValue={() => this.notifyParent()}
           />
         </Layout>
         <Container>

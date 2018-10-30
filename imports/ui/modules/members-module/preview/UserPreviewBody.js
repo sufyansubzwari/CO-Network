@@ -438,7 +438,7 @@ class UserPreviewBody extends React.Component {
                     </CollapseList> : null}
                 </PlaceHolder>
                 <PlaceHolder
-                    loading={!publications || (!publications.length && !this.props.id)}
+                    loading={(!publications || !publications.length) && !this.props.id}
                     height={35}
                     width={300}
                 >

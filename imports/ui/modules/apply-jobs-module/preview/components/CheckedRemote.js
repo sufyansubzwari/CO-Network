@@ -1,0 +1,36 @@
+import React from "react";
+import styled from "styled-components";
+import PropsTypes from "prop-types";
+import MaterialIcon from "react-material-iconic-font";
+
+const Span = styled.span`
+    height: 14px;   
+    color: #2B2B2B;
+    font-size: 14px;
+    line-height: 20px;
+    width: 100%;
+    
+    i {
+        margin-right: 5px;
+        font-size: 15px;
+    }
+`
+
+CheckedRemote = (props) => {
+
+    return props.seeking ? (
+        <Span>
+          <MaterialIcon type={"check"}/>
+            {"Work remote"}
+      </Span>
+    ) : props.seeking === false ? <Span>
+          <MaterialIcon type={"close"}/>
+        {"Work remote"}
+      </Span> : null
+}
+
+export default CheckedRemote;
+
+CheckedRemote.propTypes = {
+    seeking: PropsTypes.bool
+}
