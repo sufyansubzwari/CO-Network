@@ -246,7 +246,7 @@ SponsorsList.propTypes = {
   isEditable: PropTypes.bool,
   onInviteSpeaker: PropTypes.func, // todo: support invite a user not in the system
   onInviteSponsor: PropTypes.func, // todo: support invite a user not in the system
-  users: PropTypes.func
+  users: PropTypes.array
 };
 
 export default SponsorsList;
