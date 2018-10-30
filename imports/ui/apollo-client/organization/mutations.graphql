@@ -2,6 +2,8 @@
 mutation CreateOrg($entity: OrganizationsInput!) {
   organization(organizations: $entity) {
     _id
+    checkStatus
+    enable
   }
 }
 

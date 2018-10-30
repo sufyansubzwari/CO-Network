@@ -1,15 +1,14 @@
 import React from "react";
-import {Container, Layout} from "btech-layout";
+import { Container, Layout } from "btech-layout";
 import {
-    Location,
-    Social,
-    TagsAdd,
-    Text,
-    Title,
-    PreviewSection,
-    SalaryRangePreview,
-    CollapseList,
-    Dates
+  CollapseList,
+  Location,
+  PreviewSection,
+  SalaryRangePreview,
+  Social,
+  TagsAdd,
+  Text,
+  Title
 } from "../../../components/Preview/components/index";
 import services from "../../../components/LoginModal/service.constant";
 import styled from "styled-components";
@@ -20,16 +19,16 @@ import PatentPreview from "./components/PatentPreview";
 import AcademicBackgroundPreview from "./components/AcademicBackgroundPreview";
 import PublicationsPreview from "./components/PublicationsPreview";
 import NavMenu from "../../../components/ItemsList/components/navMenu";
-import {Query, Mutation} from "react-apollo";
+import { Mutation, Query } from "react-apollo";
 import OrganizationCard from "./components/organizationCard";
 import CreateButton from "./components/CreateButton";
 import JobCard from "./components/jobCard";
-import {GetOrg} from "../../../apollo-client/organization/index";
-import {GetEvents} from "../../../apollo-client/event/index";
-import {GetJobs} from "../../../apollo-client/job/index";
-import {FollowAction} from "../../../apollo-client/follow";
-import {GetJobApply} from "../../../apollo-client/jobApply";
-import {PlaceHolder} from "btech-placeholder-component";
+import { GetOrg } from "../../../apollo-client/organization/index";
+import { GetEvents } from "../../../apollo-client/event/index";
+import { GetJobs } from "../../../apollo-client/job/index";
+import { FollowAction } from "../../../apollo-client/follow";
+import { GetJobApply } from "../../../apollo-client/jobApply";
+import { PlaceHolder } from "btech-placeholder-component";
 
 const SText = styled(Container)`
   font-size: 12px;
@@ -43,22 +42,20 @@ class UserPreviewBody extends React.Component {
             user: props.user ? props.user : {},
             showMoreAbout: false
         };
-
-        this.SummarySection = React.createRef();
+  this.SummarySection = React.createRef();
         this.KnowledgeSection = React.createRef();
         this.ProfessionalSection = React.createRef();
         this.AcademicSection = React.createRef();
         this.OrganizationSection = React.createRef();
         this.EventSection = React.createRef();
-        this.JobSection = React.createRef();
-    }
+        this.JobSection = React.createRef();  }
 
-  componentWillReceiveProps(nextProps) {
-    if (nextProps.user) {
-      this.setState({
-        user: nextProps.user
-      });
-    }
+    componentWillReceiveProps(nextProps) {
+        if (nextProps.user) {
+            this.setState({
+                user: nextProps.user
+            });
+        }
     if (nextProps.activePreview !== this.props.activePreview) {
       this.scrollToDomRef( nextProps.activePreview );
     }
@@ -86,28 +83,27 @@ class UserPreviewBody extends React.Component {
                 return this.EventSection.current;
             case "Job":
                 return this.JobSection.current;
-        }
-    }
+        }}
 
-    handleMoreAbout = () => {
-        this.setState({
-            showMoreAbout: !this.state.showMoreAbout
-        });
-    };
+  handleMoreAbout = () => {
+    this.setState({
+      showMoreAbout: !this.state.showMoreAbout
+    });
+  };
 
-    handleFollow = (followAction, follow, id) => {
-        let follower = {
-            entityId: id,
-            entity: "EVENT"
-        };
-        followAction({
-            variables: {
-                follower: follower,
-                id: id,
-                follow: follow
-            }
-        });
+  handleFollow = (followAction, follow, id) => {
+    let follower = {
+      entityId: id,
+      entity: "EVENT"
     };
+    followAction({
+      variables: {
+        follower: follower,
+        id: id,
+        follow: follow
+      }
+    });
+  };
 
     renderSummarySection = () => {
         let user = this.state.user;
@@ -180,34 +176,34 @@ class UserPreviewBody extends React.Component {
         ) : null
     };
 
-    renderKnowledgeSection = () => {
-        let user = this.state.user;
-        let knowledge = user.knowledge;
+  renderKnowledgeSection = () => {
+    let user = this.state.user;
+    let knowledge = user.knowledge;
 
-        let languages =
-            knowledge &&
-            knowledge.languages &&
-            knowledge.languages.length &&
-            knowledge.languages.map(lang => ({
-                ...lang.tag,
-                active: true
-            }));
-        let curious =
-            knowledge &&
-            knowledge.curiosity &&
-            knowledge.curiosity.length &&
-            knowledge.curiosity.map(cur => ({
-                ...cur.tag,
-                active: true
-            }));
-        let lookingfor =
-            knowledge &&
-            knowledge.lookingFor &&
-            knowledge.lookingFor.length &&
-            knowledge.lookingFor.map((look, index) => ({
-                ...look,
-                active: true
-            }));
+    let languages =
+      knowledge &&
+      knowledge.languages &&
+      knowledge.languages.length &&
+      knowledge.languages.map(lang => ({
+        ...lang.tag,
+        active: true
+      }));
+    let curious =
+      knowledge &&
+      knowledge.curiosity &&
+      knowledge.curiosity.length &&
+      knowledge.curiosity.map(cur => ({
+        ...cur.tag,
+        active: true
+      }));
+    let lookingfor =
+      knowledge &&
+      knowledge.lookingFor &&
+      knowledge.lookingFor.length &&
+      knowledge.lookingFor.map((look, index) => ({
+        ...look,
+        active: true
+      }));
 
         const render =
             (languages && languages.length) ||
@@ -255,41 +251,32 @@ class UserPreviewBody extends React.Component {
         ) : null
     };
 
-    renderProfessionalSection = () => {
-        let user = this.state.user;
-        let professional = user.professional;
-        let achievements = user.achievements;
+  renderProfessionalSection = () => {
+    let user = this.state.user;
+    let professional = user.professional;
+    let achievements = user.achievements;
 
-        let min =
-            professional &&
-            professional.salaryRange &&
-            professional.salaryRange.min;
-        let max =
-            professional &&
-            professional.salaryRange &&
-            professional.salaryRange.max;
+        let min = professional && professional.salaryRange && professional.salaryRange.min ;
+        let max = professional && professional.salaryRange && professional.salaryRange.max ;
 
-        let jobType =
-            professional &&
-            professional.jobType &&
-            professional.jobType.length &&
-            professional.jobType.map(job => ({
-                ...job,
-                active: true
-            }));
-        let industry =
-            professional &&
-            professional.industry &&
-            professional.industry.length &&
-            professional.industry.map(ind => ({
-                ...ind,
-                active: true
-            }));
+    let jobType =
+      professional &&
+      professional.jobType &&
+      professional.jobType.length &&
+      professional.jobType.map(job => ({
+        ...job,
+        active: true
+      }));
+    let industry =
+      professional &&
+      professional.industry &&
+      professional.industry.length &&
+      professional.industry.map(ind => ({
+        ...ind,
+        active: true
+      }));
 
-        const jobVal =
-            ((jobType && jobType.length) || min || max) &&
-            professional &&
-            professional.seeking;
+        const jobVal = ((jobType && jobType.length) || min || max) && professional && professional.seeking;
 
         const profesionalexp =
             achievements &&
@@ -400,9 +387,9 @@ class UserPreviewBody extends React.Component {
         ) : null
     };
 
-    renderAcademicSection = () => {
-        let user = this.state.user;
-        let achievements = user.achievements;
+  renderAcademicSection = () => {
+    let user = this.state.user;
+    let achievements = user.achievements;
 
         const academic =
             achievements &&
@@ -534,40 +521,26 @@ class UserPreviewBody extends React.Component {
     renderEventsSection = () => {
         const render = this.props.id;
         return render ? (
-            <Query
-                fetchPolicy={"network-only"}
-                query={GetEvents}
-                variables={{
-                    events: {
-                        owner: this.props.id
-                    }
-                }}
-            >
+            <Query fetchPolicy={"network-only"} query={GetEvents}
+                   variables={{
+                       events: {
+                           owner: this.props.id}
+                       }}
+                   >
                 {({loading, error, data}) => {
                     if (loading) return <div/>;
                     if (error) return <div/>;
                     let events = data.events;
                     return events && events.length > 0 ? (
-                        <PreviewSection previewRef={this.EventSection}>
+                        <PreviewSectionpreviewRef={this.EventSection}>
                             <Layout customTemplateColumns={"1fr auto"}>
-                                <NavMenu
-                                    noMarginBottom={true}
-                                    noMarginRight={true}
-                                    noMarginLeft={true}
-                                    options={[
-                                        {value: "Events", title: "Events", number: events.length}
-                                    ]}
-                                />
-                                <CreateButton text={"Create Event"} route={"/post-event"}/>
+                                <NavMenu noMarginBottom={true} noMarginRight={true} noMarginLeft={true}
+                                         options={[{value: "Events", title: "Events", number: events.length}
+                  ]}
+                                />              <CreateButton text={"Create Event"} route={"/post-event"}/>
                             </Layout>
-                            <Layout
-                                colGap={"20px"}
-                                customTemplateColumns={`1fr`}
-                                mdCustomTemplateColumns={"1fr 1fr"}
-                            >
-                                {events &&
-                                events.length > 0 &&
-                                events.map((event, index) => (
+                            <Layout colGap={"20px"} customTemplateColumns={`1fr`} mdCustomTemplateColumns={"1fr 1fr"}>
+                                {events && events.length > 0 && events.map((event, index) =>(
                                     <Mutation
                                         mutation={FollowAction}
                                         onError={error => console.log(error)}
@@ -576,29 +549,26 @@ class UserPreviewBody extends React.Component {
                                         {(followAction, {followResult}) => {
                                             const follow =
                                                 event.followerList &&
-                                                event.followerList.indexOf(Meteor.userId()) > -1;
-                                            return (
-                                                <OrganizationCard
-                                                    key={index}
-                                                    isEventCard={true}
-                                                    name={event.title}
-                                                    image={event.image}
-                                                    startDate={event.startDate}
-                                                    endDate={event.endDate}
-                                                    lgCustomTemplateColumns={"130px 1fr"}
-                                                    hideButton={event.owner === Meteor.userId()}
-                                                    onFollowClick={() =>
-                                                        this.handleFollow(followAction, follow, event._id)
-                                                    }
-                                                    following={follow}
-                                                />
+                                                event.followerList.indexOf(
+                                                    Meteor.userId()
+                                                ) > -1;
+                                            return (<OrganizationCard key={index}
+                                                                     isEventCard={true}
+                                                                     name={event.title}
+                                                                     image={event.image}
+                                                                     startDate={event.startDate}
+                                                                     endDate={event.endDate}
+                                                                     lgCustomTemplateColumns={"130px 1fr"}
+                                                                     hideButton={event.owner === Meteor.userId()}
+                                                                     onFollowClick={() => this.handleFollow(followAction, follow, event._id)
+                                         }                            following={follow}
+/>
                                             );
                                         }}
                                     </Mutation>
                                 ))}
                             </Layout>
-                        </PreviewSection>
-                    ) : null;
+                        </PreviewSection>) : null;
                 }}
             </Query>
         ) : null;
@@ -607,22 +577,18 @@ class UserPreviewBody extends React.Component {
     renderJobsSection = () => {
         const render = this.props.id;
         return render ? (
-            <Query
-                fetchPolicy={"network-only"}
-                query={GetJobs}
-                variables={{
-                    jobs: {
-                        owner: this.props.id
-                    }
-                }}
-            >
+            <Query fetchPolicy={"network-only"} query={GetJobs}
+                   variables={{
+                       jobs: {
+                           owner: this.props.id}
+                       }}
+                   >
                 {({loading, error, data}) => {
                     if (loading) return <div/>;
                     if (error) return <div/>;
                     let jobs = data.jobs;
                     return jobs && jobs.length > 0 ? (
-                        <PreviewSection
-                            previewRef={this.JobSection}
+                        <PreviewSectionpreviewRef={this.JobSection}
                         >
                             <Layout customTemplateColumns={"1fr auto"}>
                                 <NavMenu
@@ -630,77 +596,63 @@ class UserPreviewBody extends React.Component {
                                     noMarginRight={true}
                                     noMarginLeft={true}
                                     options={[
-                                        {value: "Jobs", title: "Jobs", number: jobs.length}
-                                    ]}
+                                        {value: "Jobs", title:"Jobs", number:jobs.length}]}
                                 />
                                 <CreateButton text={"Create Job"} route={"/post-job"}/>
                             </Layout>
-                            <Layout
-                                colGap={"20px"}
-                                customTemplateColumns={`1fr`}
-                                mdCustomTemplateColumns={"1fr 1fr"}
-                            >
-                                {jobs.map((job, index) => {
-                                    return (
-                                        <Query
-                                            fetchPolicy={"cache-and-network"}
-                                            query={GetJobApply}
-                                            variables={{jobsApply: {job: job._id}}}
-                                        >
-                                            {({loading, error, data}) => {
-                                                if (loading) return <div/>;
-                                                if (error) return <div>Error</div>;
+                            <Layout colGap={"20px"} customTemplateColumns={`1fr`} mdCustomTemplateColumns={"1fr 1fr"}
+                                >
+                                    {jobs.map((job, index) => {
+                                        return (
+                                            <Query fetchPolicy={"cache-and-network"} query={GetJobApply}
+                                                   variables={{jobsApply: {job: job._id}}}
+                          >                      {({loading, error, data}) => {
+                                                    if (loading) return <div/>;
+                                                    if (error) return <div>Error</div>;
 
-                                                let applyJobs = data.jobsApply;
-                                                let apply =
-                                                    applyJobs &&
-                                                    applyJobs.length > 0 &&
-                                                    applyJobs.some(
-                                                        item =>
-                                                            item.owner && item.owner._id === Meteor.userId()
-                                                    );
-                                                return (
-                                                    <JobCard
-                                                        key={index}
-                                                        name={job.title}
-                                                        image={job.image}
-                                                        location={job.place}
-                                                        lgCustomTemplateColumns={"130px 1fr"}
-                                                        hideButton={apply}
-                                                    />
-                                                );
-                                            }}
-                                        </Query>
+                                                    let applyJobs = data.jobsApply;
+                                                    let apply = applyJobs && applyJobs.length > 0 && applyJobs.some(item => item.owner && item.owner._id === Meteor.userId());
+                                                    return (
+                                                        <JobCard
+                                                            key={index}
+                                                            name={job.title}
+                                                            image={job.image}
+                                                            location={job.place}
+                                                            lgCustomTemplateColumns={"130px 1fr"}
+                                                            hideButton={apply}/>
+                                                        );
+                                                }}
+                                            </Query>
                                     );
                                 })}
                             </Layout>
-                        </PreviewSection>
-                    ) : null;
+                        </PreviewSection>) : null;
                 }}
             </Query>
         ) : null;
     };
 
-    getService(provider) {
-        return this.servicesSocial.find(element => {
-            return provider === element.service;
-        });
-    }
+  getService(provider) {
+    return this.servicesSocial.find(element => {
+      return provider === element.service;
+    });
+  }
 
-    getLinkForSocial(iden) {
-        if (!iden.profileData)
-            return `${this.getService(iden.provider).link}/${
-                this.state.user.nickName
-                }`;
-        else {
-            const data = iden.profileData;
-            if (data.link) return data.link;
-            return `${this.getService(iden.provider).link}/${data.screen_name ||
-            data.nickName}`;
-        }
+  getLinkForSocial(iden) {
+    if (!iden.profileData)
+      return `${this.getService(iden.provider).link}/${
+        this.state.user.nickName
+      }`;
+    else {
+      const data = iden.profileData;
+      if (data.link) return data.link;
+      return `${this.getService(iden.provider).link}/${data.screen_name ||
+        data.nickName}`;
     }
+  }
 
     render() {
+
         return (
             <Layout mdRowGap={"20px"}>
                 {this.renderSummarySection()}

@@ -6,6 +6,21 @@ query GetEvents($limit: Int, $filter: String, $events: EventsInputSearch) {
     description
     venueName
     image
+    organization {
+        _id
+        name
+        checkStatus
+        image
+        place {
+            location{
+                address
+                location{
+                    lat
+                    lng
+                }
+            }
+        }
+    }
     startDate
     endDate
     owner {
@@ -41,16 +56,15 @@ query GetEvents($limit: Int, $filter: String, $events: EventsInputSearch) {
                 name
                 lastName
                 image
-                place{
+                place {
                     location{
-                            address
-                            location{
-                              lat
-                              lng
-                            }
-                          }
-              }
-
+                        address
+                        location{
+                          lat
+                          lng
+                        }
+                    }
+                }
             }
             followerList
         }

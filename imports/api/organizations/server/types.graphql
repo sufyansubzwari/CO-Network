@@ -4,6 +4,8 @@ type Organizations {
     _id: ID
     owner: User!
     entity: String
+    checkStatus: String
+    enable: Boolean
     views: Int
     name: String
     description: [Tags]
@@ -64,6 +66,7 @@ type Social {
 type Contact {
     email: String!
     phone: String
+    name: String
 }
 
 type Services {
@@ -100,12 +103,16 @@ input OrganizationSearchInput{
     location: [LocationInput]
     owner: String
     locationRange: Float
+    enable: Boolean
+    checkStatus: String
 }
 
 input OrganizationsInput {
     _id: ID
     owner: String!
     name: String
+    checkStatus: String
+    enable: Boolean
     description: [TagsInput]
     image: String
     cover: String
@@ -158,6 +165,7 @@ input SocialInput {
 input ContactInput {
     email: String
     phone: String
+    name: String
 }
 
 input ServicesInput {

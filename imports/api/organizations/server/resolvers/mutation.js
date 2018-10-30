@@ -17,7 +17,7 @@ Mutation.organization = async (root, { organizations }, context) => {
       organizations.tech.stack,
       oldOrg && oldOrg.tech && oldOrg.tech.stack && oldOrg.tech.stack.length ? oldOrg.tech.stack : []
     );
-  if (organizations.tech.industry && organizations.tech.industry)
+  if (organizations.tech && organizations.tech.industry)
     entity.tech.industry = await Tags.service.normalizeTags(
       organizations.tech.industry,
       oldOrg ? oldOrg.tech.industry : []
@@ -50,6 +50,10 @@ Mutation.deleteOrganization = async (root, { _id }, context) => {
 
 Mutation.updateIdentitiesOrg = (root, { _id, identities }, context) => {
     return Service.updateIdentitiesOrg(_id, identities);
+};
+
+Mutation.updateOrgImage = async (root, { _id, image, cover }, context) => {
+  return Service.updateImage(_id, image, cover);
 };
 
 export default Mutation;

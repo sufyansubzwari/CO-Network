@@ -32,6 +32,9 @@ import OutsideClickHandler from "./OutsideClickHandler/OutsideClickHandler";
 import ButtonArea from "./ButtonArea/ButtonArea";
 import InternalForm from "./InternalForm/InternalForm";
 import ButtonList from "./ButtonList/ButtonList";
+import InfoChatBox from "./InfoChatBox/InfoChatBox";
+import SelectionMarker from "./SelectionMarker/SelectionMarker";
+import OrgStatusIcon from "./OrgStatusIcon/OrgStatusIcon";
 
 // layouts
 import InternalLayout from "../layouts/InternalLayout/InternalLayout";
@@ -77,5 +80,8 @@ export {
   OutsideClickHandler,
   ButtonArea,
   InternalForm,
-  ButtonList
+  ButtonList,
+  InfoChatBox,
+  SelectionMarker,
+  OrgStatusIcon
 };

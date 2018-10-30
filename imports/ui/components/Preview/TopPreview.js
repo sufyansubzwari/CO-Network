@@ -190,7 +190,7 @@ TopPreview.propTypes = {
   renderOptions: PropsTypes.func,
   allowChangeAvatar: PropsTypes.bool,
   allowChangeImages: PropsTypes.bool,
-  image: PropsTypes.string,
+  image: PropsTypes.any,
   changeProfile: PropsTypes.func,
   changeBackground: PropsTypes.func,
   handleUpload: PropsTypes.func

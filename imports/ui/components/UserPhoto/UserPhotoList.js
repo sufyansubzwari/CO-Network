@@ -11,9 +11,6 @@ const PhotoListContainer = styled(Container)`
 
 const PhotoContainer = styled(Container)`
   z-index: ${props => props.len - props.index};
-  :hover {
-    z-index: 100;
-  }
 `;
 
 class UserPhotoList extends React.Component {
@@ -28,7 +25,7 @@ class UserPhotoList extends React.Component {
       ? image.startsWith("http") || image.startsWith("data:")
         ? image
         : Utils.getImageFromS3(image, "photo")
-      : null;
+      : `/images/nav/${this.props.entity}.svg`;
   };
 
   render() {

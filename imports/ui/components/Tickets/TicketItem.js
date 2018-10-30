@@ -2,11 +2,7 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { Container, Layout } from "btech-layout";
 import styled from "styled-components";
-import {
-  Input,
-  SalaryInput,
-  TextArea
-} from "btech-base-forms-component";
+import { Input, SalaryInput, TextArea } from "btech-base-forms-component";
 import { NAME_REGEX } from "../../constants";
 import { InternalForm } from "../../components";
 
@@ -45,7 +41,11 @@ class TicketItem extends Component {
 
   render() {
     return (
-      <InternalForm title={this.props.title} handleCancel={this.props.handleCancel} onSave={() => this.props.onSave && this.props.onSave(this.state.ticket)}>
+      <InternalForm
+        title={this.props.title}
+        handleCancel={this.props.handleCancel}
+        onSave={() => this.props.onSave && this.props.onSave(this.state.ticket)}
+      >
         <Container>
           <Container>
             <Layout mdTemplateColumns={2} mdColGap={"20px"} rowGap={"5px"}>
