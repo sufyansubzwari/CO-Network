@@ -2,6 +2,7 @@ import {WebAuth, Management} from "auth0-js/dist/auth0";
 import {Meteor} from "meteor/meteor";
 import react from "react";
 import Axios from "axios";
+import {NotificationToast} from "../index";
 
 
 class Authorization extends react.Component {
@@ -62,7 +63,7 @@ class Authorization extends react.Component {
             this.profile = profile;
             if (!err) cb(profile);
             else {
-                // todo: alert for error
+              NotificationToast.notify("error", "Error on getting profile.");
             }
         });
     }
@@ -155,7 +156,7 @@ class Authorization extends react.Component {
             this.profile = profile;
             if (!err) cb(profile);
             else {
-                // todo: alert for error
+              NotificationToast.notify("error", "Error on getting profile.");
             }
         });
     }
@@ -191,7 +192,7 @@ class Authorization extends react.Component {
         //Verify if account exist in the system
         const exist = await this.verifyUserExist(authResult.idTokenPayload.sub);
         if (exist) {
-            //Todo: return error
+          NotificationToast.notify("warn", "This user already exists.");
         } else this.linkAccount(authResult.idToken, callback);
     }
 
@@ -208,7 +209,7 @@ class Authorization extends react.Component {
         const primaryUserId = localStorage.getItem("user_id");
         this.authManage.linkUser(primaryUserId, secondaryIdToken, error => {
             if (error) {
-                // todo: alert for error
+              NotificationToast.notify("error", "Error on linking account.");
             } else
                 this.getProfile(profile => {
                     let prof = Meteor.user();

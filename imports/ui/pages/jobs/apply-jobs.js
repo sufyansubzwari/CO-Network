@@ -6,8 +6,7 @@ import { graphql, Mutation } from "react-apollo";
 import { CreateJobApply, GetJobApply } from "../../apollo-client/jobApply";
 import { Meteor } from "meteor/meteor";
 import { userQuery } from "../../apollo-client/user";
-import {NotificationToast} from "../../services";
-import {ConfirmPopup} from "../../services";
+import { NotificationToast, ConfirmPopup } from "../../services";
 import ApplyJobPreviewBody from "../../modules/apply-jobs-module/preview/ApplyJobPreviewBody";
 
 /**
@@ -112,9 +111,7 @@ class ApplyJob extends Component {
     if (Meteor.userId()) {
       createJobApply({ variables: { entity: job } });
     } else {
-      // todo login the user and then create the event or notify the user must login
-      NotificationToast.notify("warn", "You must be logged.")
-      alert("You must be logged");
+      NotificationToast.notify("warn", "You must be logged.");
     }
   }
 

@@ -4,6 +4,7 @@ import { withRouter } from "react-router-dom";
 import ColloquiumForm from "../../modules/colloquium-module/form";
 import { CreateColloquium } from "../../apollo-client/colloquium";
 import { Mutation } from "react-apollo";
+import { NotificationToast } from "../../services";
 
 /**
  * @module Colloquiums
@@ -55,7 +56,6 @@ class PostColloquiums extends Component {
       redirect: true //!this.state.formChange || !isEditMode // is only one step
     });
     let queryColloquium = Object.assign({}, query);
-    //todo: remove when location improvement
     queryColloquium.place &&
     queryColloquium.place.location &&
     queryColloquium.place.location.fullLocation
@@ -67,8 +67,7 @@ class PostColloquiums extends Component {
       colloquium.owner = this.props.curUser._id;
       createColloquium({ variables: { entity: colloquium } });
     } else {
-      // todo login the user and then create the colloquium or notify the user must login
-      alert("You must be logged");
+      NotificationToast.notify("warn", "You must be logged.");
     }
   }
 
