@@ -1,5 +1,6 @@
 import Service from "../service";
 import Users from "../../../users";
+import Organizations from "../../../organizations";
 import Tags from "../../../tags";
 import Places from "../../../places";
 import Followers from "../../../followers";
@@ -9,6 +10,11 @@ const Events = {};
 
 Events.owner = entity => {
   return Users.service.getUser(entity.owner);
+};
+
+Events.organization = entity => {
+  console.log(entity.organization);
+  return Organizations.service.getOrganization(entity.organization);
 };
 
 Events.category = entity => {

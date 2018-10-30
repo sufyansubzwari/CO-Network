@@ -44,10 +44,10 @@ class ItemsList extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    if(nextProps.activePreview !== this.props.activePreview){
+    if (nextProps.activePreview !== this.props.activePreview) {
       this.forceUpdate();
     }
-    if(!_.isEqual(nextProps.previewOptions, this.props.previewOptions)){
+    if (!_.isEqual(nextProps.previewOptions, this.props.previewOptions)) {
       this.forceUpdate();
     }
   }
@@ -85,7 +85,9 @@ class ItemsList extends Component {
         data={item || 0}
         onSelectTag={this.props.onSelectTag}
         previewOptions={this.props.previewOptions}
-        showPreviewMenu={this.props.previewOptions && this.props.previewOptions.length}
+        showPreviewMenu={
+          this.props.previewOptions && !!this.props.previewOptions.length
+        }
         activeOptionPreview={this.props.activePreview}
       />
     );
@@ -125,7 +127,10 @@ class ItemsList extends Component {
         ) : null}
         {!this.props.loading &&
         (!this.props.data || !this.props.data.length) ? (
-          <EmptyList curUser={this.props.curUser} entityName={this.props.title} />
+          <EmptyList
+            curUser={this.props.curUser}
+            entityName={this.props.title}
+          />
         ) : null}
       </Container>
     );

@@ -2,7 +2,6 @@ import Users from "../../../users";
 import Tags from "../../../tags";
 import Places from "../../../places";
 import Service from "../service";
-import Mutation from "../../../jobs/server/resolvers/mutation";
 import { normalizeTagsWithLevels } from '../../../aux-functions';
 
 const Organizations = {};
@@ -30,10 +29,6 @@ Organizations.tech = entity => {
     return Object.assign(entity.tech, tech, techInd);
   }
   return {};
-};
-
-Mutation.updateOrgImage = async (root, { _id, image, cover }, context) => {
-  return Service.updateImage(_id, image, cover);
 };
 
 export default Organizations;

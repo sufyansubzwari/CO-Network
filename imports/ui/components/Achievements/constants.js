@@ -42,7 +42,6 @@ export const DEGREE_LEVEL = [
     label: "Bachelor",
     type: "Bachelor"
   },
-
   {
     label: "Master",
     type: "Master"

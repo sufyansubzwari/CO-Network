@@ -44,8 +44,7 @@ class ListInnovators extends List {
       navList: INNOVATORS_TYPES,
       currentTab: INNOVATORS_TYPES[0],
       summary: true,
-      previewOptions: [
-      ],
+      previewOptions: [],
       activePreview: null
     };
     this.customRenderItem = this.customRenderItem.bind(this);
@@ -260,8 +259,7 @@ class ListInnovators extends List {
             activeOptionPreview={this.state.activePreview}
             previewOptions={this.state.previewOptions}
             showPreviewMenu={
-              this.state.previewOptions &&
-              this.state.previewOptions.length
+              this.state.previewOptions && !!this.state.previewOptions.length
             }
           />
         );
@@ -299,8 +297,7 @@ class ListInnovators extends List {
             activeOptionPreview={this.state.activePreview}
             previewOptions={this.state.previewOptions}
             showPreviewMenu={
-              this.state.previewOptions &&
-              this.state.previewOptions.length
+              this.state.previewOptions && !!this.state.previewOptions.length
             }
           />
         );

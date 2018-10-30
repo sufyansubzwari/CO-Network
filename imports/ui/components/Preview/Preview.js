@@ -392,11 +392,30 @@ class Preview extends React.Component {
           autoHideDuration={200}
           style={{ height: "100%" }}
           ref={scroll => (this.scroll = scroll)}
-          renderThumbVertical={({ style, ...props }) =>
-            <div {...props} style={{...style, width: '7px', borderRadius: '0px', backgroundColor: '#ACACAC', cursor: 'pointer'}} />}
-          renderThumbHorizontal={({ style, ...props }) =>
-            <div {...props} style={{...style, height: '7px', borderRadius: '0px', backgroundColor: '#ACACAC', cursor: 'pointer'}} />}
-
+          renderThumbVertical={({ style, ...props }) => (
+            <div
+              {...props}
+              style={{
+                ...style,
+                width: "7px",
+                borderRadius: "0px",
+                backgroundColor: "#ACACAC",
+                cursor: "pointer"
+              }}
+            />
+          )}
+          renderThumbHorizontal={({ style, ...props }) => (
+            <div
+              {...props}
+              style={{
+                ...style,
+                height: "7px",
+                borderRadius: "0px",
+                backgroundColor: "#ACACAC",
+                cursor: "pointer"
+              }}
+            />
+          )}
         >
           <Layout
             fullY
@@ -420,6 +439,7 @@ class Preview extends React.Component {
             <SLayout
               gridArea="options"
               customTemplateColumns={"1fr auto"}
+              padding={{ md: "0 30px" }}
               mdCustomTemplateColumns={
                 this.props.showAvatar ? "140px 1fr auto" : "1fr auto"
               }
@@ -534,7 +554,7 @@ Preview.propTypes = {
   navOptions: PropsTypes.array,
   allowChangeImages: PropsTypes.bool,
   allowChangeAvatar: PropsTypes.bool,
-  image: PropsTypes.string,
+  image: PropsTypes.any,
   changeProfile: PropsTypes.func,
   onBackgroundChange: PropsTypes.func,
   onUserPhotoChange: PropsTypes.func,

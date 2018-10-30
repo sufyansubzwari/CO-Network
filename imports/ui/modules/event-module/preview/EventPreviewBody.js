@@ -442,7 +442,7 @@ class EventPreviewBody extends React.Component {
             height={35}
             width={300}
           >
-            <Location location={this.state.event.venueName} />
+            <Location location={event.venueName} />
           </PlaceHolder>
           <PlaceHolder
             loading={!event.venueEmail && !event._id}
@@ -457,7 +457,7 @@ class EventPreviewBody extends React.Component {
                   fontFamily: "Roboto Mono"
                 }}
               >
-                {this.state.event.venueEmail}
+                {event.venueEmail}
               </span>
             </Container>
           </PlaceHolder>

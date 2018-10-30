@@ -6,10 +6,10 @@ type Events {
     description: String
     startDate: Date!
     endDate: Date!
+    organization: Organizations
     owner: User!
     venueName: String!
     venueEmail: String
-    organizer: String!
     phone: String
     notes: String
     category: [Tags]!
@@ -109,6 +109,8 @@ input EventsInput {
     title: String!
     description: String
     startDate: Date
+    organization: String
+    organizer: Boolean
     endDate: Date
     owner: String!
     venueName: String

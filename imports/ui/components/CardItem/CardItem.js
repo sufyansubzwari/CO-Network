@@ -51,7 +51,7 @@ const SubTitleCardContainer = Styled.div`
   overflow: hidden;
   text-overflow: ellipsis;
   color: ${props => (props.isActive ? "#ffffff" : "#000000")};
-  line-height: 1;
+  line-height: initial;
   
   ${mixins.media.desktop`
     font-size: 14px;
@@ -191,7 +191,6 @@ class CardItem extends Component {
     }, 500);
     if (!newProps.image) return;
     if (newProps.image !== this.props.image) this.loadImage(newProps.image);
-
   }
 
   loadImage(imageSrc) {
@@ -258,7 +257,7 @@ class CardItem extends Component {
           minH={"initial"}
           mdMinH={"100px"}
           customTemplateRows={"1fr"}
-          mdRowGap={"8px"}
+          mdRowGap={"10px"}
           mdCustomTemplateRows={"1fr 27px"}
         >
           <Layout
@@ -267,7 +266,7 @@ class CardItem extends Component {
             mdRowGap={"10px"}
             rowGap={"8px"}
           >
-            <Container mdMinH={"25px"}>
+            <Container>
               <Layout
                 customTemplateColumns={"1fr"}
                 mdCustomTemplateColumns={
@@ -368,7 +367,11 @@ class CardItem extends Component {
     const loading =
       this.props.loading || (this.props.image && this.state.loadingImage);
     const imageElement = loading ? (
-      <PlaceHolder rect loading={loading} height={280} width={390} />
+      !isMobile() ? (
+        <PlaceHolder rect loading={loading} height={280} width={390} />
+      ) : (
+        <PlaceHolder rect loading={loading} height={340} width={390} />
+      )
     ) : (
       <SImage src={this.handleImage(this.props.image)} />
     );
@@ -392,7 +395,13 @@ class CardItem extends Component {
       <SCardContainer>
         <SMLCard
           className={"card"}
-          background={this.props.isActive ? this.state.showPreview ? "#2E2E2E" : "#000000" : "white"}
+          background={
+            this.props.isActive
+              ? this.state.showPreview
+                ? "#2E2E2E"
+                : "#000000"
+              : "white"
+          }
           onSelect={() =>
             this.props.onSelect && this.props.onSelect({ ...this.props.data })
           }

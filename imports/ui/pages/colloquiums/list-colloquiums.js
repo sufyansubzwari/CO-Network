@@ -67,14 +67,11 @@ class ListColloquiums extends List {
             colloquiums: { _id: nextProps.location.state.target }
           },
           updateQuery: (previousResult, { fetchMoreResult }) => {
+            const previous = previousResult["colloquiums"] || [];
+            const fetched = fetchMoreResult["colloquiums"] || [];
             return {
-              ...previousResult["colloquiums"],
-              colloquiums: _.uniqBy(
-                previousResult["colloquiums"].concat(
-                  ...fetchMoreResult["colloquiums"]
-                ),
-                "_id"
-              )
+              ...previous,
+              colloquiums: _.uniqBy(previous.concat(...fetched), "_id")
             };
           }
         })
