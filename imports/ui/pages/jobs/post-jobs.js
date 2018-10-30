@@ -5,7 +5,7 @@ import JobPreviewBody from "../../modules/jobs-module/preview/JobPreviewBody";
 import { withRouter } from "react-router-dom";
 import { CreateJob, DeleteJob } from "../../apollo-client/job";
 import { Mutation } from "react-apollo";
-import { ConfirmPopup } from "../../services";
+import {ConfirmPopup, NotificationToast} from "../../services";
 
 /**
  * @module Jobs
@@ -77,8 +77,7 @@ class PostJob extends Component {
       job.owner = this.props.curUser._id;
       createJob({ variables: { entity: job } });
     } else {
-      // todo login the user and then create the event or notify the user must login
-      alert("You must be logged");
+      NotificationToast.notify("warn", "You must be logged.");
     }
   }
 

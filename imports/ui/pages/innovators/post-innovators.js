@@ -5,7 +5,7 @@ import OrganizationPreviewBody from "../../modules/organization-module/preview/O
 import { withRouter } from "react-router-dom";
 import { CreateOrg, DeleteOrg } from "../../apollo-client/organization";
 import { Mutation } from "react-apollo";
-import {ConfirmPopup, NotificationToast} from "../../services";
+import { ConfirmPopup, NotificationToast } from "../../services";
 
 /**
  * @module Organization
@@ -117,9 +117,7 @@ class PostOrganization extends Component {
       organization.owner = this.props.curUser._id;
       createOrg({ variables: { entity: organization } });
     } else {
-      // todo login the user and then create the event or notify the user must login
-      NotificationToast.notify("warn", "You must be logged.")
-      alert("You must be logged");
+      NotificationToast.notify("warn", "You must be logged.");
     }
   }
 

@@ -98,7 +98,6 @@ class MediaList extends React.Component {
             delete media[index]["files"]["loading"];
             this.setState({ media: media }, () => this.notifyParent());
           } else {
-            // todo: show notification for error
             NotificationToast.notify("error", "Error on uploading files")
           }
         },

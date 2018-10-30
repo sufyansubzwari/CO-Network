@@ -7,7 +7,7 @@ import { CreateEvent, DeleteEvent } from "../../apollo-client/event";
 import { Mutation } from "react-apollo";
 import _ from "lodash";
 import { GetSponsors } from "../../apollo-client/sponsor";
-import {ConfirmPopup, NotificationToast} from "../../services";
+import { ConfirmPopup, NotificationToast } from "../../services";
 
 /**
  * @module Events
@@ -95,9 +95,7 @@ class PostEvent extends Component {
       event.owner = this.props.curUser._id;
       createEvent({ variables: { entity: event } });
     } else {
-      // todo login the user and then create the event or notify the user must login
       NotificationToast.notify("warn", "You must be logged");
-      alert("You must be logged");
     }
   }
 
@@ -153,10 +151,7 @@ class PostEvent extends Component {
                   },
                   onClick: () => {
                     ConfirmPopup.confirmPopup(() => {
-                      this.removeEntity(
-                        deleteEvent,
-                        this.state.event
-                      );
+                      this.removeEntity(deleteEvent, this.state.event);
                     });
                   }
                 }
