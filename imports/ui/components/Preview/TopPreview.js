@@ -4,7 +4,7 @@ import { Container, Layout, mixins } from "btech-layout";
 import UserPhotoList from "./../UserPhoto/UserPhotoList";
 import { UploadFile } from "./components";
 import PropsTypes from "prop-types";
-import { UploadToS3, Utils } from "../../services";
+import {NotificationToast, UploadToS3, Utils} from "../../services";
 
 const Photo = styled(Container)`
   background: ${props =>
@@ -96,7 +96,7 @@ class TopPreview extends Component {
             this.props.handleUpload &&
               this.props.handleUpload(response.result, element);
           } else {
-            // todo: show notification for error
+            NotificationToast.notify("error", "Error on uploading image.")
           }
         },
         ({ uploading }) => {

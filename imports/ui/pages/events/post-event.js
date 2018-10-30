@@ -7,7 +7,7 @@ import { CreateEvent, DeleteEvent } from "../../apollo-client/event";
 import { Mutation } from "react-apollo";
 import _ from "lodash";
 import { GetSponsors } from "../../apollo-client/sponsor";
-import { ConfirmPopup } from "../../services";
+import {ConfirmPopup, NotificationToast} from "../../services";
 
 /**
  * @module Events
@@ -96,6 +96,7 @@ class PostEvent extends Component {
       createEvent({ variables: { entity: event } });
     } else {
       // todo login the user and then create the event or notify the user must login
+      NotificationToast.notify("warn", "You must be logged");
       alert("You must be logged");
     }
   }

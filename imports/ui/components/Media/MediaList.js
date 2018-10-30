@@ -99,6 +99,7 @@ class MediaList extends React.Component {
             this.setState({ media: media }, () => this.notifyParent());
           } else {
             // todo: show notification for error
+            NotificationToast.notify("error", "Error on uploading files")
           }
         },
         ({ uploading }) => {
