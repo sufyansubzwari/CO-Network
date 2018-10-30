@@ -191,7 +191,6 @@ class CardItem extends Component {
     }, 500);
     if (!newProps.image) return;
     if (newProps.image !== this.props.image) this.loadImage(newProps.image);
-
   }
 
   loadImage(imageSrc) {
@@ -368,7 +367,11 @@ class CardItem extends Component {
     const loading =
       this.props.loading || (this.props.image && this.state.loadingImage);
     const imageElement = loading ? (
-      <PlaceHolder rect loading={loading} height={280} width={390} />
+      !isMobile() ? (
+        <PlaceHolder rect loading={loading} height={280} width={390} />
+      ) : (
+        <PlaceHolder rect loading={loading} height={340} width={390} />
+      )
     ) : (
       <SImage src={this.handleImage(this.props.image)} />
     );
@@ -392,7 +395,13 @@ class CardItem extends Component {
       <SCardContainer>
         <SMLCard
           className={"card"}
-          background={this.props.isActive ? this.state.showPreview ? "#2E2E2E" : "#000000" : "white"}
+          background={
+            this.props.isActive
+              ? this.state.showPreview
+                ? "#2E2E2E"
+                : "#000000"
+              : "white"
+          }
           onSelect={() =>
             this.props.onSelect && this.props.onSelect({ ...this.props.data })
           }
