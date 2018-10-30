@@ -9,6 +9,34 @@ import { Query } from "react-apollo";
 import { connect } from "react-redux";
 import { cleanSearch } from "../../actions/TopSearchActions";
 import * as type from "../../actions/TopSearchActions/types";
+import styled from "styled-components";
+
+const SFakeInput = styled(Container)`
+  background: #ffffff;
+  border: 1px solid #d1d1d1;
+  border-radius: 3px;
+  font-size: 12px;
+  height: 36px;
+  padding: 3px 10px;
+  color: #2b2b2b;
+`;
+
+const SFakeInputText = styled(Container)`
+  margin-left: 0;
+  margin-top: auto;
+  margin-bottom: auto;
+  margin-right: auto;
+`;
+
+const SAddButton = styled.span`
+  margin-left: auto;
+  margin-top: auto;
+  margin-bottom: auto;
+  margin-right: 5px;
+  font-size: 18px;
+  cursor: pointer;
+  color: ${props => (props.inactive ? "rgba(0,0,0,0.5)" : "#2B2B2B")};
+`;
 
 /**
  * @module Data
@@ -110,48 +138,67 @@ class TopSearcher extends Component {
             this.props.curUser && this.props.curUser._id ? "1fr auto" : "1fr"
           }
         >
-          <Container>
-            <Query query={tags} fetchPolicy={"cache-and-network"}>
-              {({ loading, error, data }) => {
-                return (
-                  <MLTagsInput
-                    autoFocus={!this.props.isMobile}
-                    iconClass={"arrow-forward"}
-                    inputPlaceholder={"Discover"}
-                    getAddedOptions={value => {
-                      this.onSearchTags(value);
-                    }}
-                    getNewAddedOptions={value => this.onSearchTags(value)}
-                    fixLabel
-                    onFocusAction={() =>
-                      this.props.onFocusSearch && this.props.onFocusSearch()
-                    }
-                    optionsLimit={9}
-                    noAddNewTagsOnEnter={true}
-                    onCloseTags={(e, tag, index) => {
-                      e.preventDefault();
-                      e.stopPropagation();
-                      this.onCloseTags(e, tag, index);
-                    }}
-                    onSearch={value => this.onSearchText(value)}
-                    options={data ? data.tags : []}
-                    tags={
-                      this.state.tags && this.state.tags.length
-                        ? this.state.tags.map(item => ({
-                            active: true,
-                            ...item
-                          }))
-                        : []
-                    }
-                    showClose={true}
-                    newAdded={this.state.added}
-                    onClose={this.handleClose}
-                    onTextChange={() => this.setState({ added: false })}
-                  />
-                );
-              }}
-            </Query>
-          </Container>
+          {!this.props.isMobile ? (
+            <Container>
+              <Query query={tags} fetchPolicy={"cache-and-network"}>
+                {({ loading, error, data }) => {
+                  return (
+                    <MLTagsInput
+                      autoFocus={!this.props.isMobile}
+                      iconClass={"arrow-forward"}
+                      inputPlaceholder={"Discover"}
+                      getAddedOptions={value => {
+                        this.onSearchTags(value);
+                      }}
+                      getNewAddedOptions={value => this.onSearchTags(value)}
+                      fixLabel
+                      onFocusAction={() =>
+                        this.props.onFocusSearch && this.props.onFocusSearch()
+                      }
+                      optionsLimit={9}
+                      noAddNewTagsOnEnter={true}
+                      onCloseTags={(e, tag, index) => {
+                        e.preventDefault();
+                        e.stopPropagation();
+                        this.onCloseTags(e, tag, index);
+                      }}
+                      onSearch={value => this.onSearchText(value)}
+                      options={data ? data.tags : []}
+                      tags={
+                        this.state.tags && this.state.tags.length
+                          ? this.state.tags.map(item => ({
+                              active: true,
+                              ...item
+                            }))
+                          : []
+                      }
+                      showClose={true}
+                      newAdded={this.state.added}
+                      onClose={this.handleClose}
+                      onTextChange={() => this.setState({ added: false })}
+                    />
+                  );
+                }}
+              </Query>
+            </Container>
+          ) : (
+            <SFakeInput
+              onClick={() =>
+                this.props.onFocusSearch && this.props.onFocusSearch()
+              }
+            >
+              <Layout customTemplateColumns={"1fr auto"}>
+                <SFakeInputText>
+                  {this.state.value || "Discover"}
+                </SFakeInputText>
+                <Container>
+                  <SAddButton>
+                    <MaterialIcon type={"arrow-forward"} />
+                  </SAddButton>
+                </Container>
+              </Layout>
+            </SFakeInput>
+          )}
           {this.props.curUser && this.props.curUser._id ? (
             <Container hide mdShow>
               <Button

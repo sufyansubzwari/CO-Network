@@ -51,11 +51,10 @@ const SubTitleCardContainer = Styled.div`
   overflow: hidden;
   text-overflow: ellipsis;
   color: ${props => (props.isActive ? "#ffffff" : "#000000")};
-  line-height: 1;
+  line-height: initial;
   
   ${mixins.media.desktop`
     font-size: 14px;
-    line-height: initial;
   `};
 `;
 
