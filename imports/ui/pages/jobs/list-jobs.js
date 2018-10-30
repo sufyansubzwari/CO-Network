@@ -15,6 +15,7 @@ import { ViewsCountUpdate } from "../../apollo-client/viewCount";
 import { cleanSearch, onSearchTags } from "../../actions/TopSearchActions";
 import { GetJobApply } from "../../apollo-client/jobApply";
 import { List } from "../general";
+import { Meteor } from 'meteor/meteor'
 
 /**
  * @module Jobs
@@ -241,7 +242,6 @@ class ListJobs extends List {
                             )
                           }
                         >
-                          {" "}
                           <JobPreviewBody job={this.state.selectedItem} activePreview={this.state.activePreview}/>
                         </Preview>
                       );

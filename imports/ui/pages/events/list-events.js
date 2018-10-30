@@ -70,7 +70,7 @@ class ListEvents extends List {
     }
     if (
       options.sponsors &&
-      options.sponsors.filter(item => item.type === "Speakers")
+      options.sponsors.filter(item => item.type === "Speakers").length
     )
       preview.push({
         label: "Speakers",
@@ -78,7 +78,7 @@ class ListEvents extends List {
       });
     if (
       options.sponsors &&
-      options.sponsors.filter(item => item.type === "Sponsors")
+      options.sponsors.filter(item => item.type === "Sponsors").length
     )
       preview.push({
         label: "Sponsors",
