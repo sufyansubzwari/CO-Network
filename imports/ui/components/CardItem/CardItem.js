@@ -323,7 +323,7 @@ class CardItem extends Component {
             )}
           </Container>
         </Layout>
-        {this.props.isActive && !isMobile() ? (
+        {this.props.isActive && this.props.showPreviewMenu && !isMobile() ? (
           <SShowMore onClick={this.handlePreviewCard}>
             <span>
               <span>
@@ -349,7 +349,6 @@ class CardItem extends Component {
         mdColGap={"5px"}
       >
         <CardPreview
-          title={this.props.previewTitle}
           options={this.props.previewOptions}
           active={this.props.activeOptionPreview}
         />
@@ -423,17 +422,7 @@ CardItem.defaultProps = {
   views: 0,
   showMenu: false,
   image: null,
-  iconClass: "eye",
-  previewTitle: "Summary",
-  //example todo: delete this on integration
-  previewOptions: [
-    { label: "Organizations", action: () => console.log("action1") },
-    { label: "Jobs", action: () => console.log("action2") },
-    { label: "Events", action: () => console.log("action3") },
-    { label: "Events1", action: () => console.log("action31") },
-    { label: "Events2", action: () => console.log("action32") },
-    { label: "Events3", action: () => console.log("action33") }
-  ]
+  iconClass: "eye"
 };
 
 CardItem.propTypes = {
@@ -449,8 +438,8 @@ CardItem.propTypes = {
   tags: PropTypes.array,
   views: PropTypes.number,
   previewOptions: PropTypes.array,
-  previewTitle: PropTypes.string,
-  activeOptionPreview: PropTypes.number
+  showPreviewMenu: PropTypes.bool,
+  activeOptionPreview: PropTypes.object
 };
 
 export default CardItem;

@@ -24,18 +24,67 @@ class ListEvents extends List {
     super(props);
     this.entityName = "events";
     this.state = {
-      previewOptions: [
-        { label: "Summary", action: () => this.scrollToSection("Summary") },
-        { label: "Venue", action: () => this.scrollToSection("Venue") },
-        { label: "Speaker", action: () => this.scrollToSection("Speaker") },
-        { label: "Sponsor", action: () => this.scrollToSection("Sponsor") }
-      ],
-      activePreview: null,
-    }
+      previewOptions: [],
+      activePreview: null
+    };
   }
 
-  scrollToSection(link){
-    this.setState({activePreview: link});
+  scrollToSection(link) {
+    this.setState({ activePreview: link });
+  }
+
+  onChangeCard = (item, key, viewsUpdate) => {
+    let result = [
+      { label: "Summary", action: () => this.scrollToSection("Summary") },
+      { label: "Venue", action: () => this.scrollToSection("Venue") }
+    ];
+    const options = this.removeEmpty(item && JSON.parse(JSON.stringify(item)));
+    const preview = this.addPreviewOptions(options);
+    result = result.concat(preview);
+    this.setState({
+      previewOptions: result,
+      activePreview: {
+        label: "Summary",
+        action: () => this.scrollToSection("Summary")
+      }
+    });
+
+    this.onChangeSelection(item, key, viewsUpdate);
+  };
+
+  removeEmpty = obj =>
+    Object.keys(obj)
+      .filter(k => obj[k] && obj[k].length) // Remove undef, null and empty.
+      .reduce(
+        (newObj, k) =>
+          typeof obj[k] === "object" && !Array.isArray(obj[k])
+            ? Object.assign(newObj, { [k]: this.removeEmpty(obj[k]) }) // Recurse.
+            : Object.assign(newObj, { [k]: obj[k] }), // Copy value.
+        {}
+      );
+
+  addPreviewOptions(options) {
+    const preview = [];
+    if (!options) {
+      return preview;
+    }
+    if (
+      options.sponsors &&
+      options.sponsors.filter(item => item.type === "Speakers")
+    )
+      preview.push({
+        label: "Speakers",
+        action: () => this.scrollToSection("Speaker")
+      });
+    if (
+      options.sponsors &&
+      options.sponsors.filter(item => item.type === "Sponsors")
+    )
+      preview.push({
+        label: "Sponsors",
+        action: () => this.scrollToSection("Sponsor")
+      });
+    return preview;
   }
 
   componentWillMount() {
@@ -80,7 +129,7 @@ class ListEvents extends List {
               loading={isLoading}
               onFetchData={() => this.fetchMoreSelection(isLoading)}
               onSelectCard={(item, key) =>
-                this.onChangeSelection(item, key, viewsUpdate)
+                this.onChangeCard(item, key, viewsUpdate)
               }
               onSelectTag={(tag, index) => this.onSelectTag(tag, index)}
               activePreview={this.state.activePreview}
@@ -103,7 +152,7 @@ class ListEvents extends List {
                   mutation={FollowAction}
                   onError={error => this.errorOnBackgroundChange(error)}
                 >
-                  {(followAction) => {
+                  {followAction => {
                     const follow =
                       this.props.curUser &&
                       this.props.curUser._id &&
@@ -206,7 +255,10 @@ class ListEvents extends List {
                           )
                         }
                       >
-                        <EventPreviewBody event={this.state.selectedItem} activePreview={this.state.activePreview}/>
+                        <EventPreviewBody
+                          event={this.state.selectedItem}
+                          activePreview={this.state.activePreview}
+                        />
                       </Preview>
                     );
                   }}

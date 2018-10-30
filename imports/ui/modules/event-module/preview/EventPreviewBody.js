@@ -48,11 +48,6 @@ class EventPreviewBody extends React.Component {
     currentRef &&
       this.props.onScroll &&
       this.props.onScroll(currentRef.offsetTop);
-    // let scroll = document.getElementById("previewScrollBar");
-    // currentRef && scroll && scroll.scrollTop(currentRef.offsetHeight);
-    // currentRef && currentRef.scrollIntoView();
-    // const myDomNode = ReactDOM.findDOMNode(currentRef);
-    // myDomNode.scrollTo(0, myDomNode.offsetTop);
   };
 
   getRef(link) {

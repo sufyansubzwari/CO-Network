@@ -85,6 +85,7 @@ class ItemsList extends Component {
         data={item || 0}
         onSelectTag={this.props.onSelectTag}
         previewOptions={this.props.previewOptions}
+        showPreviewMenu={this.props.previewOptions && this.props.previewOptions.length}
         activeOptionPreview={this.props.activePreview}
       />
     );
@@ -142,7 +143,7 @@ ItemsList.propTypes = {
   navList: PropTypes.array,
   getNavActive: PropTypes.func,
   onSelectTag: PropTypes.func,
-  activePreview: PropTypes.string,
+  activePreview: PropTypes.object,
   previewOptions: PropTypes.array
 };
 

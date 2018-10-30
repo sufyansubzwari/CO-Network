@@ -60,18 +60,15 @@ class UserPreviewBody extends React.Component {
       });
     }
     if (nextProps.activePreview !== this.props.activePreview) {
-      this.setState({ activePreview: nextProps.activePreview }, () => {
-        this.scrollToDomRef();
-      });
+      this.scrollToDomRef(nextProps.activePreview);
     }
   }
 
-  scrollToDomRef = () => {
-    const currentRef = this.getRef(this.state.activePreview);
-    // this.props.scrollRef.scrollToTop();
-    currentRef && currentRef.scrollIntoView();
-    // const myDomNode = ReactDOM.findDOMNode(currentRef);
-    // myDomNode.scrollTo(0, myDomNode.offsetTop);
+  scrollToDomRef = activePreview => {
+    const currentRef = this.getRef(activePreview);
+    currentRef &&
+    this.props.onScroll &&
+    this.props.onScroll(currentRef.offsetTop);
   };
 
   getRef(link) {

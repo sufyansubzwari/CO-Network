@@ -43,29 +43,15 @@ class ListInnovators extends List {
       navList: INNOVATORS_TYPES,
       currentTab: INNOVATORS_TYPES[0],
       summary: true,
-      previewMembersOptions: [
-        { label: "Summary", action: () => this.scrollToSection("Summary") },
-        { label: "Knowledge | Community", action: () => this.scrollToSection("Knowledge") },
-        { label: "Professional", action: () => this.scrollToSection("Professional") },
-        { label: "Academic", action: () => this.scrollToSection("Academic") },
-        { label: "Organization", action: () => this.scrollToSection("Organization") },
-        { label: "Event", action: () => this.scrollToSection("Event") },
-        { label: "Job", action: () => this.scrollToSection("Job") }
-      ],
-      previewOrgOptions: [
-        { label: "Summary", action: () => this.scrollToSection("Summary") },
-        { label: "Technical Recruitment", action: () => this.scrollToSection("Recruitment") },
-        { label: "Product & Service", action: () => this.scrollToSection("Product") },
-        { label: "Media", action: () => this.scrollToSection("Media") }
-      ],
-      activePreview: null,
+      previewOptions: [],
+      activePreview: null
     };
     this.customRenderItem = this.customRenderItem.bind(this);
     this.entityName = "innovators";
   }
 
-  scrollToSection(link){
-    this.setState({activePreview: link});
+  scrollToSection(link) {
+    this.setState({ activePreview: link });
   }
 
   componentWillMount() {
@@ -249,7 +235,7 @@ class ListInnovators extends List {
         return (
           <CardItem
             lgCustomTemplateColumns={"195px 1fr"}
-            onSelect={() => this.onChangeSelection(item, key, viewsUpdate)}
+            onSelect={() => this.onChangeCard(item, key, viewsUpdate)}
             isActive={
               this.state.selectedItem &&
               this.state.selectedItem._id === item._id
@@ -264,14 +250,18 @@ class ListInnovators extends List {
             key={key}
             onSelectTag={(tag, index) => this.onSelectTag(tag, index)}
             activeOptionPreview={this.state.activePreview}
-            previewOptions={this.state.previewOrgOptions}
+            previewOptions={this.state.previewOptions}
+            showPreviewMenu={
+              this.state.previewOptions &&
+              this.state.previewOptions.length
+            }
           />
         );
       case "members":
         return (
           <CardItem
             lgCustomTemplateColumns={"195px 1fr"}
-            onSelect={() => this.onChangeSelection(item, key, viewsUpdate)}
+            onSelect={() => this.onChangeCard(item, key, viewsUpdate)}
             isActive={
               this.state.selectedItem &&
               this.state.selectedItem._id === item._id
@@ -299,12 +289,121 @@ class ListInnovators extends List {
             key={key}
             onSelectTag={(tag, index) => this.onSelectTag(tag, index)}
             activeOptionPreview={this.state.activePreview}
-            previewOptions={this.state.previewMembersOptions}
+            previewOptions={this.state.previewOptions}
+            showPreviewMenu={
+              this.state.previewOptions &&
+              this.state.previewOptions.length
+            }
           />
         );
       default:
         return null;
     }
+  }
+
+  onChangeCard = (item, key, viewsUpdate) => {
+    let result = [
+      { label: "Summary", action: () => this.scrollToSection("Summary") }
+    ];
+    if (this.state.currentTab === "members") {
+      const options = this.removeEmpty(
+        item && item.profile && JSON.parse(JSON.stringify(item.profile))
+      );
+      const preview = this.addPreviewOptionMember(options);
+      result = result.concat(preview);
+    } else {
+      const options = this.removeEmpty(
+        item && JSON.parse(JSON.stringify(item))
+      );
+      const preview = this.addPreviewOrganization(options);
+      result = result.concat(preview);
+    }
+    this.setState({
+      previewOptions: result,
+      activePreview: {
+        label: "Summary",
+        action: () => this.scrollToSection("Summary")
+      }
+    });
+
+    this.onChangeSelection(item, key, viewsUpdate);
+  };
+
+  removeEmpty = obj =>
+    Object.keys(obj)
+      .filter(k => obj[k] && obj[k].length) // Remove undef, null and empty.
+      .reduce(
+        (newObj, k) =>
+          typeof obj[k] === "object" && !Array.isArray(obj[k])
+            ? Object.assign(newObj, { [k]: this.removeEmpty(obj[k]) }) // Recurse.
+            : Object.assign(newObj, { [k]: obj[k] }), // Copy value.
+        {}
+      );
+
+  addPreviewOrganization(options) {
+    const preview = [];
+    if (!options) {
+      return preview;
+    }
+    if (options.tech)
+      preview.push({
+        label: "Technical Recruitment",
+        action: () => this.scrollToSection("Recruitment")
+      });
+    if (options.product)
+      preview.push({
+        label: "Product & Service",
+        action: () => this.scrollToSection("Product")
+      });
+    if (options.media)
+      preview.push({
+        label: "Media",
+        action: () => this.scrollToSection("Media")
+      });
+    return preview;
+  }
+
+  addPreviewOptionMember(options) {
+    const preview = [];
+    if (!options) {
+      return preview;
+    }
+    if (options.knowledge)
+      preview.push({
+        label: "Knowledge | Community",
+        action: () => this.scrollToSection("Knowledge")
+      });
+    if (
+      options.professional ||
+      options.achievements.filter(
+        item =>
+          item.type === "Patents" || item.type === "Professional Experience"
+      ).length
+    )
+      preview.push({
+        label: "Professional",
+        action: () => this.scrollToSection("Professional")
+      });
+    if (
+      options.achievements.filter(
+        item =>
+          item.type === "Publications" || item.type === "Academic Background"
+      ).length
+    )
+      preview.push({
+        label: "Academic",
+        action: () => this.scrollToSection("Academic")
+      });
+    preview.push({
+      label: "Organization",
+      action: () => this.scrollToSection("Organization")
+    });
+    preview.push({
+      label: "Event",
+      action: () => this.scrollToSection("Event")
+    });
+    preview.push({ label: "Job", action: () => this.scrollToSection("Job") });
+    return preview;
   }
 
   render() {
@@ -346,7 +445,7 @@ class ListInnovators extends List {
               }
               loading={isLoading}
               onFetchData={() => this.fetchMoreSelection(isLoading)}
-              onSelectCard={(item, key) => this.onChangeSelection(item, key)}
+              onSelectCard={(item, key) => this.onChangeCard(item, key)}
             />
           )}
         </Mutation>
