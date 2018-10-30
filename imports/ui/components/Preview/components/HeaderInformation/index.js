@@ -43,7 +43,7 @@ const HeaderInformation = function(props) {
             </Container>
             <Container />
             <Container>
-              <ButtonMenu
+                {props.menuOperations && props.menuOperations.length > 0 ? <ButtonMenu
                 showIcon={false}
                 padding={"0px"}
                 renderOptionItem={elementRender}
@@ -52,7 +52,7 @@ const HeaderInformation = function(props) {
                 onSelect={(item, key) =>
                   item.onClick && item.onClick(item, key)
                 }
-              />
+              />: null}
             </Container>
           </Layout>
         </Container>
