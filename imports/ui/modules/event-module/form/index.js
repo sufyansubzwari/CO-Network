@@ -95,13 +95,13 @@ class EventForm extends Component {
         radioColor={"#000000"}
         onCancel={() => this.props.onCancel && this.props.onCancel()}
       >
-        <WizardStepForm title={"Hosting Organization"} isValid>
-          <EventStep0
-            curUser={this.props.curUser}
-            data={event}
-            onChange={event => this.handleChange(event, 0)}
-          />
-        </WizardStepForm>
+        {/*<WizardStepForm title={"Hosting Organization"} isValid>*/}
+          {/*<EventStep0*/}
+            {/*curUser={this.props.curUser}*/}
+            {/*data={event}*/}
+            {/*onChange={event => this.handleChange(event, 0)}*/}
+          {/*/>*/}
+        {/*</WizardStepForm>*/}
         <WizardStepForm title={"Event Details"} isValid>
           <EventStep1
             data={event}
