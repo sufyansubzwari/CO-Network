@@ -108,6 +108,7 @@ handleImage = image => {
 };
 
 const ItemsContainer = function(props) {
+  const { curUser } = props;
   return (
     <SContainer
       fullY
@@ -116,10 +117,8 @@ const ItemsContainer = function(props) {
     >
       <Photo
         image={
-          props.curUser &&
-          props.curUser.profile &&
-          props.curUser.profile.cover !== ""
-            ? handleImage(props.curUser.profile.cover)
+          curUser && curUser.profile
+            ? handleImage(curUser.profile.cover || curUser.profile.image)
             : null
         }
       >
@@ -142,11 +141,30 @@ const ItemsContainer = function(props) {
           autoHide
           autoHideDuration={props.autoHideDuration}
           style={{ height: "100%", overflow: "display" }}
-          renderThumbVertical={({ style, ...props }) =>
-            <div {...props} style={{...style, width: '7px', borderRadius: '0px', backgroundColor: '#ACACAC', cursor: 'pointer'}} />}
-          renderThumbHorizontal={({ style, ...props }) =>
-            <div {...props} style={{...style, height: '7px', borderRadius: '0px', backgroundColor: '#ACACAC', cursor: 'pointer'}} />}
-
+          renderThumbVertical={({ style, ...props }) => (
+            <div
+              {...props}
+              style={{
+                ...style,
+                width: "7px",
+                borderRadius: "0px",
+                backgroundColor: "#ACACAC",
+                cursor: "pointer"
+              }}
+            />
+          )}
+          renderThumbHorizontal={({ style, ...props }) => (
+            <div
+              {...props}
+              style={{
+                ...style,
+                height: "7px",
+                borderRadius: "0px",
+                backgroundColor: "#ACACAC",
+                cursor: "pointer"
+              }}
+            />
+          )}
         >
           {props.children}
         </Scrollbars>

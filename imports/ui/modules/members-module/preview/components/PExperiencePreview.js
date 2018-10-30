@@ -8,6 +8,7 @@ import ReactSVG from "react-svg";
 import LightBox from "react-images";
 import { Utils } from "../../../../services";
 import theme from "../../../../theme";
+import { OrgStatusIcon } from "../../../../components";
 
 const SImage = styled(Container)`
   background: ${props => (props.src ? `url(${props.src})` : "#32363D")};
@@ -84,7 +85,7 @@ class ProfessionalExperiencePreview extends React.Component {
 
   getLevelSvg = level => {
     switch (level) {
-      case "Advance":
+      case "Advanced":
         return (
           <ReactSVG
             src={"/images/icons/line3.svg"}
@@ -98,7 +99,7 @@ class ProfessionalExperiencePreview extends React.Component {
             svgStyle={{ fill: "#464646" }}
           />
         );
-      case "Beginneer":
+      case "Beginner":
         return (
           <ReactSVG
             src={"/images/icons/line1.svg"}
@@ -117,9 +118,7 @@ class ProfessionalExperiencePreview extends React.Component {
           <STitle>{this.props.position}</STitle>
           <SOrganization customTemplateColumns={"auto auto 1fr"}>
             {this.props.organization && this.props.organization.toUpperCase()}
-            {this.props.checkedOrganization ? (
-              <MaterialIcon type={"shield-check"} />
-            ) : null}
+            <OrgStatusIcon status={this.props.checkedOrganization} />
             <div />
           </SOrganization>
           <Layout customTemplateColumns={"11px auto"} colGap={"3px"}>

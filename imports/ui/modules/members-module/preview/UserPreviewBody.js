@@ -298,7 +298,7 @@ class UserPreviewBody extends React.Component {
       ((jobType && jobType.length) || min || max) &&
       professional &&
       professional.seeking;
-    const profesionalexp =
+    const professionalExp =
       achievements &&
       achievements.length > 0 &&
       achievements.filter(item => item.type === "Professional Experience");
@@ -311,7 +311,7 @@ class UserPreviewBody extends React.Component {
       (professional && professional.seeking && (min || max)) ||
       (patents && patents.length) ||
       (jobType && jobType.length) ||
-      (profesionalexp && profesionalexp.length) ||
+      (professionalExp && professionalExp.length) ||
       !this.props.id;
 
     return render ? (
@@ -368,14 +368,14 @@ class UserPreviewBody extends React.Component {
         </PlaceHolder>
         <PlaceHolder
           loading={
-            (!profesionalexp || !profesionalexp.length) && !this.props.id
+            (!professionalExp || !professionalExp.length) && !this.props.id
           }
           height={35}
           width={300}
         >
-          {profesionalexp && profesionalexp.length > 0 ? (
+          {professionalExp && professionalExp.length > 0 ? (
             <CollapseList cutElements={3} title={"Professional Experience"}>
-              {profesionalexp.map((item, index) => (
+              {professionalExp.map((item, index) => (
                 <ProfessionalExperiencePreview
                   key={index}
                   position={item.position}

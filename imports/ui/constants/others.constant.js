@@ -549,8 +549,8 @@ export const PROFESSIONAL_EXPERIENCE = [
 
 export const COURSE_LEVEL = [
   {
-    label: "Beginneer",
-    value: "Beginneer"
+    label: "Beginner",
+    value: "Beginner"
   },
   {
     label: "Intermediate",

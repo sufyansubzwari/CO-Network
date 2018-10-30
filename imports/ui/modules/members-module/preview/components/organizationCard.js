@@ -40,7 +40,7 @@ const TitleCardContainer = Styled.div`
   `};
 `;
 
-const SubTitleCardContainer = Styled.div`
+const SubTitleCardContainer = Styled(Container)`
   font-size: 12px;
   white-space: nowrap;
   overflow: hidden;
@@ -88,18 +88,10 @@ class OrganizationCard extends CardItem {
   renderLeftSide() {
     return (
       <Layout fullY customTemplateRows={"auto auto auto"} minH={"90px"}>
-        <Container>
-          <Layout
-            customTemplateRows={
-              this.props.checkedOrganization ? "1fr auto" : "1fr"
-            }
-          >
-            <TitleCardContainer isActive={this.props.isActive}>
-              {this.props.name || "No Organization"}
-              <OrgStatusIcon status={this.props.checkedOrganization} />
-            </TitleCardContainer>
-          </Layout>
-        </Container>
+        <TitleCardContainer isActive={this.props.isActive}>
+          {this.props.name || "No Organization"}
+          <OrgStatusIcon status={this.props.checkedOrganization} />
+        </TitleCardContainer>
         <Container>
           <Layout customTemplateRows={"1fr"}>
             {this.props.isEventCard ? (
