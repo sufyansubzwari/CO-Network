@@ -58,7 +58,7 @@ class ColloquiumForm extends Component {
         onFinish={() =>
           this.props.onFinish && this.props.onFinish(this.state.colloquium)
         }
-        editMode={this.state.colloquium && this.state.colloquium._id}
+        editMode={this.state.colloquium && !!this.state.colloquium._id}
         edited={this.props.formChange}
         radioColor={'#000000'}
         onBackAction={() => this.props.onCancel && this.props.onCancel()}

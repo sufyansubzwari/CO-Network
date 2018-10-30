@@ -53,7 +53,7 @@ class UserForm extends Component {
         onFinish={() =>
           this.props.onFinish && this.props.onFinish(this.state.user)
         }
-        editMode={this.props.curUser && this.props.curUser._id}
+        editMode={this.props.curUser && !!this.props.curUser._id}
         edited={this.props.formChange}
         radioColor={"#000000"}
         onBackAction={() => this.props.onCancel && this.props.onCancel()}

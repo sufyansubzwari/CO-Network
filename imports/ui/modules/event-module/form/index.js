@@ -101,7 +101,7 @@ class EventForm extends Component {
         showProgress
         onBackAction={() => this.props.onCancel && this.props.onCancel()}
         inactiveColor={"#A0A0A0"}
-        editMode={this.state.event && this.state.event._id}
+        editMode={this.state.event && !!this.state.event._id}
         edited={this.props.formChange}
         radioColor={"#000000"}
         onCancel={() => this.props.onCancel && this.props.onCancel()}
