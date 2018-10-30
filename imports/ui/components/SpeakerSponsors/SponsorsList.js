@@ -202,6 +202,7 @@ class SponsorsList extends React.Component {
                           hoverBackground={"transparent"}
                           hoverColor={"initial"}
                           onClick={() => this.handleChange(index)}
+                          title={"Edit"}
                         >
                           <MaterialIcon type={"edit"} />
                         </Button>
@@ -215,6 +216,7 @@ class SponsorsList extends React.Component {
                           hoverBackground={"transparent"}
                           hoverColor={"initial"}
                           onClick={() => this.handleRemove(index)}
+                          title={"Remove"}
                         >
                           <MaterialIcon type={"delete"} />
                         </Button>
