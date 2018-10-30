@@ -28,6 +28,11 @@ Mutation.colloquium = async (root, { colloquium }, context) => {
     delete place.location.fullLocation;
     await Places.service.place(place);
   }
+  else{
+    const place = Places.service.getPlace({owner: entity._id});
+    if(place)
+      await Places.service.deletePlace(place._id);
+  }
   return inserted;
 };
 

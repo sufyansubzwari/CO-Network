@@ -40,7 +40,7 @@ class EventForm extends Component {
     this.handleChange = this.handleChange.bind(this);
   }
 
-  componentWillMount() {
+  componentDidMount() {
     if (
       this.props.location &&
       this.props.location.state &&
@@ -55,6 +55,17 @@ class EventForm extends Component {
           this.props.handleChangeEvent &&
           this.props.handleChangeEvent(event, true)
       );
+    }
+    if(!this.state.event.place){
+      let event = this.state.event;
+      event.place = {
+        location: {
+          address: "",
+          location: {lat: "", lng: ""},
+          fullLocation: {}
+        }
+      };
+      this.setState({event: event})
     }
   }
 

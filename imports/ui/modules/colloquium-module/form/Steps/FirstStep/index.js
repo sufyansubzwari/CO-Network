@@ -32,7 +32,7 @@ class FirstStep extends React.Component {
     this.state = { colloquium: data, competences: COLLOQUIUM_LEVEL };
   }
 
-  componentWillMount() {
+  componentDidMount() {
     if (this.props.data && this.props.data.competences) {
       this.setState({
         competences: COLLOQUIUM_LEVEL.map(e => {
@@ -42,6 +42,17 @@ class FirstStep extends React.Component {
           return e;
         })
       });
+    }
+    if(!this.state.colloquium.place){
+      let colloq = this.state.colloquium;
+      colloq.place = {
+        location: {
+          address: "",
+          location: {lat: "", lng: ""},
+          fullLocation: {}
+        }
+      };
+      this.setState({colloquium: colloq})
     }
   }
 
@@ -82,7 +93,11 @@ class FirstStep extends React.Component {
         { colloquium: colloquium },
         () => this.props.onChange && this.props.onChange(this.state.colloquium)
       );
-    } else this.props.onChange && this.props.onChange(this.state.colloquium);
+    } else {
+      let colloquium = this.state.colloquium;
+      delete colloquium.place;
+      this.props.onChange && this.props.onChange(colloquium);
+    }
   }
 
   onAddTags(tag) {

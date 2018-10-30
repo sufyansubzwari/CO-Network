@@ -53,6 +53,17 @@ class OrganizationForm extends React.Component {
           )
       );
     }
+    if(!this.state.organization.place){
+      let org = this.state.organization;
+      org.place = {
+        location: {
+          address: "",
+          location: {lat: "", lng: ""},
+          fullLocation: {}
+        }
+      };
+      this.setState({organization: org})
+    }
   }
 
   render() {

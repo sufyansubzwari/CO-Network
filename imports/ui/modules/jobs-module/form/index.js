@@ -53,6 +53,17 @@ class JobForm extends React.Component {
           this.props.handleJobChange(this.props.location.state.job, true)
       );
     }
+    if(!this.state.job.place){
+      let job = this.state.job;
+      job.place = {
+        location: {
+          address: "",
+          location: {lat: "", lng: ""},
+          fullLocation: {}
+        }
+      };
+      this.setState({job: job})
+    }
   }
 
   handleChange(job) {
