@@ -1,9 +1,10 @@
 import React, { Component } from "react";
-import { PostLayout } from "../../../ui/components";
+import { PostLayout, ColloquiumPreview } from "../../../ui/components";
 import { withRouter } from "react-router-dom";
 import ColloquiumForm from "../../modules/colloquium-module/form";
 import { CreateColloquium } from "../../apollo-client/colloquium";
 import { Mutation } from "react-apollo";
+import {ConfirmPopup} from "../../services";
 
 /**
  * @module Colloquiums
@@ -103,6 +104,15 @@ class PostColloquiums extends Component {
             />
           )}
         </Mutation>
+        <ColloquiumPreview
+            key={"rightSide"}
+            isOpen={this.state.openPreview}
+            onClose={() => this.setState({ openPreview: false })}
+            data={this.state.colloquium}
+            isColloquium
+            curUser={this.props.curUser}
+            isMobile={this.props.isMobile}
+        />
       </PostLayout>
     );
   }
