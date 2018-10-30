@@ -12,6 +12,7 @@ import { theme } from "./theme";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "react-confirm-alert/src/react-confirm-alert.css";
 import "react-leaflet-markercluster/dist/styles.min.css";
+import 'react-toastify/dist/ReactToastify.min.css';
 
 // To get started, create an ApolloClient instance and point it at your GraphQL
 // server (handled in our case by meteor-apollo). By default, this client will

@@ -6,7 +6,7 @@ import { Button } from "btech-base-forms-component";
 import MaterialIcon from "react-material-iconic-font";
 import Product from "./Product";
 import Service from "./Service";
-import { UploadToS3, UploadToS3FromClient } from "../../services";
+import {NotificationToast, UploadToS3, UploadToS3FromClient} from "../../services";
 
 const SLabel = styled.div`
   font-size: 12px;
@@ -102,7 +102,7 @@ class ProductList extends React.Component {
           });
           this.setState({ products: products }, () => this.notifyParent());
         } else {
-          // todo: show notification for error
+          NotificationToast.notify("error", "Error on uploading file.")
         }
       });
     }

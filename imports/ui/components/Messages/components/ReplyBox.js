@@ -7,7 +7,7 @@ import "emoji-mart/css/emoji-mart.css";
 import { Picker } from "emoji-mart";
 import styled from "styled-components";
 import MaterialIcon from "react-material-iconic-font";
-import { UploadToS3, UploadToS3FromClient } from "../../../services";
+import {NotificationToast, UploadToS3, UploadToS3FromClient} from "../../../services";
 import OutsideClickHandler from "../../OutsideClickHandler/OutsideClickHandler";
 
 /**
@@ -138,7 +138,7 @@ export class ReplyBox extends React.Component {
             this.props.getImage &&
               this.props.getImage(img, files[0].size, false);
           } else {
-            // todo: show notification for error
+            NotificationToast.notify("error", "Error on uploading image.")
           }
         },
         ({ uploading }) =>
@@ -163,7 +163,7 @@ export class ReplyBox extends React.Component {
             this.props.getAttachment &&
               this.props.getAttachment(response, files[0].size, false);
           } else {
-            // todo: show notification for error
+            NotificationToast.notify("error", "Error on uploading file.")
           }
         },
         ({ uploading }) =>

@@ -10,11 +10,10 @@ import AttachedFile from "./AttachedFile";
 import LightBox from "react-images";
 import { Emojione } from "react-emoji-render";
 import "emoji-mart/css/emoji-mart.css";
-import { Utils } from "../../../services";
+import {NotificationToast, Utils, ConfirmPopup} from "../../../services";
 import { Meteor } from "meteor/meteor";
 import ButtonList from "../../ButtonList/ButtonList";
 import copy from "copy-to-clipboard";
-import { ConfirmPopup } from "../../../services";
 
 export const SMessageItem = styled(Container)`
   line-height: 15px;
@@ -107,8 +106,8 @@ class MessageItem extends React.Component {
     event.preventDefault();
     if (props && props.message) {
       const wasCopy = copy(props.message.text);
-      if (wasCopy) console.log("COPIED");
-      // todo: integrate with the toast notifications
+      if (wasCopy)
+        NotificationToast.notify("info", "Message copied to clipboard.")
     }
   }
 

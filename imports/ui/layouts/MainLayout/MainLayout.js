@@ -15,6 +15,7 @@ import { Meteor } from "meteor/meteor";
 import { withTracker } from "meteor/react-meteor-data";
 import UserRedux from "../../redux/user";
 import { isMobileView } from "../../actions/IsMobileView";
+import { ToastContainer } from 'react-toastify';
 
 const MainLayoutStyled = Styled(Layout)`
  position:fixed;
@@ -117,6 +118,7 @@ class MainLayout extends Component {
         }}
         minH="100vh"
       >
+        <ToastContainer />
         <SignUpListener {...propsProvider} />
         <TopNavbar
           pose={this.state.showNavbar ? "showNavbar" : "closeNavbar"}

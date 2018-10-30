@@ -6,6 +6,7 @@ import { Button } from "btech-base-forms-component";
 import MaterialIcon from "react-material-iconic-font";
 import MediaItem from "./MediaItem";
 import { UploadToS3, UploadToS3FromClient } from "../../services";
+import {NotificationToast} from "../../services"
 
 const SMediaItem = styled(Layout)`
   .buttons {
@@ -98,6 +99,7 @@ class MediaList extends React.Component {
             this.setState({ media: media }, () => this.notifyParent());
           } else {
             // todo: show notification for error
+            NotificationToast.notify("error", "Error on uploading files")
           }
         },
         ({ uploading }) => {

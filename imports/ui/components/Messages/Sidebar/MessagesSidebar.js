@@ -28,7 +28,7 @@ import { userQuery } from "../../../apollo-client/user";
 import moment from "moment/moment";
 import { withRouter } from "react-router-dom";
 import posed from "react-pose/lib/index";
-import { ConfirmPopup, Utils } from "../../../services";
+import { ConfirmPopup, NotificationToast, Utils } from "../../../services";
 import { PlaceHolder } from "btech-placeholder-component";
 
 const SLabel = styled(Label)`
@@ -180,8 +180,9 @@ class MessagesSidebar extends React.Component {
             let messages = msg;
             messages.deleted = true;
             Meteor.call("messages.update", messages, error => {
-              // todo: integrate with toast notifications
-              if (error) return console.log("ERROR - ", error);
+              NotificationToast.notify("success", "Message deleted.");
+              if (error)
+                NotificationToast.notify("error", "Error on deleting message.");
             });
             setTimeout(() => {
               this.setState({ isDeleting: false });
