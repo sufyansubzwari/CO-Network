@@ -111,6 +111,7 @@ class PostColloquiums extends Component {
             isColloquium
             curUser={this.props.curUser}
             isMobile={this.props.isMobile}
+            isPost={true}
         />
       </PostLayout>
     );
