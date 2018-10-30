@@ -50,7 +50,7 @@ class ListJobs extends List {
 
   removeEmpty = obj =>
     Object.keys(obj)
-      .filter(k => obj[k] && obj[k].length) // Remove undef, null and empty.
+      .filter(k => obj[k] && (obj[k].length || Object.keys(obj[k]).length)) // Remove undef, null and empty.
       .reduce(
         (newObj, k) =>
           typeof obj[k] === "object" && !Array.isArray(obj[k])
