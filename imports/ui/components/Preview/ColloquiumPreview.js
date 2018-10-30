@@ -279,7 +279,7 @@ class ColloquiumPreview extends Preview {
               fullY
               gridArea="content"
             >
-              <PlaceHolder loading={!this.props.data || !this.props.data._id} placeholder={ChatLoader} >
+              <PlaceHolder loading={!this.props.data || this.props.isPost} placeholder={ChatLoader} >
               {this.props.data ? (
                 <Messages
                   scroll={this.scroll}
@@ -311,7 +311,7 @@ class ColloquiumPreview extends Preview {
               ))
             : null}
         </Container>
-        {this.props.data && this.props.data._id ? (
+        {this.props.data && !this.props.isPost ? (
           <Container hide={!this.props.curUser}>
             <ReplyBox
               name={"textMessage"}
