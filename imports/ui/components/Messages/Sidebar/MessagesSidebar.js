@@ -1,9 +1,5 @@
 import React from "react";
-import {
-  cleanFilters,
-  setFilters,
-  toggleSideBar
-} from "../../../actions/SideBarActions";
+import { toggleSideBar } from "../../../actions/SideBarActions";
 import { connect } from "react-redux";
 import Notification from "../../Notifications/Sidebar/Notification";
 import NotificationBack from "../../Notifications/Sidebar/NotificationBack";
@@ -30,6 +26,7 @@ import { withRouter } from "react-router-dom";
 import posed from "react-pose/lib/index";
 import { ConfirmPopup, Utils } from "../../../services";
 import { PlaceHolder } from "btech-placeholder-component";
+import { List } from "btech-card-list-component";
 
 const SLabel = styled(Label)`
   display: flex;
@@ -97,6 +94,7 @@ class MessagesSidebar extends React.Component {
       deleteAction: false,
       dragValue: null
     };
+    this.renderItem = this.renderItem.bind(this);
   }
 
   shouldComponentUpdate(nextProps, nextState) {
@@ -206,13 +204,108 @@ class MessagesSidebar extends React.Component {
     this.setState({ dragValue: value });
   }
 
+  renderItem(message, index) {
+    if (!message) return null;
+    return (
+      <Query
+        key={index}
+        query={userQuery}
+        variables={{ id: message.owner }}
+        fetchPolicy={"cache-and-network"}
+      >
+        {({ loading, error, data }) => {
+          if (error) return <div />;
+          const owner = data.user;
+          return this.props.loading || loading ? (
+            <div style={{ padding: "15px" }}>
+              <PlaceHolder
+                facebook
+                loading={this.props.loading || loading}
+                height={280}
+                width={390}
+              />
+            </div>
+          ) : (
+            <Container relative>
+              <NotificationBack />
+              <SDragContainer
+                relative
+                onValueChange={{
+                  x: x => this.observerDragBoundaries(x, index, message)
+                }}
+                onDragEnd={() => {
+                  if (
+                    this.props.isMobile &&
+                    !this.state.deleteAction &&
+                    this.state.dragValue === 0
+                  )
+                    this.handleSelect(index);
+                  this.setState({ deleteAction: false });
+                }}
+              >
+                <Notification
+                  hasIcon={true}
+                  key={index}
+                  viewed={message.read}
+                  title={owner.profile.name}
+                  description={message.text}
+                  // entity={"ML Society"}
+                  time={this.setTimeFormat(message.createdAt)}
+                  image={owner.profile.image}
+                  selected={this.state.selectedItem === index}
+                  onSelect={this.handleSelect.bind(this, index)}
+                  onDelete={() => this.deleteMessage(message, index)}
+                />
+              </SDragContainer>
+            </Container>
+          );
+        }}
+      </Query>
+    );
+  }
+
+  filterByGroup(item) {
+    return (
+      (this.state.type === "direct" &&
+        !item.replies &&
+        (this.state.read === "All"
+          ? true
+          : this.state.read === "Read"
+            ? item.read
+            : !item.read)) ||
+      (this.state.type === "related" &&
+        item.replies &&
+        (this.state.read === "All"
+          ? true
+          : this.state.read === "Read"
+            ? item.read
+            : !item.read))
+    );
+  }
+
+  filterToShowUniqueByGroup(item) {
+    if (this.state.type === "direct") {
+      if (!item || !item.owner) return false;
+      if (this.messagesCache[item.owner]) return false;
+      this.messagesCache[item.owner] = true;
+      return true;
+    } else return true;
+  }
+
   render() {
+    const { messages } = this.state;
+    const data = messages
+      ? messages
+          .filter(item => this.filterByGroup(item))
+          .filter(item => this.filterToShowUniqueByGroup(item))
+      : [];
+    this.messagesCache = {};
     return (
       <NotificationContainer
         title={"Messages"}
         onClose={() => this.props.onClose && this.props.onClose()}
         onClear={() => this.handleClear()}
-        childrens={this.state.messages.length}
+        childrens={messages && messages.length}
       >
         <Container>
           <RLayout padding={"10px 20px"} customTemplateColumns={"1fr auto"}>
@@ -270,82 +363,11 @@ class MessagesSidebar extends React.Component {
           </RLayout>
           <Separator />
         </Container>
-        {this.state.messages &&
-          this.state.messages.length > 0 &&
-          this.state.messages
-            .filter(
-              item =>
-                (this.state.type === "direct" &&
-                  !item.replies &&
-                  (this.state.read === "All"
-                    ? true
-                    : this.state.read === "Read"
-                      ? item.read
-                      : !item.read)) ||
-                (this.state.type === "related" &&
-                  item.replies &&
-                  (this.state.read === "All"
-                    ? true
-                    : this.state.read === "Read"
-                      ? item.read
-                      : !item.read))
-            )
-            .map((message, index) => (
-              <Query
-                key={index}
-                query={userQuery}
-                variables={{ id: message.owner }}
-                fetchPolicy={"cache-and-network"}
-              >
-                {({ loading, error, data }) => {
-                  if (error) return <div />;
-                  const owner = data.user;
-                  return this.props.loading || loading ? (
-                    <div style={{ padding: "15px" }}>
-                      <PlaceHolder
-                        facebook
-                        loading={this.props.loading || loading}
-                        height={280}
-                        width={390}
-                      />
-                    </div>
-                  ) : (
-                    <Container relative>
-                      <NotificationBack />
-                      <SDragContainer
-                        relative
-                        onValueChange={{
-                          x: x => this.observerDragBoundaries(x, index, message)
-                        }}
-                        onDragEnd={() => {
-                          if (
-                            this.props.isMobile &&
-                            !this.state.deleteAction &&
-                            this.state.dragValue === 0
-                          )
-                            this.handleSelect(index);
-                          this.setState({ deleteAction: false });
-                        }}
-                      >
-                        <Notification
-                          hasIcon={true}
-                          key={index}
-                          viewed={message.read}
-                          title={owner.profile.name}
-                          description={message.text}
-                          // entity={"ML Society"}
-                          time={this.setTimeFormat(message.createdAt)}
-                          image={owner.profile.image}
-                          selected={this.state.selectedItem === index}
-                          onSelect={this.handleSelect.bind(this, index)}
-                          onDelete={() => this.deleteMessage(message, index)}
-                        />
-                      </SDragContainer>
-                    </Container>
-                  );
-                }}
-              </Query>
-            ))}
+        <List
+          renderItem={this.renderItem}
+          scrollSeparation={"0px"}
+          data={data}
+        />
       </NotificationContainer>
     );
   }
@@ -358,8 +380,6 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
   return {
-    setFilters: (type, filters) => dispatch(setFilters(type, filters)),
-    cleanFilters: () => dispatch(cleanFilters()),
     closeSideBar: () => dispatch(toggleSideBar(false, false, false))
   };
 };

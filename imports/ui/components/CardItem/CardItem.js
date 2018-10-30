@@ -55,6 +55,7 @@ const SubTitleCardContainer = Styled.div`
   
   ${mixins.media.desktop`
     font-size: 14px;
+    line-height: initial;
   `};
 `;
 
@@ -258,7 +259,7 @@ class CardItem extends Component {
           minH={"initial"}
           mdMinH={"100px"}
           customTemplateRows={"1fr"}
-          mdRowGap={"8px"}
+          mdRowGap={"10px"}
           mdCustomTemplateRows={"1fr 27px"}
         >
           <Layout
@@ -267,7 +268,7 @@ class CardItem extends Component {
             mdRowGap={"10px"}
             rowGap={"8px"}
           >
-            <Container mdMinH={"25px"}>
+            <Container>
               <Layout
                 customTemplateColumns={"1fr"}
                 mdCustomTemplateColumns={
