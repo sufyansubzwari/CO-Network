@@ -17,6 +17,19 @@ pipeline {
            }
         }
      }
+     stage('Update Container for Demo') {
+        when {
+            expression { env.BRANCH_NAME == 'master' }
+        }
+        steps {
+            sh 'echo "Updating"'
+            sshagent(['ea22b683-89a3-4925-8a17-41ba23b0aaf2']) {
+               sh 'echo "Building...."'
+               sh "ssh ${DEV_HOST_USER}@${DEV_HOST} './production-update.sh'"
+               sh 'echo "Updated DEMO successfully"'
+            }
+        }
+     }
   }
   post {
       success {
