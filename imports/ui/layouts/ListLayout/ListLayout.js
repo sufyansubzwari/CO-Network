@@ -92,6 +92,7 @@ class ListLayout extends Component {
                         color={"black"}
                         secondary
                         onClick={() => this.onFilterToggle()}
+                        title={"Filters"}
                       >
                         <MaterialIcon type={"sort"} />
                       </Button>

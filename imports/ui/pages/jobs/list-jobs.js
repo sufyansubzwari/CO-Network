@@ -15,6 +15,8 @@ import { ViewsCountUpdate } from "../../apollo-client/viewCount";
 import { cleanSearch, onSearchTags } from "../../actions/TopSearchActions";
 import { GetJobApply } from "../../apollo-client/jobApply";
 import { List } from "../general";
+import { Meteor } from 'meteor/meteor'
+import { ConfirmPopup } from "../../services";
 
 /**
  * @module Jobs
@@ -25,14 +27,50 @@ class ListJobs extends List {
     super(props);
     this.entityName = "jobs";
     this.state = {
-      previewOptions: [
-        { label: "Summary", action: () => this.scrollToSection("Summary") },
-        { label: "Requirements", action: () => this.scrollToSection("Requirements") },
-        { label: "Applicants", action: () => this.scrollToSection("Applicants") },
-        { label: "Employer", action: () => this.scrollToSection("Employer") }
-      ],
+      previewOptions: [],
       activePreview: null,
     }
+  }
+
+  onChangeCard = (item, key, viewsUpdate) => {
+    let result = [{ label: "Summary", action: () => this.scrollToSection("Summary") }];
+    const options = this.removeEmpty(item && JSON.parse(JSON.stringify(item)));
+    const preview = this.addPreviewOptions(options);
+    result = result.concat(preview);
+    this.setState({
+      previewOptions: result,
+      activePreview: {
+        label: "Summary",
+        action: () => this.scrollToSection("Summary")
+      }
+    });
+
+    this.onChangeSelection(item, key, viewsUpdate);
+  };
+
+  removeEmpty = obj =>
+    Object.keys(obj)
+      .filter(k => obj[k] && obj[k].length) // Remove undef, null and empty.
+      .reduce(
+        (newObj, k) =>
+          typeof obj[k] === "object" && !Array.isArray(obj[k])
+            ? Object.assign(newObj, { [k]: this.removeEmpty(obj[k]) }) // Recurse.
+            : Object.assign(newObj, { [k]: obj[k] }), // Copy value.
+        {}
+      );
+
+  addPreviewOptions(options) {
+    const preview = [];
+    if (!options) {
+      return preview;
+    }
+    if (options.jobExperience || options.languages)
+      preview.push({ label: "Requirements", action: () => this.scrollToSection("Requirements") });
+    //
+      preview.push({ label: "Applicants", action: () => this.scrollToSection("Applicants") });
+    if (options.culture || options.candidateQuestions || options.aboutUsTeam)
+      preview.push({ label: "Employer", action: () => this.scrollToSection("Employer") });
+    return preview;
   }
 
   scrollToSection(link){
@@ -103,7 +141,7 @@ class ListJobs extends List {
               loading={isLoading}
               onFetchData={() => this.fetchMoreSelection(isLoading)}
               onSelectCard={(item, key) =>
-                this.onChangeSelection(item, key, viewsUpdate)
+                this.onChangeCard(item, key, viewsUpdate)
               }
               onSelectTag={(tag, index) => this.onSelectTag(tag, index)}
               activePreview={this.state.activePreview}
@@ -149,6 +187,7 @@ class ListJobs extends List {
                             },
                             {
                               text: "Edit",
+                              icon: "edit",
                               checkVisibility: () => {
                                 const element = this.state.selectedItem;
                                 return (
@@ -177,10 +216,12 @@ class ListJobs extends List {
                                 );
                               },
                               onClick: () => {
-                                this.removeEntity(
-                                  deleteJob,
-                                  this.state.selectedItem
-                                );
+                                ConfirmPopup.confirmPopup(() => {
+                                  this.removeEntity(
+                                    deleteJob,
+                                    this.state.selectedItem
+                                  );
+                                });
                               }
                             }
                           ]}
@@ -205,8 +246,7 @@ class ListJobs extends List {
                             )
                           }
                         >
-                          {" "}
-                          <JobPreviewBody job={this.state.selectedItem} activePreview={this.state.activePreview}/>
+                          <JobPreviewBody job={this.state.selectedItem} onSelectTag={(tag, index) => this.onSelectTag(tag, index)} activePreview={this.state.activePreview}/>
                         </Preview>
                       );
                     }}

@@ -195,7 +195,7 @@ class EventsFilters extends React.Component {
         <Separator />
         <FilterItem>
           <DatePickerRange
-            format={"DD-MM"}
+            format={"DD-MM-YYYY"}
             labelText={"Dates"}
             placeholder={"dd/mm"}
             getValue={(startDate, endDate) => {

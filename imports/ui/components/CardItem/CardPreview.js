@@ -76,8 +76,7 @@ class CardPreview extends Component {
 
 CardPreview.propTypes = {
   options: PropsTypes.arrayOf(PropsTypes.object),
-  active: PropsTypes.number,
-  title: PropsTypes.string
+  active: PropsTypes.number
 };
 
 export default CardPreview;

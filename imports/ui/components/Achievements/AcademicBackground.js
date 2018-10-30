@@ -60,6 +60,7 @@ export default (AcademicBackground = function(props) {
                 hoverColor={"initial"}
                 onClick={props.handleCancel}
                 style={{ fontSize: "14px" }}
+                title={"Cancel"}
               >
                 <MaterialIcon type={"block"} />
                 <span style={{ paddingLeft: "5px" }}>Cancel</span>
@@ -75,6 +76,7 @@ export default (AcademicBackground = function(props) {
                 hoverColor={"initial"}
                 // onClick={props.handleSave}
                 style={{ fontSize: "14px" }}
+                title={"Save"}
               >
                 <MaterialIcon type={"save"} />
                 <span style={{ paddingLeft: "5px" }}>Save</span>

@@ -18,6 +18,7 @@ import { cleanSearch, onSearchTags } from "../../actions/TopSearchActions";
 import { List } from "../general";
 import { FollowAction } from "../../apollo-client/follow";
 import _ from "lodash";
+import { ConfirmPopup } from "../../services";
 
 /**
  * @module Colloquiums
@@ -203,10 +204,12 @@ class ListColloquiums extends List {
                               );
                             },
                             onClick: () => {
-                              this.removeEntity(
-                                deleteColloquium,
-                                this.state.selectedItem
-                              );
+                              ConfirmPopup.confirmPopup(() => {
+                                this.removeEntity(
+                                  deleteColloquium,
+                                  this.state.selectedItem
+                                );
+                              });
                             }
                           }
                         ]}

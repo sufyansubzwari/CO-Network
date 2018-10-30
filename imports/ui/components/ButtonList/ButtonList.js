@@ -13,26 +13,26 @@ const SContainer = styled(Container)`
   box-shadow: 0px 0px 15px -2px rgba(0, 0, 0, 0.5);
   width: fit-content;
   float: right;
-  border: 1px solid rgba(0,0,0,0.5);
+  border: 1px solid rgba(0, 0, 0, 0.5);
   border-radius: 10px;
   font-size: 18px;
   position: absolute;
-  background-color: #FFFFFF;
-  top: ${props => props.topPos || '-10px'};
-  right: ${props => props.rightPos || '-7px'};
-  color: rgba(0,0,0,0.5);
+  background-color: #ffffff;
+  top: ${props => props.topPos || "-10px"};
+  right: ${props => props.rightPos || "-7px"};
+  color: rgba(0, 0, 0, 0.5);
 `;
 
 const SOptions = styled.div`
-  width: ${props => !props.initial ? '35px' : '34px'};
+  width: ${props => (!props.initial ? "35px" : "34px")};
   height: 25px;
   display: flex;
   align-items: center;
   justify-content: center;
-  border-left: ${props => !props.initial ? 'solid 1px rgba(0, 0, 0, 0.5)' : 'none'}; 
-  
+  border-left: ${props => !props.initial ? "solid 1px rgba(0, 0, 0, 0.5)" : "none"}; 
+  transition: color 0.3s ease-out;
   :hover {
-    color: rgba(0,0,0,1);
+    color: rgba(0, 0, 0, 1);
   }
 `;
 
@@ -42,24 +42,25 @@ class ButtonList extends Component {
   render() {
     return (
       <SContainer
+        className={this.props.customClass}
         rightPos={this.props.rightPos}
         topPos={this.props.topPos}
       >
         {this.props.options &&
-          this.props.options.map((op, key) => (
-            <div key={key}>
-              <SOptions
-                initial={key === 0}
-                onClick={op.action}
-                id={op.text}
-              >
-                <MaterialIcon type={op.icon} />
-              </SOptions>
-              <UncontrolledTooltip target={op.text}>
-                {op.text}
-              </UncontrolledTooltip>
-            </div>
-          ))}
+          this.props.options
+            .filter((op, index) => {
+              return op.checkVisibility ? op.checkVisibility(op, index) : true;
+            })
+            .map((op, key) => (
+              <div key={key}>
+                <SOptions initial={key === 0} onClick={op.action} id={op.text}>
+                  <MaterialIcon type={op.icon} />
+                </SOptions>
+                <UncontrolledTooltip target={op.text}>
+                  {op.text}
+                </UncontrolledTooltip>
+              </div>
+            ))}
       </SContainer>
     );
   }
@@ -83,6 +84,7 @@ ButtonList.defaultProps = {
 ButtonList.propTypes = {
   options: PropTypes.array,
   topPos: PropTypes.string,
+  customClass: PropTypes.string,
   rightPos: PropTypes.string
 };
 

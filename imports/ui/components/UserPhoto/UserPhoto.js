@@ -57,8 +57,11 @@ class UserPhoto extends React.Component {
     this.state = {
       loadingImage: true
     };
-    if (props.photo) {
-      this.loadImage(props.photo);
+  }
+
+  componentDidMount(){
+    if (this.props.photo) {
+      this.loadImage(this.props.photo);
     }
   }
 

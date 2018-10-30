@@ -26,6 +26,7 @@ const SLink = styled.a`
   padding-right: ${props => props.hidePaddingRight ? "0" : "20px"};
   cursor: pointer;
   zoom: 100%;
+  transition: color 0.3s ease-out;
 
   @media (min-width: 62em) {
     zoom: 80%;

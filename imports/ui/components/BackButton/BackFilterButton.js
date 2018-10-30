@@ -28,6 +28,7 @@ const BackFilterButton = function(props) {
       secondary
       onClick={() => props.onClick && props.onClick()}
       color={"black"}
+      title={"Back"}
     >
       <Icon>
         <MaterialIcon type={"chevron-left"} />

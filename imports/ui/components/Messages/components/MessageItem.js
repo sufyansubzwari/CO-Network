@@ -3,8 +3,7 @@ import PropTypes from "prop-types";
 import moment from "moment/moment";
 import { Container, Layout, mixins } from "btech-layout";
 import ChatUserInfo from "./ChatUserInfo";
-import { SReplyButton, SDeleteButton, SText, SUser } from "./styledComponents";
-import MaterialIcon from "react-material-iconic-font";
+import { SText, SUser } from "./styledComponents";
 import styled from "styled-components";
 import AttachedImage from "./Image";
 import AttachedFile from "./AttachedFile";
@@ -13,6 +12,9 @@ import { Emojione } from "react-emoji-render";
 import "emoji-mart/css/emoji-mart.css";
 import { Utils } from "../../../services";
 import { Meteor } from "meteor/meteor";
+import ButtonList from "../../ButtonList/ButtonList";
+import copy from "copy-to-clipboard";
+import { ConfirmPopup } from "../../../services";
 
 export const SMessageItem = styled(Container)`
   line-height: 15px;
@@ -27,6 +29,14 @@ export const SMessageItem = styled(Container)`
       transition: all 200ms ease-out;
     }
   }
+`;
+
+export const SButtonListContainer = styled(Container)`
+  opacity: 1;
+
+  ${mixins.media.desktop`
+    opacity: 0;
+  `};
 `;
 
 const LightBoxTheme = {
@@ -71,16 +81,35 @@ class MessageItem extends React.Component {
       : null;
   };
 
-  handleReply(props) {
+  handleReply(event, props) {
     event.stopPropagation();
     event.preventDefault();
     props.onReplyAction && props.onReplyAction(props.message);
   }
 
-  handleDelete(props) {
+  handleDelete(event, props) {
     event.stopPropagation();
     event.preventDefault();
-    props.onDeleteAction && props.onDeleteAction(props.message);
+    ConfirmPopup.confirmPopup(
+      () => {
+        props.onDeleteAction && props.onDeleteAction(props.message);
+      },
+      null,
+      {
+        title: "Remove this message",
+        message: "Are you sure to want delete this message."
+      }
+    );
+  }
+
+  handleCopy(event, props) {
+    event.stopPropagation();
+    event.preventDefault();
+    if (props && props.message) {
+      const wasCopy = copy(props.message.text);
+      if (wasCopy) console.log("COPIED");
+      // todo: integrate with the toast notifications
+    }
   }
 
   render() {
@@ -94,7 +123,7 @@ class MessageItem extends React.Component {
         onClick={event => props.onSelect && props.onSelect()}
       >
         <ChatUserInfo owner={props.owner} />
-        <SMessageItem ml={"10px"}>
+        <SMessageItem relative ml={"10px"}>
           <SUser>
             <span id={"user-name"}>
               {props.owner && props.owner.profile && props.owner.profile.name}
@@ -104,26 +133,40 @@ class MessageItem extends React.Component {
                 "h:mm a"
               )}
             </span>
-            {props.message && props.message.canReply && userId ? (
-              <SReplyButton
-                className={"actionButton"}
-                onClick={this.handleReply.bind(this, props)}
-              >
-                <MaterialIcon type={"mail-reply"} />
-                <span style={{ marginLeft: "5px" }}>Reply</span>
-              </SReplyButton>
-            ) : null}
-            {props.message && props.owner && props.message.owner === userId ? (
-              <SDeleteButton
-                className={"actionButton"}
-                marginLeft={!props.message && !props.message.canReply}
-                onClick={this.handleDelete.bind(this, props)}
-              >
-                <MaterialIcon type={"delete"} />
-                <span style={{ marginLeft: "5px" }}>Delete</span>
-              </SDeleteButton>
-            ) : null}
           </SUser>
+          <SButtonListContainer className={"actionButton"}>
+            <ButtonList
+              rightPos={"0"}
+              topPos={"-5px"}
+              options={[
+                {
+                  action: event =>
+                    this.handleCopy && this.handleCopy(event, props),
+                  checkVisibility: () => props.message && props.message.text,
+                  text: "Copy",
+                  icon: "copy"
+                },
+                {
+                  action: event =>
+                    this.handleReply && this.handleReply(event, props),
+                  checkVisibility: () =>
+                    props.message && props.message.canReply && userId,
+                  text: "Reply",
+                  icon: "mail-reply"
+                },
+                {
+                  action: event =>
+                    this.handleDelete && this.handleDelete(event, props),
+                  checkVisibility: () =>
+                    props.message &&
+                    props.owner &&
+                    props.message.owner === userId,
+                  text: "Delete",
+                  icon: "delete"
+                }
+              ]}
+            />
+          </SButtonListContainer>
           <SText isActive={props.isActive}>
             <Emojione text={props.message.text} />
           </SText>
