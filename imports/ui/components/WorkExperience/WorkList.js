@@ -181,6 +181,7 @@ class WorkList extends React.Component {
                           this.handleChange(index);
                         }}
                         style={{ fontSize: "14px" }}
+                        title={"Edit"}
                       >
                         <MaterialIcon type={"edit"} />
                       </Button>
@@ -195,6 +196,7 @@ class WorkList extends React.Component {
                         hoverColor={"initial"}
                         onClick={() => this.handleRemove(index)}
                         style={{ fontSize: "14px" }}
+                        title={"Delete"}
                       >
                         <MaterialIcon type={"delete"} />
                       </Button>

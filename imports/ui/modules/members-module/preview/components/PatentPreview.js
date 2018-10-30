@@ -63,7 +63,7 @@ class PatentPreview extends React.Component {
                 <SText>
                     {this.props.link && this.props.link}
                 </SText>
-                <TagsAdd tags={this.props.tags}/>
+                <TagsAdd onSelectTag={this.props.onSelectTag} tags={this.props.tags}/>
             </Layout>
         )
     }

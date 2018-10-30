@@ -18,7 +18,7 @@ export default (Service = function(props) {
         onSubmit={e => {
           e.preventDefault();
           e.stopPropagation();
-          this.props.handleSave();
+          props.handleSave();
         }}
       >
         <FormMainLayout>

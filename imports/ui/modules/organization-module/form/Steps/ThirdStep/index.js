@@ -1,10 +1,10 @@
 import React from "react";
 import { CheckBoxList } from "btech-base-forms-component";
-import { Container, Layout } from "btech-layout";
+import { Container } from "btech-layout";
 import { ACTIVELY } from "../../../../../constants";
 import { GetTags } from "../../../../../apollo-client/tag";
 import { Query } from "react-apollo";
-import { MLTagsInput, FormMainLayout } from "../../../../../components";
+import { FormMainLayout, MLTagsInput } from "../../../../../components";
 
 class ThirdStep extends React.Component {
   constructor(props) {

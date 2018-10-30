@@ -32,7 +32,7 @@ const File = function(props) {
 
 const Link = styled.a`
   color: initial;
-
+  transition: color 0.3s ease-out;
   :hover {
     color: ${props => props.theme.color.primary};
   }

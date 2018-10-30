@@ -24,6 +24,7 @@ import { INNOVATORS_TYPES } from "../../constants";
 import { cleanSearch, onSearchTags } from "../../actions/TopSearchActions";
 import { List } from "../general";
 import _ from "lodash";
+import { ConfirmPopup } from "../../services";
 
 /**
  * @module Events
@@ -43,7 +44,8 @@ class ListInnovators extends List {
       navList: INNOVATORS_TYPES,
       currentTab: INNOVATORS_TYPES[0],
       summary: true,
-      previewOptions: [],
+      previewOptions: [
+      ],
       activePreview: null
     };
     this.customRenderItem = this.customRenderItem.bind(this);
@@ -94,7 +96,10 @@ class ListInnovators extends List {
           })
           .then(({ data }) => {
             console.log("onRefetch", data);
-            this.setState({ selectedItem: data.users[0], showMessages: true });
+            this.setState({
+              selectedItem: data && data.users && data.users[0],
+              showMessages: true
+            });
           });
       });
     }
@@ -127,7 +132,10 @@ class ListInnovators extends List {
       entity = "organizations";
     }
     if (this.state.currentTab.value === "members") {
-      count = this.state.users.users.length;
+      count =
+        this.state.users &&
+        this.state.users.users &&
+        this.state.users.users.length;
       entity = "users";
     }
     if (!isLoading && this.state.limit <= count)
@@ -562,10 +570,12 @@ class ListInnovators extends List {
                               );
                             },
                             onClick: () => {
-                              this.removeEntity(
-                                deleteOrg,
-                                this.state.selectedItem
-                              );
+                              ConfirmPopup.confirmPopup(() => {
+                                this.removeEntity(
+                                  deleteOrg,
+                                  this.state.selectedItem
+                                );
+                              });
                             }
                           }
                         ]}
@@ -605,6 +615,9 @@ class ListInnovators extends List {
                         this.state.selectedItem ? (
                           <OrganizationPreviewBody
                             organization={this.state.selectedItem}
+                            onSelectTag={(tag, index) =>
+                              this.onSelectTag(tag, index)
+                            }
                             activePreview={this.state.activePreview}
                           />
                         ) : this.state.currentTab.value === "members" &&
@@ -612,6 +625,9 @@ class ListInnovators extends List {
                           <UserPreviewBody
                             user={this.state.selectedItem.profile}
                             id={this.state.selectedItem._id}
+                            onSelectTag={(tag, index) =>
+                              this.onSelectTag(tag, index)
+                            }
                             activePreview={this.state.activePreview}
                           />
                         ) : null}

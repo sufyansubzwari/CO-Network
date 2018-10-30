@@ -199,6 +199,7 @@ class UserNavbarSection extends React.Component {
                       primary
                       size={this.size}
                       onClick={() => this.onAddToggle()}
+                      title={"Create"}
                     >
                       <SAddMaterialIcon>
                         <MaterialIcon type={"plus"} size={2} />
@@ -219,6 +220,7 @@ class UserNavbarSection extends React.Component {
                       }}
                       activeEval={this.activeEval}
                       onClick={() => this.onMessageToggle()}
+                      title={"Messages"}
                     />
                   </RenderCondition>
                   <RenderCondition>
@@ -240,6 +242,7 @@ class UserNavbarSection extends React.Component {
                       }}
                       activeEval={this.activeEval}
                       onClick={() => this.onNotificationToggle()}
+                      title={"Notifications"}
                     />
                   </RenderCondition>
                   {this.props.isMobile ? (

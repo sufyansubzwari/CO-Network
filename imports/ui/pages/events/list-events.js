@@ -14,6 +14,7 @@ import { ViewsCountUpdate } from "../../apollo-client/viewCount";
 import { withRouter } from "react-router-dom";
 import { cleanSearch, onSearchTags } from "../../actions/TopSearchActions";
 import { List } from "../general";
+import { ConfirmPopup } from "../../services";
 
 /**
  * @module Events
@@ -227,10 +228,12 @@ class ListEvents extends List {
                               );
                             },
                             onClick: () => {
-                              this.removeEntity(
-                                deleteEvent,
-                                this.state.selectedItem
-                              );
+                              ConfirmPopup.confirmPopup(() => {
+                                this.removeEntity(
+                                  deleteEvent,
+                                  this.state.selectedItem
+                                );
+                              });
                             }
                           }
                         ]}
@@ -255,10 +258,7 @@ class ListEvents extends List {
                           )
                         }
                       >
-                        <EventPreviewBody
-                          event={this.state.selectedItem}
-                          activePreview={this.state.activePreview}
-                        />
+                        <EventPreviewBody event={this.state.selectedItem}onSelectTag={(tag, index) => this.onSelectTag(tag, index)} activePreview={this.state.activePreview}/>
                       </Preview>
                     );
                   }}

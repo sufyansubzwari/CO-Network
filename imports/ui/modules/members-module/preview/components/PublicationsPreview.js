@@ -68,7 +68,7 @@ class PublicationsPreview extends React.Component {
                 <Text>
                     {this.props.details}
                 </Text>
-                <TagsAdd tags={this.props.tags}/>
+                <TagsAdd onSelectTag={this.props.onSelectTag} tags={this.props.tags}/>
             </Layout>
         )
     }

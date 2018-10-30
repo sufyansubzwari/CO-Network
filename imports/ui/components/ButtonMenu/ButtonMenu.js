@@ -13,6 +13,7 @@ import { theme } from "../../theme";
 const SDropdownItem = styled(DropdownItem)`
   cursor: pointer;
   font-size: 12px;
+  transition: background-color 0.3s ease-out;
 
   :hover {
     background-color: ${props =>

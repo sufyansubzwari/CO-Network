@@ -5,6 +5,7 @@ import OrganizationPreviewBody from "../../modules/organization-module/preview/O
 import { withRouter } from "react-router-dom";
 import { CreateOrg, DeleteOrg } from "../../apollo-client/organization";
 import { Mutation } from "react-apollo";
+import { ConfirmPopup } from "../../services";
 
 /**
  * @module Organization
@@ -64,7 +65,6 @@ class PostOrganization extends Component {
         }
         //plan: 0
       },
-
       formChange: false
     };
     this.handleBackgroundChange = this.handleBackgroundChange.bind(this);
@@ -175,7 +175,9 @@ class PostOrganization extends Component {
                     );
                   },
                   onClick: () => {
-                    this.removeOrg(deleteOrg, this.state.organization);
+                    ConfirmPopup.confirmPopup(() => {
+                      this.removeOrg(deleteOrg, this.state.organization);
+                    });
                   }
                 }
               ]}

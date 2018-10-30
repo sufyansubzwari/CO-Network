@@ -76,6 +76,7 @@ const SNotification = styled(Container)`
   .deleteNotification {
     opacity: 0;
   }
+  transition: background 0.3s ease-out;
 
   :hover {
     background: ${props =>

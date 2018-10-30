@@ -35,13 +35,14 @@ const SAddMaterialIcon = styled.span`
   > i {
     line-height: 30px;
     font-size: 1.2rem;
+    transition: color 0.3s ease-out;
 
     ${mixins.media.desktop`
       font-size: 2em;   
       line-height: ${props =>
         props.lineHeight ? `${props.lineHeight}px` : "50px"};
     `};
-
+    
     &:hover {
       color: ${props => props.theme.color.primary};
     }

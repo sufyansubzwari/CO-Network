@@ -28,7 +28,7 @@ import { userQuery } from "../../../apollo-client/user";
 import moment from "moment/moment";
 import { withRouter } from "react-router-dom";
 import posed from "react-pose/lib/index";
-import { Utils } from "../../../services";
+import { ConfirmPopup, Utils } from "../../../services";
 import { PlaceHolder } from "btech-placeholder-component";
 
 const SLabel = styled(Label)`
@@ -49,7 +49,7 @@ const Span = styled.span`
 const SDropdownItem = styled(DropdownItem)`
   cursor: pointer;
   font-size: 12px;
-
+  transition: background-color 0.3s ease-out;
   :hover {
     background-color: ${props =>
       props.optionBackColor
@@ -87,7 +87,6 @@ const SDragContainer = posed(SMessageStyled)({
 class MessagesSidebar extends React.Component {
   constructor(props) {
     super(props);
-
     this.state = {
       messages: [],
       selectedItem: -1,
@@ -98,8 +97,6 @@ class MessagesSidebar extends React.Component {
       deleteAction: false,
       dragValue: null
     };
-
-    this.deleteMessage = this.deleteMessage.bind(this);
   }
 
   shouldComponentUpdate(nextProps, nextState) {
@@ -172,20 +169,30 @@ class MessagesSidebar extends React.Component {
     return moment(date).calendar();
   }
 
-  deleteMessage(msg, index) {
-    this.setState(
-      {
-        isDeleting: true
-      },
+  deleteMessage(msg) {
+    ConfirmPopup.confirmPopup(
       () => {
-        let messages = msg;
-        messages.deleted = true;
-        Meteor.call("messages.update", messages, (error, result) => {
-          if (error) return console.log("ERROR - ", error);
-        });
-        setTimeout(() => {
-          this.setState({ isDeleting: false });
-        }, 1000);
+        this.setState(
+          {
+            isDeleting: true
+          },
+          () => {
+            let messages = msg;
+            messages.deleted = true;
+            Meteor.call("messages.update", messages, error => {
+              // todo: integrate with toast notifications
+              if (error) return console.log("ERROR - ", error);
+            });
+            setTimeout(() => {
+              this.setState({ isDeleting: false });
+            }, 1000);
+          }
+        );
+      },
+      null,
+      {
+        title: "Remove this message",
+        message: "Are you sure to want delete this message."
       }
     );
   }
@@ -331,11 +338,7 @@ class MessagesSidebar extends React.Component {
                           image={owner.profile.image}
                           selected={this.state.selectedItem === index}
                           onSelect={this.handleSelect.bind(this, index)}
-                          onDelete={this.deleteMessage.bind(
-                            this,
-                            message,
-                            index
-                          )}
+                          onDelete={() => this.deleteMessage(message, index)}
                         />
                       </SDragContainer>
                     </Container>

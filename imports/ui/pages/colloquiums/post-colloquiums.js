@@ -61,6 +61,7 @@ class PostColloquiums extends Component {
     queryColloquium.place.location.fullLocation
       ? delete queryColloquium.place.location.fullLocation
       : null;
+    delete queryColloquium.followerList;
     let colloquium = { ...queryColloquium };
     if (this.props.curUser) {
       colloquium.owner = this.props.curUser._id;
