@@ -81,6 +81,7 @@ class Speaker extends React.Component {
                   getAddedOptions={obj => this.onAdd(this.props, obj)}
                   getNewAddedOptions={obj => this.onAddNew(this.props, obj)}
                   required={true}
+                  keepText={true}
                 />
               </Container>
               <Input
