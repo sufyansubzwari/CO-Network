@@ -34,11 +34,6 @@ class ApplyJobPreviewBody extends React.Component {
             apply: props.apply ? props.apply : {},
             showMoreAbout: false
         };
-
-        this.SummarySection = React.createRef();
-        this.RequirementsSection = React.createRef();
-        this.ApplicantsSection = React.createRef();
-        this.EmployerSection = React.createRef();
     }
 
   componentWillReceiveProps(nextProps) {
@@ -47,43 +42,7 @@ class ApplyJobPreviewBody extends React.Component {
           apply: nextProps.apply
       });
     }
-    if (nextProps.activePreview !== this.props.activePreview) {
-      this.scrollToDomRef( nextProps.activePreview );
-    }
   }
-
-  scrollToDomRef = activePreview => {
-    const currentRef = this.getRef(activePreview);currentRef &&
-     this.props.onScroll &&
-    this.props.onScroll(currentRef .offsetTop);
-  };
-
-    getRef(link) {
-        switch (link) {
-            case "Summary":
-                return this.SummarySection.current;
-        }
-    }
-
-    handleFollow = (followAction, follow, id) => {
-        let follower = {
-            entityId: id,
-            entity: "USER"
-        };
-        followAction({
-            variables: {
-                follower: follower,
-                id: id,
-                follow: follow
-            }
-        });
-    };
-
-    handleMoreAbout = () => {
-        this.setState({
-            showMoreAbout: !this.state.showMoreAbout
-        });
-    };
 
     renderSummarySection = () => {
         const apply = this.state.apply;
@@ -396,9 +355,6 @@ class ApplyJobPreviewBody extends React.Component {
                 {this.renderProfessionalSection()}
                 {this.renderWorkExperienceSection()}
                 {this.renderAchievementsSection()}
-                {/*{this.renderRequirementsSection()}*/}
-                {/*{this.renderCultureSection()}*/}
-                {/*{this.renderApplicantsSection()}*/}
             </Layout>
         );
     }
