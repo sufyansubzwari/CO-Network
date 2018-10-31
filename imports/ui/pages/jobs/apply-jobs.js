@@ -61,10 +61,9 @@ class ApplyJob extends Component {
       apply.image = user.profile.image || "";
       apply.cover = user.profile.cover || "";
       apply.owner = user._id || "";
-      apply.jobSpecific.passion = user.profile.aboutMe.yourPassion || "";
-      apply.jobSpecific.existingProblem =
-        user.profile.aboutMe.existingProblem || "";
-      apply.jobSpecific.steps = user.profile.aboutMe.steps || "";
+      apply.jobSpecific.passion = user.profile.aboutMe && user.profile.aboutMe.yourPassion || "";
+      apply.jobSpecific.existingProblem = user.profile.aboutMe && user.profile.aboutMe.existingProblem || "";
+      apply.jobSpecific.steps = user.profile.aboutMe && user.profile.aboutMe.steps || "";
       apply.professional.languages =
         user.profile &&
         user.profile.knowledge &&
