@@ -26,7 +26,7 @@ class ListEvents extends List {
     this.entityName = "events";
     this.state = {
       previewOptions: [],
-      activePreview: null
+      activePreview: "Summary"
     };
   }
 
@@ -43,11 +43,7 @@ class ListEvents extends List {
     const preview = this.addPreviewOptions(options);
     result = result.concat(preview);
     this.setState({
-      previewOptions: result,
-      activePreview: {
-        label: "Summary",
-        action: () => this.scrollToSection("Summary")
-      }
+      previewOptions: result
     });
 
     this.onChangeSelection(item, key, viewsUpdate);
