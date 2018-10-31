@@ -5,7 +5,7 @@ pipeline {
 	}
 	stages {
 	    stage('Update Container for Demo') {
-            when {expression { env.BRANCH_NAME == 'master' }}
+            when {expression { env.BRANCH_NAME == 'feature/jenkinsfile' }}
             steps {
                 sh ''
                 sshagent(['mlsociety-production']) {
