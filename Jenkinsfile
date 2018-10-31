@@ -8,7 +8,7 @@ pipeline {
             when {expression { env.BRANCH_NAME == 'feature/jenkinsfile' }}
             steps {
                 sh ''
-                sshagent(['mlsociety-production']) {
+                sshagent(credentials: ['mlsociety-production']) {
                    sh 'echo "Performing npm build..."'
                    sh "ssh ubuntu@35.153.153.200 'uname -a'"
                    sh 'echo "Updated DEMO successfully"'
