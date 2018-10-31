@@ -255,6 +255,11 @@ class JobPreviewBody extends React.Component {
                                                 <ApplicantsCard
                                                     key={index}
                                                     location={
+                                                        jobApply &&
+                                                        jobApply.owner &&
+                                                        jobApply.owner.profile &&
+                                                        jobApply.owner.profile.place &&
+                                                        jobApply.owner.profile.place.location &&
                                                         jobApply.owner.profile.place.location.address
                                                     }
                                                     name={`${jobApply.name} ${jobApply.lastName}`}

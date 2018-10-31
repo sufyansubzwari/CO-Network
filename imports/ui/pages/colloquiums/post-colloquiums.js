@@ -112,6 +112,11 @@ class PostColloquiums extends Component {
             curUser={this.props.curUser}
             isMobile={this.props.isMobile}
             isPost={true}
+            backGroundImage={this.state.colloquium.image}
+            allowChangeImages
+            onBackgroundChange={imageSrc =>
+                this.handleBackgroundChange(imageSrc)
+            }
         />
       </PostLayout>
     );
