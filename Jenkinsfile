@@ -10,7 +10,7 @@ pipeline {
                 sh ''
                 sshagent(credentials: ['mlsociety-production']) {
                    sh 'echo "Performing npm build..."'
-                   sh "ssh ubuntu@35.153.153.200 'uname -a'"
+                   sh "ssh -o StrictHostKeyChecking=no ubuntu@35.153.153.200 'uname -a'"
                    sh 'echo "Updated DEMO successfully"'
                 }
             }
