@@ -45,7 +45,7 @@ class ListInnovators extends List {
       currentTab: INNOVATORS_TYPES[0],
       summary: true,
       previewOptions: [],
-      activePreview: null
+      activePreview: "Summary"
     };
     this.customRenderItem = this.customRenderItem.bind(this);
     this.entityName = "innovators";
@@ -310,7 +310,7 @@ class ListInnovators extends List {
     let result = [
       { label: "Summary", action: () => this.scrollToSection("Summary") }
     ];
-    if (this.state.currentTab === "members") {
+    if (this.state.currentTab.value === "members") {
       const options = this.removeEmpty(
         item && item.profile && JSON.parse(JSON.stringify(item.profile))
       );
@@ -324,11 +324,7 @@ class ListInnovators extends List {
       result = result.concat(preview);
     }
     this.setState({
-      previewOptions: result,
-      activePreview: {
-        label: "Summary",
-        action: () => this.scrollToSection("Summary")
-      }
+      previewOptions: result
     });
 
     this.onChangeSelection(item, key, viewsUpdate);
@@ -353,12 +349,12 @@ class ListInnovators extends List {
     if (options.tech)
       preview.push({
         label: "Technical Recruitment",
-        action: () => this.scrollToSection("Recruitment")
+        action: () => this.scrollToSection("Technical Recruitment")
       });
     if (options.product)
       preview.push({
         label: "Product & Service",
-        action: () => this.scrollToSection("Product")
+        action: () => this.scrollToSection("Product & Service")
       });
     if (options.media)
       preview.push({
@@ -376,20 +372,20 @@ class ListInnovators extends List {
     if (options.knowledge)
       preview.push({
         label: "Knowledge | Community",
-        action: () => this.scrollToSection("Knowledge")
+        action: () => this.scrollToSection("Knowledge | Community")
       });
     if (
       options.professional ||
-      options.achievements.filter(
+      (options.achievements && options.achievements.filter(
         item =>
           item.type === "Patents" || item.type === "Professional Experience"
-      ).length
+      ).length)
     )
       preview.push({
         label: "Professional",
         action: () => this.scrollToSection("Professional")
       });
-    if (
+    if (options.achievements &&
       options.achievements.filter(
         item =>
           item.type === "Publications" || item.type === "Academic Background"

@@ -28,7 +28,7 @@ class ListJobs extends List {
     this.entityName = "jobs";
     this.state = {
       previewOptions: [],
-      activePreview: null,
+      activePreview: "Summary"
     }
   }
 
@@ -38,11 +38,7 @@ class ListJobs extends List {
     const preview = this.addPreviewOptions(options);
     result = result.concat(preview);
     this.setState({
-      previewOptions: result,
-      activePreview: {
-        label: "Summary",
-        action: () => this.scrollToSection("Summary")
-      }
+      previewOptions: result
     });
 
     this.onChangeSelection(item, key, viewsUpdate);

@@ -73,7 +73,7 @@ class UserPreviewBody extends React.Component {
     switch (link) {
       case "Summary":
         return this.SummarySection.current;
-      case "Knowledge":
+      case "Knowledge | Community":
         return this.KnowledgeSection.current;
       case "Professional":
         return this.ProfessionalSection.current;

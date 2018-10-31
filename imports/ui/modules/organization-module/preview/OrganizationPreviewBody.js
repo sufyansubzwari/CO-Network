@@ -60,9 +60,9 @@ class OrganizationPreviewBody extends React.Component {
     switch (link) {
       case "Summary":
         return this.SummarySection.current;
-      case "Recruitment":
+      case "Technical Recruitment":
         return this.RecruitmentSection.current;
-      case "Product":
+      case "Product & Service":
         return this.ProductSection.current;
       case "Media":
         return this.MediaSection.current;
