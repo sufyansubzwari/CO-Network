@@ -31,30 +31,37 @@ class EventStep1 extends Component {
     };
   }
 
-  componentWillMount() {
+  componentDidMount() {
     window.addEventListener('resize', () => {
       const lowResolution = this.isMobile() || window.document.body.clientWidth <= 1440;
       this.setState({dateFormat: lowResolution ? "MM/DD/YY HH:mm A" : "MM/DD/YYYY HH:mm A"});
     });
     if (this.props.data && this.props.data.category) {
-      let event = this.props.data;
-      event.others = this.props.data.category.filter(
-        item => EVENT_TYPE.findIndex(c => c.label === item.label) === -1
+      this.handleCategory(this.props);
+  }
+  }
+
+  handleCategory = (props) => {
+      let event = props.data;
+      event.others = props.data.category.filter(
+          item => EVENT_TYPE.findIndex(c => c.label === item.label) === -1
       );
       this.setState({
-        category: EVENT_TYPE.map(e => {
-          e["active"] = this.props.data.category.some(
-            element => e.label === element.label
-          );
-          return e;
-        })
+          category: EVENT_TYPE.map(e => {
+              e["active"] = props.data.category.some(
+                  element => e.label === element.label
+              );
+              return e;
+          })
       });
-    }
   }
 
   componentWillReceiveProps(nextProps) {
     if (nextProps.data && nextProps.data !== this.state.event)
       this.setState({ event: nextProps.data });
+    if(nextProps.data && nextProps.data.category){
+        this.handleCategory(nextProps)
+    }
   }
 
   notifyParent(model, name, value) {
