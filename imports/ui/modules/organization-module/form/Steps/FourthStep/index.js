@@ -180,10 +180,10 @@ class FourthStep extends React.Component {
                     }
                     levelOptions={TAG_LEVEL}
                     defaultLevel={{
-                        value: "expert",
-                        label: "Expert",
-                        levelColor: "#FF1493",
-                        icon: "/images/icons/line3.svg"
+                      value: "expert",
+                      label: "Expert",
+                      levelColor: "#FF1493",
+                      icon: "/images/icons/line3.svg"
                     }}
                     onCategoryChange={(index, value, color, icon) =>
                       this.handleCategoryChange(
@@ -236,7 +236,11 @@ class FourthStep extends React.Component {
           {/*/>*/}
           {/*</Container>*/}
         </Container>
-        <Layout mdTemplateColumns={2} mdColGap={"20px"} rowGap={"5px"}>
+        <Layout
+          mdCustomTemplateColumns={"70% auto"}
+          mdColGap={"20px"}
+          rowGap={"5px"}
+        >
           <SalaryRange
             labelText={"Salary Range"}
             placeholder={"000"}
@@ -262,7 +266,6 @@ class FourthStep extends React.Component {
               );
             }}
           />
-          <div />
         </Layout>
         <IndustrySector
           tags={

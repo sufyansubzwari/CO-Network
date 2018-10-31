@@ -109,7 +109,11 @@ class ThirdStep extends React.Component {
             onSelected={this.handleSeeking.bind(this, 1)}
           />
         </Container>
-        <Layout mdCustomTemplateColumns={"1fr 1fr"}>
+        <Layout
+          mdCustomTemplateColumns={"70% auto"}
+          mdColGap={"20px"}
+          rowGap={"5px"}
+        >
           <SalaryRange
             labelText={"Expected Salary Range"}
             placeholder={"000"}
