@@ -20,7 +20,7 @@ import { GetTags } from "../../../apollo-client/tag";
 import { Query } from "react-apollo";
 import { Meteor } from "meteor/meteor";
 import { GetMyEvents } from "../../../apollo-client/event";
-import { EVENT_TYPE,LOCATION_RANGE_OPTIONS } from "../../../constants";
+import { EVENT_TYPE, LOCATION_RANGE_OPTIONS } from "../../../constants";
 
 class EventsFilters extends React.Component {
   constructor(props) {
@@ -46,8 +46,8 @@ class EventsFilters extends React.Component {
           active: false
         }
       ],
-      locationOptions:LOCATION_RANGE_OPTIONS,
-      activeOption:LOCATION_RANGE_OPTIONS[0],
+      locationOptions: LOCATION_RANGE_OPTIONS,
+      activeOption: LOCATION_RANGE_OPTIONS[0]
     };
     this.eventTypes = EVENT_TYPE;
 
@@ -151,8 +151,8 @@ class EventsFilters extends React.Component {
     );
   }
 
-  handleLocationMiles(selected){
-    this.setState({activeOption: selected});
+  handleLocationMiles(selected) {
+    this.setState({ activeOption: selected });
   }
 
   render() {
@@ -251,6 +251,23 @@ class EventsFilters extends React.Component {
             fetchPolicy={"cache-and-network"}
           >
             {({ loading, error, data }) => {
+              const tags =
+                data &&
+                data.tags &&
+                data.tags
+                  .slice(0, this.state.limit)
+                  .filter(item => {
+                    return this.eventTypes.some(e => {
+                      return item.label === e.label;
+                    });
+                  })
+                  .map((item, key) => ({
+                    ...item,
+                    number: item.used || 0,
+                    active:
+                      this.state.category[key] &&
+                      this.state.category[key].active
+                  }));
               if (loading) return <div />;
               if (error) return <div>Error</div>;
               return (
@@ -259,25 +276,9 @@ class EventsFilters extends React.Component {
                   limit={this.state.limit}
                   title={"Community Event Categories"}
                   sizeList={this.state.category.length}
-                  options={
-                    data &&
-                    data.tags
-                      .slice(0, this.state.limit)
-                      .map((item, key) => ({
-                        ...item,
-                        number: item.used || 0,
-                        active:
-                          this.state.category[key] &&
-                          this.state.category[key].active
-                      }))
-                      .filter(item => {
-                        return this.eventTypes.some(e => {
-                          return item.label === e.label;
-                        });
-                      })
-                  }
+                  options={tags}
                   onSelect={selected =>
-                    this.addFilters("category", selected, data.tags)
+                    this.addFilters("category", selected, tags)
                   }
                   onMoreAction={this.handleShowMore.bind(this)}
                 />

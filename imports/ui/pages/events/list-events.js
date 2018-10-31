@@ -139,7 +139,7 @@ class ListEvents extends List {
           )}
         </Mutation>
         <Mutation
-          refetchQueries={["GetEvents", "GetMyEvents"]}
+          // refetchQueries={["GetEvents", "GetMyEvents"]}
           key={"rightSide"}
           mutation={DeleteEvent}
         >
@@ -311,14 +311,14 @@ export default withRouter(
         return {
           variables: {
             limit: 10,
-            [this.entityName]:
+            events:
               (props.filterStatus &&
-                props.filterStatus.entityType === this.entityName &&
+                props.filterStatus.entityType === "events" &&
                 props.filterStatus.filters) ||
               {},
             filter:
               (props.filterStatus &&
-                props.filterStatus.entityType === this.entityName &&
+                props.filterStatus.entityType === "events" &&
                 props.filterStatus.text) ||
               ""
           },

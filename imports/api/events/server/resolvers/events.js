@@ -13,7 +13,6 @@ Events.owner = entity => {
 };
 
 Events.organization = entity => {
-  console.log(entity.organization);
   return Organizations.service.getOrganization(entity.organization);
 };
 
