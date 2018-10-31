@@ -6,6 +6,7 @@ import { Preview } from "../../../ui/components";
 import UserPreviewBody from "../../modules/members-module/preview/UserPreviewBody";
 import { graphql, Mutation } from "react-apollo";
 import { CreateUser, userQuery } from "../../apollo-client/user";
+import { NotificationToast } from "../../services";
 
 /**
  * @module User
@@ -136,18 +137,27 @@ class UserProfile extends Component {
       .catch(error => console.log(error));
   }
 
+  onCompletedAction() {
+    if (this.state.redirect) {
+      NotificationToast.success("The user profile was update successfully");
+      this.props.history.push("/profile");
+    }
+  }
+
+  onError(error) {
+    NotificationToast.error();
+    console.log("Error: ", error);
+  }
+
   render() {
     return (
       <PostLayout>
         <Container fullY key={"leftSide"}>
           <Mutation
-            refetchQueries={['user']}
+            refetchQueries={["user"]}
             mutation={CreateUser}
-            onCompleted={() =>
-              this.state.redirect &&
-              this.props.history.push("/", { userCreate: true })
-            }
-            onError={error => console.log("Error: ", error)}
+            onCompleted={() => this.onCompletedAction()}
+            onError={error => this.onError(error)}
           >
             {(createProfile, { profileCreated }) => (
               <UserForm

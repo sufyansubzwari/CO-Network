@@ -15,28 +15,28 @@ import Attachment from "../Messages/components/Attachment";
 import { connect } from "react-redux";
 import { closeChatView, openChatView } from "../../actions/ChatView";
 import { Utils } from "../../services";
-import {PlaceHolder} from "btech-placeholder-component";
-import ContentLoader from "react-content-loader"
+import { PlaceHolder } from "btech-placeholder-component";
+import ContentLoader from "react-content-loader";
 
 const ChatLoader = props => (
-    <ContentLoader
-        height={160}
-        width={400}
-        speed={2}
-        primaryColor="#f3f3f3"
-        secondaryColor="#ecebeb"
-        {...props}
-    >
-        <circle cx="14.8" cy="22.12" r="9.12" />
-        <rect x="29" y="10.58" rx="5" ry="5" width="365.2" height="31.9" />
-        <rect x="31" y="51.58" rx="5" ry="5" width="316.8" height="16.4" />
-        <circle cx="14.64" cy="58.96" r="8.96" />
-        <rect x="30" y="76.58" rx="5" ry="5" width="365.2" height="31.9" />
-        <circle cx="14.8" cy="88.12" r="9.12" />
-        <rect x="31" y="119.58" rx="5" ry="5" width="316.8" height="16.4" />
-        <circle cx="14.64" cy="128.96" r="8.96" />
-    </ContentLoader>
-)
+  <ContentLoader
+    height={160}
+    width={400}
+    speed={2}
+    primaryColor="#f3f3f3"
+    secondaryColor="#ecebeb"
+    {...props}
+  >
+    <circle cx="14.8" cy="22.12" r="9.12" />
+    <rect x="29" y="10.58" rx="5" ry="5" width="365.2" height="31.9" />
+    <rect x="31" y="51.58" rx="5" ry="5" width="316.8" height="16.4" />
+    <circle cx="14.64" cy="58.96" r="8.96" />
+    <rect x="30" y="76.58" rx="5" ry="5" width="365.2" height="31.9" />
+    <circle cx="14.8" cy="88.12" r="9.12" />
+    <rect x="31" y="119.58" rx="5" ry="5" width="316.8" height="16.4" />
+    <circle cx="14.64" cy="128.96" r="8.96" />
+  </ContentLoader>
+);
 
 const ResponsiveContainer = styled(Layout)`
   margin-left: -100%;
@@ -123,7 +123,7 @@ class ColloquiumPreview extends Preview {
   }
 
   triggerChatViewStatus(isOpen) {
-    if (this.props.isMobile)
+    if (this.props.isMobile && !this.props.isPost)
       isOpen ? this.props.openChatView() : this.props.closeChatView();
   }
 
@@ -279,19 +279,22 @@ class ColloquiumPreview extends Preview {
               fullY
               gridArea="content"
             >
-              <PlaceHolder loading={!this.props.data || this.props.isPost} placeholder={ChatLoader} >
-              {this.props.data ? (
-                <Messages
-                  scroll={this.scroll}
-                  receptor={this.props.data}
-                  isMobile={this.props.isMobile}
-                  onLoadMessages={list => {
-                    this.messagesLength = list.length;
-                  }}
-                  type={this.getState()}
-                  {...this.props}
-                />
-              ) : null}
+              <PlaceHolder
+                loading={!this.props.data || this.props.isPost}
+                placeholder={ChatLoader}
+              >
+                {this.props.data ? (
+                  <Messages
+                    scroll={this.scroll}
+                    receptor={this.props.data}
+                    isMobile={this.props.isMobile}
+                    onLoadMessages={list => {
+                      this.messagesLength = list.length;
+                    }}
+                    type={this.getState()}
+                    {...this.props}
+                  />
+                ) : null}
               </PlaceHolder>
             </Container>
           </Layout>
