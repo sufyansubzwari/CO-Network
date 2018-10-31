@@ -303,7 +303,7 @@ export class ReplyBox extends React.Component {
             <SAddButton
               onClick={() => this.props.onSend && this.props.onSend()}
             >
-              <MaterialIcon type={"arrow-forward"} />
+              <MaterialIcon type={"mail-send"} />
             </SAddButton>
           </STextAreaContainer>
         </Layout>
