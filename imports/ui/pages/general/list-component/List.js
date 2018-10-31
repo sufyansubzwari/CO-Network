@@ -120,8 +120,10 @@ class List extends Component {
     tags.length
       ? (tagsFilters[keyIndex] = { in: tags.map(item => item._id) })
       : null;
-    this.setState({ filter: value, filterStatus: tagsFilters }, () =>
-      this.reFetchQuery()
+    this.setState({ filter: value, filterStatus: tagsFilters }, () => {
+        this.props.setFilters(this.entityName, tagsFilters, value)
+        this.reFetchQuery()
+      }
     );
   }
 

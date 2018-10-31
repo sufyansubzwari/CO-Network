@@ -17,6 +17,7 @@ import { GetJobApply } from "../../apollo-client/jobApply";
 import { List } from "../general";
 import { Meteor } from 'meteor/meteor'
 import { ConfirmPopup } from "../../services";
+import {setFilters} from "../../actions/SideBarActions";
 
 /**
  * @module Jobs
@@ -268,6 +269,7 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => {
   return {
     onSearchTags: tag => dispatch(onSearchTags(tag)),
+    setFilters: (type, filters, text) => dispatch(setFilters(type, filters, text)),
     cleanSearch: () => dispatch(cleanSearch()),
     sendPreviewData: (item, key, type) => dispatch(PreviewData(item, key, type))
   };

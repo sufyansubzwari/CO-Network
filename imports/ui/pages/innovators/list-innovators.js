@@ -25,6 +25,7 @@ import { cleanSearch, onSearchTags } from "../../actions/TopSearchActions";
 import { List } from "../general";
 import _ from "lodash";
 import { ConfirmPopup } from "../../services";
+import { setFilters } from "../../actions/SideBarActions";
 
 /**
  * @module Events
@@ -225,15 +226,22 @@ class ListInnovators extends List {
       tags.length
         ? (tagsFilters.description = { in: tags.map(item => item._id) })
         : null;
-    if (this.state.currentTab.value === "members")
+    if (this.state.currentTab.value === "members") {
       tags.length
         ? (tagsFilters.profile_DOT_knowledge_DOT_languages_DOT_tag = {
             in: tags.map(item => item._id)
           })
         : null;
-    this.setState({ filter: value, filterStatus: tagsFilters }, () =>
-      this.reFetchQuery()
-    );
+      tagsFilters["_id"] = { ne: this.props.curUser._id };
+    }
+    this.setState({ filter: value, filterStatus: tagsFilters }, () => {
+      this.props.setFilters(
+        this.state.currentTab.value === "members" ? "members" : "organizations",
+        tagsFilters,
+        value
+      );
+      this.reFetchQuery();
+    });
   }
 
   customRenderItem(item, key, isLoading, viewsUpdate) {
@@ -376,16 +384,18 @@ class ListInnovators extends List {
       });
     if (
       options.professional ||
-      (options.achievements && options.achievements.filter(
-        item =>
-          item.type === "Patents" || item.type === "Professional Experience"
-      ).length)
+      (options.achievements &&
+        options.achievements.filter(
+          item =>
+            item.type === "Patents" || item.type === "Professional Experience"
+        ).length)
     )
       preview.push({
         label: "Professional",
         action: () => this.scrollToSection("Professional")
       });
-    if (options.achievements &&
+    if (
+      options.achievements &&
       options.achievements.filter(
         item =>
           item.type === "Publications" || item.type === "Academic Background"
@@ -648,6 +658,8 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => {
   return {
     onSearchTags: tag => dispatch(onSearchTags(tag)),
+    setFilters: (type, filters, text) =>
+      dispatch(setFilters(type, filters, text)),
     cleanSearch: () => dispatch(cleanSearch()),
     sendPreviewData: (item, key, type) => dispatch(PreviewData(item, key, type))
   };

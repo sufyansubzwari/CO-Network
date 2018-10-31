@@ -148,7 +148,7 @@ ItemsList.propTypes = {
   navList: PropTypes.array,
   getNavActive: PropTypes.func,
   onSelectTag: PropTypes.func,
-  activePreview: PropTypes.object,
+  activePreview: PropTypes.string,
   previewOptions: PropTypes.array
 };
 

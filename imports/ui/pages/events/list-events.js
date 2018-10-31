@@ -15,6 +15,7 @@ import { withRouter } from "react-router-dom";
 import { cleanSearch, onSearchTags } from "../../actions/TopSearchActions";
 import { List } from "../general";
 import { ConfirmPopup } from "../../services";
+import { setFilters } from "../../actions/SideBarActions";
 
 /**
  * @module Events
@@ -267,7 +268,7 @@ class ListEvents extends List {
                           )
                         }
                       >
-                        <EventPreviewBody event={this.state.selectedItem}onSelectTag={(tag, index) => this.onSelectTag(tag, index)} activePreview={this.state.activePreview}/>
+                        <EventPreviewBody event={this.state.selectedItem} onSelectTag={(tag, index) => this.onSelectTag(tag, index)} activePreview={this.state.activePreview}/>
                       </Preview>
                     );
                   }}
@@ -292,6 +293,7 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => {
   return {
     onSearchTags: tag => dispatch(onSearchTags(tag)),
+    setFilters: (type, filters, text) => dispatch(setFilters(type, filters, text)),
     cleanSearch: () => dispatch(cleanSearch()),
     sendPreviewData: (item, key, type) => dispatch(PreviewData(item, key, type))
   };
