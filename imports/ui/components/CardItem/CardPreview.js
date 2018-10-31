@@ -34,7 +34,7 @@ class CardPreview extends Component {
             {this.props.options &&
               this.props.options.slice(0, 4).map((op, index) => (
                 <SOption
-                  active={this.props.active === op.label}
+                  active={this.props.active && this.props.active.label === op.label}
                   key={index}
                   onClick={() => op.action()}
                 >
@@ -47,7 +47,7 @@ class CardPreview extends Component {
               this.props.options.length > 4 &&
               this.props.options.slice(4, 8).map((op, index) => (
                 <SOption
-                  active={this.props.active === op.label}
+                  active={this.props.active && this.props.active.label === op.label}
                   key={index}
                   onClick={() => op.action()}
                 >
@@ -60,7 +60,7 @@ class CardPreview extends Component {
               this.props.options.length > 8 &&
               this.props.options.slice(8, 12).map((op, index) => (
                 <SOption
-                  active={this.props.active === op.label}
+                  active={this.props.active && this.props.active.label === op.label}
                   key={index}
                   onClick={() => op.action()}
                 >
