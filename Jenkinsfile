@@ -4,6 +4,17 @@ pipeline {
 	    nodejs 'node_v8.12'
 	}
 	stages {
+	    stage('Update Container for Demo') {
+            when {expression { env.BRANCH_NAME == 'master' }}
+            steps {
+                sh ''
+                sshagent(['mlsociety-production']) {
+                   sh 'echo "Performing npm build..."'
+                   sh "ssh ubuntu@35.153.153.200 'uname -a'"
+                   sh 'echo "Updated DEMO successfully"'
+                }
+            }
+        }
 	    stage('Deploy Dev') {
 	        when {expression { env.BRANCH_NAME == 'dev' }}
 	        steps {
