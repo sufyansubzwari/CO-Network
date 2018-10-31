@@ -176,6 +176,7 @@ class TopSearcher extends Component {
                       newAdded={this.state.added}
                       onClose={this.handleClose}
                       onTextChange={() => this.setState({ added: false })}
+                      iconClass={"mail-send"}
                     />
                   );
                 }}

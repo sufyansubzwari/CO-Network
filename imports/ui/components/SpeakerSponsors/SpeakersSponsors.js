@@ -6,6 +6,9 @@ import LineSeparator from "./LineSeparator";
 import SponsorsList from "./SponsorsList";
 import styled from "styled-components";
 import { SPEAKERS_SPONSORS } from "./constants";
+import { userList as users } from "../../apollo-client/user";
+import { GetOrg as orgList } from "../../apollo-client/organization";
+import { Query } from "react-apollo";
 
 const SLabel = styled.div`
   font-size: 13px;
@@ -24,8 +27,7 @@ class SpeakersSponsor extends React.Component {
           ? this.props.sponsors
           : [],
       editIndex: -1,
-      menuOptions: SPEAKERS_SPONSORS,
-      users: props.users && props.users.length ? props.users : []
+      menuOptions: SPEAKERS_SPONSORS
     };
 
     this.onSelectToAdd = this.onSelectToAdd.bind(this);
@@ -46,12 +48,6 @@ class SpeakersSponsor extends React.Component {
     this.setState({ sponsors: list });
   }
 
-  componentWillReceiveProps(nextProps) {
-    if (nextProps.users) {
-      this.setState({ users: nextProps.users });
-    }
-  }
-
   render() {
     return (
       <Container>
@@ -67,20 +63,34 @@ class SpeakersSponsor extends React.Component {
             </Layout>
           </Container>
           <Container>
-            <SponsorsList
-              users={this.state.users}
-              data={this.state.sponsors}
-              onChange={this.handleChange}
-              type={"Speakers"}
-            />
+            <Query query={users}>
+              {({ loading, error, data }) => {
+                if (error) return <div>Error loading the information</div>;
+                return (
+                  <SponsorsList
+                    users={data && data.users}
+                    data={this.state.sponsors}
+                    onChange={this.handleChange}
+                    type={"Speakers"}
+                  />
+                );
+              }}
+            </Query>
           </Container>
           <Container>
-            <SponsorsList
-              users={this.state.users}
-              data={this.state.sponsors}
-              onChange={this.handleChange}
-              type={"Sponsors"}
-            />
+            <Query query={orgList}>
+              {({ loading, error, data }) => {
+                if (error) return <div>Error loading the information</div>;
+                return (
+                  <SponsorsList
+                    organizations={data && data.organizations}
+                    data={this.state.sponsors}
+                    onChange={this.handleChange}
+                    type={"Sponsors"}
+                  />
+                );
+              }}
+            </Query>
           </Container>
         </Layout>
       </Container>
@@ -93,8 +103,7 @@ SpeakersSponsor.defaultProps = {};
 SpeakersSponsor.propTypes = {
   sponsors: PropTypes.array,
   onChange: PropTypes.func,
-  type: PropTypes.func,
-  users: PropTypes.array
+  type: PropTypes.func
 };
 
 export default SpeakersSponsor;

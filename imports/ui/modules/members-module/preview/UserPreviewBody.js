@@ -492,7 +492,7 @@ class UserPreviewBody extends React.Component {
     const render = this.props.id;
     return render ? (
       <Query
-        fetchPolicy={"network-only"}
+        fetchPolicy={"cache-and-network"}
         query={GetOrg}
         variables={{
           organizations: {
@@ -519,10 +519,10 @@ class UserPreviewBody extends React.Component {
                     }
                   ]}
                 />
-                <CreateButton
+                  { Meteor.userId() ? <CreateButton
                   text={"Create Org"}
                   route={"/post-organization"}
-                />
+                /> : null}
               </Layout>
               <Layout
                 colGap={"20px"}
@@ -576,7 +576,7 @@ class UserPreviewBody extends React.Component {
                     { value: "Events", title: "Events", number: events.length }
                   ]}
                 />{" "}
-                <CreateButton text={"Create Event"} route={"/post-event"} />
+                  { Meteor.userId() ? <CreateButton text={"Create Event"} route={"/post-event"} /> : null}
               </Layout>
               <Layout
                 colGap={"20px"}
@@ -650,7 +650,7 @@ class UserPreviewBody extends React.Component {
                     { value: "Jobs", title: "Jobs", number: jobs.length }
                   ]}
                 />
-                <CreateButton text={"Create Job"} route={"/post-job"} />
+                  {Meteor.userId() ? <CreateButton text={"Create Job"} route={"/post-job"} /> : null}
               </Layout>
               <Layout
                 colGap={"20px"}

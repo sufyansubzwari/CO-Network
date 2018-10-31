@@ -6,6 +6,7 @@ type Sponsors {
     type: String
     external: Boolean
     user: User
+    organization: Organizations
     name: String
     email: String
     description: String
@@ -23,6 +24,7 @@ input SponsorsInput {
     external: Boolean
     type: String
     user: String
+    organization: String
     name: String
     email: String
     description: String

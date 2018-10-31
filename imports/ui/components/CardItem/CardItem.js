@@ -242,7 +242,7 @@ class CardItem extends Component {
     const tags = this.props.tags
       .map(tag => ({ active: true, ...tag }))
       .sort((a, b) => {
-        return a.label.length - b.label.length;
+        return (a.label && a.label.length) - (b.label && b.label.length);
       });
     return (
       <Layout
@@ -303,7 +303,7 @@ class CardItem extends Component {
             </Container>
           </Layout>
           <Container hide mdShow ref={this.tagRef}>
-            {tags.length ? (
+            { tags && tags.length ? (
               <TagList
                 containerRef={this.tagcontainer}
                 cut={true}
@@ -448,7 +448,7 @@ CardItem.propTypes = {
   views: PropTypes.number,
   previewOptions: PropTypes.array,
   showPreviewMenu: PropTypes.bool,
-  activeOptionPreview: PropTypes.object
+  activeOptionPreview: PropTypes.string
 };
 
 export default CardItem;
