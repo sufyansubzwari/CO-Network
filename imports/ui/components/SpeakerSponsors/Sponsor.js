@@ -43,14 +43,14 @@ class Sponsor extends React.Component {
     });
     props.onAdd(obj.label, "name");
     props.onAdd(obj.email, "email");
-    props.onAdd(obj.user, "user");
+    props.onAdd(obj.org, "organization");
   }
 
   onAddNew(props, obj) {
 
-      let user = props.users.some(user => props.model['name'] === `${user.profile.name} ${user.profile.lastName}`)
+      let org = props.organizations.some(org => props.model['name'] === org.name)
 
-      if (!!obj.label && obj.label !== "" && !user)
+      if (!!obj.label && obj.label !== "" && !org)
       this.setState({
         userValid: false
       });
@@ -76,11 +76,11 @@ class Sponsor extends React.Component {
                   placeholderText={"Name"}
                   name={"name"}
                   model={this.props.model}
-                  options={this.props.users.map(user => ({
-                    label: `${user.profile.name} ${user.profile.lastName}`,
-                    value: user.profile.name,
-                    email: user.profile.email,
-                    user: user._id
+                  options={this.props.organizations.map(org => ({
+                    label: org.name,
+                    value: org.name,
+                    email: org.contact.email,
+                    org: org._id
                   }))}
                   validate={NAME_REGEX}
                   getAddedOptions={obj => this.onAdd(this.props, obj)}

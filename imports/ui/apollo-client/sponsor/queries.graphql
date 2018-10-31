@@ -22,6 +22,22 @@ query GetSponsors($limit: Int, $filter: String, $sponsors: SponsorsInput) {
           }
           followerList
       }
+      organization{
+                _id
+                name
+                place{
+                    location{
+                        address
+                        location{
+                          lat
+                          lng
+                        }
+                    }
+                }
+                contact{
+                    name
+                }
+            }
       name
       email
       description

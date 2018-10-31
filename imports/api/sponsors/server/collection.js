@@ -50,6 +50,11 @@ const schema = new SimpleSchema({
     label: 'ID of the user',
     optional: true,
   },
+  organization: {
+    type: String,
+    label: 'ID of the organization',
+    optional: true,
+  },
   name: {
     type: String,
     label: 'Name of the Speaker or Sponsor.',

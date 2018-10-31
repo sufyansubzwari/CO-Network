@@ -173,7 +173,7 @@ class SponsorsList extends React.Component {
                     ) : item.type === "Sponsors" ? (
                       <Sponsor
                         key={index}
-                        users={this.props.users}
+                        organizations={this.props.organizations}
                         model={this.state.sponsors[index]}
                         handleSave={() => this.handleSave(index)}
                         onAdd={(label, name) => this.onAdd(index, label, name)}
@@ -246,7 +246,8 @@ SponsorsList.propTypes = {
   isEditable: PropTypes.bool,
   onInviteSpeaker: PropTypes.func, // todo: support invite a user not in the system
   onInviteSponsor: PropTypes.func, // todo: support invite a user not in the system
-  users: PropTypes.array
+  users: PropTypes.array,
+  organizations: PropTypes.array
 };
 
 export default SponsorsList;

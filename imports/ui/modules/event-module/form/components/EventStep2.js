@@ -1,8 +1,6 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { SpeakersSponsors, FormMainLayout } from "../../../../components";
-import { userList as users } from "../../../../apollo-client/user";
-import { Query } from "react-apollo";
 
 /**
  * @module Event
@@ -48,18 +46,10 @@ class EventStep2 extends Component {
   render() {
     return (
       <FormMainLayout>
-        <Query query={users}>
-          {({ loading, error, data }) => {
-            if (error) return <div>Error loading the information</div>;
-            return (
-              <SpeakersSponsors
-                onChange={this.handleChange}
-                sponsors={this.state.event.sponsors}
-                users={data.users}
-              />
-            );
-          }}
-        </Query>
+        <SpeakersSponsors
+          onChange={this.handleChange}
+          sponsors={this.state.event.sponsors}
+        />
       </FormMainLayout>
     );
   }

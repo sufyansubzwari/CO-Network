@@ -448,7 +448,7 @@ CardItem.propTypes = {
   views: PropTypes.number,
   previewOptions: PropTypes.array,
   showPreviewMenu: PropTypes.bool,
-  activeOptionPreview: PropTypes.object
+  activeOptionPreview: PropTypes.string
 };
 
 export default CardItem;
