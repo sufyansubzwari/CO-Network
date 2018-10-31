@@ -4,7 +4,7 @@ pipeline {
 	    nodejs 'node_v8.12'
 	}
 	stages {
-	    stage('Update Container for Demo') {
+	    stage('Deploy to production') {
             when {expression { env.BRANCH_NAME == 'master' }}
             steps {
                 sh ''
