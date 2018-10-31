@@ -21,12 +21,27 @@ class IndustrySector extends React.Component {
     }
   }
 
+  compare(a, b){
+    var nameA = a.label.toUpperCase(); // ignore upper and lowercase
+    var nameB = b.label.toUpperCase(); // ignore upper and lowercase
+    if (nameA < nameB) {
+      return -1;
+    }
+    if (nameA > nameB) {
+      return 1;
+    }
+
+    // names must be equal
+    return 0;
+  }
+
   render() {
     return (
       <Query query={GetTags} variables={{ tags: { type: "INDUSTRY" } }}>
         {({ loading, error, data }) => {
           if (loading) return <div />;
           if (error) return <div>Error</div>;
+          const tags = data.tags && JSON.parse(JSON.stringify(data.tags));
           return (
             <SelectTag
               placeholderText={"Industry | Sector"}
@@ -34,7 +49,7 @@ class IndustrySector extends React.Component {
                 ...tag,
                 active: true
               }))}
-              selectOptions={data.tags}
+              selectOptions={tags.sort((a,b) => this.compare(a, b))}
               getTags={obj => this.props.handleTags(obj)}
               model={{ obj: [] }}
               name={"obj"}
