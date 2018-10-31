@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import MaterialIcon from "react-material-iconic-font";
 import styled from "styled-components";
 import { Container, Layout } from "btech-layout";
-import { types, iconTypes, colorsTypes } from "./types";
+import { types, iconTypes, colorsTypes, messages } from "./types";
 
 const STitleNotify = styled.span`
   color: #2b2b2b;
@@ -65,8 +65,10 @@ export const Toast = props => (
         <MaterialIcon type={props.iconType || iconTypes[props.type || ""]} />
       </SNotifyIcon>
       <SNotifyCustom>
-        <STitleNotify>{types[props.type] || ""}</STitleNotify>
-        <SMessageNotify title={props.message}>{props.message || ""}</SMessageNotify>
+        <STitleNotify>{props.title || types[props.type] || ""}</STitleNotify>
+        <SMessageNotify title={props.message || messages[props.type] || ""}>
+          {props.message || messages[props.type] || ""}
+        </SMessageNotify>
       </SNotifyCustom>
     </Layout>
   </Container>
@@ -74,6 +76,7 @@ export const Toast = props => (
 
 Toast.propTypes = {
   iconType: PropTypes.string,
+  title: PropTypes.string,
   message: PropTypes.string,
   type: PropTypes.string
 };
