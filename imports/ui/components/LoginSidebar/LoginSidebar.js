@@ -186,7 +186,7 @@ class LoginSidebar extends React.Component {
             <Container>
               <Container mb={{ md: "15px" }}>
                 <SLoginText>
-                  Discover what´s happening in our network
+                  Log into the COnscious Network
                 </SLoginText>
               </Container>
               <Container>

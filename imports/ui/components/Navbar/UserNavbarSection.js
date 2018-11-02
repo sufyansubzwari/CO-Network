@@ -170,7 +170,7 @@ class UserNavbarSection extends React.Component {
                   authenticated={isAuthenticated}
                   title={
                     !isAuthenticated
-                      ? "Discover what´s happening in our network"
+                      ? "Log into the COnscious Network"
                       : null
                   }
                 >
