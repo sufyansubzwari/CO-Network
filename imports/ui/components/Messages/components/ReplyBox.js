@@ -9,6 +9,8 @@ import styled from "styled-components";
 import MaterialIcon from "react-material-iconic-font";
 import {NotificationToast, UploadToS3, UploadToS3FromClient} from "../../../services";
 import OutsideClickHandler from "../../OutsideClickHandler/OutsideClickHandler";
+import ReactSVG from "react-svg";
+
 
 /**
  * @module Data
@@ -63,6 +65,12 @@ const SOptionToggle = styled.span`
     font-size: 24px;
   }
 `;
+
+const Span = styled.div`
+  height: 100%;
+  width: 12px;
+  line-height: 34px;
+`
 
 const GroupRender = props => {
   return (
@@ -303,7 +311,7 @@ export class ReplyBox extends React.Component {
             <SAddButton
               onClick={() => this.props.onSend && this.props.onSend()}
             >
-              <MaterialIcon type={"mail-send"} />
+                <Span title={"Send"} ><ReactSVG src={"/images/icons/Send.svg"} /></Span>
             </SAddButton>
           </STextAreaContainer>
         </Layout>

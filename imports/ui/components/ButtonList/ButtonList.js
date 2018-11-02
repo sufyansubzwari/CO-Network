@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import MaterialIcon from "react-material-iconic-font";
-import { UncontrolledTooltip } from "reactstrap";
 import { Container } from "btech-layout";
 import styled from "styled-components";
 
@@ -29,7 +28,8 @@ const SOptions = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  border-left: ${props => !props.initial ? "solid 1px rgba(0, 0, 0, 0.5)" : "none"}; 
+  border-left: ${props =>
+    !props.initial ? "solid 1px rgba(0, 0, 0, 0.5)" : "none"};
   transition: color 0.3s ease-out;
   :hover {
     color: rgba(0, 0, 0, 1);
@@ -53,12 +53,14 @@ class ButtonList extends Component {
             })
             .map((op, key) => (
               <div key={key}>
-                <SOptions initial={key === 0} onClick={op.action} id={op.text}>
+                <SOptions
+                  initial={key === 0}
+                  onClick={op.action}
+                  id={op.text}
+                  title={op.text}
+                >
                   <MaterialIcon type={op.icon} />
                 </SOptions>
-                <UncontrolledTooltip target={op.text}>
-                  {op.text}
-                </UncontrolledTooltip>
               </div>
             ))}
       </SContainer>

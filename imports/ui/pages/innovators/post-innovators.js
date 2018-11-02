@@ -112,6 +112,7 @@ class PostOrganization extends Component {
     orgQuery.place.location.fullLocation
       ? delete orgQuery.place.location.fullLocation
       : null;
+    if (!orgQuery.checkStatus) orgQuery.checkStatus = "approved";
     let organization = { ...orgQuery };
     if (this.props.curUser) {
       organization.owner = this.props.curUser._id;

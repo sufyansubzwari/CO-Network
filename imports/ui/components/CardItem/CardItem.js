@@ -11,6 +11,7 @@ import posed from "react-pose";
 import { Utils } from "../../services";
 import isMobile from "../../constants/isMobile";
 import CardPreview from "./CardPreview";
+import OrgStatusIcon from "../OrgStatusIcon/OrgStatusIcon";
 
 const TitleCardContainer = Styled.div`
   font-family: Helvetica Neue LT Std;
@@ -292,6 +293,9 @@ class CardItem extends Component {
               <Layout customTemplateRows={"1fr"}>
                 <TitleCardContainer isActive={this.props.isActive}>
                   {this.props.title || "No title"}
+                  {this.props.showStatusIcon && this.props.statusValue ? (
+                    <OrgStatusIcon status={this.props.statusValue} />
+                  ) : null}
                 </TitleCardContainer>
               </Layout>
             </Container>
@@ -304,7 +308,7 @@ class CardItem extends Component {
             </Container>
           </Layout>
           <Container hide mdShow ref={this.tagRef}>
-            { tags && tags.length ? (
+            {tags && tags.length ? (
               <TagList
                 containerRef={this.tagcontainer}
                 cut={true}
@@ -431,6 +435,7 @@ CardItem.defaultProps = {
   topOptions: [],
   views: 0,
   showMenu: false,
+  showStatusIcon: false,
   image: null,
   iconClass: "eye"
 };
@@ -439,9 +444,11 @@ CardItem.propTypes = {
   ...Card.propTypes,
   data: PropTypes.any,
   title: PropTypes.string,
+  statusValue: PropTypes.string,
   image: PropTypes.string,
   subTitle: PropTypes.string,
   showMenu: PropTypes.bool,
+  showStatusIcon: PropTypes.bool,
   iconClass: PropTypes.string,
   topOptions: PropTypes.array,
   onSelectTag: PropTypes.func,

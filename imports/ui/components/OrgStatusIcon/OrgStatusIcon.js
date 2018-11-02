@@ -6,7 +6,7 @@ import { theme } from "../../theme";
 
 const SContainer = styled.span`
   margin-left: 5px;
-  
+
   i {
     color: ${props => theme.color[props.color]};
   }
@@ -26,16 +26,20 @@ const OrgStatusIcon = function(props) {
       case "working":
         return {};
       case "approved":
-        return { icon: "shield-check", color: "primary" };
+        return {
+          icon: "shield-check",
+          color: "primary",
+          info: "This organization was successfully verified"
+        };
       case "denied":
         return {};
       default:
         return {};
     }
   };
-  const { icon, color } = iconToShow();
+  const { icon, color, info } = iconToShow();
   return icon ? (
-    <SContainer color={color}>
+    <SContainer color={color} title={info}>
       <MaterialIcon type={icon} />
     </SContainer>
   ) : null;

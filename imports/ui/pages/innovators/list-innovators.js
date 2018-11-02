@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React from "react";
 import {
   CardItem,
   ItemsList,
@@ -12,7 +12,6 @@ import {
   GetOrg,
   UpdateOrgImages
 } from "../../apollo-client/organization";
-import { Layout, Container } from "btech-layout";
 import { DeleteUser, getUsers } from "../../apollo-client/user";
 import OrganizationPreviewBody from "../../modules/organization-module/preview/OrganizationPreviewBody";
 import UserPreviewBody from "../../modules/members-module/preview/UserPreviewBody";
@@ -255,6 +254,8 @@ class ListInnovators extends List {
               this.state.selectedItem &&
               this.state.selectedItem._id === item._id
             }
+            showStatusIcon
+            statusValue={item.checkStatus}
             data={item}
             loading={isLoading}
             title={item.name}

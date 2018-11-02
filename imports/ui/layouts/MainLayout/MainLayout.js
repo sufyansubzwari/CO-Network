@@ -15,7 +15,7 @@ import { Meteor } from "meteor/meteor";
 import { withTracker } from "meteor/react-meteor-data";
 import UserRedux from "../../redux/user";
 import { isMobileView } from "../../actions/IsMobileView";
-import { ToastContainer } from 'react-toastify';
+import { ToastContainer } from "react-toastify";
 
 const MainLayoutStyled = Styled(Layout)`
  position:fixed;
@@ -133,10 +133,30 @@ class MainLayout extends Component {
         <SideBar {...propsProvider} isOpen={props.showSidebar} />
         <ContentContainerPose pose={contentPose} fullY gridArea="content">
           <Scrollbars
-            renderThumbVertical={({ style, ...props }) =>
-              <div {...props} style={{...style, width: '7px', borderRadius: '0px', backgroundColor: '#ACACAC', cursor: 'pointer'}} />}
-            renderThumbHorizontal={({ style, ...props }) =>
-              <div {...props} style={{...style, height: '7px', borderRadius: '0px', backgroundColor: '#ACACAC', cursor: 'pointer'}} />}
+            renderThumbVertical={({ style, ...props }) => (
+              <div
+                {...props}
+                style={{
+                  ...style,
+                  width: "7px",
+                  borderRadius: "0px",
+                  backgroundColor: "#ACACAC",
+                  cursor: "pointer"
+                }}
+              />
+            )}
+            renderThumbHorizontal={({ style, ...props }) => (
+              <div
+                {...props}
+                style={{
+                  ...style,
+                  height: "7px",
+                  borderRadius: "0px",
+                  backgroundColor: "#ACACAC",
+                  cursor: "pointer"
+                }}
+              />
+            )}
           >
             <Routes {...propsProvider} />
           </Scrollbars>
