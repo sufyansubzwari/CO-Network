@@ -317,6 +317,16 @@ class EventPreviewBody extends React.Component {
                         <SpeakerCard
                           key={index}
                           name={speaker.name}
+                          location={
+                            speaker.organization &&
+                            speaker.organization.place &&
+                            speaker.organization.place.location &&
+                            speaker.organization.place.location.address
+                          }
+                          image={
+                            speaker.organization &&
+                            speaker.organization.image
+                          }
                           lgCustomTemplateColumns={"130px 1fr"}
                           hideButton={true}
                         />

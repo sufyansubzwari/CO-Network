@@ -26,7 +26,7 @@ Mutation.event = async (root, {events}, context) => {
   }
 
   await Sponsors.service.deleteSponsor({owner: eventInserted._id })
-
+console.log("EVEnt sponsors: ", sponsors);
   if(sponsors && sponsors.length){
       sponsors.forEach(async spon => {
           if (spon._id) {
