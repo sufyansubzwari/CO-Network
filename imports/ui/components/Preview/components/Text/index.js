@@ -127,6 +127,7 @@ class Text extends React.Component {
     }
 
     render() {
+        const extras = this.props.extraTexts && this.props.extraTexts.length > 0 && this.props.extraTexts.some(item => item && item.text && item.text !== "" )
         return (
             <Container>
                 {this.props.header ? (
@@ -136,13 +137,13 @@ class Text extends React.Component {
                     <Container>
                         <SText lines={this.state.lines} innerRef={ ref => this.handleRef(ref) } showMore={this.state.showMore} {...this.props}>{this.props.text}
                         </SText>
-                        {!this.state.showMore && this.props.extraTexts && this.props.extraTexts.map( (item,index) =>
-                            <Container>
+                        {!this.state.showMore && this.props.extraTexts && this.props.extraTexts.length > 0 && this.props.extraTexts.map( (item,index) =>
+                        item && item.text && item.text !== "" ? <Container>
                                 <STitle {...this.props}>{item.title}</STitle>
                                 <SText key={index}>{item.text}</SText>
-                            </Container>
+                            </Container> : null
                         )}
-                        { (this.props.cutText && this.state.renderMore) || this.props.showMore ? this.state.showMore  ?
+                        { (this.props.cutText && this.state.renderMore) || (this.props.showMore && extras) ? this.state.showMore  ?
                             <SSpan onClick={this.handleMore}>More...</SSpan> :
                             <SSpan onClick={this.handleMore}>Less...</SSpan> : null}</Container>
                 ) : this.props.children ? (
