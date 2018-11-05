@@ -134,7 +134,7 @@ class MainLayout extends Component {
           xs: `'SideBar content' 'Navbar Navbar'`,
           md: `'Navbar SideBar content'`
         }}
-        minH="100vh"
+        mdMinH="100vh"
       >
         <ToastContainer />
         <SignUpListener {...propsProvider} />
