@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import moment from "moment/moment";
 import { Container, Layout, mixins } from "btech-layout";
 import ChatUserInfo from "./ChatUserInfo";
-import { SText, SUser } from "./styledComponents";
+import { SText, SUserInfo } from "./styledComponents";
 import styled from "styled-components";
 import AttachedImage from "./Image";
 import AttachedFile from "./AttachedFile";
@@ -123,52 +123,55 @@ class MessageItem extends React.Component {
       >
         <ChatUserInfo owner={props.owner} />
         <SMessageItem relative ml={"10px"}>
-          <SUser>
-            <span id={"user-name"}>
+          <SUserInfo
+            customTemplateColumns={"auto auto 1fr auto"}
+            colGap={"5px"}
+          >
+            <Container id={"user-name"}>
               {props.owner &&
                 props.owner.profile &&
                 props.owner.profile.name &&
                 `${props.owner.profile.name} ${props.owner.profile.lastName}`}
-            </span>
-            <span id={"time"}>
+            </Container>
+            <Container id={"time"}>
               {moment(props.message && props.message.createdAt).format(
                 "h:mm a"
               )}
-            </span>
-          </SUser>
-          <SButtonListContainer className={"actionButton"}>
-            <ButtonList
-              rightPos={"0"}
-              topPos={"-5px"}
-              options={[
-                {
-                  action: event =>
-                    this.handleCopy && this.handleCopy(event, props),
-                  checkVisibility: () => props.message && props.message.text,
-                  text: "Copy",
-                  icon: "copy"
-                },
-                {
-                  action: event =>
-                    this.handleReply && this.handleReply(event, props),
-                  checkVisibility: () =>
-                    props.message && props.message.canReply && userId,
-                  text: "Reply",
-                  icon: "mail-reply"
-                },
-                {
-                  action: event =>
-                    this.handleDelete && this.handleDelete(event, props),
-                  checkVisibility: () =>
-                    props.message &&
-                    props.owner &&
-                    props.message.owner === userId,
-                  text: "Delete",
-                  icon: "delete"
-                }
-              ]}
-            />
-          </SButtonListContainer>
+            </Container>
+            <Container />
+            <SButtonListContainer className={"actionButton"}>
+              <ButtonList
+                absolute={false}
+                options={[
+                  {
+                    action: event =>
+                      this.handleCopy && this.handleCopy(event, props),
+                    checkVisibility: () => props.message && props.message.text,
+                    text: "Copy",
+                    icon: "copy"
+                  },
+                  {
+                    action: event =>
+                      this.handleReply && this.handleReply(event, props),
+                    checkVisibility: () =>
+                      props.message && props.message.canReply && userId,
+                    text: "Reply",
+                    icon: "mail-reply"
+                  },
+                  {
+                    action: event =>
+                      this.handleDelete && this.handleDelete(event, props),
+                    checkVisibility: () =>
+                      props.message &&
+                      props.owner &&
+                      props.message.owner === userId,
+                    text: "Delete",
+                    icon: "delete"
+                  }
+                ]}
+              />
+            </SButtonListContainer>
+          </SUserInfo>
           <SText isActive={props.isActive}>
             {props.message.text ? <Emojione text={props.message.text} /> : null}
           </SText>

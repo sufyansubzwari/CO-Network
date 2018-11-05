@@ -76,20 +76,20 @@ export const SImage = styled.img`
   margin: 0 10px;
 `;
 
-export const SUser = styled(Container)`
-  display: flex;
-  flex-direction: row;
+export const SUserInfo = styled(Layout)`
   font-size: 12px;
   margin-bottom: 5px;
 
   > #user-name {
     font-weight: bold;
   }
+  
   > #time {
     opacity: 0.5;
     font-size: 12px;
     font-family: "Roboto Mono";
   }
+  
   > span {
     margin-right: 10px;
   }
@@ -102,6 +102,7 @@ export const SUser = styled(Container)`
       line-height: 25px;
       font-size: 14px;
     }
+    
     > #time {
       font-size: 13px;
       font-family: "Roboto Mono";

@@ -11,11 +11,10 @@ const SContainer = styled(Container)`
   -moz-box-shadow: 0px 0px 20px -2px rgba(0, 0, 0, 0.5);
   box-shadow: 0px 0px 15px -2px rgba(0, 0, 0, 0.5);
   width: fit-content;
-  float: right;
   border: 1px solid rgba(0, 0, 0, 0.5);
   border-radius: 10px;
   font-size: 18px;
-  position: absolute;
+  position: ${props => (props.absolute ? "absolute" : "initial")};
   background-color: #ffffff;
   top: ${props => props.topPos || "-10px"};
   right: ${props => props.rightPos || "-7px"};
@@ -41,11 +40,7 @@ class ButtonList extends Component {
 
   render() {
     return (
-      <SContainer
-        className={this.props.customClass}
-        rightPos={this.props.rightPos}
-        topPos={this.props.topPos}
-      >
+      <SContainer {...this.props} className={this.props.customClass}>
         {this.props.options &&
           this.props.options
             .filter((op, index) => {
@@ -69,22 +64,13 @@ class ButtonList extends Component {
 }
 
 ButtonList.defaultProps = {
-  options: [
-    {
-      action: () => console.log("op1"),
-      text: "op1",
-      icon: "edit"
-    },
-    {
-      action: () => console.log("op2"),
-      text: "op2",
-      icon: "delete"
-    }
-  ]
+  absolute: true,
+  options: []
 };
 
 ButtonList.propTypes = {
   options: PropTypes.array,
+  absolute: PropTypes.bool,
   topPos: PropTypes.string,
   customClass: PropTypes.string,
   rightPos: PropTypes.string
