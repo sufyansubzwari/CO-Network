@@ -189,7 +189,7 @@ class FirstStep extends React.Component {
         <Container>
           <Query query={GetTags} variables={{ tags: { type: "Colloquiums" } }}>
             {({ loading, error, data }) => {
-              if (error) return <div>Error</div>;
+              if (error) return <div/>
               return (
                 <Container>
                   <MLTagsInput

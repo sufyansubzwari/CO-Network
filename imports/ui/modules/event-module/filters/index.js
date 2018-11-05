@@ -269,7 +269,7 @@ class EventsFilters extends React.Component {
                       this.state.category[key].active
                   }));
               if (loading) return <div />;
-              if (error) return <div>Error</div>;
+              if (error) return <div/>
               return (
                 <MLCheckBoxList
                   showMore
@@ -295,7 +295,7 @@ class EventsFilters extends React.Component {
           >
             {({ loading, error, data }) => {
               if (loading) return <div />;
-              if (error) return <div>Error</div>;
+              if (error) return <div/>
               return (
                 <CheckBoxList
                   placeholderText={"My Events"}

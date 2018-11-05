@@ -97,7 +97,7 @@ class ThirdStep extends React.Component {
           <Query query={GetTags} variables={{ tags: { type: "OrgDesc" } }}>
             {({ loading, error, data }) => {
               if (loading) return <div />;
-              if (error) return <div>Error</div>;
+              if (error) return <div/>
               return (
                 <Container mt={"25px"}>
                   <MLTagsInput

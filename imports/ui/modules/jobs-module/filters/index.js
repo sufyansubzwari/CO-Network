@@ -216,7 +216,7 @@ class JobsFilters extends React.Component {
           <Query query={JobCounts} variables={{ field: "jobType" }}>
             {({ loading, error, data }) => {
               if (loading) return <div />;
-              if (error) return <div>Error</div>;
+              if (error) return <div/>
               return (
                 <CheckBoxList
                   placeholderText={"Job Type"}
@@ -241,7 +241,7 @@ class JobsFilters extends React.Component {
           <Query query={JobCounts} variables={{ field: "jobExperience" }}>
             {({ loading, error, data }) => {
               if (loading) return <div />;
-              if (error) return <div>Error</div>;
+              if (error) return <div/>
               return (
                 <CheckBoxList
                   placeholderText={"Experience Required"}
@@ -267,7 +267,7 @@ class JobsFilters extends React.Component {
           <Query query={GetMyJobs} variables={{ owner: Meteor.userId() }}>
             {({ loading, error, data }) => {
               if (loading) return <div />;
-              if (error) return <div>Error</div>;
+              if (error) return <div/>
               return (
                 <CheckBoxList
                   placeholderText={"My Jobs"}

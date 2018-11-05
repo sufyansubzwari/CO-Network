@@ -165,7 +165,7 @@ class ListJobs extends List {
                     }}
                   >
                     {({ loading, error, data }) => {
-                      if (error) return <div>Error</div>;
+                      if (error) return <div/>
                       return (
                         <Preview
                           entity={this.entityName}

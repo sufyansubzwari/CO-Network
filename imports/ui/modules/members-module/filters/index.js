@@ -182,7 +182,7 @@ class MembersFilters extends React.Component {
           >
             {({ loading, error, data }) => {
               if (loading) return <div />;
-              if (error) return <div>Error</div>;
+              if (error) return <div/>
               const elements =
                 data.usersFieldCounts && data.usersFieldCounts.length
                   ? data.usersFieldCounts
@@ -237,7 +237,7 @@ class MembersFilters extends React.Component {
           <Query query={GetFollowFollowers} fetchPolicy={"cache-and-network"}>
             {({ loading, error, data }) => {
               if (loading) return <div />;
-              if (error) return <div>Error</div>;
+              if (error) return <div/>
               return (
                 <CheckBoxList
                   placeholderText={"My Follows"}

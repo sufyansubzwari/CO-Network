@@ -243,7 +243,7 @@ class OrganizationFilters extends React.Component {
           >
             {({ loading, error, data }) => {
               if (loading) return <div />;
-              if (error) return <div>Error</div>;
+              if (error) return <div/>
               return (
                 <div>
                   <MLTagsInput
@@ -315,7 +315,7 @@ class OrganizationFilters extends React.Component {
           >
             {({ loading, error, data }) => {
               if (loading) return <div />;
-              if (error) return <div>Error</div>;
+              if (error) return <div/>
               return (
                 <div>
                   <MLTagsInput
@@ -378,7 +378,7 @@ class OrganizationFilters extends React.Component {
           >
             {({ loading, error, data }) => {
               if (loading) return <div />;
-              if (error) return <div>Error</div>;
+              if (error) return <div/>;
               return (
                 <CheckBoxList
                   placeholderText={""}

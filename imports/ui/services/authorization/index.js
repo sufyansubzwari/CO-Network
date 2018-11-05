@@ -78,25 +78,23 @@ class Authorization extends react.Component {
   }
 
   renewToken() {
-    let _this = this;
-    debugger;
-    this.auth0.checkSession({}, function(err, result) {
-      if (err) {
-        console.log(err);
-      } else {
-        if (result) _this.setSession(result);
-      }
+    this.auth0.checkSession({}, (err, result) => {
+      if (!err) if (result) this.setSession(result);
     });
   }
 
-  scheduleRenewal() {
+  isExpiredSession() {
     const expiresAt = JSON.parse(localStorage.getItem("expires_at"));
-    const delay = expiresAt - Date.now();
-    let self = this;
-    if (delay > 0) {
-      global.tokenRenewalTimeout = setTimeout(function() {
-        self.renewToken();
-      }, delay);
+    const time = expiresAt - Date.now();
+    return { time: time, isExpired: time <= 0 };
+  }
+
+  scheduleRenewal() {
+    const { time, isExpired } = this.isExpiredSession();
+    if (!isExpired) {
+      global.tokenRenewalTimeout = setTimeout(() => {
+        this.renewToken();
+      }, time);
     }
   }
 
@@ -117,12 +115,12 @@ class Authorization extends react.Component {
     this.getProfile(this.loginMeteor);
   }
 
-  logout(props, callback) {
+  logout(callback) {
     // Clear Access Token and ID Token from local storage
     localStorage.removeItem("access_token");
     localStorage.removeItem("id_token");
     localStorage.removeItem("expires_at");
-    callback ? callback() : null;
+    callback && callback();
   }
 
   isAuthenticated() {
@@ -182,7 +180,6 @@ class Authorization extends react.Component {
         audience: `https://${this.settings.domain}/api/v2/`
       }
     }).then(res => {
-      debugger;
       localStorage.setItem("access_token", res.accessToken);
     });
   }

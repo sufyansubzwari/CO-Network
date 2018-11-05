@@ -8,6 +8,7 @@ import SideBar from "../../components/SideBar/SideBar";
 import LoginModal from "../../components/LoginModal/LoginModal";
 import isMobile from "../../constants/isMobile";
 import SignUpListener from "../../components/SignUpListener/SignUpListener";
+import { Authorization, NotificationToast } from "../../services";
 import posed from "react-pose";
 import { Scrollbars } from "react-custom-scrollbars";
 import Styled from "styled-components";
@@ -100,12 +101,29 @@ class MainLayout extends Component {
 
   render() {
     let props = this.props;
-    const isSignUp = props.user ? props.user.profile.isSignUp : true;
+    let isExpired = false;
+    // if (props.user) isExpired = Authorization.isExpiredSession();
+    const isSignUp = !isExpired
+      ? props.user
+        ? props.user.profile.isSignUp
+        : true
+      : true;
     const isMobile = this.isMobile() || window.document.body.clientWidth <= 376;
-    let propsProvider = { curUser: props.user, isSignUp, isMobile };
+    let propsProvider = {
+      curUser: !isExpired ? props.user : null,
+      isSignUp,
+      isMobile
+    };
     const contentPose = props.showSidebar ? "leftOpen" : "leftClose";
-    this.props.setUser(this.props.user || null);
+    this.props.setUser(!isExpired ? this.props.user : null);
     this.props.isMobileView(isMobile);
+    if (isExpired)
+      Authorization.logout(() => {
+        NotificationToast.success(
+          "Your session expired, please login again.",
+          "Session Expired"
+        );
+      });
     return (
       <MainLayoutStyled
         customTemplateColumns={`1fr 1fr`}

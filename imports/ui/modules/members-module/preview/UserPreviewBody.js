@@ -667,7 +667,7 @@ class UserPreviewBody extends React.Component {
                     >
                       {({ loading, error, data }) => {
                         if (loading) return <div />;
-                        if (error) return <div>Error</div>;
+                        if (error) return <div/>
 
                         let applyJobs = data.jobsApply;
                         let apply =
@@ -720,7 +720,7 @@ class UserPreviewBody extends React.Component {
 
   render() {
     return (
-      <Layout mdRowGap={"20px"}>
+      <Layout mdRowGap={"20px"} rowGap={"10px"}>
         {this.renderSummarySection()}
         {this.renderKnowledgeSection()}
         {this.renderProfessionalSection()}

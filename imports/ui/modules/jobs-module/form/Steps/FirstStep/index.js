@@ -202,7 +202,7 @@ class FirstStep extends React.Component {
               <Query query={tags} variables={{ tags: { type: "JobPosition" } }}>
                 {({ loading, error, data }) => {
                   if (loading) return <div />;
-                  if (error) return <div>Error</div>;
+                  if (error) return <div/>
                   return (
                     <div>
                       <MLTagsInput

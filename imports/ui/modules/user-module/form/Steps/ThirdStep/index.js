@@ -126,7 +126,7 @@ class ThirdStep extends React.Component {
           <Query query={GetTags} variables={{ tags: { type: "Languages" } }}>
             {({ loading, error, data }) => {
               if (loading) return <div />;
-              if (error) return <div>Error</div>;
+              if (error) return <div/>
               return (
                 <Container mt={"25px"}>
                   <MLTagsInput
@@ -204,7 +204,7 @@ class ThirdStep extends React.Component {
           <Query query={GetTags} variables={{ tags: { type: "Curiosity" } }}>
             {({ loading, error, data }) => {
               if (loading) return <div />;
-              if (error) return <div>Error</div>;
+              if (error) return <div/>
               return (
                 <Container mt={"25px"}>
                   <MLTagsInput

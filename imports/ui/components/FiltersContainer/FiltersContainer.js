@@ -52,7 +52,7 @@ const STagsLabel = styled(Container)`
 const FlexContainer = styled(Container)`
   display: flex;
   align-items: center;
-`
+`;
 
 /**
  * @module Data
@@ -157,8 +157,7 @@ class FiltersContainer extends Component {
           <Container fullY mdHide>
             <FlexContainer fullY>
               <Query query={tags} fetchPolicy={"cache-and-network"}>
-                {({ loading, error, data }) => {
-                  if (error) return <div>Error</div>;
+                {({ loading, data }) => {
                   return (
                     <MLTagsInput
                       autoFocus={!this.props.isMobile}
@@ -170,7 +169,7 @@ class FiltersContainer extends Component {
                       optionsLimit={9}
                       noAddNewTagsOnEnter={true}
                       onSearch={value => this.onSearchText(value)}
-                      options={data.tags}
+                      options={data ? data.tags : []}
                       tags={[]}
                       showClose={true}
                       newAdded={this.state.added}
@@ -189,11 +188,30 @@ class FiltersContainer extends Component {
             autoHide
             autoHideDuration={this.props.autoHideDuration}
             style={{ height: "100%", overflow: "display" }}
-            renderThumbVertical={({ style, ...props }) =>
-              <div {...props} style={{...style, width: '7px', borderRadius: '0px', backgroundColor: '#ACACAC', cursor: 'pointer'}} />}
-            renderThumbHorizontal={({ style, ...props }) =>
-              <div {...props} style={{...style, height: '7px', borderRadius: '0px', backgroundColor: '#ACACAC', cursor: 'pointer'}} />}
-
+            renderThumbVertical={({ style, ...props }) => (
+              <div
+                {...props}
+                style={{
+                  ...style,
+                  width: "7px",
+                  borderRadius: "0px",
+                  backgroundColor: "#ACACAC",
+                  cursor: "pointer"
+                }}
+              />
+            )}
+            renderThumbHorizontal={({ style, ...props }) => (
+              <div
+                {...props}
+                style={{
+                  ...style,
+                  height: "7px",
+                  borderRadius: "0px",
+                  backgroundColor: "#ACACAC",
+                  cursor: "pointer"
+                }}
+              />
+            )}
           >
             {this.state.tags && this.state.tags.length ? (
               <FilterItem mdHide>

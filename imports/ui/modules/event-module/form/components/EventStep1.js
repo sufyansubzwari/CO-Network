@@ -202,7 +202,7 @@ class EventStep1 extends Component {
               <Query query={tags} variables={{ tags: { type: "EVENT" } }}>
                 {({ loading, error, data }) => {
                   if (loading) return <div />;
-                  if (error) return <div>Error</div>;
+                  if (error) return <div/>
                   return (
                     <div>
                       <MLTagsInput

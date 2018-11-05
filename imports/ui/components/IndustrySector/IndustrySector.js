@@ -40,7 +40,7 @@ class IndustrySector extends React.Component {
       <Query query={GetTags} variables={{ tags: { type: "INDUSTRY" } }}>
         {({ loading, error, data }) => {
           if (loading) return <div />;
-          if (error) return <div>Error</div>;
+          if (error) return <div/>
           const tags = data.tags && JSON.parse(JSON.stringify(data.tags));
           return (
             <SelectTag

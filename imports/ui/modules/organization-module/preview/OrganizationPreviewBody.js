@@ -14,7 +14,6 @@ import Separator from "../../../components/FiltersContainer/Separator";
 import { OrgStatusIcon } from "../../../components";
 import ProductPreview from "./components/ProductPreview";
 import MediaPreview from "./components/MediaPreview";
-import MaterialIcon from "react-material-iconic-font";
 import styled from "styled-components";
 
 const Span = styled.span`
@@ -399,7 +398,7 @@ class OrganizationPreviewBody extends React.Component {
 
   render() {
     return this.state.organization ? (
-      <Layout mdRowGap={"20px"}>
+      <Layout mdRowGap={"20px"} rowGap={"10px"}>
         {this.renderSummarySection()}
         {this.renderTechnicalSection()}
         {this.renderProductsServicesSection()}

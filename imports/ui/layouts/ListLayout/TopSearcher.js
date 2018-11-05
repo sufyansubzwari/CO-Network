@@ -145,7 +145,6 @@ class TopSearcher extends Component {
                   return (
                     <MLTagsInput
                       autoFocus={!this.props.isMobile}
-                      iconClass={"arrow-forward"}
                       inputPlaceholder={"Discover"}
                       getAddedOptions={value => {
                         this.onSearchTags(value);

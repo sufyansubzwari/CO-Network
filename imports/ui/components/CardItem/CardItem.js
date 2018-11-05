@@ -187,10 +187,6 @@ class CardItem extends Component {
     if (newProps.isActive !== this.props.isActive) {
       this.setState({ showPreview: false });
     }
-    //TODO: find another solution for this!! Console Warning!!
-    setTimeout(() => {
-      this.setState({ loadingImage: this.state.loadingImage });
-    }, 500);
     if (!newProps.image) return;
     if (newProps.image !== this.props.image) this.loadImage(newProps.image);
   }
