@@ -305,7 +305,7 @@ class ColloquiumPreview extends Preview {
                 <Attachment
                   key={index}
                   isImage={file.isImage}
-                  link={Utils.getFromS3(file.link)}
+                  link={file.link}
                   filename={file.name}
                   size={file.size}
                   loading={file.loading}

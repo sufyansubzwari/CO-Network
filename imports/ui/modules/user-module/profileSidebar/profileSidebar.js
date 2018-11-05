@@ -94,6 +94,13 @@ const SInfoProfileItem = styled(ProfileItem)`
   line-height: 15px;
 `;
 
+const SImage = styled.img`
+  position: absolute;
+  object-fit: fill;
+  width: 100%;
+  height: 100%;
+`;
+
 const SButtons = styled(Container)`
   display: flex;
   align-items: center;
@@ -115,13 +122,14 @@ const ItemsContainer = function(props) {
       customTemplateRows={"95px 1fr 52px"}
       mdCustomTemplateRows={"160px 1fr 62px"}
     >
-      <Photo
-        image={
-          curUser && curUser.profile
-            ? handleImage(curUser.profile.cover || curUser.profile.image)
-            : null
-        }
-      >
+      <Photo>
+        <SImage
+          src={
+            curUser && curUser.profile
+              ? handleImage(curUser.profile.cover || curUser.profile.image)
+              : null
+          }
+        />
         <CButton
           primary
           secondary={true}

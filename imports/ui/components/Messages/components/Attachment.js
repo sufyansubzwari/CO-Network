@@ -21,6 +21,9 @@ const File = styled.span`
   color: #000000;
   font-family: "Roboto Mono";
   font-size: 12px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
   opacity: ${props => (props.loading ? "0.5" : "1")};
 `;
 
@@ -35,11 +38,6 @@ const Size = styled.span`
   color: #000000;
   font-family: "Roboto Mono";
   font-size: 12px;
-`;
-
-const FlexContainer = styled(Container)`
-  display: flex;
-  align-items: center;
 `;
 
 const SImage = styled.div`
@@ -64,7 +62,7 @@ const Attachment = props => {
     <Attach hideBorder={props.hideBorder}>
       <SLayout
         customTemplateColumns={
-          props.isImage ? "40px auto auto 1fr auto" : "auto auto 1fr auto"
+          props.isImage ? "40px 1fr auto auto" : "1fr auto auto"
         }
         colGap={"10px"}
       >
@@ -73,14 +71,13 @@ const Attachment = props => {
             <SImage src={this.handleImage(props.link)} />
           </Container>
         ) : null}
-        <FlexContainer>
+        <Container cutText>
           <File>{props.filename}</File>
-        </FlexContainer>
-        <FlexContainer>
+        </Container>
+        <Container>
           <Size>{Utils.formatSize(props.size)}</Size>
-        </FlexContainer>
-        <Container />
-        <FlexContainer>
+        </Container>
+        <Container>
           <Icon
             onClick={() =>
               props.loading ? null : props.onClose && props.onClose()
@@ -92,7 +89,7 @@ const Attachment = props => {
               spin={props.loading}
             />
           </Icon>
-        </FlexContainer>
+        </Container>
       </SLayout>
     </Attach>
   );

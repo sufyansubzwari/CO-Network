@@ -43,7 +43,8 @@ Messages.schema = new SimpleSchema({
     label: "The type of the message."
   },
   text: {
-    type: String
+    type: String,
+    optional: true
   },
   read: {
     type: Boolean,

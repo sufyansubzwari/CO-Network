@@ -12,7 +12,7 @@ import ReplyBox from "../Messages/components/ReplyBox";
 import Messages from "../Messages/Messages";
 import Attachment from "../Messages/components/Attachment";
 import { insertMessage } from "../Messages/Service/service";
-import { SpringSystem, MathUtil } from 'rebound';
+import { SpringSystem, MathUtil } from "rebound";
 
 const ResponsiveContainer = styled(Layout)`
   margin-left: -100%;
@@ -228,7 +228,11 @@ class Preview extends React.Component {
   onKeyPress(event) {
     if (event.key === "Enter" && event.shiftKey === false) {
       event.preventDefault();
-      if (event.target.value.trim() !== "")
+      if (
+        event.target.value.trim() !== "" ||
+        (this.state.attachments && this.state.attachments.length) ||
+        (this.state.images && this.state.images.length)
+      )
         this.handleMessage(event.target.value);
     }
   }
@@ -490,7 +494,9 @@ class Preview extends React.Component {
                 ) : null
               ) : (
                 React.Children.map(this.props.children, child =>
-                  React.cloneElement(child, { onScroll: (value) => this.scrollTop(value) })
+                  React.cloneElement(child, {
+                    onScroll: value => this.scrollTop(value)
+                  })
                 )
               )}
             </SPreviewContainer>
