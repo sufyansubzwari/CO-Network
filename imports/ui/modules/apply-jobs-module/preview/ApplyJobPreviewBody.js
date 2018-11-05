@@ -36,13 +36,13 @@ class ApplyJobPreviewBody extends React.Component {
         };
     }
 
-  componentWillReceiveProps(nextProps) {
-    if (nextProps.apply) {
-      this.setState({
-          apply: nextProps.apply
-      });
+    componentWillReceiveProps(nextProps) {
+        if (nextProps.apply) {
+            this.setState({
+                apply: nextProps.apply
+            });
+        }
     }
-  }
 
     renderSummarySection = () => {
         const apply = this.state.apply;
@@ -56,6 +56,12 @@ class ApplyJobPreviewBody extends React.Component {
             city += ` ${apply.cities}`;
 
         const canRender = true
+
+        const existingProblem = {title : "Most Exciting Problem you want to solve", text: aboutMe && aboutMe.existingProblem};
+        const steps = {title : "Steps taken towards achieving this mission", text: aboutMe && aboutMe.steps};
+        const candidate = {title : "What makes you the best candidate for this position", text: aboutMe && aboutMe.candidate};
+        const questions = {title : "Questions for the employer", text: aboutMe && aboutMe.questions};
+
 
         return canRender ? (
             <PreviewSection previewRef={this.SummarySection}>
@@ -91,10 +97,10 @@ class ApplyJobPreviewBody extends React.Component {
                             text={aboutMe.passion}
                             showMore={true}
                             extraTexts={[
-                                aboutMe && aboutMe.existingProblem,
-                                aboutMe && aboutMe.steps,
-                                aboutMe && aboutMe.candidate,
-                                aboutMe && aboutMe.questions
+                                existingProblem,
+                                steps,
+                                candidate,
+                                questions
                             ]}
                             moreClicked={this.handleMoreAbout}
                         />

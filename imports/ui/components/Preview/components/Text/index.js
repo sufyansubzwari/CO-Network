@@ -108,8 +108,8 @@ class Text extends React.Component {
 
     handleMore = () => {
         this.setState({
-            showMore: !this.state.showMore
-        },
+                showMore: !this.state.showMore
+            },
             () => this.props.moreClicked && this.props.moreClicked() )
     }
 
@@ -117,13 +117,13 @@ class Text extends React.Component {
         this.textRef = ref;
 
         if(this.state.lines === 100)
-        if(this.textRef && Math.floor(this.textRef.clientHeight / 22) > this.props.cutLines) {
-            let line = Math.floor(this.textRef.clientHeight / 22)
-            this.setState({
-                lines: this.props.cutLines,
-                renderMore: true
-            })
-        }
+            if(this.textRef && Math.floor(this.textRef.clientHeight / 22) > this.props.cutLines) {
+                let line = Math.floor(this.textRef.clientHeight / 22)
+                this.setState({
+                    lines: this.props.cutLines,
+                    renderMore: true
+                })
+            }
     }
 
     render() {
@@ -136,10 +136,15 @@ class Text extends React.Component {
                     <Container>
                         <SText lines={this.state.lines} innerRef={ ref => this.handleRef(ref) } showMore={this.state.showMore} {...this.props}>{this.props.text}
                         </SText>
-                        {!this.state.showMore && this.props.extraTexts && this.props.extraTexts.map( (item,index) => <SText key={index}>{item}</SText>  )}
+                        {!this.state.showMore && this.props.extraTexts && this.props.extraTexts.map( (item,index) =>
+                            <Container>
+                                <STitle {...this.props}>{item.title}</STitle>
+                                <SText key={index}>{item.text}</SText>
+                            </Container>
+                        )}
                         { (this.props.cutText && this.state.renderMore) || this.props.showMore ? this.state.showMore  ?
-                        <SSpan onClick={this.handleMore}>More...</SSpan> :
-                        <SSpan onClick={this.handleMore}>Less...</SSpan> : null}</Container>
+                            <SSpan onClick={this.handleMore}>More...</SSpan> :
+                            <SSpan onClick={this.handleMore}>Less...</SSpan> : null}</Container>
                 ) : this.props.children ? (
                     <SContainer {...this.props}>{this.props.children}</SContainer>
                 ) : null}

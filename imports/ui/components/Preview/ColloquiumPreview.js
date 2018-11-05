@@ -22,7 +22,7 @@ const ChatLoader = props => (
   <ContentLoader
     height={160}
     width={400}
-    speed={2}
+    speed={6}
     primaryColor="#f3f3f3"
     secondaryColor="#ecebeb"
     {...props}
