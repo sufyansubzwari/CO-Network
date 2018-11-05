@@ -125,7 +125,7 @@ class MessageItem extends React.Component {
         <SMessageItem relative ml={"10px"}>
           <SUser>
             <span id={"user-name"}>
-              {props.owner && props.owner.profile && props.owner.profile.name}
+              {props.owner && props.owner.profile && props.owner.profile.name && `${props.owner.profile.name} ${props.owner.profile.lastName}`}
             </span>
             <span id={"time"}>
               {moment(props.message && props.message.createdAt).format(
