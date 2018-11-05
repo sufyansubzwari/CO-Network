@@ -4,6 +4,7 @@ import PropTypes from "prop-types";
 import posed from "react-pose";
 import { HNavItem } from "btech-horizantal-navbar";
 import styled from "styled-components";
+import HomeTitle from "./components/HomeTitle/HomeTitle";
 
 const HNavLayout = styled(Layout)`
    z-index: 1000;
@@ -75,10 +76,10 @@ const NavItemStyled = styled.div`
   `};
 `;
 
-const XsTextDescription = styled.div`
-  font-size: 12px;
-  margin-top: 25px;
-  color: #95939b;
+const XsTextDescription = styled(Container)`
+  display: flex;
+  justify-content: center;
+  align-items: center;
 `;
 const NavItem = posed.div({
   show: { opacity: 1, y: "0%" },
@@ -115,13 +116,13 @@ const HNavbar = function(props) {
       {...props}
     >
       <Layout customTemplateRows={"1fr auto"} mdCustomTemplateRows={"1fr"}>
-        <Container mdMt={"38px"}>
+        <Layout mdMt={"38px"} customTemplateRows={"auto auto 1fr"}>
           {getComponent("header")}
           <Layout
             mdCustomTemplateColumns={"5px 1fr"}
             customTemplateColumns={"1fr"}
             maxW={"195px"}
-            margin={"0 auto"}
+            m={{ xs: "0 auto", md: 0 }}
           >
             <Container hide mdShow>
               <ActiveLink pose={`pose${props.activeLink}`} />
@@ -151,12 +152,17 @@ const HNavbar = function(props) {
                 : ""}
             </Layout>
           </Layout>
-          <Container mdHide maxW={"190px"} margin={"0 auto"} textCenter>
-            <XsTextDescription>
-              Lorem ipsum dolor sit amet consectetur adipisicing
+          <Container
+            mdHide
+            maxW={"190px"}
+            m={{ xs: "0 auto", md: 0 }}
+            textCenter
+          >
+            <XsTextDescription fullY>
+              <HomeTitle />
             </XsTextDescription>
           </Container>
-        </Container>
+        </Layout>
         <Container>{getComponent("footer")}</Container>
       </Layout>
     </HItemContainerLayout>
