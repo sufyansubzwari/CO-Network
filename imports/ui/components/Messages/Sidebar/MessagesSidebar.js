@@ -37,7 +37,7 @@ const SLabel = styled(Label)`
 
 const Span = styled.span`
   font-family: Roboto Mono;
-  font-size: 14px;
+  font-size: 12px;
   line-height: 12px;
   padding-right: 5px;
   margin-bottom: 0;
@@ -309,25 +309,29 @@ class MessagesSidebar extends React.Component {
         childrens={messages && messages.length}
       >
         <Container>
-          <RLayout padding={"10px 20px"} customTemplateColumns={"1fr auto"}>
-            <Layout customTemplateColumns={"auto auto 1fr"} colGap={"20px"}>
-              <SLabel
-                active={this.state.type === "direct"}
-                text={"Direct"}
-                onClick={() =>
-                  this.setState({ type: "direct", selectedItem: -1 })
-                }
-              />
-              <SLabel
-                active={this.state.type === "related"}
-                text={"Related"}
-                onClick={() =>
-                  this.setState({ type: "related", selectedItem: -1 })
-                }
-              />
-              <div />
-            </Layout>
-            <Container>
+          <RLayout
+            padding={"10px"}
+            customTemplateColumns={"auto auto 1fr auto"}
+            colGap={"10px"}
+          >
+            <SLabel
+              fontSize={"12px"}
+              active={this.state.type === "direct"}
+              text={"Conversations"}
+              onClick={() =>
+                this.setState({ type: "direct", selectedItem: -1 })
+              }
+            />
+            <SLabel
+              fontSize={"12px"}
+              active={this.state.type === "related"}
+              text={"Colloquiums"}
+              onClick={() =>
+                this.setState({ type: "related", selectedItem: -1 })
+              }
+            />
+            <div />
+            <Container flex style={{ alignItems: "center" }}>
               <Dropdown
                 isOpen={this.state.dropDownOpen}
                 toggle={() =>
@@ -343,7 +347,9 @@ class MessagesSidebar extends React.Component {
                     color: "black",
                     border: "none",
                     boxShadow: "none",
-                    backgroundColor: "transparent"
+                    backgroundColor: "transparent",
+                    display: "flex",
+                    alignItems: "center"
                   }}
                 >
                   <Span>{this.state.read}</Span>
