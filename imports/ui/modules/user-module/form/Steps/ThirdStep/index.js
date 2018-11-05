@@ -1,7 +1,7 @@
 import React from "react";
 import { CheckBoxList, TagList } from "btech-base-forms-component";
 import { Container } from "btech-layout";
-import { LOOKING_FOR_DEFAULT, TAG_LEVEL } from "../../../../../constants";
+import { LOOKING_FOR_DEFAULT, TAG_LEVEL, TAG_LEVEL_CURIOSITY } from "../../../../../constants";
 import { GetTags } from "../../../../../apollo-client/tag";
 import { Query } from "react-apollo";
 import { FormMainLayout, MLTagsInput } from "../../../../../components";
@@ -237,10 +237,10 @@ class ThirdStep extends React.Component {
                         : []
                     }
                     useIcon={true}
-                    levelOptions={TAG_LEVEL}
+                    levelOptions={TAG_LEVEL_CURIOSITY}
                     defaultLevel={{
-                      value: "expert",
-                      label: "Expert",
+                      label: "Advanced",
+                      value: "Advanced",
                       levelColor: "#FF1493",
                       icon: "/images/icons/line3.svg"
                     }}

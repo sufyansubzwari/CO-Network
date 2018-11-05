@@ -1007,6 +1007,27 @@ export const TAG_LEVEL = [
   }
 ];
 
+export const TAG_LEVEL_CURIOSITY = [
+  {
+    label: "Advanced",
+    value: "Advanced",
+    levelColor: "#FF1493",
+    icon: "/images/icons/line3.svg"
+  },
+  {
+    label: "Intermediate",
+    value: "Intermediate",
+    levelColor: "#464646",
+    icon: "/images/icons/line2.svg"
+  },
+  {
+    label: "Beginner",
+    value: "Beginner",
+    levelColor: "#8e8a8a",
+    icon: "/images/icons/line1.svg"
+  }
+];
+
 export const POSITION_TAGS = [
   { name: "DataScience", active: true, userAdd: false, closable: true },
   { name: "Bio", active: true, userAdd: false, closable: true },
