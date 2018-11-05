@@ -3,6 +3,7 @@ import { HButtom } from "btech-horizantal-navbar";
 import { connect } from "react-redux";
 import styled from "styled-components";
 import MaterialIcon from "react-material-iconic-font";
+import { Utils } from "../../services";
 
 const SInitialsContainer = styled.span`
   font-family: "Helvetica Neue Light";
@@ -36,6 +37,14 @@ class NavbarUserButton extends Component {
     } else return "";
   }
 
+  handleImage(image) {
+    return image
+      ? image.startsWith("http") || image.startsWith("data:")
+        ? image
+        : Utils.getImageFromS3(image, "base")
+      : null;
+  }
+
   render() {
     let { user, isMobile } = this.props;
     const initials = user
@@ -45,18 +54,13 @@ class NavbarUserButton extends Component {
       : null;
     return (
       <HButtom
-        image={!!user ? user.profile.image : ""}
+        image={!!user ? this.handleImage(user.profile.image) : ""}
         size={this.props.size}
-        // primary={!user && !isMobile}
       >
         {!user ? (
-          // isMobile ? (
-            <span style={{ fontSize: 24 }}>
-              <MaterialIcon type={"account-o"} />
-            </span>
-          // ) : (
-          //   <SStartText>Start</SStartText>
-          // )
+          <span style={{ fontSize: 24 }}>
+            <MaterialIcon type={"account-o"} />
+          </span>
         ) : !user.profile.image ? (
           <SInitialsContainer>{initials}</SInitialsContainer>
         ) : null}

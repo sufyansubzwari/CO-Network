@@ -116,6 +116,7 @@ class ListJobs extends List {
       !alreadyApply
     );
   }
+
   render() {
     const isLoading =
       this.props.data.loading &&

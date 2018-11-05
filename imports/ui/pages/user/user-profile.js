@@ -100,7 +100,8 @@ class UserProfile extends Component {
       user: {
         ...this.state.user,
         cover: src
-      }
+      },
+      formChange: true
     });
   }
 
@@ -109,7 +110,8 @@ class UserProfile extends Component {
       user: {
         ...this.state.user,
         image: src
-      }
+      },
+      formChange: true
     });
   }
 

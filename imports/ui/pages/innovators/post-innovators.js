@@ -82,7 +82,8 @@ class PostOrganization extends Component {
       organization: {
         ...this.state.organization,
         cover: src
-      }
+      },
+      formChange: true
     });
   }
 
@@ -91,7 +92,8 @@ class PostOrganization extends Component {
       organization: {
         ...this.state.organization,
         image: src
-      }
+      },
+      formChange: true
     });
   }
 

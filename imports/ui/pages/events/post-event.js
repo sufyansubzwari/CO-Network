@@ -61,7 +61,8 @@ class PostEvent extends Component {
       event: {
         ...this.state.event,
         image: src
-      }
+      },
+      formChange: true
     });
   }
 
@@ -153,33 +154,37 @@ class PostEvent extends Component {
               eventImages.push(null);
               eventImages.push(this.state.event.organization.image);
             }
-            return (<Preview
-              isOpen={this.state.openPreview}
-              navClicked={index => console.log(index)}
-              navOptions={[
-                {
-                  text: "Remove",
-                  icon: "delete",
-                  checkVisibility: () => {
-                    return this.state.event && this.state.event._id;
-                  },
-                  onClick: () => {
-                    ConfirmPopup.confirmPopup(() => {this.removeEntity(deleteEvent, this.state.event);
-                    });
+            return (
+              <Preview
+                isOpen={this.state.openPreview}
+                navClicked={index => console.log(index)}
+                navOptions={[
+                  {
+                    text: "Remove",
+                    icon: "delete",
+                    checkVisibility: () => {
+                      return this.state.event && this.state.event._id;
+                    },
+                    onClick: () => {
+                      ConfirmPopup.confirmPopup(() => {
+                        this.removeEntity(deleteEvent, this.state.event);
+                      });
+                    }
                   }
-                }
-              ]}
-              data={this.state.event}
-              allowChangeImages
-              showAvatar
+                ]}
+                data={this.state.event}
+                allowChangeImages
+                showAvatar
                 entity={"events"}
-                image={eventImages}backGroundImage={this.state.event && this.state.event.image}
-              onBackgroundChange={this.handleBackgroundChange}
-              onUserPhotoChange={this.handleUserPhotoChange}
-            >
-              <EventPreviewBody event={this.state.event} />
-            </Preview>
-          );
+                image={eventImages}
+                allowChangeAvatar={false}
+                backGroundImage={this.state.event && this.state.event.image}
+                onBackgroundChange={this.handleBackgroundChange}
+                onUserPhotoChange={this.handleUserPhotoChange}
+              >
+                <EventPreviewBody event={this.state.event} />
+              </Preview>
+            );
           }}
         </Mutation>
       </PostLayout>

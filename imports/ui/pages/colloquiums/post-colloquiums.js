@@ -5,7 +5,7 @@ import ColloquiumForm from "../../modules/colloquium-module/form";
 import { CreateColloquium } from "../../apollo-client/colloquium";
 import { Mutation } from "react-apollo";
 import { NotificationToast } from "../../services";
-import {ConfirmPopup} from "../../services";
+import { ConfirmPopup } from "../../services";
 
 /**
  * @module Colloquiums
@@ -47,7 +47,7 @@ class PostColloquiums extends Component {
   handleBackgroundChange(src) {
     const colloquium = this.state.colloquium;
     if (src) colloquium.image = src;
-    this.setState({ colloquium: colloquium });
+    this.setState({ colloquium: colloquium, formChange: true });
   }
 
   onPostAction(createColloquium, query) {
@@ -104,19 +104,17 @@ class PostColloquiums extends Component {
           )}
         </Mutation>
         <ColloquiumPreview
-            key={"rightSide"}
-            isOpen={this.state.openPreview}
-            onClose={() => this.setState({ openPreview: false })}
-            data={this.state.colloquium}
-            isColloquium
-            curUser={this.props.curUser}
-            isMobile={this.props.isMobile}
-            isPost={true}
-            backGroundImage={this.state.colloquium.image}
-            allowChangeImages
-            onBackgroundChange={imageSrc =>
-                this.handleBackgroundChange(imageSrc)
-            }
+          key={"rightSide"}
+          isOpen={this.state.openPreview}
+          onClose={() => this.setState({ openPreview: false })}
+          data={this.state.colloquium}
+          isColloquium
+          curUser={this.props.curUser}
+          isMobile={this.props.isMobile}
+          isPost={true}
+          backGroundImage={this.state.colloquium.image}
+          allowChangeImages
+          onBackgroundChange={imageSrc => this.handleBackgroundChange(imageSrc)}
         />
       </PostLayout>
     );

@@ -5,7 +5,7 @@ import JobPreviewBody from "../../modules/jobs-module/preview/JobPreviewBody";
 import { withRouter } from "react-router-dom";
 import { CreateJob, DeleteJob } from "../../apollo-client/job";
 import { Mutation } from "react-apollo";
-import {ConfirmPopup, NotificationToast} from "../../services";
+import { ConfirmPopup, NotificationToast } from "../../services";
 
 /**
  * @module Jobs
@@ -56,7 +56,7 @@ class PostJob extends Component {
   handleBackgroundChange(src) {
     const job = this.state.job;
     if (src) job.image = src;
-    this.setState({ job: job });
+    this.setState({ job: job, formChange: true });
   }
 
   onPostAction(createJob, query) {
@@ -137,6 +137,9 @@ class PostJob extends Component {
               ]}
               data={this.state.job}
               allowChangeImages
+              showAvatar
+              entity={"jobs"}
+              allowChangeAvatar={false}
               backGroundImage={this.state.job && this.state.job.image}
               onBackgroundChange={imageSrc =>
                 this.handleBackgroundChange(imageSrc)
