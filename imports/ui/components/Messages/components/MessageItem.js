@@ -111,6 +111,12 @@ class MessageItem extends React.Component {
     }
   }
 
+  handleEdit = (event, props) =>{
+      event.stopPropagation();
+      event.preventDefault();
+      props.onEditAction && props.onEditAction(props.message);
+  }
+
   render() {
     const { props } = this;
     const userId = Meteor.userId();
@@ -149,6 +155,16 @@ class MessageItem extends React.Component {
                     checkVisibility: () => props.message && props.message.text,
                     text: "Copy",
                     icon: "copy"
+                  },
+                  {
+                      action: event =>
+                          this.handleEdit && this.handleEdit(event, props),
+                      checkVisibility: () =>
+                          props.message &&
+                          props.owner &&
+                          props.message.owner === userId,
+                      text: "Edit",
+                      icon: "edit"
                   },
                   {
                     action: event =>
@@ -227,7 +243,8 @@ MessageItem.propTypes = {
   isActive: PropTypes.bool,
   onSelect: PropTypes.func,
   onReplyAction: PropTypes.func,
-  onDeleteAction: PropTypes.func
+  onDeleteAction: PropTypes.func,
+  onEditAction: PropTypes.func
 };
 
 export default MessageItem;

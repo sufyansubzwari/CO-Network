@@ -23,6 +23,7 @@ class LoadMessages extends Component {
       blocks: [],
       selectMessageItem: -1,
       replyMessage: "",
+      editMessage: "",
       textReply: "",
       flag: true,
       attachment: [],
@@ -47,7 +48,7 @@ class LoadMessages extends Component {
     }
   }
 
-  handleMessage(text, msg) {
+  handleMessage(text, msg, isReply, parent) {
     let message = Object.assign({}, msg);
     let reply = {
       owner: Meteor.userId(),
@@ -58,26 +59,36 @@ class LoadMessages extends Component {
       createdAt: new Date()
     };
 
+
+    if(isReply)
+      message.replies ? message.replies.push(reply) : (message.replies = [reply]);
+    else
+      message.text = text;
+
+    if(parent && parent.replies && parent.replies.length )
+    {
+      const id = msg._id;
+      let pos = parent.replies.findIndex(item => item._id === id);
+      parent.replies[pos] = message
+      message = parent;
+    }
     delete message.showReply;
     delete message.canReply;
-
-    message.replies ? message.replies.push(reply) : (message.replies = [reply]);
-
     updateMessage(message, res => {
       if (res === "success") {
-        this.setState({ replyMessage: "", textReply: "" });
+        this.setState({ replyMessage: "", textReply: "", editMessage: "" });
       } else {
         console.log(res.reason, "danger");
       }
     });
   }
 
-  onKeyPress(event, message) {
+  onKeyPress(event, message, isReply, parent) {
     console.log(message);
     if (event.key === "Enter" && event.shiftKey === false) {
       event.preventDefault();
       if (event.target.value.trim() !== "")
-        this.handleMessage(event.target.value, message);
+        this.handleMessage(event.target.value, message, isReply, parent);
     }
   }
 
@@ -92,6 +103,14 @@ class LoadMessages extends Component {
       Meteor.call("messages.remove", item._id, (error, result) => {
         if (error) return console.log("ERROR - ", error);
       });
+    }
+  }
+
+  handleEdit = (item) => {
+    if(item._id === this.state.editMessage)
+      this.setState({editMessage: ""});
+    else {
+        this.setState({editMessage: item._id, images: item.images, attachment: item.attachment, textEdit: item.text})
     }
   }
 
@@ -142,7 +161,7 @@ class LoadMessages extends Component {
   onAttachmentUpload(file, size) {
     console.log("uploaded the file " + file);
     let attach = this.state.attachment;
-    attach.push(file);
+    attach.push({...file, size: size});
     let listFiles = this.state.listFiles;
     let index = this.state.listFiles.findIndex(item => item.name === file.name);
     if (index > -1) listFiles[index] = { ...listFiles[index], link: file.link };
@@ -157,7 +176,7 @@ class LoadMessages extends Component {
   onImageUpload(file, size) {
     console.log("uploaded the image " + file);
     let imgs = this.state.images;
-    imgs.push(file);
+    imgs.push({...file, size: size});
     let listFiles = this.state.listFiles;
     let index = this.state.listFiles.findIndex(item => item.name === file.name);
     if (index > -1) listFiles[index] = { ...listFiles[index], link: file.link };
@@ -196,8 +215,8 @@ class LoadMessages extends Component {
     this.setState({ attachment: att });
   }
 
-  closeFile(index) {
-    let files = this.state.listFiles;
+  closeFile(lFiles,index) {
+    let files = lFiles;
     let deleted = files.splice(index, 1);
 
     if (deleted[0].isImage) {
@@ -264,16 +283,66 @@ class LoadMessages extends Component {
               {({ loading, error, data }) => {
                 if (error) return <div />;
                 const owner = data.user;
+                let files = []
+                this.state.images && this.state.images.length > 0 && this.state.images.map( img => files.push({isImage: true, link: img.link, name: img.name, size: img.size}))
+                this.state.attachment && this.state.attachment.length > 0 && this.state.attachment.map( att => files.push({isImage: false, link: att.link, name: att.name, size: att.size}))
                 return (
                   <Container fullY key={k} style={{ height: "auto" }}>
-                    <MessageItem
+                      { message._id === this.state.editMessage ?
+                          <Container mb={"15px"}>
+                              <Container fullX>
+                                  {
+                                      files.length > 0
+                                      ? files.map((file, index) => (
+                                          <Attachment
+                                              hideBorder={true}
+                                              key={index}
+                                              isImage={file.isImage}
+                                              link={file.link}
+                                              filename={file.name}
+                                              size={file.size}
+                                              loading={file.loading}
+                                              onClose={() => this.closeFile(files,index)}
+                                          />
+                                      ))
+                                      : null}
+                              </Container>
+                              <ReplyBox
+                                  name={"textEdit"}
+                                  onTextChange={text =>
+                                      this.setState({ textEdit: text })
+                                  }
+                                  isMobile={this.props.isMobile}
+                                  model={this.state}
+                                  buttonText={"Edit"}
+                                  onKeyPress={event => this.onKeyPress(event, message, false, parent)}
+                                  onSend={() =>
+                                      this.handleMessage(this.state.textEdit, message, false, parent)
+                                  }
+                                  showEmojis={showEmoji}
+                                  onEmojiSelect={emoji => this.handleEmoji(emoji)}
+                                  handleEmojiClicked={this.emojiClicked}
+                                  getAttachment={(file, size) =>
+                                      this.onAttachmentUpload(file, size)
+                                  }
+                                  getImage={(file, size) =>
+                                      this.onImageUpload(file, size)
+                                  }
+                                  getLoading={(loading, file, isImage) =>
+                                      this.handleLoading(loading, file, isImage)
+                                  }
+                              />
+                          </Container>
+                      :
+                          <MessageItem
                       owner={owner}
                       isActive={k === selectMessageItem}
                       onSelect={this.selectMessage.bind(this, k)}
                       message={message}
                       onReplyAction={this.handleReply.bind(this)}
                       onDeleteAction={this.handleDelete.bind(this)}
-                    />
+                      onEditAction={this.handleEdit}
+                    />}
                     {message._id === replyMessage ? (
                       <Container ml={{ md: "20px" }} mb={"15px"}>
                         <Container fullX>
@@ -287,7 +356,7 @@ class LoadMessages extends Component {
                                   filename={file.name}
                                   size={file.size}
                                   loading={file.loading}
-                                  onClose={() => this.closeFile(index)}
+                                  onClose={() => this.closeFile(this.state.listFiles,index)}
                                 />
                               ))
                             : null}
@@ -302,9 +371,9 @@ class LoadMessages extends Component {
                           isMobile={this.props.isMobile}
                           model={this.state}
                           buttonText={"Reply"}
-                          onKeyPress={event => this.onKeyPress(event, message)}
+                          onKeyPress={event => this.onKeyPress(event, message, true)}
                           onSend={() =>
-                            this.handleMessage(this.state.textReply, message)
+                            this.handleMessage(this.state.textReply, message, true)
                           }
                           showEmojis={showEmoji}
                           onEmojiSelect={emoji => this.handleEmoji(emoji)}

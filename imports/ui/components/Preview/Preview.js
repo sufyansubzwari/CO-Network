@@ -295,7 +295,7 @@ class Preview extends React.Component {
   onAttachmentUpload(file, size) {
     console.log("uploaded the file " + file);
     let attach = this.state.attachments;
-    attach.push(file);
+    attach.push({...file, size: size});
     let listFiles = this.state.listFiles;
     let index = this.state.listFiles.findIndex(item => item.name === file.name);
     if (index > -1) listFiles[index] = { ...listFiles[index], link: file.link };
@@ -310,7 +310,7 @@ class Preview extends React.Component {
   onImageUpload(file, size) {
     console.log("uploaded the image " + file);
     let imgs = this.state.images;
-    imgs.push(file);
+    imgs.push({...file, size: size});
     let listFiles = this.state.listFiles;
     let index = this.state.listFiles.findIndex(item => item.name === file.name);
     if (index > -1) listFiles[index] = { ...listFiles[index], link: file.link };

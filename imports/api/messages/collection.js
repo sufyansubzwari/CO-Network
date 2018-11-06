@@ -80,6 +80,10 @@ Messages.schema = new SimpleSchema({
     type: String,
     optional: true
   },
+  "attachment.$.size": {
+      type: Number,
+      optional: true
+  },
   images: {
     type: Array,
     optional: true
@@ -98,6 +102,10 @@ Messages.schema = new SimpleSchema({
   },
   "images.$.link": {
     type: String,
+    optional: true
+  },
+    "images.$.size": {
+    type: Number,
     optional: true
   },
   deleted: {
