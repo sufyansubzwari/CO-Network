@@ -6,6 +6,7 @@ import { Button } from "btech-base-forms-component";
 import MaterialIcon from "react-material-iconic-font";
 import Speaker from "./Speaker";
 import Sponsor from "./Sponsor";
+import { ConfirmPopup } from "../../services"
 
 const SLabel = styled.div`
   font-size: 12px;
@@ -215,7 +216,7 @@ class SponsorsList extends React.Component {
                           border={"none"}
                           hoverBackground={"transparent"}
                           hoverColor={"initial"}
-                          onClick={() => this.handleRemove(index)}
+                          onClick={() => ConfirmPopup.confirmPopup(() =>  this.handleRemove(index),() => console.log(""),{title: `Remove this ${item.type}`, message: `Are you sure to want delete this ${item.type}`})}
                           title={"Remove"}
                         >
                           <MaterialIcon type={"delete"} />

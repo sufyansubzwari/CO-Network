@@ -5,7 +5,7 @@ import styled from "styled-components";
 import { Button } from "btech-base-forms-component";
 import MaterialIcon from "react-material-iconic-font";
 import MediaItem from "./MediaItem";
-import { UploadToS3, UploadToS3FromClient } from "../../services";
+import {ConfirmPopup, UploadToS3, UploadToS3FromClient} from "../../services";
 import {NotificationToast} from "../../services"
 
 const SMediaItem = styled(Layout)`
@@ -226,7 +226,7 @@ class MediaList extends React.Component {
                         border={"none"}
                         hoverBackground={"transparent"}
                         hoverColor={"initial"}
-                        onClick={() => this.handleRemove(index)}
+                        onClick={() => ConfirmPopup.confirmPopup(() =>  this.handleRemove(index),() => console.log(""),{title: `Remove this Media`, message: `Are you sure to want delete this Media`})}
                         style={{ fontSize: "14px" }}
                       >
                         <MaterialIcon type={"delete"} />

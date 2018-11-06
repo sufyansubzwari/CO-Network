@@ -9,6 +9,7 @@ import AcademicBackground from "./AcademicBackground";
 import AuditedCourse from "./AuditedCourse";
 import Publications from "./Publications";
 import Patents from "./Patents";
+import {ConfirmPopup} from "../../services";
 
 const SLabel = styled.div`
   font-size: 12px;
@@ -249,7 +250,7 @@ class AchievementsList extends React.Component {
                           border={"none"}
                           hoverBackground={"transparent"}
                           hoverColor={"initial"}
-                          onClick={() => this.handleRemove(index)}
+                          onClick={() => ConfirmPopup.confirmPopup(() =>  this.handleRemove(index),() => console.log(""),{title: `Remove this ${item.type}`, message: `Are you sure to want delete this ${item.type}`})}
                           style={{ fontSize: "14px" }}
                           title={"Delete"}
                         >

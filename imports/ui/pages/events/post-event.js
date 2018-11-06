@@ -8,6 +8,8 @@ import { Mutation } from "react-apollo";
 import _ from "lodash";
 import { GetSponsors } from "../../apollo-client/sponsor";
 import { ConfirmPopup, NotificationToast } from "../../services";
+import {connect} from "react-redux";
+import {setFilterEntity, toggleSideBar} from "../../actions/SideBarActions";
 
 /**
  * @module Events
@@ -101,6 +103,11 @@ class PostEvent extends Component {
       createEvent({ variables: { entity: event } });
     } else {
       NotificationToast.notify("warn", "You must be logged");
+      this.props.toggleSideBar(
+          !this.props.profileSideBarIsOpen,
+          false,
+          !this.props.profileSideBarIsOpen
+      );
     }
   }
 
@@ -192,4 +199,22 @@ class PostEvent extends Component {
   }
 }
 
-export default withRouter(PostEvent);
+const mapStateToProps = state => {
+    const { sideBarStatus } = state;
+    return {
+        addSidebarIsOpen: sideBarStatus.status && sideBarStatus.isAdd,
+        profileSideBarIsOpen: sideBarStatus.status && sideBarStatus.profile,
+    };
+};
+
+const mapDispatchToProps = dispatch => {
+    return {
+        toggleSideBar: (status, isAdd, profile, notifications, messages) =>
+            dispatch(toggleSideBar(status, isAdd, profile, notifications, messages)),
+    };
+};
+
+export default withRouter(connect(
+    mapStateToProps,
+    mapDispatchToProps
+)(PostEvent));

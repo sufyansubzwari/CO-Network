@@ -6,6 +6,8 @@ import { withRouter } from "react-router-dom";
 import { CreateOrg, DeleteOrg } from "../../apollo-client/organization";
 import { Mutation } from "react-apollo";
 import { ConfirmPopup, NotificationToast } from "../../services";
+import {connect} from "react-redux";
+import {toggleSideBar} from "../../actions/SideBarActions";
 
 /**
  * @module Organization
@@ -121,6 +123,11 @@ class PostOrganization extends Component {
       createOrg({ variables: { entity: organization } });
     } else {
       NotificationToast.notify("warn", "You must be logged.");
+      this.props.toggleSideBar(
+          !this.props.profileSideBarIsOpen,
+          false,
+          !this.props.profileSideBarIsOpen
+      );
     }
   }
 
@@ -202,4 +209,23 @@ class PostOrganization extends Component {
   }
 }
 
-export default withRouter(PostOrganization);
+const mapStateToProps = state => {
+    const { sideBarStatus } = state;
+    return {
+        addSidebarIsOpen: sideBarStatus.status && sideBarStatus.isAdd,
+        profileSideBarIsOpen: sideBarStatus.status && sideBarStatus.profile,
+    };
+};
+
+const mapDispatchToProps = dispatch => {
+    return {
+        toggleSideBar: (status, isAdd, profile, notifications, messages) =>
+            dispatch(toggleSideBar(status, isAdd, profile, notifications, messages)),
+    };
+};
+
+export default withRouter(connect(
+    mapStateToProps,
+    mapDispatchToProps
+)(PostOrganization));
+

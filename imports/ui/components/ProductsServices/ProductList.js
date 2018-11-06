@@ -6,7 +6,7 @@ import { Button } from "btech-base-forms-component";
 import MaterialIcon from "react-material-iconic-font";
 import Product from "./Product";
 import Service from "./Service";
-import {NotificationToast, UploadToS3, UploadToS3FromClient} from "../../services";
+import {ConfirmPopup, NotificationToast, UploadToS3, UploadToS3FromClient} from "../../services";
 
 const SLabel = styled.div`
   font-size: 12px;
@@ -232,7 +232,7 @@ class ProductList extends React.Component {
                           border={"none"}
                           hoverBackground={"transparent"}
                           hoverColor={"initial"}
-                          onClick={() => this.handleRemove(index)}
+                          onClick={() => ConfirmPopup.confirmPopup(() =>  this.handleRemove(index),() => console.log(""),{title: `Remove this ${item.type}`, message: `Are you sure to want delete this ${item.type}`})}
                           style={{ fontSize: "14px" }}
                         >
                           <MaterialIcon type={"delete"} />

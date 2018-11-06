@@ -6,6 +6,8 @@ import { withRouter } from "react-router-dom";
 import { CreateJob, DeleteJob } from "../../apollo-client/job";
 import { Mutation } from "react-apollo";
 import { ConfirmPopup, NotificationToast } from "../../services";
+import {connect} from "react-redux";
+import {toggleSideBar} from "../../actions/SideBarActions";
 
 /**
  * @module Jobs
@@ -78,6 +80,11 @@ class PostJob extends Component {
       createJob({ variables: { entity: job } });
     } else {
       NotificationToast.notify("warn", "You must be logged.");
+        this.props.toggleSideBar(
+            !this.props.profileSideBarIsOpen,
+            false,
+            !this.props.profileSideBarIsOpen
+        );
     }
   }
 
@@ -154,4 +161,22 @@ class PostJob extends Component {
   }
 }
 
-export default withRouter(PostJob);
+const mapStateToProps = state => {
+    const { sideBarStatus } = state;
+    return {
+        addSidebarIsOpen: sideBarStatus.status && sideBarStatus.isAdd,
+        profileSideBarIsOpen: sideBarStatus.status && sideBarStatus.profile,
+    };
+};
+
+const mapDispatchToProps = dispatch => {
+    return {
+        toggleSideBar: (status, isAdd, profile, notifications, messages) =>
+            dispatch(toggleSideBar(status, isAdd, profile, notifications, messages)),
+    };
+};
+
+export default withRouter(connect(
+    mapStateToProps,
+    mapDispatchToProps
+)(PostJob));

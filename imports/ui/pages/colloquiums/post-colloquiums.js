@@ -6,6 +6,8 @@ import { CreateColloquium } from "../../apollo-client/colloquium";
 import { Mutation } from "react-apollo";
 import { NotificationToast } from "../../services";
 import { ConfirmPopup } from "../../services";
+import {connect} from "react-redux";
+import {toggleSideBar} from "../../actions/SideBarActions";
 
 /**
  * @module Colloquiums
@@ -69,6 +71,11 @@ class PostColloquiums extends Component {
       createColloquium({ variables: { entity: colloquium } });
     } else {
       NotificationToast.notify("warn", "You must be logged.");
+      this.props.toggleSideBar(
+          !this.props.profileSideBarIsOpen,
+          false,
+          !this.props.profileSideBarIsOpen
+      );
     }
   }
 
@@ -121,4 +128,23 @@ class PostColloquiums extends Component {
   }
 }
 
-export default withRouter(PostColloquiums);
+const mapStateToProps = state => {
+    const { sideBarStatus } = state;
+    return {
+        addSidebarIsOpen: sideBarStatus.status && sideBarStatus.isAdd,
+        profileSideBarIsOpen: sideBarStatus.status && sideBarStatus.profile,
+    };
+};
+
+const mapDispatchToProps = dispatch => {
+    return {
+        toggleSideBar: (status, isAdd, profile, notifications, messages) =>
+            dispatch(toggleSideBar(status, isAdd, profile, notifications, messages)),
+    };
+};
+
+export default withRouter(connect(
+    mapStateToProps,
+    mapDispatchToProps
+)(PostColloquiums));
+
