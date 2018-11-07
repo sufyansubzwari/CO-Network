@@ -3,6 +3,7 @@ import { Router } from "react-router-dom";
 import createBrowserHistory from "history/createBrowserHistory";
 import { createApolloClient } from "meteor/apollo";
 import { InMemoryCache } from "apollo-cache-inmemory";
+import { persistCache } from 'apollo-cache-persist';
 import { ApolloProvider } from "react-apollo";
 import { Provider } from "react-redux";
 import { ThemeProvider } from "styled-components";
@@ -14,14 +15,23 @@ import "react-confirm-alert/src/react-confirm-alert.css";
 import "react-leaflet-markercluster/dist/styles.min.css";
 import 'react-toastify/dist/ReactToastify.min.css';
 
+const cache = new InMemoryCache({
+    addTypename: false
+})
+
+persistCache({
+    cache,
+    storage: window.localStorage,
+});
+
 // To get started, create an ApolloClient instance and point it at your GraphQL
 // server (handled in our case by meteor-apollo). By default, this client will
 // send queries to the '/graphql' endpoint on the same host.
 const client = createApolloClient({
-  cache: new InMemoryCache({
-    addTypename: false
-  })
+    cache
 });
+
+
 
 // Given that we are implementing App Shell Architecture and, therefore,
 // injecting (via reactDOM.render) the Header, Menu and Main components into
