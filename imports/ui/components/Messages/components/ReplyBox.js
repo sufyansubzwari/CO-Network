@@ -7,10 +7,14 @@ import "emoji-mart/css/emoji-mart.css";
 import { Picker } from "emoji-mart";
 import styled from "styled-components";
 import MaterialIcon from "react-material-iconic-font";
-import {NotificationToast, UploadToS3, UploadToS3FromClient} from "../../../services";
+import {
+  NotificationToast,
+  UploadToS3,
+  UploadToS3FromClient
+} from "../../../services";
 import OutsideClickHandler from "../../OutsideClickHandler/OutsideClickHandler";
 import ReactSVG from "react-svg";
-
+import { DropFileArea } from "btech-base-forms-component";
 
 /**
  * @module Data
@@ -70,7 +74,7 @@ const Span = styled.div`
   height: 100%;
   width: 12px;
   line-height: 34px;
-`
+`;
 
 const GroupRender = props => {
   return (
@@ -123,6 +127,34 @@ export class ReplyBox extends React.Component {
     setTimeout(() => {
       this.onFocus();
     }, 200);
+    const _this = this;
+    // window.addEventListener('paste', ... or
+    document.onpaste = async function(event) {
+      event.preventDefault();
+      event.stopPropagation();
+      // use event.originalEvent.clipboard for newer chrome versions
+      let items = (event.clipboardData || event.originalEvent.clipboardData)
+        .items;
+      let blob = null;
+      let name = "";
+      console.log(JSON.stringify(items)); // will give you the mime types
+      // find pasted image among pasted items
+      for (let i = 0; i < items.length; i++) {
+        if (items[i].type.indexOf("image") === 0) {
+          blob = items[i].getAsFile();
+        } else if (items[i].type.indexOf("text/plain") === 0) {
+          name = new Promise(resolve => {
+            items[i].getAsString(item => {
+              return resolve(item);
+            });
+          });
+        }
+      }
+      if (blob !== null) {
+        let newFile = new File([blob], await name, { type: "image/png" });
+        _this.onUploadImage([newFile]);
+      }
+    };
   }
 
   onFocus() {
@@ -146,7 +178,7 @@ export class ReplyBox extends React.Component {
             this.props.getImage &&
               this.props.getImage(img, files[0].size, false);
           } else {
-            NotificationToast.notify("error", "Error on uploading image.")
+            NotificationToast.notify("error", "Error on uploading image.");
           }
         },
         ({ uploading }) =>
@@ -171,7 +203,7 @@ export class ReplyBox extends React.Component {
             this.props.getAttachment &&
               this.props.getAttachment(response, files[0].size, false);
           } else {
-            NotificationToast.notify("error", "Error on uploading file.")
+            NotificationToast.notify("error", "Error on uploading file.");
           }
         },
         ({ uploading }) =>
@@ -200,6 +232,13 @@ export class ReplyBox extends React.Component {
       this.props.onTextChange && this.props.onTextChange(newMessage);
     }
   }
+
+  onDropFile = event => {
+    event.map(async file => {
+      if (file.type.indexOf("image") !== -1) this.onUploadImage([file]);
+      else await this.handleUpload([file]);
+    });
+  };
 
   /**
    * Render the emoji, image and files options
@@ -274,48 +313,55 @@ export class ReplyBox extends React.Component {
 
   render() {
     return (
-      <SReplyBox fullY>
-        <Layout
-          minH={"50px"}
-          fullY
-          customTemplateColumns={"auto 1fr"}
-          padding={{ md: "10px 20px" }}
-        >
-          <GroupRender
-            isMobile={this.props.isMobile}
-            showOptions={this.state.showOptions}
-            onToggle={() => this.optionsToggle()}
+      <DropFileArea
+        getFile={this.onDropFile}
+        renderContent={() => <div>Drop Files Here</div>}
+      >
+        <SReplyBox fullY>
+          <Layout
+            minH={"50px"}
+            fullY
+            customTemplateColumns={"auto 1fr"}
+            padding={{ md: "10px 20px" }}
           >
-            {this.renderMessageOptions()}
-          </GroupRender>
-          <STextAreaContainer relative fullY>
-            <TextArea
-              textAreaRef={this.TextAreaRef}
-              placeholderText={this.props.placeholder}
-              name={this.props.name}
-              fixLabel
-              height={"40px"}
-              padding={"6px 25px 6px 12px"}
-              marginTop={"0px"}
-              style={{ lineHeight: "25px" }}
-              model={this.props.model}
-              onKeyPress={event =>
-                this.props.onKeyPress && this.props.onKeyPress(event)
-              }
-              onClick={event => {
-                event.stopPropagation();
-                event.preventDefault();
-                this.optionsToggle(true);
-              }}
-            />
-            <SAddButton
-              onClick={() => this.props.onSend && this.props.onSend()}
+            <GroupRender
+              isMobile={this.props.isMobile}
+              showOptions={this.state.showOptions}
+              onToggle={() => this.optionsToggle()}
             >
-                <Span title={"Send"} ><ReactSVG src={"/images/icons/Send.svg"} /></Span>
-            </SAddButton>
-          </STextAreaContainer>
-        </Layout>
-      </SReplyBox>
+              {this.renderMessageOptions()}
+            </GroupRender>
+            <STextAreaContainer relative fullY>
+              <TextArea
+                textAreaRef={this.TextAreaRef}
+                placeholderText={this.props.placeholder}
+                name={this.props.name}
+                fixLabel
+                height={"40px"}
+                padding={"6px 25px 6px 12px"}
+                marginTop={"0px"}
+                style={{ lineHeight: "25px" }}
+                model={this.props.model}
+                onKeyPress={event =>
+                  this.props.onKeyPress && this.props.onKeyPress(event)
+                }
+                onClick={event => {
+                  event.stopPropagation();
+                  event.preventDefault();
+                  this.optionsToggle(true);
+                }}
+              />
+              <SAddButton
+                onClick={() => this.props.onSend && this.props.onSend()}
+              >
+                <Span title={"Send"}>
+                  <ReactSVG src={"/images/icons/Send.svg"} />
+                </Span>
+              </SAddButton>
+            </STextAreaContainer>
+          </Layout>
+        </SReplyBox>
+      </DropFileArea>
     );
   }
 }

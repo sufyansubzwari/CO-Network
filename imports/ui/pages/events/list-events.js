@@ -16,6 +16,8 @@ import { cleanSearch, onSearchTags } from "../../actions/TopSearchActions";
 import { List } from "../general";
 import { ConfirmPopup } from "../../services";
 import { setFilters } from "../../actions/SideBarActions";
+import {Utils} from "../../services"
+
 
 /**
  * @module Events
@@ -105,12 +107,24 @@ class ListEvents extends List {
     });
   }
 
+    handleCalendarEvent = (event) => {
+        let calendarEvent = {};
+        calendarEvent['title'] = event && event.title;
+        calendarEvent['description'] = event && event.description;
+        calendarEvent['location'] = Utils.instanceOf("place.location.address", event);
+        calendarEvent['startTime'] = event && event.startDate;
+        calendarEvent['endTime'] = event && event.endDate;
+
+        return calendarEvent;
+    }
+
   render() {
     //Todo: handle graphQL errors
     const isLoading =
       this.props.data.loading &&
       (!this.props.data[this.entityName] ||
         !this.props.data[this.entityName].length);
+   const calendarEvent = this.handleCalendarEvent(this.state.selectedItem);
     return (
       <ListLayout
         {...this.props}
@@ -176,6 +190,7 @@ class ListEvents extends List {
                         key={"rightSide"}
                         entity={this.entityName}
                         showAvatar
+                        showRSVP={true}
                         onClose={() => this.onChangeSelection(null, null)}
                         isOpen={this.activePreview()}
                         navClicked={index => console.log(index)}
@@ -189,6 +204,11 @@ class ListEvents extends List {
                                 ? this.state.selectedItem.followerList.length +
                                   " Followers"
                                 : null
+                          },
+                          {
+                            type: "rsvp",
+                            calendarEvent: calendarEvent,
+                            checkVisibility: () => true
                           },
                           {
                             text: !follow ? "Follow" : "Unfollow",

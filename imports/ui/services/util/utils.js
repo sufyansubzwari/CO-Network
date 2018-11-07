@@ -19,6 +19,17 @@ const getImageFromS3 = (id, prefix) => {
     : `${bucketPath}/resources/${id}`;
 };
 
+const instanceOf = (instance, obj) => {
+  let copy = obj
+  if(instance){
+    const keys = instance.split('.');
+    keys.map( key => copy = copy && copy[key])
+    return copy;
+  }
+  return undefined;
+
+}
+
 const getFromS3 = id => {
   let bucketPath = "https://s3.amazonaws.com/mlsociety-public";
   return `${bucketPath}/resources/${id}`;
@@ -151,5 +162,6 @@ export default {
   getImageFromS3,
   getPercentOfDrag,
   getDataForService,
-  getFromS3
+  getFromS3,
+  instanceOf
 };
