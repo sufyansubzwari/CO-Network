@@ -170,11 +170,11 @@ class UserPreviewBody extends React.Component {
               <Text
                 header={"About"}
                 text={aboutMe.yourPassion}
-                showMore={true}
                 extraTexts={[
                     existingProblem,
                     steps
                 ]}
+                displayExtraTexts={true}
                 moreClicked={this.handleMoreAbout}
               />
             </Container>

@@ -137,7 +137,7 @@ class Text extends React.Component {
                     <Container>
                         <SText lines={this.state.lines} innerRef={ ref => this.handleRef(ref) } showMore={this.state.showMore} {...this.props}>{this.props.text}
                         </SText>
-                        {!this.state.showMore && this.props.extraTexts && this.props.extraTexts.length > 0 && this.props.extraTexts.map( (item,index) =>
+                        {(!this.state.showMore || this.props.displayExtraTexts) && this.props.extraTexts && this.props.extraTexts.length > 0 && this.props.extraTexts.map( (item,index) =>
                         item && item.text && item.text !== "" ? <Container>
                                 <STitle {...this.props}>{item.title}</STitle>
                                 <SText key={index}>{item.text}</SText>
@@ -178,7 +178,8 @@ Text.propTypes = {
     cutText: PropsTypes.bool,
     cutLines: PropsTypes.number,
     showMore: PropsTypes.bool,
-    extraTexts: PropsTypes.array
+    extraTexts: PropsTypes.array,
+    displayExtraTexts: PropsTypes.bool
 };
 
 export default Text;
