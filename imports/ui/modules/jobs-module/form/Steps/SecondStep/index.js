@@ -12,7 +12,8 @@ class SecondStep extends React.Component {
     super(props);
     this.state = {
       job: this.props.data,
-      jobExperience: EXPERIENCE_REQUIERED
+      jobExperience: EXPERIENCE_REQUIERED,
+      languages: []
     };
   }
 
@@ -52,6 +53,10 @@ class SecondStep extends React.Component {
       let tags = this.state.job.languages || [];
       !newTag.name ? (newTag.name = newTag.label) : null;
       newTag.tag.type = "Languages";
+
+      let lis = tags.map(item => false)
+      lis.push(true);
+      this.setState({ languages: lis})
       tags.push(newTag);
       this.state.job.languages = tags;
       this.setState({ job: this.state.job }, () => this.notifyParent());
@@ -146,14 +151,14 @@ class SecondStep extends React.Component {
                       this.state.job &&
                       this.state.job.languages &&
                       this.state.job.languages.length > 0
-                        ? this.state.job.languages.map(item => ({
+                        ? this.state.job.languages.map((item, index) => ({
                             active: true,
                             useIcon: true,
                             levelColor: item.levelColor || "",
                             icon: item.icon || "",
                             level: item.level || "",
                             ...item.tag,
-                            showOptions: !item.levelColor
+                            showOptions: this.state.languages[index]
                           }))
                         : []
                     }

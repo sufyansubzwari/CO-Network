@@ -15,7 +15,9 @@ class ThirdStep extends React.Component {
     super(props);
     let data = props.data ? props.data : {};
     this.state = {
-      apply: data
+      apply: data,
+      languages: [],
+      expertise: []
     };
   }
 
@@ -64,6 +66,16 @@ class ThirdStep extends React.Component {
         [];
       !newTag.tag.name ? (newTag.tag.name = newTag.tag.label) : null;
       newTag.tag.type = type;
+      if(name === 'expertise'){
+            let lis = tags.map(item => false)
+            lis.push(true);
+            this.setState({ expertise: lis})
+      }
+      if(name === 'languages'){
+          let lis = tags.map(item => false)
+          lis.push(true);
+          this.setState({ languages: lis})
+      }
       tags.push(newTag);
       this.state.apply.professional[name] = tags;
       this.setState({ apply: this.state.apply }, () => this.notifyParent());
@@ -153,14 +165,14 @@ class ThirdStep extends React.Component {
                     tags={
                       this.state.apply.professional &&
                       this.state.apply.professional.expertise
-                        ? this.state.apply.professional.expertise.map(item => ({
+                        ? this.state.apply.professional.expertise.map((item, index) => ({
                             active: true,
                             useIcon: true,
                             levelColor: item.levelColor || "",
                             icon: item.icon || "",
                             level: item.level || "",
                             ...item.tag,
-                            showOptions: !item.levelColor
+                            showOptions: this.state.expertise[index]
                           }))
                         : []
                     }
@@ -267,14 +279,14 @@ class ThirdStep extends React.Component {
                       this.state.apply.professional &&
                       this.state.apply.professional.languages &&
                       this.state.apply.professional.languages.length
-                        ? this.state.apply.professional.languages.map(item => ({
+                        ? this.state.apply.professional.languages.map((item,index) => ({
                             active: true,
                             useIcon: true,
                             levelColor: item.levelColor || "",
                             icon: item.icon || "",
                             level: item.level || "",
                             ...item.tag,
-                            showOptions: !item.levelColor
+                            showOptions: this.state.languages[index]
                           }))
                         : []
                     }

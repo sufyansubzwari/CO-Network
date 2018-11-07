@@ -17,7 +17,8 @@ class FourthStep extends React.Component {
     this.state = {
       organization: data,
       industry: [],
-      jobType: JOB_TYPE
+      jobType: JOB_TYPE,
+      languages: []
     };
   }
 
@@ -79,6 +80,13 @@ class FourthStep extends React.Component {
       let tags = this.state.organization.tech[name] || [];
       !newTag.name ? (newTag.name = newTag.label) : null;
       newTag.tag.type = "Languages";
+
+      if(name === 'stack'){
+            let lis = tags.map(item => false)
+            lis.push(true);
+            this.setState({ languages: lis})
+      }
+
       tags.push(newTag);
       this.state.organization.tech[name] = tags;
       this.setState({ organization: this.state.organization }, () =>
@@ -167,14 +175,14 @@ class FourthStep extends React.Component {
                     tags={
                       this.state.organization.tech &&
                       this.state.organization.tech.stack
-                        ? this.state.organization.tech.stack.map(item => ({
+                        ? this.state.organization.tech.stack.map((item, index) => ({
                             active: true,
                             useIcon: true,
                             levelColor: item.levelColor || "",
                             icon: item.icon || "",
                             level: item.level || "",
                             ...item.tag,
-                            showOptions: !item.levelColor
+                            showOptions: this.state.languages[index]
                           }))
                         : []
                     }

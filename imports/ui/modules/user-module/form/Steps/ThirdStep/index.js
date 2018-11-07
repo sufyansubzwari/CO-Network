@@ -14,7 +14,9 @@ class ThirdStep extends React.Component {
 
     this.state = {
       user: data,
-      lookingSDateRangeContainerFor: LOOKING_FOR_DEFAULT
+      lookingSDateRangeContainerFor: LOOKING_FOR_DEFAULT,
+      curiosity: [],
+      languages: []
     };
   }
 
@@ -66,6 +68,16 @@ class ThirdStep extends React.Component {
         (this.state.user.knowledge && this.state.user.knowledge[name]) || [];
       !newTag.tag.name ? (newTag.tag.name = newTag.tag.label) : null;
       newTag.tag.type = type;
+      if(name === 'curiosity'){
+          let cur = tags.map(item => false)
+          cur.push(true);
+          this.setState({ curiosity: cur})
+      }
+      if(name === 'languages'){
+          let lis = tags.map(item => false)
+          lis.push(true);
+          this.setState({ languages: lis})
+      }
       tags.push(newTag);
       this.state.user.knowledge[name] = tags;
       this.setState({ user: this.state.user }, () => this.notifyParent());
@@ -148,14 +160,14 @@ class ThirdStep extends React.Component {
                     tags={
                       this.state.user.knowledge &&
                       this.state.user.knowledge.languages
-                        ? this.state.user.knowledge.languages.map(item => ({
+                        ? this.state.user.knowledge.languages.map((item,index) => ({
                             active: true,
                             useIcon: true,
                             levelColor: item.levelColor || "",
                             icon: item.icon || "",
                             level: item.level || "",
                             ...item.tag,
-                            showOptions: !item.levelColor
+                            showOptions: this.state.languages[index]
                           }))
                         : []
                     }
@@ -225,14 +237,14 @@ class ThirdStep extends React.Component {
                     tags={
                       this.state.user.knowledge &&
                       this.state.user.knowledge.curiosity
-                        ? this.state.user.knowledge.curiosity.map(item => ({
+                        ? this.state.user.knowledge.curiosity.map((item,index) => ({
                             active: true,
                             useIcon: true,
                             levelColor: item.levelColor || "",
                             icon: item.icon || "",
                             level: item.level || "",
                             ...item.tag,
-                            showOptions: !item.levelColor
+                            showOptions: this.state.curiosity[index]
                           }))
                         : []
                     }
