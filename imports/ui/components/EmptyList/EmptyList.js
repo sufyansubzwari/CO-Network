@@ -66,12 +66,14 @@ const EmptyList = function(props) {
         <Container textCenter>
           <STitle>No {props.entityName}</STitle>
           <STitle>To Show</STitle>
-          <SSubTitle mt={{ md: "10px" }}>
-            Feel free to{" "}
-            <STitleAction onClick={() => onAddToggle()}>create</STitleAction>{" "}
-            your
-          </SSubTitle>
-          <SSubTitle>first one...</SSubTitle>
+          <Container hide={!props.allowAddEntity}>
+            <SSubTitle mt={{ md: "10px" }}>
+              Feel free to{" "}
+              <STitleAction onClick={() => onAddToggle()}>create</STitleAction>{" "}
+              your
+            </SSubTitle>
+            <SSubTitle>first one...</SSubTitle>
+          </Container>
         </Container>
       );
     else

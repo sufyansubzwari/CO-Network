@@ -128,6 +128,8 @@ class ItemsList extends Component {
         {!this.props.loading &&
         (!this.props.data || !this.props.data.length) ? (
           <EmptyList
+            allowAddEntity={this.props.allowAddEntity}
+            allowInvite={this.props.allowInvite}
             curUser={this.props.curUser}
             entityName={this.props.title}
           />
@@ -137,11 +139,18 @@ class ItemsList extends Component {
   }
 }
 
+ItemsList.defaultProps = {
+  allowAddEntity: true,
+  allowInvite: false
+};
+
 ItemsList.propTypes = {
   title: PropTypes.string,
   data: PropTypes.array,
   topOptions: PropTypes.array,
   loading: PropTypes.bool,
+  allowAddEntity: PropTypes.bool,
+  allowInvite: PropTypes.bool,
   onFetchData: PropTypes.func,
   renderItem: PropTypes.func,
   onSelectCard: PropTypes.func,

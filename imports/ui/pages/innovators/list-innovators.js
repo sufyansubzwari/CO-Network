@@ -454,6 +454,8 @@ class ListInnovators extends List {
               renderItem={(item, key) =>
                 this.customRenderItem(item, key, isLoading, viewsUpdate)
               }
+              allowAddEntity={this.state.currentTab.value === "corporations"}
+              allowInvite={this.state.currentTab.value === "members"}
               loading={isLoading}
               onFetchData={() => this.fetchMoreSelection(isLoading)}
               onSelectCard={(item, key) => this.onChangeCard(item, key)}
@@ -478,7 +480,7 @@ class ListInnovators extends List {
                       this.state.selectedItem &&
                       this.state.selectedItem.followerList &&
                       this.state.selectedItem.followerList.indexOf(
-                        this.props.curUser._id
+                        this.props.curUser && this.props.curUser._id
                       ) > -1;
                     return (
                       <MemberPreview
