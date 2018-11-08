@@ -1,4 +1,4 @@
-export { default as GetColloquiums } from "./queries.graphql";
+export { GetColloquiums, GetColloquium } from "./queries.graphql";
 export {
   CreateColloquium,
   DeleteColloquium,

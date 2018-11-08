@@ -1,5 +1,115 @@
-query GetOrg($limit: Int, $filter: String, $organizations: OrganizationSearchInput) {
+query GetOrgs($limit: Int, $filter: String, $organizations: OrganizationSearchInput) {
     organizations(limit: $limit, filter: $filter, organizations: $organizations) {
+        _id
+        owner {
+            _id
+        }
+        entity
+        checkStatus
+        enable
+        views
+        name
+        description {
+            _id
+            label
+            value
+            name
+        }
+        image
+        cover
+        orgType{
+            label
+        }
+        actively{
+            label
+        }
+        place{
+            _id
+            location{
+                address
+                location{
+                    lat
+                    lng
+                }
+            }
+        }
+        social{
+            github
+            linkedin
+            facebook
+            twitter
+            google
+        }
+        contact{
+            email
+            phone
+            name
+        }
+        reason{
+            bio
+            vision
+            orgDefine
+        }
+        tech{
+            industry{
+                _id
+                label
+                value
+                name
+            }
+            salaryRange{
+                min
+                max
+            }
+            stack{
+                      tag{
+                        _id
+                        name
+                        label
+                        value
+                        type
+                        used
+                      }
+                      level
+                      levelColor
+                      icon
+                    }
+            jobType{
+                label
+            }
+        }
+        products{
+            type
+            name
+            link
+            explain
+            files{
+                name
+                link
+            }
+        }
+        media{
+            title
+            link
+            explain
+            files{
+                name
+                link
+            }
+        }
+        identities {
+            provider
+            user_id
+            profileData {
+                name
+                email
+            }
+        }
+    }
+}
+
+query GetOrg($id: String) {
+    organization(_id: $id) {
         _id
         owner {
             _id

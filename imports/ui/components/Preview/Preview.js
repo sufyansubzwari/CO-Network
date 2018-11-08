@@ -1,22 +1,21 @@
 import React from "react";
-import {Container, Layout, mixins} from "btech-layout";
+import { Container, Layout, mixins } from "btech-layout";
 import styled from "styled-components";
 import PropsTypes from "prop-types";
 import MaterialIcon from "react-material-iconic-font";
-import {Scrollbars} from "react-custom-scrollbars";
-import {Button} from "btech-base-forms-component";
+import { Scrollbars } from "react-custom-scrollbars";
+import { Button } from "btech-base-forms-component";
 import TopPreview from "./TopPreview";
 import posed from "react-pose";
 import BackButton from "../BackButton/BackButton";
 import ReplyBox from "../Messages/components/ReplyBox";
 import Messages from "../Messages/Messages";
 import Attachment from "../Messages/components/Attachment";
-import {insertMessage} from "../Messages/Service/service";
-import {SpringSystem, MathUtil} from "rebound";
-import AddToCalendar from 'react-add-to-calendar';
+import { insertMessage } from "../Messages/Service/service";
+import { SpringSystem, MathUtil } from "rebound";
+import AddToCalendar from "react-add-to-calendar";
 
 const SAddToCalendar = styled(Container)`
- 
   .react-add-to-calendar {
     -webkit-font-smoothing: antialiased;
     text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.004);
@@ -27,16 +26,16 @@ const SAddToCalendar = styled(Container)`
     width: 100%;
     align-items: center;
   }
-  
+
   .react-add-to-calendar__wrapper {
     cursor: pointer;
   }
-  .react-add-to-calendar__button{        
+  .react-add-to-calendar__button {
     padding: 8px 5px;
-        i{
-            display: none;
-        }         
-  }  
+    i {
+      display: none;
+    }
+  }
   .react-add-to-calendar__dropdown {
     position: absolute;
     top: 33px;
@@ -47,27 +46,26 @@ const SAddToCalendar = styled(Container)`
     border: 1px solid #a8a8a8;
     background-color: #fff;
     text-align: left;
-    
+
     ul {
       list-style: none;
       margin: 0;
       padding: 0;
     }
     li {
-        margin: 0;
-        padding: 4px 0;
-        border: 0;
-        font: inherit;
-        font-size: 100%;
-        vertical-align: baseline;
-         a{
-            color: #000;
-            text-decoration: none;            
-         }         
+      margin: 0;
+      padding: 4px 0;
+      border: 0;
+      font: inherit;
+      font-size: 100%;
+      vertical-align: baseline;
+      a {
+        color: #000;
+        text-decoration: none;
+      }
     }
   }
-  
-`
+`;
 
 const ResponsiveContainer = styled(Layout)`
   margin-left: -100%;
@@ -78,28 +76,28 @@ const ResponsiveContainer = styled(Layout)`
 `;
 
 const PreviewContainer = posed(ResponsiveContainer)({
-    openPreview: {
-        x: "0%",
-        staggerChildren: 50,
-        transition: {
-            duration: 200,
-            ease: "circOut" //circOut
-        }
-    },
-    closedPreview: {
-        x: "100%",
-        transition: {
-            duration: 200,
-            ease: "circOut" //circOut
-        }
+  openPreview: {
+    x: "0%",
+    staggerChildren: 50,
+    transition: {
+      duration: 200,
+      ease: "circOut" //circOut
     }
+  },
+  closedPreview: {
+    x: "100%",
+    transition: {
+      duration: 200,
+      ease: "circOut" //circOut
+    }
+  }
 });
 
 const SLayout = styled(Layout)`
   border-bottom: ${props =>
     props.theme
-        ? "1px solid " + props.theme.preview.borderColor
-        : "1px solid transparent"};
+      ? "1px solid " + props.theme.preview.borderColor
+      : "1px solid transparent"};
   border-left: none;
   border-right: none;
   padding: 0 10px;
@@ -185,449 +183,452 @@ const SNavLinkItem = styled.a`
 `;
 
 class Preview extends React.Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            selectedLink: 0,
-            image: props.image ? props.image : "",
-            backGroundImage: props.backGroundImage ? props.backGroundImage : "",
+  constructor(props) {
+    super(props);
+    this.state = {
+      selectedLink: 0,
+      image: props.image ? props.image : "",
+      backGroundImage: props.backGroundImage ? props.backGroundImage : "",
+      textMessage: "",
+      attachments: [],
+      images: [],
+      listFiles: []
+    };
+    this.messagesLength = 0;
+    this.calendarRef = React.createRef();
+    this.handleUploadChange = this.handleUploadChange.bind(this);
+    this.handleSpringUpdate = this.handleSpringUpdate.bind(this);
+  }
+
+  componentWillReceiveProps(nextProps) {
+    this.setState({
+      image: nextProps.image ? nextProps.image : null,
+      backGroundImage: nextProps.backGroundImage
+        ? nextProps.backGroundImage
+        : null
+    });
+    this.triggerChatViewStatus(nextProps.isOpen, nextProps.showChatView);
+  }
+
+  componentDidMount() {
+    this.springSystem = new SpringSystem();
+    this.spring = this.springSystem.createSpring();
+    this.spring.addListener({ onSpringUpdate: this.handleSpringUpdate });
+  }
+
+  componentWillUnmount() {
+    this.springSystem.deregisterSpring(this.spring);
+    this.springSystem.removeAllListeners();
+    this.springSystem = undefined;
+    this.spring.destroy();
+    this.spring = undefined;
+  }
+
+  getScrollTop() {
+    return this.scroll.getScrollTop();
+  }
+
+  getScrollHeight() {
+    return this.scroll.getScrollHeight();
+  }
+
+  getHeight() {
+    return this.scroll.getHeight();
+  }
+
+  scrollTop(top) {
+    const scrollTop = this.scroll && this.scroll.getScrollTop();
+    // const scrollHeight = this.scroll && this.scroll.getScrollHeight();
+    // const val = MathUtil.mapValueInRange(top, 0, scrollHeight, scrollHeight * 0.2, scrollHeight * 0.8);
+    this.spring.setCurrentValue(scrollTop).setAtRest();
+    this.spring.setEndValue(top - 65);
+  }
+
+  handleSpringUpdate(spring) {
+    const { scroll } = this;
+    const val = spring.getCurrentValue();
+    scroll.scrollTop(val);
+  }
+
+  handleUploadChange(src, element) {
+    if (element === "background")
+      this.props.onBackgroundChange && this.props.onBackgroundChange(src);
+    if (element === "userPhoto")
+      this.props.onUserPhotoChange && this.props.onUserPhotoChange(src);
+  }
+
+  getLinks() {
+    return (
+      this.props.navlinks &&
+      this.props.navlinks.map((element, index) => (
+        <SNavLinkItem
+          key={index}
+          style={{ paddingRight: "10px" }}
+          onClick={() => this.props.navClicked && this.props.navClicked(index)}
+        >
+          {element}
+        </SNavLinkItem>
+      ))
+    );
+  }
+
+  triggerChatViewStatus(isOpen, isChatView) {
+    if (this.props.isMobile)
+      isOpen && isChatView
+        ? this.props.openChatView()
+        : this.props.closeChatView();
+  }
+
+  onKeyPress(event) {
+    if (event.key === "Enter" && event.shiftKey === false) {
+      event.preventDefault();
+      if (
+        event.target.value.trim() !== "" ||
+        (this.state.attachments && this.state.attachments.length) ||
+        (this.state.images && this.state.images.length)
+      )
+        this.handleMessage(event.target.value);
+    }
+  }
+
+  handleMessage(text) {
+    insertMessage(
+      {
+        owner: this.props.curUser._id,
+        receptor: this.props.data._id,
+        text: text || this.state.textMessage,
+        type: "private",
+        attachment: this.state.attachments,
+        images: this.state.images
+      },
+      res => {
+        if (res === "success")
+          this.setState({
             textMessage: "",
             attachments: [],
             images: [],
-            listFiles: [],
-        };
-        this.messagesLength = 0;
-        this.calendarRef = React.createRef();
-        this.handleUploadChange = this.handleUploadChange.bind(this);
-        this.handleSpringUpdate = this.handleSpringUpdate.bind(this);
-    }
+            listFiles: []
+          });
+        this.setScroll();
+      }
+    );
+  }
 
-    componentWillReceiveProps(nextProps) {
-        this.setState({
-            image: nextProps.image ? nextProps.image : null,
-            backGroundImage: nextProps.backGroundImage
-                ? nextProps.backGroundImage
-                : null
-        });
-        this.triggerChatViewStatus(nextProps.isOpen, nextProps.showChatView);
-    }
+  closeImage(index) {
+    let images = this.state.images;
+    let img = images.splice(index, 1);
+    this.setState({ images: images });
+  }
 
-    componentDidMount() {
-        this.springSystem = new SpringSystem();
-        this.spring = this.springSystem.createSpring();
-        this.spring.addListener({onSpringUpdate: this.handleSpringUpdate});
-    }
+  closeAttachment(index) {
+    let att = this.state.attachments;
+    let attachmentDeleted = att.splice(index, 1);
+    this.setState({ attachments: att });
+  }
 
-    componentWillUnmount() {
-        this.springSystem.deregisterSpring(this.spring);
-        this.springSystem.removeAllListeners();
-        this.springSystem = undefined;
-        this.spring.destroy();
-        this.spring = undefined;
-    }
+  closeFile(index) {
+    let files = this.state.listFiles;
+    let deleted = files.splice(index, 1);
 
-    getScrollTop() {
-        return this.scroll.getScrollTop();
+    if (deleted[0].isImage) {
+      let i = this.state.images.findIndex(
+        item => item.name === deleted[0].name
+      );
+      this.closeImage(i);
+    } else {
+      let i = this.state.attachments.findIndex(
+        item => item.name === deleted[0].name
+      );
+      this.closeAttachment(i);
     }
+    this.setState({
+      listFiles: files
+    });
+  }
 
-    getScrollHeight() {
-        return this.scroll.getScrollHeight();
-    }
+  onAttachmentUpload(file, size) {
+    console.log("uploaded the file " + file);
+    let attach = this.state.attachments;
+    attach.push({ ...file, size: size });
+    let listFiles = this.state.listFiles;
+    let index = this.state.listFiles.findIndex(item => item.name === file.name);
+    if (index > -1) listFiles[index] = { ...listFiles[index], link: file.link };
+    else
+      listFiles.push({ ...file, size: size, isImage: false, loading: false });
+    this.setState({
+      attachments: attach,
+      listFiles: listFiles
+    });
+  }
 
-    getHeight() {
-        return this.scroll.getHeight();
-    }
+  onImageUpload(file, size) {
+    console.log("uploaded the image " + file);
+    let imgs = this.state.images;
+    imgs.push({ ...file, size: size });
+    let listFiles = this.state.listFiles;
+    let index = this.state.listFiles.findIndex(item => item.name === file.name);
+    if (index > -1) listFiles[index] = { ...listFiles[index], link: file.link };
+    else listFiles.push({ ...file, size: size, isImage: true, loading: false });
+    this.setState({
+      images: imgs,
+      listFiles: listFiles
+    });
+  }
 
-    scrollTop(top) {
-        const scrollTop = this.scroll && this.scroll.getScrollTop();
-        // const scrollHeight = this.scroll && this.scroll.getScrollHeight();
-        // const val = MathUtil.mapValueInRange(top, 0, scrollHeight, scrollHeight * 0.2, scrollHeight * 0.8);
-        this.spring.setCurrentValue(scrollTop).setAtRest();
-        this.spring.setEndValue(top - 65);
-    }
-
-    handleSpringUpdate(spring) {
-        const {scroll} = this;
-        const val = spring.getCurrentValue();
-        scroll.scrollTop(val);
-    }
-
-    handleUploadChange(src, element) {
-        if (element === "background")
-            this.props.onBackgroundChange && this.props.onBackgroundChange(src);
-        if (element === "userPhoto")
-            this.props.onUserPhotoChange && this.props.onUserPhotoChange(src);
-    }
-
-    getLinks() {
-        return (
-            this.props.navlinks &&
-            this.props.navlinks.map((element, index) => (
-                <SNavLinkItem
-                    key={index}
-                    style={{paddingRight: "10px"}}
-                    onClick={() => this.props.navClicked && this.props.navClicked(index)}
+  getNavOptions() {
+    return this.props.navOptions
+      ? this.props.navOptions
+          .filter((element, index) => {
+            return element.checkVisibility
+              ? element.checkVisibility(element, index)
+              : true;
+          })
+          .map(
+            (element, index) =>
+              element.type && element.type === "rsvp" ? (
+                <Button key={index} style={{ padding: 0 }}>
+                  <SAddToCalendar fullY fullX>
+                    <AddToCalendar
+                      displayItemIcons={false}
+                      buttonLabel={"RSVP"}
+                      event={element.calendarEvent}
+                    />
+                  </SAddToCalendar>
+                </Button>
+              ) : element.type && element.type === "text" ? (
+                <SText key={index}>
+                  {element.icon ? <MaterialIcon type={element.icon} /> : null}
+                  {element.text}
+                </SText>
+              ) : (
+                <Button
+                  color={!element.primary ? "black" : null}
+                  key={index}
+                  secondary={!element.primary}
+                  onClick={element.onClick}
                 >
-                    {element}
-                </SNavLinkItem>
-            ))
-        );
+                  <SButtonIcon>
+                    {element.icon ? <MaterialIcon type={element.icon} /> : null}
+                    {element.text}
+                  </SButtonIcon>
+                </Button>
+              )
+          )
+      : [];
+  }
+
+  handleLoading(loading, file, isImage) {
+    let listFiles = this.state.listFiles;
+    let nfile = {
+      name: file.name,
+      type: file.type,
+      size: file.size,
+      isImage: isImage,
+      loading: loading
+    };
+    let index = this.state.listFiles.findIndex(item => item.name === file.name);
+    if (index > -1) {
+      listFiles[index] = { ...listFiles[index], loading: loading };
+    } else {
+      listFiles.push(nfile);
     }
+    this.setState({
+      listFiles: listFiles
+    });
+  }
 
-    triggerChatViewStatus(isOpen, isChatView) {
-        if (this.props.isMobile)
-            isOpen && isChatView
-                ? this.props.openChatView()
-                : this.props.closeChatView();
-    }
+  setScroll() {
+    let _this = this.scroll;
+    if (this.scroll)
+      setTimeout(() => {
+        _this && _this.scrollToBottom();
+      }, 100);
+  }
 
-    onKeyPress(event) {
-        if (event.key === "Enter" && event.shiftKey === false) {
-            event.preventDefault();
-            if (
-                event.target.value.trim() !== "" ||
-                (this.state.attachments && this.state.attachments.length) ||
-                (this.state.images && this.state.images.length)
-            )
-                this.handleMessage(event.target.value);
-        }
-    }
-
-    handleMessage(text) {
-        insertMessage(
-            {
-                owner: this.props.curUser._id,
-                receptor: this.props.data._id,
-                text: text || this.state.textMessage,
-                type: "private",
-                attachment: this.state.attachments,
-                images: this.state.images
-            },
-            res => {
-                if (res === "success")
-                    this.setState({
-                        textMessage: "",
-                        attachments: [],
-                        images: [],
-                        listFiles: []
-                    });
-                this.setScroll();
-            }
-        );
-    }
-
-    closeImage(index) {
-        let images = this.state.images;
-        let img = images.splice(index, 1);
-        this.setState({images: images});
-    }
-
-    closeAttachment(index) {
-        let att = this.state.attachments;
-        let attachmentDeleted = att.splice(index, 1);
-        this.setState({attachments: att});
-    }
-
-    closeFile(index) {
-        let files = this.state.listFiles;
-        let deleted = files.splice(index, 1);
-
-        if (deleted[0].isImage) {
-            let i = this.state.images.findIndex(
-                item => item.name === deleted[0].name
-            );
-            this.closeImage(i);
-        } else {
-            let i = this.state.attachments.findIndex(
-                item => item.name === deleted[0].name
-            );
-            this.closeAttachment(i);
-        }
-        this.setState({
-            listFiles: files
-        });
-    }
-
-    onAttachmentUpload(file, size) {
-        console.log("uploaded the file " + file);
-        let attach = this.state.attachments;
-        attach.push({...file, size: size});
-        let listFiles = this.state.listFiles;
-        let index = this.state.listFiles.findIndex(item => item.name === file.name);
-        if (index > -1) listFiles[index] = {...listFiles[index], link: file.link};
-        else
-            listFiles.push({...file, size: size, isImage: false, loading: false});
-        this.setState({
-            attachments: attach,
-            listFiles: listFiles
-        });
-    }
-
-    onImageUpload(file, size) {
-        console.log("uploaded the image " + file);
-        let imgs = this.state.images;
-        imgs.push({...file, size: size});
-        let listFiles = this.state.listFiles;
-        let index = this.state.listFiles.findIndex(item => item.name === file.name);
-        if (index > -1) listFiles[index] = {...listFiles[index], link: file.link};
-        else listFiles.push({...file, size: size, isImage: true, loading: false});
-        this.setState({
-            images: imgs,
-            listFiles: listFiles
-        });
-    }
-
-    getNavOptions() {
-        return this.props.navOptions
-            ? this.props.navOptions
-                .filter((element, index) => {
-                    return element.checkVisibility
-                        ? element.checkVisibility(element, index)
-                        : true;
-                })
-                .map(
-                    (element, index) =>
-                        element.type && element.type === "rsvp" ?
-                            <Button style={{padding: 0}}>
-                                <SAddToCalendar fullY fullX><AddToCalendar displayItemIcons={false}
-                                                                           buttonLabel={"RSVP"}
-                                                                           event={element.calendarEvent}/></SAddToCalendar>
-                            </Button> :
-                            element.type && element.type === "text" ? (
-                                <SText key={index}>
-                                    {element.icon ? <MaterialIcon type={element.icon}/> : null}
-                                    {element.text}
-                                </SText>
-                            ) : (
-                                <Button
-                                    color={!element.primary ? "black" : null}
-                                    key={index}
-                                    secondary={!element.primary}
-                                    onClick={element.onClick}
-                                >
-                                    <SButtonIcon>
-                                        {element.icon ? <MaterialIcon type={element.icon}/> : null}
-                                        {element.text}
-                                    </SButtonIcon>
-                                </Button>
-                            )
-                )
-            : [];
-    }
-
-    handleLoading(loading, file, isImage) {
-        let listFiles = this.state.listFiles;
-        let nfile = {
-            name: file.name,
-            type: file.type,
-            size: file.size,
-            isImage: isImage,
-            loading: loading
-        };
-        let index = this.state.listFiles.findIndex(item => item.name === file.name);
-        if (index > -1) {
-            listFiles[index] = {...listFiles[index], loading: loading};
-        } else {
-            listFiles.push(nfile);
-        }
-        this.setState({
-            listFiles: listFiles
-        });
-    }
-
-    setScroll() {
-        let _this = this.scroll;
-        if (this.scroll)
-            setTimeout(() => {
-                _this && _this.scrollToBottom();
-            }, 100);
-    }
-
-    render() {
-        return (
-            <PreviewContainer
-                fullY
-                background={"white"}
-                pose={this.props.isOpen ? "openPreview" : "closedPreview"}
-                customTemplateRows={!this.props.showChatView ? "1fr auto" : "1fr"}
+  render() {
+    return (
+      <PreviewContainer
+        fullY
+        background={"white"}
+        pose={this.props.isOpen ? "openPreview" : "closedPreview"}
+        customTemplateRows={!this.props.showChatView ? "1fr auto" : "1fr"}
+      >
+        <Scrollbars
+          id={"previewScrollBar"}
+          universal
+          autoHide
+          autoHideDuration={200}
+          style={{ height: "100%" }}
+          ref={scroll => (this.scroll = scroll)}
+          renderThumbVertical={({ style, ...props }) => (
+            <div
+              {...props}
+              style={{
+                ...style,
+                width: "7px",
+                borderRadius: "0px",
+                backgroundColor: "#ACACAC",
+                cursor: "pointer"
+              }}
+            />
+          )}
+          renderThumbHorizontal={({ style, ...props }) => (
+            <div
+              {...props}
+              style={{
+                ...style,
+                height: "7px",
+                borderRadius: "0px",
+                backgroundColor: "#ACACAC",
+                cursor: "pointer"
+              }}
+            />
+          )}
+        >
+          <Layout
+            fullY
+            customTemplateRows={"68px 190px 1fr"}
+            mdCustomTemplateRows={"190px 66px 1fr"}
+            layoutAreas={{
+              xs: `'options' 'picture' 'content'`,
+              md: `'picture' 'options' 'content'`
+            }}
+          >
+            <TopPreview
+              entity={this.props.entity}
+              handleUpload={this.handleUploadChange}
+              image={this.state.image}
+              allowChangeAvatar={this.props.allowChangeAvatar}
+              backGroundImage={this.state.backGroundImage}
+              showAvatar={this.props.showAvatar}
+              allowChangeImages={this.props.allowChangeImages}
+              gridArea="picture"
+            />
+            <SLayout
+              gridArea="options"
+              customTemplateColumns={"1fr auto auto"}
+              padding={{ md: "0 30px" }}
+              mdCustomTemplateColumns={
+                this.props.showAvatar ? "140px 1fr auto auto" : "1fr auto auto"
+              }
             >
-                <Scrollbars
-                    id={"previewScrollBar"}
-                    universal
-                    autoHide
-                    autoHideDuration={200}
-                    style={{height: "100%"}}
-                    ref={scroll => (this.scroll = scroll)}
-                    renderThumbVertical={({style, ...props}) => (
-                        <div
-                            {...props}
-                            style={{
-                                ...style,
-                                width: "7px",
-                                borderRadius: "0px",
-                                backgroundColor: "#ACACAC",
-                                cursor: "pointer"
-                            }}
-                        />
-                    )}
-                    renderThumbHorizontal={({style, ...props}) => (
-                        <div
-                            {...props}
-                            style={{
-                                ...style,
-                                height: "7px",
-                                borderRadius: "0px",
-                                backgroundColor: "#ACACAC",
-                                cursor: "pointer"
-                            }}
-                        />
-                    )}
+              {this.props.showAvatar ? <Container hide mdShow /> : null}
+              <Container height="100%" hide mdShow>
+                <NavLinks
+                  style={{
+                    height: "100%",
+                    display: "flex",
+                    flexDirection: "row"
+                  }}
                 >
-                    <Layout
-                        fullY
-                        customTemplateRows={"68px 190px 1fr"}
-                        mdCustomTemplateRows={"190px 66px 1fr"}
-                        layoutAreas={{
-                            xs: `'options' 'picture' 'content'`,
-                            md: `'picture' 'options' 'content'`
-                        }}
-                    >
-                        <TopPreview
-                            entity={this.props.entity}
-                            handleUpload={this.handleUploadChange}
-                            image={this.state.image}
-                            allowChangeAvatar={this.props.allowChangeAvatar}
-                            backGroundImage={this.state.backGroundImage}
-                            showAvatar={this.props.showAvatar}
-                            allowChangeImages={this.props.allowChangeImages}
-                            gridArea="picture"
-                        />
-                        <SLayout
-                            gridArea="options"
-                            customTemplateColumns={"1fr auto auto"}
-                            padding={{md: "0 30px"}}
-                            mdCustomTemplateColumns={
-                                this.props.showAvatar ? "140px 1fr auto auto" : "1fr auto auto"
-                            }
-                        >
-                            {this.props.showAvatar ? <Container hide mdShow/> : null}
-                            <Container height="100%" hide mdShow>
-                                <NavLinks
-                                    style={{
-                                        height: "100%",
-                                        display: "flex",
-                                        flexDirection: "row"
-                                    }}
-                                >
-
-                                    {this.getLinks()}
-                                </NavLinks>
-                            </Container>
-                            <Container mdHide>
-                                <BackButton
-                                    onClick={() => this.props.onClose && this.props.onClose()}
-                                />
-                            </Container>
-                            <NavLinks
-                                style={{
-                                    display: "flex",
-                                    flexDirection: "row",
-                                    justifyContent: "center"
-                                }}
-                            >
-                                {this.getNavOptions()}
-                            </NavLinks>
-                        </SLayout>
-                        <SPreviewContainer
-                            gridArea="content"
-                            fullY
-                            isChatView={this.props.showChatView}
-                        >
-                            {this.props.showChatView ? (
-                                this.props.data ? (
-                                    <Messages
-                                        scroll={this.scroll}
-                                        receptor={this.props.data}
-                                        onLoadMessages={list => {
-                                            this.messagesLength = list.length;
-                                        }}
-                                        type={"private"}
-                                        {...this.props}
-                                    />
-                                ) : null
-                            ) : (
-                                React.Children.map(this.props.children, child =>
-                                    React.cloneElement(child, {
-                                        onScroll: value => this.scrollTop(value)
-                                    })
-                                )
-                            )}
-                        </SPreviewContainer>
-                    </Layout>
-                </Scrollbars>
-                <Container>
-                    <Container fullX>
-                        {this.state.listFiles.length > 0
-                            ? this.state.listFiles.map((file, index) => (
-                                <Attachment
-                                    key={index}
-                                    isImage={file.isImage}
-                                    link={file.link}
-                                    filename={file.name}
-                                    size={file.size}
-                                    loading={file.loading}
-                                    onClose={() => this.closeFile(index)}
-                                />
-                            ))
-                            : null}
-                    </Container>
-                    <Container>
-                        {this.props.showChatView ? (
-                            <ReplyBox
-                                name={"textMessage"}
-                                model={this.state}
-                                isMobile={this.props.isMobile}
-                                onTextChange={text => this.setState({textMessage: text})}
-                                onKeyPress={event => this.onKeyPress(event)}
-                                onSend={() => this.handleMessage(this.state.textMessage)}
-                                getAttachment={(file, size) =>
-                                    this.onAttachmentUpload(file, size)
-                                }
-                                getImage={(file, size) => this.onImageUpload(file, size)}
-                                getLoading={(loading, file, isImage) =>
-                                    this.handleLoading(loading, file, isImage)
-                                }
-                            />
-                        ) : null}
-                    </Container>
-                </Container>
-            </PreviewContainer>
-        );
-    }
+                  {this.getLinks()}
+                </NavLinks>
+              </Container>
+              <Container mdHide>
+                <BackButton
+                  onClick={() => this.props.onClose && this.props.onClose()}
+                />
+              </Container>
+              <NavLinks
+                style={{
+                  display: "flex",
+                  flexDirection: "row",
+                  justifyContent: "center"
+                }}
+              >
+                {this.getNavOptions()}
+              </NavLinks>
+            </SLayout>
+            <SPreviewContainer
+              gridArea="content"
+              fullY
+              isChatView={this.props.showChatView}
+            >
+              {this.props.showChatView ? (
+                this.props.data ? (
+                  <Messages
+                    scroll={this.scroll}
+                    receptor={this.props.data}
+                    onLoadMessages={list => {
+                      this.messagesLength = list.length;
+                    }}
+                    type={"private"}
+                    {...this.props}
+                  />
+                ) : null
+              ) : (
+                React.Children.map(this.props.children, child =>
+                  React.cloneElement(child, {
+                    onScroll: value => this.scrollTop(value)
+                  })
+                )
+              )}
+            </SPreviewContainer>
+          </Layout>
+        </Scrollbars>
+        <Container>
+          <Container fullX>
+            {this.state.listFiles.length > 0
+              ? this.state.listFiles.map((file, index) => (
+                  <Attachment
+                    key={index}
+                    isImage={file.isImage}
+                    link={file.link}
+                    filename={file.name}
+                    size={file.size}
+                    loading={file.loading}
+                    onClose={() => this.closeFile(index)}
+                  />
+                ))
+              : null}
+          </Container>
+          <Container>
+            {this.props.showChatView ? (
+              <ReplyBox
+                name={"textMessage"}
+                model={this.state}
+                isMobile={this.props.isMobile}
+                onTextChange={text => this.setState({ textMessage: text })}
+                onKeyPress={event => this.onKeyPress(event)}
+                onSend={() => this.handleMessage(this.state.textMessage)}
+                getAttachment={(file, size) =>
+                  this.onAttachmentUpload(file, size)
+                }
+                getImage={(file, size) => this.onImageUpload(file, size)}
+                getLoading={(loading, file, isImage) =>
+                  this.handleLoading(loading, file, isImage)
+                }
+              />
+            ) : null}
+          </Container>
+        </Container>
+      </PreviewContainer>
+    );
+  }
 }
 
 Preview.defaultProps = {
-    showAvatar: false,
-    allowChangeImages: false,
-    isOpen: false,
-    allowChangeAvatar: true
+  showAvatar: false,
+  allowChangeImages: false,
+  isOpen: false,
+  allowChangeAvatar: true
 };
 
 Preview.propTypes = {
-    backGroundImage: PropsTypes.string,
-    navlinks: PropsTypes.array,
-    showAvatar: PropsTypes.bool,
-    data: PropsTypes.object,
-    isOpen: PropsTypes.bool,
-    navClicked: PropsTypes.func,
-    navOptions: PropsTypes.array,
-    allowChangeImages: PropsTypes.bool,
-    allowChangeAvatar: PropsTypes.bool,
-    image: PropsTypes.any,
-    changeProfile: PropsTypes.func,
-    onBackgroundChange: PropsTypes.func,
-    onUserPhotoChange: PropsTypes.func,
-    showChatView: PropsTypes.bool
+  backGroundImage: PropsTypes.string,
+  navlinks: PropsTypes.array,
+  showAvatar: PropsTypes.bool,
+  data: PropsTypes.object,
+  isOpen: PropsTypes.bool,
+  navClicked: PropsTypes.func,
+  navOptions: PropsTypes.array,
+  allowChangeImages: PropsTypes.bool,
+  allowChangeAvatar: PropsTypes.bool,
+  image: PropsTypes.any,
+  changeProfile: PropsTypes.func,
+  onBackgroundChange: PropsTypes.func,
+  onUserPhotoChange: PropsTypes.func,
+  showChatView: PropsTypes.bool
 };
 
 export default Preview;

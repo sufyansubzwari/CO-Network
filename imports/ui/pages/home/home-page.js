@@ -7,6 +7,13 @@ import MapBackGround from "../../components/BackGroundMap/index";
 class HomePage extends Component {
   constructor(props) {
     super(props);
+    this.state = { isShow: false };
+  }
+
+  componentDidMount() {
+    setTimeout(() => {
+      this.setState({ isShow: true });
+    }, 100);
   }
 
   componentWillMount() {
@@ -19,14 +26,14 @@ class HomePage extends Component {
   }
 
   render() {
-    return (
+    return this.state.isShow ? (
       <Container fullY>
         <MapBackGround
           isMobile={this.props.isMobile}
           onClusterClick={() => this.clickOverMapItem()}
         />
       </Container>
-    );
+    ) : null;
   }
 }
 

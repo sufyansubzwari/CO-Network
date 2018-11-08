@@ -1,2 +1,7 @@
-export { GetOrg, GetOrgFilters } from "./queries.graphql";
-export { CreateOrg, DeleteOrg, UpdateOrgImages, UpdateIdentitiesOrg} from "./mutations.graphql";
+export { GetOrgs, GetOrgFilters, GetOrg } from "./queries.graphql";
+export {
+  CreateOrg,
+  DeleteOrg,
+  UpdateOrgImages,
+  UpdateIdentitiesOrg
+} from "./mutations.graphql";

@@ -7,7 +7,7 @@ import OrganizationItem from "./components/OrganizationItem";
 import styled from "styled-components";
 import MaterialIcon from "react-material-iconic-font";
 import { graphql, Mutation } from "react-apollo";
-import { CreateOrg, GetOrg } from "../../../../apollo-client/organization";
+import { CreateOrg, GetOrgs } from "../../../../apollo-client/organization";
 import { InfoChatBox } from "../../../../components";
 import { STEP_TEXTS } from "./constants/StepsTexts";
 import SimpleOrgCreateForm from "./components/SimpleOrgCreateForm";
@@ -283,7 +283,7 @@ EventStep0.propTypes = {
   onChange: PropTypes.func
 };
 
-export default graphql(GetOrg, {
+export default graphql(GetOrgs, {
   name: "organizations",
   options: props => {
     return {

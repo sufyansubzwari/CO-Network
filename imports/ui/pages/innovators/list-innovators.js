@@ -9,7 +9,7 @@ import { compose, graphql, Mutation } from "react-apollo";
 import { withRouter } from "react-router-dom";
 import {
   DeleteOrg,
-  GetOrg,
+  GetOrgs,
   UpdateOrgImages
 } from "../../apollo-client/organization";
 import { DeleteUser, getUsers } from "../../apollo-client/user";
@@ -671,7 +671,7 @@ export default withRouter(
     mapDispatchToProps
   )(
     compose(
-      graphql(GetOrg, {
+      graphql(GetOrgs, {
         name: "organizations",
         options: props => {
           return {

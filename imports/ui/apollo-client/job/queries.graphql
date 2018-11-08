@@ -62,6 +62,69 @@ query GetJobs($limit: Int, $filter: String, $jobs: JobsInputSearch) {
     }
 }
 
+query GetJob($id: String) {
+  job(_id: $id) {
+      _id
+      owner {
+        _id
+      }
+      title
+      description
+      image
+      jobType{
+          label
+          value
+          name
+      }
+      jobExperience{
+          label
+          value
+          name
+      }
+      languages{
+                tag{
+                  _id
+                  name
+                  label
+                  value
+                  type
+                  used
+                }
+                level
+                levelColor
+                icon
+              }
+      positionTags{
+          _id
+          label
+          value
+          name
+      }
+      salaryRange{
+          min
+          max
+      }
+      place{
+          _id
+          owner
+          entity
+          location{
+              address
+              location{
+                  lat
+                  lng
+              }
+          }
+      }
+      jobResponsibility
+      culture
+      aboutUsTeam
+      candidateQuestions
+      entity
+      views
+    }
+}
+
 query JobCounts($field: String){
     jobCounts(field: $field){
         _id

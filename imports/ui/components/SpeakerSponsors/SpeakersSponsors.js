@@ -7,7 +7,7 @@ import SponsorsList from "./SponsorsList";
 import styled from "styled-components";
 import { SPEAKERS_SPONSORS } from "./constants";
 import { userList as users } from "../../apollo-client/user";
-import { GetOrg as orgList } from "../../apollo-client/organization";
+import { GetOrgs as orgList } from "../../apollo-client/organization";
 import { Query } from "react-apollo";
 
 const SLabel = styled.div`

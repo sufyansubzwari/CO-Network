@@ -23,7 +23,7 @@ import { Mutation, Query } from "react-apollo";
 import OrganizationCard from "./components/organizationCard";
 import CreateButton from "./components/CreateButton";
 import JobCard from "./components/jobCard";
-import { GetOrg } from "../../../apollo-client/organization/index";
+import { GetOrgs } from "../../../apollo-client/organization/index";
 import { GetEvents } from "../../../apollo-client/event/index";
 import { GetJobs } from "../../../apollo-client/job/index";
 import { FollowAction } from "../../../apollo-client/follow";
@@ -495,7 +495,7 @@ class UserPreviewBody extends React.Component {
     return render ? (
       <Query
         fetchPolicy={"cache-and-network"}
-        query={GetOrg}
+        query={GetOrgs}
         variables={{
           organizations: {
             owner: this.props.id
