@@ -56,7 +56,6 @@ Meteor.methods({
   },
   "messages.markAsRead": function markAsRead(msg) {
     check(msg, Array);
-    console.log("markAsRead");
     try {
       Messages.update(
         { _id: { $in: msg } },

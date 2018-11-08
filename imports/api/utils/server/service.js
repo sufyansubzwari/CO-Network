@@ -1,4 +1,4 @@
-import StorageS3 from '../aws/StorageS3';
+import StorageS3 from "../aws/StorageS3";
 
 /**
  * @class UtilsService
@@ -14,14 +14,8 @@ class UtilsService {
    * @return {String} path - return the path of the file in S3
    */
   static resourceUpload = async (body, contentType, path) => {
-    var buffer = new Buffer(body, 'binary');
-
-    console.log('saving image');
-    console.log('Content-Length', body.length);
-    console.log('Content-Type', contentType);
-
+    const buffer = new Buffer(body, "binary");
     try {
-
       const error = await StorageS3.putObject({
         Body: buffer,
         Key: path,

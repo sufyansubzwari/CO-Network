@@ -75,8 +75,6 @@ class NotificationsService {
     title,
     applyId
   ) => {
-    console.log("Action => generateNotification");
-
     switch (action) {
       case "POST":
         const userFollowers = await Followers.service.getFollower({
@@ -123,7 +121,7 @@ class NotificationsService {
           entityId,
           applyId ? "JOB-APPLY" : entityOwner.entity,
           entityOwner.title,
-          applyId || entityId,
+          applyId || entityId
         );
       default:
         return null;

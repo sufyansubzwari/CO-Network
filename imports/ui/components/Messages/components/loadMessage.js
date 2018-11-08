@@ -84,7 +84,6 @@ class LoadMessages extends Component {
   }
 
   onKeyPress(event, message, isReply, parent) {
-    console.log(message);
     if (event.key === "Enter" && event.shiftKey === false) {
       event.preventDefault();
       if (event.target.value.trim() !== "")
@@ -159,7 +158,6 @@ class LoadMessages extends Component {
   }
 
   onAttachmentUpload(file, size) {
-    console.log("uploaded the file " + file);
     let attach = this.state.attachment;
     attach.push({...file, size: size});
     let listFiles = this.state.listFiles;
@@ -174,7 +172,6 @@ class LoadMessages extends Component {
   }
 
   onImageUpload(file, size) {
-    console.log("uploaded the image " + file);
     let imgs = this.state.images;
     imgs.push({...file, size: size});
     let listFiles = this.state.listFiles;

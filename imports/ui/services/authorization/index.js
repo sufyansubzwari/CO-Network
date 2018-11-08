@@ -28,7 +28,6 @@ class Authorization extends react.Component {
   login(service, callback) {
     localStorage.setItem("currentService", service);
     this.callback = callback;
-    console.log("in real login ", service);
     this.auth0.popup.authorize(
       {
         nonce: "login",

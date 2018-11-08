@@ -94,7 +94,6 @@ class ListInnovators extends List {
             }
           })
           .then(({ data }) => {
-            console.log("onRefetch", data);
             this.setState({
               selectedItem: data && data.users && data.users[0],
               showMessages: true

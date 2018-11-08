@@ -163,7 +163,6 @@ class OrganizationFilters extends React.Component {
   }
 
   orgFilters(actives, org, host) {
-    console.log(actives);
     const selected = this.state.orgFilters.map((category, index) => {
       category["active"] = actives[index];
       return category;

@@ -137,7 +137,6 @@ export class ReplyBox extends React.Component {
         .items;
       let blob = null;
       let name = "";
-      console.log(JSON.stringify(items)); // will give you the mime types
       // find pasted image among pasted items
       for (let i = 0; i < items.length; i++) {
         if (items[i].type.indexOf("image") === 0) {

@@ -149,8 +149,15 @@ const SLoginText = styled(Container)`
 `;
 
 class LoginSidebar extends React.Component {
+  constructor(props) {
+    super(props);
+  }
+
   processAuthRequest(service) {
-    Authorization.login(service);
+    Authorization.login(service, result => {
+      const { error, user } = result;
+      if (!error) this.props.onClose && this.props.onClose();
+    });
   }
 
   render() {
@@ -185,9 +192,7 @@ class LoginSidebar extends React.Component {
             </SPageTitle>
             <Container>
               <Container mb={{ md: "15px" }}>
-                <SLoginText>
-                  Log into the COnscious Network
-                </SLoginText>
+                <SLoginText>Log into the COnscious Network</SLoginText>
               </Container>
               <Container>
                 <LoginButtons

@@ -20,7 +20,6 @@ Query.events = (root, {filter, limit, events}, context) => {
       delete events.locationRange;
     }
     query = wrapOperators(events);
-    // console.log(query);
   }
   if (filter) {
     query["$or"] = [

@@ -200,19 +200,10 @@ class ProfileSideBar extends React.Component {
 
   render() {
     !this.props.curUser && this.props.onClose && this.props.onClose();
-    let name =
-      this.props.curUser &&
-      this.props.curUser.profile &&
-      this.props.curUser.profile.name;
-    let lastName =
-      this.props.curUser &&
-      this.props.curUser.profile &&
-      this.props.curUser.profile.lastName;
-    let aboutMe =
-      this.props.curUser &&
-      this.props.curUser.profile &&
-      this.props.curUser.profile.aboutMe &&
-      this.props.curUser.profile.aboutMe.yourPassion;
+    const { profile } = this.props.curUser;
+    let name = profile && profile.name;
+    let lastName = profile && profile.lastName;
+    let aboutMe = profile && profile.aboutMe && profile.aboutMe.yourPassion;
 
     return (
       <ItemsContainer
@@ -229,9 +220,7 @@ class ProfileSideBar extends React.Component {
             </Container>
             <Container>
               <Website>
-                {this.props.curUser &&
-                  this.props.curUser.profile &&
-                  this.props.curUser.profile.website}
+                {this.props.curUser && profile && profile.website}
               </Website>
             </Container>
             <SButtons>
