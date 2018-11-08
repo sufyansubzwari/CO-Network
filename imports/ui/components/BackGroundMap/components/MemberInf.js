@@ -27,7 +27,7 @@ const MemberInf = function(props) {
         const { profile } = user || {};
         return user ? (
           <Layout rowGap={"5px"}>
-            <SType uppercase>{location.entity}</SType>
+            <SType uppercase>{"MEMBER" || location.entity}</SType>
             <STitle>{profile && `${profile.name} ${profile.lastName}`}</STitle>
             <SContent>{location && location.location.address}</SContent>
           </Layout>
