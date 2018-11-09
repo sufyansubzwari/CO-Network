@@ -130,8 +130,6 @@ export class ReplyBox extends React.Component {
     const _this = this;
     // window.addEventListener('paste', ... or
     document.onpaste = async function(event) {
-      event.preventDefault();
-      event.stopPropagation();
       // use event.originalEvent.clipboard for newer chrome versions
       let items = (event.clipboardData || event.originalEvent.clipboardData)
         .items;
