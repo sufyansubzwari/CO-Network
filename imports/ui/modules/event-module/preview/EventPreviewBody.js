@@ -128,9 +128,9 @@ class EventPreviewBody extends React.Component {
       " - " +
       moment(endDate).format("ll" || "MMM DD h:mm A");
     const boughtTickets =
-      this.state.event.tickets &&
-      this.state.event.tickets.length > 0 &&
-      this.state.event.tickets.filter(
+      this.state.soldTickets &&
+      this.state.soldTickets.length > 0 &&
+      this.state.soldTickets.filter(
         item => item.soldTickets && item.soldTickets > 0
       );
 

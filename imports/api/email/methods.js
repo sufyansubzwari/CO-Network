@@ -10,10 +10,16 @@ Meteor.methods({
     Email.send({ to, from, subject, text });
   },
 
-    sendEmailHtml(to, from, subject, html) {
-        check([to, from, subject, html], [String]);
+    sendEmailHtml(to, from, subject, htmlurl, data) {
+        check([to, from, subject, htmlurl], [String]);
+
+        SSR.compileTemplate('emailTemplate', Assets.getText(htmlurl));
+
+        let html = SSR.render('emailTemplate',data);
+        console.log("sending email with data", data)
+
         this.unblock();
-        Email.send({ to, from, subject, html });
+        Email.send({ to, from, subject, html: html });
     },
 
     sendEmailPayment(to, from, subject, data) {
