@@ -173,10 +173,10 @@ class ThirdStep extends React.Component {
                     }
                     levelOptions={TAG_LEVEL}
                     defaultLevel={{
-                        value: "expert",
-                        label: "Expert",
-                        levelColor: "#FF1493",
-                        icon: "/images/icons/line3.svg"
+                        value: "experienced",
+                        label: "Experienced",
+                        levelColor: "#464646",
+                        icon: "/images/icons/line2.svg"
                     }}
                     onCategoryChange={(index, value, color, icon) =>
                       this.handleCategoryChange(
@@ -251,10 +251,10 @@ class ThirdStep extends React.Component {
                     useIcon={true}
                     levelOptions={TAG_LEVEL_CURIOSITY}
                     defaultLevel={{
-                      label: "Advanced",
-                      value: "Advanced",
-                      levelColor: "#FF1493",
-                      icon: "/images/icons/line3.svg"
+                        label: "Intermediate",
+                        value: "Intermediate",
+                        levelColor: "#464646",
+                        icon: "/images/icons/line2.svg"
                     }}
                     onCategoryChange={(index, value, color, icon) =>
                       this.handleCategoryChange(
