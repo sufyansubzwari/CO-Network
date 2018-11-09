@@ -1,0 +1,35 @@
+# types for Tickets namespace
+
+type Tickets{
+    _id: String
+    owner: Events
+    name: String
+    description: String
+    type: String
+    available: Int
+    total: Int
+    sold: Boolean
+    price: Float
+}
+
+type Query {
+    tickets(tickets: TicketsInput): [Tickets]
+    ticket(_id: String): Tickets
+}
+
+input TicketsInput{
+    _id: String
+    owner: String
+    name: String
+    description: String
+    type: String
+    available: Int
+    total: Int
+    price: Float
+    sold: Boolean
+}
+
+type Mutation {
+    ticket(ticket: TicketsInput!): Tickets
+    deleteTicket(_id: String!): Tickets
+}

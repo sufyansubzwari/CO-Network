@@ -16,6 +16,9 @@
     "subject": "mailto:logistics@blueoceantech.us",
     "privateKey": "YYOoa_IbW83Zvdr5r7o6b1c84e4R1KXRyoXH6ioaN6o"
   },
+  "stripe":{
+    "secretKey":"sk_test_qURSzn8xrWGPc458HIIuPzwl"
+  },
   "OAuth": {
     "facebook": {
       "enabled": true,
@@ -49,6 +52,9 @@
       "clientID": "FnbCFhjJzvg5eXqCjQajFPMXKm49zEAu",
       "redirectUri": "http://localhost:3000/",
       "audience": "https://co-mlsociety.auth0.com/api/v2/"
+    },
+    "stripe":{
+      "publicKey":"pk_test_vPwmH67DGcmErnQRKNdsXu62"
     },
     "facebook": {
       "appId": "647522955587362"

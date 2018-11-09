@@ -1,0 +1,11 @@
+query GetStripeCustomers($stripeCustomer: StripeCustomerInput) {
+    stripeCustomers(stripeCustomer: $stripeCustomer) {
+        _id
+        owner{
+            _id
+        }
+        customer
+        stripeToken
+        type
+    }
+}

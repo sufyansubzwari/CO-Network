@@ -288,7 +288,15 @@ class ListEvents extends List {
                           )
                         }
                       >
-                        <EventPreviewBody event={this.state.selectedItem} onSelectTag={(tag, index) => this.onSelectTag(tag, index)} activePreview={this.state.activePreview}/>
+                        <EventPreviewBody
+                          curUser={this.props.curUser}
+                          isMobile={this.props.isMobile}
+                          event={this.state.selectedItem}
+                          onSelectTag={(tag, index) =>
+                            this.onSelectTag(tag, index)
+                          }
+                          activePreview={this.state.activePreview}
+                        />
                       </Preview>
                     );
                   }}
@@ -313,7 +321,8 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => {
   return {
     onSearchTags: tag => dispatch(onSearchTags(tag)),
-    setFilters: (type, filters, text) => dispatch(setFilters(type, filters, text)),
+    setFilters: (type, filters, text) =>
+      dispatch(setFilters(type, filters, text)),
     cleanSearch: () => dispatch(cleanSearch()),
     sendPreviewData: (item, key, type) => dispatch(PreviewData(item, key, type))
   };

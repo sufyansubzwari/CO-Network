@@ -57,6 +57,7 @@ class TicketItem extends Component {
                   model={this.state.ticket}
                   required={true}
                   validate={NAME_REGEX}
+                  disabled={this.state.ticket.sold}
                 />
               </Container>
               <SInput>
@@ -89,6 +90,7 @@ class TicketItem extends Component {
                   ticket.price = price;
                   this.setState({ ticket: ticket });
                 }}
+                disabled={this.state.ticket.sold}
               />
               <div />
             </Layout>

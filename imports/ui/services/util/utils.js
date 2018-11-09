@@ -20,15 +20,14 @@ const getImageFromS3 = (id, prefix) => {
 };
 
 const instanceOf = (instance, obj) => {
-  let copy = obj
-  if(instance){
-    const keys = instance.split('.');
-    keys.map( key => copy = copy && copy[key])
+  let copy = obj;
+  if (instance) {
+    const keys = instance.split(".");
+    keys.map(key => (copy = copy && copy[key]));
     return copy;
   }
   return undefined;
-
-}
+};
 
 const getFromS3 = id => {
   let bucketPath = "https://s3.amazonaws.com/mlsociety-public";

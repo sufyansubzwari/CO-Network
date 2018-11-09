@@ -54,6 +54,7 @@ class InternalForm extends Component {
                     hoverColor={"initial"}
                     onClick={this.props.handleCancel}
                     style={{ fontSize: "14px" }}
+                    disabled={this.props.isLoading}
                   >
                     <MaterialIcon type={"block"} />
                     <span style={{ paddingLeft: "5px" }}>Cancel</span>
@@ -66,9 +67,10 @@ class InternalForm extends Component {
                     border={"none"}
                     hoverBackground={"transparent"}
                     hoverColor={"initial"}
+                    disabled={this.props.isLoading}
                   >
-                    <MaterialIcon type={"save"} />
-                    <SButtonText>Save</SButtonText>
+                    <MaterialIcon spin={this.props.isLoading} type={this.props.isLoading ? "spinner" : "save"} />
+                    <SButtonText>{this.props.isLoading ? "Saving" : "Save" }</SButtonText>
                   </Button>
                 </Layout>
               </Container>
@@ -82,7 +84,7 @@ class InternalForm extends Component {
 
 InternalForm.defaultProps = {
   title: "No Title",
-  border: "1px dashed #bebebe"
+  border: "2px dashed #bebebe"
 };
 
 InternalForm.propTypes = {

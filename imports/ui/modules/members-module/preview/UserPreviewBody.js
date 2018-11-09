@@ -134,9 +134,8 @@ class UserPreviewBody extends React.Component {
       user.aboutMe.yourPassion ||
       !this.props.id;
     const aboutMe = user.aboutMe;
-      const existingProblem = {title : "Most Exciting Problem you want to solve", text: aboutMe && aboutMe.existingProblem};
-      const steps = {title : "Steps taken towards achieving this mission", text: aboutMe && aboutMe.steps};
-      return render ? (
+    const existingProblem = {title : "Most Exciting Problem you want to solve", text: aboutMe && aboutMe.existingProblem};
+      const steps = {title : "Steps taken towards achieving this mission", text: aboutMe && aboutMe.steps};return render ? (
       <PreviewSection previewRef={this.SummarySection}>
         <PlaceHolder
           loading={!user.name && !user.lastName && !this.props.id}

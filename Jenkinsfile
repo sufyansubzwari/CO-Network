@@ -55,7 +55,7 @@ pipeline {
 	        }
 	    }
 	    stage('Deploy Demo') {
-	        when {expression { env.BRANCH_NAME == 'feature/payments' }}
+	        when {expression { env.BRANCH_NAME == 'release/event-payment' }}
 	        steps {
 	            sh '''
 	            #!/bin/bash

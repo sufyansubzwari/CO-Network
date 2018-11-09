@@ -3,6 +3,7 @@ import PropTypes from "prop-types";
 import MaterialIcon from "react-material-iconic-font";
 import { Container } from "btech-layout";
 import styled from "styled-components";
+import _ from "lodash";
 
 const SContainer = styled(Container)`
   display: flex;
@@ -38,6 +39,12 @@ const SOptions = styled.div`
 class ButtonList extends Component {
   state = {};
 
+  shouldComponentUpdate(nextProps, nextState) {
+    return (
+      !_.isEqual(this.props.options, nextProps.options)
+    );
+  }
+
   render() {
     return (
       <SContainer {...this.props} className={this.props.customClass}>
@@ -54,7 +61,7 @@ class ButtonList extends Component {
                   id={op.text}
                   title={op.text}
                 >
-                  <MaterialIcon type={op.icon} />
+                  <MaterialIcon spin={op.loading} type={op.loading ? "spinner" : op.icon} />
                 </SOptions>
               </div>
             ))}

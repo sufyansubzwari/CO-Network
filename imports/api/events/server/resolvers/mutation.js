@@ -2,12 +2,15 @@ import Service from "../service";
 import Tags from "../../../tags";
 import Places from "../../../places";
 import Sponsors from "../../../sponsors";
+import Tickets from "../../../tickets";
 
 const Mutation = {};
 
 Mutation.event = async (root, { events }, context) => {
   let sponsors = events.sponsors;
+  let tickets = events.tickets;
   delete events.sponsors;
+  delete events.tickets;
   let entity = Object.assign({}, events);
   const oldEvent = events._id ? Service.getEvent(events._id) : null;
   if (events.category)
@@ -38,7 +41,27 @@ Mutation.event = async (root, { events }, context) => {
       await Sponsors.service.sponsor(spon);
     });
   }
+  const copyTickets = JSON.parse(JSON.stringify(tickets));
 
+  const dbtickets = Tickets.service.getTicketByOwner(eventInserted._id);
+
+  dbtickets &&
+    dbtickets.length &&
+    dbtickets.forEach(dbticket => {
+      const index = copyTickets.findIndex(
+        copyTicket => dbticket._id === copyTicket._id
+      );
+      if (index === -1) {
+        Tickets.service.deleteTicket(dbticket._id);
+      }
+    });
+
+  if (tickets && tickets.length) {
+    tickets.forEach(async ticket => {
+      ticket.owner = eventInserted._id;
+      await Tickets.service.ticket(ticket);
+    });
+  }
   return eventInserted;
 };
 

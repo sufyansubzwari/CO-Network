@@ -1,15 +1,13 @@
-import Service from "../service"
+import Service from "../service";
 
 const Query = {};
 
-Query.stripeCustomer = (root, {_id}, context) => {
-  return Service.getStripeCustomer(_id)
+Query.stripeCustomer = (root, { _id }, context) => {
+  return Service.getStripeCustomer(_id);
 };
-Query.stripeCustomers = (root, {stripeCustomer}, context) => {
-  let query = {};
-  if (stripeCustomer) {
-    query = stripeCustomer;
-  }
-  return Service.stripeCustomers(query)
+Query.stripeCustomers = (root, { stripeCustomer }, context) => {
+  let query = stripeCustomer ? { ...stripeCustomer } : {};
+  return Service.stripeCustomers(query);
 };
+
 export default Query;

@@ -102,4 +102,23 @@
         integrity="sha512-nMMmRyTVoLYqjP9hrbed9S+FzjZHW5gY1TWCHA5ckwXZBadntCNs8kEqAWdrb9O7rxbCaA4lKTIWjDXZxflOcA=="
 crossorigin=""></script>
 <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCqziAoTlEKOak6m2CahxkjWAm-HcE6pN4&v=3.exp&libraries=geometry,drawing,places"></script>
+<script type="text/javascript">
+    function parseJSAtOnload() {
+        var links = ["https://checkout.stripe.com/checkout.js", "https://js.stripe.com/v2/", "https://js.stripe.com/v2/channel.html?stripe_xdm_e=https%3A%2F%2Fmlsociety-staging.meteorapp.com&stripe_xdm_c=default55465&stripe_xdm_p=1"],
+                headElement = document.getElementsByTagName("head")[0],
+                linkElement, i;
+        for (i = 0; i < links.length; i++) {
+            linkElement = document.createElement("script");
+            linkElement.src = links[i];
+            headElement.appendChild(linkElement);
+        }
+    }
+    if (window.addEventListener)
+        window.addEventListener("load", parseJSAtOnload, false);
+    else if (window.attachEvent)
+        window.attachEvent("onload", parseJSAtOnload);
+    else window.onload = parseJSAtOnload;
+</script>
+
+<script async id="stripe-js" src="https://js.stripe.com/v3/"></script>
 </body>

@@ -1,23 +1,27 @@
-# types for stripeCustomer namespace
+# types for Notifications namespace
 
 type StripeCustomer {
     _id: ID
     owner: User!
-    customer: String!
+    customer: String
+    stripeToken: Json,
+    type: String
 }
 
 type Query {
-    stripeCustomers(stripeCustomer: StripeCustomerInput!): [StripeCustomer]
+    stripeCustomers(stripeCustomer: StripeCustomerInput): [StripeCustomer]
     stripeCustomer(_id: String): StripeCustomer
 }
 
 input StripeCustomerInput {
     _id: ID
     owner: String!
-    customer: String!
+    customer: String
+    stripeToken: Json
+    type: String
 }
 
 type Mutation {
-    stripeCustomer(stripeCustomer: StripeCustomerInput!): StripeCustomer
-    deleteStripeCustomer(_id: String!): StripeCustomer
+    stripeCustomer(stripeCustomer: StripeCustomerInput): StripeCustomer
+    deleteStripeCustomer(_id: String): StripeCustomer
 }

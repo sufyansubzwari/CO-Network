@@ -14,7 +14,7 @@ const Separator = styled.div`
   width: 100%;
   opacity: 0.5;
   background-color: ${props =>
-    props.theme ? props.theme.filter.separatorColor : "black"};
+    props.invert ? "#FFFFFF" : props.theme.filter.separatorColor};
 `;
 
 export default Separator;

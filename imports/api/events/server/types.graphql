@@ -17,11 +17,12 @@ type Events {
     image: String
     entity: String
     views: Int
-    tickets: [TicketsType]
+    tickets: [Tickets]
     eventType: ObjectType
     sponsors: [Sponsors]
     place: Places
     followerList: [String]
+    paymentAccount: String
 }
 
 type Attenders {
@@ -46,14 +47,6 @@ type Query {
 type myEvents {
     myEvents: [String]
     followings: [String]
-}
-
-type TicketsType{
-    name: String
-    description: String
-    type: String
-    available: Int
-    price: Float
 }
 
 input EventsInputSearch {
@@ -121,10 +114,11 @@ input EventsInput {
     category: [TagsInput]!
     attenders: AttendersInput!
     image: String
-    tickets: [TicketsTypeInput]
+    tickets: [TicketsInput]
     eventType: ObjectTypeInput
     place: PlacesInput
     sponsors: [SponsorsInput]
+    paymentAccount: String
 }
 
 input AttendersInput {
@@ -139,14 +133,6 @@ input ObjectTypeInput {
     name: String
     active: String
     number: Int
-}
-
-input TicketsTypeInput{
-    name: String
-    description: String
-    type: String
-    available: Int
-    price: Float
 }
 
 type Mutation {

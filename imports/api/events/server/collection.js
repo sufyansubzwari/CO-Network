@@ -87,34 +87,15 @@ const schema = new SimpleSchema({
     label: "The description of the event.",
     optional: true
   },
-  tickets: {
-    type: Array,
-    optional: true
-  },
-  "tickets.$": {
-    type: Object,
-    optional: true
-  },
-  "tickets.$.name": {
-    type: String,
-    optional: true
-  },
-  "tickets.$.description": {
-    type: String,
-    optional: true
-  },
-  "tickets.$.type": {
-    type: String,
-    optional: true
-  },
-  "tickets.$.available": {
-    type: Number,
-    optional: true
-  },
-  "tickets.$.price": {
-    type: Number,
-    optional: true
-  },
+    tickets: {
+        type: Array,
+        label: "The tickets of the event.",
+        optional: true
+    },
+    "tickets.$": {
+        type: String,
+        label: "The ticket id"
+    },
   eventType: {
     type: Object,
     optional: true
@@ -173,6 +154,11 @@ const schema = new SimpleSchema({
     label: "Viewed Count",
     optional: true,
     defaultValue: 1
+  },
+  paymentAccount: {
+    type: String,
+    label: "account id for send transaction when a tickets is sold.",
+    optional: true
   }
 });
 

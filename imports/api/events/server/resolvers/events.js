@@ -5,6 +5,7 @@ import Tags from "../../../tags";
 import Places from "../../../places";
 import Followers from "../../../followers";
 import Sponsors from "../../../sponsors";
+import Tickets from "../../../tickets";
 
 const Events = {};
 
@@ -26,6 +27,10 @@ Events.place = entity => {
 
 Events.sponsors = entity => {
   return Sponsors.service.getSponsorsByOwner(entity._id)
+}
+
+Events.tickets = entity => {
+  return Tickets.service.getTicketByOwner(entity._id)
 }
 
 Events.followerList = entity => {

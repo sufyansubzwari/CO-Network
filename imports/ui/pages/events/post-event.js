@@ -189,7 +189,7 @@ class PostEvent extends Component {
                 onBackgroundChange={this.handleBackgroundChange}
                 onUserPhotoChange={this.handleUserPhotoChange}
               >
-                <EventPreviewBody event={this.state.event} />
+                <EventPreviewBody isPost={true} isMobile={this.props.isMobile} event={this.state.event} />
               </Preview>
             );
           }}

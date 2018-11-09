@@ -1,8 +1,9 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import { Layout, Container } from "btech-layout";
+import { Container, Layout } from "btech-layout";
 import styled from "styled-components";
 import { ButtonList } from "../../components";
+import { Input } from "btech-base-forms-component";
 
 const STitle = styled.div`
   font-family: "Helvetica Neue LT Std";
@@ -12,6 +13,7 @@ const STitle = styled.div`
 `;
 
 const SText = styled.div`
+  font-size: 12px;
   color: #959595;
   overflow: hidden;
   white-space: normal;
@@ -42,7 +44,13 @@ class TicketsList extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      showOptions: false
+      showOptions: false,
+      quantity:
+        props.data &&
+        props.data.soldTickets &&
+        typeof props.data.soldTickets === "string"
+          ? props.data.soldTickets
+          : "0"
     };
     this.onMouseEnter = this.onMouseEnter.bind(this);
     this.onMouseLeave = this.onMouseLeave.bind(this);
@@ -54,6 +62,10 @@ class TicketsList extends Component {
 
   onMouseLeave = () => {
     this.setState({ showOptions: false });
+  };
+
+  handleQuantity = () => {
+    this.props.getQuantity && this.props.getQuantity(this.state.quantity);
   };
 
   render() {
@@ -71,7 +83,7 @@ class TicketsList extends Component {
           onMouseLeave={this.onMouseLeave}
           position={"relative"}
         >
-          {this.state.showOptions ? (
+          {this.state.showOptions && this.props.showOptions ? (
             <ButtonList
               options={[
                 {
@@ -90,10 +102,12 @@ class TicketsList extends Component {
             />
           ) : null}
           <Layout
-            colGap={"10px"}
+            colGap={"15px"}
             customTemplateColumns={
               props.hasQuantity
-                ? "minmax(100px, max-content) 1fr 70px auto"
+                ? !props.isMobile
+                  ? "minmax(100px, max-content) 1fr 70px 90px"
+                  : "minmax(100px, max-content) 70px 90px"
                 : "auto 1fr 70px"
             }
           >
@@ -103,17 +117,31 @@ class TicketsList extends Component {
                 {(props.data[props.countField] || 0) + " Available"}
               </SText>
             </Container>
-            <SContainer>
-              <SText>
-                {props.data[props.descriptionField] || "No description"}
-              </SText>
-            </SContainer>
+            {!this.props.isMobile ? (
+              <SContainer>
+                <SText>
+                  {props.data[props.descriptionField] || "No description"}
+                </SText>
+              </SContainer>
+            ) : null}
             <Container>
               <SText>Price</SText>
               <STitle fontSize={"24px"}>
                 {props.showPriceFields ? prices : "Free"}
               </STitle>
             </Container>
+            {this.props.hasQuantity ? (
+              <Container mt={"-20px"}>
+                <Input
+                  model={this.state}
+                  name={"quantity"}
+                  type={"number"}
+                  getValue={this.handleQuantity}
+                  max={this.props.maxQuantity}
+                  min={0}
+                />
+              </Container>
+            ) : null}
           </Layout>
         </SItemContainer>
       </Container>
@@ -132,7 +160,8 @@ TicketsList.defaultProps = {
   moneySymbol: "$",
   showPriceFields: true,
   maxField: "max",
-  descriptionField: "description"
+  descriptionField: "description",
+  showOptions: true
 };
 
 TicketsList.propTypes = {
@@ -149,7 +178,10 @@ TicketsList.propTypes = {
   background: PropTypes.string,
   onEdit: PropTypes.func,
   onDelete: PropTypes.func,
-  hasQuantity: PropTypes.bool
+  hasQuantity: PropTypes.bool,
+  showOptions: PropTypes.bool,
+  getQuantity: PropTypes.func,
+  maxQuantity: PropTypes.number
 };
 
 export default TicketsList;

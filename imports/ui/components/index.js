@@ -35,6 +35,9 @@ import ButtonList from "./ButtonList/ButtonList";
 import InfoChatBox from "./InfoChatBox/InfoChatBox";
 import SelectionMarker from "./SelectionMarker/SelectionMarker";
 import OrgStatusIcon from "./OrgStatusIcon/OrgStatusIcon";
+import InfoArea from "./InfoArea/InfoArea";
+import PaymentCard from "./PaymentCard/PaymentCard";
+import PaymentItemList from "./PaymentCard/PaymentItemList";
 
 // layouts
 import InternalLayout from "../layouts/InternalLayout/InternalLayout";
@@ -83,5 +86,8 @@ export {
   ButtonList,
   InfoChatBox,
   SelectionMarker,
-  OrgStatusIcon
+  OrgStatusIcon,
+  InfoArea,
+  PaymentCard,
+  PaymentItemList
 };

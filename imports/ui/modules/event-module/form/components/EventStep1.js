@@ -27,14 +27,14 @@ class EventStep1 extends Component {
     this.state = {
       event: this.props.data,
       category: EVENT_TYPE,
-      dateFormat: lowResolution ? "MM/DD/YY HH:mm A" : "MM/DD/YYYY HH:mm A"
+      dateFormat: lowResolution ? "MM/DD/YY" : "MM/DD/YYYY"
     };
   }
 
   componentDidMount() {
     window.addEventListener('resize', () => {
       const lowResolution = this.isMobile() || window.document.body.clientWidth <= 1440;
-      this.setState({dateFormat: lowResolution ? "MM/DD/YY HH:mm A" : "MM/DD/YYYY HH:mm A"});
+      this.setState({dateFormat: lowResolution ? "MM/DD/YY" : "MM/DD/YYYY"});
     });
     if (this.props.data && this.props.data.category) {
       this.handleCategory(this.props);

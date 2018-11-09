@@ -38,11 +38,13 @@ query GetEvents($limit: Int, $filter: String, $events: EventsInputSearch) {
       max
     }
     tickets{
+      _id
       name
       description
       available
       type
       price
+      sold
     }
     entity
     views
@@ -85,6 +87,7 @@ query GetEvents($limit: Int, $filter: String, $events: EventsInputSearch) {
       }
     }
     followerList
+    paymentAccount
   }
 }
 

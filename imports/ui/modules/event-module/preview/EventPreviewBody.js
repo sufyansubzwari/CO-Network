@@ -1,5 +1,5 @@
 import React from "react";
-import ReactDOM from "react-dom";
+import _ from "lodash";
 import { Container, Layout } from "btech-layout";
 import {
   Dates,
@@ -9,33 +9,51 @@ import {
   Text,
   Title
 } from "../../../components/Preview/components/index";
+import { Button } from "btech-base-forms-component";
 import Separator from "../../../components/FiltersContainer/Separator";
-import _ from "lodash";
+import TicketsList from "../../../components/Tickets/TicketsList";
+import StrideComponent from "./components/StrideComponent";
+import PaypalComponent from "./components/PayPalComponent";
+import TotalMoney from "./components/TotalMoney";
+import TicketSold from "./components/TicketSoldItem";
 import { FollowAction } from "../../../apollo-client/follow";
 import { Mutation, Query } from "react-apollo";
 import { userQuery } from "../../../apollo-client/user";
 import { GetSpeakers, GetSponsors } from "../../../apollo-client/sponsor/index";
+import { GetTickets } from "../../../apollo-client/tickets";
 import SpeakerCard from "./components/speaker";
 import { PlaceHolder } from "btech-placeholder-component";
 import { MapSection } from "../../../components/Preview/components";
+import { Email } from "../../../services/index";
+import moment from "moment/moment";
+import styled from "styled-components";
+
+const Cancel = styled(Button)`
+  opacity: 0.5;
+  color: #ffffff;
+`;
 
 class EventPreviewBody extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      event: props.event ? props.event : {}
+      event: props.event ? props.event : {},
+      buyTickets: true,
+      soldTickets: []
     };
 
     this.SummarySection = React.createRef();
     this.VenueSection = React.createRef();
     this.SponsorSection = React.createRef();
     this.SpeakerSection = React.createRef();
+    this.handlePayAction = this.handlePayAction.bind(this);
   }
 
   componentWillReceiveProps(nextProps) {
     if (nextProps.event) {
       this.setState({
-        event: nextProps.event
+        event: nextProps.event,
+        buyTickets: true
       });
     }
     if (nextProps.activePreview !== this.props.activePreview) {
@@ -75,6 +93,68 @@ class EventPreviewBody extends React.Component {
         follow: follow
       }
     });
+  };
+
+  handleQuantityChanged = (tickets, index, value) => {
+    let soldTickets = this.state.soldTickets;
+    if (tickets && tickets[index]) {
+      const exists = soldTickets.findIndex(
+        item => item._id === tickets[index]._id
+      );
+      if (exists > -1) soldTickets[exists].soldTickets = Number(value);
+      else
+        soldTickets.push({
+          _id: tickets[index]._id,
+          soldTickets: Number(value)
+        });
+      this.setState({
+        soldTickets: soldTickets
+      });
+    }
+  };
+
+  handleBuyTicket = () => {
+    this.setState({
+      buyTickets: !this.state.buyTickets
+    });
+  };
+
+  handlePayAction = (obj, refetch) => {
+    const startDate = this.state.event.startDate;
+    const endDate = this.state.event.endDate;
+
+    const date =
+      moment(startDate).format("MMM DD" || "MMM DD h:mm A") +
+      " - " +
+      moment(endDate).format("ll" || "MMM DD h:mm A");
+    const boughtTickets =
+      this.state.event.tickets &&
+      this.state.event.tickets.length > 0 &&
+      this.state.event.tickets.filter(
+        item => item.soldTickets && item.soldTickets > 0
+      );
+
+    const tickets =
+      boughtTickets &&
+      boughtTickets.length &&
+      boughtTickets.map(tick => `${tick.soldTickets} x ${tick.name}\n`);
+
+    let data = {
+      username: obj.name,
+      event: this.state.event.title,
+      date: date,
+      tickets: tickets,
+      linkGoogle: "www.wikipedia.org"
+    };
+    this.setState(
+      {
+        buyTickets: true
+      },
+      () => {
+        refetch && refetch();
+      }
+    );
+    Email.sendEmailPayment("COnetwork", obj.email, "Payment", data);
   };
 
   renderSummarySection = () => {
@@ -117,7 +197,11 @@ class EventPreviewBody extends React.Component {
           height={35}
           width={300}
         >
-          <TagsAdd onSelectTag={this.props.onSelectTag} header={"Event Category"} tags={category} />
+          <TagsAdd
+            onSelectTag={this.props.onSelectTag}
+            header={"Event Category"}
+            tags={category}
+          />
         </PlaceHolder>
         <PlaceHolder
           loading={!event.description && !event._id}
@@ -127,6 +211,132 @@ class EventPreviewBody extends React.Component {
           <Text header={"Description"} text={event.description} />
         </PlaceHolder>
       </PreviewSection>
+    ) : null;
+  };
+
+  renderTicketSection = (ticketsList, refetch) => {
+    const event = this.state.event;
+    const list = JSON.parse(JSON.stringify(ticketsList));
+    const soldTickets = this.state.soldTickets;
+    let tickets = list.map(itm => {
+      const tic = soldTickets.find(item => item._id === itm._id);
+      return tic ? Object.assign(tic, itm) : itm;
+    });
+
+    const canRender = !event._id || (tickets && tickets.length > 0);
+
+    let totalToPay = 0;
+    const boughtTickets =
+      tickets &&
+      tickets.length > 0 &&
+      tickets.filter(item => item.soldTickets && item.soldTickets > 0);
+    boughtTickets &&
+      boughtTickets.length > 0 &&
+      boughtTickets.map(
+        item =>
+          item.soldTickets && (totalToPay += item.price * item.soldTickets)
+      );
+    return canRender ? (
+      this.state.buyTickets ? (
+        <PreviewSection title={"Tickets"} previewRef={this.SummarySection}>
+          <PlaceHolder
+            loading={(!tickets || !tickets.length) && !event._id}
+            height={35}
+            width={300}
+          >
+            {tickets && tickets.length > 0 ? (
+              <form
+                onSubmit={e => {
+                  e.preventDefault();
+                  e.stopPropagation();
+                  this.handleBuyTicket();
+                }}
+              >
+                <Container>
+                  {tickets.map((ticket, index) => {
+                    const isPaid = ticket.type === "paid";
+                    return (
+                      <Container key={index} mb={10}>
+                        <TicketsList
+                          isMobile={this.props.isMobile}
+                          data={ticket}
+                          title={isPaid ? "Paid Tickets" : "Free Tickets"}
+                          showPriceFields={isPaid}
+                          showOptions={false}
+                          hasQuantity={!this.props.isPost}
+                          getQuantity={value =>
+                            this.handleQuantityChanged(
+                              ticketsList,
+                              index,
+                              value
+                            )
+                          }
+                          maxQuantity={ticket.available}
+                        />
+                      </Container>
+                    );
+                  })}
+                  {!this.props.isPost ? (
+                    <Layout customTemplateColumns={"1fr auto"}>
+                      <div />
+                      <Button
+                        disabled={!boughtTickets || !boughtTickets.length}
+                        type={"submit"}
+                      >
+                        {"Buy Ticket"}
+                      </Button>
+                    </Layout>
+                  ) : null}
+                </Container>
+              </form>
+            ) : null}
+          </PlaceHolder>
+        </PreviewSection>
+      ) : (
+        <Container>
+          <PreviewSection invertColor={true} title={"Summary"}>
+            <Layout
+              colGap={"10px"}
+              mdCustomTemplateColumns={"1fr 246px"}
+              customTemplateColumns={"1fr 140px"}
+            >
+              <Layout rowGap={"10px"}>
+                {boughtTickets &&
+                  boughtTickets.length > 0 &&
+                  boughtTickets.map((ticket, index) => {
+                    return (
+                      <TicketSold
+                        key={index}
+                        quantity={ticket.soldTickets}
+                        ticketName={ticket.name}
+                        ticketPrice={ticket.price}
+                      />
+                    );
+                  })}
+              </Layout>
+              <Container background={"#3E4148"}>
+                <TotalMoney money={totalToPay} />
+              </Container>
+            </Layout>
+          </PreviewSection>
+          <Separator invert />
+          <PreviewSection invertColor={true} title={"Payment Method"}>
+            <StrideComponent
+              totalToPay={totalToPay}
+              boughtTickets={boughtTickets}
+              onPayAction={obj => this.handlePayAction(obj, refetch)}
+              curUser={this.props.curUser}
+            />
+            <PaypalComponent totalToPay={totalToPay} disabled={true} />
+            <Layout customTemplateColumns={"1fr auto"}>
+              <div />
+              <Cancel secondary={true} onClick={this.handleBuyTicket}>
+                {"Back"}
+              </Cancel>
+            </Layout>
+          </PreviewSection>
+        </Container>
+      )
     ) : null;
   };
 
@@ -490,39 +700,24 @@ class EventPreviewBody extends React.Component {
   };
 
   render() {
-    let tickets = this.state.event.tickets
-      ? this.state.event.tickets.map((ticket, index) => {
-          return ticket.type === "paid" ? (
-            <Container key={index}>
-              <Layout templateColumns={3}>
-                <Text header={"Ticket Name"} text={ticket.name} />
-                <Text header={"Available"} text={`${ticket.available || 0}`} />
-                <Text
-                  header={"Price Range"}
-                  text={`${ticket.min} - ${ticket.max}`}
-                />
-              </Layout>
-              {ticket.description ? (
-                <Text header={"Ticket Description"} text={ticket.description} />
-              ) : null}
-            </Container>
-          ) : (
-            <Container key={index}>
-              <Layout templateColumns={3}>
-                <Text header={"Ticket Name"} text={ticket.name} />
-                <Text header={"Available"} text={`${ticket.available || 0}`} />
-                <div />
-              </Layout>
-              {ticket.description ? (
-                <Text header={"Ticket Description"} text={ticket.description} />
-              ) : null}
-            </Container>
-          );
-        })
-      : [];
     return (
       <Layout mdRowGap={"20px"} rowGap={"10px"}>
         {this.renderSummarySection()}
+        {this.state.event && this.state.event._id ? (
+          <Query
+            fetchPolicy={"cache-and-network"}
+            query={GetTickets}
+            variables={{
+              tickets: { owner: this.state.event._id }
+            }}
+          >
+            {({ loading, error, data, refetch }) => {
+              if (loading) return <div />;
+              if (error) return <div />;
+              return this.renderTicketSection(data.tickets, refetch);
+            }}
+          </Query>
+        ) : null}
         {this.renderVenueSection()}
         {this.renderSpeakerSection()}
         {this.renderSponsorsSection()}

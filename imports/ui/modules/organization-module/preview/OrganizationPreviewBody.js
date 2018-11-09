@@ -144,7 +144,7 @@ class OrganizationPreviewBody extends React.Component {
     const orgType = this.handleOrgType();
     let description = this.handleDescriptionTags();
     const reason = organization.reason;
-      const biography = {title : "Biography", text: reason && reason.bio};
+const biography = {title : "Biography", text: reason && reason.bio};
       const orgDefine = {title : "Organization Define", text: reason && reason.orgDefine};
     return (
       <PreviewSection previewRef={this.SummarySection}>

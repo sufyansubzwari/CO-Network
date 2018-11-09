@@ -11,7 +11,7 @@ const PreviewSectionContainer = styled(Layout)`
   }
 
   background: ${props =>
-    props.theme ? props.theme.preview.background : "white"};
+    props.invertColor ? props.theme.preview.backgroundInvert : props.theme.preview.background};
   border-top: ${props =>
     props.theme ? `1px solid ${props.theme.preview.borderColor}` : null};
   border-bottom: ${props =>
@@ -22,7 +22,7 @@ const STitle = styled.span`
   font-family: ${props =>
     props.theme ? props.theme.preview.section.titleFamily : "Roboto Mono"};
   color: ${props =>
-    props.theme ? props.theme.preview.section.titleColor : "black"};
+    props.invertColor ? props.theme.preview.section.titleColorInvert : props.theme.preview.section.titleColor};
   font-weight: bold;
   font-size: 16px;
 `;
@@ -55,9 +55,9 @@ class PreviewSection extends React.Component{
   render() {
     const {props} = this;
     return (
-      <PreviewSectionContainer innerRef={props.previewRef} rowGap={props.lineSeparation || "10px"}>
+      <PreviewSectionContainer invertColor={this.props.invertColor} innerRef={props.previewRef} rowGap={props.lineSeparation || "10px"}>
         {props.title || props.number ? <Container>
-          {props.title ? <STitle>{props.title}</STitle> : null}
+          {props.title ? <STitle invertColor={this.props.invertColor}>{props.title}</STitle> : null}
           {props.number ? <Number>({props.number})</Number> : null}
         </Container> : null}
         {props.children}
@@ -72,5 +72,6 @@ PreviewSection.propTypes = {
   title: PropsTypes.string,
   lineSeparation: PropsTypes.string,
   number: PropsTypes.number,
-  previewRef: PropsTypes.any
+  previewRef: PropsTypes.any,
+  invertColor: PropsTypes.bool
 };

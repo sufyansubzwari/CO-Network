@@ -3,10 +3,11 @@ import PropTypes from "prop-types";
 import { Container, Layout } from "btech-layout";
 import TicketItem from "./TicketItem";
 import TicketsList from "./TicketsList";
-import { ButtonArea } from "../../components";
-import { ticketsTypes } from "./options.constant";
+import { ButtonArea, InfoArea } from "../../components";
+import { ticketsTypes, ticketCharge } from "./options.constant";
 import { CheckBox } from "btech-base-forms-component";
 import styled from "styled-components";
+import links from "../../constants/links.constant";
 
 /**
  * @module Data
@@ -19,16 +20,14 @@ const STitle = styled.div`
   padding-bottom: 5px;
 `;
 
-const SCheckBox = styled.div`
-  padding: 20px;
-  border-radius: 3px;
-  background-color: #ededed;
-  margin-bottom: 10px;
-  color: #32363d;
-  border-top-right-radius: 20px;
+const SText = styled.div`
+  color: #ffffff;
+  font-family: ${props =>
+    props.helvetica ? "Helvetica Neue LT Std" : "Roboto Mono"};
+  font-size: ${props => props.fontSize || "12px"};
   ${props =>
-    props.radiusBR ? "border-bottom-right-radius: 20px;" : ""} ${props =>
-    props.radiusBL ? "border-bottom-left-radius: 20px;" : ""};
+    props.flex ? `display: flex; align-items: baseline;` : ""} ${props =>
+    props.margin ? `margin: ${props.margin};` : null};
 `;
 
 class TicketTypes extends Component {
@@ -98,25 +97,61 @@ class TicketTypes extends Component {
         <Layout rowGap={"10px"}>
           <Container mt={"10px"}>
             <STitle>Selling Tickets</STitle>
-            <SCheckBox
+            <InfoArea
+              backgroundImage={
+                "linear-gradient(90deg, #E826F9 0%, #F92672 100%)"
+              }
+              radiusTR
+            >
+              <SText margin={"margin-bottom: 15px;"}>
+                We charge a small processing fee for every ticket sold on our
+                platform. The CO Network is incentivised to increase your ticket
+                sales, we only get paid when we support your event successfully.
+              </SText>
+              <SText flex>
+                <SText fontSize={"20px"} helvetica margin={"0 5px 0 0"}>
+                  {ticketCharge}% of ticket sales
+                </SText>
+                <SText>*Includes payment processing</SText>
+              </SText>
+            </InfoArea>
+            <InfoArea
+              width={"fit-content"}
               radiusBL={!this.state.acceptFee && !this.state.tickets.length > 0}
               radiusBR={!this.state.tickets.length > 0}
+              backgroundColor={"#EDEDED"}
+              padding={"12px 20px"}
             >
               <CheckBox
                 active={this.state.acceptFee}
                 onSelected={this.handleFee}
-                text={
-                  "We charge a small processing fee for every ticket sold on our platform. The CO Network is incentivised to increase your ticket sales, we only get paid when we support your event successfully."
-                }
-              />
-            </SCheckBox>
+              >
+                <div>
+                  I agree to the CO Network and{" "}
+                  <a
+                    href={links.sellingTerms.link}
+                    target={links.sellingTerms.target}
+                    style={{ color: links.sellingTerms.target }}
+                  >
+                    Selling Terms
+                  </a>{" "}
+                  and{" "}
+                  <a
+                    href={links.userTerms.link}
+                    target={links.userTerms.target}
+                    style={{ color: links.userTerms.target }}
+                  >
+                    User Terms
+                  </a>
+                </div>
+              </CheckBox>
+            </InfoArea>
             {this.state.tickets.map((ticket, index) => {
               const isPaid = ticket.type === "paid";
               return (
                 <Container key={index} mb={10}>
                   {this.state.editIndex === index ? (
                     <TicketItem
-
                       title={isPaid ? "Paid Ticket" : "Free Ticket"}
                       isPaid={isPaid}
                       data={this.state.editIndex === index ? { ...ticket } : {}}

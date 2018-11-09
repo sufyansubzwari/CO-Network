@@ -4,12 +4,12 @@ import {
   EventStep1,
   EventStep2,
   EventStep3,
-  EventStep4,
-  EventStep5
+  EventStep4
 } from "./components/index";
 import { MlWizardForm, WizardStepForm } from "btech-base-forms-component";
 import PropTypes from "prop-types";
 import moment from "moment";
+import PaymentsOptions from "../../payment-module/paymentOptions";
 
 /**
  * @module Event
@@ -57,16 +57,16 @@ class EventForm extends Component {
           this.props.handleChangeEvent(event, true)
       );
     }
-    if(!this.state.event.place){
+    if (!this.state.event.place) {
       let event = this.state.event;
       event.place = {
         location: {
           address: "",
-          location: {lat: "", lng: ""},
+          location: { lat: "", lng: "" },
           fullLocation: {}
         }
       };
-      this.setState({event: event})
+      this.setState({ event: event });
     }
   }
 
@@ -107,11 +107,11 @@ class EventForm extends Component {
         onCancel={() => this.props.onCancel && this.props.onCancel()}
       >
         {/*<WizardStepForm title={"Hosting Organization"} isValid>*/}
-          {/*<EventStep0*/}
-            {/*curUser={this.props.curUser}*/}
-            {/*data={event}*/}
-            {/*onChange={event => this.handleChange(event, 0)}*/}
-          {/*/>*/}
+        {/*<EventStep0*/}
+        {/*curUser={this.props.curUser}*/}
+        {/*data={event}*/}
+        {/*onChange={event => this.handleChange(event, 0)}*/}
+        {/*/>*/}
         {/*</WizardStepForm>*/}
         <WizardStepForm title={"Event Details"} isValid>
           <EventStep1
@@ -137,12 +137,13 @@ class EventForm extends Component {
             onChange={event => this.handleChange(event, 3)}
           />
         </WizardStepForm>
-        {/*<WizardStepForm title={"Receive Payments"} isValid>*/}
-        {/*<EventStep5*/}
-        {/*data={event}*/}
-        {/*onChange={event => this.handleChange(event)}*/}
-        {/*/>*/}
-        {/*</WizardStepForm>*/}
+        <WizardStepForm title={"Payments Options"} isValid>
+          <PaymentsOptions
+            curUser={this.props.curUser}
+            event={event}
+            onChange={event => this.handleChange(event, 3)}
+          />
+        </WizardStepForm>
       </MlWizardForm>
     );
   }

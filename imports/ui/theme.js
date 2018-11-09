@@ -139,9 +139,11 @@ const preview = {
   section: {
     titleFamily: "Helvetica Neue LT Std",
     titleColor: "#000000",
+    titleColorInvert: "#FFFFFF"
   },
   borderColor: "#DBDBDB",
   background: "#F9F9FB",
+  backgroundInvert : "#32363D"
 };
 
 const filter = {

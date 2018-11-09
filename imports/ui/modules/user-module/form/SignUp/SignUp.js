@@ -17,7 +17,7 @@ import {
   SIGNUP_OPTIONS
 } from "../../../../constants";
 import { theme } from "./../../../../theme";
-import links from "./links.constant";
+import links from "../../../../constants/links.constant";
 import { connect } from "react-redux";
 import UserRedux from "../../../../redux/user";
 import { Scrollbars } from "react-custom-scrollbars";

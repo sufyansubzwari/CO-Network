@@ -1,3 +1,4 @@
+import { Meteor } from "meteor/meteor";
 import { Accounts } from 'meteor/accounts-base';
 import Constants from '../../../api/constants';
 
@@ -12,6 +13,16 @@ const { SITE_BRAND, DOMAIN_NAME, SUPPORT_EMAIL } = Constants;
  * @see {@link http://docs.meteor.com/#/full/accounts_sendverificationemail}
  * @see {@link https://meteorhacks.com/server-side-rendering}
  */
+
+const protocol = Meteor.settings.smtp.protocol;
+const username = Meteor.settings.smtp.username;
+const password = Meteor.settings.smtp.password;
+const server = Meteor.settings.smtp.server;
+const port = Meteor.settings.smtp.port;
+
+console.log(`${protocol}://${username}:${password}${server}:${port}`);
+process.env.MAIL_URL = `${protocol}://${username}:${password}${server}:${port}`;
+
 Accounts.emailTemplates.siteName = SITE_BRAND;
 Accounts.emailTemplates.from = `${SITE_BRAND} <no-reply@${DOMAIN_NAME}>`;
 Accounts.emailTemplates.verifyEmail = {

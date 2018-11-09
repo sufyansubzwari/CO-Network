@@ -1,0 +1,12 @@
+
+query GetTickets($tickets: TicketsInput) {
+  tickets(tickets: $tickets) {
+      _id
+      name
+      description
+      available
+      type
+      price
+      sold
+  }
+}

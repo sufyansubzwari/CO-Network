@@ -7,6 +7,7 @@ import {
   SixthStep,
   ThirdStep
 } from "./Steps/index";
+import PaymentsOption from '../../payment-module/paymentOptions';
 import { MlWizardForm, WizardStepForm } from "btech-base-forms-component";
 import PropTypes from "prop-types";
 
@@ -97,6 +98,9 @@ class UserForm extends Component {
             data={this.state.user}
             onChange={user => this.handleChange(user)}
           />
+        </WizardStepForm>
+        <WizardStepForm title={"Payments Options"} isValid>
+          <PaymentsOption/>
         </WizardStepForm>
       </MlWizardForm>
     );

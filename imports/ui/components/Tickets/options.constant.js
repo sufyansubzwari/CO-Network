@@ -8,3 +8,5 @@ export const ticketsTypes = [
     type: "paid"
   }
 ];
+// tickets charge percent
+export const ticketCharge = 6;
