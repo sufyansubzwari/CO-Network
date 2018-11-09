@@ -31,16 +31,6 @@ export default (ProfessionalExperience = function(props) {
               required={true}
             />
           </Layout>
-          <Layout mdTemplateColumns={2}>
-            <Select
-              placeholderText={"Level"}
-              model={props.model}
-              name={"level"}
-              options={EXPERIENCE_LEVEL}
-              required={true}
-            />
-            <div />
-          </Layout>
           <TextArea
             placeholderText={"What did you help to discover or create?"}
             name={"help"}

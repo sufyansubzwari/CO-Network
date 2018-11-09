@@ -381,7 +381,6 @@ class UserPreviewBody extends React.Component {
                   key={index}
                   position={item.position}
                   organization={item.name}
-                  level={item.level && item.level.label}
                   description={item.help}
                 />
               ))}

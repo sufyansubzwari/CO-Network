@@ -121,12 +121,6 @@ class ProfessionalExperiencePreview extends React.Component {
             <OrgStatusIcon status={this.props.checkedOrganization} />
             <div />
           </SOrganization>
-          <Layout customTemplateColumns={"11px auto"} colGap={"3px"}>
-            <SVGContainer>{this.getLevelSvg(this.props.level)}</SVGContainer>
-            <SOrganization>
-              {this.props.level && this.props.level.toUpperCase()}
-            </SOrganization>
-          </Layout>
         </Container>
         <Container>
           <Text>{this.props.description}</Text>
@@ -151,7 +145,6 @@ ProfessionalExperiencePreview.defaultProps = {};
 
 ProfessionalExperiencePreview.propTypes = {
   description: PropsTypes.string,
-  level: PropsTypes.string,
   organization: PropsTypes.string,
   position: PropsTypes.string,
   checkedOrganization: PropsTypes.bool,
