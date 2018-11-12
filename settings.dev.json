@@ -50,7 +50,7 @@
     "auth0":{
       "domain": "co-mlsociety.auth0.com",
       "clientID": "FnbCFhjJzvg5eXqCjQajFPMXKm49zEAu",
-      "redirectUri": "http://localhost:3000/",
+      "redirectUri": "http://localhost:3000",
       "audience": "https://co-mlsociety.auth0.com/api/v2/"
     },
     "stripe":{

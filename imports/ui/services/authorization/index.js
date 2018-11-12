@@ -8,7 +8,8 @@ class Authorization extends react.Component {
   constructor() {
     super();
     this.settings = Meteor.settings.public.auth0;
-    this.redirectLink = `${window.location.origin}`;
+    this.redirectLink =
+      `${window.location.origin}` || this.settings.redirectUri;
     this.auth0 = new WebAuth({
       domain: this.settings.domain,
       clientID: this.settings.clientID,
