@@ -5,6 +5,7 @@ import {
   Dates,
   Location,
   PreviewSection,
+  SalaryRangePreview,
   TagsAdd,
   Text,
   Title
@@ -27,7 +28,7 @@ import { MapSection } from "../../../components/Preview/components";
 import { Email } from "../../../services/index";
 import moment from "moment/moment";
 import styled from "styled-components";
-import {NotificationToast} from "../../../services";
+import { NotificationToast } from "../../../services";
 
 const Cancel = styled(Button)`
   opacity: 0.5;
@@ -155,15 +156,16 @@ class EventPreviewBody extends React.Component {
         refetch && refetch();
       }
     );
-    const options = {from : "COnetwork", to: obj.email, subject: "Payment", data}
-    Email.sendEmailPayment(options, (error, response) =>
-    {
-        if(error) {
-            NotificationToast.error(
-                error.message
-            );
-            return
-        }
+    const options = {
+      from: "COnetwork",
+      to: obj.email,
+      subject: "Payment",
+      data
+    };
+    Email.sendEmailPayment(options, (error, response) => {
+      if (error) {
+        NotificationToast.error(error.message);
+      }
     });
   };
 
@@ -177,10 +179,12 @@ class EventPreviewBody extends React.Component {
       [];
     category = _.uniqBy(category.concat(others), "label");
     category = category.map(item => ({ ...item, active: true }));
+    const { min, max } = event.attenders || {};
 
     const canRender =
       !event._id ||
       event.title ||
+      (min && max) ||
       event.startDate ||
       event.endDate ||
       event.description;
@@ -211,6 +215,18 @@ class EventPreviewBody extends React.Component {
             onSelectTag={this.props.onSelectTag}
             header={"Event Category"}
             tags={category}
+          />
+        </PlaceHolder>
+        <PlaceHolder
+          loading={(!min || !max) && !event._id}
+          height={50}
+          width={300}
+        >
+          <SalaryRangePreview
+            label={"Expected Attendees"}
+            symbol={""}
+            min={event.attenders ? min : null}
+            max={event.attenders ? max : null}
           />
         </PlaceHolder>
         <PlaceHolder

@@ -1,7 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 import PropsTypes from "prop-types";
-import {Container, Layout, mixins} from "btech-layout";
+import { Container, Layout, mixins } from "btech-layout";
 import MaterialIcon from "react-material-iconic-font";
 
 const SContainer = styled(Layout)`
@@ -36,29 +36,44 @@ const Max = styled.span`
 `;
 
 const SText = styled(Container)`
-    font-size: 12px;
-    margin-bottom: 5px;
-`
+  font-size: 12px;
+  margin-bottom: 5px;
+`;
 
 SalaryRangePreview = props => {
   return props.min || props.max ? (
     <Container>
-        {props.label ? <SText>{props.label}</SText> : null}
+      {props.label ? <SText>{props.label}</SText> : null}
       <SContainer>
-        {props.min ? <Min>${props.min}</Min> : null}
+        {props.min ? (
+          <Min>
+            {props.symbol}
+            {props.min}
+          </Min>
+        ) : null}
         <Icon>
           <MaterialIcon type={"swap"} />
         </Icon>
-        {props.max ? <Max>${props.max}</Max> : null}
+        {props.max ? (
+          <Max>
+            {props.symbol}
+            {props.max}
+          </Max>
+        ) : null}
       </SContainer>
     </Container>
   ) : null;
 };
 
-export default SalaryRangePreview;
+SalaryRangePreview.defaultProps = {
+  symbol: "$"
+};
 
 SalaryRangePreview.propTypes = {
   min: PropsTypes.number,
+  symbol: PropsTypes.string,
   max: PropsTypes.number,
   label: PropsTypes.string
 };
+
+export default SalaryRangePreview;
