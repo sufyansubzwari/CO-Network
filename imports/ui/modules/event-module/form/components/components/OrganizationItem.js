@@ -3,7 +3,11 @@ import { Container, Layout } from "btech-layout";
 import PropTypes from "prop-types";
 import TextAreaButton from "../assets/TextAreaButton";
 import { theme } from "../../../../../theme";
-import { SelectionMarker, OrgStatusIcon } from "../../../../../components";
+import {
+  SelectionMarker,
+  OrgStatusIcon,
+  ButtonList
+} from "../../../../../components";
 import styled from "styled-components";
 import { HIcon } from "btech-horizantal-navbar";
 
@@ -68,6 +72,17 @@ const OrganizationItem = function(props) {
         props.onSelect && props.onSelect(props.data);
       }}
     >
+      {props.showOptions ? (
+        <ButtonList
+          options={[
+            {
+              action: () => props.onDelete && props.onDelete(props.data),
+              text: "Delete",
+              icon: "delete"
+            }
+          ]}
+        />
+      ) : null}
       <Layout customTemplateColumns={"60px 1fr"} colGap={"10px"}>
         <SImage>
           <HIcon
@@ -102,7 +117,9 @@ OrganizationItem.defaultProps = {
 OrganizationItem.propTypes = {
   data: PropTypes.object,
   isSelected: PropTypes.bool,
-  onSelect: PropTypes.func
+  showOptions: PropTypes.bool,
+  onSelect: PropTypes.func,
+  onDelete: PropTypes.func
 };
 
 export default OrganizationItem;

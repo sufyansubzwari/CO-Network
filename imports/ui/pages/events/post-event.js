@@ -8,8 +8,8 @@ import { Mutation } from "react-apollo";
 import _ from "lodash";
 import { GetSponsors } from "../../apollo-client/sponsor";
 import { ConfirmPopup, NotificationToast } from "../../services";
-import {connect} from "react-redux";
-import {setFilterEntity, toggleSideBar} from "../../actions/SideBarActions";
+import { connect } from "react-redux";
+import { setFilterEntity, toggleSideBar } from "../../actions/SideBarActions";
 
 /**
  * @module Events
@@ -75,15 +75,16 @@ class PostEvent extends Component {
       redirect: !this.state.formChange || !isEditMode
     });
     let queryEvent = Object.assign({}, query);
+    // categories
     queryEvent.category = _.uniq(queryEvent.others.concat(queryEvent.category));
     delete queryEvent.others;
-    //todo: remove when location improvement
+    // place and localization //todo: remove when location improvement
     queryEvent.place &&
     queryEvent.place.location &&
     queryEvent.place.location.fullLocation
       ? delete queryEvent.place.location.fullLocation
       : null;
-
+    // sponsors && speakers
     let sponsors =
       queryEvent &&
       queryEvent.sponsors &&
@@ -93,10 +94,18 @@ class PostEvent extends Component {
         user: !item.user ? null : item.user._id ? item.user._id : item.user
       }));
     if (sponsors) queryEvent.sponsors = sponsors;
-
+    // organization
+    if (query.organization) {
+      queryEvent.organization = Object.assign({}, query.organization);
+      delete queryEvent.organization.views;
+      delete queryEvent.organization.entity;
+      if (queryEvent.organization.isNew) {
+        delete queryEvent.organization._id;
+        delete queryEvent.organization.isNew;
+      }
+    }
+    // followers
     if (queryEvent.followerList) delete queryEvent.followerList;
-    queryEvent.organization =
-      queryEvent.organization && queryEvent.organization._id;
     let event = { ...queryEvent };
     if (this.props.curUser) {
       event.owner = this.props.curUser._id;
@@ -104,9 +113,9 @@ class PostEvent extends Component {
     } else {
       NotificationToast.notify("warn", "You must be logged");
       this.props.toggleSideBar(
-          !this.props.profileSideBarIsOpen,
-          false,
-          !this.props.profileSideBarIsOpen
+        !this.props.profileSideBarIsOpen,
+        false,
+        !this.props.profileSideBarIsOpen
       );
     }
   }
@@ -151,15 +160,15 @@ class PostEvent extends Component {
           mutation={DeleteEvent}
         >
           {(deleteEvent, { eventDeleted }) => {
-            let eventImages = null;
-            if (
-              this.state.event &&
-              this.state.event.organization &&
-              this.state.event.organization.image
-            ) {
-              eventImages = [];
+            let eventImages = [];
+            if (this.state.event) {
               eventImages.push(null);
-              eventImages.push(this.state.event.organization.image);
+              if (this.state.event.organization)
+                eventImages.push(
+                  this.state.event.organization.image
+                    ? this.state.event.organization.image
+                    : "/images/nav/innovators.svg"
+                );
             }
             return (
               <Preview
@@ -189,7 +198,11 @@ class PostEvent extends Component {
                 onBackgroundChange={this.handleBackgroundChange}
                 onUserPhotoChange={this.handleUserPhotoChange}
               >
-                <EventPreviewBody isPost={true} isMobile={this.props.isMobile} event={this.state.event} />
+                <EventPreviewBody
+                  isPost={true}
+                  isMobile={this.props.isMobile}
+                  event={this.state.event}
+                />
               </Preview>
             );
           }}
@@ -200,21 +213,23 @@ class PostEvent extends Component {
 }
 
 const mapStateToProps = state => {
-    const { sideBarStatus } = state;
-    return {
-        addSidebarIsOpen: sideBarStatus.status && sideBarStatus.isAdd,
-        profileSideBarIsOpen: sideBarStatus.status && sideBarStatus.profile,
-    };
+  const { sideBarStatus } = state;
+  return {
+    addSidebarIsOpen: sideBarStatus.status && sideBarStatus.isAdd,
+    profileSideBarIsOpen: sideBarStatus.status && sideBarStatus.profile
+  };
 };
 
 const mapDispatchToProps = dispatch => {
-    return {
-        toggleSideBar: (status, isAdd, profile, notifications, messages) =>
-            dispatch(toggleSideBar(status, isAdd, profile, notifications, messages)),
-    };
+  return {
+    toggleSideBar: (status, isAdd, profile, notifications, messages) =>
+      dispatch(toggleSideBar(status, isAdd, profile, notifications, messages))
+  };
 };
 
-export default withRouter(connect(
+export default withRouter(
+  connect(
     mapStateToProps,
     mapDispatchToProps
-)(PostEvent));
+  )(PostEvent)
+);

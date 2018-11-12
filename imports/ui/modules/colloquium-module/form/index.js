@@ -66,7 +66,7 @@ class ColloquiumForm extends Component {
         showProgress
         inactiveColor={"#A0A0A0"}
       >
-        <WizardStepForm title={"Details"} isValid>
+        <WizardStepForm title={"Details"}>
           <FirstStep
             data={this.state.colloquium}
             onChange={colloquium => this.handleChange(colloquium)}

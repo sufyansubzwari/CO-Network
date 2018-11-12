@@ -22,7 +22,9 @@ class UserPhotoList extends React.Component {
 
   handleImage = image => {
     return image
-      ? image.startsWith("http") || image.startsWith("data:")
+      ? image.startsWith("http") ||
+        image.startsWith("/images") ||
+        image.startsWith("data:")
         ? image
         : Utils.getImageFromS3(image, "photo")
       : `/images/nav/${this.props.entity}.svg`;

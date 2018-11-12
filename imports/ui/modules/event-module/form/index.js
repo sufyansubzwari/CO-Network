@@ -24,6 +24,7 @@ class EventForm extends Component {
         category: [],
         others: [],
         title: "",
+        organizer: true,
         description: "",
         venueName: "",
         venueEmail: "",
@@ -36,9 +37,11 @@ class EventForm extends Component {
         },
         sponsors: [],
         tickets: []
-      }
+      },
+      createdOrganizations: []
     };
     this.handleChange = this.handleChange.bind(this);
+    this.isValidStep0 = this.isValidStep0.bind(this);
   }
 
   componentDidMount() {
@@ -76,6 +79,11 @@ class EventForm extends Component {
         event: nextProps.event
       });
     }
+    if (nextProps.createdOrganizations) {
+      this.setState({
+        createdOrganizations: nextProps.createdOrganizations
+      });
+    }
   }
 
   handleChange(event) {
@@ -87,13 +95,25 @@ class EventForm extends Component {
     );
   }
 
-  isValidStep1() {
+  handleChangeOrgAdded(organization) {
+    const list = this.state.createdOrganizations;
+    list.push(organization);
+    this.setState({ createdOrganizations: list });
+  }
+
+  handleOrgDeleted(index) {
+    const list = this.state.createdOrganizations;
+    list.splice(index, 1);
+    this.setState({ createdOrganizations: list });
+  }
+
+  isValidStep0() {
     const event = this.state.event;
-    return event && !!(event.category.length || event.others.length);
+    return event && event.organization;
   }
 
   render() {
-    const event = this.state.event;
+    const { event, createdOrganizations } = this.state;
     return (
       <MlWizardForm
         title={"Post a Event"}
@@ -101,43 +121,49 @@ class EventForm extends Component {
         showProgress
         onBackAction={() => this.props.onCancel && this.props.onCancel()}
         inactiveColor={"#A0A0A0"}
-        editMode={this.state.event && !!this.state.event._id}
+        editMode={event && !!event._id}
         edited={this.props.formChange}
         radioColor={"#000000"}
         onCancel={() => this.props.onCancel && this.props.onCancel()}
       >
-        {/*<WizardStepForm title={"Hosting Organization"} isValid>*/}
-        {/*<EventStep0*/}
-        {/*curUser={this.props.curUser}*/}
-        {/*data={event}*/}
-        {/*onChange={event => this.handleChange(event, 0)}*/}
-        {/*/>*/}
-        {/*</WizardStepForm>*/}
-        <WizardStepForm title={"Event Details"} isValid>
+        <WizardStepForm
+          title={"Hosting Organization"}
+          isValid={this.isValidStep0}
+        >
+          <EventStep0
+            curUser={this.props.curUser}
+            data={event}
+            orgAdded={createdOrganizations}
+            onOrgAdded={organization => this.handleChangeOrgAdded(organization)}
+            onOrgDeleted={index => this.handleOrgDeleted(index)}
+            onChange={event => this.handleChange(event)}
+          />
+        </WizardStepForm>
+        <WizardStepForm title={"Event Details"}>
           <EventStep1
             data={event}
-            onChange={event => this.handleChange(event, 0)}
+            onChange={event => this.handleChange(event)}
           />
         </WizardStepForm>
-        <WizardStepForm title={"Speaker & Sponsors"} isValid>
+        <WizardStepForm title={"Speaker & Sponsors"}>
           <EventStep2
             data={event}
-            onChange={event => this.handleChange(event, 1)}
+            onChange={event => this.handleChange(event)}
           />
         </WizardStepForm>
-        <WizardStepForm title={"Venue"} isValid>
+        <WizardStepForm title={"Venue"}>
           <EventStep3
             data={event}
-            onChange={event => this.handleChange(event, 2)}
+            onChange={event => this.handleChange(event)}
           />
         </WizardStepForm>
-        <WizardStepForm title={"Ticket Type"} isValid>
+        <WizardStepForm title={"Ticket Type"}>
           <EventStep4
             data={event}
-            onChange={event => this.handleChange(event, 3)}
+            onChange={event => this.handleChange(event)}
           />
         </WizardStepForm>
-        <WizardStepForm title={"Payments Options"} isValid>
+        <WizardStepForm title={"Payments Options"}>
           <PaymentsOptions
             curUser={this.props.curUser}
             event={event}

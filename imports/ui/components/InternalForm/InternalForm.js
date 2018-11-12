@@ -41,7 +41,10 @@ class InternalForm extends Component {
             <Layout rowGap={"5px"}>
               {this.props.children}
               <Container>
-                <Layout customTemplateColumns={"1fr auto auto"}>
+                <Layout
+                  customTemplateColumns={"1fr auto auto"}
+                  mdColGap={"20px"}
+                >
                   <div />
                   <Button
                     type={"button"}
@@ -60,17 +63,17 @@ class InternalForm extends Component {
                     <span style={{ paddingLeft: "5px" }}>Cancel</span>
                   </Button>
                   <Button
-                    secondary
                     type={"submit"}
                     role={"button"}
-                    color={"#000000"}
-                    border={"none"}
-                    hoverBackground={"transparent"}
-                    hoverColor={"initial"}
                     disabled={this.props.isLoading}
                   >
-                    <MaterialIcon spin={this.props.isLoading} type={this.props.isLoading ? "spinner" : "save"} />
-                    <SButtonText>{this.props.isLoading ? "Saving" : "Save" }</SButtonText>
+                    <MaterialIcon
+                      spin={this.props.isLoading}
+                      type={this.props.isLoading ? "spinner" : "save"}
+                    />
+                    <SButtonText>
+                      {this.props.isLoading ? "Saving" : "Save"}
+                    </SButtonText>
                   </Button>
                 </Layout>
               </Container>

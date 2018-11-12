@@ -90,19 +90,19 @@ class JobForm extends React.Component {
         onBackAction={() => this.props.onCancel && this.props.onCancel()}
         onCancel={() => this.props.onCancel && this.props.onCancel()}
       >
-        <WizardStepForm title={"Job Details"} isValid>
+        <WizardStepForm title={"Job Details"}>
           <FirstStep
             data={this.state.job}
             onChange={job => this.handleChange(job, 0)}
           />
         </WizardStepForm>
-        <WizardStepForm title={"Job Requirements"} isValid>
+        <WizardStepForm title={"Job Requirements"}>
           <SecondStep
             data={this.state.job}
             onChange={job => this.handleChange(job, 1)}
           />
         </WizardStepForm>
-        <WizardStepForm title={"Organizational Culture"} isValid>
+        <WizardStepForm title={"Organizational Culture"}>
           <ThirdStep
             data={this.state.job}
             onChange={job => this.handleChange(job, 2)}

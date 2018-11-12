@@ -14,10 +14,8 @@ import { ViewsCountUpdate } from "../../apollo-client/viewCount";
 import { withRouter } from "react-router-dom";
 import { cleanSearch, onSearchTags } from "../../actions/TopSearchActions";
 import { List } from "../general";
-import { ConfirmPopup } from "../../services";
+import { ConfirmPopup, Utils } from "../../services";
 import { setFilters } from "../../actions/SideBarActions";
-import {Utils} from "../../services"
-
 
 /**
  * @module Events
@@ -107,16 +105,19 @@ class ListEvents extends List {
     });
   }
 
-    handleCalendarEvent = (event) => {
-        let calendarEvent = {};
-        calendarEvent['title'] = event && event.title;
-        calendarEvent['description'] = event && event.description;
-        calendarEvent['location'] = Utils.instanceOf("place.location.address", event);
-        calendarEvent['startTime'] = event && event.startDate;
-        calendarEvent['endTime'] = event && event.endDate;
+  handleCalendarEvent = event => {
+    let calendarEvent = {};
+    calendarEvent["title"] = event && event.title;
+    calendarEvent["description"] = event && event.description;
+    calendarEvent["location"] = Utils.instanceOf(
+      "place.location.address",
+      event
+    );
+    calendarEvent["startTime"] = event && event.startDate;
+    calendarEvent["endTime"] = event && event.endDate;
 
-        return calendarEvent;
-    }
+    return calendarEvent;
+  };
 
   render() {
     //Todo: handle graphQL errors
@@ -124,7 +125,9 @@ class ListEvents extends List {
       this.props.data.loading &&
       (!this.props.data[this.entityName] ||
         !this.props.data[this.entityName].length);
-   const calendarEvent = this.handleCalendarEvent(this.state.selectedItem);
+    const calendarEvent = this.handleCalendarEvent(this.state.selectedItem);
+    const { selectedItem, activePreview } = this.state;
+    const { curUser } = this.props;
     return (
       <ListLayout
         {...this.props}
@@ -134,7 +137,7 @@ class ListEvents extends List {
         <Mutation key={"listComponent"} mutation={ViewsCountUpdate}>
           {(viewsUpdate, {}) => (
             <ItemsList
-              curUser={this.props.curUser}
+              curUser={curUser}
               key={"listComponent"}
               title={"Events"}
               data={this.props.data[this.entityName]}
@@ -144,17 +147,13 @@ class ListEvents extends List {
                 this.onChangeCard(item, key, viewsUpdate)
               }
               onSelectTag={(tag, index) => this.onSelectTag(tag, index)}
-              activePreview={this.state.activePreview}
+              activePreview={activePreview}
               previewOptions={this.state.previewOptions}
             />
           )}
         </Mutation>
-        <Mutation
-          // refetchQueries={["GetEvents", "GetMyEvents"]}
-          key={"rightSide"}
-          mutation={DeleteEvent}
-        >
-          {(deleteEvent, { eventDeleted }) => (
+        <Mutation key={"rightSide"} mutation={DeleteEvent}>
+          {deleteEvent => (
             <Mutation
               mutation={UpdateImageEvent}
               onError={error => this.errorOnBackgroundChange(error)}
@@ -166,24 +165,20 @@ class ListEvents extends List {
                 >
                   {followAction => {
                     const follow =
-                      this.props.curUser &&
-                      this.props.curUser._id &&
-                      this.state.selectedItem &&
-                      this.state.selectedItem.followerList &&
-                      this.state.selectedItem.followerList.indexOf(
-                        this.props.curUser._id
-                      ) > -1;
-                    let eventImages = null;
-                    if (
-                      this.state.selectedItem &&
-                      this.state.selectedItem.organization &&
-                      this.state.selectedItem.organization.image
-                    ) {
-                      eventImages = [];
+                      curUser &&
+                      curUser._id &&
+                      selectedItem &&
+                      selectedItem.followerList &&
+                      selectedItem.followerList.indexOf(curUser._id) > -1;
+                    let eventImages = [];
+                    if (selectedItem) {
                       eventImages.push(null);
-                      eventImages.push(
-                        this.state.selectedItem.organization.image
-                      );
+                      if (selectedItem.organization)
+                        eventImages.push(
+                          selectedItem.organization.image
+                            ? selectedItem.organization.image
+                            : "/images/nav/innovators.svg"
+                        );
                     }
                     return (
                       <Preview
@@ -199,9 +194,8 @@ class ListEvents extends List {
                             type: "text",
                             icon: "mail-reply",
                             text:
-                              this.state.selectedItem &&
-                              this.state.selectedItem.followerList
-                                ? this.state.selectedItem.followerList.length +
+                              selectedItem && selectedItem.followerList
+                                ? selectedItem.followerList.length +
                                   " Followers"
                                 : null
                           },
@@ -214,13 +208,13 @@ class ListEvents extends List {
                             text: !follow ? "Follow" : "Unfollow",
                             primary: true,
                             checkVisibility: () => {
-                              const element = this.state.selectedItem;
+                              const element = selectedItem;
                               return (
                                 element &&
                                 element._id &&
                                 element.owner &&
-                                this.props.curUser &&
-                                element.owner._id !== this.props.curUser._id
+                                curUser &&
+                                element.owner._id !== curUser._id
                               );
                             },
                             onClick: () =>
@@ -230,13 +224,13 @@ class ListEvents extends List {
                             text: "Edit",
                             icon: "edit",
                             checkVisibility: () => {
-                              const element = this.state.selectedItem;
+                              const element = selectedItem;
                               return (
                                 element &&
                                 element._id &&
                                 element.owner &&
-                                this.props.curUser &&
-                                element.owner._id === this.props.curUser._id
+                                curUser &&
+                                element.owner._id === curUser._id
                               );
                             },
                             onClick: () => {
@@ -247,39 +241,33 @@ class ListEvents extends List {
                             text: "Remove",
                             icon: "delete",
                             checkVisibility: () => {
-                              const element = this.state.selectedItem;
+                              const element = selectedItem;
                               return (
                                 element &&
                                 element._id &&
                                 element.owner &&
-                                this.props.curUser &&
-                                element.owner._id === this.props.curUser._id
+                                curUser &&
+                                element.owner._id === curUser._id
                               );
                             },
                             onClick: () => {
                               ConfirmPopup.confirmPopup(() => {
-                                this.removeEntity(
-                                  deleteEvent,
-                                  this.state.selectedItem
-                                );
+                                this.removeEntity(deleteEvent, selectedItem);
                               });
                             }
                           }
                         ]}
-                        data={this.state.selectedItem}
+                        data={selectedItem}
                         image={eventImages}
                         allowChangeAvatar={false}
                         allowChangeImages={
-                          this.state.selectedItem &&
-                          this.state.selectedItem.owner &&
-                          this.props.curUser &&
-                          this.state.selectedItem.owner._id ===
-                            this.props.curUser._id
+                          selectedItem &&
+                          selectedItem.owner &&
+                          curUser &&
+                          selectedItem.owner._id === curUser._id
                         }
                         backGroundImage={
-                          this.state.selectedItem
-                            ? this.state.selectedItem.image
-                            : null
+                          selectedItem ? selectedItem.image : null
                         }
                         onBackgroundChange={imageSrc =>
                           this.handleBackgroundChange(
@@ -289,13 +277,13 @@ class ListEvents extends List {
                         }
                       >
                         <EventPreviewBody
-                          curUser={this.props.curUser}
+                          curUser={curUser}
                           isMobile={this.props.isMobile}
-                          event={this.state.selectedItem}
+                          event={selectedItem}
                           onSelectTag={(tag, index) =>
                             this.onSelectTag(tag, index)
                           }
-                          activePreview={this.state.activePreview}
+                          activePreview={activePreview}
                         />
                       </Preview>
                     );

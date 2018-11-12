@@ -6,11 +6,13 @@ import TextAreaButton from "./assets/TextAreaButton";
 import OrganizationItem from "./components/OrganizationItem";
 import styled from "styled-components";
 import MaterialIcon from "react-material-iconic-font";
-import { graphql, Mutation } from "react-apollo";
-import { CreateOrg, GetOrgs } from "../../../../apollo-client/organization";
+import { graphql } from "react-apollo";
+import { GetOrgs } from "../../../../apollo-client/organization";
 import { InfoChatBox } from "../../../../components";
 import { STEP_TEXTS } from "./constants/StepsTexts";
 import SimpleOrgCreateForm from "./components/SimpleOrgCreateForm";
+import v1 from "uuid/v1";
+import _ from "lodash";
 
 const SYesNoOption = styled.span`
   margin-right: 5px;
@@ -40,24 +42,62 @@ const SLabel = styled.label`
 class EventStep0 extends Component {
   constructor(props) {
     super(props);
-
     this.state = {
       event: this.props.data,
       texts: STEP_TEXTS,
       orgSelected: this.props.data && this.props.data.organization,
       temporalData: null,
+      organizations: [],
       isFormOpen: false
     };
   }
 
-  componentWillMount() {}
-
-  componentWillReceiveProps(nextProps) {
-    if (nextProps.data && nextProps.data !== this.state.event)
-      this.setState({ event: nextProps.data });
+  componentDidMount() {
+    const { organizations } = this.props;
+    if (
+      organizations &&
+      !organizations.loading &&
+      organizations.organizations
+    ) {
+      const list = _.uniqBy(
+        this.state.organizations.concat(
+          organizations.organizations.map(e => e),
+          "_id"
+        )
+      );
+      this.setState({
+        organizations: list
+      });
+    }
   }
 
-  notifyParent(name, value, model) {
+  componentWillReceiveProps(nextProps) {
+    const { organizations, data, orgAdded } = nextProps;
+    let eventReceived = {};
+    let organizationsReceived = [];
+    let orgAddedReceived = [];
+    if (data) eventReceived = data;
+    if (
+      organizations &&
+      !organizations.loading &&
+      organizations.organizations
+    ) {
+      organizationsReceived = this.state.organizations.concat(
+        organizations.organizations.map(e => e)
+      );
+    }
+    if (orgAdded && orgAdded.length)
+      orgAddedReceived = this.state.organizations.concat(orgAdded);
+    this.setState({
+      event: eventReceived,
+      organizations: _.uniqBy(
+        organizationsReceived.concat(orgAddedReceived),
+        "_id"
+      )
+    });
+  }
+
+  notifyParent(name, value) {
     if (name) {
       let event = this.state.event;
       event[name] = value;
@@ -70,11 +110,17 @@ class EventStep0 extends Component {
 
   onSelectOrganization(name, value, element) {
     let event = this.state.event;
-    event["organization"] = element;
-    this.setState(
-      { orgSelected: element, event: event, isFormOpen: false },
-      () => this.notifyParent(name, value)
-    );
+    if (
+      !event.organization ||
+      !element ||
+      (element && element._id !== event.organization._id)
+    ) {
+      event["organization"] = element;
+      this.setState(
+        { orgSelected: element, event: event, isFormOpen: false },
+        () => this.notifyParent(name, value)
+      );
+    }
   }
 
   onCreationButtonClick(value) {
@@ -86,39 +132,34 @@ class EventStep0 extends Component {
     );
   }
 
-  onNewOrgCreation(data, createOrg) {
+  checkIfHaveNewOrg() {
+    return this.state.organizations.some(item => item.isNew);
+  }
+
+  onNewOrgCreation(data) {
     const { event } = this.state;
     let orgQuery = Object.assign({}, data);
     orgQuery.enable = event.organizer;
+    orgQuery.checkStatus = "approved";
     let organization = { ...orgQuery };
     if (this.props.curUser) {
       organization.owner = this.props.curUser._id;
-      this.setState(
-        { temporalData: !organization.enable ? organization : null },
-        () => {
-          createOrg({ variables: { entity: organization } });
-        }
-      );
+      organization.isNew = true;
+      // temporal id to select the organization
+      organization._id = v1();
+      // adding to the list
+      this.props.onOrgAdded && this.props.onOrgAdded(organization);
+      // selecting the organization
+      this.onSelectOrganization("organization", organization, organization);
     } else {
       // todo login the user and then create the event or notify the user must login
       alert("You must be logged");
     }
   }
 
-  onCreationCallback(result) {
-    let { organization } = result;
-    if (organization && organization._id) {
-      if (this.state.temporalData)
-        organization = Object.assign(this.state.temporalData, organization);
-      organization.isNew = !this.state.temporalData;
-      this.onSelectOrganization("organization", organization, organization);
-      this.props.organizations.refetch();
-    }
-  }
-
   render() {
     const { event, orgSelected, texts } = this.state;
-    const { organizations } = this.props.organizations || {};
+    const organizations = event.organizer ? this.state.organizations : [];
     return (
       <FormMainLayout>
         <Container mt={"5px"}>
@@ -128,7 +169,7 @@ class EventStep0 extends Component {
               pointer
               isActive={event.organizer}
               onClick={() => {
-                this.notifyParent("organizer", !event.organizer);
+                this.notifyParent("organizer", true);
               }}
             >
               <div>
@@ -138,10 +179,11 @@ class EventStep0 extends Component {
             </TextAreaButton>
             <TextAreaButton
               pointer
+              disabled
               isActive={!event.organizer}
-              onClick={() =>
-                this.onSelectOrganization("organizer", !event.organizer, null)
-              }
+              // onClick={() =>
+              //   this.onSelectOrganization("organizer", false, null)
+              // }
             >
               <div>
                 <div>
@@ -161,15 +203,15 @@ class EventStep0 extends Component {
             </Layout>
           </Container>
         </Container>
-        <Container hide={!event.organizer}>
-          <Container mb={"5px"}>Please select your Organization</Container>
+        <Container hide={!event.organizer || !organizations.length}>
+          <Container mb={"10px"}>Please select your Organization</Container>
           <Layout mdTemplateColumns={2} mdColGap={"10px"} rowGap={"10px"}>
             {organizations &&
-              event.organizer &&
               organizations.map((element, index) => {
                 return (
                   <OrganizationItem
                     data={element}
+                    // showOptions={element.isNew}
                     pointer
                     key={index}
                     isSelected={
@@ -183,24 +225,17 @@ class EventStep0 extends Component {
                         element
                       )
                     }
+                    onDelete={() =>
+                      this.props.onOrgDeleted &&
+                      this.props.onOrgDeleted(index, element)
+                    }
                   />
                 );
               })}
           </Layout>
-          <Container
-            mt={"10px"}
-            hide={!orgSelected || orgSelected.checkStatus === "approved"}
-          >
-            <InfoChatBox>
-              <Container>
-                <SLabel>Note</SLabel>
-                <Container>{texts.orgNeedVerification}</Container>
-              </Container>
-            </InfoChatBox>
-          </Container>
         </Container>
         <Container hide={!event.organizer && orgSelected}>
-          <Layout mt={"10px"} mdTemplateColumns={2}>
+          <Layout mdTemplateColumns={2}>
             <TextAreaButton
               isExpanded={this.state.isFormOpen}
               center={!this.state.isFormOpen}
@@ -217,21 +252,11 @@ class EventStep0 extends Component {
                 {event.organizer ? "Create Organization" : "Add Organizer Info"}
               </Container>
               <Container hide={!this.state.isFormOpen}>
-                <Mutation
-                  mutation={CreateOrg}
-                  onCompleted={organization =>
-                    this.onCreationCallback(organization)
-                  }
-                  onError={error => console.log("Error: ", error)}
-                >
-                  {createOrg => (
-                    <SimpleOrgCreateForm
-                      allowUpload={event.organizer}
-                      handleCancel={() => this.onCreationButtonClick(false)}
-                      onSave={data => this.onNewOrgCreation(data, createOrg)}
-                    />
-                  )}
-                </Mutation>
+                <SimpleOrgCreateForm
+                  allowUpload={event.organizer}
+                  handleCancel={() => this.onCreationButtonClick(false)}
+                  onSave={data => this.onNewOrgCreation(data)}
+                />
               </Container>
             </TextAreaButton>
           </Layout>
@@ -259,6 +284,21 @@ class EventStep0 extends Component {
         </Container>
         <Container
           mt={"10px"}
+          hide={
+            !event.organizer ||
+            !orgSelected ||
+            orgSelected.checkStatus === "approved"
+          }
+        >
+          <InfoChatBox>
+            <Container>
+              <SLabel>Note</SLabel>
+              <Container>{texts.orgNeedVerification}</Container>
+            </Container>
+          </InfoChatBox>
+        </Container>
+        <Container
+          mt={"10px"}
           hide
           // hide={!orgSelected || !orgSelected.isNew}
         >
@@ -280,6 +320,9 @@ EventStep0.defaultProps = {
 
 EventStep0.propTypes = {
   data: PropTypes.object,
+  orgAdded: PropTypes.array,
+  onOrgAdded: PropTypes.func,
+  onOrgDeleted: PropTypes.func,
   onChange: PropTypes.func
 };
 

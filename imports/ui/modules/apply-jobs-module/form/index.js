@@ -49,31 +49,31 @@ class ApplyJobForm extends React.Component {
         onBackAction={() => this.props.onCancel && this.props.onCancel()}
         onCancel={() => this.props.onCancel && this.props.onCancel()}
       >
-        <WizardStepForm title={"Personal Info"} isValid>
+        <WizardStepForm title={"Personal Info"}>
           <FirstStep
             data={this.state.apply}
             onChange={apply => this.handleChange(apply)}
           />
         </WizardStepForm>
-        <WizardStepForm title={"Job Specific"} isValid>
+        <WizardStepForm title={"Job Specific"}>
           <SecondStep
             data={this.state.apply}
             onChange={apply => this.handleChange(apply)}
           />
         </WizardStepForm>
-        <WizardStepForm title={"Professional Experience"} isValid>
+        <WizardStepForm title={"Professional Experience"}>
           <ThirdStep
             data={this.state.apply}
             onChange={apply => this.handleChange(apply)}
           />
         </WizardStepForm>
-        <WizardStepForm title={"Work Experience"} isValid>
+        <WizardStepForm title={"Work Experience"}>
           <FourthStep
             data={this.state.apply}
             onChange={apply => this.handleChange(apply)}
           />
         </WizardStepForm>
-        <WizardStepForm title={"Achievements"} isValid>
+        <WizardStepForm title={"Achievements"}>
           <FifthStep
             data={this.state.apply}
             onChange={apply => this.handleChange(apply)}

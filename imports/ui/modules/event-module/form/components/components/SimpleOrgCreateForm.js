@@ -18,16 +18,34 @@ import { UploadToS3 } from "../../../../../services";
 class SimpleOrgCreateForm extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {
-      organization: {
+    this.defaultCollection = {
+      name: null,
+      contact: {
+        email: null,
         name: null,
-        contact: {
-          email: null,
-          name: null,
-          phone: null
-        },
-        image: null
+        phone: null
       },
+      employees: {},
+      services: {},
+      reason: {
+        bio: "",
+        vision: "",
+        orgDefine: ""
+      },
+      tech: {
+        industry: [],
+        salaryRange: {
+          min: 100,
+          max: 1000
+        },
+        stack: [],
+        jobType: []
+      },
+      social: {},
+      image: null
+    };
+    this.state = {
+      organization: Object.assign({}, this.defaultCollection),
       file: {}
     };
     this.handleUpload = this.handleUpload.bind(this);
@@ -72,6 +90,13 @@ class SimpleOrgCreateForm extends React.Component {
     this.setState({ organization: organization, file: null });
   }
 
+  onSaveAndReset() {
+    this.props.onSave && this.props.onSave(this.state.organization);
+    this.setState({
+      organization: this.defaultCollection
+    });
+  }
+
   render() {
     const { organization, file } = this.state;
     return (
@@ -79,7 +104,7 @@ class SimpleOrgCreateForm extends React.Component {
         border={"none"}
         title={"Organization Info"}
         handleCancel={this.props.handleCancel}
-        onSave={() => this.props.onSave && this.props.onSave(organization)}
+        onSave={() => this.onSaveAndReset()}
       >
         <Layout mdTemplateColumns={2} mdColGap={"20px"} rowGap={"5px"}>
           <Container>

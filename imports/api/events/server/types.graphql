@@ -102,7 +102,7 @@ input EventsInput {
     title: String!
     description: String
     startDate: Date
-    organization: String
+    organization: OrganizationsInput
     organizer: Boolean
     endDate: Date
     owner: String!

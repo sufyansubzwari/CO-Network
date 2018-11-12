@@ -97,7 +97,7 @@ class OrganizationPreviewBody extends React.Component {
     let tags = [];
     if (this.state.organization && this.state.organization.description)
       tags = this.state.organization.description;
-    return tags.map(item => ({
+    return tags && tags.map(item => ({
       ...item,
       active: true
     }));
@@ -109,24 +109,27 @@ class OrganizationPreviewBody extends React.Component {
       this.state.organization &&
       this.state.organization.tech &&
       this.state.organization.tech[elementName]
-    )
+    ){
+      const items = this.state.organization.tech[elementName];
       if (elementName === "stack")
-        elements = this.state.organization.tech[elementName].map(element => ({
+        elements = items && items.map(element => ({
           ...element.tag,
           active: true
         }));
       else
-        elements = this.state.organization.tech[elementName].map(element => ({
+        elements = items && items.map(element => ({
           ...element,
           active: true
         }));
+    }
+
     return elements;
   }
 
   handleOrgType() {
     let elements = [];
     if (this.state.organization) elements = this.state.organization.orgType;
-    return elements.map(e => ({
+    return elements && elements.map(e => ({
       ...e,
       active: true
     }));

@@ -32,7 +32,12 @@ const TextAreaButton = styled(Container)`
       : null}
   border: ${props => `1px ${props.borderType} ${props.borderColor}`};
   border-radius: ${props => props.borderRadius};
-  cursor: ${props => (props.pointer ? "pointer" : "default")};
+  cursor: ${props =>
+    props.pointer && !props.disabled
+      ? "pointer"
+      : props.disabled
+        ? "not-allowed"
+        : "default"};
   transition: all 300ms;
   width: 100%;
   height: ${props =>
@@ -52,6 +57,7 @@ TextAreaButton.defaultProps = {
   backgroudColor: "#FFFFFF",
   borderColor: "#BEBEBE",
   boxShadow: false,
+  disabled: false,
   borderType: "solid",
   borderRadius: "3px",
   center: true,
@@ -67,6 +73,7 @@ TextAreaButton.defaultProps = {
 TextAreaButton.propTypes = {
   height: PropTypes.string,
   boxShadow: PropTypes.bool,
+  disabled: PropTypes.bool,
   isExpanded: PropTypes.bool,
   widthToExpand: PropTypes.string,
   pointer: PropTypes.bool,
