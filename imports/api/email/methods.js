@@ -10,19 +10,31 @@ Meteor.methods({
     Email.send({ to, from, subject, text });
   },
 
-  sendEmailHtml(to, from, subject, htmlurl, data) {
-    check([to, from, subject, htmlurl], [String]);
+  sendEmailHtml(options) {
 
-    SSR.compileTemplate("emailTemplate", Assets.getText(htmlurl));
+    try {
+        const {to, from ,subject, htmlurl, data} = options;
 
-    let html = SSR.render("emailTemplate", data);
-    console.log("sending email with data", data);
+        check([to, from, subject, htmlurl], [String]);
 
-    this.unblock();
-    Email.send({ to, from, subject, html: html });
+        SSR.compileTemplate("emailTemplate", Assets.getText(htmlurl));
+
+        let html = SSR.render("emailTemplate", data);
+        console.log("sending email with data", data);
+
+        this.unblock();
+        Email.send({to, from, subject, html: html});
+
+    }catch (e){
+        throw e
+    }
   },
 
-  sendEmailPayment(to, from, subject, data) {
+  sendEmailPayment(options) {
+
+    try {
+    const {to, from ,subject, data} = options;
+
     check([to, from, subject], [String]);
 
     SSR.compileTemplate(
@@ -34,5 +46,9 @@ Meteor.methods({
     console.log("sending email with data", data);
     this.unblock();
     Email.send({ to: to, from: from, subject: subject, html: html });
+    }
+    catch (e){
+        throw e
+    }
   }
 });

@@ -27,6 +27,7 @@ import { MapSection } from "../../../components/Preview/components";
 import { Email } from "../../../services/index";
 import moment from "moment/moment";
 import styled from "styled-components";
+import {NotificationToast} from "../../../services";
 
 const Cancel = styled(Button)`
   opacity: 0.5;
@@ -154,7 +155,16 @@ class EventPreviewBody extends React.Component {
         refetch && refetch();
       }
     );
-    Email.sendEmailPayment("COnetwork", obj.email, "Payment", data);
+    const options = {from : "COnetwork", to: obj.email, subject: "Payment", data}
+    Email.sendEmailPayment(options, (error, response) =>
+    {
+        if(error) {
+            NotificationToast.error(
+                error.message
+            );
+            return
+        }
+    });
   };
 
   renderSummarySection = () => {

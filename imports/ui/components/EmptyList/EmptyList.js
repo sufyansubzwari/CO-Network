@@ -103,18 +103,27 @@ class EmptyList extends React.Component {
       username: username
     };
     try {
-      Email.sendEmailHtml(
-        "COnetwork",
-        this.state.email,
-        "Invitation",
-        "email-templates/invitationEmail.html",
-        data
+      const options = {from: "COnetwork",
+              to: this.state.email,
+          subject: "Invitation",
+          htmlurl: "email-templates/invitationEmail.html",
+          data}
+
+      Email.sendEmailHtml(options, (error, response) =>
+      {
+         if(error) {
+             NotificationToast.error(
+                 error.message
+             );
+             return
+         }
+          NotificationToast.success(
+              "Your message was sent. We are waiting for the new COmmunity member"
+          );
+      }
+
       );
-      this.setState({ invite: false, name: "", email: "", message: "" }, () => {
-        NotificationToast.success(
-          "Your message was sent. We are waiting for the new COmmunity member"
-        );
-      });
+      this.setState({ invite: false, name: "", email: "", message: "" });
     } catch (exc) {
       NotificationToast.error(
         "We doesn't could send your message. Please try again."

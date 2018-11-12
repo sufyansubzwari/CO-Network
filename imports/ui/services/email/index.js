@@ -6,11 +6,20 @@ class Email {
   sendEmailText(from, to, subject, text) {
     Meteor.call("sendEmailText", to, from, subject, text);
   }
-  sendEmailHtml(from, to, subject, htmlurl, data) {
-    Meteor.call("sendEmailHtml", to, from, subject, htmlurl, data);
+  sendEmailHtml(options, callback) {
+      // options{from, to, subject, htmlurl, data}
+      //params to, from, subject, htmlurl, data
+
+      const {from, to, subject, htmlurl, data} = options;
+      const options2 = {to, from, subject, htmlurl, data};
+
+    Meteor.call("sendEmailHtml", options2, (error, result) => { callback(error, result) });
   }
-  sendEmailPayment(from, to, subject, data) {
-    Meteor.call("sendEmailPayment", to, from, subject, data);
+  sendEmailPayment(options, callback) {
+    const {from, to, subject, data} = options;
+    const options2 = {to, from, subject, data};
+
+    Meteor.call("sendEmailPayment", options2, (error, result) => { callback(error, result) });
   }
 }
 
