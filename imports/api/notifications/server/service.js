@@ -3,7 +3,7 @@ import * as _ from "lodash";
 import Followers from "../../followers";
 import { messages } from "../constants";
 import Users from "../../users";
-import ServiceCollection from "../../viewsCount/server/service";
+import { GetCollection } from "../../getCollection";
 
 /**
  * @class Job Service
@@ -112,7 +112,7 @@ class NotificationsService {
           entityId
         );
       case "FOLLOW_ENTITY" || "APPLY" || "SPONSOR" || "SPEAKER":
-        const collectionService = ServiceCollection.getCollection(entity);
+        const collectionService = GetCollection(entity);
         const entityOwner = collectionService.findOne({ _id: userId });
         console.log("entityOwner", entityOwner);
         return NotificationsService.notifyUser(

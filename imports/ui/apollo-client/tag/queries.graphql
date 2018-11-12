@@ -7,3 +7,13 @@ query GetTags($tags: TagsInput) {
         used
     }
 }
+
+query TagsFilters($type: String, $entity: String, $field: String) {
+    tagsFilters(type: $type, entity: $entity, field: $field) {
+        _id
+        name
+        label
+        value
+        number
+    }
+}

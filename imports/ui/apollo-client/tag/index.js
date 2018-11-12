@@ -1,1 +1,1 @@
-export { default as GetTags } from "./queries.graphql";
+export { GetTags, TagsFilters } from "./queries.graphql";

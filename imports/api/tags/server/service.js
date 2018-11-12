@@ -1,5 +1,6 @@
 import Tags from "../index";
 import * as _ from "lodash";
+import { GetCollection } from "../../getCollection";
 
 /**
  * @class Tags Service
@@ -16,13 +17,11 @@ class TagsService {
     let tags = Tags.collection.findOne({ label: data.label, type: data.type });
     if (_.isUndefined(data._id) && !tags) {
       data._id ? delete data._id : null;
-      data.used ? delete data.used : null;
       const id = Tags.collection.insert(data);
       return Tags.collection.findOne(id);
     } else {
       let id = data._id || tags._id;
       data._id ? delete data._id : null;
-      data.used = !tags || (tags && !tags.used) ? 1 : tags.used;
       await Tags.collection.update(id, { $set: data });
       return Tags.collection.findOne(id);
     }
@@ -43,11 +42,11 @@ class TagsService {
    *@name tags
    * @summary Get all tags
    * @param {Object} query - query parameters
-   * @param {Object} limit - query limit
+   * @param {Object?} limit - query limit
    * @return {Object}||[{Object }] Return one or all tags
    */
   static tags = (query, limit) => {
-    return Tags.collection.find(query, limit).fetch();
+    return Tags.collection.find(query, limit || {}).fetch();
   };
 
   static normalizeTags = async (tagList, entityTagList) => {
@@ -55,7 +54,6 @@ class TagsService {
       return await Tags.service.tag(tag);
     });
     return Promise.all(tagsInserted).then(completed => {
-      UpdateCounters(completed, entityTagList);
       return completed.map(item => item._id);
     });
   };
@@ -70,10 +68,6 @@ class TagsService {
       };
     });
     return Promise.all(tagsInserted).then(completed => {
-      UpdateCounters(
-        completed.map(item => item.tag),
-        entityTagList.map(item => item.tag)
-      );
       return completed.map(item => ({
         tag: item.tag._id,
         level: item.level || "",
@@ -82,24 +76,13 @@ class TagsService {
       }));
     });
   };
+
+  static tagsFilters = async(type, entity, field) => {
+    return await Tags.collection.find({type}).map(tag => {
+      tag.number = GetCollection(entity).find({[field]: tag._id}).fetch().length;
+      return tag;
+    });
+  };
 }
 
 export default TagsService;
-
-const UpdateCounters = (tagList, entityTagList) => {
-  const incrementCounts = tagList && tagList.length ? tagList.filter(
-    item => entityTagList && entityTagList.indexOf(item._id) === -1
-  ) : [];
-  const decrementCounts = entityTagList && entityTagList.length ? entityTagList.filter(
-    item => tagList && tagList.length && tagList.map(item => item._id).indexOf(item) === -1
-  ) : [];
-  incrementCounts.forEach(tag => {
-    Tags.collection.update({ _id: tag._id }, { $inc: { used: 1 } });
-  });
-  decrementCounts.forEach(id => {
-    Tags.collection.update(
-      { _id: id, used: { $gt: 0 } },
-      { $inc: { used: -1 } }
-    );
-  });
-};

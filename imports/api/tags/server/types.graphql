@@ -3,16 +3,18 @@
 type Tags {
     _id: String
     name: String
-    label: String!
-    value: String!
+    label: String
+    value: String
     used: Int
     categories: [String]
     type: String
+    number: Int
 }
 
 type Query {
     tags(tags: TagsInput, limit: Int): [Tags]
     tag(_id: String): Tags
+    tagsFilters(type: String, entity: String, field: String): [Tags]
 }
 
 input TagsInput {

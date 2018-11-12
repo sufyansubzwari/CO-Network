@@ -16,7 +16,7 @@ import {
 import PropsTypes from "prop-types";
 import { connect } from "react-redux";
 import { cleanFilters, setFilters } from "../../../actions/SideBarActions";
-import { GetTags } from "../../../apollo-client/tag";
+import { TagsFilters } from "../../../apollo-client/tag";
 import { Query } from "react-apollo";
 import { Meteor } from "meteor/meteor";
 import { GetMyEvents } from "../../../apollo-client/event";
@@ -111,7 +111,7 @@ class EventsFilters extends React.Component {
     if (this.state.limit < this.state.category.length) {
       const newLimit = this.state.limit + 5;
       this.setState({ limit: newLimit });
-    } else this.setState({ limit: 5 });
+    } else this.setState({ limit: 4 });
   }
 
   onSearch(value, tags) {
@@ -246,24 +246,18 @@ class EventsFilters extends React.Component {
         <Separator />
         <FilterItem>
           <Query
-            query={GetTags}
-            variables={{ tags: { type: "EVENT" } }}
+            query={TagsFilters}
+            variables={{ type: "EVENT", entity: "EVENT", field: "category" }}
             fetchPolicy={"cache-and-network"}
           >
             {({ loading, error, data }) => {
               const tags =
                 data &&
-                data.tags &&
-                data.tags
+                data.tagsFilters &&
+                data.tagsFilters
                   .slice(0, this.state.limit)
-                  .filter(item => {
-                    return this.eventTypes.some(e => {
-                      return item.label === e.label;
-                    });
-                  })
                   .map((item, key) => ({
                     ...item,
-                    number: item.used || 0,
                     active:
                       this.state.category[key] &&
                       this.state.category[key].active
