@@ -390,7 +390,7 @@ class Preview extends React.Component {
                   <SAddToCalendar fullY fullX>
                     <AddToCalendar
                       displayItemIcons={false}
-                      buttonLabel={"RSVP"}
+                      buttonLabel={"Add to Calendar"}
                       event={element.calendarEvent}
                     />
                   </SAddToCalendar>
