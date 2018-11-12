@@ -228,14 +228,14 @@ class EventPreviewBody extends React.Component {
     let totalToPay = 0;
     const boughtTickets =
       tickets &&
-      tickets.length > 0 &&
-      tickets.filter(item => item.soldTickets && item.soldTickets > 0);
-    boughtTickets &&
-      boughtTickets.length > 0 &&
-      boughtTickets.map(
-        item =>
-          item.soldTickets && (totalToPay += item.price * item.soldTickets)
-      );
+      tickets
+        .filter(item => item.soldTickets && item.soldTickets > 0)
+        .map(item => {
+          item.soldTickets &&
+            item.price &&
+            (totalToPay += item.price * item.soldTickets);
+          return item;
+        });
     return canRender ? (
       this.state.buyTickets ? (
         <PreviewSection title={"Tickets"} previewRef={this.SummarySection}>
@@ -302,7 +302,6 @@ class EventPreviewBody extends React.Component {
             >
               <Layout rowGap={"10px"}>
                 {boughtTickets &&
-                  boughtTickets.length > 0 &&
                   boughtTickets.map((ticket, index) => {
                     return (
                       <TicketSold
@@ -534,8 +533,7 @@ class EventPreviewBody extends React.Component {
                             speaker.organization.place.location.address
                           }
                           image={
-                            speaker.organization &&
-                            speaker.organization.image
+                            speaker.organization && speaker.organization.image
                           }
                           lgCustomTemplateColumns={"130px 1fr"}
                           hideButton={true}

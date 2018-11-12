@@ -84,6 +84,9 @@ class EmptyList extends React.Component {
 
   handleInvite = () => {
     this.setState({
+      name: "",
+      email: "",
+      message: "",
       invite: !this.state.invite
     });
   };

@@ -46,11 +46,7 @@ class TicketsList extends Component {
     this.state = {
       showOptions: false,
       quantity:
-        props.data &&
-        props.data.soldTickets &&
-        typeof props.data.soldTickets === "string"
-          ? props.data.soldTickets
-          : "0"
+        props.data && props.data.soldTickets ? props.data.soldTickets : "0"
     };
     this.onMouseEnter = this.onMouseEnter.bind(this);
     this.onMouseLeave = this.onMouseLeave.bind(this);
