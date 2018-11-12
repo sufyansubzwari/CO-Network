@@ -144,7 +144,7 @@ class List extends Component {
       }
     }).then(() => {
       this.reFetchQuery().then(() => {
-        let selected = this.props.data[
+        let selected = this.props.data && this.props.data[
           customEntityName || this.entityName
         ].find(item => item._id === this.state.selectedItem._id);
         this.setState({ selectedItem: selected });

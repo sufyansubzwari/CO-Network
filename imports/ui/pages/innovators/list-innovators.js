@@ -214,8 +214,25 @@ class ListInnovators extends List {
     );
   }
 
-  handleFollow(followAction, follow) {
-    super.handleFollow(followAction, follow, "users");
+  handleFollow(followAction, follow, customEntityName) {
+      let follower = {
+          entityId: this.state.selectedItem._id,
+          entity: this.state.selectedItem.entity
+      };
+      followAction({
+          variables: {
+              follower: follower,
+              id: this.state.selectedItem._id,
+              follow: follow
+          }
+      }).then(() => {
+          this.reFetchQuery().then(() => {
+              let selected = this.props[customEntityName] && this.props[customEntityName][
+              customEntityName
+                  ].find(item => item._id === this.state.selectedItem._id);
+              this.setState({ selectedItem: selected });
+          });
+      });
   }
 
   onSearch(value, tags) {
@@ -542,7 +559,7 @@ class ListInnovators extends List {
                               );
                             },
                             onClick: () =>
-                              this.handleFollow(followAction, follow)
+                              this.handleFollow(followAction, follow, "users")
                           },
                           {
                             text: "Edit",
