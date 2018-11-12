@@ -7,7 +7,7 @@ import {
   SixthStep,
   ThirdStep
 } from "./Steps/index";
-import PaymentsOption from '../../payment-module/paymentOptions';
+import PaymentsOption from "../../payment-module/paymentOptions";
 import { MlWizardForm, WizardStepForm } from "btech-base-forms-component";
 import PropTypes from "prop-types";
 
@@ -61,46 +61,47 @@ class UserForm extends Component {
         onCancel={() => this.props.onCancel && this.props.onCancel()}
         showProgress
         inactiveColor={"#A0A0A0"}
+        finishButtonText={"Save"}
       >
-        <WizardStepForm title={"User Details"} isValid>
+        <WizardStepForm title={"User Details"}>
           <FirstStep
             data={this.state.user}
             onChange={user => this.handleChange(user)}
             getNavigationLinks={links => console.log(links)}
           />
         </WizardStepForm>
-        <WizardStepForm title={"About Me | Passion"} isValid>
+        <WizardStepForm title={"About Me | Passion"}>
           <SecondStep
             data={this.state.user}
             onChange={user => this.handleChange(user)}
           />
         </WizardStepForm>
-        <WizardStepForm title={"Knowledge"} isValid>
+        <WizardStepForm title={"Knowledge"}>
           <ThirdStep
             data={this.state.user}
             onChange={user => this.handleChange(user)}
           />
         </WizardStepForm>
-        <WizardStepForm title={"Professional"} isValid>
+        <WizardStepForm title={"Professional"}>
           <FourthStep
             data={this.state.user}
             onChange={user => this.handleChange(user)}
           />
         </WizardStepForm>
-        <WizardStepForm title={"Achievements"} isValid>
+        <WizardStepForm title={"Achievements"}>
           <FifthStep
             data={this.state.user}
             onChange={user => this.handleChange(user)}
           />
         </WizardStepForm>
-        <WizardStepForm title={"Speaker Directory"} isValid>
+        <WizardStepForm title={"Speaker Directory"}>
           <SixthStep
             data={this.state.user}
             onChange={user => this.handleChange(user)}
           />
         </WizardStepForm>
-        <WizardStepForm title={"Payments Options"} isValid>
-          <PaymentsOption/>
+        <WizardStepForm title={"Payments Options"}>
+          <PaymentsOption />
         </WizardStepForm>
       </MlWizardForm>
     );
