@@ -209,7 +209,20 @@ class StrideComponent extends React.Component {
               />
             </Layout>
           </Container>
-          <SCardElement />
+          <SCardElement
+            style={{
+              base: {
+                fontWeight: 300,
+                fontFamily: "Roboto Mono, sans-serif",
+                fontSize: "12px",
+                color: "#2B2B2B",
+
+                "::placeholder": {
+                  fontFamily: "Roboto Mono"
+                }
+              }
+            }}
+          />
           <CheckBox
             active={this.state.agreeTerms}
             onSelected={this.handleCheckBox}
@@ -264,12 +277,9 @@ class StrideComponent extends React.Component {
               size={"16px"}
             />
           </SRadio>
-          <Title disabled={this.props.disabled}>Credit Car</Title>
+          <StrideImage src={"/images/payments/colorstripe.png"} />
           <Cards>
-            <SLabel>Powered by</SLabel>
-            <StrideImage src={"/images/payments/whitestripe.png"} />
             <img src={"/images/payments/cards.png"} />
-            <SLabel>and more...</SLabel>
           </Cards>
         </CardContainer>
         {this.state.active && this.renderForm()}

@@ -1,13 +1,7 @@
 import React from "react";
-import PropTypes from "prop-types";
 import { Meteor } from "meteor/meteor";
-import {
-  StripeProvider,
-  Elements,
-  CardElement,
-  injectStripe
-} from "react-stripe-elements";
-import {findByOwnerAndType, paySubscriptions} from './Service/service';
+import { Elements, StripeProvider } from "react-stripe-elements";
+import { paySubscriptions } from "./Service/service";
 
 let stripeKey = Meteor.settings.public.stripe.publicKey;
 
