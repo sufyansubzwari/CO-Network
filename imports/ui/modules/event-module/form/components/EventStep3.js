@@ -62,26 +62,26 @@ class EventStep3 extends Component {
     return (
       <FormMainLayout>
         <Container>
-          <Layout mdTemplateColumns={2} mdColGap={"20px"} rowGap={"5px"}>
-            <Container>
-              <Input
-                required
-                placeholderText={"Name"}
-                name={"venueName"}
-                getValue={this.notifyParent.bind(this)}
-                model={this.state.event}
-              />
-            </Container>
-            <Container>
-              <Input
-                placeholderText={"Contact Email"}
-                name={"venueEmail"}
-                validate={EMAIL_REGEX}
-                getValue={this.notifyParent.bind(this)}
-                model={this.state.event}
-              />
-            </Container>
-          </Layout>
+          {/*<Layout mdTemplateColumns={2} mdColGap={"20px"} rowGap={"5px"}>*/}
+          {/*<Container>*/}
+          <Input
+            required
+            placeholderText={"Name"}
+            name={"venueName"}
+            getValue={this.notifyParent.bind(this)}
+            model={this.state.event}
+          />
+          {/*</Container>*/}
+          {/*<Container>*/}
+          {/*<Input*/}
+          {/*placeholderText={"Contact Email"}*/}
+          {/*name={"venueEmail"}*/}
+          {/*validate={EMAIL_REGEX}*/}
+          {/*getValue={this.notifyParent.bind(this)}*/}
+          {/*model={this.state.event}*/}
+          {/*/>*/}
+          {/*</Container>*/}
+          {/*</Layout>*/}
         </Container>
         <Container>
           <GeoInputLocation

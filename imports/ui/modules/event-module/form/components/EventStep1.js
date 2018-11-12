@@ -23,44 +23,48 @@ class EventStep1 extends Component {
   constructor(props) {
     super(props);
     this.isMobile = isMobile;
-    const lowResolution = this.isMobile() || window.document.body.clientWidth <= 1440;
+    const lowResolution =
+      this.isMobile() || window.document.body.clientWidth <= 376;
     this.state = {
       event: this.props.data,
       category: EVENT_TYPE,
-      dateFormat: lowResolution ? "MM/DD/YY" : "MM/DD/YYYY"
+      dateFormat: lowResolution ? "MM/DD/YY HH:mm" : "MM/DD/YYYY HH:mm A"
     };
   }
 
   componentDidMount() {
-    window.addEventListener('resize', () => {
-      const lowResolution = this.isMobile() || window.document.body.clientWidth <= 1440;
-      this.setState({dateFormat: lowResolution ? "MM/DD/YY" : "MM/DD/YYYY"});
+    window.addEventListener("resize", () => {
+      const lowResolution =
+        this.isMobile() || window.document.body.clientWidth <= 376;
+      this.setState({
+        dateFormat: lowResolution ? "MM/DD/YY HH:mm" : "MM/DD/YYYY HH:mm A"
+      });
     });
     if (this.props.data && this.props.data.category) {
       this.handleCategory(this.props);
-  }
+    }
   }
 
-  handleCategory = (props) => {
-      let event = props.data;
-      event.others = props.data.category.filter(
-          item => EVENT_TYPE.findIndex(c => c.label === item.label) === -1
-      );
-      this.setState({
-          category: EVENT_TYPE.map(e => {
-              e["active"] = props.data.category.some(
-                  element => e.label === element.label
-              );
-              return e;
-          })
-      });
-  }
+  handleCategory = props => {
+    let event = props.data;
+    event.others = props.data.category.filter(
+      item => EVENT_TYPE.findIndex(c => c.label === item.label) === -1
+    );
+    this.setState({
+      category: EVENT_TYPE.map(e => {
+        e["active"] = props.data.category.some(
+          element => e.label === element.label
+        );
+        return e;
+      })
+    });
+  };
 
   componentWillReceiveProps(nextProps) {
     if (nextProps.data && nextProps.data !== this.state.event)
       this.setState({ event: nextProps.data });
-    if(nextProps.data && nextProps.data.category){
-        this.handleCategory(nextProps)
+    if (nextProps.data && nextProps.data.category) {
+      this.handleCategory(nextProps);
     }
   }
 
@@ -85,7 +89,7 @@ class EventStep1 extends Component {
     let others = this.state.event.others;
 
     const category = selected.filter(element => element.active);
-    others && others.map( tag => category.push(tag));
+    others && others.map(tag => category.push(tag));
     const temp = this.state.event;
     temp["category"] = category;
     this.setState({ category: selected, event: temp }, () =>
@@ -111,9 +115,9 @@ class EventStep1 extends Component {
   onCloseTags(e, tag, index) {
     this.state.event.others.splice(index, 1);
     let category = this.state.event.category;
-    let i = category.length && category.findIndex(cate => cate.label === tag.label);
-    if(i > -1)
-      category.splice(i,1);
+    let i =
+      category.length && category.findIndex(cate => cate.label === tag.label);
+    if (i > -1) category.splice(i, 1);
     this.state.event.category = category;
     this.setState({ event: this.state.event }, () => this.notifyParent());
   }
@@ -182,6 +186,7 @@ class EventStep1 extends Component {
             startDate={this.state.event && this.state.event.startDate}
             endDate={this.state.event && this.state.event.endDate}
             format={this.state.dateFormat}
+            showTimeSelect
             getValue={(startDate, endDate) =>
               this.onDatesChange(startDate, endDate)
             }
@@ -202,7 +207,7 @@ class EventStep1 extends Component {
               <Query query={tags} variables={{ tags: { type: "EVENT" } }}>
                 {({ loading, error, data }) => {
                   if (loading) return <div />;
-                  if (error) return <div/>
+                  if (error) return <div />;
                   return (
                     <div>
                       <MLTagsInput
@@ -227,7 +232,14 @@ class EventStep1 extends Component {
                       />
                       <Container mt={"10px"}>
                         <TagList
-                          tags={this.tagsSuggested(data.tags.filter(tag => this.state.category.findIndex(item => item.label === tag.label) === -1))}
+                          tags={this.tagsSuggested(
+                            data.tags.filter(
+                              tag =>
+                                this.state.category.findIndex(
+                                  item => item.label === tag.label
+                                ) === -1
+                            )
+                          )}
                           onSelect={(event, tag, index) => {
                             if (!tag.active) {
                               delete tag.active;

@@ -14,21 +14,37 @@ const STitle = styled.div`
     props.lineHeight
       ? props.lineHeight
       : props.theme.preview.locations.lineheight};
-      
-  overflow: ${props => props.cut ? "hidden" : null};
+
+  overflow: ${props => (props.cut ? "hidden" : null)};
   text-overflow: ellipsis;
-  white-space: ${props => props.cut ? "nowrap" : null};
+  white-space: ${props => (props.cut ? "nowrap" : null)};
 `;
 
 const Dates = function(props) {
   if (props.startDate && props.endDate)
     return (
       <STitle {...props}>
-        {moment(props.startDate).format(
-          props.initDateFormat || props.dateFormat
-        )}
-        <span style={{ margin: "0 5px" }}>{props.endDate ? "-" : null}</span>
-        {moment(props.endDate).format(props.endDateFormat || props.dateFormat)}
+        <span>
+          {moment(props.startDate).format(
+            props.initDateFormat || props.dateFormat
+          )}
+          <span style={{ margin: "0 5px" }}>{props.endDate ? "-" : null}</span>
+          {moment(props.endDate).format(
+            props.endDateFormat || props.dateFormat
+          )}
+        </span>
+        {props.showTime ? (
+          <span>
+            <span style={{ margin: "0 5px" }}>at</span>
+            <span>
+              {moment(props.startDate).format(props.timeFormat)}
+              <span style={{ margin: "0 5px" }}>
+                {props.endDate ? "-" : null}
+              </span>
+              {moment(props.endDate).format(props.timeFormat)}
+            </span>
+          </span>
+        ) : null}
       </STitle>
     );
   else return <div />;
@@ -37,12 +53,16 @@ const Dates = function(props) {
 Dates.defaultProps = {
   dateFormat: "MMM DD h:mm A",
   initDateFormat: "MMM DD",
-  endDateFormat: "ll"
+  timeFormat: "LT",
+  endDateFormat: "ll",
+  showTime: false
 };
 
 Dates.propTypes = {
   dateFormat: PropsTypes.string,
+  showTime: PropsTypes.bool,
   initDateFormat: PropsTypes.string,
+  timeFormat: PropsTypes.string,
   endDateFormat: PropsTypes.string,
   startDate: PropsTypes.any,
   endDate: PropsTypes.any,

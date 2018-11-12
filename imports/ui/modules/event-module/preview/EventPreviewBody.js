@@ -203,7 +203,7 @@ class EventPreviewBody extends React.Component {
           height={35}
           width={150}
         >
-          <Dates startDate={event.startDate} endDate={event.endDate} />
+          <Dates startDate={event.startDate} endDate={event.endDate} showTime />
         </PlaceHolder>
         <Separator />
         <PlaceHolder
@@ -211,11 +211,7 @@ class EventPreviewBody extends React.Component {
           height={35}
           width={300}
         >
-          <TagsAdd
-            onSelectTag={this.props.onSelectTag}
-            header={"Event Category"}
-            tags={category}
-          />
+          <TagsAdd onSelectTag={this.props.onSelectTag} header={"CommunityEvent Categories"} tags={category}/>
         </PlaceHolder>
         <PlaceHolder
           loading={(!min || !max) && !event._id}
@@ -226,8 +222,7 @@ class EventPreviewBody extends React.Component {
             label={"Expected Attendees"}
             symbol={""}
             min={event.attenders ? min : null}
-            max={event.attenders ? max : null}
-          />
+            max={event.attenders ? max : null} />
         </PlaceHolder>
         <PlaceHolder
           loading={!event.description && !event._id}

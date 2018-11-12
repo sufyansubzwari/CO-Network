@@ -86,7 +86,11 @@ class MapBackGround extends Component {
               key={index}
               position={[location.lat, location.lng]}
             >
-              <Popup closeButton={false} className={"entityPopup"}>
+              <Popup
+                minWidth={150}
+                closeButton={false}
+                className={"entityPopup"}
+              >
                 <EntityInf location={element} />
               </Popup>
             </Marker>
