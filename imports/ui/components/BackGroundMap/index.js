@@ -50,10 +50,10 @@ class MapBackGround extends Component {
   }
 
   createMarkerIcon() {
-    return L.icon({
-      iconUrl: "my-icon.png",
-      iconSize: [38, 95],
-      iconAnchor: [22, 94]
+    return L.divIcon({
+      className: "marker-custom-icon",
+      iconSize: null,
+      html: `<div class="pulsating-circle" />`
     });
   }
 
@@ -81,7 +81,11 @@ class MapBackGround extends Component {
       ? this.props.data.places.map((element, index) => {
           const { location } = element.location;
           return location ? (
-            <Marker key={index} position={[location.lat, location.lng]}>
+            <Marker
+              icon={this.createMarkerIcon()}
+              key={index}
+              position={[location.lat, location.lng]}
+            >
               <Popup closeButton={false} className={"entityPopup"}>
                 <EntityInf location={element} />
               </Popup>

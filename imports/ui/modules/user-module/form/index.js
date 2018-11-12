@@ -93,7 +93,7 @@ class UserForm extends Component {
             onChange={user => this.handleChange(user)}
           />
         </WizardStepForm>
-        <WizardStepForm title={"Speak Directory"} isValid>
+        <WizardStepForm title={"Speaker Directory"} isValid>
           <SixthStep
             data={this.state.user}
             onChange={user => this.handleChange(user)}
