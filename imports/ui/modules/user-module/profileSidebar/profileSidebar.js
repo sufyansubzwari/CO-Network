@@ -127,8 +127,8 @@ const ItemsContainer = function(props) {
   return (
     <SContainer
       fullY
-      customTemplateRows={"95px 1fr 10px"}
-      mdCustomTemplateRows={"160px 1fr 15px"}
+      customTemplateRows={"95px 1fr auto"}
+      mdCustomTemplateRows={"160px 1fr auto"}
     >
       <Photo>
         <SImage
@@ -185,6 +185,31 @@ const ItemsContainer = function(props) {
           {props.children}
         </Scrollbars>
       </SContainer>
+      <Container mb={{ md: "10px" }}>
+        <ProfileItem>
+          <Link to={"/"}>
+            <STextImage>Network Map</STextImage>
+            <SHomePageImage
+              src="/images/map-link.png"
+              width={"100%"}
+            />
+          </Link>
+        </ProfileItem>
+        <Container hide mdShow>
+          <Separator />
+          <SPolicyContainer paddingX={"20px"}>
+            <Container>
+              <SideBarLink href={props.policy}>
+                {" "}
+                Terms Policies{" "}
+              </SideBarLink>
+            </Container>
+            <Container>
+              <SideBarLink> CONetwork © 2018 </SideBarLink>
+            </Container>
+          </SPolicyContainer>
+        </Container>
+      </Container>
     </SContainer>
   );
 };
@@ -240,26 +265,6 @@ class ProfileSideBar extends React.Component {
         <ProfileItem hide={!aboutMe}>
           <Text header={"Me self:"} text={aboutMe} />
         </ProfileItem>
-        <ProfileItem>
-          <Link to={"/"}>
-            <STextImage>Network Map</STextImage>
-            <SHomePageImage
-              src="/images/map-background-gtmetrix.png"
-              width={"100%"}
-            />
-          </Link>
-        </ProfileItem>
-        <Container hide mdShow>
-          <Separator />
-          <SPolicyContainer paddingX={"20px"}>
-            <Container>
-              <SideBarLink href={this.props.policy}> Terms Policies </SideBarLink>
-            </Container>
-            <Container>
-              <SideBarLink> CONetwork © 2018 </SideBarLink>
-            </Container>
-          </SPolicyContainer>
-        </Container>
       </ItemsContainer>
     );
   }
