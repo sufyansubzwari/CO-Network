@@ -210,18 +210,13 @@ class EventPreviewBody extends React.Component {
           height={35}
           width={300}
         >
-          {category.length > 0 ?
-          <TagsAdd onSelectTag={this.props.onSelectTag} header={"CommunityEvent Categories"} tags={category} /></PlaceHolder>
-        <PlaceHolder
-          loading={(!min || !max) && !event._id}
-          height={50}
-          width={300}
-        >
-          <SalaryRangePreview
-            label={"Expected Attendees"}
-            symbol={""}
-            min={event.attenders ? min : null}
-            max={event.attenders ? max : null} /> : null}
+          {category.length > 0 ? (
+            <TagsAdd
+              onSelectTag={this.props.onSelectTag}
+              header={"Community Event Categories"}
+              tags={category}
+            />
+          ) : null}
         </PlaceHolder>
         <PlaceHolder
           loading={!tags.length && !event._id}
@@ -235,6 +230,19 @@ class EventPreviewBody extends React.Component {
               tags={tags}
             />
           ) : null}
+        </PlaceHolder>
+        <PlaceHolder
+          loading={(!min || !max) && !event._id}
+          height={50}
+          width={300}
+        >
+          <SalaryRangePreview
+            label={"Expected Attendees"}
+            symbol={""}
+            min={event.attenders ? min : null}
+            max={event.attenders ? max : null}
+          />{" "}
+          : null}
         </PlaceHolder>
         <PlaceHolder
           loading={!event.description && !event._id}
