@@ -242,7 +242,6 @@ class EventPreviewBody extends React.Component {
             min={event.attenders ? min : null}
             max={event.attenders ? max : null}
           />{" "}
-          : null}
         </PlaceHolder>
         <PlaceHolder
           loading={!event.description && !event._id}
