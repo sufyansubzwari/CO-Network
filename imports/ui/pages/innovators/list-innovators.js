@@ -126,14 +126,17 @@ class ListInnovators extends List {
     let count = 0;
     let entity = "users";
     if (this.state.currentTab.value === "corporations") {
-      count = this.state.organizations.organizations.length;
+      count =
+        this.props.organizations &&
+        this.props.organizations.organizations &&
+        this.props.organizations.organizations.length;
       entity = "organizations";
     }
     if (this.state.currentTab.value === "members") {
       count =
-        this.state.users &&
-        this.state.users.users &&
-        this.state.users.users.length;
+        this.props.users &&
+        this.props.users.users &&
+        this.props.users.users.length;
       entity = "users";
     }
     if (!isLoading && this.state.limit <= count)
@@ -142,7 +145,7 @@ class ListInnovators extends List {
           limit: this.state.limit + 10
         },
         () => {
-          this.props.data.fetchMore({
+          this.props[entity] && this.props[entity].fetchMore({
             variables: {
               limit: this.state.limit,
 
@@ -215,24 +218,26 @@ class ListInnovators extends List {
   }
 
   handleFollow(followAction, follow, customEntityName) {
-      let follower = {
-          entityId: this.state.selectedItem._id,
-          entity: this.state.selectedItem.entity
-      };
-      followAction({
-          variables: {
-              follower: follower,
-              id: this.state.selectedItem._id,
-              follow: follow
-          }
-      }).then(() => {
-          this.reFetchQuery().then(() => {
-              let selected = this.props[customEntityName] && this.props[customEntityName][
-              customEntityName
-                  ].find(item => item._id === this.state.selectedItem._id);
-              this.setState({ selectedItem: selected });
-          });
+    let follower = {
+      entityId: this.state.selectedItem._id,
+      entity: this.state.selectedItem.entity
+    };
+    followAction({
+      variables: {
+        follower: follower,
+        id: this.state.selectedItem._id,
+        follow: follow
+      }
+    }).then(() => {
+      this.reFetchQuery().then(() => {
+        let selected =
+          this.props[customEntityName] &&
+          this.props[customEntityName][customEntityName].find(
+            item => item._id === this.state.selectedItem._id
+          );
+        this.setState({ selectedItem: selected });
       });
+    });
   }
 
   onSearch(value, tags) {

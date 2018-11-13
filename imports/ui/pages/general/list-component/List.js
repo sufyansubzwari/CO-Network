@@ -31,15 +31,6 @@ class List extends Component {
   componentWillReceiveProps(nextProps) {
     if (
       nextProps.filterStatus &&
-      nextProps.filterStatus.filters &&
-      JSON.stringify(this.state.filterStatus) !==
-        JSON.stringify(nextProps.filterStatus.filters)
-    ) {
-      const filters = Object.assign({}, nextProps.filterStatus.filters);
-      this.setState({ filterStatus: filters }, () => this.reFetchQuery());
-    }
-    if (
-      nextProps.filterStatus &&
       nextProps.filterStatus.text &&
       nextProps.filterStatus.text !== this.state.filter
     ) {

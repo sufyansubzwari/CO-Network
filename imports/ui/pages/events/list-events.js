@@ -26,6 +26,7 @@ class ListEvents extends List {
     super(props);
     this.entityName = "events";
     this.state = {
+      limit:10,
       previewOptions: [],
       activePreview: "Summary"
     };

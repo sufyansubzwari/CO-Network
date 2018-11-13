@@ -28,8 +28,9 @@ class ListJobs extends List {
     super(props);
     this.entityName = "jobs";
     this.state = {
+      limit:10,
       previewOptions: [],
-      activePreview: "Summary"
+      activePreview: "Summary",
     }
   }
 
