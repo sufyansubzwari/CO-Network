@@ -106,6 +106,14 @@ const SButtons = styled(Container)`
   align-items: center;
 `;
 
+const STextImage = styled(Username)``;
+
+const SHomePageImage = styled.img`
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  cursor: pointer;
+`;
+
 handleImage = image => {
   return image
     ? image.startsWith("http") || image.startsWith("data:")
@@ -119,8 +127,8 @@ const ItemsContainer = function(props) {
   return (
     <SContainer
       fullY
-      customTemplateRows={"95px 1fr 52px"}
-      mdCustomTemplateRows={"160px 1fr 62px"}
+      customTemplateRows={"95px 1fr 10px"}
+      mdCustomTemplateRows={"160px 1fr 15px"}
     >
       <Photo>
         <SImage
@@ -177,17 +185,6 @@ const ItemsContainer = function(props) {
           {props.children}
         </Scrollbars>
       </SContainer>
-      <Container hide mdShow>
-        <Separator />
-        <SPolicyContainer paddingX={"20px"}>
-          <Container>
-            <SideBarLink href={props.policy}> Terms Policies </SideBarLink>
-          </Container>
-          <Container>
-            <SideBarLink> CONetwork © 2018 </SideBarLink>
-          </Container>
-        </SPolicyContainer>
-      </Container>
     </SContainer>
   );
 };
@@ -199,11 +196,15 @@ class ProfileSideBar extends React.Component {
   }
 
   render() {
-    !this.props.curUser && this.props.onClose && this.props.onClose();
-    const { profile } = this.props.curUser;
-    let name = profile && profile.name;
-    let lastName = profile && profile.lastName;
-    let aboutMe = profile && profile.aboutMe && profile.aboutMe.yourPassion;
+    const { curUser } = this.props;
+    !curUser && this.props.onClose && this.props.onClose();
+    let name = curUser && curUser.profile && curUser.profile.name;
+    let lastName = curUser && curUser.profile && curUser.profile.lastName;
+    let aboutMe =
+      curUser &&
+      curUser.profile &&
+      curUser.profile.aboutMe &&
+      curUser.profile.aboutMe.yourPassion;
 
     return (
       <ItemsContainer
@@ -220,7 +221,7 @@ class ProfileSideBar extends React.Component {
             </Container>
             <Container>
               <Website>
-                {this.props.curUser && profile && profile.website}
+                {curUser && curUser.profile && curUser.profile.website}
               </Website>
             </Container>
             <SButtons>
@@ -239,6 +240,26 @@ class ProfileSideBar extends React.Component {
         <ProfileItem hide={!aboutMe}>
           <Text header={"Me self:"} text={aboutMe} />
         </ProfileItem>
+        <ProfileItem>
+          <Link to={"/"}>
+            <STextImage>Network Map</STextImage>
+            <SHomePageImage
+              src="/images/map-background-gtmetrix.png"
+              width={"100%"}
+            />
+          </Link>
+        </ProfileItem>
+        <Container hide mdShow>
+          <Separator />
+          <SPolicyContainer paddingX={"20px"}>
+            <Container>
+              <SideBarLink href={this.props.policy}> Terms Policies </SideBarLink>
+            </Container>
+            <Container>
+              <SideBarLink> CONetwork © 2018 </SideBarLink>
+            </Container>
+          </SPolicyContainer>
+        </Container>
       </ItemsContainer>
     );
   }

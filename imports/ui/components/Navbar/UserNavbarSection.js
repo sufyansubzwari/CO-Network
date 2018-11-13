@@ -169,9 +169,7 @@ class UserNavbarSection extends React.Component {
                 <GroupSocial
                   authenticated={isAuthenticated}
                   title={
-                    !isAuthenticated
-                      ? "Log into the COnscious Network"
-                      : null
+                    !isAuthenticated ? "Log into the COnscious Network" : null
                   }
                 >
                   {this.loginServices.map((service, index) => {

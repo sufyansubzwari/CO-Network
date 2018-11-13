@@ -54,6 +54,7 @@ class SideBar extends Component {
   }
 
   renderSidebar() {
+    if (!this.props.isOpen) return null;
     if (this.props.isAddAction) {
       return (
         <Create
