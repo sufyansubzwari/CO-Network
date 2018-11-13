@@ -97,11 +97,20 @@ class LoadMessages extends Component {
     else this.setState({ replyMessage: item._id });
   }
 
-  handleDelete(item) {
-    if (item && item._id) {
+  handleDelete(item, index, parent) {
+    if (item && item._id && !parent) {
       Meteor.call("messages.remove", item._id, (error, result) => {
         if (error) return console.log("ERROR - ", error);
       });
+    } else {
+      if (parent) {
+        parent.replies && parent.replies.splice(index, 1);
+        delete parent.showReply;
+        delete parent.canReply;
+        updateMessage(parent, res => {
+          if (res !== "success") console.log(res.reason, "danger");
+        });
+      }
     }
   }
 
@@ -337,7 +346,9 @@ class LoadMessages extends Component {
                       onSelect={this.selectMessage.bind(this, k)}
                       message={message}
                       onReplyAction={this.handleReply.bind(this)}
-                      onDeleteAction={this.handleDelete.bind(this)}
+                      onDeleteAction={item =>
+                        this.handleDelete(item, k, parent)
+                      }
                       onEditAction={this.handleEdit}
                     />}
                     {message._id === replyMessage ? (
