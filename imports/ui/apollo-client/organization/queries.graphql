@@ -25,13 +25,19 @@ query GetOrgs($limit: Int, $filter: String, $organizations: OrganizationSearchIn
         }
         place{
             _id
-            location{
-                address
+                owner
+                entity
                 location{
+                  address
+                  location{
                     lat
                     lng
+                  }
+                  cityCountry{
+                      city
+                      country
+                  }
                 }
-            }
         }
         social{
             github

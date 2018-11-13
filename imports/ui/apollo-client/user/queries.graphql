@@ -118,15 +118,19 @@ query userQuery($id: String){
       }
       place{
         _id
-        owner
-        entity
-        location{
-          address
-          location{
-            lat
-            lng
-          }
-        }
+            owner
+            entity
+            location{
+              address
+              location{
+                lat
+                lng
+              }
+              cityCountry{
+                  city
+                  country
+              }
+            }
       }
       achievements{
         study
@@ -327,15 +331,19 @@ query getUsers($limit: Int, $filter: String, $user: UsersInputSearch){
                   }
                   place{
                     _id
-                    owner
-                    entity
-                    location{
-                      address
-                      location{
-                        lat
-                        lng
-                      }
-                    }
+                        owner
+                        entity
+                        location{
+                          address
+                          location{
+                            lat
+                            lng
+                          }
+                          cityCountry{
+                              city
+                              country
+                          }
+                        }
                   }
                   achievements{
                     study

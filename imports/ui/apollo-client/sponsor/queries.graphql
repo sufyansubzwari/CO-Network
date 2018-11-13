@@ -10,13 +10,17 @@ query GetSponsors($limit: Int, $filter: String, $sponsors: SponsorsInput) {
               lastName
               image
               place{
-                  location{
-                          address
-                          location{
-                            lat
-                            lng
-                          }
+                      location{
+                        address
+                        location{
+                          lat
+                          lng
                         }
+                        cityCountry{
+                            city
+                            country
+                        }
+                      }
             }
 
           }
@@ -26,13 +30,17 @@ query GetSponsors($limit: Int, $filter: String, $sponsors: SponsorsInput) {
                 _id
                 name
                 place{
-                    location{
-                        address
                         location{
-                          lat
-                          lng
+                          address
+                          location{
+                            lat
+                            lng
+                          }
+                          cityCountry{
+                              city
+                              country
+                          }
                         }
-                    }
                 }
                 contact{
                     name
@@ -56,13 +64,17 @@ query GetSpeakers($limit: Int, $filter: String, $sponsors: SponsorsInput) {
               lastName
               image
               place{
-                  location{
-                          address
-                          location{
-                            lat
-                            lng
-                          }
+                      location{
+                        address
+                        location{
+                          lat
+                          lng
                         }
+                        cityCountry{
+                            city
+                            country
+                        }
+                      }
             }
 
           }

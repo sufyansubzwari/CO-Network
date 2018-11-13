@@ -110,12 +110,7 @@ class PostOrganization extends Component {
       redirect: !this.state.formChange || !isEditMode
     });
     let orgQuery = Object.assign({}, query);
-    //todo: remove when location improvement
-    orgQuery.place &&
-    orgQuery.place.location &&
-    orgQuery.place.location.fullLocation
-      ? delete orgQuery.place.location.fullLocation
-      : null;
+
     if (!orgQuery.checkStatus) orgQuery.checkStatus = "approved";
     let organization = { ...orgQuery };
     if (this.props.curUser) {

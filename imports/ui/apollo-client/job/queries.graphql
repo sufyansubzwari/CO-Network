@@ -43,15 +43,19 @@ query GetJobs($limit: Int, $filter: String, $jobs: JobsInputSearch) {
       }
       place{
           _id
-          owner
-          entity
-          location{
-              address
+              owner
+              entity
               location{
+                address
+                location{
                   lat
                   lng
+                }
+                cityCountry{
+                    city
+                    country
+                }
               }
-          }
       }
       jobResponsibility
       culture

@@ -59,11 +59,7 @@ class PostColloquiums extends Component {
       redirect: true //!this.state.formChange || !isEditMode // is only one step
     });
     let queryColloquium = Object.assign({}, query);
-    queryColloquium.place &&
-    queryColloquium.place.location &&
-    queryColloquium.place.location.fullLocation
-      ? delete queryColloquium.place.location.fullLocation
-      : null;
+
     delete queryColloquium.followerList;
     let colloquium = { ...queryColloquium };
     if (this.props.curUser) {

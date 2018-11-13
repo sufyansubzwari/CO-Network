@@ -211,8 +211,7 @@ class EventPreviewBody extends React.Component {
           height={35}
           width={300}
         >
-          <TagsAdd onSelectTag={this.props.onSelectTag} header={"CommunityEvent Categories"} tags={category}/>
-        </PlaceHolder>
+          <TagsAdd onSelectTag={this.props.onSelectTag} header={"CommunityEvent Categories"} tags={category} /></PlaceHolder>
         <PlaceHolder
           loading={(!min || !max) && !event._id}
           height={50}
@@ -667,6 +666,13 @@ class EventPreviewBody extends React.Component {
     const event = this.state.event;
     const place = event ? event.place : null;
     let address = place && place.location && place.location.address;
+    let cityCountry =
+      place &&
+      place.location &&
+      place.location.cityCountry &&
+      `${place.location.cityCountry.city}, ${
+        place.location.cityCountry.country
+      }`;
     const position = place && place.location && { ...place.location.location };
     if (address) position.address = address;
 
@@ -700,16 +706,20 @@ class EventPreviewBody extends React.Component {
               </span>
             </Container>
           </PlaceHolder>
-          <PlaceHolder loading={!address && !event._id} height={35} width={300}>
+          <PlaceHolder
+            loading={(!cityCountry || !address) && !event._id}
+            height={35}
+            width={300}
+          >
             <TagsAdd
               hideBorder={true}
               activeColor={"white"}
               backgroundTagColor={"#202225"}
-              tags={[{ label: address, active: true }]}
+              tags={[{ label: cityCountry || address, active: true }]}
             />
           </PlaceHolder>
         </Layout>
-        {address && position ? (
+        {(cityCountry || address) && position ? (
           <Container height={"320px"}>
             <MapSection locations={[position]} centerAt={position} />
           </Container>

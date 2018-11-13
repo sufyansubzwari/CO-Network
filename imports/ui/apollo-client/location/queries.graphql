@@ -2,14 +2,18 @@
 query GetLocations{
   places{
     _id
-    owner
-    location {
-      address
-      location{
-        lat
-        lng
-      }
-    }
-    entity
+        owner
+        entity
+        location{
+          address
+          location{
+            lat
+            lng
+          }
+          cityCountry{
+              city
+              country
+          }
+        }
   }
 }

@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import {NotificationToast} from "../../../services";
+import { NotificationToast } from "../../../services";
 
 /**
  * @module Data
@@ -77,10 +77,7 @@ class List extends Component {
   }
 
   fetchMoreSelection(isLoading) {
-    if (
-      !isLoading &&
-      this.state.limit <= this.props.data[this.entityName].length
-    )
+    if (!isLoading)
       this.setState(
         {
           limit: this.state.limit + 10
@@ -112,10 +109,9 @@ class List extends Component {
       ? (tagsFilters[keyIndex] = { in: tags.map(item => item._id) })
       : null;
     this.setState({ filter: value, filterStatus: tagsFilters }, () => {
-        this.props.setFilters(this.entityName, tagsFilters, value)
-        this.reFetchQuery()
-      }
-    );
+      this.props.setFilters(this.entityName, tagsFilters, value);
+      this.reFetchQuery();
+    });
   }
 
   onSelectTag(tag) {
@@ -135,9 +131,11 @@ class List extends Component {
       }
     }).then(() => {
       this.reFetchQuery().then(() => {
-        let selected = this.props.data && this.props.data[
-          customEntityName || this.entityName
-        ].find(item => item._id === this.state.selectedItem._id);
+        let selected =
+          this.props.data &&
+          this.props.data[customEntityName || this.entityName].find(
+            item => item._id === this.state.selectedItem._id
+          );
         this.setState({ selectedItem: selected });
       });
     });

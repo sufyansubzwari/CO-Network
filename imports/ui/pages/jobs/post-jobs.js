@@ -68,12 +68,7 @@ class PostJob extends Component {
       redirect: !this.state.formChange || !isEditMode
     });
     let queryJob = Object.assign({}, query);
-    //todo: remove when location improvement
-    queryJob.place &&
-    queryJob.place.location &&
-    queryJob.place.location.fullLocation
-      ? delete queryJob.place.location.fullLocation
-      : null;
+
     let job = { ...queryJob };
     if (this.props.curUser) {
       job.owner = this.props.curUser._id;

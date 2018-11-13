@@ -78,13 +78,7 @@ class PostEvent extends Component {
     // categories
     queryEvent.category = _.uniq(queryEvent.others.concat(queryEvent.category));
     delete queryEvent.others;
-    // place and localization //todo: remove when location improvement
-    queryEvent.place &&
-    queryEvent.place.location &&
-    queryEvent.place.location.fullLocation
-      ? delete queryEvent.place.location.fullLocation
-      : null;
-    // sponsors && speakers
+
     let sponsors =
       queryEvent &&
       queryEvent.sponsors &&

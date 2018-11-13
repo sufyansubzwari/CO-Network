@@ -166,15 +166,19 @@ query GetEvent($id: String) {
     }
     place{
       _id
-      owner
-      entity
-      location{
-        address
-        location{
-          lat
-          lng
-        }
-      }
+          owner
+          entity
+          location{
+            address
+            location{
+              lat
+              lng
+            }
+            cityCountry{
+                city
+                country
+            }
+          }
     }
     followerList
   }

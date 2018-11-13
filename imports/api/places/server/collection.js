@@ -40,6 +40,11 @@ Places.schema = new SimpleSchema({
     type: Object,
     label: "The location of the job."
   },
+  "location.fullLocation": {
+    type: Object,
+    optional: true,
+    blackbox: true
+  },
   "location.cityCountry": {
     type: Object,
     optional: true,

@@ -1,0 +1,16 @@
+fragment placesFragment on Places {
+    _id
+    owner
+    entity
+    location{
+      address
+      location{
+        lat
+        lng
+      }
+      cityCountry{
+          city
+          country
+      }
+    }
+}

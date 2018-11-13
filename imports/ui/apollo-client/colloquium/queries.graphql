@@ -21,15 +21,19 @@ query GetColloquiums($limit: Int, $filter: String, $colloquiums: ColloquiumSearc
     }
     place{
       _id
-      owner
-      entity
-      location{
-        address
-        location{
-          lat
-          lng
-        }
-      }
+          owner
+          entity
+          location{
+            address
+            location{
+              lat
+              lng
+            }
+            cityCountry{
+                city
+                country
+            }
+          }
     }
     entity
     views

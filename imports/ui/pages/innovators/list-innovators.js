@@ -139,29 +139,30 @@ class ListInnovators extends List {
         this.props.users.users.length;
       entity = "users";
     }
-    if (!isLoading && this.state.limit <= count)
+    if (!isLoading)
       this.setState(
         {
           limit: this.state.limit + 10
         },
         () => {
-          this.props[entity] && this.props[entity].fetchMore({
-            variables: {
-              limit: this.state.limit,
+          this.props[entity] &&
+            this.props[entity].fetchMore({
+              variables: {
+                limit: this.state.limit,
 
-              filter: this.state.filter || "",
-              [entity]: this.state.filterStatus || {}
-            },
-            updateQuery: (
-              previousResult,
-              { fetchMoreResult, queryVariables }
-            ) => {
-              return {
-                ...previousResult,
-                [entity]: [...fetchMoreResult[entity]]
-              };
-            }
-          });
+                filter: this.state.filter || "",
+                [entity]: this.state.filterStatus || {}
+              },
+              updateQuery: (
+                previousResult,
+                { fetchMoreResult, queryVariables }
+              ) => {
+                return {
+                  ...previousResult,
+                  [entity]: [...fetchMoreResult[entity]]
+                };
+              }
+            });
         }
       );
   }

@@ -6,13 +6,17 @@ query GetJobApply($limit: Int, $filter: String, $jobsApply: JobApplyInput) {
         _id
         profile{
             place{
-                location{
-                        address
-                        location{
-                          lat
-                          lng
-                        }
+                    location{
+                      address
+                      location{
+                        lat
+                        lng
                       }
+                      cityCountry{
+                          city
+                          country
+                      }
+                    }
           }
 
         }
@@ -34,13 +38,17 @@ query GetSponsors($limit: Int, $filter: String, $sponsors: SponsorsInput) {
         name
 	    image
             place{
-                location{
-                        address
-                        location{
-                          lat
-                          lng
-                        }
+                    location{
+                      address
+                      location{
+                        lat
+                        lng
                       }
+                      cityCountry{
+                          city
+                          country
+                      }
+                    }
           }
 
         }

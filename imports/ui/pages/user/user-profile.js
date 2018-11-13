@@ -122,12 +122,7 @@ class UserProfile extends Component {
       redirect: !this.state.formChange || !isEditMode
     });
     let profile = Object.assign({}, query);
-    //todo: remove when location improvement
-    profile.place &&
-    profile.place.location &&
-    profile.place.location.fullLocation
-      ? delete profile.place.location.fullLocation
-      : null;
+
     let user = {
       _id: this.props.curUser._id,
       profile: profile
