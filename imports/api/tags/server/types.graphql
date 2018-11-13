@@ -26,6 +26,7 @@ input TagsInput {
     categories: [String]
     active: String
     type: String
+    number: Int
 }
 
 type Mutation {

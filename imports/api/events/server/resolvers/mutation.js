@@ -18,7 +18,15 @@ Mutation.event = async (root, { events }, context) => {
   const oldEvent = events._id ? Service.getEvent(events._id) : null;
   // handling the categories
   if (events.category)
-    entity.category = await Tags.service.normalizeTags(events.category, oldEvent ? oldEvent.category : []);
+    entity.category = await Tags.service.normalizeTags(
+      events.category,
+      oldEvent ? oldEvent.category : []
+    );
+  if (events.tags)
+    entity.tags = await Tags.service.normalizeTags(
+      events.tags,
+      oldEvent ? oldEvent.tags : []
+    );
   // handling the organization
   if (organization && organization._id) entity.organization = organization._id;
   else {

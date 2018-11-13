@@ -12,7 +12,7 @@ Query.tags = (root, { tags, limit }, context) => {
 
 Query.tagsFilters = async (root, { type, entity, field }, context) => {
   let tags = await Service.tagsFilters(type, entity, field);
-  return tags.filter(item => item.number).sort((a, b) => b.number - a.number);
+  return tags.sort((a, b) => b.number - a.number);
 };
 
 export default Query;

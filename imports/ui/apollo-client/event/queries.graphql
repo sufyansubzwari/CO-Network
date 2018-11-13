@@ -32,6 +32,12 @@ query GetEvents($limit: Int, $filter: String, $events: EventsInputSearch) {
       value
       name
     }
+    tags {
+          _id
+          label
+          value
+          name
+        }
     venueEmail
     attenders{
       min

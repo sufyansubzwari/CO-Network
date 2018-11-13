@@ -1,4 +1,3 @@
-import Service from "../service";
 import Users from "../../../users";
 import Organizations from "../../../organizations";
 import Tags from "../../../tags";
@@ -21,20 +20,28 @@ Events.category = entity => {
   return Tags.service.getTagList(entity.category);
 };
 
+Events.tags = entity => {
+  return Tags.service.getTagList(entity.tags);
+};
+
 Events.place = entity => {
   return Places.service.getPlaceByOwner(entity._id);
 };
 
 Events.sponsors = entity => {
-  return Sponsors.service.getSponsorsByOwner(entity._id)
-}
+  return Sponsors.service.getSponsorsByOwner(entity._id);
+};
 
 Events.tickets = entity => {
   return Tickets.service.getTicketByOwner(entity._id)
 }
 
 Events.followerList = entity => {
-  const followers = Followers.service.getFollower({ entityId: entity._id, entity: entity.entity });
+  const followers = Followers.service.getFollower({
+    entityId: entity._id,
+    entity: entity.entity
+  });
   return (followers && followers.followers) || [];
 };
+
 export default Events;

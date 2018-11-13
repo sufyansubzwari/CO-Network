@@ -13,6 +13,7 @@ type Events {
     phone: String
     notes: String
     category: [Tags]!
+    tags: [Tags]!
     attenders: Attenders!
     image: String
     entity: String
@@ -57,6 +58,7 @@ input EventsInputSearch {
     endDate: TableDateFilterInput
     owner: String
     category: TableStringFilterInput
+    tags: TableStringFilterInput
     venueName: TableStringFilterInput
     tickets: ticketsElemMatch
     location: [LocationInput]
@@ -112,6 +114,7 @@ input EventsInput {
     phone: String
     notes: String
     category: [TagsInput]!
+    tags: [TagsInput]!
     attenders: AttendersInput!
     image: String
     tickets: [TicketsInput]

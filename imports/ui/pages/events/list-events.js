@@ -16,6 +16,7 @@ import { cleanSearch, onSearchTags } from "../../actions/TopSearchActions";
 import { List } from "../general";
 import { ConfirmPopup, Utils } from "../../services";
 import { setFilters } from "../../actions/SideBarActions";
+import CardItem from "../../components/CardItem/CardItem";
 
 /**
  * @module Events
@@ -26,7 +27,7 @@ class ListEvents extends List {
     super(props);
     this.entityName = "events";
     this.state = {
-      limit:10,
+      limit: 10,
       previewOptions: [],
       activePreview: "Summary"
     };
@@ -120,6 +121,37 @@ class ListEvents extends List {
     return calendarEvent;
   };
 
+  renderEventItem(item, key, isLoading, viewsUpdate) {
+    if (!item) return null;
+    const tags = item.tags || [];
+    const category = item.category || [];
+    return (
+      <CardItem
+        lgCustomTemplateColumns={"195px 1fr"}
+        onSelect={() => this.onChangeCard(item, key, viewsUpdate)}
+        isActive={
+          this.state.activeIndex !== null
+            ? this.state.activeIndex === key
+            : false
+        }
+        loading={isLoading}
+        title={item.title || ""}
+        subTitle={item.description || ""}
+        image={item.image || null}
+        tags={tags.concat(category)}
+        views={item.views}
+        key={key}
+        data={item}
+        onSelectTag={(tag, index) => this.onSelectTag(tag, index)}
+        previewOptions={this.state.previewOptions}
+        showPreviewMenu={
+          this.state.previewOptions && !!this.state.previewOptions.length
+        }
+        activeOptionPreview={this.state.activePreview}
+      />
+    );
+  }
+
   render() {
     //Todo: handle graphQL errors
     const isLoading =
@@ -144,12 +176,12 @@ class ListEvents extends List {
               data={this.props.data[this.entityName]}
               loading={isLoading}
               onFetchData={() => this.fetchMoreSelection(isLoading)}
-              onSelectCard={(item, key) =>
-                this.onChangeCard(item, key, viewsUpdate)
-              }
+
               onSelectTag={(tag, index) => this.onSelectTag(tag, index)}
               activePreview={activePreview}
               previewOptions={this.state.previewOptions}
+              renderItem={(item, key) =>
+                this.renderEventItem(item, key, isLoading, viewsUpdate)}
             />
           )}
         </Mutation>
@@ -277,15 +309,9 @@ class ListEvents extends List {
                           )
                         }
                       >
-                        <EventPreviewBody
-                          curUser={curUser}
+                        <EventPreviewBody curUser={curUser}
                           isMobile={this.props.isMobile}
-                          event={selectedItem}
-                          onSelectTag={(tag, index) =>
-                            this.onSelectTag(tag, index)
-                          }
-                          activePreview={activePreview}
-                        />
+                          event={selectedItem} onSelectTag={(tag, index) => this.onSelectTag(tag, index)} activePreview={activePreview}/>
                       </Preview>
                     );
                   }}

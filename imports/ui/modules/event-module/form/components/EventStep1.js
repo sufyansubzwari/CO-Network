@@ -1,5 +1,5 @@
-import React, { Component } from "react";
-import { Container, Layout } from "btech-layout";
+import React, {Component} from "react";
+import {Container, Layout} from "btech-layout";
 import PropTypes from "prop-types";
 import {
   CheckBoxList,
@@ -8,10 +8,10 @@ import {
   TagList,
   TextArea
 } from "btech-base-forms-component";
-import { EVENT_TYPE } from "../../../../constants";
-import { Query } from "react-apollo";
-import { GetTags as tags } from "../../../../apollo-client/tag";
-import { MLTagsInput, FormMainLayout } from "../../../../../ui/components";
+import {EVENT_TYPE} from "../../../../constants";
+import {Query} from "react-apollo";
+import {TagsFilters as tags} from "../../../../apollo-client/tag";
+import {MLTagsInput, FormMainLayout} from "../../../../../ui/components";
 import moment from "moment";
 import isMobile from "../../../../constants/isMobile";
 
@@ -41,7 +41,7 @@ class EventStep1 extends Component {
       });
     });
     if (this.props.data && this.props.data.category) {
-      this.handleCategory(this.props);
+      //this.handleCategory(this.props);
     }
   }
 
@@ -62,9 +62,9 @@ class EventStep1 extends Component {
 
   componentWillReceiveProps(nextProps) {
     if (nextProps.data && nextProps.data !== this.state.event)
-      this.setState({ event: nextProps.data });
+      this.setState({event: nextProps.data});
     if (nextProps.data && nextProps.data.category) {
-      this.handleCategory(nextProps);
+      //this.handleCategory(nextProps);
     }
   }
 
@@ -73,7 +73,7 @@ class EventStep1 extends Component {
       let event = this.state.event;
       event[name] = value;
       this.setState(
-        { event: event },
+        {event: event},
         () => this.props.onChange && this.props.onChange(this.state.event)
       );
     } else this.props.onChange && this.props.onChange(this.state.event);
@@ -86,40 +86,37 @@ class EventStep1 extends Component {
       return category;
     });
 
-    let others = this.state.event.others;
+    //let others = this.state.event.others;
 
     const category = selected.filter(element => element.active);
-    others && others.map(tag => category.push(tag));
+    //others && others.map(tag => category.push(tag));
     const temp = this.state.event;
     temp["category"] = category;
-    this.setState({ category: selected, event: temp }, () =>
+    this.setState({category: selected, event: temp}, () =>
       this.notifyParent()
     );
   }
 
-  onAddTags(tag) {
+  onAddTags(type, section, tag) {
     if (tag.label && tag.label.length > 0) {
-      let newTag = Object.assign({}, tag);
-      let tags = this.state.event.others || [];
-      let category = this.state.event.category || [];
+      let newTag = Object.assign({}, { ...tag });
+      let tags = (this.state.event && this.state.event[section]) || [];
       !newTag.name ? (newTag.name = newTag.label) : null;
-      newTag.type = "EVENT";
+      newTag.type = type;
       tags.push(newTag);
-      category.push(newTag);
-      this.state.event.others = tags;
-      this.state.event.category = category;
+      this.state.event[section] = tags;
       this.setState({ event: this.state.event }, () => this.notifyParent());
     }
   }
 
   onCloseTags(e, tag, index) {
-    this.state.event.others.splice(index, 1);
-    let category = this.state.event.category;
+    this.state.event.tags.splice(index, 1);
+    let eventTags = this.state.event.tags;
     let i =
-      category.length && category.findIndex(cate => cate.label === tag.label);
-    if (i > -1) category.splice(i, 1);
-    this.state.event.category = category;
-    this.setState({ event: this.state.event }, () => this.notifyParent());
+      eventTags.length && eventTags.findIndex(cate => cate.label === tag.label);
+    if (i > -1) eventTags.splice(i, 1);
+    this.state.event.tags = eventTags;
+    this.setState({event: this.state.event}, () => this.notifyParent());
   }
 
   onDatesChange(startDate, endDate) {
@@ -127,34 +124,24 @@ class EventStep1 extends Component {
     event.startDate = startDate;
     event.endDate = endDate;
     this.setState(
-      { event: event },
+      {event: event},
       () => this.props.onChange && this.props.onChange(this.state.event)
     );
   }
 
   tagsSuggested(tags) {
     let sug = JSON.parse(JSON.stringify(tags));
-    return sug
-      .filter(
-        tag =>
-          !this.state.event ||
-          !this.state.event.others ||
-          this.state.event.others.length === 0 ||
-          this.state.event.others.findIndex(item => item._id === tag._id) === -1
-      )
-      .sort((a, b) => b.used - a.used)
-      .map(tag => ({
-        ...tag,
-        active:
-          this.state.event &&
-          this.state.event.others &&
-          this.state.event.others.findIndex(item => item._id === tag._id) > -1
-      }))
-      .slice(0, 5);
+    let exist = !this.state.event || !this.state.event.tags || this.state.event.tags.length === 0;
+    return (exist ? sug : sug
+        .filter(
+          tag =>
+            this.state.event.tags.findIndex(item => item._id === tag._id) === -1
+        )
+    ).slice(0, 5);
   }
 
   render() {
-    const { category } = this.state;
+    const {category} = this.state;
     return (
       <FormMainLayout>
         <Container>
@@ -204,48 +191,41 @@ class EventStep1 extends Component {
         <Container>
           <Layout rowGap={"10px"}>
             <Container>
-              <Query query={tags} variables={{ tags: { type: "EVENT" } }}>
-                {({ loading, error, data }) => {
-                  if (loading) return <div />;
-                  if (error) return <div />;
+              <Query query={tags} variables={{ type: "EVENT", entity: "EVENT", field: "tags" }}>
+                {({loading, error, data}) => {
+                  if (loading) return <div/>;
+                  if (error) return <div/>;
                   return (
                     <div>
                       <MLTagsInput
                         inputPlaceholder={"Discover..."}
                         placeholderText={"Event Tags"}
-                        getAddedOptions={this.onAddTags.bind(this)}
-                        getNewAddedOptions={this.onAddTags.bind(this)}
+                        getAddedOptions={this.onAddTags.bind(this, "EVENT", "tags")}
+                        getNewAddedOptions={this.onAddTags.bind(this, "EVENT", "tags")}
                         onCloseTags={(e, tag, index) =>
                           this.onCloseTags(e, tag, index)
                         }
-                        options={data.tags}
+                        options={data.tagsFilters}
                         tags={
                           this.state.event &&
-                          this.state.event.others &&
-                          this.state.event.others.length > 0
-                            ? this.state.event.others.map(item => ({
-                                active: true,
-                                ...item
-                              }))
+                          this.state.event.tags &&
+                          this.state.event.tags.length > 0
+                            ? this.state.event.tags.map(item => ({
+                              active: true,
+                              ...item
+                            }))
                             : []
                         }
                       />
                       <Container mt={"10px"}>
                         <TagList
-                          tags={this.tagsSuggested(
-                            data.tags.filter(
-                              tag =>
-                                this.state.category.findIndex(
-                                  item => item.label === tag.label
-                                ) === -1
-                            )
-                          )}
+                          tags={this.tagsSuggested(data.tagsFilters)}
                           onSelect={(event, tag, index) => {
                             if (!tag.active) {
                               delete tag.active;
-                              this.onAddTags(tag);
+                              this.onAddTags("EVENT", "tags", tag);
                             } else {
-                              const pos = this.state.event.others.findIndex(
+                              const pos = this.state.event.tags.findIndex(
                                 item => item._id === tag._id
                               );
                               this.onCloseTags(event, tag, pos);

@@ -22,7 +22,7 @@ class PostEvent extends Component {
       openPreview: false,
       event: {
         category: [],
-        others: [],
+        tags: [],
         title: "",
         description: "",
         venueName: "",
@@ -75,9 +75,6 @@ class PostEvent extends Component {
       redirect: !this.state.formChange || !isEditMode
     });
     let queryEvent = Object.assign({}, query);
-    // categories
-    queryEvent.category = _.uniq(queryEvent.others.concat(queryEvent.category));
-    delete queryEvent.others;
 
     let sponsors =
       queryEvent &&

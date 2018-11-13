@@ -172,13 +172,12 @@ class EventPreviewBody extends React.Component {
   renderSummarySection = () => {
     const event = this.state.event;
 
-    let category = event.category || [];
-    let others =
-      (event.others &&
-        event.others.map(other => ({ ...other, active: true }))) ||
+    let category =
+      (event.category &&
+        event.category.map(cat => ({ ...cat, active: true }))) ||
       [];
-    category = _.uniqBy(category.concat(others), "label");
-    category = category.map(item => ({ ...item, active: true }));
+    let tags =
+      (event.tags && event.tags.map(tag => ({ ...tag, active: true }))) || [];
     const { min, max } = event.attenders || {};
 
     const canRender =
@@ -211,6 +210,7 @@ class EventPreviewBody extends React.Component {
           height={35}
           width={300}
         >
+          {category.length > 0 ?
           <TagsAdd onSelectTag={this.props.onSelectTag} header={"CommunityEvent Categories"} tags={category} /></PlaceHolder>
         <PlaceHolder
           loading={(!min || !max) && !event._id}
@@ -221,7 +221,20 @@ class EventPreviewBody extends React.Component {
             label={"Expected Attendees"}
             symbol={""}
             min={event.attenders ? min : null}
-            max={event.attenders ? max : null} />
+            max={event.attenders ? max : null} /> : null}
+        </PlaceHolder>
+        <PlaceHolder
+          loading={!tags.length && !event._id}
+          height={35}
+          width={300}
+        >
+          {tags.length > 0 ? (
+            <TagsAdd
+              onSelectTag={this.props.onSelectTag}
+              header={"Event Tags"}
+              tags={tags}
+            />
+          ) : null}
         </PlaceHolder>
         <PlaceHolder
           loading={!event.description && !event._id}

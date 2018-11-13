@@ -255,6 +255,7 @@ class EventsFilters extends React.Component {
                 data &&
                 data.tagsFilters &&
                 data.tagsFilters
+                  .filter(item => item.number)
                   .slice(0, this.state.limit)
                   .map((item, key) => ({
                     ...item,

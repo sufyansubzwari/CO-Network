@@ -126,6 +126,15 @@ const schema = new SimpleSchema({
     label: "The category of the event.",
     optional: true
   },
+  tags: {
+    type: Array,
+    optional: true
+  },
+  "tags.$": {
+    type: String,
+    label: "The tags of the event.",
+    optional: true
+  },
   attenders: {
     type: Object,
     label: "The expected attenders of the event.",
