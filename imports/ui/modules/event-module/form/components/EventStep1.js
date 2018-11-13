@@ -212,7 +212,7 @@ class EventStep1 extends Component {
                     <div>
                       <MLTagsInput
                         inputPlaceholder={"Discover..."}
-                        placeholderText={"Other"}
+                        placeholderText={"Event Tags"}
                         getAddedOptions={this.onAddTags.bind(this)}
                         getNewAddedOptions={this.onAddTags.bind(this)}
                         onCloseTags={(e, tag, index) =>

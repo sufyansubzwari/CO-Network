@@ -25,7 +25,7 @@ class StorageS3 {
       process.env.BUCKET ||
       process.env.AWS_S3_BUCKET ||
       bucket ||
-      "mlsociety-public";
+      "conetwork-ai";
     this.s3 = new S3({
       region:
         process.env.AWS_REGION || process.env.REGION || region || "us-east-1"

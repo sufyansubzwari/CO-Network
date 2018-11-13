@@ -1,3 +1,8 @@
+import { Meteor } from "meteor/meteor";
+//
+const bucket = Meteor.settings.s3 && Meteor.settings.s3.bucket;
+const bucketPath = `https://s3.amazonaws.com/${bucket || "conetwork-ai"}`;
+
 const formatSize = size => {
   let sizeMb = "0 bytes";
   if (size) {
@@ -13,7 +18,6 @@ const formatSize = size => {
 };
 
 const getImageFromS3 = (id, prefix) => {
-  let bucketPath = "https://s3.amazonaws.com/mlsociety-public";
   return prefix && prefix !== "base"
     ? `${bucketPath}/resources/${prefix}/${id}`
     : `${bucketPath}/resources/${id}`;
@@ -30,7 +34,6 @@ const instanceOf = (instance, obj) => {
 };
 
 const getFromS3 = id => {
-  let bucketPath = "https://s3.amazonaws.com/mlsociety-public";
   return `${bucketPath}/resources/${id}`;
 };
 

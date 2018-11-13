@@ -187,10 +187,9 @@ class CardItem extends Component {
     if (newProps.isActive !== this.props.isActive) {
       this.setState({ showPreview: false });
     }
-    //TODO: find another solution for this!! Console Warning!! This is used make a rerender after some time to update the taglist size
-      setTimeout(() => {
-          this.setState({ loadingImage: this.state.loadingImage });
-      }, 500);
+    setTimeout(() => {
+      this.setState({ loadingImage: this.state.loadingImage });
+    }, 500);
     if (!newProps.image) return;
     if (newProps.image !== this.props.image) this.loadImage(newProps.image);
   }
