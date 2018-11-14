@@ -52,7 +52,8 @@ query GetJobs($limit: Int, $filter: String, $jobs: JobsInputSearch) {
                   lng
                 }
                 cityCountry{
-                    city
+                    locality
+                    administrative_area_level_1
                     country
                 }
               }

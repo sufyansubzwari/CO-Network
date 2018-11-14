@@ -43,7 +43,8 @@ class PostEvent extends Component {
         sponsors: [],
         tickets: []
       },
-      formChange: false
+      formChange: false,
+      formSaving: false
     };
     this.handleBackgroundChange = this.handleBackgroundChange.bind(this);
   }
@@ -69,6 +70,10 @@ class PostEvent extends Component {
   }
 
   onPostAction(createEvent, query) {
+
+    this.setState({
+        formSaving: true
+    })
     const isEditMode = this.state.event && this.state.event._id;
     this.setState({
       formChange: false,
@@ -100,7 +105,12 @@ class PostEvent extends Component {
     let event = { ...queryEvent };
     if (this.props.curUser) {
       event.owner = this.props.curUser._id;
-      createEvent({ variables: { entity: event } });
+      createEvent({ variables: { entity: event } }).then((response) => {
+        if(response && response.data && response.data.event)
+        {
+          this.setState({formSaving: false})
+        }
+      })
     } else {
       NotificationToast.notify("warn", "You must be logged");
       this.props.toggleSideBar(
@@ -142,6 +152,7 @@ class PostEvent extends Component {
               event={this.state.event}
               {...this.props}
               formChange={this.state.formChange}
+              saving={this.state.formSaving}
             />
           )}
         </Mutation>

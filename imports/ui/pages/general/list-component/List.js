@@ -22,13 +22,22 @@ class List extends Component {
 
   reFetchQuery() {
     return this.props.data.refetch({
-      limit: this.state.limit,
+      limit: this.state.limit || 10,
       filter: this.state.filter || "",
       [this.entityName]: this.state.filterStatus || {}
     });
   }
 
   componentWillReceiveProps(nextProps) {
+    if (
+      nextProps.filterStatus &&
+      nextProps.filterStatus.filters &&
+      JSON.stringify(this.state.filterStatus) !==
+      JSON.stringify(nextProps.filterStatus.filters)
+    ) {
+      const filters = Object.assign({}, nextProps.filterStatus.filters);
+      this.setState({ filterStatus: filters }, () => this.reFetchQuery());
+    }
     if (
       nextProps.filterStatus &&
       nextProps.filterStatus.text &&

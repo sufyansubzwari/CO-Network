@@ -110,6 +110,30 @@ class UserPreviewBody extends React.Component {
 
   renderSummarySection = () => {
     let user = this.state.user;
+    const place = user ? user.place : null;
+    let cityCountry =
+      place &&
+      place.location &&
+      place.location.cityCountry &&
+      `${place.location.cityCountry.locality ?
+        place.location.cityCountry.locality + ", " : ""}${place.location.cityCountry
+        .administrative_area_level_1 ?
+        place.location.cityCountry.administrative_area_level_1 + ", " : ""}${place
+        .location.cityCountry.country && place.location.cityCountry.country}.`;
+    const address =
+      user.place &&
+      user.place.location &&
+      user.place.location.address;
+    const hasLocation =
+      (place &&
+        place.location &&
+        place.location.cityCountry &&
+        place.location.cityCountry.locality &&
+        place.location.cityCountry.administrative_area_level_1 &&
+        place.location.cityCountry.country &&
+        cityCountry) ||
+      address;
+
     let name = `${this.state.user.name} ${this.state.user.lastName}`;
     let website = user &&
       user.website && [{ website: user.website, link: user.website }];
@@ -145,11 +169,17 @@ class UserPreviewBody extends React.Component {
           <Title text={name} />
         </PlaceHolder>
         <PlaceHolder
-          loading={!user.place && !this.props.id}
+          loading={!user.place && !user._id}
           height={35}
           width={300}
         >
-          <Location location={user.place} />
+          {place ? (
+            <TagsAdd
+              hideBorder={true}
+              activeColor={"white"}
+              backgroundTagColor={"#202225"}
+              tags={[{ label: hasLocation, active: true }]}
+            /> ) : null}
         </PlaceHolder>
         <PlaceHolder
           loading={!website && !socials.length && !this.props.id}

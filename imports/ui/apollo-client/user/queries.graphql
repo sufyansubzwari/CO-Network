@@ -127,7 +127,8 @@ query userQuery($id: String){
                 lng
               }
               cityCountry{
-                  city
+                  locality
+                  administrative_area_level_1
                   country
               }
             }
@@ -339,10 +340,11 @@ query getUsers($limit: Int, $filter: String, $user: UsersInputSearch){
                             lat
                             lng
                           }
-                          cityCountry{
-                              city
-                              country
-                          }
+                            cityCountry{
+                                locality
+                                administrative_area_level_1
+                                country
+                            }
                         }
                   }
                   achievements{

@@ -106,13 +106,13 @@ class ListInnovators extends List {
   reFetchQuery() {
     if (this.state.currentTab.value === "corporations")
       return this.props.organizations.refetch({
-        limit: this.state.limit,
+        limit: this.state.limit || 10,
         filter: this.state.filter || "",
         organizations: this.state.filterStatus || {}
       });
     else if (this.state.currentTab.value === "members")
       return this.props.users.refetch({
-        limit: this.state.limit,
+        limit: this.state.limit || 10,
         filter: this.state.filter || "",
         user: Object.keys(this.state.filterStatus).length
           ? this.state.filterStatus

@@ -67,7 +67,8 @@ class PostOrganization extends Component {
         }
         //plan: 0
       },
-      formChange: false
+      formChange: false,
+      formSaving: false
     };
     this.handleBackgroundChange = this.handleBackgroundChange.bind(this);
     this.handleUserPhotoChange = this.handleUserPhotoChange.bind(this);
@@ -104,6 +105,9 @@ class PostOrganization extends Component {
   }
 
   onPostAction(createOrg, query) {
+      this.setState({
+          formSaving: true
+      })
     const isEditMode = this.state.organization && this.state.organization._id;
     this.setState({
       formChange: false,
@@ -115,7 +119,12 @@ class PostOrganization extends Component {
     let organization = { ...orgQuery };
     if (this.props.curUser) {
       organization.owner = this.props.curUser._id;
-      createOrg({ variables: { entity: organization } });
+      createOrg({ variables: { entity: organization } }).then((response) => {
+          if(response && response.data && response.data.organization)
+          {
+              this.setState({formSaving: false})
+          }
+      })
     } else {
       NotificationToast.notify("warn", "You must be logged.");
       this.props.toggleSideBar(
@@ -158,6 +167,7 @@ class PostOrganization extends Component {
               }
               organization={this.state.organization}
               formChange={this.state.formChange}
+              saving={this.state.formSaving}
               {...this.props}
             />
           )}

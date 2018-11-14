@@ -62,6 +62,7 @@ class UserForm extends Component {
         showProgress
         inactiveColor={"#A0A0A0"}
         finishButtonText={"Save"}
+        saving={this.props.saving}
       >
         <WizardStepForm title={"User Details"}>
           <FirstStep

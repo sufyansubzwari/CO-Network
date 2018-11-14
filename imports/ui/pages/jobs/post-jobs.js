@@ -41,7 +41,8 @@ class PostJob extends Component {
           max: 1000
         }
       },
-      formChange: false
+      formChange: false,
+      formSaving: false
     };
   }
 
@@ -62,6 +63,9 @@ class PostJob extends Component {
   }
 
   onPostAction(createJob, query) {
+      this.setState({
+          formSaving: true
+      })
     const isEditMode = this.state.job && this.state.job._id;
     this.setState({
       formChange: false,
@@ -72,7 +76,12 @@ class PostJob extends Component {
     let job = { ...queryJob };
     if (this.props.curUser) {
       job.owner = this.props.curUser._id;
-      createJob({ variables: { entity: job } });
+      createJob({ variables: { entity: job } }).then((response) => {
+          if(response && response.data && response.data.job)
+          {
+              this.setState({formSaving: false})
+          }
+      })
     } else {
       NotificationToast.notify("warn", "You must be logged.");
         this.props.toggleSideBar(
@@ -113,6 +122,7 @@ class PostJob extends Component {
               }
               job={this.state.job}
               formChange={this.state.formChange}
+              saving={this.state.formSaving}
             />
           )}
         </Mutation>

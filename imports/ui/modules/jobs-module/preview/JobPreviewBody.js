@@ -78,6 +78,7 @@ class JobPreviewBody extends React.Component {
 
   renderSummarySection = () => {
     const job = this.state.job;
+    const place = job ? job.place : null;
     let jobType = job.jobType
       ? job.jobType.map(type => ({ ...type, active: true }))
       : [];
@@ -90,8 +91,26 @@ class JobPreviewBody extends React.Component {
     let min = job && job.salaryRange && job.salaryRange.min;
     let max = job && job.salaryRange && job.salaryRange.max;
 
-    const hasLocation =
+    let cityCountry =
+      place &&
+      place.location &&
+      place.location.cityCountry &&
+      `${place.location.cityCountry.locality ?
+        place.location.cityCountry.locality + ", " : ""}${place.location.cityCountry
+        .administrative_area_level_1 ?
+        place.location.cityCountry.administrative_area_level_1 + ", " : ""}${place
+        .location.cityCountry.country && place.location.cityCountry.country}.`;
+    const address =
       job.place && job.place.location && job.place.location.address;
+    const hasLocation =
+      (place &&
+        place.location &&
+        place.location.cityCountry &&
+        place.location.cityCountry.locality &&
+        place.location.cityCountry.administrative_area_level_1 &&
+        place.location.cityCountry.country &&
+        cityCountry) ||
+      address;
 
     const canRender =
       job.title ||
@@ -107,7 +126,13 @@ class JobPreviewBody extends React.Component {
           <Title text={job.title} />
         </PlaceHolder>
         <PlaceHolder loading={!hasLocation && !job._id} height={35} width={300}>
-          <Location location={job.place} />
+          {place ? (
+            <TagsAdd
+              hideBorder={true}
+              activeColor={"white"}
+              backgroundTagColor={"#202225"}
+              tags={[{ label: hasLocation, active: true }]}
+            /> ) : null}
         </PlaceHolder>
         <PlaceHolder
           loading={!jobType.length && !job._id}

@@ -21,8 +21,8 @@ type Coordinates{
 
 type CityCountry{
     city: String
-    state: String
-    entire: String
+    locality: String
+    administrative_area_level_1: String
     country: String
 }
 
@@ -52,10 +52,10 @@ input CoordinatesInput{
 }
 
 input CityCountryInput{
-    city: String!
-    state: String
-    entire: String
-    country: String!
+    city: String
+    locality: String
+    administrative_area_level_1: String
+    country: String
 }
 
 type Mutation {

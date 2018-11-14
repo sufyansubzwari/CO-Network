@@ -69,7 +69,8 @@ class UserProfile extends Component {
     this.state = {
       openPreview: false,
       user: userObject,
-      formChange: false
+      formChange: false,
+      formSaving: false
     };
     this.handleBackgroundChange = this.handleBackgroundChange.bind(this);
     this.handleUserPhotoChange = this.handleUserPhotoChange.bind(this);
@@ -116,6 +117,9 @@ class UserProfile extends Component {
   }
 
   onPostAction(createProfile, query) {
+      this.setState({
+          formSaving: true
+      })
     const isEditMode = true; //this.state.user && this.state.user._id;
     this.setState({
       formChange: false,
@@ -130,6 +134,9 @@ class UserProfile extends Component {
     createProfile({ variables: { entity: user } })
       .then(({ data }) => {
         this.props.data.refetch();
+        this.setState({
+            formSaving: false
+        })
       })
       .catch(error => console.log(error));
   }
@@ -169,6 +176,7 @@ class UserProfile extends Component {
                 }
                 user={this.state.user}
                 formChange={this.state.formChange}
+                saving={this.state.formSaving}
                 {...this.props}
               />
             )}

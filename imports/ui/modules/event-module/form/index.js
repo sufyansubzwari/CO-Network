@@ -38,7 +38,8 @@ class EventForm extends Component {
         sponsors: [],
         tickets: []
       },
-      createdOrganizations: []
+      createdOrganizations: [],
+      formSaving : false
     };
     this.handleChange = this.handleChange.bind(this);
     this.isValidStep0 = this.isValidStep0.bind(this);
@@ -84,6 +85,11 @@ class EventForm extends Component {
         createdOrganizations: nextProps.createdOrganizations
       });
     }
+    if(nextProps.saving !== undefined && nextProps.saving !== null){
+      this.setState({
+          formSaving: nextProps.saving
+      })
+    }
   }
 
   handleChange(event) {
@@ -91,7 +97,7 @@ class EventForm extends Component {
       {
         event: event
       },
-      () => this.props.handleChangeEvent && this.props.handleChangeEvent(event)
+      () => setTimeout(this.props.handleChangeEvent && this.props.handleChangeEvent(event), 300)
     );
   }
 
@@ -112,12 +118,18 @@ class EventForm extends Component {
     return event && event.organization;
   }
 
+  handleFinish = () => {
+    this.setState({
+        formSaving: true
+    }, () => this.props.onFinish && this.props.onFinish(this.state.event))
+  }
+
   render() {
     const { event, createdOrganizations } = this.state;
     return (
       <MlWizardForm
         title={"Post a Event"}
-        onFinish={() => this.props.onFinish && this.props.onFinish(event)}
+        onFinish={this.handleFinish}
         showProgress
         onBackAction={() => this.props.onCancel && this.props.onCancel()}
         inactiveColor={"#A0A0A0"}
@@ -125,6 +137,7 @@ class EventForm extends Component {
         edited={this.props.formChange}
         radioColor={"#000000"}
         onCancel={() => this.props.onCancel && this.props.onCancel()}
+        saving={this.state.formSaving}
       >
         <WizardStepForm
           title={"Hosting Organization"}
@@ -182,7 +195,8 @@ EventForm.defaultProps = {
 EventForm.propTypes = {
   onCancel: PropTypes.func,
   onFinish: PropTypes.func,
-  handleChangeEvent: PropTypes.func
+  handleChangeEvent: PropTypes.func,
+  saving: PropTypes.bool
 };
 
 export default EventForm;

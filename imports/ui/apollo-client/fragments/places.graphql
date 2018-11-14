@@ -9,7 +9,8 @@ fragment placesFragment on Places {
         lng
       }
       cityCountry{
-          city
+          locality
+          administrative_area_level_1
           country
       }
     }

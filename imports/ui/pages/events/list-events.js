@@ -130,9 +130,8 @@ class ListEvents extends List {
         lgCustomTemplateColumns={"195px 1fr"}
         onSelect={() => this.onChangeCard(item, key, viewsUpdate)}
         isActive={
-          this.state.activeIndex !== null
-            ? this.state.activeIndex === key
-            : false
+            this.state.selectedItem &&
+            this.state.selectedItem._id === item._id
         }
         loading={isLoading}
         title={item.title || ""}

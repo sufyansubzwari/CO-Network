@@ -80,6 +80,7 @@ class OrganizationForm extends React.Component {
         radioColor={"#000000"}
         onBackAction={() => this.props.onCancel && this.props.onCancel()}
         onCancel={() => this.props.onCancel && this.props.onCancel()}
+        saving={this.props.saving}
       >
         <WizardStepForm title={"Details"}>
           <FirstStep

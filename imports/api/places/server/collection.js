@@ -55,12 +55,12 @@ Places.schema = new SimpleSchema({
     optional: true,
     label: "The location of the job."
   },
-  "location.cityCountry.state": {
+  "location.cityCountry.locality": {
     type: String,
     optional: true,
     label: "The location of the job."
   },
-  "location.cityCountry.entire": {
+  "location.cityCountry.administrative_area_level_1": {
     type: String,
     optional: true,
     label: "The location of the job."

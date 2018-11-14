@@ -210,12 +210,7 @@ class EventPreviewBody extends React.Component {
           height={35}
           width={300}
         >
-          {category.length > 0 ? (
-            <TagsAdd
-              onSelectTag={this.props.onSelectTag}
-              header={"Community Event Categories"}
-              tags={category}
-            />
+          {category.length > 0 ? (<TagsAdd onSelectTag={this.props.onSelectTag} header={"CommunityEvent Categories"} tags={category} />
           ) : null}
         </PlaceHolder>
         <PlaceHolder
@@ -229,8 +224,7 @@ class EventPreviewBody extends React.Component {
               header={"Event Tags"}
               tags={tags}
             />
-          ) : null}
-        </PlaceHolder>
+          ) : null}</PlaceHolder>
         <PlaceHolder
           loading={(!min || !max) && !event._id}
           height={50}
@@ -241,7 +235,7 @@ class EventPreviewBody extends React.Component {
             symbol={""}
             min={event.attenders ? min : null}
             max={event.attenders ? max : null}
-          />{" "}
+          />
         </PlaceHolder>
         <PlaceHolder
           loading={!event.description && !event._id}
@@ -690,9 +684,26 @@ class EventPreviewBody extends React.Component {
       place &&
       place.location &&
       place.location.cityCountry &&
-      `${place.location.cityCountry.city}, ${
-        place.location.cityCountry.country
-      }`;
+      `${
+        place.location.cityCountry.locality
+          ? place.location.cityCountry.locality + ", "
+          : ""
+      }${
+        place.location.cityCountry.administrative_area_level_1
+          ? place.location.cityCountry.administrative_area_level_1 + ", "
+          : ""
+      }${place.location.cityCountry.country &&
+        place.location.cityCountry.country}.`;
+    const hasLocation =
+      (place &&
+        place.location &&
+        place.location.cityCountry &&
+        place.location.cityCountry.locality &&
+        place.location.cityCountry.administrative_area_level_1 &&
+        place.location.cityCountry.country &&
+        cityCountry) ||
+      address;
+
     const position = place && place.location && { ...place.location.location };
     if (address) position.address = address;
 
@@ -727,19 +738,21 @@ class EventPreviewBody extends React.Component {
             </Container>
           </PlaceHolder>
           <PlaceHolder
-            loading={(!cityCountry || !address) && !event._id}
+            loading={!hasLocation && !event._id}
             height={35}
             width={300}
           >
-            <TagsAdd
-              hideBorder={true}
-              activeColor={"white"}
-              backgroundTagColor={"#202225"}
-              tags={[{ label: cityCountry || address, active: true }]}
-            />
+            {place ? (
+              <TagsAdd
+                hideBorder={true}
+                activeColor={"white"}
+                backgroundTagColor={"#202225"}
+                tags={[{ label: hasLocation, active: true }]}
+              />
+            ) : null}
           </PlaceHolder>
         </Layout>
-        {(cityCountry || address) && position ? (
+        {hasLocation && position ? (
           <Container height={"320px"}>
             <MapSection locations={[position]} centerAt={position} />
           </Container>

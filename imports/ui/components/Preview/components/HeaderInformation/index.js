@@ -27,6 +27,29 @@ const HeaderInformation = function(props) {
       </MenuOption>
     );
   };
+  const place = props ? props.place : null;
+  let cityCountry =
+    place &&
+    place.location &&
+    place.location.cityCountry &&
+    `${place.location.cityCountry.locality ?
+      place.location.cityCountry.locality + ", " : ""}${place.location.cityCountry
+      .administrative_area_level_1 ?
+      place.location.cityCountry.administrative_area_level_1 + ", " : ""}${place
+      .location.cityCountry.country && place.location.cityCountry.country}.`;
+  const address =
+    props.place &&
+    props.place.location &&
+    props.place.location.address;
+  const hasLocation =
+    (place &&
+      place.location &&
+      place.location.cityCountry &&
+      place.location.cityCountry.locality &&
+      place.location.cityCountry.administrative_area_level_1 &&
+      place.location.cityCountry.country &&
+      cityCountry) ||
+    address;
   const tags = props.tags.map(tag => ({ active: true, ...tag }));
   // todo: put the information items
   return (
@@ -57,7 +80,7 @@ const HeaderInformation = function(props) {
           </Layout>
         </Container>
         <Container>
-          <HeaderLocation removeMargin location={props.place} />
+          <HeaderLocation removeMargin location={hasLocation} />
         </Container>
         <Container>
           <HeaderDescription

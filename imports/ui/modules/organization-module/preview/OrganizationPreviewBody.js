@@ -97,10 +97,13 @@ class OrganizationPreviewBody extends React.Component {
     let tags = [];
     if (this.state.organization && this.state.organization.description)
       tags = this.state.organization.description;
-    return tags && tags.map(item => ({
-      ...item,
-      active: true
-    }));
+    return (
+      tags &&
+      tags.map(item => ({
+        ...item,
+        active: true
+      }))
+    );
   }
 
   handleTechElements(elementName) {
@@ -109,18 +112,22 @@ class OrganizationPreviewBody extends React.Component {
       this.state.organization &&
       this.state.organization.tech &&
       this.state.organization.tech[elementName]
-    ){
+    ) {
       const items = this.state.organization.tech[elementName];
       if (elementName === "stack")
-        elements = items && items.map(element => ({
-          ...element.tag,
-          active: true
-        }));
+        elements =
+          items &&
+          items.map(element => ({
+            ...element.tag,
+            active: true
+          }));
       else
-        elements = items && items.map(element => ({
-          ...element,
-          active: true
-        }));
+        elements =
+          items &&
+          items.map(element => ({
+            ...element,
+            active: true
+          }));
     }
 
     return elements;
@@ -129,10 +136,13 @@ class OrganizationPreviewBody extends React.Component {
   handleOrgType() {
     let elements = [];
     if (this.state.organization) elements = this.state.organization.orgType;
-    return elements && elements.map(e => ({
-      ...e,
-      active: true
-    }));
+    return (
+      elements &&
+      elements.map(e => ({
+        ...e,
+        active: true
+      }))
+    );
   }
 
   handleMoreAbout = () => {
@@ -143,12 +153,39 @@ class OrganizationPreviewBody extends React.Component {
 
   renderSummarySection = () => {
     let organization = this.state.organization;
+    const place = organization ? organization.place : null;
     let name = `${organization.name}`;
     const orgType = this.handleOrgType();
     let description = this.handleDescriptionTags();
     const reason = organization.reason;
-const biography = {title : "Biography", text: reason && reason.bio};
-      const orgDefine = {title : "Organization Define", text: reason && reason.orgDefine};
+    const biography = { title: "Biography", text: reason && reason.bio };
+    const orgDefine = {
+      title: "Organization Define",
+      text: reason && reason.orgDefine
+    };
+
+    let cityCountry =
+      place &&
+      place.location &&
+      place.location.cityCountry &&
+      `${place.location.cityCountry.locality ?
+        place.location.cityCountry.locality + ", " : ""}${place.location.cityCountry
+        .administrative_area_level_1 ?
+        place.location.cityCountry.administrative_area_level_1 + ", " : ""}${place
+        .location.cityCountry.country && place.location.cityCountry.country}.`;
+    const address =
+      organization.place &&
+      organization.place.location &&
+      organization.place.location.address;
+    const hasLocation =
+      (place &&
+        place.location &&
+        place.location.cityCountry &&
+        place.location.cityCountry.locality &&
+        place.location.cityCountry.administrative_area_level_1 &&
+        place.location.cityCountry.country &&
+        cityCountry) ||
+      address;
     return (
       <PreviewSection previewRef={this.SummarySection}>
         <PlaceHolder
@@ -166,9 +203,13 @@ const biography = {title : "Biography", text: reason && reason.bio};
           height={35}
           width={300}
         >
-          {organization.place ? (
-            <Location location={organization.place} />
-          ) : null}
+          {place ? (
+            <TagsAdd
+              hideBorder={true}
+              activeColor={"white"}
+              backgroundTagColor={"#202225"}
+              tags={[{ label: hasLocation, active: true }]}
+            /> ) : null}
         </PlaceHolder>
         <PlaceHolder
           loading={(!orgType || !orgType.length) && !organization._id}

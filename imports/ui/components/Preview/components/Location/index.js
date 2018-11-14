@@ -7,6 +7,8 @@ import { mixins } from "btech-layout";
 const STitle = styled.label`
   color: ${props =>
     props.color ? props.color : props.theme.preview.locations.color};
+  background-color: ${props =>
+    props.background ? props.background : "transparent"};
   font-family: ${props =>
     props.family ? props.family : props.theme.preview.locations.family};
   font-size: ${props => (props.size ? props.size : "12px")};
